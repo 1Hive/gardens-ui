@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import useAppLogic from '../app-logic'
-
 import {
   getProposalSupportStatus,
   PROPOSAL_STATUS_SUPPORTED,

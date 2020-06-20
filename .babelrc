@@ -4,25 +4,27 @@
       "@babel/preset-env",
       {
         "modules": false,
-        "targets": {
-          "browsers": [
-            "> 1%",
-            "last 3 versions",
-            "ie >= 9",
-            "ios >= 8",
-            "android >= 4.2"
-          ]
-        },
-        "useBuiltIns": false
+        "useBuiltIns": "entry",
+        "corejs": 3
       }
-    ]
+    ],
+    "@babel/preset-react"
   ],
   "plugins": [
-    [
-      "styled-components",
-      {
-        "displayName": true
-      }
-    ]
-  ]
+    ["styled-components", { "displayName": true }],
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "modules": "commonjs",
+            "targets": { "node": "current" }
+          }
+        ]
+      ]
+    }
+  }
 }

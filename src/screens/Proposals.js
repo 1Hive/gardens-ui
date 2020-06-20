@@ -10,6 +10,7 @@ import {
   useTheme,
   Split,
   Tabs,
+  useLayout,
 } from '@aragon/ui'
 import { useConnectedAccount } from '@aragon/api-react'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -23,6 +24,7 @@ import LocalIdentityBadge from '../components/LocalIdentityBadge/LocalIdentityBa
 import FilterBar from '../components/FilterBar/FilterBar'
 import Balance from '../components/Balance'
 import StakingTokens from './StakingTokens'
+import AccountModule from '../components/Account/AccountModule'
 
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
@@ -46,6 +48,9 @@ const Proposals = React.memo(
   }) => {
     const theme = useTheme()
     const connectedAccount = useConnectedAccount()
+    const { layoutName } = useLayout()
+    const compactMode = layoutName === 'small'
+
     const convictionFields =
       proposalExecutionStatusFilter === 0
         ? [
@@ -189,6 +194,9 @@ const Proposals = React.memo(
         }
         secondary={
           <div>
+            <Box heading="Wallet">
+              <AccountModule compact={compactMode} />
+            </Box>
             <StakingTokens
               stakeToken={stakeToken}
               myStakes={myStakes}

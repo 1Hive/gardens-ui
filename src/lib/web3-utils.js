@@ -1,4 +1,61 @@
 import { toChecksumAddress } from 'web3-utils'
+import env from '../environment'
+import { getDefaultChain } from '../local-settings'
+
+export const DEFAULT_LOCAL_CHAIN = ''
+
+export function getUseWalletProviders() {
+  const providers = [{ id: 'injected' }, { id: 'frame' }]
+
+  if (env('FORTMATIC_API_KEY')) {
+    providers.push({
+      id: 'fortmatic',
+      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
+    })
+  }
+
+  if (env('PORTIS_DAPP_ID')) {
+    providers.push({
+      id: 'portis',
+      useWalletConf: { dAppId: env('PORTIS_DAPP_ID') },
+    })
+  }
+
+  return providers
+}
+
+export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
+  return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
+}
+
+export function getUseWalletConnectors() {
+  return getUseWalletProviders().reduce((connectors, provider) => {
+    if (provider.useWalletConf) {
+      connectors[provider.id] = provider.useWalletConf
+    }
+    return connectors
+  }, {})
+}
+
+export function getNetworkType(chainId = getDefaultChain()) {
+  chainId = String(chainId)
+
+  if (chainId === '1') return 'mainnet'
+  if (chainId === '3') return 'ropsten'
+  if (chainId === '4') return 'rinkeby'
+
+  return DEFAULT_LOCAL_CHAIN
+}
+
+export function getNetworkName(chainId = getDefaultChain()) {
+  chainId = String(chainId)
+
+  if (chainId === '1') return 'Mainnet'
+  if (chainId === '3') return 'Ropsten'
+  if (chainId === '4') return 'Rinkeby'
+
+  return 'unknown'
+}
 
 // Check address equality with checksums
 export function addressesEqual(first, second) {

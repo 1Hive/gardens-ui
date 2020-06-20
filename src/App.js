@@ -10,7 +10,6 @@ import {
   useLayout,
 } from '@aragon/ui'
 
-// import AccountModule from './components/Account/AccountModule'
 import ProposalDetail from './screens/ProposalDetail'
 import Proposals from './screens/Proposals'
 import AddProposalPanel from './components/AddProposalPanel'
@@ -54,62 +53,59 @@ const App = React.memo(function App() {
   }
 
   return (
-    <React.Fragment>
+    <>
       <SyncIndicator visible={isSyncing} />
-      {
-        <>
-          <Header
-            primary="Conviction Voting"
-            secondary={
-              <div>
-                {/* <AccountModule compact={compactMode} /> */}
-                {!selectedProposal && (
-                  <Button
-                    mode="strong"
-                    onClick={() => setProposalPanel(true)}
-                    label="New proposal"
-                    icon={<IconPlus />}
-                    display={compactMode ? 'icon' : 'label'}
-                  />
-                )}
-              </div>
-            }
+      <>
+        <Header
+          primary="Conviction Voting"
+          secondary={
+            <div>
+              {!selectedProposal && (
+                <Button
+                  mode="strong"
+                  onClick={() => setProposalPanel(true)}
+                  label="New proposal"
+                  icon={<IconPlus />}
+                  display={compactMode ? 'icon' : 'label'}
+                />
+              )}
+            </div>
+          }
+        />
+        {selectedProposal ? (
+          <ProposalDetail
+            proposal={selectedProposal}
+            onBack={handleBack}
+            requestToken={requestToken}
           />
-          {selectedProposal ? (
-            <ProposalDetail
-              proposal={selectedProposal}
-              onBack={handleBack}
-              requestToken={requestToken}
-            />
-          ) : (
-            <Proposals
-              selectProposal={selectProposal}
-              filteredProposals={filteredProposals}
-              proposalExecutionStatusFilter={proposalExecutionStatusFilter}
-              proposalSupportStatusFilter={proposalSupportStatusFilter}
-              proposalTextFilter={proposalTextFilter}
-              handleProposalSupportFilterChange={
-                handleProposalSupportFilterChange
-              }
-              handleExecutionStatusFilterChange={handleTabChange}
-              handleSearchTextFilterChange={handleSearchTextFilterChange}
-              requestToken={requestToken}
-              stakeToken={stakeToken}
-              myStakes={myStakes}
-              myActiveTokens={myActiveTokens}
-              totalActiveTokens={totalActiveTokens}
-            />
-          )}
-          <SidePanel
-            title="New proposal"
-            opened={proposalPanel}
-            onClose={() => setProposalPanel(false)}
-          >
-            <AddProposalPanel onSubmit={onProposalSubmit} />
-          </SidePanel>
-        </>
-      }
-    </React.Fragment>
+        ) : (
+          <Proposals
+            selectProposal={selectProposal}
+            filteredProposals={filteredProposals}
+            proposalExecutionStatusFilter={proposalExecutionStatusFilter}
+            proposalSupportStatusFilter={proposalSupportStatusFilter}
+            proposalTextFilter={proposalTextFilter}
+            handleProposalSupportFilterChange={
+              handleProposalSupportFilterChange
+            }
+            handleExecutionStatusFilterChange={handleTabChange}
+            handleSearchTextFilterChange={handleSearchTextFilterChange}
+            requestToken={requestToken}
+            stakeToken={stakeToken}
+            myStakes={myStakes}
+            myActiveTokens={myActiveTokens}
+            totalActiveTokens={totalActiveTokens}
+          />
+        )}
+        <SidePanel
+          title="New proposal"
+          opened={proposalPanel}
+          onClose={() => setProposalPanel(false)}
+        >
+          <AddProposalPanel onSubmit={onProposalSubmit} />
+        </SidePanel>
+      </>
+    </>
   )
 })
 

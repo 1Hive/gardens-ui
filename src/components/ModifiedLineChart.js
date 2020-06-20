@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react'
-import { Spring } from 'react-spring'
+import { Spring } from 'react-spring/renderprops'
 import { unselectable, springs } from '@aragon/ui'
 
 const LABELS_HEIGHT = 30
