@@ -1,4 +1,9 @@
-node_modules
-.cache
+# dependencies
+/node_modules
 package-lock.json
+
+# production
+/build
+/public
+/.cache
 

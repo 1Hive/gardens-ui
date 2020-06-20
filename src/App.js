@@ -10,6 +10,7 @@ import {
   useLayout,
 } from '@aragon/ui'
 
+// import AccountModule from './components/Account/AccountModule'
 import ProposalDetail from './screens/ProposalDetail'
 import Proposals from './screens/Proposals'
 import AddProposalPanel from './components/AddProposalPanel'
@@ -60,15 +61,18 @@ const App = React.memo(function App() {
           <Header
             primary="Conviction Voting"
             secondary={
-              !selectedProposal && (
-                <Button
-                  mode="strong"
-                  onClick={() => setProposalPanel(true)}
-                  label="New proposal"
-                  icon={<IconPlus />}
-                  display={compactMode ? 'icon' : 'label'}
-                />
-              )
+              <div>
+                {/* <AccountModule compact={compactMode} /> */}
+                {!selectedProposal && (
+                  <Button
+                    mode="strong"
+                    onClick={() => setProposalPanel(true)}
+                    label="New proposal"
+                    icon={<IconPlus />}
+                    display={compactMode ? 'icon' : 'label'}
+                  />
+                )}
+              </div>
             }
           />
           {selectedProposal ? (
