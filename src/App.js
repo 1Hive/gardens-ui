@@ -55,7 +55,7 @@ const App = React.memo(function App() {
   return (
     <React.Fragment>
       <SyncIndicator visible={isSyncing} />
-      {!isSyncing && (
+      {
         <>
           <Header
             primary="Conviction Voting"
@@ -104,7 +104,7 @@ const App = React.memo(function App() {
             <AddProposalPanel onSubmit={onProposalSubmit} />
           </SidePanel>
         </>
-      )}
+      }
     </React.Fragment>
   )
 })
