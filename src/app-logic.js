@@ -1,22 +1,39 @@
 import { useState, useMemo } from 'react'
 import BigNumber from './lib/bigNumber'
-import { useAragonApi, useAppState } from '@aragon/api-react'
+import { useAppState } from '@aragon/api-react'
 import { toDecimals } from './lib/math-utils'
 import { toHex } from 'web3-utils'
 import { useProposals } from './hooks/useProposals'
+import { useAppData } from './hooks/useAppData'
+import { useWallet } from 'use-wallet'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
-  const { api, connectedAccount } = useAragonApi()
+  const { connectedAccount } = useWallet()
+
   const { stakeToken, requestToken, isSyncing } = useAppState()
   const [proposals, blockHasLoaded] = useProposals()
-
   const [proposalPanel, setProposalPanel] = useState(false)
 
-  const onProposalSubmit = ({ title, link, amount, beneficiary }) => {
+  const { organization, convictionApp } = useAppData()
+
+  const onProposalSubmit = async ({ title, link, amount, beneficiary }) => {
     const decimals = parseInt(requestToken.decimals)
     const decimalAmount = toDecimals(amount.trim(), decimals).toString()
-    api.addProposal(title, toHex(link), decimalAmount, beneficiary).toPromise()
+
+    const intent = organization.appIntent(
+      convictionApp.appAddress,
+      'addProposal',
+      [title, toHex(link), decimalAmount, beneficiary]
+    )
+
+    // const intent = org.appIntent(finance.address, 'newImmediatePayment', [ ethers.constants.AddressZero, ACCOUNT, ethers.utils.parseEther('1'), 'Tests Payment', ])
+
+    const txPath = await intent.paths(connectedAccount)
+
+    console.log('txPath ', txPath)
+
+    // api.addProposal(title, toHex(link), decimalAmount, beneficiary).toPromise()
     setProposalPanel(false)
   }
 

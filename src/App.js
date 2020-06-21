@@ -18,6 +18,8 @@ import useAppLogic from './app-logic'
 import useFilterProposals from './hooks/useFilterProposals'
 import useSelectedProposal from './hooks/useSelectedProposal'
 
+// import { useAppState as useAppStateConnector } from './hooks/useAppState'
+
 const App = React.memo(function App() {
   const {
     proposals,
@@ -30,6 +32,9 @@ const App = React.memo(function App() {
     totalActiveTokens,
   } = useAppLogic()
 
+  // const appData = useAppStateConnector()
+
+  // console.log(appData)
   const { requestToken, stakeToken } = useAppState()
 
   const { layoutName } = useLayout()

@@ -16,6 +16,7 @@ function AccountButton({ label, onClick }) {
   const theme = useTheme()
   const wallet = useWallet()
 
+  console.log('wallet ', wallet)
   return (
     <HeaderModule
       icon={
