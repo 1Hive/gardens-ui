@@ -21,7 +21,7 @@ function WalletAugmented({ children }) {
       return null
     }
 
-    const ensRegistry = getNetwork().ensRegistry
+    const ensRegistry = getNetwork()?.ensRegistry
     return new EthersProviders.Web3Provider(ethereum, {
       name: '',
       chainId: getDefaultChain(),

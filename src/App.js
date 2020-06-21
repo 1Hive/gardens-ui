@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useGuiStyle, useAppState } from '@aragon/api-react'
+import { useAppState } from '@aragon/api-react'
 import {
   Main,
   Button,
@@ -13,7 +13,7 @@ import {
 import ProposalDetail from './screens/ProposalDetail'
 import Proposals from './screens/Proposals'
 import AddProposalPanel from './components/AddProposalPanel'
-
+import theme from './theme-conviction'
 import useAppLogic from './app-logic'
 import useFilterProposals from './hooks/useFilterProposals'
 import useSelectedProposal from './hooks/useSelectedProposal'
@@ -110,9 +110,9 @@ const App = React.memo(function App() {
 })
 
 export default () => {
-  const { appearance } = useGuiStyle()
+  // const { appearance } = useGuiStyle()
   return (
-    <Main theme={appearance} assetsUrl="./aragon-ui">
+    <Main theme={theme} assetsUrl="./aragon-ui">
       <App />
     </Main>
   )
