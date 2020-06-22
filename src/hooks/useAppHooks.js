@@ -1,13 +1,36 @@
 import { useEffect, useRef, useState } from 'react'
 import gql from 'graphql-tag'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
+import { providers as EthersProviders } from 'ethers'
 
+import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
+import { connect } from '@aragon/connect'
+import { getDefaultChain } from '../local-settings'
+import {
+  transformProposalData,
+  transformConfigData,
+  getAppAddressByName,
+} from '../lib/data-utils'
 import { useContractReadOnly } from './useContract'
 
 import BigNumber from '../lib/bigNumber'
-import { getAppAddressByName } from '../lib/data-utils'
-import vaultAbi from '../abi/vault-balance.json'
 
+import vaultAbi from '../abi/vault-balance.json'
+import { useWallet } from '../providers/Wallet'
+
+// Endpoints TODO: Move to endpoints file
+
+// Organzation
+const ORG_ADDRESS = '0xe03f1aa34886a753d4e546c870d7f082fdd2fa9b'
+const ORG_SUBRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'
+
+// Convcition voting
+const APP_NAME = 'conviction-voting'
+const APP_SUBRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-xdai'
+
+// Tokens app
 const TOKEN_MANAGER_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/1hive/aragon-tokens-xdai'
 const TOKEN_HOLDER_QUERY = `
@@ -22,6 +45,101 @@ query miniMeToken($id: String!, $address: String!) {
   }
 }
 `
+
+const DEFAULT_APP_DATA = {
+  convictionApp: null,
+  stakeToken: {},
+  requestToken: {},
+  proposals: [],
+  convictionStakes: [],
+  alpha: BigNumber(0),
+  maxRatio: BigNumber(0),
+  weight: BigNumber(0),
+}
+
+export function useOrganzation() {
+  const [organzation, setOrganization] = useState(null)
+  const { ethereum } = useWallet()
+
+  useEffect(() => {
+    let cancelled = false
+    const fetchOrg = async () => {
+      // Fetch the apps belonging to this organization. const apps = await organization.apps()
+      const organization = await connect(
+        ORG_ADDRESS,
+        [
+          'thegraph',
+          {
+            orgSubgraphUrl: ORG_SUBRAPH_URL,
+          },
+        ],
+        {
+          readProvider:
+            ethereum ||
+            new EthersProviders.JsonRpcProvider('https://xdai.poanetwork.dev/'), // TODO: Remove once connect doesn't require a provider if it's not going to use it
+          chainId: getDefaultChain(),
+        }
+      )
+
+      if (!cancelled) {
+        setOrganization(organization)
+      }
+    }
+
+    fetchOrg()
+
+    return () => {
+      cancelled = true
+    }
+  }, [ethereum])
+
+  return organzation
+}
+
+export function useAppData(organization) {
+  const [appData, setAppData] = useState(DEFAULT_APP_DATA)
+
+  useEffect(() => {
+    if (!organization) {
+      return
+    }
+
+    let cancelled = false
+
+    const fetchAppData = async () => {
+      const apps = await organization.apps()
+
+      const convictionApp = apps.find(app => app.name === APP_NAME)
+
+      const conviction = new ConvictionVoting(
+        convictionApp.address,
+        APP_SUBRAPH_URL
+      )
+
+      const proposals = await conviction.proposals()
+      const config = await conviction.config()
+
+      if (!cancelled) {
+        setAppData(appData => ({
+          ...appData,
+          ...transformConfigData(config),
+          installedApps: apps,
+          convictionApp: conviction,
+          organization,
+          proposals: proposals.map(transformProposalData),
+        }))
+      }
+    }
+
+    fetchAppData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [organization])
+
+  return appData
+}
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
   const vaultAddress = getAppAddressByName(installedApps, 'vault')
@@ -46,7 +164,8 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
           const vaultBalance = await vaultContract.balance(token.id)
 
           if (!cancelled) {
-            setVaultBalance(vaultBalance)
+            // Contract value is bn.js so we need to convert it to bignumber.js
+            setVaultBalance(new BigNumber(vaultBalance.toString()))
           }
         } catch (err) {
           console.error(`Error fetching balance: ${err} retrying...`)
@@ -78,7 +197,7 @@ export function useTokenBalances(account, token) {
   })
 
   useEffect(() => {
-    if (!account || !token.id) {
+    if (!token.id) {
       return
     }
 
@@ -88,7 +207,7 @@ export function useTokenBalances(account, token) {
       const wrapper = new GraphQLWrapper(TOKEN_MANAGER_SUBGRAPH)
       const results = await wrapper.performQuery(gql(TOKEN_HOLDER_QUERY), {
         id: `tokenAddress-${token.id}`,
-        address: account,
+        address: account || '',
       })
 
       if (!results.data) {

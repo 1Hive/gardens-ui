@@ -1,45 +1,18 @@
-import { useCallback, useMemo, useState } from 'react'
-import BigNumber from './lib/bigNumber'
-import { toDecimals } from './lib/math-utils'
-import { toHex } from 'web3-utils'
-import { useWallet } from './providers/Wallet'
-import { useProposals } from './hooks/useProposals'
+import { useMemo } from 'react'
 import { useAppState } from './providers/AppState'
+import usePanelState from './hooks/usePanelState'
+import { useProposals } from './hooks/useProposals'
+import { useWallet } from './providers/Wallet'
+import BigNumber from './lib/bigNumber'
+import useProposalActions from './hooks/useProposalActions'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
-  const { connectedAccount, ethers } = useWallet()
+  const { connectedAccount } = useWallet()
 
-  const {
-    organization,
-    convictionApp,
-    isLoading,
-    requestToken,
-    stakeToken,
-  } = useAppState()
+  const { isLoading, stakeToken } = useAppState()
   const [proposals] = useProposals()
-  const [proposalPanel, setProposalPanel] = useState(false)
-
-  const onNewProposal = useCallback(
-    async ({ title, link, amount, beneficiary }) => {
-      const { decimals } = requestToken
-      const decimalAmount = toDecimals(amount.trim(), decimals).toString()
-
-      const intent = organization.appIntent(
-        convictionApp.appAddress,
-        'addProposal',
-        [title, toHex(link), decimalAmount, beneficiary]
-      )
-
-      const txPath = await intent.paths(connectedAccount)
-
-      const { to, data } = txPath.transactions[0]
-      ethers.getSigner().sendTransaction({ data, to })
-
-      setProposalPanel(false)
-    },
-    [connectedAccount, convictionApp, ethers, requestToken, organization]
-  )
+  const proposalPanel = usePanelState()
 
   const { myStakes, totalActiveTokens } = useMemo(() => {
     if (!connectedAccount || !stakeToken || !proposals) {
@@ -75,13 +48,14 @@ export default function useAppLogic() {
     )
   }, [proposals, connectedAccount, stakeToken])
 
+  const actions = useProposalActions(proposalPanel.requestClose)
+
   return {
-    proposals,
+    actions,
     isLoading: isLoading,
-    onNewProposal,
-    proposalPanel,
-    setProposalPanel,
     myStakes,
+    proposals,
+    proposalPanel,
     totalActiveTokens,
   }
 }

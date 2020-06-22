@@ -11,9 +11,9 @@ export function transformProposalData(proposal) {
 export function transformConfigData(config) {
   return {
     ...config,
-    alpha: new BigNumber(config.decay),
-    maxRatio: new BigNumber(config.maxRatio),
-    weight: new BigNumber(config.weight),
+    alpha: new BigNumber(config.decay).div(config.pctBase),
+    maxRatio: new BigNumber(config.maxRatio).div(config.pctBase),
+    weight: new BigNumber(config.weight).div(config.pctBase),
     pctBase: new BigNumber(config.pctBase),
   }
 }
