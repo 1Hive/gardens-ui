@@ -18,19 +18,23 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 export function useProposals() {
   const { account } = useWallet()
   const {
-    proposals = [],
+    alpha,
     convictionStakes,
-    stakeToken,
+    isLoading,
+    maxRatio,
+    proposals = [],
     totalSupply,
     vaultBalance,
-    alpha,
-    maxRatio,
     weight,
   } = useAppState()
 
   const latestBlock = useLatestBlock()
 
   const proposalsWithData = useMemo(() => {
+    if (isLoading) {
+      return proposals
+    }
+
     return proposals.map(proposal => {
       const stakes = convictionStakes.filter(
         stake => stake.proposal === parseInt(proposal.id)
@@ -72,7 +76,7 @@ export function useProposals() {
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
       const futureStakedConviction = futureConviction.div(maxConviction)
-      const neededConviction = threshold?.div(maxConviction)
+      const neededConviction = threshold.div(maxConviction)
 
       const minTokensNeeded = getMinNeededStake(threshold, alpha)
 
@@ -111,15 +115,16 @@ export function useProposals() {
       }
     })
   }, [
+    account,
     alpha,
     convictionStakes,
+    isLoading,
+    latestBlock,
     maxRatio,
     proposals,
-    stakeToken,
-    latestBlock,
-    account,
-    weight,
+    totalSupply,
     vaultBalance,
+    weight,
   ])
 
   return [proposalsWithData, latestBlock.number !== 0]

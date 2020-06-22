@@ -44,7 +44,6 @@ const Proposals = React.memo(
     requestToken,
     stakeToken,
     myStakes,
-    myActiveTokens,
     totalActiveTokens,
   }) => {
     const theme = useTheme()
@@ -210,7 +209,6 @@ const Proposals = React.memo(
             {account && (
               <StakingTokens
                 myStakes={myStakes}
-                myActiveTokens={myActiveTokens}
                 totalActiveTokens={totalActiveTokens}
               />
             )}

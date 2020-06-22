@@ -27,7 +27,14 @@ import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 import SupportProposal from '../components/panels/SupportProposal'
 import { useWallet } from '../providers/Wallet'
 
-function ProposalDetail({ proposal, onBack, requestToken }) {
+function ProposalDetail({
+  proposal,
+  onBack,
+  onExecuteProposal,
+  onStakeToProposal,
+  onWithdrawFromProposal,
+  requestToken,
+}) {
   const theme = useTheme()
   const { layoutName } = useLayout()
 
@@ -54,17 +61,13 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
   )
   const didIStaked = myStakes.length > 0 && [...myStakes].pop().tokensStaked > 0
 
-  const handleExecute = useCallback(() => {
-    // api.executeProposal(id, true).toPromise()
-  }, [id])
-
-  const handleStake = useCallback(() => {
-    // api.stakeAllToProposal(id).toPromise()
-  }, [id])
-
   const handleWithdraw = useCallback(() => {
-    // api.withdrawAllFromProposal(id).toPromise()
-  }, [id])
+    onWithdrawFromProposal(id)
+  }, [id, onWithdrawFromProposal])
+
+  const handleExecute = useCallback(() => {
+    onExecuteProposal(id)
+  }, [id, onExecuteProposal])
 
   const buttonProps = useMemo(() => {
     if (currentConviction.gte(threshold)) {
@@ -87,9 +90,9 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
     currentConviction,
     didIStaked,
     handleExecute,
-    handleStake,
     handleWithdraw,
     panelState,
+    threshold,
   ])
 
   return (
@@ -239,7 +242,11 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
         opened={panelState.visible}
         onClose={panelState.requestClose}
       >
-        <SupportProposal id={id} onDone={panelState.requestClose} />
+        <SupportProposal
+          id={id}
+          onDone={panelState.requestClose}
+          onStakeToProposal={onStakeToProposal}
+        />
       </SidePanel>
     </div>
   )

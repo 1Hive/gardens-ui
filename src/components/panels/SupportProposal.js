@@ -15,7 +15,11 @@ import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
 import { formatTokenAmount } from '../../lib/token-utils'
 import { useAppState } from '../../providers/AppState'
 
-const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
+const SupportProposal = React.memo(function SupportProposal({
+  id,
+  onDone,
+  onStakeToProposal,
+}) {
   const theme = useTheme()
   const [amount, setAmount] = useState({
     value: '0',
@@ -92,11 +96,11 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
     event => {
       event.preventDefault()
 
-      // api.stakeToProposal(id, String(amount.valueBN)).toPromise()
+      onStakeToProposal(id, String(amount.valueBN))
 
       onDone()
     },
-    [onDone]
+    [amount, id, onDone, onStakeToProposal]
   )
 
   const errorMessage = useMemo(() => {

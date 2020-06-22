@@ -19,13 +19,11 @@ import useSelectedProposal from './hooks/useSelectedProposal'
 
 const App = React.memo(function App() {
   const {
-    proposals,
+    actions,
     isLoading,
     myStakes,
-    setProposalPanel,
+    proposals,
     proposalPanel,
-    onNewProposal,
-    myActiveTokens,
     totalActiveTokens,
   } = useAppLogic()
 
@@ -70,7 +68,7 @@ const App = React.memo(function App() {
               {!selectedProposal && (
                 <Button
                   mode="strong"
-                  onClick={() => setProposalPanel(true)}
+                  onClick={proposalPanel.requestOpen}
                   label="New proposal"
                   icon={<IconPlus />}
                   display={compactMode ? 'icon' : 'label'}
@@ -83,8 +81,11 @@ const App = React.memo(function App() {
           <>
             {selectedProposal ? (
               <ProposalDetail
-                proposal={selectedProposal}
                 onBack={handleBack}
+                onExecuteProposal={actions.executeProposal}
+                onStakeToProposal={actions.stakeToProposal}
+                onWithdrawFromProposal={actions.withdrawFromProposal}
+                proposal={selectedProposal}
                 requestToken={requestToken}
               />
             ) : (
@@ -101,7 +102,6 @@ const App = React.memo(function App() {
                 requestToken={requestToken}
                 stakeToken={stakeToken}
                 myStakes={myStakes}
-                myActiveTokens={myActiveTokens}
                 totalActiveTokens={totalActiveTokens}
               />
             )}
@@ -109,10 +109,10 @@ const App = React.memo(function App() {
         )}
         <SidePanel
           title="New proposal"
-          opened={proposalPanel}
-          onClose={() => setProposalPanel(false)}
+          opened={proposalPanel.visible}
+          onClose={proposalPanel.requestClose}
         >
-          <AddProposalPanel onSubmit={onNewProposal} />
+          <AddProposalPanel onSubmit={actions.newProposal} />
         </SidePanel>
       </>
     </>
