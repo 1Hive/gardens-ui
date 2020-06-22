@@ -12,27 +12,28 @@ import {
   Tabs,
   useLayout,
 } from '@aragon/ui'
-import { useConnectedAccount } from '@aragon/api-react'
 import { formatTokenAmount } from '../lib/token-utils'
+import { useHistory } from 'react-router-dom'
 
 import {
   ConvictionBar,
   ConvictionTrend,
   ConvictionCountdown,
 } from '../components/ConvictionVisuals'
-import LocalIdentityBadge from '../components/LocalIdentityBadge/LocalIdentityBadge'
+import IdentityBadge from '../components/IdentityBadge'
 import FilterBar from '../components/FilterBar/FilterBar'
 import Balance from '../components/Balance'
 import StakingTokens from './StakingTokens'
 import AccountModule from '../components/Account/AccountModule'
+import { useWallet } from '../providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
+import { useAppState } from '../providers/AppState'
 
 const ENTRIES_PER_PAGE = 6
 
 const Proposals = React.memo(
   ({
-    selectProposal,
     filteredProposals,
     proposalExecutionStatusFilter,
     proposalSupportStatusFilter,
@@ -47,9 +48,10 @@ const Proposals = React.memo(
     totalActiveTokens,
   }) => {
     const theme = useTheme()
-    const connectedAccount = useConnectedAccount()
+    const { account } = useWallet()
     const { layoutName } = useLayout()
     const compactMode = layoutName === 'small'
+    const { vaultBalance } = useAppState()
 
     const convictionFields =
       proposalExecutionStatusFilter === 0
@@ -92,6 +94,14 @@ const Proposals = React.memo(
       [handleSearchTextFilterChange]
     )
 
+    const history = useHistory()
+    const handleSelectProposal = useCallback(
+      id => {
+        history.push(`/proposal/${id}`)
+      },
+      [history]
+    )
+
     return (
       <Split
         primary={
@@ -112,7 +122,7 @@ const Proposals = React.memo(
                 ...beneficiaryField,
                 ...statusField,
               ]}
-              statusEmpty={
+              emptyState={
                 <p
                   css={`
                     ${textStyle('title2')};
@@ -128,7 +138,7 @@ const Proposals = React.memo(
                   <IdAndTitle
                     id={proposal.id}
                     name={proposal.name}
-                    selectProposal={selectProposal}
+                    selectProposal={handleSelectProposal}
                   />,
                 ]
                 if (proposal.executed || !requestToken) {
@@ -159,10 +169,10 @@ const Proposals = React.memo(
                 }
                 if (proposal.executed) {
                   entriesElements.push(
-                    <LocalIdentityBadge
+                    <IdentityBadge
                       connectedAccount={addressesEqual(
                         proposal.creator,
-                        connectedAccount
+                        account
                       )}
                       entity={proposal.creator}
                     />
@@ -197,12 +207,13 @@ const Proposals = React.memo(
             <Box heading="Wallet">
               <AccountModule compact={compactMode} />
             </Box>
-            <StakingTokens
-              stakeToken={stakeToken}
-              myStakes={myStakes}
-              myActiveTokens={myActiveTokens}
-              totalActiveTokens={totalActiveTokens}
-            />
+            {account && (
+              <StakingTokens
+                myStakes={myStakes}
+                myActiveTokens={myActiveTokens}
+                totalActiveTokens={totalActiveTokens}
+              />
+            )}
             {requestToken && (
               <Box heading="Organization funds">
                 <span
@@ -215,6 +226,7 @@ const Proposals = React.memo(
                 </span>
                 <Balance
                   {...requestToken}
+                  amount={vaultBalance}
                   color={theme.positive}
                   size={textStyle('title3')}
                 />
@@ -250,8 +262,8 @@ const ProposalInfo = ({
         <Tag>
           {`✓ Supported: ${formatTokenAmount(
             parseInt(myStakeInfo.stakedAmount),
-            parseInt(stakeToken.tokenDecimals)
-          )} ${stakeToken.tokenSymbol}`}
+            parseInt(stakeToken.decimals)
+          )} ${stakeToken.symbol}`}
         </Tag>
       )}
     </div>

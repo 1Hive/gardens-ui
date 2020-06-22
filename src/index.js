@@ -1,18 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { AragonApi } from '@aragon/api-react'
+import { BrowserRouter } from 'react-router-dom'
+
 import App from './App'
-import { IdentityProvider } from './identity-manager'
-import reducer from './app-state-reducer.js'
+import { Main } from '@aragon/ui'
+import theme from './theme-conviction'
 import { WalletProvider } from './providers/Wallet'
+import { AppStateProvider } from './providers/AppState'
 
 ReactDOM.render(
-  <AragonApi reducer={reducer}>
-    <IdentityProvider>
-      <WalletProvider>
-        <App />
-      </WalletProvider>
-    </IdentityProvider>
-  </AragonApi>,
+  <WalletProvider>
+    <AppStateProvider>
+      <Main theme={theme} assetsUrl="/aragon-ui/">
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Main>
+    </AppStateProvider>
+  </WalletProvider>,
   document.getElementById('root')
 )

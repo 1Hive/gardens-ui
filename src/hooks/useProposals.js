@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useAragonApi, useAppState } from '@aragon/api-react'
 import BigNumber from '../lib/bigNumber'
 import { useLatestBlock } from './useBlock'
 import {
@@ -11,17 +10,22 @@ import {
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
+import { useWallet } from '../providers/Wallet'
+import { useAppState } from '../providers/AppState'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
-  const { connectedAccount } = useAragonApi()
+  const { account } = useWallet()
   const {
     proposals = [],
     convictionStakes,
     stakeToken,
-    requestToken,
-    globalParams: { alpha, maxRatio, weight },
+    totalSupply,
+    vaultBalance,
+    alpha,
+    maxRatio,
+    weight,
   } = useAppState()
 
   const latestBlock = useLatestBlock()
@@ -41,15 +45,15 @@ export function useProposals() {
 
       const threshold = calculateThreshold(
         proposal.requestedAmount,
-        requestToken.amount || new BigNumber('0'),
-        stakeToken.totalSupply || new BigNumber('0'),
+        vaultBalance || new BigNumber('0'),
+        totalSupply || new BigNumber('0'),
         alpha,
         maxRatio,
         weight
       )
 
       const maxConviction = getMaxConviction(
-        stakeToken.totalSupply || new BigNumber('0'),
+        totalSupply || new BigNumber('0'),
         alpha
       )
 
@@ -60,7 +64,7 @@ export function useProposals() {
       )
       const userConviction = getCurrentConvictionByEntity(
         stakes,
-        connectedAccount,
+        account,
         latestBlock.number,
         alpha
       )
@@ -68,7 +72,7 @@ export function useProposals() {
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
       const futureStakedConviction = futureConviction.div(maxConviction)
-      const neededConviction = threshold.div(maxConviction)
+      const neededConviction = threshold?.div(maxConviction)
 
       const minTokensNeeded = getMinNeededStake(threshold, alpha)
 
@@ -106,7 +110,17 @@ export function useProposals() {
         convictionTrend,
       }
     })
-  }, [proposals, latestBlock])
+  }, [
+    alpha,
+    convictionStakes,
+    maxRatio,
+    proposals,
+    stakeToken,
+    latestBlock,
+    account,
+    weight,
+    vaultBalance,
+  ])
 
   return [proposalsWithData, latestBlock.number !== 0]
 }

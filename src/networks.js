@@ -1,4 +1,5 @@
 import { getNetworkType, isLocalOrUnknownNetwork } from './lib/web3-utils'
+import { getDefaultChain } from './local-settings'
 
 const networks = {
   mainnet: {
@@ -13,13 +14,20 @@ const networks = {
     name: 'Rinkeby',
     type: 'rinkeby',
   },
+  xdai: {
+    chainId: 100,
+    ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
+    name: 'xdai',
+    type: 'private',
+    defaultEthNode: 'https://xdai.poanetwork.dev/',
+  },
 }
 
-function getNetworkInternalName(chainId) {
+function getNetworkInternalName(chainId = getDefaultChain()) {
   return isLocalOrUnknownNetwork(chainId) ? 'local' : getNetworkType(chainId)
 }
 
-export function getNetwork(chainId) {
+export function getNetwork(chainId = getDefaultChain()) {
   return networks[getNetworkInternalName(chainId)]
 }
 

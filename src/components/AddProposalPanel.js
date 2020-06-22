@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useAppState } from '@aragon/api-react'
 import { Button, Field, TextInput } from '@aragon/ui'
 import styled from 'styled-components'
-import LocalIdentitiesAutoComplete from './LocalIdentitiesAutoComplete/LocalIdentitiesAutoComplete'
+import { useAppState } from '../providers/AppState'
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
@@ -22,7 +21,7 @@ const AddProposalPanel = ({ onSubmit }) => {
           form.title === '' || form.amount === '' || form.beneficiary === ''
         )
       : setDisabled(form.title === '')
-  }, [form])
+  }, [form, requestToken])
 
   const onFormSubmit = event => {
     event.preventDefault()
@@ -56,8 +55,10 @@ const AddProposalPanel = ({ onSubmit }) => {
             />
           </Field>
           <Field label="Beneficiary">
-            <LocalIdentitiesAutoComplete
-              onChange={beneficiary => setForm({ ...form, beneficiary })}
+            <TextInput
+              onChange={event =>
+                setForm({ ...form, beneficiary: event.target.value })
+              }
               value={form.beneficiary}
               wide
               required

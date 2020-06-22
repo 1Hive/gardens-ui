@@ -1,22 +1,19 @@
-import { useState } from 'react'
-import { useApi } from '@aragon/api-react'
+import { useCallback, useState } from 'react'
 
 import useInterval from './useInterval'
-import { loadLatestBlock } from '../lib/web3-utils'
+import { useWallet } from '../providers/Wallet'
 
 export function useLatestBlock(updateEvery = 1000) {
-  const api = useApi()
+  const { getBlockNumber } = useWallet()
   const [block, setBlock] = useState({ number: 0, timeStamp: 0 })
 
-  useInterval(
-    async () => {
-      const { number, timestamp } = api ? await loadLatestBlock(api) : block
-      // Prevent unnecessary re-renders
-      if (number !== block.number) setBlock({ number, timestamp })
-    },
-    updateEvery,
-    true
-  )
+  const fetchBlock = useCallback(async () => {
+    const { number, timestamp } = getBlockNumber() || block
+    // Prevent unnecessary re-renders
+    if (number !== block.number) setBlock({ number, timestamp })
+  }, [block, getBlockNumber])
+
+  useInterval(fetchBlock, updateEvery, true)
 
   return block
 }

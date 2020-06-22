@@ -43,6 +43,7 @@ export function getNetworkType(chainId = getDefaultChain()) {
   if (chainId === '1') return 'mainnet'
   if (chainId === '3') return 'ropsten'
   if (chainId === '4') return 'rinkeby'
+  if (chainId === '100') return 'xdai'
 
   return DEFAULT_LOCAL_CHAIN
 }
@@ -53,6 +54,7 @@ export function getNetworkName(chainId = getDefaultChain()) {
   if (chainId === '1') return 'Mainnet'
   if (chainId === '3') return 'Ropsten'
   if (chainId === '4') return 'Rinkeby'
+  if (chainId === '100') return 'Xdai'
 
   return 'unknown'
 }
@@ -88,18 +90,6 @@ export function addressesEqualNoSum(first, second) {
   first = first && first.toLowerCase()
   second = second && second.toLowerCase()
   return first === second
-}
-
-/**
- * @param {*} api aragon api
- * @returns {object} Latest block number and timestamp in miliseconds
- */
-export const loadLatestBlock = async api => {
-  const { number, timestamp } = await api
-    .web3Eth('getBlock', 'latest')
-    .toPromise()
-
-  return { number, timestamp: timestamp * 1000 }
 }
 
 // Re-export some web3-utils functions
