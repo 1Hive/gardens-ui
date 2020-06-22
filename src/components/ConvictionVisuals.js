@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
-import { useAppState } from '@aragon/api-react'
 import { Timer, Text, Tag, useTheme, useLayout, textStyle } from '@aragon/ui'
 import BigNumber from '../lib/bigNumber'
 import LineChart from './ModifiedLineChart'
 import styled from 'styled-components'
 import SummaryBar from './SummaryBar'
 import { formatTokenAmount } from '../lib/token-utils'
+import { useAppState } from '../providers/AppState'
 
 export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const { maxConviction, threshold } = proposal
@@ -53,7 +53,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
         firstSize={userStakedConviction.toNumber()}
         secondSize={secondSize.toNumber()}
         thirdSize={thirdSize.toNumber()}
-        requiredSize={withThreshold && neededConviction.toNumber()}
+        requiredSize={withThreshold && neededConviction?.toNumber()}
         compact
       />
       <div>
@@ -69,7 +69,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
                 color: ${theme.contentSecondary};
               `}
             >
-              {isFinite(neededConviction)
+              {neededConviction
                 ? `(${Math.round(
                     neededConviction.multipliedBy(new BigNumber('100'))
                   )}% needed)`
@@ -95,8 +95,8 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
 
 export function ConvictionCountdown({ proposal, shorter }) {
   const {
-    globalParams: { maxRatio },
-    stakeToken: { tokenSymbol, tokenDecimals },
+    maxRatio,
+    stakeToken: { symbol, decimals },
   } = useAppState()
 
   const theme = useTheme()
@@ -124,7 +124,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
       return MAY_PASS
     }
     return UNABLE_TO_PASS
-  }, [currentConviction, threshold, remainingTimeToPass])
+  }, [currentConviction, executed, threshold, remainingTimeToPass])
 
   const NOW = Date.now()
 
@@ -136,7 +136,13 @@ export function ConvictionCountdown({ proposal, shorter }) {
 
   return view === UNABLE_TO_PASS ? (
     <>
-      <Text color={theme.negative.toString()}> ✘ Won't pass</Text>
+      <span
+        css={`
+          color: ${theme.negative};
+        `}
+      >
+        ✘ Won't pass
+      </span>
       {!shorter && (
         <div>
           <Text color={theme.surfaceContent.toString()}>
@@ -151,10 +157,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
               <React.Fragment>
                 At least{' '}
                 <Tag>
-                  {`${formatTokenAmount(
-                    neededTokens,
-                    tokenDecimals
-                  )} ${tokenSymbol}`}
+                  {`${formatTokenAmount(neededTokens, decimals)} ${symbol}`}
                 </Tag>{' '}
                 more needed
               </React.Fragment>

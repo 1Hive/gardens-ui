@@ -1,20 +1,18 @@
 import { useMemo } from 'react'
-import { useAppState, useAragonApi } from '@aragon/api-react'
 import { useLatestBlock } from './useBlock'
 import {
   getConvictionHistory,
   getConvictionHistoryByEntity,
 } from '../lib/conviction'
+import { useWallet } from '../providers/Wallet'
+import { useAppState } from '../providers/AppState'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useConvictionHistory(proposal) {
-  const { connectedAccount } = useAragonApi()
+  const { account } = useWallet()
   const latestBlock = useLatestBlock()
-  const {
-    convictionStakes,
-    globalParams: { alpha },
-  } = useAppState()
+  const { convictionStakes, alpha } = useAppState()
 
   const stakes = useMemo(() => {
     if (!convictionStakes || !proposal) {
@@ -32,10 +30,10 @@ export function useConvictionHistory(proposal) {
     TIME_UNIT
   )
 
-  const userConvictionHistory = connectedAccount
+  const userConvictionHistory = account
     ? getConvictionHistoryByEntity(
         stakes,
-        connectedAccount,
+        account,
         latestBlock.number + 25 * TIME_UNIT,
         alpha,
         TIME_UNIT

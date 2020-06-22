@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { useNetwork } from '@aragon/api-react'
 import { theme, useLayout, tokenIconUrl, GU } from '@aragon/ui'
 
 import { formatTokenAmount } from '../lib/token-utils'
 import { ETHER_TOKEN_VERIFIED_BY_SYMBOL } from '../lib/verified-tokens'
+import { getNetwork } from '../networks'
 
 const splitAmount = amount => {
   const [integer, fractional] = formatTokenAmount(amount).split('.')
@@ -27,7 +27,7 @@ const BalanceToken = ({
 }) => {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const network = useNetwork()
+  const network = getNetwork()
   const tokenAddress =
     symbol && ETHER_TOKEN_VERIFIED_BY_SYMBOL.get(symbol.toUpperCase())
   return (
