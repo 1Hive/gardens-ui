@@ -9,7 +9,7 @@ import {
   textStyle,
   useTheme,
 } from '@aragon/ui'
-import LocalIdentityBadge from '../LocalIdentityBadge/LocalIdentityBadge'
+import IdentityBadge from '../IdentityBadge'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 
@@ -76,7 +76,7 @@ function AccountScreenConnected({ wallet }) {
               }
             `}
           >
-            <LocalIdentityBadge
+            <IdentityBadge
               entity={wallet.account}
               compact
               badgeOnly
