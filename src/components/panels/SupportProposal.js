@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import BigNumber from '../../lib/bigNumber'
-import { useAragonApi } from '@aragon/api-react'
 import {
   Button,
   ButtonBase,
@@ -14,6 +13,7 @@ import {
 import { toDecimals, round, pct } from '../../lib/math-utils'
 import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
 import { formatTokenAmount } from '../../lib/token-utils'
+import { useAppState } from '../../providers/AppState'
 
 const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
   const theme = useTheme()
@@ -22,15 +22,12 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
     valueBN: new BigNumber('0'),
   })
 
-  const {
-    api,
-    appState: { stakeToken },
-  } = useAragonApi()
+  const { accountBalance, stakeToken } = useAppState()
   const inputRef = useSidePanelFocusOnReady()
 
   const totalStaked = useAccountTotalStaked()
 
-  const nonStakedTokens = stakeToken.balance.minus(totalStaked)
+  const nonStakedTokens = accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
     editMode => {
@@ -38,13 +35,13 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
         const newValue = amount.valueBN.gte(0)
           ? formatTokenAmount(
               amount.valueBN,
-              stakeToken.tokenDecimals,
+              stakeToken.decimals,
               false,
               false,
               {
                 commas: !editMode,
                 replaceZeroBy: editMode ? '' : '0',
-                rounding: stakeToken.tokenDecimals,
+                rounding: stakeToken.decimals,
               }
             )
           : ''
@@ -66,7 +63,7 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
       const newAmountBN = new BigNumber(
         isNaN(event.target.value)
           ? -1
-          : toDecimals(newAmount, stakeToken.tokenDecimals)
+          : toDecimals(newAmount, stakeToken.decimals)
       )
 
       setAmount({
@@ -82,10 +79,10 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
       valueBN: nonStakedTokens,
       value: formatTokenAmount(
         nonStakedTokens,
-        stakeToken.tokenDecimals,
+        stakeToken.decimals,
         false,
         false,
-        { commas: false, rounding: stakeToken.tokenDecimals }
+        { commas: false, rounding: stakeToken.decimals }
       ),
     })
   }, [nonStakedTokens, stakeToken])
@@ -95,11 +92,11 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
     event => {
       event.preventDefault()
 
-      api.stakeToProposal(id, String(amount.valueBN)).toPromise()
+      // api.stakeToProposal(id, String(amount.valueBN)).toPromise()
 
       onDone()
     },
-    [amount, api, onDone, stakeToken]
+    [onDone]
   )
 
   const errorMessage = useMemo(() => {
@@ -112,10 +109,10 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
     }
 
     return null
-  }, [amount])
+  }, [amount, nonStakedTokens])
 
   // Calculate percentages
-  const nonStakedPct = round(pct(nonStakedTokens, stakeToken.balance))
+  const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
   const stakedPct = 100 - nonStakedPct
 
   return (
@@ -180,15 +177,15 @@ const SupportProposal = React.memo(function SupportProposal({ id, onDone }) {
       >
         You have{' '}
         <strong>
-          {formatTokenAmount(nonStakedTokens, stakeToken.tokenDecimals)}{' '}
-          {stakeToken.tokenSymbol}
+          {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
+          {stakeToken.symbol}
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
         {totalStaked.gt(0) && (
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {formatTokenAmount(totalStaked, stakeToken.tokenDecimals)} locked
+              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
               tokens
             </strong>{' '}
             ({stakedPct}% of your balance).

@@ -1,5 +1,6 @@
-import { useCallback, useMemo } from 'react'
-import { useAppState, usePath } from '@aragon/api-react'
+import { useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useAppState } from '../providers/AppState'
 
 const PROPOSAL_ID_PATH_RE = /^\/proposal\/([0-9]+)\/?$/
 const NO_PROPOSAL_ID = '-1'
@@ -14,30 +15,23 @@ function idFromPath(path) {
 
 // Get the proposal currently selected, or null otherwise.
 export default function useSelectedProposal(proposals) {
-  const [path, requestPath] = usePath()
-  const { isSyncing } = useAppState()
+  const { isLoading } = useAppState()
+  const location = useLocation()
 
   // The memoized proposal currently selected.
   const selectedProposal = useMemo(() => {
-    const id = idFromPath(path)
+    const id = idFromPath(location.pathname)
 
-    // The `isSyncing` check prevents a proposal to be
+    // The `isLoading` check prevents a proposal to be
     // selected until the app state is fully ready.
-    if (isSyncing || id === NO_PROPOSAL_ID) {
+    if (isLoading || id === NO_PROPOSAL_ID) {
       return null
     }
 
     return (
       proposals.find(proposal => Number(proposal.id) === Number(id)) || null
     )
-  }, [path, isSyncing, proposals])
+  }, [isLoading, location.pathname, proposals])
 
-  const selectProposal = useCallback(
-    id => {
-      requestPath(String(id) === NO_PROPOSAL_ID ? '' : `/proposal/${id}/`)
-    },
-    [requestPath]
-  )
-
-  return [selectedProposal, selectProposal]
+  return selectedProposal
 }

@@ -14,8 +14,7 @@ import {
   useTheme,
 } from '@aragon/ui'
 import styled from 'styled-components'
-import { useAragonApi } from '@aragon/api-react'
-import LocalIdentityBadge from '../components/LocalIdentityBadge/LocalIdentityBadge'
+import IdentityBadge from '../components/IdentityBadge'
 import Balance from '../components/Balance'
 import {
   ConvictionCountdown,
@@ -26,11 +25,13 @@ import usePanelState from '../hooks/usePanelState'
 import { useConvictionHistory } from '../hooks/useConvictionHistory'
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 import SupportProposal from '../components/panels/SupportProposal'
+import { useWallet } from '../providers/Wallet'
 
 function ProposalDetail({ proposal, onBack, requestToken }) {
   const theme = useTheme()
   const { layoutName } = useLayout()
-  const { api, connectedAccount } = useAragonApi()
+
+  const { account: connectedAccount } = useWallet()
   const chartLines = useConvictionHistory(proposal)
 
   const panelState = usePanelState()
@@ -54,16 +55,16 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
   const didIStaked = myStakes.length > 0 && [...myStakes].pop().tokensStaked > 0
 
   const handleExecute = useCallback(() => {
-    api.executeProposal(id, true).toPromise()
-  }, [api, id])
+    // api.executeProposal(id, true).toPromise()
+  }, [id])
 
   const handleStake = useCallback(() => {
-    api.stakeAllToProposal(id).toPromise()
-  }, [api, id])
+    // api.stakeAllToProposal(id).toPromise()
+  }, [id])
 
   const handleWithdraw = useCallback(() => {
-    api.withdrawAllFromProposal(id).toPromise()
-  }, [api, id])
+    // api.withdrawAllFromProposal(id).toPromise()
+  }, [id])
 
   const buttonProps = useMemo(() => {
     if (currentConviction.gte(threshold)) {
@@ -159,7 +160,7 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
                         align-items: flex-start;
                       `}
                     >
-                      <LocalIdentityBadge
+                      <IdentityBadge
                         connectedAccount={addressesEqual(
                           creator,
                           connectedAccount
@@ -179,7 +180,7 @@ function ProposalDetail({ proposal, onBack, requestToken }) {
                           align-items: flex-start;
                         `}
                       >
-                        <LocalIdentityBadge
+                        <IdentityBadge
                           connectedAccount={addressesEqual(
                             beneficiary,
                             connectedAccount

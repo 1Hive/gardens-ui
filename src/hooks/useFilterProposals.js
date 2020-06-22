@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import {
   getProposalSupportStatus,
@@ -42,32 +42,29 @@ function testSearchFilter(proposalName, textSearch) {
 }
 
 const useFilterProposals = (proposals, myStakes) => {
-  const [filteredProposals, setFilteredProposals] = useState(proposals)
   const [supportFilter, setSupportFilter] = useState(NULL_FILTER_STATE)
   const [executionFilter, setExecutionFilter] = useState(
     EXECUTION_STATUS_FILTER_OPEN
   )
   const [textSearch, setTextSearch] = useState('')
-  useEffect(() => {
-    const filtered = proposals.filter(proposal => {
-      const proposalExecutionStatus = getProposalExecutionStatus(proposal)
-      const proposalSupportStatus = getProposalSupportStatus(myStakes, proposal)
 
-      return (
-        testExecutionFilter(executionFilter, proposalExecutionStatus) &&
-        testSupportFilter(supportFilter, proposalSupportStatus) &&
-        testSearchFilter(proposal.name, textSearch)
-      )
-    })
+  const filteredProposals = useMemo(
+    () =>
+      proposals.filter(proposal => {
+        const proposalExecutionStatus = getProposalExecutionStatus(proposal)
+        const proposalSupportStatus = getProposalSupportStatus(
+          myStakes,
+          proposal
+        )
 
-    setFilteredProposals(filtered)
-  }, [
-    supportFilter,
-    executionFilter,
-    setFilteredProposals,
-    proposals,
-    textSearch,
-  ])
+        return (
+          testExecutionFilter(executionFilter, proposalExecutionStatus) &&
+          testSupportFilter(supportFilter, proposalSupportStatus) &&
+          testSearchFilter(proposal.name, textSearch)
+        )
+      }),
+    [executionFilter, myStakes, proposals, supportFilter, textSearch]
+  )
 
   return {
     filteredProposals,
