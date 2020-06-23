@@ -6,17 +6,17 @@ import { providers as EthersProviders } from 'ethers'
 import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
 import { connect } from '@aragon/connect'
 import { getDefaultChain } from '../local-settings'
-import {
-  transformProposalData,
-  transformConfigData,
-  getAppAddressByName,
-} from '../lib/data-utils'
+import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
 import { useContractReadOnly } from './useContract'
 
 import BigNumber from '../lib/bigNumber'
 
 import vaultAbi from '../abi/vault-balance.json'
 import { useWallet } from '../providers/Wallet'
+import {
+  useProposalsSubscription,
+  useStakesHistorySubscription,
+} from './useSubscriptions'
 
 // Endpoints TODO: Move to endpoints file
 
@@ -47,11 +47,11 @@ query miniMeToken($id: String!, $address: String!) {
 `
 
 const DEFAULT_APP_DATA = {
-  convictionApp: null,
+  conviction: null,
   stakeToken: {},
   requestToken: {},
   proposals: [],
-  convictionStakes: [],
+  stakesHistory: [],
   alpha: BigNumber(0),
   maxRatio: BigNumber(0),
   weight: BigNumber(0),
@@ -116,7 +116,6 @@ export function useAppData(organization) {
         APP_SUBRAPH_URL
       )
 
-      const proposals = await conviction.proposals()
       const config = await conviction.config()
 
       if (!cancelled) {
@@ -124,9 +123,8 @@ export function useAppData(organization) {
           ...appData,
           ...transformConfigData(config),
           installedApps: apps,
-          convictionApp: conviction,
+          conviction,
           organization,
-          proposals: proposals.map(transformProposalData),
         }))
       }
     }
@@ -138,7 +136,13 @@ export function useAppData(organization) {
     }
   }, [organization])
 
-  return appData
+  const proposals = useProposalsSubscription(appData.conviction)
+
+  // Stakes done across all proposals on this app
+  // Includes old and current stakes
+  const stakesHistory = useStakesHistorySubscription()
+
+  return { ...appData, proposals, stakesHistory }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
