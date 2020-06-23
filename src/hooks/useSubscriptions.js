@@ -4,31 +4,32 @@ import {
   transformStakeHistoryData,
 } from '../lib/data-utils'
 
-export function useProposalsSubscription(conviction) {
+export function useProposalsSubscription(convictionVoting) {
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
 
   const onProposalsHandler = useCallback((proposals = []) => {
-    console.log('proposals', proposals)
     const transformedProposals = proposals.map(transformProposalData)
     setProposals(transformedProposals)
   }, [])
 
   useEffect(() => {
-    if (!conviction) {
+    if (!convictionVoting) {
       return
     }
 
-    proposalsSubscription.current = conviction.onProposals(onProposalsHandler)
+    proposalsSubscription.current = convictionVoting.onProposals(
+      onProposalsHandler
+    )
 
-    return () => proposalsSubscription.current.unsubscribe()
-  }, [conviction, onProposalsHandler])
+    return () => proposalsSubscription.current[0]()
+  }, [convictionVoting, onProposalsHandler])
 
   return proposals
 }
 
-export function useStakesHistorySubscription(conviction) {
+export function useStakesHistorySubscription(convictionVoting) {
   const [stakes, setStakes] = useState([])
 
   const stakesSubscription = useRef(null)
@@ -39,14 +40,18 @@ export function useStakesHistorySubscription(conviction) {
   }, [])
 
   useEffect(() => {
-    if (!conviction) {
+    if (!convictionVoting) {
       return
     }
 
-    stakesSubscription.current = conviction.onProposals(onStakesHandler)
+    stakesSubscription.current = convictionVoting.onStakesHistory(
+      onStakesHandler
+    )
 
-    return () => stakesSubscription.current.unsubscribe()
-  }, [conviction, onStakesHandler])
+    return () => {
+      stakesSubscription.current[0]()
+    }
+  }, [convictionVoting, onStakesHandler])
 
   return stakes
 }

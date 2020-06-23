@@ -24,7 +24,7 @@ function AppStateProvider({ children }) {
   const { balance, totalSupply } = useTokenBalances(account, appData.stakeToken)
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = !appData.conviction || balancesLoading
+  const appLoading = !appData.convictionVoting || balancesLoading
 
   return (
     <AppStateContext.Provider

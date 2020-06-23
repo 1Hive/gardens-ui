@@ -7,7 +7,7 @@ import { toHex } from 'web3-utils'
 export default function useProposalActions(onDone) {
   const { account, ethers } = useWallet()
 
-  const { organization, conviction, requestToken } = useAppState()
+  const { organization, convictionVoting, requestToken } = useAppState()
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
@@ -16,7 +16,7 @@ export default function useProposalActions(onDone) {
 
       sendIntent(
         organization,
-        conviction.appAddress,
+        convictionVoting.appAddress,
         'addProposal',
         [title, toHex(link), decimalAmount, beneficiary],
         { ethers, from: account }
@@ -24,14 +24,14 @@ export default function useProposalActions(onDone) {
 
       onDone()
     },
-    [account, conviction, ethers, onDone, organization, requestToken]
+    [account, convictionVoting, ethers, onDone, organization, requestToken]
   )
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
       sendIntent(
         organization,
-        conviction.appAddress,
+        convictionVoting.appAddress,
         'stakeToProposal',
         [proposalId, amount],
         { ethers, from: account }
@@ -39,14 +39,14 @@ export default function useProposalActions(onDone) {
 
       onDone()
     },
-    [account, conviction, ethers, onDone, organization]
+    [account, convictionVoting, ethers, onDone, organization]
   )
 
   const withdrawFromProposal = useCallback(
     proposalId => {
       sendIntent(
         organization,
-        conviction.appAddress,
+        convictionVoting.appAddress,
         'withdrawAllFromProposal',
         [proposalId],
         { ethers, from: account }
@@ -54,14 +54,14 @@ export default function useProposalActions(onDone) {
 
       onDone()
     },
-    [account, conviction, ethers, onDone, organization]
+    [account, convictionVoting, ethers, onDone, organization]
   )
 
   const executeProposal = useCallback(
     proposalId => {
       sendIntent(
         organization,
-        conviction.appAddress,
+        convictionVoting.appAddress,
         'executeProposal',
         [proposalId, true],
         { ethers, from: account }
@@ -69,7 +69,7 @@ export default function useProposalActions(onDone) {
 
       onDone()
     },
-    [account, conviction, ethers, onDone, organization]
+    [account, convictionVoting, ethers, onDone, organization]
   )
 
   return { newProposal, stakeToProposal, withdrawFromProposal, executeProposal }

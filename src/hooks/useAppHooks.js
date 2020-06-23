@@ -47,7 +47,7 @@ query miniMeToken($id: String!, $address: String!) {
 `
 
 const DEFAULT_APP_DATA = {
-  conviction: null,
+  convictionVoting: null,
   stakeToken: {},
   requestToken: {},
   proposals: [],
@@ -111,19 +111,19 @@ export function useAppData(organization) {
 
       const convictionApp = apps.find(app => app.name === APP_NAME)
 
-      const conviction = new ConvictionVoting(
+      const convictionVoting = new ConvictionVoting(
         convictionApp.address,
         APP_SUBRAPH_URL
       )
 
-      const config = await conviction.config()
+      const config = await convictionVoting.config()
 
       if (!cancelled) {
         setAppData(appData => ({
           ...appData,
           ...transformConfigData(config),
           installedApps: apps,
-          conviction,
+          convictionVoting,
           organization,
         }))
       }
@@ -136,11 +136,11 @@ export function useAppData(organization) {
     }
   }, [organization])
 
-  const proposals = useProposalsSubscription(appData.conviction)
+  const proposals = useProposalsSubscription(appData.convictionVoting)
 
   // Stakes done across all proposals on this app
   // Includes old and current stakes
-  const stakesHistory = useStakesHistorySubscription()
+  const stakesHistory = useStakesHistorySubscription(appData.convictionVoting)
 
   return { ...appData, proposals, stakesHistory }
 }
