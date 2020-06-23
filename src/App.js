@@ -14,6 +14,7 @@ import Proposals from './screens/Proposals'
 import ProposalDetail from './screens/ProposalDetail'
 import useAppLogic from './app-logic'
 import { useAppState } from './providers/AppState'
+import { useWallet } from './providers/Wallet'
 import useFilterProposals from './hooks/useFilterProposals'
 import useSelectedProposal from './hooks/useSelectedProposal'
 
@@ -26,7 +27,7 @@ const App = React.memo(function App() {
     proposalPanel,
     totalActiveTokens,
   } = useAppLogic()
-
+  const { account } = useWallet()
   const { requestToken, stakeToken } = useAppState()
 
   const history = useHistory()
@@ -65,7 +66,7 @@ const App = React.memo(function App() {
           primary="Conviction Voting"
           secondary={
             <div>
-              {!selectedProposal && (
+              {!selectedProposal && account && (
                 <Button
                   mode="strong"
                   onClick={proposalPanel.requestOpen}
