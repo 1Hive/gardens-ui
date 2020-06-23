@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@1hive/connect-thegraph-conviction-voting": "^0.1.0",
+    "@1hive/connect-thegraph-conviction-voting": "^0.1.5",
     "@aragon/connect": "^0.2.0",
     "@aragon/ui": "^1.4.1",
     "bignumber.js": "^9.0.0",
