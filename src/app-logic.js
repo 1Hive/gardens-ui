@@ -1,21 +1,23 @@
 import { useMemo } from 'react'
 import { useAppState } from './providers/AppState'
-import usePanelState from './hooks/usePanelState'
 import { useProposals } from './hooks/useProposals'
 import { useWallet } from './providers/Wallet'
-import BigNumber from './lib/bigNumber'
+import usePanelState from './hooks/usePanelState'
 import useProposalActions from './hooks/useProposalActions'
+
+import BigNumber from './lib/bigNumber'
+import { addressesEqual } from './lib/web3-utils'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
-  const { connectedAccount } = useWallet()
+  const { account } = useWallet()
 
   const { isLoading, stakeToken } = useAppState()
   const [proposals] = useProposals()
   const proposalPanel = usePanelState()
 
   const { myStakes, totalActiveTokens } = useMemo(() => {
-    if (!connectedAccount || !stakeToken || !proposals) {
+    if (!account || !stakeToken || !proposals) {
       return { myStakes: [], totalActiveTokens: new BigNumber('0') }
     }
 
@@ -31,28 +33,28 @@ export default function useAppLogic() {
 
         totalActiveTokens = totalActiveTokens.plus(totalActive)
 
-        const myStake = proposal.stakes.find(
-          stake => stake.entity === connectedAccount
+        const myStake = proposal.stakes.find(stake =>
+          addressesEqual(stake.entity, account)
         )
 
         if (myStake) {
           myStakes.push({
-            proposal: proposal.id,
+            proposalId: proposal.id,
             proposalName: proposal.name,
-            stakedAmount: myStake.amount,
+            amount: myStake.amount,
           })
         }
         return { myStakes, totalActiveTokens }
       },
       { myStakes: [], totalActiveTokens: new BigNumber('0') }
     )
-  }, [proposals, connectedAccount, stakeToken])
+  }, [account, proposals, stakeToken])
 
   const actions = useProposalActions(proposalPanel.requestClose)
 
   return {
     actions,
-    isLoading: isLoading,
+    isLoading: isLoading, // TODO: Add loading flag for block back again
     myStakes,
     proposals,
     proposalPanel,

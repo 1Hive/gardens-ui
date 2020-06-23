@@ -12,16 +12,16 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 export function useConvictionHistory(proposal) {
   const { account } = useWallet()
   const latestBlock = useLatestBlock()
-  const { convictionStakes, alpha } = useAppState()
+  const { stakesHistory, alpha } = useAppState()
 
   const stakes = useMemo(() => {
-    if (!convictionStakes || !proposal) {
+    if (!stakesHistory || !proposal) {
       return []
     }
-    return convictionStakes.filter(
-      stake => stake.proposal === parseInt(proposal.id)
+    return stakesHistory.filter(
+      stake => parseInt(stake.proposalId) === parseInt(proposal.id)
     )
-  }, [convictionStakes, proposal])
+  }, [stakesHistory, proposal])
 
   const convictionHistory = getConvictionHistory(
     stakes,

@@ -245,7 +245,7 @@ const ProposalInfo = ({
   requestToken,
   selectProposal = false,
 }) => {
-  const myStakeInfo = myStakes.find(stake => stake.proposal === proposal.id)
+  const myStakeInfo = myStakes.find(stake => stake.proposalId === proposal.id)
   return (
     <div
       css={`
@@ -256,10 +256,10 @@ const ProposalInfo = ({
         <IdAndTitle {...proposal} selectProposal={selectProposal} />
       )}
       <ConvictionBar proposal={proposal} withThreshold={requestToken} />
-      {myStakeInfo && (
+      {myStakeInfo?.amount.gt(0) && (
         <Tag>
           {`✓ Supported: ${formatTokenAmount(
-            parseInt(myStakeInfo.stakedAmount),
+            myStakeInfo.amount,
             parseInt(stakeToken.decimals)
           )} ${stakeToken.symbol}`}
         </Tag>

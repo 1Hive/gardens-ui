@@ -19,10 +19,10 @@ export function useProposals() {
   const { account } = useWallet()
   const {
     alpha,
-    convictionStakes,
     isLoading,
     maxRatio,
     proposals = [],
+    stakesHistory = [],
     totalSupply,
     vaultBalance,
     weight,
@@ -36,7 +36,7 @@ export function useProposals() {
     }
 
     return proposals.map(proposal => {
-      const stakes = convictionStakes.filter(
+      const stakes = stakesHistory.filter(
         stake => stake.proposal === parseInt(proposal.id)
       )
 
@@ -117,11 +117,11 @@ export function useProposals() {
   }, [
     account,
     alpha,
-    convictionStakes,
     isLoading,
     latestBlock,
     maxRatio,
     proposals,
+    stakesHistory,
     totalSupply,
     vaultBalance,
     weight,

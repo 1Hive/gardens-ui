@@ -96,7 +96,7 @@ const SupportProposal = React.memo(function SupportProposal({
     event => {
       event.preventDefault()
 
-      onStakeToProposal(id, String(amount.valueBN))
+      onStakeToProposal(id, amount.valueBN.toString(10))
 
       onDone()
     },

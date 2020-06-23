@@ -59,7 +59,12 @@ function ProposalDetail({
   const myStakes = stakes.filter(({ entity }) =>
     addressesEqual(entity, connectedAccount)
   )
-  const didIStaked = myStakes.length > 0 && [...myStakes].pop().tokensStaked > 0
+  const didIStaked =
+    myStakes.length > 0 &&
+    myStakes
+      .slice(-1)
+      .pop()
+      .amount.gt(0)
 
   const handleWithdraw = useCallback(() => {
     onWithdrawFromProposal(id)
