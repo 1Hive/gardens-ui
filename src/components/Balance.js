@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import BalanceToken from './BalanceToken'
 import { round } from '../lib/math-utils'
 
@@ -12,7 +12,7 @@ function Balance(props) {
   const { amount = 0, decimals, symbol, icon, verified, color, size } = props
   const [convertRates, setConvertRates] = useState({})
 
-  const updateConvertedRates = async ({ verified, symbol }) => {
+  const updateConvertedRates = useCallback(async ({ verified, symbol }) => {
     if (!verified) {
       return
     }
@@ -20,7 +20,7 @@ function Balance(props) {
     const res = await fetch(convertApiUrl([symbol]))
     const convertRates = await res.json()
     setConvertRates(convertRates)
-  }
+  }, [])
 
   useThrottledEffect(
     () => {
@@ -62,7 +62,7 @@ const useThrottledEffect = (callback, delay, deps = []) => {
     }, delay - (Date.now() - lastRan.current))
 
     return () => clearTimeout(handler)
-  }, [delay, ...deps])
+  }, [callback, delay, ...deps])
 }
 
 export default Balance

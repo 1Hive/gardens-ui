@@ -1,48 +1,23 @@
-import { useCallback, useMemo, useState } from 'react'
-import BigNumber from './lib/bigNumber'
-import { toDecimals } from './lib/math-utils'
-import { toHex } from 'web3-utils'
-import { useWallet } from './providers/Wallet'
-import { useProposals } from './hooks/useProposals'
+import { useMemo } from 'react'
 import { useAppState } from './providers/AppState'
+import { useProposals } from './hooks/useProposals'
+import { useWallet } from './providers/Wallet'
+import usePanelState from './hooks/usePanelState'
+import useProposalActions from './hooks/useProposalActions'
+
+import BigNumber from './lib/bigNumber'
+import { addressesEqual } from './lib/web3-utils'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
-  const { connectedAccount, ethers } = useWallet()
+  const { account } = useWallet()
 
-  const {
-    organization,
-    convictionApp,
-    isLoading,
-    requestToken,
-    stakeToken,
-  } = useAppState()
+  const { isLoading, stakeToken } = useAppState()
   const [proposals] = useProposals()
-  const [proposalPanel, setProposalPanel] = useState(false)
-
-  const onNewProposal = useCallback(
-    async ({ title, link, amount, beneficiary }) => {
-      const { decimals } = requestToken
-      const decimalAmount = toDecimals(amount.trim(), decimals).toString()
-
-      const intent = organization.appIntent(
-        convictionApp.appAddress,
-        'addProposal',
-        [title, toHex(link), decimalAmount, beneficiary]
-      )
-
-      const txPath = await intent.paths(connectedAccount)
-
-      const { to, data } = txPath.transactions[0]
-      ethers.getSigner().sendTransaction({ data, to })
-
-      setProposalPanel(false)
-    },
-    [connectedAccount, convictionApp, ethers, requestToken, organization]
-  )
+  const proposalPanel = usePanelState()
 
   const { myStakes, totalActiveTokens } = useMemo(() => {
-    if (!connectedAccount || !stakeToken || !proposals) {
+    if (!account || !stakeToken || !proposals) {
       return { myStakes: [], totalActiveTokens: new BigNumber('0') }
     }
 
@@ -58,30 +33,31 @@ export default function useAppLogic() {
 
         totalActiveTokens = totalActiveTokens.plus(totalActive)
 
-        const myStake = proposal.stakes.find(
-          stake => stake.entity === connectedAccount
+        const myStake = proposal.stakes.find(stake =>
+          addressesEqual(stake.entity, account)
         )
 
         if (myStake) {
           myStakes.push({
-            proposal: proposal.id,
+            proposalId: proposal.id,
             proposalName: proposal.name,
-            stakedAmount: myStake.amount,
+            amount: myStake.amount,
           })
         }
         return { myStakes, totalActiveTokens }
       },
       { myStakes: [], totalActiveTokens: new BigNumber('0') }
     )
-  }, [proposals, connectedAccount, stakeToken])
+  }, [account, proposals, stakeToken])
+
+  const actions = useProposalActions(proposalPanel.requestClose)
 
   return {
-    proposals,
-    isLoading: isLoading,
-    onNewProposal,
-    proposalPanel,
-    setProposalPanel,
+    actions,
+    isLoading: isLoading, // TODO: Add loading flag for block back again
     myStakes,
+    proposals,
+    proposalPanel,
     totalActiveTokens,
   }
 }

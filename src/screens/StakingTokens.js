@@ -17,7 +17,7 @@ const DISTRIBUTION_ITEMS_MAX = 6
 
 function displayedStakes(stakes, total) {
   return stakesPercentages(
-    stakes.map(({ stakedAmount }) => stakedAmount),
+    stakes.map(({ amount }) => amount),
     {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
@@ -26,7 +26,7 @@ function displayedStakes(stakes, total) {
     item:
       stake.index === -1
         ? 'Others'
-        : `#${stakes[stake.index].proposal}${' '}${
+        : `#${stakes[stake.index].proposalId}${' '}${
             stakes[stake.index].proposalName
           }`,
     percentage: stake.percentage,
@@ -47,7 +47,7 @@ const StakingTokens = React.memo(function StakingTokens({
       return new BigNumber('0')
     }
     return myStakes.reduce((accumulator, stake) => {
-      return accumulator.plus(stake.stakedAmount)
+      return accumulator.plus(stake.amount)
     }, new BigNumber('0'))
   }, [myStakes])
 
