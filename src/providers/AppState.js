@@ -6,7 +6,7 @@ import {
   useTokenBalances,
   useOrganzation,
   useAppData,
-} from '../hooks/useAppHooks'
+} from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
 
 const AppStateContext = React.createContext()
@@ -14,26 +14,33 @@ const AppStateContext = React.createContext()
 function AppStateProvider({ children }) {
   const { account } = useWallet()
   const organization = useOrganzation()
-  const appData = useAppData(organization)
+  const {
+    convictionVoting,
+    installedApps,
+    requestToken,
+    stakeToken,
+    ...appData
+  } = useAppData(organization)
 
-  const vaultBalance = useVaultBalance(
-    appData.installedApps,
-    appData.requestToken
-  )
+  const vaultBalance = useVaultBalance(installedApps, requestToken)
 
-  const { balance, totalSupply } = useTokenBalances(account, appData.stakeToken)
+  const { balance, totalSupply } = useTokenBalances(account, stakeToken)
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = !appData.convictionVoting || balancesLoading
+  const appLoading = !convictionVoting || balancesLoading
 
   return (
     <AppStateContext.Provider
       value={{
         ...appData,
-        isLoading: appLoading,
-        vaultBalance,
         accountBalance: balance,
+        convictionVoting,
+        installedApps,
+        isLoading: appLoading,
+        requestToken,
+        stakeToken,
         totalSupply: totalSupply,
+        vaultBalance,
       }}
     >
       {children}

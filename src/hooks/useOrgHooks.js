@@ -64,7 +64,6 @@ export function useOrganzation() {
   useEffect(() => {
     let cancelled = false
     const fetchOrg = async () => {
-      // Fetch the apps belonging to this organization. const apps = await organization.apps()
       const organization = await connect(
         ORG_ADDRESS,
         [
