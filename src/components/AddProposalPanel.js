@@ -159,7 +159,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           margin-top: ${3 * GU}px;
         `}
       >
-        This action will create a proposal which can be voted on by staking
+        This action will create a proposal which can be voted on by staking{' '}
         {stakeToken.symbol}. The action will be executable if the accrued total
         stake reaches above the threshold.
       </Info>
