@@ -160,8 +160,8 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
         `}
       >
         This action will create a proposal which can be voted on by staking
-        {stakeToken.tokenSymbol}. The action will be executable if the accrued
-        total stake reaches above the threshold.
+        {stakeToken.symbol}. The action will be executable if the accrued total
+        stake reaches above the threshold.
       </Info>
       <Field
         label="Title"
