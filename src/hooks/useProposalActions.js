@@ -29,6 +29,7 @@ export default function useProposalActions(onDone) {
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
+      console.log('STAKE ', typeof amount)
       sendIntent(
         organization,
         convictionVoting.appAddress,
@@ -43,12 +44,12 @@ export default function useProposalActions(onDone) {
   )
 
   const withdrawFromProposal = useCallback(
-    proposalId => {
+    (proposalId, amount) => {
       sendIntent(
         organization,
         convictionVoting.appAddress,
-        'withdrawAllFromProposal',
-        [proposalId],
+        'withdrawFromProposal',
+        [proposalId, amount],
         { ethers, from: account }
       )
 
@@ -86,6 +87,10 @@ async function sendIntent(
     const intent = organization.appIntent(appAddress, fn, params)
 
     const txPath = await intent.paths(from)
+
+    console.log('txPath ', txPath)
+
+    console.log('PARAMS! ', params)
 
     const { to, data } = txPath.transactions[0] // TODO: Handle errors when no tx path is found
     ethers.getSigner().sendTransaction({ data, to })
