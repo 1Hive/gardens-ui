@@ -59,6 +59,8 @@ function ProposalDetail({
   const myStakes = stakes.filter(({ entity }) =>
     addressesEqual(entity, connectedAccount)
   )
+
+  console.log('j')
   const didIStaked =
     myStakes.length > 0 &&
     myStakes
@@ -227,12 +229,12 @@ function ProposalDetail({
         secondary={
           <div>
             {requestToken && (
-              <Box heading="Status">
+              <Box heading="Status" padding={3 * GU}>
                 <ConvictionCountdown proposal={proposal} />
               </Box>
             )}
             {!proposal.executed && (
-              <Box heading="Conviction Progress">
+              <Box heading="Conviction Progress" padding={3 * GU}>
                 <ConvictionBar
                   proposal={proposal}
                   withThreshold={!!requestToken}

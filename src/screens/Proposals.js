@@ -4,13 +4,10 @@ import {
   Link,
   GU,
   Text,
-  Box,
   Tag,
   textStyle,
   useTheme,
-  Split,
   Tabs,
-  useLayout,
 } from '@aragon/ui'
 import { formatTokenAmount } from '../lib/token-utils'
 import { useHistory } from 'react-router-dom'
@@ -20,15 +17,12 @@ import {
   ConvictionTrend,
   ConvictionCountdown,
 } from '../components/ConvictionVisuals'
-import IdentityBadge from '../components/IdentityBadge'
-import FilterBar from '../components/FilterBar/FilterBar'
 import Balance from '../components/Balance'
-import StakingTokens from './StakingTokens'
-import AccountModule from '../components/Account/AccountModule'
+import FilterBar from '../components/FilterBar/FilterBar'
+import IdentityBadge from '../components/IdentityBadge'
 import { useWallet } from '../providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
-import { useAppState } from '../providers/AppState'
 
 const ENTRIES_PER_PAGE = 6
 
@@ -44,13 +38,8 @@ const Proposals = React.memo(
     requestToken,
     stakeToken,
     myStakes,
-    totalActiveTokens,
   }) => {
-    const theme = useTheme()
     const { account } = useWallet()
-    const { layoutName } = useLayout()
-    const compactMode = layoutName === 'small'
-    const { vaultBalance } = useAppState()
 
     const convictionFields =
       proposalExecutionStatusFilter === 0
@@ -67,7 +56,7 @@ const Proposals = React.memo(
       proposalExecutionStatusFilter === 1 || !requestToken
         ? [{ label: 'Link', align: 'start' }]
         : []
-    const tabs = ['Open Proposals', 'Executed Proposals']
+    const tabs = ['Open', 'Closed']
     const requestedField = requestToken
       ? [{ label: 'Requested', align: 'start' }]
       : []
@@ -102,138 +91,99 @@ const Proposals = React.memo(
     )
 
     return (
-      <Split
-        primary={
-          <div>
-            {requestToken && (
-              <Tabs
-                items={tabs}
-                selected={proposalExecutionStatusFilter}
-                onChange={handleTabChange}
-              />
-            )}
-            <DataView
-              fields={[
-                { label: 'Proposal', align: 'start' },
-                ...linkField,
-                ...requestedField,
-                ...convictionFields,
-                ...beneficiaryField,
-                ...statusField,
-              ]}
-              emptyState={
-                <p
-                  css={`
-                    ${textStyle('title2')};
-                    font-weight: 600;
-                  `}
-                >
-                  No proposals yet!
-                </p>
-              }
-              entries={sortedProposals}
-              renderEntry={proposal => {
-                const entriesElements = [
-                  <IdAndTitle
-                    id={proposal.id}
-                    name={proposal.name}
-                    selectProposal={handleSelectProposal}
-                  />,
-                ]
-                if (proposal.executed || !requestToken) {
-                  entriesElements.push(
-                    <Link href={proposal.link} external>
-                      Read more
-                    </Link>
-                  )
-                }
-                if (requestToken) {
-                  entriesElements.push(
-                    <Amount
-                      requestedAmount={proposal.requestedAmount}
-                      requestToken={requestToken}
-                    />
-                  )
-                }
-                if (!proposal.executed) {
-                  entriesElements.push(
-                    <ProposalInfo
-                      proposal={proposal}
-                      myStakes={myStakes}
-                      stakeToken={stakeToken}
-                      requestToken={requestToken}
-                    />,
-                    <ConvictionTrend proposal={proposal} />
-                  )
-                }
-                if (proposal.executed) {
-                  entriesElements.push(
-                    <IdentityBadge
-                      connectedAccount={addressesEqual(
-                        proposal.creator,
-                        account
-                      )}
-                      entity={proposal.creator}
-                    />
-                  )
-                }
-                if (requestToken) {
-                  entriesElements.push(
-                    <ConvictionCountdown proposal={proposal} shorter />
-                  )
-                }
-                return entriesElements
-              }}
-              tableRowHeight={14 * GU}
-              heading={
-                <FilterBar
-                  proposalsSize={filteredProposals.length}
-                  proposalStatusFilter={proposalSupportStatusFilter}
-                  proposalTextFilter={proposalTextFilter}
-                  handleProposalStatusFilterChange={
-                    handleProposalSupportFilterChange
-                  }
-                  handleTextFilterChange={updateTextFilter}
-                  disableDropDownFilter={proposalExecutionStatusFilter === 1}
+      <div>
+        {requestToken && (
+          <Tabs
+            items={tabs}
+            selected={proposalExecutionStatusFilter}
+            onChange={handleTabChange}
+          />
+        )}
+        <DataView
+          fields={[
+            { label: 'Proposal', align: 'start' },
+            ...linkField,
+            ...requestedField,
+            ...convictionFields,
+            ...beneficiaryField,
+            ...statusField,
+          ]}
+          emptyState={
+            <p
+              css={`
+                ${textStyle('title2')};
+                font-weight: 600;
+              `}
+            >
+              No proposals yet!
+            </p>
+          }
+          entries={sortedProposals}
+          renderEntry={proposal => {
+            const entriesElements = [
+              <IdAndTitle
+                id={proposal.id}
+                name={proposal.name}
+                selectProposal={handleSelectProposal}
+              />,
+            ]
+            if (proposal.executed || !requestToken) {
+              entriesElements.push(
+                <Link href={proposal.link} external>
+                  Read more
+                </Link>
+              )
+            }
+            if (requestToken) {
+              entriesElements.push(
+                <Amount
+                  requestedAmount={proposal.requestedAmount}
+                  requestToken={requestToken}
                 />
+              )
+            }
+            if (!proposal.executed) {
+              entriesElements.push(
+                <ProposalInfo
+                  proposal={proposal}
+                  myStakes={myStakes}
+                  stakeToken={stakeToken}
+                  requestToken={requestToken}
+                />,
+                <ConvictionTrend proposal={proposal} />
+              )
+            }
+            if (proposal.executed) {
+              entriesElements.push(
+                <IdentityBadge
+                  connectedAccount={addressesEqual(proposal.creator, account)}
+                  entity={proposal.creator}
+                />
+              )
+            }
+            if (requestToken) {
+              entriesElements.push(
+                <ConvictionCountdown proposal={proposal} shorter />
+              )
+            }
+            return entriesElements
+          }}
+          tableRowHeight={14 * GU}
+          heading={
+            <FilterBar
+              proposalsSize={filteredProposals.length}
+              proposalStatusFilter={proposalSupportStatusFilter}
+              proposalTextFilter={proposalTextFilter}
+              handleProposalStatusFilterChange={
+                handleProposalSupportFilterChange
               }
-              entriesPerPage={ENTRIES_PER_PAGE}
+              handleTextFilterChange={updateTextFilter}
+              disableDropDownFilter={proposalExecutionStatusFilter === 1}
             />
-          </div>
-        }
-        secondary={
-          <div>
-            <Box heading="Wallet">
-              <AccountModule compact={compactMode} />
-            </Box>
-            {account && (
-              <StakingTokens
-                myStakes={myStakes}
-                totalActiveTokens={totalActiveTokens}
-              />
-            )}
-            {requestToken && (
-              <Box heading="Organization funds">
-                <span
-                  css={`
-                    color: ${theme.contentSecondary};
-                    ${textStyle('body2')}
-                  `}
-                >
-                  Funding Pool
-                </span>
-                <Balance
-                  {...requestToken}
-                  amount={vaultBalance}
-                  color={theme.positive}
-                  size={textStyle('title3')}
-                />
-              </Box>
-            )}
-          </div>
-        }
-        invert="horizontal"
-      />
+          }
+          entriesPerPage={ENTRIES_PER_PAGE}
+        />
+      </div>
     )
   }
 )
