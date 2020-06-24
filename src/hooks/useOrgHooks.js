@@ -72,7 +72,7 @@ export function useOrganzation() {
           },
         ],
         {
-          readProvider: ethers, // TODO: Remove once connect doesn't require a provider if it's not going to use it
+          readProvider: ethers,
           chainId: getDefaultChain(),
         }
       )
