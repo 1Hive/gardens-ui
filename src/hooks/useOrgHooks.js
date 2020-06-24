@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gql from 'graphql-tag'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
-import { providers as EthersProviders } from 'ethers'
 
 import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
 import { connect } from '@aragon/connect'
@@ -59,7 +58,7 @@ const DEFAULT_APP_DATA = {
 
 export function useOrganzation() {
   const [organzation, setOrganization] = useState(null)
-  const { ethereum } = useWallet()
+  const { ethers } = useWallet()
 
   useEffect(() => {
     let cancelled = false
@@ -73,9 +72,7 @@ export function useOrganzation() {
           },
         ],
         {
-          readProvider:
-            ethereum ||
-            new EthersProviders.JsonRpcProvider('https://xdai.poanetwork.dev/'), // TODO: Remove once connect doesn't require a provider if it's not going to use it
+          readProvider: ethers, // TODO: Remove once connect doesn't require a provider if it's not going to use it
           chainId: getDefaultChain(),
         }
       )
@@ -90,7 +87,7 @@ export function useOrganzation() {
     return () => {
       cancelled = true
     }
-  }, [ethereum])
+  }, [ethers])
 
   return organzation
 }
