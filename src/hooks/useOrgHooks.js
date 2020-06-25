@@ -164,11 +164,15 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     const fetchVaultBalance = () => {
       timeoutId = setTimeout(async () => {
         try {
-          const vaultBalance = await vaultContract.balance(token.id)
+          const vaultContractBalance = await vaultContract.balance(token.id)
 
           if (!cancelled) {
             // Contract value is bn.js so we need to convert it to bignumber.js
-            setVaultBalance(new BigNumber(vaultBalance.toString()))
+            const newValue = new BigNumber(vaultContractBalance.toString())
+
+            if (!newValue.eq(vaultBalance)) {
+              setVaultBalance(newValue)
+            }
           }
         } catch (err) {
           console.error(`Error fetching balance: ${err} retrying...`)
@@ -188,7 +192,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultContract, controlledTimeout, timeout, token.id])
+  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token.id])
 
   return vaultBalance
 }
