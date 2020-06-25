@@ -7,6 +7,7 @@ import { formatTokenAmount } from '../lib/token-utils'
 const Metrics = React.memo(function Metrics({
   totalSupply,
   commonPool,
+  onExecuteIssuance,
   stakeToken,
   requestToken,
   totalActiveTokens,
@@ -28,11 +29,12 @@ const Metrics = React.memo(function Metrics({
         `}
       >
         <div
+          onClick={onExecuteIssuance}
           css={`
             margin-left: ${2 * GU}px;
           `}
         >
-          <img src={honeySvg} />
+          <img src={honeySvg} height="60" width="60" alt="" />
         </div>
         <div>
           <Metric

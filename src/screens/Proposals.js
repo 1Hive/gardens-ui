@@ -1,20 +1,21 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
+  Box,
+  Button,
   DataView,
   Link,
   GU,
+  IconPlus,
   Text,
-  Tag,
   textStyle,
+  useLayout,
   useTheme,
-  Tabs,
 } from '@aragon/ui'
-import { formatTokenAmount } from '../lib/token-utils'
+import { getTokenIconBySymbol } from '../lib/token-utils'
 import { useHistory } from 'react-router-dom'
 
 import {
   ConvictionBar,
-  ConvictionTrend,
   ConvictionCountdown,
 } from '../components/ConvictionVisuals'
 import Balance from '../components/Balance'
@@ -24,7 +25,7 @@ import { useWallet } from '../providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
-const ENTRIES_PER_PAGE = 6
+const ENTRIES_PER_PAGE = 5
 
 const Proposals = React.memo(
   ({
@@ -36,27 +37,29 @@ const Proposals = React.memo(
     handleExecutionStatusFilterChange,
     handleSearchTextFilterChange,
     requestToken,
-    stakeToken,
-    myStakes,
+    onRequestNewProposal,
   }) => {
     const { account } = useWallet()
+    const { layoutName } = useLayout()
+    const compactMode = layoutName === 'small'
 
-    const convictionFields =
-      proposalExecutionStatusFilter === 0
-        ? [
-            { label: 'Conviction progress', align: 'start' },
-            { label: 'Trend', align: 'start' },
-          ]
-        : []
-    const beneficiaryField =
-      proposalExecutionStatusFilter === 1
-        ? [{ label: 'Beneficiary', align: 'start' }]
-        : []
-    const linkField =
-      proposalExecutionStatusFilter === 1 || !requestToken
-        ? [{ label: 'Link', align: 'start' }]
-        : []
-    const tabs = ['Open', 'Closed']
+    const {
+      convictionFields = [],
+      beneficiaryField = [],
+      linkField = [],
+    } = useMemo(() => {
+      if (proposalExecutionStatusFilter === 0) {
+        return {
+          convictionFields: [{ label: 'Conviction progress', align: 'start' }],
+        }
+      }
+
+      return {
+        beneficiaryField: [{ label: 'Beneficiary', align: 'start' }],
+        linkField: [{ label: 'Link', align: 'start' }],
+      }
+    }, [proposalExecutionStatusFilter])
+
     const requestedField = requestToken
       ? [{ label: 'Requested', align: 'start' }]
       : []
@@ -66,13 +69,6 @@ const Proposals = React.memo(
 
     const sortedProposals = filteredProposals.sort(
       (a, b) => b.currentConviction - a.currentConviction // desc order
-    )
-
-    const handleTabChange = useCallback(
-      tabIndex => {
-        handleExecutionStatusFilterChange(tabIndex)
-      },
-      [handleExecutionStatusFilterChange]
     )
 
     const updateTextFilter = useCallback(
@@ -92,13 +88,39 @@ const Proposals = React.memo(
 
     return (
       <div>
-        {requestToken && (
-          <Tabs
-            items={tabs}
-            selected={proposalExecutionStatusFilter}
-            onChange={handleTabChange}
-          />
-        )}
+        <Box padding={2 * GU}>
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            `}
+          >
+            {account && (
+              <Button
+                mode="strong"
+                onClick={onRequestNewProposal}
+                label="New proposal"
+                icon={<IconPlus />}
+                display={compactMode ? 'icon' : 'label'}
+              />
+            )}
+            <FilterBar
+              proposalsSize={filteredProposals.length}
+              proposalExecutionStatusFilter={proposalExecutionStatusFilter}
+              proposalStatusFilter={proposalSupportStatusFilter}
+              proposalTextFilter={proposalTextFilter}
+              handleExecutionStatusFilterChange={
+                handleExecutionStatusFilterChange
+              }
+              handleProposalStatusFilterChange={
+                handleProposalSupportFilterChange
+              }
+              handleTextFilterChange={updateTextFilter}
+            />
+          </div>
+        </Box>
+
         <DataView
           fields={[
             { label: 'Proposal', align: 'start' },
@@ -144,13 +166,7 @@ const Proposals = React.memo(
             }
             if (!proposal.executed) {
               entriesElements.push(
-                <ProposalInfo
-                  proposal={proposal}
-                  myStakes={myStakes}
-                  stakeToken={stakeToken}
-                  requestToken={requestToken}
-                />,
-                <ConvictionTrend proposal={proposal} />
+                <ProposalInfo proposal={proposal} requestToken={requestToken} />
               )
             }
             if (proposal.executed) {
@@ -169,18 +185,6 @@ const Proposals = React.memo(
             return entriesElements
           }}
           tableRowHeight={14 * GU}
-          heading={
-            <FilterBar
-              proposalsSize={filteredProposals.length}
-              proposalStatusFilter={proposalSupportStatusFilter}
-              proposalTextFilter={proposalTextFilter}
-              handleProposalStatusFilterChange={
-                handleProposalSupportFilterChange
-              }
-              handleTextFilterChange={updateTextFilter}
-              disableDropDownFilter={proposalExecutionStatusFilter === 1}
-            />
-          }
           entriesPerPage={ENTRIES_PER_PAGE}
         />
       </div>
@@ -188,14 +192,7 @@ const Proposals = React.memo(
   }
 )
 
-const ProposalInfo = ({
-  proposal,
-  stakeToken,
-  myStakes,
-  requestToken,
-  selectProposal = false,
-}) => {
-  const myStakeInfo = myStakes.find(stake => stake.proposalId === proposal.id)
+const ProposalInfo = ({ proposal, requestToken, selectProposal = false }) => {
   return (
     <div
       css={`
@@ -206,21 +203,12 @@ const ProposalInfo = ({
         <IdAndTitle {...proposal} selectProposal={selectProposal} />
       )}
       <ConvictionBar proposal={proposal} withThreshold={requestToken} />
-      {myStakeInfo?.amount.gt(0) && (
-        <Tag>
-          {`✓ Supported: ${formatTokenAmount(
-            myStakeInfo.amount,
-            parseInt(stakeToken.decimals)
-          )} ${stakeToken.symbol}`}
-        </Tag>
-      )}
     </div>
   )
 }
 
 const IdAndTitle = ({ id, name, selectProposal }) => (
   <Link onClick={() => selectProposal(id)}>
-    <Text color={useTheme().surfaceContent.toString()}>#{id}</Text>{' '}
     <Text color={useTheme().surfaceContentSecondary.toString()}>{name}</Text>
   </Link>
 )
@@ -228,15 +216,19 @@ const IdAndTitle = ({ id, name, selectProposal }) => (
 const Amount = ({
   requestedAmount = 0,
   requestToken: { symbol, decimals, verified },
-}) => (
-  <div>
-    <Balance
-      amount={requestedAmount}
-      decimals={decimals}
-      symbol={symbol}
-      verified={verified}
-    />
-  </div>
-)
+}) => {
+  const tokenIcon = getTokenIconBySymbol(symbol)
+  return (
+    <div>
+      <Balance
+        amount={requestedAmount}
+        decimals={decimals}
+        symbol={symbol}
+        verified={verified}
+        icon={tokenIcon}
+      />
+    </div>
+  )
+}
 
 export default Proposals

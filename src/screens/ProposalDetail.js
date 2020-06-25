@@ -28,11 +28,11 @@ import SupportProposal from '../components/panels/SupportProposal'
 import { useWallet } from '../providers/Wallet'
 
 function ProposalDetail({
-  proposal,
   onBack,
   onExecuteProposal,
   onStakeToProposal,
   onWithdrawFromProposal,
+  proposal,
   requestToken,
 }) {
   const theme = useTheme()

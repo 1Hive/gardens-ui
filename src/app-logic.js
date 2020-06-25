@@ -3,7 +3,7 @@ import { useAppState } from './providers/AppState'
 import { useProposals } from './hooks/useProposals'
 import { useWallet } from './providers/Wallet'
 import usePanelState from './hooks/usePanelState'
-import useProposalActions from './hooks/useProposalActions'
+import useActions from './hooks/useActions'
 
 import BigNumber from './lib/bigNumber'
 import { addressesEqual } from './lib/web3-utils'
@@ -63,7 +63,7 @@ export default function useAppLogic() {
     )
   }, [account, proposals, stakeToken])
 
-  const actions = useProposalActions(proposalPanel.requestClose)
+  const actions = useActions(proposalPanel.requestClose)
 
   return {
     actions,
