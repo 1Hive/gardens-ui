@@ -4,6 +4,7 @@ import { SidePanel, Split, SyncIndicator } from '@aragon/ui'
 import AddProposalPanel from './components/AddProposalPanel'
 import MainScreen from './screens/MainScreen'
 import StakingTokens from './screens/StakingTokens'
+import Wallet from './components/Wallet'
 
 import useAppLogic from './app-logic'
 import { useWallet } from './providers/Wallet'
@@ -51,12 +52,11 @@ const App = React.memo(function App() {
           primary={MainScreenComponent}
           secondary={
             <div>
-              {account && (
-                <StakingTokens
-                  myStakes={myStakes}
-                  totalActiveTokens={totalActiveTokens}
-                />
-              )}
+              <Wallet myStakes={myStakes} />
+              <StakingTokens
+                myStakes={myStakes}
+                totalActiveTokens={totalActiveTokens}
+              />
             </div>
           }
           invert="horizontal"
