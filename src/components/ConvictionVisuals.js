@@ -1,11 +1,25 @@
 import React, { useMemo } from 'react'
-import { Timer, Text, Tag, useTheme, useLayout, textStyle } from '@aragon/ui'
+import {
+  GU,
+  IconCheck,
+  IconCross,
+  Tag,
+  textStyle,
+  Timer,
+  useLayout,
+  useTheme,
+} from '@aragon/ui'
 import BigNumber from '../lib/bigNumber'
 import LineChart from './ModifiedLineChart'
 import styled from 'styled-components'
 import SummaryBar from './SummaryBar'
 import { formatTokenAmount } from '../lib/token-utils'
 import { useAppState } from '../providers/AppState'
+
+const UNABLE_TO_PASS = 0
+const MAY_PASS = 1
+const AVAILABLE = 2
+const EXECUTED = 3
 
 export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const { maxConviction, threshold } = proposal
@@ -108,11 +122,6 @@ export function ConvictionCountdown({ proposal, shorter }) {
     currentConviction,
   } = proposal
 
-  const UNABLE_TO_PASS = 0
-  const MAY_PASS = 1
-  const AVAILABLE = 2
-  const EXECUTED = 3
-
   const view = useMemo(() => {
     if (executed) {
       return EXECUTED
@@ -134,61 +143,54 @@ export function ConvictionCountdown({ proposal, shorter }) {
     !isNaN(new Date(NOW + remainingTimeToPass * BLOCK_TIME).getTime()) &&
     new Date(NOW + remainingTimeToPass * BLOCK_TIME)
 
-  return view === UNABLE_TO_PASS ? (
-    <>
-      <span
-        css={`
-          color: ${theme.negative};
-        `}
-      >
-        ✘ Won't pass
-      </span>
-      {!shorter && (
-        <div>
-          <Text color={theme.surfaceContent.toString()}>
-            {!isNaN(neededTokens)
-              ? 'Insufficient staked tokens'
-              : 'Not enough funds in the organization'}
-          </Text>
-          <br />
-          <Text color={theme.surfaceContentSecondary.toString()}>
-            (
-            {!isNaN(neededTokens) ? (
-              <React.Fragment>
-                At least{' '}
-                <Tag>
-                  {`${formatTokenAmount(neededTokens, decimals)} ${symbol}`}
-                </Tag>{' '}
-                more needed
-              </React.Fragment>
-            ) : (
-              `Funding requests must be below ${maxRatio *
-                100}% organization total funds`
-            )}
-            ).
-          </Text>
-        </div>
+  return (
+    <div
+      css={`
+        display: grid;
+        grid-gap: ${1 * GU}px;
+      `}
+    >
+      {view === UNABLE_TO_PASS ? (
+        <>
+          <Outcome result={"Won't pass"} positive={false} />
+          {!shorter && (
+            <>
+              <span
+                css={`
+                  color: ${theme.surfaceContent};
+                `}
+              >
+                {!isNaN(neededTokens)
+                  ? 'Insufficient staked tokens'
+                  : 'Not enough funds in the organization'}
+              </span>
+              <span
+                css={`
+                  color: ${theme.surfaceContentSecondary};
+                `}
+              >
+                (
+                {!isNaN(neededTokens) ? (
+                  <React.Fragment>
+                    At least{' '}
+                    <Tag>
+                      {`${formatTokenAmount(neededTokens, decimals)} ${symbol}`}
+                    </Tag>{' '}
+                    more needed
+                  </React.Fragment>
+                ) : (
+                  `Funding requests must be below ${maxRatio *
+                    100}% organization total funds`
+                )}
+                ).
+              </span>
+            </>
+          )}
+        </>
+      ) : (
+        <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
       )}
-    </>
-  ) : view === MAY_PASS ? (
-    <>
-      <Text color={theme.positive.toString()}> ✓ May pass</Text>
-      {!shorter && (
-        <React.Fragment>
-          <br />
-          <Text color={theme.surfaceContentSecondary.toString()}>
-            Estimate until pass
-          </Text>
-          {!!endDate && <Timer end={endDate} />}
-        </React.Fragment>
-      )}
-    </>
-  ) : view === EXECUTED ? (
-    <Text color={theme.positive.toString()}> ✓ Executed</Text>
-  ) : (
-    <>
-      <Text color={theme.positive.toString()}> ✓ Available for execution</Text>
-    </>
+    </div>
   )
 }
 
@@ -217,6 +219,51 @@ export function ConvictionTrend({ proposal }) {
         {percentage}%
       </span>
     </TrendWrapper>
+  )
+}
+
+const PositiveOutcome = ({ endDate, shorter, view }) => {
+  const theme = useTheme()
+
+  const text =
+    view === MAY_PASS
+      ? 'May pass'
+      : view === EXECUTED
+      ? 'Executed'
+      : 'Available for execution'
+
+  return (
+    <>
+      <Outcome result={text} positive />
+      {!shorter && (
+        <>
+          <span
+            css={`
+              color: ${theme.contentSecondary};
+            `}
+          >
+            Estimate until pass
+          </span>
+          {!!endDate && <Timer end={endDate} />}
+        </>
+      )}
+    </>
+  )
+}
+
+const Outcome = ({ result, positive }) => {
+  const theme = useTheme()
+
+  return (
+    <div
+      css={`
+        color: ${theme[positive ? 'positive' : 'negative']};
+        display: flex;
+        align-items: center;
+      `}
+    >
+      {positive ? <IconCheck /> : <IconCross />} {result}
+    </div>
   )
 }
 
