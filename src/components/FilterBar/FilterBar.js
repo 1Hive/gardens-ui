@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import styled from 'styled-components'
+import { DropDown, GU } from '@aragon/ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
@@ -8,9 +8,10 @@ import DropdownFilter from './DropdownFilter'
 const FilterBar = React.memo(
   ({
     proposalsSize = 0,
+    proposalExecutionStatusFilter,
     proposalStatusFilter,
     proposalTextFilter,
-    disableDropDownFilter = false,
+    handleExecutionStatusFilterChange,
     handleProposalStatusFilterChange,
     handleTextFilterChange,
   }) => {
@@ -21,9 +22,23 @@ const FilterBar = React.memo(
       setTextFieldVisible(true)
     }, [setTextFieldVisible])
 
+    const statusFilterDisabled = proposalExecutionStatusFilter === 1
+
     return (
-      <FilterBarWrapper disableDropDown={disableDropDownFilter}>
-        {!disableDropDownFilter && (
+      <div
+        css={`
+          display: grid;
+          grid-template-columns: auto auto ${32 * GU}px;
+          grid-gap: ${1.5 * GU}px;
+        `}
+      >
+        <DropDown
+          header="Status"
+          selected={proposalExecutionStatusFilter}
+          onChange={handleExecutionStatusFilterChange}
+          items={['Open', 'Closed']}
+        />
+        {!statusFilterDisabled && (
           <DropdownFilter
             proposalsSize={proposalsSize}
             proposalStatusFilter={proposalStatusFilter}
@@ -39,24 +54,19 @@ const FilterBar = React.memo(
           openerRef={textFilterOpener}
           onClick={handlerTextFilterClick}
         />
-      </FilterBarWrapper>
+      </div>
     )
   }
 )
 
-const FilterBarWrapper = styled.div`
-  display: flex;
-  justify-content: ${({ disableDropDown }) =>
-    disableDropDown ? 'flex-end' : 'space-between'};
-`
-
 FilterBar.propTypes = {
   proposalsSize: PropTypes.number,
+  proposalExecutionStatusFilter: PropTypes.number.isRequired,
   proposalStatusFilter: PropTypes.number.isRequired,
   proposalTextFilter: PropTypes.string.isRequired,
+  handleExecutionStatusFilterChange: PropTypes.func.isRequired,
   handleProposalStatusFilterChange: PropTypes.func.isRequired,
   handleTextFilterChange: PropTypes.func.isRequired,
-  disableDropDownFilter: PropTypes.bool,
 }
 
 export default FilterBar

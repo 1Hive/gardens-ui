@@ -28,6 +28,7 @@ const TextFilter = React.memo(
         value={textFilter}
         onChange={updateTextFilter}
         placeholder={placeholder}
+        wide
       />
     ) : (
       <React.Fragment>
