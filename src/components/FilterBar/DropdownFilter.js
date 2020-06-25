@@ -29,6 +29,9 @@ const DropwdownFilter = React.memo(
           'Supported',
           'Not Supported',
         ]}
+        css={`
+          margin-left: ${1.5 * GU}px;
+        `}
       />
     )
   }
