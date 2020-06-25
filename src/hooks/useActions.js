@@ -35,6 +35,7 @@ export default function useActions(onDone) {
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
+      console.log('STAKE ', typeof amount)
       sendIntent(
         organization,
         convictionVoting.appAddress,
@@ -49,12 +50,12 @@ export default function useActions(onDone) {
   )
 
   const withdrawFromProposal = useCallback(
-    proposalId => {
+    (proposalId, amount) => {
       sendIntent(
         organization,
         convictionVoting.appAddress,
-        'withdrawAllFromProposal',
-        [proposalId],
+        'withdrawFromProposal',
+        [proposalId, amount],
         { ethers, from: account }
       )
 
