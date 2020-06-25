@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   BackButton,
   Bar,
@@ -41,11 +41,11 @@ import BigNumber from '../lib/bigNumber'
 const MAX_INPUT_DECIMAL_BASE = 6
 
 function ProposalDetail({
+  proposal,
   onBack,
   onExecuteProposal,
   onStakeToProposal,
   onWithdrawFromProposal,
-  proposal,
   requestToken,
 }) {
   const theme = useTheme()
@@ -108,20 +108,17 @@ function ProposalDetail({
     rounding
   )
 
-  const didIStaked = myStake?.amount.gt(0)
+  const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
     if (currentConviction.gte(threshold)) {
       return 'execute'
     }
-    if (didIStaked) {
+    if (didIStake) {
       return 'update'
     }
     return 'support'
-  }, [currentConviction, threshold, didIStaked])
-
-  // Focus input
-  const inputRef = useRef(null)
+  }, [currentConviction, didIStake, threshold])
 
   const handleExecute = useCallback(() => {
     onExecuteProposal(id)
@@ -160,7 +157,8 @@ function ProposalDetail({
         text: 'Change support',
         action: handleChangeSupport,
         mode: 'normal',
-        disabled: myStakeAmountFormatted === inputValue.toString(),
+        disabled:
+          myStakeAmountFormatted.replace(',', '') === inputValue.toString(),
       }
     }
     return {
@@ -300,20 +298,14 @@ function ProposalDetail({
                                 justify-content: space-between;
                               `}
                             >
-                              <div
+                              <Slider
+                                value={progress}
+                                onUpdate={setProgress}
                                 css={`
+                                  padding-left: 0;
                                   width: 100%;
                                 `}
-                              >
-                                <Slider
-                                  css={`
-                                    display: flex;
-                                    justify-content: space-between;
-                                  `}
-                                  value={progress}
-                                  onUpdate={setProgress}
-                                />
-                              </div>
+                              />
                               <TextInput
                                 value={inputValue}
                                 onChange={setAmount}
@@ -321,7 +313,6 @@ function ProposalDetail({
                                 max={maxAvailable}
                                 min="0"
                                 required
-                                ref={inputRef}
                                 css={`
                                   width: ${18 * GU}px;
                                 `}
@@ -359,12 +350,12 @@ function ProposalDetail({
         secondary={
           <div>
             {requestToken && (
-              <Box heading="Status" padding={3 * GU}>
+              <Box heading="Status">
                 <ConvictionCountdown proposal={proposal} />
               </Box>
             )}
             {!proposal.executed && (
-              <Box heading="Conviction Progress" padding={3 * GU}>
+              <Box heading="Conviction Progress">
                 <ConvictionBar
                   proposal={proposal}
                   withThreshold={!!requestToken}
@@ -434,7 +425,7 @@ const AccountNotConnected = () => {
 
 const useAmount = (balance, maxAvailable, rounding) => {
   const [amount, setAmount] = useState({
-    value: balance,
+    value: balance, // TODO: Use BNs
     max: maxAvailable,
     progress: safeDiv(balance, maxAvailable),
   })
