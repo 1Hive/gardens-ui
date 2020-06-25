@@ -1,11 +1,14 @@
 export default {
-  _name: 'court',
+  _name: '1hive',
   _appearance: 'light',
 
   accent: '#CBF3EF',
   accentStart: '#CBF3EF',
   accentEnd: '#7CE0D6',
   accentContent: '#FFFFFF',
+
+  background: '#F9F9F8',
+  border: '#EFEFEF',
 
   selected: '#7CE0D6',
   selectedContent: '#FFFFFF',
