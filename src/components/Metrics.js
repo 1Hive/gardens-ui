@@ -45,6 +45,7 @@ const Metrics = React.memo(function Metrics({
           css={`
             display: flex;
             align-items: center;
+            margin-bottom: ${2 * GU}px;
           `}
         >
           <img
