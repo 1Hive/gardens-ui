@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { Main } from '@1hive/1hive-ui'
 
 import App from './App'
@@ -12,11 +12,11 @@ ReactDOM.render(
   <WalletProvider>
     <AppStateProvider>
       <Main assetsUrl="/aragon-ui/" layout={false}>
-        <BrowserRouter>
+        <HashRouter>
           <MainView>
             <App />
           </MainView>
-        </BrowserRouter>
+        </HashRouter>
       </Main>
     </AppStateProvider>
   </WalletProvider>,
