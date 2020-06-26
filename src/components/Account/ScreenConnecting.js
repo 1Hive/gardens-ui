@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
-import { GU, useTheme, textStyle, Link } from '@aragon/ui'
+import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 import {
   getProviderFromUseWalletId,
   getProviderString,

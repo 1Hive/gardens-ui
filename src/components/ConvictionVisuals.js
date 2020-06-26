@@ -8,7 +8,7 @@ import {
   Timer,
   useLayout,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import BigNumber from '../lib/bigNumber'
 import LineChart from './ModifiedLineChart'
 import styled from 'styled-components'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, Layout, useViewport } from '@aragon/ui'
+import { GU, Layout, useViewport } from '@1hive/1hive-ui'
 import AccountModule from './Account/AccountModule'
 import { BREAKPOINTS } from '../styles/breakpoints'
 

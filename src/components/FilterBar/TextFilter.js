@@ -8,7 +8,7 @@ import {
   Popover,
   SearchInput,
   useLayout,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 
 const TextFilter = React.memo(
   ({

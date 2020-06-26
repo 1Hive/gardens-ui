@@ -1,5 +1,11 @@
 import React from 'react'
-import { ButtonBase, GU, IconDown, useTheme, useViewport } from '@aragon/ui'
+import {
+  ButtonBase,
+  GU,
+  IconDown,
+  useTheme,
+  useViewport,
+} from '@1hive/1hive-ui'
 function HeaderModule({ icon, content, onClick }) {
   const { above } = useViewport()
   const theme = useTheme()

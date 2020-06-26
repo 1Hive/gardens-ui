@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Box, Distribution, GU, useTheme, useViewport } from '@aragon/ui'
+import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '../lib/bigNumber'
 import { stakesPercentages } from '../lib/math-utils'

@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
-import { Button, GU, IconConnect, springs, shortenAddress } from '@aragon/ui'
+import {
+  Button,
+  GU,
+  IconConnect,
+  springs,
+  shortenAddress,
+  useLayout,
+} from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
 
 import ScreenError from './ScreenError'
@@ -11,7 +18,6 @@ import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { getUseWalletProviders } from '../../lib/web3-utils'
-import { useLayout } from '@aragon/ui/dist/Layout'
 
 const SCREENS = [
   {

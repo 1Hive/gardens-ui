@@ -6,7 +6,7 @@ import {
   textStyle,
   useTheme,
   useViewport,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import logoSvg from '../assets/logo.svg'
 import { BREAKPOINTS } from '../styles/breakpoints'

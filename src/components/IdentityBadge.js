@@ -1,5 +1,5 @@
 import React from 'react'
-import { IdentityBadge as Badge } from '@aragon/ui'
+import { IdentityBadge as Badge } from '@1hive/1hive-ui'
 import { getNetworkType } from '../lib/web3-utils'
 
 function IdentityBadge({ entity, ...props }) {

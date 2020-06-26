@@ -9,7 +9,7 @@ import {
   TextInput,
   useSidePanelFocusOnReady,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import { toDecimals, round, pct } from '../../lib/math-utils'
 import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
 import { formatTokenAmount } from '../../lib/token-utils'
