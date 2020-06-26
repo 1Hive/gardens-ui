@@ -37,8 +37,8 @@ export default function useAppLogic() {
 
         totalActiveTokens = totalActiveTokens.plus(totalActive)
 
-        const myStake = proposal.stakes.find(stake =>
-          addressesEqual(stake.entity, account)
+        const myStake = proposal.stakes.find(
+          stake => addressesEqual(stake.entity, account) && stake.amount.gt(0)
         )
 
         if (myStake) {

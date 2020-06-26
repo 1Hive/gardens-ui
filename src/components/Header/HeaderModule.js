@@ -9,7 +9,8 @@ function HeaderModule({ icon, content, onClick }) {
       onClick={onClick}
       css={`
         height: 100%;
-        padding: 0 ${1 * GU}px;
+        padding: ${1 * GU}px;
+        background: ${theme.surface};
         &:active {
           background: ${theme.surfacePressed};
         }

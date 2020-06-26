@@ -5,6 +5,8 @@ import { toDecimals } from '../lib/math-utils'
 import { toHex } from 'web3-utils'
 import { getAppAddressByName } from '../lib/data-utils'
 
+const GAS_LIMIT = 250000
+
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
@@ -110,7 +112,7 @@ async function sendIntent(
     const txPath = await intent.paths(from)
 
     const { to, data } = txPath.transactions[0] // TODO: Handle errors when no tx path is found
-    ethers.getSigner().sendTransaction({ data, to })
+    ethers.getSigner().sendTransaction({ data, to, gasLimit: GAS_LIMIT })
   } catch (err) {
     console.error('Could not create tx:', err)
   }

@@ -14,10 +14,7 @@ import {
 import { getTokenIconBySymbol } from '../lib/token-utils'
 import { useHistory } from 'react-router-dom'
 
-import {
-  ConvictionBar,
-  ConvictionCountdown,
-} from '../components/ConvictionVisuals'
+import { ConvictionBar } from '../components/ConvictionVisuals'
 import Balance from '../components/Balance'
 import FilterBar from '../components/FilterBar/FilterBar'
 import IdentityBadge from '../components/IdentityBadge'
@@ -50,7 +47,7 @@ const Proposals = React.memo(
     } = useMemo(() => {
       if (proposalExecutionStatusFilter === 0) {
         return {
-          convictionFields: [{ label: 'Conviction progress', align: 'start' }],
+          convictionFields: [{ label: 'Progress', align: 'start' }],
         }
       }
 
@@ -61,10 +58,7 @@ const Proposals = React.memo(
     }, [proposalExecutionStatusFilter])
 
     const requestedField = requestToken
-      ? [{ label: 'Requested', align: 'start' }]
-      : []
-    const statusField = requestToken
-      ? [{ label: 'Status', align: 'start' }]
+      ? [{ label: 'Request amount', align: 'start' }]
       : []
 
     const sortedProposals = filteredProposals.sort(
@@ -128,7 +122,6 @@ const Proposals = React.memo(
             ...requestedField,
             ...convictionFields,
             ...beneficiaryField,
-            ...statusField,
           ]}
           emptyState={
             <p
@@ -177,11 +170,7 @@ const Proposals = React.memo(
                 />
               )
             }
-            if (requestToken) {
-              entriesElements.push(
-                <ConvictionCountdown proposal={proposal} shorter />
-              )
-            }
+
             return entriesElements
           }}
           tableRowHeight={14 * GU}
@@ -192,16 +181,13 @@ const Proposals = React.memo(
   }
 )
 
-const ProposalInfo = ({ proposal, requestToken, selectProposal = false }) => {
+const ProposalInfo = ({ proposal, requestToken }) => {
   return (
     <div
       css={`
         width: ${23 * GU}px;
       `}
     >
-      {selectProposal && (
-        <IdAndTitle {...proposal} selectProposal={selectProposal} />
-      )}
       <ConvictionBar proposal={proposal} withThreshold={requestToken} />
     </div>
   )

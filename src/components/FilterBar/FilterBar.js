@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { DropDown, GU } from '@aragon/ui'
+import { DropDown } from '@aragon/ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
@@ -27,9 +27,8 @@ const FilterBar = React.memo(
     return (
       <div
         css={`
-          display: grid;
-          grid-template-columns: auto auto ${32 * GU}px;
-          grid-gap: ${1.5 * GU}px;
+          display: flex;
+          align-itmes: center;
         `}
       >
         <DropDown
