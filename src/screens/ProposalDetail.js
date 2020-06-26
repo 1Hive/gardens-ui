@@ -20,10 +20,11 @@ import IdentityBadge from '../components/IdentityBadge'
 import ProposalActions from '../components/ProposalActions'
 import SupportProposal from '../components/panels/SupportProposal'
 
+import { useAppState } from '../providers/AppState'
 import usePanelState from '../hooks/usePanelState'
 import { useWallet } from '../providers/Wallet'
 
-import { getTokenIconBySymbol } from '../lib/token-utils'
+import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
 function ProposalDetail({
@@ -36,8 +37,10 @@ function ProposalDetail({
 }) {
   const { layoutName } = useLayout()
 
-  const { account: connectedAccount } = useWallet()
+  const theme = useTheme()
   const panelState = usePanelState()
+  const { vaultBalance } = useAppState()
+  const { account: connectedAccount } = useWallet()
 
   const {
     id,
@@ -75,16 +78,44 @@ function ProposalDetail({
                 css={`
                   display: grid;
                   grid-template-columns: ${layoutName !== 'small'
-                    ? 'auto auto auto auto'
+                    ? 'auto auto auto'
                     : 'auto'};
                   grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
                 `}
               >
                 {requestToken && (
-                  <Amount
-                    requestedAmount={requestedAmount}
-                    requestToken={requestToken}
-                  />
+                  <>
+                    <Amount
+                      requestedAmount={requestedAmount}
+                      requestToken={requestToken}
+                    />
+                    <div
+                      css={`
+                        margin-top: ${2.5 * GU}px;
+                        grid-column: span 2;
+                        width: ${50 * GU}px;
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      <span>
+                        This proposal is requesting{' '}
+                        <strong>
+                          {formatTokenAmount(
+                            requestedAmount,
+                            requestToken.decimals
+                          )}
+                        </strong>{' '}
+                        {requestToken.name} out of{' '}
+                        <strong>
+                          {formatTokenAmount(
+                            vaultBalance,
+                            requestToken.decimals
+                          )}
+                        </strong>{' '}
+                        {requestToken.name} currently in the common pool.
+                      </span>
+                    </div>
+                  </>
                 )}
                 <DataField
                   label="Link"
