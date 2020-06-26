@@ -9,9 +9,10 @@ import {
   useViewport,
 } from '@aragon/ui'
 import { useAppState } from '../providers/AppState'
-import { formatTokenAmount } from '../lib/token-utils'
-import { stakesPercentages, pct } from '../lib/math-utils'
+
 import BigNumber from '../lib/bigNumber'
+import { formatTokenAmount } from '../lib/token-utils'
+import { pct, round, stakesPercentages } from '../lib/math-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -100,8 +101,10 @@ const StakingTokens = React.memo(function StakingTokens({
                 color: ${theme.contentSecondary};
               `}
             >
-              {accountBalance.gte(0) ? pct(accountBalance, totalSupply) : '-'}%
-              of total tokens
+              {accountBalance.gte(0)
+                ? round(pct(accountBalance, totalSupply))
+                : '-'}
+              % of total tokens
             </div>
           </Field>
         </div>

@@ -1,21 +1,12 @@
-import React, { useCallback } from 'react'
-import {
-  Button,
-  SidePanel,
-  SyncIndicator,
-  IconPlus,
-  Header,
-  useLayout,
-} from '@aragon/ui'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
+import { SidePanel, Split, SyncIndicator } from '@aragon/ui'
 
 import AddProposalPanel from './components/AddProposalPanel'
-import Proposals from './screens/Proposals'
-import ProposalDetail from './screens/ProposalDetail'
+import MainScreen from './screens/MainScreen'
+import StakingTokens from './screens/StakingTokens'
+
 import useAppLogic from './app-logic'
-import { useAppState } from './providers/AppState'
 import { useWallet } from './providers/Wallet'
-import useFilterProposals from './hooks/useFilterProposals'
 import useSelectedProposal from './hooks/useSelectedProposal'
 
 const App = React.memo(function App() {
@@ -26,100 +17,61 @@ const App = React.memo(function App() {
     proposals,
     proposalPanel,
     totalActiveTokens,
+    totalOpenProposals,
   } = useAppLogic()
-  const { account } = useWallet()
-  const { requestToken, stakeToken } = useAppState()
 
-  const history = useHistory()
-  const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
+  const { account } = useWallet()
 
   const selectedProposal = useSelectedProposal(proposals)
 
-  const handleBack = useCallback(
-    id => {
-      history.push(`/`)
-    },
-    [history]
+  const MainScreenComponent = (
+    <MainScreen
+      isLoading={isLoading}
+      myStakes={myStakes}
+      onExecuteIssuance={actions.executeIssuance}
+      onExecuteProposal={actions.executeProposal}
+      onRequestNewProposal={proposalPanel.requestOpen}
+      onStakeToProposal={actions.stakeToProposal}
+      onWithdrawFromProposal={actions.withdrawFromProposal}
+      proposals={proposals}
+      selectedProposal={selectedProposal}
+      totalActiveTokens={totalActiveTokens}
+      totalOpenProposals={totalOpenProposals}
+    />
   )
 
-  const {
-    filteredProposals,
-    proposalExecutionStatusFilter,
-    proposalSupportStatusFilter,
-    proposalTextFilter,
-    handleProposalSupportFilterChange,
-    handleProposalExecutionFilterChange,
-    handleSearchTextFilterChange,
-  } = useFilterProposals(proposals, myStakes)
-
-  const handleTabChange = tabIndex => {
-    handleProposalExecutionFilterChange(tabIndex)
-    handleProposalSupportFilterChange(-1)
-  }
-
   return (
-    <>
+    <div>
       <SyncIndicator visible={isLoading} />
-      <>
-        <Header
-          primary="Conviction Voting"
+
+      {!account ? (
+        MainScreenComponent
+      ) : (
+        <Split
+          primary={MainScreenComponent}
           secondary={
             <div>
-              {!selectedProposal && account && (
-                <Button
-                  mode="strong"
-                  onClick={proposalPanel.requestOpen}
-                  label="New proposal"
-                  icon={<IconPlus />}
-                  display={compactMode ? 'icon' : 'label'}
+              {account && (
+                <StakingTokens
+                  myStakes={myStakes}
+                  totalActiveTokens={totalActiveTokens}
                 />
               )}
             </div>
           }
+          invert="horizontal"
         />
-        {!isLoading && (
-          <>
-            {selectedProposal ? (
-              <ProposalDetail
-                onBack={handleBack}
-                onExecuteProposal={actions.executeProposal}
-                onStakeToProposal={actions.stakeToProposal}
-                onWithdrawFromProposal={actions.withdrawFromProposal}
-                proposal={selectedProposal}
-                requestToken={requestToken}
-              />
-            ) : (
-              <Proposals
-                filteredProposals={filteredProposals}
-                proposalExecutionStatusFilter={proposalExecutionStatusFilter}
-                proposalSupportStatusFilter={proposalSupportStatusFilter}
-                proposalTextFilter={proposalTextFilter}
-                handleProposalSupportFilterChange={
-                  handleProposalSupportFilterChange
-                }
-                handleExecutionStatusFilterChange={handleTabChange}
-                handleSearchTextFilterChange={handleSearchTextFilterChange}
-                requestToken={requestToken}
-                stakeToken={stakeToken}
-                myStakes={myStakes}
-                totalActiveTokens={totalActiveTokens}
-              />
-            )}
-          </>
-        )}
-        <SidePanel
-          title="New proposal"
-          opened={proposalPanel.visible}
-          onClose={proposalPanel.requestClose}
-        >
-          <AddProposalPanel onSubmit={actions.newProposal} />
-        </SidePanel>
-      </>
-    </>
+      )}
+
+      <SidePanel
+        title="New proposal"
+        opened={proposalPanel.visible}
+        onClose={proposalPanel.requestClose}
+      >
+        <AddProposalPanel onSubmit={actions.newProposal} />
+      </SidePanel>
+    </div>
   )
 })
 
-export default () => {
-  return <App />
-}
+export default App

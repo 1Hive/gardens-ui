@@ -3,11 +3,17 @@ import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 import { toDecimals } from '../lib/math-utils'
 import { toHex } from 'web3-utils'
+import { getAppAddressByName } from '../lib/data-utils'
 
-export default function useProposalActions(onDone) {
+export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
-  const { organization, convictionVoting, requestToken } = useAppState()
+  const {
+    convictionVoting,
+    installedApps,
+    organization,
+    requestToken,
+  } = useAppState()
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
@@ -73,7 +79,22 @@ export default function useProposalActions(onDone) {
     [account, convictionVoting, ethers, onDone, organization]
   )
 
-  return { newProposal, stakeToProposal, withdrawFromProposal, executeProposal }
+  const executeIssuance = useCallback(() => {
+    const issuanceAddress = getAppAddressByName(installedApps, 'issuance')
+
+    sendIntent(organization, issuanceAddress, 'executeIssuance', [], {
+      ethers,
+      from: account,
+    })
+  }, [account, ethers, installedApps, organization])
+
+  return {
+    executeIssuance,
+    executeProposal,
+    newProposal,
+    stakeToProposal,
+    withdrawFromProposal,
+  }
 }
 
 async function sendIntent(

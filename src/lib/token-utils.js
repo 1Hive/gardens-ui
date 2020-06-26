@@ -5,6 +5,8 @@ import tokenSymbolBytesAbi from '../abi/token-symbol-bytes.json'
 import tokenNameAbi from '../abi/token-name.json'
 import tokenNameBytesAbi from '../abi/token-name-bytes.json'
 
+import honeyIconSvg from '../assets/honey.svg'
+
 const ANT_MAINNET_TOKEN_ADDRESS = '0x960b236A07cf122663c4303350609A66A7B288C0'
 const DAI_MAINNET_TOKEN_ADDRESS = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
 export const ETHER_TOKEN_FAKE_ADDRESS =
@@ -37,6 +39,8 @@ const KNOWN_TOKENS_FALLBACK = new Map([
     ]),
   ],
 ])
+
+const LOCAL_TOKEN_ICONS = new Map([['HNY', honeyIconSvg]])
 
 export const tokenDataFallback = (tokenAddress, fieldName, networkType) => {
   // The fallback list is without checksums
@@ -122,4 +126,8 @@ export function formatTokenAmount(
     (displaySign ? (isIncoming ? '+' : '-') : '') +
     (commas ? formattedAmount : formattedAmount.replace(',', ''))
   )
+}
+
+export function getTokenIconBySymbol(symbol) {
+  return LOCAL_TOKEN_ICONS.get(symbol)
 }

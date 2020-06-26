@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { theme, useLayout, tokenIconUrl, GU } from '@aragon/ui'
+import { GU, tokenIconUrl } from '@aragon/ui'
 
 import { formatTokenAmount } from '../lib/token-utils'
 import { ETHER_TOKEN_VERIFIED_BY_SYMBOL } from '../lib/verified-tokens'
@@ -10,64 +10,42 @@ import { getNetwork } from '../networks'
 const splitAmount = amount => {
   const [integer, fractional] = formatTokenAmount(amount).split('.')
   return (
-    <span>
-      <span className="integer">{integer}</span>
+    <span
+      css={`
+        margin-right: ${0.5 * GU}px;
+      `}
+    >
+      <span>{integer}</span>
       {fractional && <span className="fractional">.{fractional}</span>}
     </span>
   )
 }
 
-const BalanceToken = ({
-  amount,
-  symbol,
-  verified,
-  convertedAmount = -1,
-  color,
-  size,
-}) => {
-  const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
+const BalanceToken = ({ amount, symbol, color, size, icon }) => {
   const network = getNetwork()
   const tokenAddress =
     symbol && ETHER_TOKEN_VERIFIED_BY_SYMBOL.get(symbol.toUpperCase())
   return (
-    <Wrap compactMode={compactMode}>
-      <div
-        css={`
-          color: ${color};
-          ${size}
-        `}
-      >
-        {tokenAddress && (
-          <TokenIcon
-            src={tokenIconUrl(tokenAddress, symbol, network && network.type)}
-          />
-        )}
-        {amount !== undefined ? splitAmount(amount.toFixed(3)) : ' - '}{' '}
-        {symbol || ''}
-      </div>
-      <ConvertedAmount>
-        {convertedAmount >= 0
-          ? `($${formatTokenAmount(convertedAmount.toFixed(2))})`
-          : '(−)'}
-      </ConvertedAmount>
-    </Wrap>
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+        color: ${color};
+        ${size}
+      `}
+    >
+      <TokenIcon
+        src={
+          icon || tokenIconUrl(tokenAddress, symbol, network && network.type)
+        }
+      />
+      {amount !== undefined ? splitAmount(amount.toFixed(3)) : ' - '}
+      {symbol || ''}
+    </div>
   )
 }
 
-const Wrap = styled.div`
-  display: flex;
-  align-items: 'flex-start';
-  justify-content: center;
-  flex-direction: column;
-`
-
-const ConvertedAmount = styled.div`
-  color: ${theme.textTertiary};
-`
-const TokenIcon = styled.img.attrs({ alt: '', width: '16', height: '16' })`
-  position: relative;
-  top: 2px;
+const TokenIcon = styled.img.attrs({ alt: '', width: '20', height: '20' })`
   margin-right: ${1 * GU}px;
 `
 
