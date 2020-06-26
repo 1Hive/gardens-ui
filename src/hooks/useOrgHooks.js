@@ -58,7 +58,7 @@ const DEFAULT_APP_DATA = {
 
 export function useOrganzation() {
   const [organzation, setOrganization] = useState(null)
-  const { ethers } = useWallet()
+  const { ethereum, ethers } = useWallet()
 
   useEffect(() => {
     let cancelled = false
@@ -72,7 +72,7 @@ export function useOrganzation() {
           },
         ],
         {
-          readProvider: ethers,
+          readProvider: ethereum || ethers,
           chainId: getDefaultChain(),
         }
       )
@@ -87,7 +87,7 @@ export function useOrganzation() {
     return () => {
       cancelled = true
     }
-  }, [ethers])
+  }, [ethers, ethereum])
 
   return organzation
 }

@@ -96,7 +96,9 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     [stakeToken.decimals]
   )
 
-  const handleBeneficiaryChange = useCallback(updatedBeneficiary => {
+  const handleBeneficiaryChange = useCallback(event => {
+    const updatedBeneficiary = event.target.value
+
     setFormData(formData => ({ ...formData, beneficiary: updatedBeneficiary }))
   }, [])
 
@@ -110,9 +112,9 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       event.preventDefault()
 
       const { amount, beneficiary = ZERO_ADDR, link, title } = formData
-      const convertedAmount = amount.valueBN.toString()
+      const convertedAmount = amount.valueBN.toString(10)
 
-      onSubmit(title, link, convertedAmount, beneficiary)
+      onSubmit({ title, link, amount: convertedAmount, beneficiary })
     },
     [formData, onSubmit]
   )

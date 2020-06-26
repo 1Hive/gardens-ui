@@ -25,10 +25,11 @@
   },
   "scripts": {
     "start": "npm run sync-assets && react-app-rewired start",
-    "start:local": "cross-env REACT_APP_CHAIN_ID=1337 npm run start",
-    "start:rinkeby": "cross-env REACT_APP_CHAIN_ID=4 npm run start",
-    "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 npm run start",
+    "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
+    "start:rinkeby": "cross-env REACT_APP_CHAIN_ID=4 yarn start",
+    "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
     "build": "npm run sync-assets && react-app-rewired build",
+    "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
     "test": "react-app-rewired test",
     "sync-assets": "copy-aragon-ui-assets ./public"
   },

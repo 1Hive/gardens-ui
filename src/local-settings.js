@@ -9,18 +9,13 @@ function getLocalStorageSetting(confKey) {
   return window.localStorage.getItem(storageKey)
 }
 
-// Get a local setting: from the local storage if available, or the env vars.
-function getLocalSetting(confKey) {
-  return getLocalStorageSetting(confKey) || env(confKey)
-}
-
 function setLocalSetting(confKey, value) {
   const storageKey = `${confKey}_KEY`
   return window.localStorage.setItem(storageKey, value)
 }
 
 export function getDefaultChain() {
-  return Number(getLocalSetting(DEFAULT_CHAIN_ID)) || ''
+  return Number(env(DEFAULT_CHAIN_ID)) || ''
 }
 
 export function setDefaultChain(chainId) {
