@@ -4,7 +4,7 @@ import { useWallet } from '../providers/Wallet'
 import { toHex } from 'web3-utils'
 import { getAppAddressByName } from '../lib/data-utils'
 
-const GAS_LIMIT = 250000
+const GAS_LIMIT = 350000
 
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
