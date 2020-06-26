@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU } from '@aragon/ui'
+import { GU } from '@1hive/1hive-ui'
 import AccountModule from './Account/AccountModule'
 import Layout from './Layout'
 

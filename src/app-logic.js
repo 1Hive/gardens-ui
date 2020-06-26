@@ -13,7 +13,7 @@ export default function useAppLogic() {
   const { account } = useWallet()
 
   const { isLoading, stakeToken } = useAppState()
-  const [proposals] = useProposals()
+  const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
 
   const { myStakes, totalActiveTokens, totalOpenProposals } = useMemo(() => {
@@ -67,7 +67,7 @@ export default function useAppLogic() {
 
   return {
     actions,
-    isLoading: isLoading, // TODO: Add loading flag for block back again
+    isLoading: isLoading || !blockHasLoaded,
     myStakes,
     proposals,
     proposalPanel,

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gql from 'graphql-tag'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
-import { providers as EthersProviders } from 'ethers'
 
 import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
 import { connect } from '@aragon/connect'
@@ -59,7 +58,7 @@ const DEFAULT_APP_DATA = {
 
 export function useOrganzation() {
   const [organzation, setOrganization] = useState(null)
-  const { ethereum } = useWallet()
+  const { ethers } = useWallet()
 
   useEffect(() => {
     let cancelled = false
@@ -73,9 +72,7 @@ export function useOrganzation() {
           },
         ],
         {
-          readProvider:
-            ethereum ||
-            new EthersProviders.JsonRpcProvider('https://xdai.poanetwork.dev/'), // TODO: Remove once connect doesn't require a provider if it's not going to use it
+          readProvider: ethers,
           chainId: getDefaultChain(),
         }
       )
@@ -90,7 +87,7 @@ export function useOrganzation() {
     return () => {
       cancelled = true
     }
-  }, [ethereum])
+  }, [ethers])
 
   return organzation
 }
@@ -164,11 +161,15 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     const fetchVaultBalance = () => {
       timeoutId = setTimeout(async () => {
         try {
-          const vaultBalance = await vaultContract.balance(token.id)
+          const vaultContractBalance = await vaultContract.balance(token.id)
 
           if (!cancelled) {
             // Contract value is bn.js so we need to convert it to bignumber.js
-            setVaultBalance(new BigNumber(vaultBalance.toString()))
+            const newValue = new BigNumber(vaultContractBalance.toString())
+
+            if (!newValue.eq(vaultBalance)) {
+              setVaultBalance(newValue)
+            }
           }
         } catch (err) {
           console.error(`Error fetching balance: ${err} retrying...`)
@@ -188,7 +189,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultContract, controlledTimeout, timeout, token.id])
+  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token.id])
 
   return vaultBalance
 }

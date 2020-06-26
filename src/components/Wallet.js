@@ -6,7 +6,7 @@ import {
   shortenAddress,
   textStyle,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'

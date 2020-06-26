@@ -1,6 +1,6 @@
 import React from 'react'
+import { GU, Link as AragonLink, textStyle, useTheme } from '@1hive/1hive-ui'
 import styled from 'styled-components'
-import { GU, Link as AragonLink, textStyle, useTheme } from '@aragon/ui'
 import Layout from './Layout'
 import logoSvg from '../assets/logo.svg'
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import { GU, useViewport } from '@aragon/ui'
-import Layout from './Layout'
+import { GU, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
 import Header from './Header'
+import Layout from './Layout'
 
 function MainView({ children }) {
   const { below } = useViewport()

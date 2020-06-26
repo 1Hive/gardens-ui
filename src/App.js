@@ -1,5 +1,5 @@
 import React from 'react'
-import { SidePanel, Split, SyncIndicator } from '@aragon/ui'
+import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from './components/AddProposalPanel'
 import MainScreen from './screens/MainScreen'

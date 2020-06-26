@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { DropDown, GU, textStyle, Tag, useTheme } from '@aragon/ui'
+import { DropDown, GU, textStyle, Tag, useTheme } from '@1hive/1hive-ui'
 
 const DropwdownFilter = React.memo(
   ({

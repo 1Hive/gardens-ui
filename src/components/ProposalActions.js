@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Button, Field, GU, Info, Slider, TextInput } from '@aragon/ui'
+import { Button, Field, GU, Info, Slider, TextInput } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '../hooks/useAccountTotalStaked'
 import { useAppState } from '../providers/AppState'

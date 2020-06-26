@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react'
 import { Spring } from 'react-spring/renderprops'
-import { unselectable, springs } from '@aragon/ui'
+import { unselectable, springs } from '@1hive/1hive-ui'
 
 const LABELS_HEIGHT = 30
 const WIDTH_DEFAULT = 300

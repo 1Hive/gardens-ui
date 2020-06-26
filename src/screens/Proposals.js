@@ -10,7 +10,7 @@ import {
   textStyle,
   useLayout,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import { getTokenIconBySymbol } from '../lib/token-utils'
 import { useHistory } from 'react-router-dom'
 

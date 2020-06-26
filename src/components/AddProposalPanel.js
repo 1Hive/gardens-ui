@@ -7,7 +7,7 @@ import {
   isAddress,
   TextInput,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 import { useAppState } from '../providers/AppState'
 
 import BigNumber from '../lib/bigNumber'

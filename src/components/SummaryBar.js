@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { springs, useTheme } from '@aragon/ui'
+import { springs, useTheme } from '@1hive/1hive-ui'
 import { Spring, animated } from 'react-spring/renderprops'
 
 function SummaryBar({
