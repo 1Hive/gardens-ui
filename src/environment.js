@@ -1,5 +1,5 @@
 // rinkeby
-const DEFAULT_CHAIN_ID = 4
+const DEFAULT_CHAIN_ID = 100
 
 const ENV_VARS = {
   CHAIN_ID() {

@@ -2,7 +2,7 @@ import { toChecksumAddress } from 'web3-utils'
 import env from '../environment'
 import { getDefaultChain } from '../local-settings'
 
-export const DEFAULT_LOCAL_CHAIN = 'xdai'
+const DEFAULT_LOCAL_CHAIN = ''
 
 export function getUseWalletProviders() {
   const providers = [{ id: 'injected' }, { id: 'frame' }]
