@@ -7,11 +7,12 @@ import {
   textStyle,
   useTheme,
 } from '@aragon/ui'
+import styled from 'styled-components'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
-import { formatTokenAmount } from '../lib/token-utils'
+import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function Wallet({ myStakes }) {
   const theme = useTheme()
@@ -69,59 +70,82 @@ function Wallet({ myStakes }) {
           css={`
             ${textStyle('title4')};
             color: ${theme.contentSecondary};
-            margin-bottom: ${2 * GU}px;
+            margin-bottom: ${3 * GU}px;
           `}
         >
           Wallet
         </h5>
-        <div
-          css={`
-            margin-left: ${3 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              margin-bottom: ${2 * GU}px;
-            `}
-          >
-            <h5
-              css={`
-                color: ${theme.contentSecondary};
-                margin-bottom: ${0.5 * GU}px;
-              `}
-            >
-              Balance
-            </h5>
-            <span
-              css={`
-                ${textStyle('title4')};
-              `}
-            >
-              {formatTokenAmount(accountBalance, stakeToken.decimals)}
-            </span>
-          </div>
-          <div>
-            <h5
-              css={`
-                color: ${theme.contentSecondary};
-                margin-bottom: ${0.5 * GU}px;
-              `}
-            >
-              Inactive
-            </h5>
-            <span
-              css={`
-                ${textStyle('title4')};
-                color: ${theme.negative};
-              `}
-            >
-              {formatTokenAmount(inactiveTokens, stakeToken.decimals)}
-            </span>
-          </div>
+        <div>
+          <Balance
+            amount={accountBalance}
+            decimals={stakeToken.decimals}
+            label="Balance"
+            symbol={stakeToken.symbol}
+          />
+          <LineSeparator border={theme.border} />
+          <Balance
+            amount={inactiveTokens}
+            decimals={stakeToken.decimals}
+            inactive
+            label="Inactive"
+            symbol={stakeToken.symbol}
+          />
         </div>
       </div>
     </Box>
   )
 }
+
+const Balance = ({ amount, decimals, inactive = false, label, symbol }) => {
+  const theme = useTheme()
+  const tokenIcon = getTokenIconBySymbol(symbol)
+
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+      `}
+    >
+      <div
+        css={`
+          margin-right: ${3 * GU}px;
+        `}
+      >
+        <img
+          src={tokenIcon}
+          height="50"
+          alt=""
+          css={`
+            opacity: ${inactive ? 0.5 : 1};
+          `}
+        />
+      </div>
+      <div>
+        <h5
+          css={`
+            color: ${theme.contentSecondary};
+          `}
+        >
+          {label}
+        </h5>
+        <span
+          css={`
+            ${textStyle('title4')};
+            color: ${theme[inactive ? 'negative' : 'content']};
+          `}
+        >
+          {formatTokenAmount(amount, decimals)}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+const LineSeparator = styled.div`
+  height: 1px;
+  border: 0.5px solid ${({ border }) => border};
+  margin: ${3 * GU}px 0;
+`
 
 export default Wallet
