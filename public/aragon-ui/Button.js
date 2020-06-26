@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,8 +40,8 @@ var Theme = require('./Theme.js');
 var _extends = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 var index$1 = require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+require('./Viewport-2b9ed1c1.js');
 var Layout = require('./Layout.js');
 require('./FocusVisible.js');
 var ButtonBase = require('./ButtonBase.js');
@@ -139,7 +139,7 @@ function modeStyles(theme, mode, disabled) {
 
   if (mode === 'strong') {
     return {
-      background: "\n        linear-gradient(\n          190deg,\n          ".concat(theme.accentStart, " -100%,\n          ").concat(theme.accentEnd, " 80%\n        )\n      "),
+      background: "\n        linear-gradient(\n          45deg,\n          ".concat(theme.accentStart, " 0%,\n          ").concat(theme.accentEnd, " 100%\n        )\n      "),
       color: theme.accentContent,
       iconColor: theme.accentContent,
       border: '0'
@@ -174,7 +174,7 @@ function modeStyles(theme, mode, disabled) {
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "Button___StyledButtonBase",
-  componentId: "sc-8npd5h-0"
+  componentId: "sc-1dg3zas-0"
 })(["display:", ";align-items:center;justify-content:center;width:", ";height:", ";min-width:", ";padding:", ";", ";", ";background:", ";color:", ";white-space:nowrap;border:", ";box-shadow:", ";transition-property:transform,box-shadow;transition-duration:50ms;transition-timing-function:ease-in-out;&:active{transform:", ";box-shadow:", ";}"], function (p) {
   return p._css;
 }, function (p) {
@@ -203,8 +203,8 @@ var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "Button___StyledSpan",
-  componentId: "sc-8npd5h-1"
-})(["position:relative;top:-1px;display:flex;color:", ";margin-right:", ";"], function (p) {
+  componentId: "sc-1dg3zas-1"
+})(["position:relative;display:flex;color:", ";margin-right:", ";"], function (p) {
   return p._css13;
 }, function (p) {
   return p._css14;
@@ -310,7 +310,7 @@ function Button(_ref) {
   return /*#__PURE__*/React__default.createElement(_StyledButtonBase, _extends._extends({
     ref: innerRef,
     focusRingSpacing: border === '0' ? 0 : 1,
-    focusRingRadius: constants.RADIUS,
+    focusRingRadius: constants.BIG_RADIUS,
     disabled: disabled
   }, props, {
     _css: wide ? 'flex' : 'inline-flex',

@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS, GU } from './constants.js';
+import { BIG_RADIUS, GU } from './constants.js';
 import './breakpoints.js';
 import { springs } from './springs.js';
 import './text-styles.js';
@@ -32,12 +32,12 @@ import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import { u as useViewport } from './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import { u as useViewport } from './Viewport-05d16edd.js';
 import './Layout.js';
 import './FocusVisible.js';
 import './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -148,7 +148,7 @@ import 'react-dom';
 import { e as extendedAnimated, T as Transition } from './web-a351a0a1.js';
 import './Button.js';
 import ButtonIcon from './ButtonIcon.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import RootPortal from './RootPortal.js';
 import EscapeOutside from './EscapeOutside.js';
 
@@ -159,24 +159,24 @@ var SPACE_AROUND = 4 * GU;
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "Modal___StyledAnimatedDiv",
-  componentId: "sc-1ofisn3-0"
+  componentId: "zpm1g8-0"
 })(["position:fixed;top:0;left:0;right:0;bottom:0;background:", ";"], function (p) {
   return p._css;
 });
 
 var _StyledAnimatedDiv2 = _styled(extendedAnimated.div).withConfig({
   displayName: "Modal___StyledAnimatedDiv2",
-  componentId: "sc-1ofisn3-1"
+  componentId: "zpm1g8-1"
 })(["position:absolute;z-index:1;top:0;left:0;right:0;bottom:0;display:grid;align-items:center;justify-content:center;overflow:auto;"]);
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Modal___StyledDiv",
-  componentId: "sc-1ofisn3-2"
+  componentId: "zpm1g8-2"
 })(["padding:", "px 0;"], SPACE_AROUND);
 
 var _StyledEscapeOutside = _styled(EscapeOutside).withConfig({
   displayName: "Modal___StyledEscapeOutside",
-  componentId: "sc-1ofisn3-3"
+  componentId: "zpm1g8-3"
 })(["position:relative;overflow:hidden;min-width:", "px;background:", ";box-shadow:0 10px 28px rgba(0,0,0,0.15);"], function (p) {
   return p._css2;
 }, function (p) {
@@ -185,7 +185,7 @@ var _StyledEscapeOutside = _styled(EscapeOutside).withConfig({
 
 var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
   displayName: "Modal___StyledButtonIcon",
-  componentId: "sc-1ofisn3-4"
+  componentId: "zpm1g8-4"
 })(["position:absolute;z-index:2;top:", "px;right:", "px;"], function (p) {
   return p._css4;
 }, function (p) {
@@ -194,7 +194,7 @@ var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Modal___StyledDiv2",
-  componentId: "sc-1ofisn3-5"
+  componentId: "zpm1g8-5"
 })(["position:relative;z-index:1;"]);
 
 function Modal(_ref) {
@@ -251,7 +251,7 @@ function Modal(_ref) {
         onEscapeOutside: onClose,
         style: {
           width: cssPx(typeof width === 'function' ? width(viewport) : width),
-          borderRadius: "".concat(RADIUS, "px")
+          borderRadius: "".concat(BIG_RADIUS, "px")
         },
         _css2: 360 - SPACE_AROUND * 2,
         _css3: theme.surface

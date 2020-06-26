@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useContext } from 'react';
 import { c as createCommonjsModule } from './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import { _ as _toConsumableArray } from './toConsumableArray-127424c2.js';
+import { _ as _toConsumableArray } from './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b96da1e1.js';
+import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import { stylingProps } from './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS, GU } from './constants.js';
+import { BIG_RADIUS, GU } from './constants.js';
 import './breakpoints.js';
 import { springs } from './springs.js';
 import { textStyle } from './text-styles.js';
@@ -31,12 +31,12 @@ import './theme-light.js';
 import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
-import './isObject-3c6ec07e.js';
-import { u as useViewport } from './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import { u as useViewport } from './Viewport-05d16edd.js';
 import './objectWithoutPropertiesLoose-9606ad13.js';
 import 'react-dom';
 import { e as extendedAnimated, T as Transition } from './web-a351a0a1.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import RootPortal from './RootPortal.js';
 
 var runtime_1 = createCommonjsModule(function (module) {
@@ -1029,7 +1029,7 @@ _defineProperty(ToastHubProvider, "defaultProps", {
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "ToastHub___StyledDiv",
-  componentId: "sc-1y0i8xl-0"
+  componentId: "sc-1cfhkh0-0"
 })(["position:fixed;z-index:1000;top:", ";bottom:", ";left:", "px;right:", "px;display:flex;margin:0 auto;flex-direction:", ";pointer-events:none;align-items:", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -1046,14 +1046,14 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "ToastHub___StyledAnimatedDiv",
-  componentId: "sc-1y0i8xl-1"
+  componentId: "sc-1cfhkh0-1"
 })(["box-sizing:border-box;position:relative;width:", ";"], function (p) {
   return p._css7;
 });
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "ToastHub___StyledDiv2",
-  componentId: "sc-1y0i8xl-2"
+  componentId: "sc-1cfhkh0-2"
 })(["display:flex;align-items:center;overflow:hidden;height:", "px;margin-top:", ";margin-bottom:", ";padding:0 ", "px;", ";color:", ";background:", ";border-radius:", "px;"], function (p) {
   return p._css8;
 }, function (p) {
@@ -1068,11 +1068,11 @@ var _StyledDiv2 = _styled("div").withConfig({
   return p._css13;
 }, function (p) {
   return p._css14;
-}, RADIUS);
+}, BIG_RADIUS);
 
 var _StyledAnimatedDiv2 = _styled(extendedAnimated.div).withConfig({
   displayName: "ToastHub___StyledAnimatedDiv2",
-  componentId: "sc-1y0i8xl-3"
+  componentId: "sc-1cfhkh0-3"
 })(["position:absolute;bottom:", ";left:0;width:auto;height:5px;background-image:linear-gradient( 130deg,#00b4e6,#00f0e0 );"], function (p) {
   return p._css15;
 });

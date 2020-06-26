@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useCallback, useState, useEffect, useContext, useRef } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -32,12 +32,12 @@ import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import { i } from './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import { u as useViewport } from './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import { u as useViewport } from './Viewport-05d16edd.js';
 import './Layout.js';
 import './FocusVisible.js';
 import './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -148,7 +148,7 @@ import 'react-dom';
 import { e as extendedAnimated, T as Transition } from './web-a351a0a1.js';
 import './Button.js';
 import ButtonIcon from './ButtonIcon.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import RootPortal from './RootPortal.js';
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -162,21 +162,21 @@ var SidePanelContext = React.createContext(null);
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "SidePanel___StyledDiv",
-  componentId: "sc-1kjx6mk-0"
+  componentId: "sc-1g2q00o-0"
 })(["position:absolute;z-index:1;top:0;left:0;right:0;bottom:0;pointer-events:", ";overflow:hidden;"], function (p) {
   return p._css;
 });
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "SidePanel___StyledAnimatedDiv",
-  componentId: "sc-1kjx6mk-1"
+  componentId: "sc-1g2q00o-1"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;background:", ";"], function (p) {
   return p._css2;
 });
 
 var _StyledHeader = _styled("header").withConfig({
   displayName: "SidePanel___StyledHeader",
-  componentId: "sc-1kjx6mk-2"
+  componentId: "sc-1g2q00o-2"
 })(["display:flex;flex-direction:column;justify-content:center;flex-shrink:0;position:relative;height:", "px;padding-left:", "px;border-bottom:1px solid ", ";", ";"], function (p) {
   return p._css3;
 }, CONTENT_PADDING, function (p) {
@@ -187,7 +187,7 @@ var _StyledHeader = _styled("header").withConfig({
 
 var _StyledH = _styled("h1").withConfig({
   displayName: "SidePanel___StyledH",
-  componentId: "sc-1kjx6mk-3"
+  componentId: "sc-1g2q00o-3"
 })(["color:", ";", ";"], function (p) {
   return p._css6;
 }, function (p) {
@@ -196,19 +196,19 @@ var _StyledH = _styled("h1").withConfig({
 
 var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
   displayName: "SidePanel___StyledButtonIcon",
-  componentId: "sc-1kjx6mk-4"
+  componentId: "sc-1g2q00o-4"
 })(["position:absolute;", ""], function (p) {
   return p._css8;
 });
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "SidePanel___StyledDiv2",
-  componentId: "sc-1kjx6mk-5"
+  componentId: "sc-1g2q00o-5"
 })(["overflow-y:auto;height:100%;display:flex;flex-direction:column;"]);
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "SidePanel___StyledDiv3",
-  componentId: "sc-1kjx6mk-6"
+  componentId: "sc-1g2q00o-6"
 })(["min-height:0;flex-grow:1;flex-shrink:0;display:flex;flex-direction:column;width:100%;padding-right:", "px;padding-left:", "px;padding-bottom:", "px;"], CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING);
 
 function SidePanel(_ref2) {
@@ -351,7 +351,7 @@ SidePanel.defaultProps = {
 
 var _StyledAnimatedAside = _styled(extendedAnimated.aside).withConfig({
   displayName: "SidePanel___StyledAnimatedAside",
-  componentId: "sc-1kjx6mk-7"
+  componentId: "sc-1g2q00o-7"
 })(["position:absolute;top:0;right:0;display:flex;flex-direction:column;width:100%;height:100%;background:", ";box-shadow:-2px 0px 4px rgba(0,0,0,0.1);", ""], function (p) {
   return p._css9;
 }, function (p) {

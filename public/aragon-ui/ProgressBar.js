@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -1894,7 +1894,7 @@ var indeterminateAnim = _styled.keyframes(["0%{transform:translate3d(calc(-100% 
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "ProgressBar___StyledDiv",
-  componentId: "sc-1gly9sn-0"
+  componentId: "cwtxpx-0"
 })(["width:100%;height:", "px;background:", ";border-radius:", "px;overflow:hidden;"], BAR_HEIGHT, function (p) {
   return p._css;
 }, RADIUS);
@@ -1947,7 +1947,7 @@ var ProgressBar = React__default.memo(function (_ref) {
 });
 var Bar = _styled__default(extendedAnimated.div).withConfig({
   displayName: "ProgressBar__Bar",
-  componentId: "sc-1gly9sn-1"
+  componentId: "cwtxpx-1"
 })(["width:100%;height:", "px;transform-origin:0 0;animation:", " ", "ms ease-in-out infinite;animation-name:none;"], BAR_HEIGHT, indeterminateAnim, INDETERMINATE_DURATION);
 ProgressBar.defaultProps = {
   animate: true,

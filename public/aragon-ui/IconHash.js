@@ -4,8 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
@@ -22,7 +22,7 @@ require('./text-styles.js');
 var _extends = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-var IconPropTypes = require('./IconPropTypes-56de5759.js');
+var IconPropTypes = require('./IconPropTypes-93876458.js');
 
 function IconHash(_ref) {
   var size = _ref.size,

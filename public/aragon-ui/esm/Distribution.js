@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -32,50 +32,50 @@ import { useTheme } from './Theme.js';
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv",
-  componentId: "r4l1i4-0"
+  componentId: "sc-9n0rbx-0"
 })(["margin-bottom:", "px;"], function (p) {
   return p._css;
 });
 
 var _StyledH = _styled("h1").withConfig({
   displayName: "Distribution___StyledH",
-  componentId: "r4l1i4-1"
+  componentId: "sc-9n0rbx-1"
 })(["", ""], function (p) {
   return p._css2;
 });
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv2",
-  componentId: "r4l1i4-2"
+  componentId: "sc-9n0rbx-2"
 })(["display:flex;width:100%;overflow:hidden;margin:0 0 ", "px;border-radius:3px;div{height:6px;}"], function (p) {
   return p._css3;
 });
 
 var _StyledUl = _styled("ul").withConfig({
   displayName: "Distribution___StyledUl",
-  componentId: "r4l1i4-3"
+  componentId: "sc-9n0rbx-3"
 })(["margin-top:", "px;"], function (p) {
   return p._css4;
 });
 
 var _StyledLi = _styled("li").withConfig({
   displayName: "Distribution___StyledLi",
-  componentId: "r4l1i4-4"
+  componentId: "sc-9n0rbx-4"
 })(["display:flex;align-items:center;justify-content:space-between;margin-top:10px;list-style:none;"]);
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv3",
-  componentId: "r4l1i4-5"
+  componentId: "sc-9n0rbx-5"
 })(["display:flex;align-items:center;flex-shrink:1;flex-grow:1;"]);
 
 var _StyledDiv4 = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv4",
-  componentId: "r4l1i4-6"
+  componentId: "sc-9n0rbx-6"
 })(["width:0;flex-shrink:1;flex-grow:1;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"]);
 
 var _StyledDiv5 = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv5",
-  componentId: "r4l1i4-7"
+  componentId: "sc-9n0rbx-7"
 })(["padding-left:", "px;flex-shrink:0;"], function (p) {
   return p._css5;
 });
@@ -184,7 +184,7 @@ Distribution.defaultProps = {
 
 var _StyledDiv6 = _styled("div").withConfig({
   displayName: "Distribution___StyledDiv6",
-  componentId: "r4l1i4-8"
+  componentId: "sc-9n0rbx-8"
 })(["width:", "px;height:", "px;margin-right:", "px;border-radius:50%;flex-shrink:0;"], function (p) {
   return p._css6;
 }, function (p) {

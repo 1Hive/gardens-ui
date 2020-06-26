@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -42,7 +42,7 @@ var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 var index$1 = require('./index-ecc57c9f.js');
 require('./FocusVisible.js');
 var ButtonBase = require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -163,21 +163,21 @@ require('./useOnBlur.js');
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "TabsFullWidth___StyledDiv",
-  componentId: "sc-1sqpfuf-0"
+  componentId: "dyhnbm-0"
 })(["padding-bottom:", "px;"], function (p) {
   return p._css;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "TabsFullWidth___StyledDiv2",
-  componentId: "sc-1sqpfuf-1"
+  componentId: "dyhnbm-1"
 })(["position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;height:", "px;"], function (p) {
   return p._css2;
 });
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "TabsFullWidth___StyledButtonBase",
-  componentId: "sc-1sqpfuf-2"
+  componentId: "dyhnbm-2"
 })(["display:flex;align-items:center;justify-content:space-between;width:100%;height:100%;background:", ";border-style:solid;border-color:", ";border-top-width:", ";border-bottom-width:1px;border-radius:0;", ";&:active{", "}"], function (p) {
   return p._css3;
 }, function (p) {
@@ -192,14 +192,14 @@ var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "TabsFullWidth___StyledDiv3",
-  componentId: "sc-1sqpfuf-3"
+  componentId: "dyhnbm-3"
 })(["padding-left:", "px;"], function (p) {
   return p._css8;
 });
 
 var _StyledDiv4 = _styled__default("div").withConfig({
   displayName: "TabsFullWidth___StyledDiv4",
-  componentId: "sc-1sqpfuf-4"
+  componentId: "dyhnbm-4"
 })(["display:flex;align-items:center;justify-content:center;width:", "px;height:100%;color:", ";"], function (p) {
   return p._css9;
 }, function (p) {
@@ -208,7 +208,7 @@ var _StyledDiv4 = _styled__default("div").withConfig({
 
 var _StyledIconDown = _styled__default(IconDown.default).withConfig({
   displayName: "TabsFullWidth___StyledIconDown",
-  componentId: "sc-1sqpfuf-5"
+  componentId: "dyhnbm-5"
 })(["transition:transform 150ms ease-in-out;transform:rotate3d(0,0,1,", "deg);color:", ";"], function (p) {
   return p._css11;
 }, function (p) {
@@ -217,7 +217,7 @@ var _StyledIconDown = _styled__default(IconDown.default).withConfig({
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "TabsFullWidth___StyledAnimatedDiv",
-  componentId: "sc-1sqpfuf-6"
+  componentId: "dyhnbm-6"
 })(["position:absolute;z-index:9;top:", "px;left:0;right:0;border-bottom:1px solid ", ";box-shadow:0px 2px 3px rgba(0,0,0,0.05);background:", ";"], function (p) {
   return p._css13;
 }, function (p) {
@@ -341,7 +341,7 @@ function TabsFullWidth(_ref) {
 
 var _StyledDiv5 = _styled__default("div").withConfig({
   displayName: "TabsFullWidth___StyledDiv5",
-  componentId: "sc-1sqpfuf-7"
+  componentId: "dyhnbm-7"
 })(["display:flex;flex-direction:column;outline:0;"]);
 
 function Menu(_ref3) {
@@ -369,7 +369,7 @@ function Menu(_ref3) {
 
 var _StyledButtonBase2 = _styled__default(ButtonBase.default).withConfig({
   displayName: "TabsFullWidth___StyledButtonBase2",
-  componentId: "sc-1sqpfuf-8"
+  componentId: "dyhnbm-8"
 })(["height:", "px;padding-left:", "px;text-align:left;", ";&:active{background:", ";}"], function (p) {
   return p._css16;
 }, function (p) {

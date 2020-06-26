@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -42,7 +42,7 @@ var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
 require('./FocusVisible.js');
 var ButtonBase = require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -152,12 +152,12 @@ var consts = require('./consts.js');
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv",
-  componentId: "sc-1is9uv6-0"
+  componentId: "v7leuj-0"
 })(["position:relative;width:", "px;display:flex;justify-content:space-between;align-items:center;padding:7px 6px;border:", "px solid ", ";border-radius:", "px;background:", ";overflow:hidden;cursor:pointer;&:active{border-color:", ";}&:focus{outline:none;}"], function (p) {
   return p._css;
 }, consts.INPUT_BORDER, function (p) {
   return p._css2;
-}, constants.RADIUS, function (p) {
+}, constants.BIG_RADIUS, function (p) {
   return p._css3;
 }, function (p) {
   return p._css4;
@@ -165,12 +165,12 @@ var _StyledDiv = _styled__default("div").withConfig({
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv2",
-  componentId: "sc-1is9uv6-1"
+  componentId: "v7leuj-1"
 })(["display:flex;flex:1;justify-content:space-around;align-items:center;"]);
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv3",
-  componentId: "sc-1is9uv6-2"
+  componentId: "v7leuj-2"
 })(["color:", ";text-align:center;", ""], function (p) {
   return p._css5;
 }, function (p) {
@@ -179,14 +179,14 @@ var _StyledDiv3 = _styled__default("div").withConfig({
 
 var _StyledDiv4 = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv4",
-  componentId: "sc-1is9uv6-3"
+  componentId: "v7leuj-3"
 })(["color:", ";font-size:13px;"], function (p) {
   return p._css7;
 });
 
 var _StyledDiv5 = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv5",
-  componentId: "sc-1is9uv6-4"
+  componentId: "v7leuj-4"
 })(["color:", ";text-align:center;", ""], function (p) {
   return p._css8;
 }, function (p) {
@@ -195,12 +195,12 @@ var _StyledDiv5 = _styled__default("div").withConfig({
 
 var _StyledDiv6 = _styled__default("div").withConfig({
   displayName: "Labels___StyledDiv6",
-  componentId: "sc-1is9uv6-5"
+  componentId: "v7leuj-5"
 })(["display:flex;padding:0 4px 0 10px;"]);
 
 var _StyledIconCalendar = _styled__default(IconCalendar.default).withConfig({
   displayName: "Labels___StyledIconCalendar",
-  componentId: "sc-1is9uv6-6"
+  componentId: "v7leuj-6"
 })(["color:", ";"], function (p) {
   return p._css10;
 });
@@ -217,7 +217,7 @@ var Labels = React.forwardRef(function Labels(_ref, ref) {
   var hasNoStart = startText === consts.START_DATE;
   var hasNoEnd = endText === consts.END_DATE;
   return /*#__PURE__*/React__default.createElement(ButtonBase.default, {
-    focusRingRadius: constants.RADIUS,
+    focusRingRadius: constants.BIG_RADIUS,
     ref: ref,
     onClick: onClick
   }, /*#__PURE__*/React__default.createElement(_StyledDiv, _extends$1._extends({}, props, {

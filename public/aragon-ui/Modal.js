@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,12 +40,12 @@ var Theme = require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-var Viewport = require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+var Viewport = require('./Viewport-2b9ed1c1.js');
 require('./Layout.js');
 require('./FocusVisible.js');
 require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -156,7 +156,7 @@ require('react-dom');
 var web = require('./web-d0294535.js');
 require('./Button.js');
 var ButtonIcon = require('./ButtonIcon.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 var RootPortal = require('./RootPortal.js');
 var EscapeOutside = require('./EscapeOutside.js');
 
@@ -167,24 +167,24 @@ var SPACE_AROUND = 4 * constants.GU;
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Modal___StyledAnimatedDiv",
-  componentId: "sc-1ofisn3-0"
+  componentId: "zpm1g8-0"
 })(["position:fixed;top:0;left:0;right:0;bottom:0;background:", ";"], function (p) {
   return p._css;
 });
 
 var _StyledAnimatedDiv2 = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Modal___StyledAnimatedDiv2",
-  componentId: "sc-1ofisn3-1"
+  componentId: "zpm1g8-1"
 })(["position:absolute;z-index:1;top:0;left:0;right:0;bottom:0;display:grid;align-items:center;justify-content:center;overflow:auto;"]);
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "Modal___StyledDiv",
-  componentId: "sc-1ofisn3-2"
+  componentId: "zpm1g8-2"
 })(["padding:", "px 0;"], SPACE_AROUND);
 
 var _StyledEscapeOutside = _styled__default(EscapeOutside.default).withConfig({
   displayName: "Modal___StyledEscapeOutside",
-  componentId: "sc-1ofisn3-3"
+  componentId: "zpm1g8-3"
 })(["position:relative;overflow:hidden;min-width:", "px;background:", ";box-shadow:0 10px 28px rgba(0,0,0,0.15);"], function (p) {
   return p._css2;
 }, function (p) {
@@ -193,7 +193,7 @@ var _StyledEscapeOutside = _styled__default(EscapeOutside.default).withConfig({
 
 var _StyledButtonIcon = _styled__default(ButtonIcon.default).withConfig({
   displayName: "Modal___StyledButtonIcon",
-  componentId: "sc-1ofisn3-4"
+  componentId: "zpm1g8-4"
 })(["position:absolute;z-index:2;top:", "px;right:", "px;"], function (p) {
   return p._css4;
 }, function (p) {
@@ -202,7 +202,7 @@ var _StyledButtonIcon = _styled__default(ButtonIcon.default).withConfig({
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "Modal___StyledDiv2",
-  componentId: "sc-1ofisn3-5"
+  componentId: "zpm1g8-5"
 })(["position:relative;z-index:1;"]);
 
 function Modal(_ref) {
@@ -259,7 +259,7 @@ function Modal(_ref) {
         onEscapeOutside: onClose,
         style: {
           width: css.cssPx(typeof width === 'function' ? width(viewport) : width),
-          borderRadius: "".concat(constants.RADIUS, "px")
+          borderRadius: "".concat(constants.BIG_RADIUS, "px")
         },
         _css2: 360 - SPACE_AROUND * 2,
         _css3: theme.surface

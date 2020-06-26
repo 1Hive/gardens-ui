@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { forwardRef } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS, GU } from './constants.js';
+import { BIG_RADIUS, GU } from './constants.js';
 import './breakpoints.js';
 import './springs.js';
 import { textStyle } from './text-styles.js';
@@ -34,7 +34,7 @@ import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e
 import './index-422d37c0.js';
 import './FocusVisible.js';
 import ButtonBase from './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -144,12 +144,12 @@ import { INPUT_BORDER, START_DATE, END_DATE } from './consts.js';
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Labels___StyledDiv",
-  componentId: "sc-1is9uv6-0"
+  componentId: "v7leuj-0"
 })(["position:relative;width:", "px;display:flex;justify-content:space-between;align-items:center;padding:7px 6px;border:", "px solid ", ";border-radius:", "px;background:", ";overflow:hidden;cursor:pointer;&:active{border-color:", ";}&:focus{outline:none;}"], function (p) {
   return p._css;
 }, INPUT_BORDER, function (p) {
   return p._css2;
-}, RADIUS, function (p) {
+}, BIG_RADIUS, function (p) {
   return p._css3;
 }, function (p) {
   return p._css4;
@@ -157,12 +157,12 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Labels___StyledDiv2",
-  componentId: "sc-1is9uv6-1"
+  componentId: "v7leuj-1"
 })(["display:flex;flex:1;justify-content:space-around;align-items:center;"]);
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "Labels___StyledDiv3",
-  componentId: "sc-1is9uv6-2"
+  componentId: "v7leuj-2"
 })(["color:", ";text-align:center;", ""], function (p) {
   return p._css5;
 }, function (p) {
@@ -171,14 +171,14 @@ var _StyledDiv3 = _styled("div").withConfig({
 
 var _StyledDiv4 = _styled("div").withConfig({
   displayName: "Labels___StyledDiv4",
-  componentId: "sc-1is9uv6-3"
+  componentId: "v7leuj-3"
 })(["color:", ";font-size:13px;"], function (p) {
   return p._css7;
 });
 
 var _StyledDiv5 = _styled("div").withConfig({
   displayName: "Labels___StyledDiv5",
-  componentId: "sc-1is9uv6-4"
+  componentId: "v7leuj-4"
 })(["color:", ";text-align:center;", ""], function (p) {
   return p._css8;
 }, function (p) {
@@ -187,12 +187,12 @@ var _StyledDiv5 = _styled("div").withConfig({
 
 var _StyledDiv6 = _styled("div").withConfig({
   displayName: "Labels___StyledDiv6",
-  componentId: "sc-1is9uv6-5"
+  componentId: "v7leuj-5"
 })(["display:flex;padding:0 4px 0 10px;"]);
 
 var _StyledIconCalendar = _styled(IconCalendar).withConfig({
   displayName: "Labels___StyledIconCalendar",
-  componentId: "sc-1is9uv6-6"
+  componentId: "v7leuj-6"
 })(["color:", ";"], function (p) {
   return p._css10;
 });
@@ -209,7 +209,7 @@ var Labels = forwardRef(function Labels(_ref, ref) {
   var hasNoStart = startText === START_DATE;
   var hasNoEnd = endText === END_DATE;
   return /*#__PURE__*/React.createElement(ButtonBase, {
-    focusRingRadius: RADIUS,
+    focusRingRadius: BIG_RADIUS,
     ref: ref,
     onClick: onClick
   }, /*#__PURE__*/React.createElement(_StyledDiv, _extends({}, props, {

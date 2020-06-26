@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -41,7 +41,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "OpenedSurfaceBorder___StyledAnimatedDiv",
-  componentId: "sc-19tx70h-0"
+  componentId: "sc-1h90vbm-0"
 })(["position:absolute;top:0;left:0;height:100%;width:3px;background:", ";transform-origin:0 0;"], function (p) {
   return p._css;
 });

@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,18 +40,18 @@ var Theme = require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 var index$1 = require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-var Viewport = require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+var Viewport = require('./Viewport-2b9ed1c1.js');
 require('./objectWithoutPropertiesLoose-1af20ad0.js');
 require('react-dom');
 var web = require('./web-d0294535.js');
 var ToastHub = require('./ToastHub.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 var RootPortal = require('./RootPortal.js');
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "FloatIndicator___StyledDiv",
-  componentId: "sc-1mhu8xn-0"
+  componentId: "tqht3z-0"
 })(["position:absolute;z-index:1;bottom:", "px;display:flex;justify-content:flex-end;width:100%;padding:0 ", "px 0 ", "px;"], function (p) {
   return p._css;
 }, function (p) {
@@ -62,7 +62,7 @@ var _StyledDiv = _styled__default("div").withConfig({
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "FloatIndicator___StyledAnimatedDiv",
-  componentId: "sc-1mhu8xn-1"
+  componentId: "tqht3z-1"
 })(["flex-grow:", ";display:flex;align-items:center;height:", "px;padding:", "px ", "px;", ";white-space:nowrap;color:", ";background:", ";border:1px solid ", ";border-radius:", "px;cursor:default;justify-content:center;"], function (p) {
   return p._css4;
 }, function (p) {
@@ -79,7 +79,7 @@ var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   return p._css10;
 }, function (p) {
   return p._css11;
-}, constants.RADIUS);
+}, constants.BIG_RADIUS);
 
 var FloatIndicator = React__default.memo(function FloatIndicator(_ref) {
   var children = _ref.children,

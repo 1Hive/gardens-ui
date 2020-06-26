@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -44,7 +44,7 @@ var ButtonBase = require('./ButtonBase.js');
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "PaginationItem___StyledButtonBase",
-  componentId: "kftpwz-0"
+  componentId: "sc-1hxxqsn-0"
 })(["width:", "px;height:", "px;color:", ";border-radius:", "px;&:active{background:", ";}", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -59,7 +59,7 @@ var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "PaginationItem___StyledSpan",
-  componentId: "kftpwz-1"
+  componentId: "sc-1hxxqsn-1"
 })(["position:relative;top:1px;"]);
 
 function PaginationItem(_ref) {

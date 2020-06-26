@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -34,7 +34,7 @@ import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e
 import { o } from './index-422d37c0.js';
 import './FocusVisible.js';
 import ButtonBase from './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -154,21 +154,21 @@ function interpolateToggleElevation(value, fn) {
 
 var _StyledSection = _styled("section").withConfig({
   displayName: "Details___StyledSection",
-  componentId: "b3f99g-0"
+  componentId: "sc-1w5ebbf-0"
 })(["", ""], function (p) {
   return p._css;
 });
 
 var _StyledButtonBase = _styled(ButtonBase).withConfig({
   displayName: "Details___StyledButtonBase",
-  componentId: "b3f99g-1"
+  componentId: "sc-1w5ebbf-1"
 })(["position:relative;width:100%;&:active{background:", ";}"], function (p) {
   return p._css2;
 });
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Details___StyledDiv",
-  componentId: "b3f99g-2"
+  componentId: "sc-1w5ebbf-2"
 })(["position:absolute;left:", "px;right:", "px;bottom:0;"], function (p) {
   return p._css3;
 }, function (p) {
@@ -177,12 +177,12 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Details___StyledDiv2",
-  componentId: "b3f99g-3"
+  componentId: "sc-1w5ebbf-3"
 })(["height:1px;box-shadow:0 1px 1px rgba(0,0,0,0.1);"]);
 
 var _StyledH = _styled("h1").withConfig({
   displayName: "Details___StyledH",
-  componentId: "b3f99g-4"
+  componentId: "sc-1w5ebbf-4"
 })(["display:flex;justify-content:flex-start;align-items:center;height:", "px;margin-left:", "px;color:", ";", " font-weight:400;"], function (p) {
   return p._css5;
 }, function (p) {
@@ -195,27 +195,27 @@ var _StyledH = _styled("h1").withConfig({
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "Details___StyledDiv3",
-  componentId: "b3f99g-5"
+  componentId: "sc-1w5ebbf-5"
 })(["margin-top:2px;"]);
 
 var _StyledDiv4 = _styled("div").withConfig({
   displayName: "Details___StyledDiv4",
-  componentId: "b3f99g-6"
+  componentId: "sc-1w5ebbf-6"
 })(["display:flex;align-items:center;justify-content:center;"]);
 
 var _StyledDiv5 = _styled("div").withConfig({
   displayName: "Details___StyledDiv5",
-  componentId: "b3f99g-7"
+  componentId: "sc-1w5ebbf-7"
 })(["overflow:hidden"]);
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "Details___StyledAnimatedDiv",
-  componentId: "b3f99g-8"
+  componentId: "sc-1w5ebbf-8"
 })(["display:flex;flex-direction:column;justify-content:flex-end;"]);
 
 var _StyledDiv6 = _styled("div").withConfig({
   displayName: "Details___StyledDiv6",
-  componentId: "b3f99g-9"
+  componentId: "sc-1w5ebbf-9"
 })(["", ""], function (p) {
   return p._css9;
 });

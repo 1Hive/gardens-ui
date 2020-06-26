@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useState } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -40,7 +40,7 @@ var WRAPPER_HEIGHT = 2.25 * GU;
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "Switch___StyledSpan",
-  componentId: "sc-1f0jw9z-0"
+  componentId: "sc-1t21muv-0"
 })(["position:relative;display:inline-block;width:", "px;height:", "px;border:", "px solid ", ";border-radius:", "px;background-color:", ";cursor:", ";", " ", ";"], WRAPPER_WIDTH, WRAPPER_HEIGHT, BORDER, function (p) {
   return p._css;
 }, WRAPPER_HEIGHT, function (p) {
@@ -55,12 +55,12 @@ var _StyledSpan = _styled("span").withConfig({
 
 var _StyledInput = _styled("input").withConfig({
   displayName: "Switch___StyledInput",
-  componentId: "sc-1f0jw9z-1"
+  componentId: "sc-1t21muv-1"
 })(["opacity:0;pointer-events:none;"]);
 
 var _StyledAnimatedSpan = _styled(extendedAnimated.span).withConfig({
   displayName: "Switch___StyledAnimatedSpan",
-  componentId: "sc-1f0jw9z-2"
+  componentId: "sc-1t21muv-2"
 })(["position:absolute;left:0;z-index:1;top:", "px;width:", "px;height:", "px;border-radius:", "px;background-color:", ";box-shadow:", ";"], BORDER, function (p) {
   return p._css6;
 }, function (p) {

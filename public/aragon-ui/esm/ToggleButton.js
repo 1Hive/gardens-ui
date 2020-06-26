@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS } from './constants.js';
+import { BIG_RADIUS } from './constants.js';
 import './breakpoints.js';
 import './springs.js';
 import './text-styles.js';
@@ -32,12 +32,12 @@ import { useTheme } from './Theme.js';
 import './extends-db4f0c26.js';
 import './objectWithoutProperties-234758e1.js';
 import './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import './Viewport-05d16edd.js';
 import './Layout.js';
 import './FocusVisible.js';
 import './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -148,14 +148,14 @@ import ButtonIcon from './ButtonIcon.js';
 
 var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
   displayName: "ToggleButton___StyledButtonIcon",
-  componentId: "sc-1fkpeh6-0"
+  componentId: "sc-1dx9ojh-0"
 })(["display:flex;flex-direction:column;color:", ";& > div{display:flex;transform-origin:50% 50%;transition:transform 250ms ease-in-out;}"], function (p) {
   return p._css;
 });
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "ToggleButton___StyledDiv",
-  componentId: "sc-1fkpeh6-1"
+  componentId: "sc-1dx9ojh-1"
 })(["transform:rotate3d(", ",0,0,180deg);transform:rotate3d(0,0,", ",180deg);"], function (p) {
   return p._css2;
 }, function (p) {
@@ -164,7 +164,7 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "ToggleButton___StyledDiv2",
-  componentId: "sc-1fkpeh6-2"
+  componentId: "sc-1dx9ojh-2"
 })(["transform:rotate3d(", ",0,0,180deg);transform:rotate3d(0,0,", ",180deg);"], function (p) {
   return p._css4;
 }, function (p) {
@@ -177,7 +177,7 @@ function ToggleButton(_ref) {
   var theme = useTheme();
   return /*#__PURE__*/React.createElement(_StyledButtonIcon, {
     label: opened ? 'Close' : 'Open',
-    focusRingRadius: RADIUS,
+    focusRingRadius: BIG_RADIUS,
     onClick: onClick,
     _css: theme.surfaceContentSecondary
   }, /*#__PURE__*/React.createElement(_StyledDiv, {

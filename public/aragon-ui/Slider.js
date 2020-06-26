@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-var getPrototypeOf = require('./getPrototypeOf-2a661a20.js');
+var getPrototypeOf = require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -67,19 +67,19 @@ var DEFAULT_RECT = typeof window === 'undefined' || typeof window.DOMRect !== 'f
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "Slider___StyledDiv",
-  componentId: "sc-94djfe-0"
+  componentId: "sc-17waq4t-0"
 })(["min-width:", "px;padding:0 ", "px;", ";"], MIN_WIDTH, function (p) {
   return p._css;
 }, css.unselectable);
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "Slider___StyledDiv2",
-  componentId: "sc-94djfe-1"
+  componentId: "sc-17waq4t-1"
 })(["position:relative;height:", "px;cursor:pointer;"], HEIGHT);
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Slider___StyledAnimatedDiv",
-  componentId: "sc-94djfe-2"
+  componentId: "sc-17waq4t-2"
 })(["position:absolute;top:50%;left:0;width:", "px;height:", "px;border:1px solid ", ";border-radius:50%;cursor:pointer;pointer-events:auto;"], HANDLE_SIZE, HANDLE_SIZE, function (p) {
   return p._css4;
 });
@@ -276,34 +276,34 @@ defineProperty$1._defineProperty(Slider, "defaultProps", {
 
 var Bars = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Slider__Bars",
-  componentId: "sc-94djfe-3"
+  componentId: "sc-17waq4t-3"
 })(["position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);overflow:hidden;border-radius:2px;height:", "px;"], BAR_HEIGHT);
 var Bar = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Slider__Bar",
-  componentId: "sc-94djfe-4"
+  componentId: "sc-17waq4t-4"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;"]);
 
 var _StyledBar2 = _styled__default(Bar).withConfig({
   displayName: "Slider___StyledBar2",
-  componentId: "sc-94djfe-5"
+  componentId: "sc-17waq4t-5"
 })(["transform-origin:0 0;background:", ";"], function (p) {
   return p._css3;
 });
 
 var _StyledBar = _styled__default(Bar).withConfig({
   displayName: "Slider___StyledBar",
-  componentId: "sc-94djfe-6"
+  componentId: "sc-17waq4t-6"
 })(["background:", ";"], function (p) {
   return p._css2;
 });
 
 var HandleClip = _styled__default.div.withConfig({
   displayName: "Slider__HandleClip",
-  componentId: "sc-94djfe-7"
+  componentId: "sc-17waq4t-7"
 })(["pointer-events:none;overflow:hidden;width:calc(100% + ", "px);height:calc(100% + ", "px);transform-origin:50% 50%;transform:translate( -", "px,-", "px );"], HANDLE_SIZE + HANDLE_SHADOW_MARGIN * 2, HANDLE_SHADOW_MARGIN * 2, HANDLE_SIZE / 2 + HANDLE_SHADOW_MARGIN, HANDLE_SHADOW_MARGIN);
 var HandlePosition = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Slider__HandlePosition",
-  componentId: "sc-94djfe-8"
+  componentId: "sc-17waq4t-8"
 })(["width:calc(100% - ", "px);height:100%;transform-origin:50% 50%;"], HANDLE_SIZE + HANDLE_SHADOW_MARGIN * 2);
 var Slider$1 = (function (props) {
   var theme = Theme.useTheme();

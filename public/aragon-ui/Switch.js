@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -48,7 +48,7 @@ var WRAPPER_HEIGHT = 2.25 * constants.GU;
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "Switch___StyledSpan",
-  componentId: "sc-1f0jw9z-0"
+  componentId: "sc-1t21muv-0"
 })(["position:relative;display:inline-block;width:", "px;height:", "px;border:", "px solid ", ";border-radius:", "px;background-color:", ";cursor:", ";", " ", ";"], WRAPPER_WIDTH, WRAPPER_HEIGHT, BORDER, function (p) {
   return p._css;
 }, WRAPPER_HEIGHT, function (p) {
@@ -63,12 +63,12 @@ var _StyledSpan = _styled__default("span").withConfig({
 
 var _StyledInput = _styled__default("input").withConfig({
   displayName: "Switch___StyledInput",
-  componentId: "sc-1f0jw9z-1"
+  componentId: "sc-1t21muv-1"
 })(["opacity:0;pointer-events:none;"]);
 
 var _StyledAnimatedSpan = _styled__default(web.extendedAnimated.span).withConfig({
   displayName: "Switch___StyledAnimatedSpan",
-  componentId: "sc-1f0jw9z-2"
+  componentId: "sc-1t21muv-2"
 })(["position:absolute;left:0;z-index:1;top:", "px;width:", "px;height:", "px;border-radius:", "px;background-color:", ";box-shadow:", ";"], BORDER, function (p) {
   return p._css6;
 }, function (p) {

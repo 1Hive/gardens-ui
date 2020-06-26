@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-var toConsumableArray = require('./toConsumableArray-d8a4a2c3.js');
+var toConsumableArray = require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-var getPrototypeOf = require('./getPrototypeOf-2a661a20.js');
+var getPrototypeOf = require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,8 +40,8 @@ var Theme = require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-var isObject = require('./isObject-ec755c87.js');
-require('./IconPropTypes-56de5759.js');
+var isObject = require('./isObject-bae30f44.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -148,7 +148,7 @@ require('./IconWrite.js');
 require('./IconZoomIn.js');
 require('./IconZoomOut.js');
 require('./getDisplayName-7ab6d318.js');
-var index$1$2 = require('./index-030bfca8.js');
+var index$1$2 = require('./index-f6fa2811.js');
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -925,7 +925,7 @@ function getTime(start, end, format, showEmpty, maxUnits) {
 
 var _StyledTime = _styled__default("time").withConfig({
   displayName: "Timer___StyledTime",
-  componentId: "sc-58hkwl-0"
+  componentId: "jnhnqb-0"
 })(["display:flex;align-items:center;white-space:nowrap;", ";", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -934,21 +934,21 @@ var _StyledTime = _styled__default("time").withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "Timer___StyledSpan",
-  componentId: "sc-58hkwl-1"
+  componentId: "jnhnqb-1"
 })(["display:flex;align-items:center;margin-right:", "px;margin-top:-3px;"], function (p) {
   return p._css3;
 });
 
 var _StyledIconTime = _styled__default(IconClock.default).withConfig({
   displayName: "Timer___StyledIconTime",
-  componentId: "sc-58hkwl-2"
+  componentId: "jnhnqb-2"
 })(["color:", ";"], function (p) {
   return p._css4;
 });
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "Timer___StyledSpan2",
-  componentId: "sc-58hkwl-3"
+  componentId: "jnhnqb-3"
 })(["", ";color:", ";"], function (p) {
   return p._css5;
 }, function (p) {
@@ -957,7 +957,7 @@ var _StyledSpan2 = _styled__default("span").withConfig({
 
 var _StyledSpan3 = _styled__default("span").withConfig({
   displayName: "Timer___StyledSpan3",
-  componentId: "sc-58hkwl-4"
+  componentId: "jnhnqb-4"
 })(["color:", ";", ";"], function (p) {
   return p._css7;
 }, function (p) {
@@ -966,14 +966,14 @@ var _StyledSpan3 = _styled__default("span").withConfig({
 
 var _StyledSpan4 = _styled__default("span").withConfig({
   displayName: "Timer___StyledSpan4",
-  componentId: "sc-58hkwl-5"
+  componentId: "jnhnqb-5"
 })(["margin-left:2px;color:", ";"], function (p) {
   return p._css9;
 });
 
 var _StyledSpan5 = _styled__default("span").withConfig({
   displayName: "Timer___StyledSpan5",
-  componentId: "sc-58hkwl-6"
+  componentId: "jnhnqb-6"
 })(["margin:0 4px;color:", ";font-weight:400;"], function (p) {
   return p._css10;
 });

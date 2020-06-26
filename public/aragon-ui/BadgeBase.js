@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -45,8 +45,8 @@ var ButtonBase = require('./ButtonBase.js');
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "BadgeBase___StyledButtonBase",
-  componentId: "sc-4zaahn-0"
-})(["display:inline-flex;overflow:hidden;color:", ";height:", "px;background:", ";", ";&:active{", ";}"], function (p) {
+  componentId: "sc-1myaths-0"
+})(["display:inline-flex;overflow:hidden;color:", ";height:", "px;background:", ";", ";&:active{", ";}border-radius:", "px;"], function (p) {
   return p._css;
 }, function (p) {
   return p._css2;
@@ -56,18 +56,18 @@ var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   return p._css4;
 }, function (p) {
   return p._css5;
-});
+}, constants.RADIUS);
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "BadgeBase___StyledDiv",
-  componentId: "sc-4zaahn-1"
+  componentId: "sc-1myaths-1"
 })(["overflow:hidden;display:flex;align-items:center;text-decoration:none;", ";"], function (p) {
   return p._css6;
 });
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "BadgeBase___StyledSpan",
-  componentId: "sc-4zaahn-2"
+  componentId: "sc-1myaths-2"
 })(["white-space:nowrap;text-overflow:ellipsis;overflow:hidden;", " ", ""], function (p) {
   return p._css7;
 }, function (p) {

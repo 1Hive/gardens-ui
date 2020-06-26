@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,12 +40,12 @@ require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+require('./Viewport-2b9ed1c1.js');
 require('./Layout.js');
 require('./FocusVisible.js');
 require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -157,11 +157,11 @@ require('./web-d0294535.js');
 require('./Button.js');
 require('./ButtonIcon.js');
 require('./getDisplayName-7ab6d318.js');
-require('./index-bc84a358.js');
+require('./index-9eb4668d.js');
 require('./Link.js');
 require('./TextInput.js');
 require('./ToastHub.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 require('./RootPortal.js');
 require('./TextCopy.js');
 require('./taggedTemplateLiteral-227ed122.js');
@@ -180,14 +180,14 @@ require('./BadgePopoverActionType.js');
 require('./proptypes-5b34673d.js');
 require('./Popover.js');
 require('./observe.js');
-require('./index-030bfca8.js');
+require('./index-f6fa2811.js');
 require('./providers.js');
 require('./BadgePopoverBase.js');
 var TokenBadgePopover = require('./TokenBadgePopover.js');
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "TokenBadge___StyledSpan",
-  componentId: "sc-7bvdqo-0"
+  componentId: "sc-1m9boyq-0"
 })(["position:relative;top:1px;display:flex;flex-shrink:1;min-width:0;margin-left:", ";"], function (p) {
   return p._css;
 });
@@ -272,7 +272,7 @@ TokenBadge.defaultProps = {
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "TokenBadge___StyledSpan2",
-  componentId: "sc-7bvdqo-1"
+  componentId: "sc-1m9boyq-1"
 })(["flex-shrink:0;display:block;width:18px;height:18px;margin:0 ", "px 0 ", "px;background-size:contain;background-position:50% 50%;background-repeat:no-repeat;background-image:url(", ");"], function (p) {
   return p._css2;
 }, function (p) {
@@ -300,12 +300,12 @@ Icon.propTypes = {
 };
 var Name = _styled__default.span.withConfig({
   displayName: "TokenBadge__Name",
-  componentId: "sc-7bvdqo-2"
+  componentId: "sc-1m9boyq-2"
 })(["flex-shrink:1;overflow:hidden;text-overflow:ellipsis;min-width:20%;margin-right:", "px;"], 0.5 * constants.GU);
 
 var _Symbol = _styled__default.span.withConfig({
   displayName: "TokenBadge___Symbol",
-  componentId: "sc-7bvdqo-3"
+  componentId: "sc-1m9boyq-3"
 })(["flex-shrink:0;"]);
 
 exports.default = TokenBadge;

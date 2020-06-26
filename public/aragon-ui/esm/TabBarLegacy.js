@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import { _ as _toConsumableArray } from './toConsumableArray-127424c2.js';
+import { _ as _toConsumableArray } from './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b96da1e1.js';
+import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -174,7 +174,7 @@ _defineProperty(TabBar, "defaultProps", {
 
 var _StyledUl = _styled("ul").withConfig({
   displayName: "TabBarLegacy___StyledUl",
-  componentId: "sc-1hufqys-0"
+  componentId: "sc-17ah8td-0"
 })(["display:flex;border-bottom:", ";"], function (p) {
   return p._css;
 });
@@ -190,7 +190,7 @@ function Bar(_ref3) {
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "TabBarLegacy___StyledSpan",
-  componentId: "sc-1hufqys-1"
+  componentId: "sc-17ah8td-1"
 })(["display:none;position:absolute;top:-5px;left:-5px;right:-5px;bottom:-5px;border:2px solid ", ";border-radius:2px;"], function (p) {
   return p._css2;
 });
@@ -206,7 +206,7 @@ function FocusRing(_ref4) {
 
 var _StyledLi = _styled("li").withConfig({
   displayName: "TabBarLegacy___StyledLi",
-  componentId: "sc-1hufqys-2"
+  componentId: "sc-17ah8td-2"
 })(["position:relative;list-style:none;padding:0 30px;cursor:pointer;", ";", ";&:focus{outline:0;.TabBarLegacy-FocusRing{display:block;}}"], function (p) {
   return p._css3;
 }, function (p) {
@@ -227,7 +227,7 @@ function Tab(_ref5) {
 
 var _StyledSpan2 = _styled("span").withConfig({
   displayName: "TabBarLegacy___StyledSpan2",
-  componentId: "sc-1hufqys-3"
+  componentId: "sc-17ah8td-3"
 })(["display:flex;margin-bottom:-1px;padding:5px 0 3px;border-bottom:4px solid ", ";"], function (p) {
   return p._css5;
 });

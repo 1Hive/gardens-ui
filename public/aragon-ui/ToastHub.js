@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 var _commonjsHelpers = require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty = require('./defineProperty-0921a47c.js');
-var toConsumableArray = require('./toConsumableArray-d8a4a2c3.js');
+var toConsumableArray = require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-var getPrototypeOf = require('./getPrototypeOf-2a661a20.js');
+var getPrototypeOf = require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 var components = require('./components.js');
 require('./contains-component.js');
@@ -39,12 +39,12 @@ require('./theme-light.js');
 var Theme = require('./Theme.js');
 var _extends = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
-require('./isObject-ec755c87.js');
-var Viewport = require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+var Viewport = require('./Viewport-2b9ed1c1.js');
 require('./objectWithoutPropertiesLoose-1af20ad0.js');
 require('react-dom');
 var web = require('./web-d0294535.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 var RootPortal = require('./RootPortal.js');
 
 var runtime_1 = _commonjsHelpers.createCommonjsModule(function (module) {
@@ -1037,7 +1037,7 @@ defineProperty._defineProperty(ToastHubProvider, "defaultProps", {
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "ToastHub___StyledDiv",
-  componentId: "sc-1y0i8xl-0"
+  componentId: "sc-1cfhkh0-0"
 })(["position:fixed;z-index:1000;top:", ";bottom:", ";left:", "px;right:", "px;display:flex;margin:0 auto;flex-direction:", ";pointer-events:none;align-items:", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -1054,14 +1054,14 @@ var _StyledDiv = _styled__default("div").withConfig({
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "ToastHub___StyledAnimatedDiv",
-  componentId: "sc-1y0i8xl-1"
+  componentId: "sc-1cfhkh0-1"
 })(["box-sizing:border-box;position:relative;width:", ";"], function (p) {
   return p._css7;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "ToastHub___StyledDiv2",
-  componentId: "sc-1y0i8xl-2"
+  componentId: "sc-1cfhkh0-2"
 })(["display:flex;align-items:center;overflow:hidden;height:", "px;margin-top:", ";margin-bottom:", ";padding:0 ", "px;", ";color:", ";background:", ";border-radius:", "px;"], function (p) {
   return p._css8;
 }, function (p) {
@@ -1076,11 +1076,11 @@ var _StyledDiv2 = _styled__default("div").withConfig({
   return p._css13;
 }, function (p) {
   return p._css14;
-}, constants.RADIUS);
+}, constants.BIG_RADIUS);
 
 var _StyledAnimatedDiv2 = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "ToastHub___StyledAnimatedDiv2",
-  componentId: "sc-1y0i8xl-3"
+  componentId: "sc-1cfhkh0-3"
 })(["position:absolute;bottom:", ";left:0;width:auto;height:5px;background-image:linear-gradient( 130deg,#00b4e6,#00f0e0 );"], function (p) {
   return p._css15;
 });

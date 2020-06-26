@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-var getPrototypeOf = require('./getPrototypeOf-2a661a20.js');
+var getPrototypeOf = require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -53,12 +53,12 @@ var RADIO_BULLET_SIZE = 10;
 
 var _StyledAnimatedSpan = _styled__default(web.extendedAnimated.span).withConfig({
   displayName: "Checkbox___StyledAnimatedSpan",
-  componentId: "sc-1avgrx5-0"
+  componentId: "sc-1v41gs7-0"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;transform-origin:50% 50%;"]);
 
 var _StyledButton = _styled__default("button").withConfig({
   displayName: "Checkbox___StyledButton",
-  componentId: "sc-1avgrx5-1"
+  componentId: "sc-1v41gs7-1"
 })(["display:inline-flex;position:relative;width:", "px;height:", "px;margin:", "px;padding:0;background:", ";border:1px solid ", ";border-radius:", ";outline:0;&::-moz-focus-inner{border:0;}", ";"], SIZE, SIZE, function (p) {
   return p._css;
 }, function (p) {
@@ -73,7 +73,7 @@ var _StyledButton = _styled__default("button").withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "Checkbox___StyledSpan",
-  componentId: "sc-1avgrx5-2"
+  componentId: "sc-1v41gs7-2"
 })(["position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border:2px solid ", ";border-radius:", ";display:none;"], function (p) {
   return p._css6;
 }, function (p) {
@@ -252,7 +252,7 @@ var Check = function Check(_ref4) {
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "Checkbox___StyledSpan2",
-  componentId: "sc-1avgrx5-3"
+  componentId: "sc-1v41gs7-3"
 })(["display:block;width:", "px;height:", "px;border-radius:50%;background:", ";"], RADIO_BULLET_SIZE, RADIO_BULLET_SIZE, function (p) {
   return p._css8;
 });

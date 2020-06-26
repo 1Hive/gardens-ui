@@ -36,7 +36,7 @@ var dark = {
   positive: '#2cc68f',
   positiveContent: '#FFFFFF',
   positiveSurface: '#35585e',
-  positiveSurfaceContent: '#1B8962',
+  positiveSurfaceContent: '#2cc68f',
   badge: '#415279',
   badgeContent: '#ffffff',
   badgePressed: '#4c5d82',

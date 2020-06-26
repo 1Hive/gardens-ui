@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -32,27 +32,27 @@ import './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import './Viewport-05d16edd.js';
 import './objectWithoutPropertiesLoose-9606ad13.js';
 import 'react-dom';
 import './web-a351a0a1.js';
 import LoadingRing from './LoadingRing.js';
 import './ToastHub.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import './RootPortal.js';
 import FloatIndicator from './FloatIndicator.js';
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "SyncIndicator___StyledDiv",
-  componentId: "sc-19m50aw-0"
+  componentId: "rvvma9-0"
 })(["margin-left:", "px;"], function (p) {
   return p._css;
 });
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "SyncIndicator___StyledSpan",
-  componentId: "sc-19m50aw-1"
+  componentId: "rvvma9-1"
 })(["white-space:nowrap"]);
 
 function SyncIndicator(_ref) {

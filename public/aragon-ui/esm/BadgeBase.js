@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -37,8 +37,8 @@ import ButtonBase from './ButtonBase.js';
 
 var _StyledButtonBase = _styled(ButtonBase).withConfig({
   displayName: "BadgeBase___StyledButtonBase",
-  componentId: "sc-4zaahn-0"
-})(["display:inline-flex;overflow:hidden;color:", ";height:", "px;background:", ";", ";&:active{", ";}"], function (p) {
+  componentId: "sc-1myaths-0"
+})(["display:inline-flex;overflow:hidden;color:", ";height:", "px;background:", ";", ";&:active{", ";}border-radius:", "px;"], function (p) {
   return p._css;
 }, function (p) {
   return p._css2;
@@ -48,18 +48,18 @@ var _StyledButtonBase = _styled(ButtonBase).withConfig({
   return p._css4;
 }, function (p) {
   return p._css5;
-});
+}, RADIUS);
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "BadgeBase___StyledDiv",
-  componentId: "sc-4zaahn-1"
+  componentId: "sc-1myaths-1"
 })(["overflow:hidden;display:flex;align-items:center;text-decoration:none;", ";"], function (p) {
   return p._css6;
 });
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "BadgeBase___StyledSpan",
-  componentId: "sc-4zaahn-2"
+  componentId: "sc-1myaths-2"
 })(["white-space:nowrap;text-overflow:ellipsis;overflow:hidden;", " ", ""], function (p) {
   return p._css7;
 }, function (p) {

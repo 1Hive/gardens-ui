@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b96da1e1.js';
+import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -59,19 +59,19 @@ var DEFAULT_RECT = typeof window === 'undefined' || typeof window.DOMRect !== 'f
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Slider___StyledDiv",
-  componentId: "sc-94djfe-0"
+  componentId: "sc-17waq4t-0"
 })(["min-width:", "px;padding:0 ", "px;", ";"], MIN_WIDTH, function (p) {
   return p._css;
 }, unselectable);
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Slider___StyledDiv2",
-  componentId: "sc-94djfe-1"
+  componentId: "sc-17waq4t-1"
 })(["position:relative;height:", "px;cursor:pointer;"], HEIGHT);
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "Slider___StyledAnimatedDiv",
-  componentId: "sc-94djfe-2"
+  componentId: "sc-17waq4t-2"
 })(["position:absolute;top:50%;left:0;width:", "px;height:", "px;border:1px solid ", ";border-radius:50%;cursor:pointer;pointer-events:auto;"], HANDLE_SIZE, HANDLE_SIZE, function (p) {
   return p._css4;
 });
@@ -268,34 +268,34 @@ _defineProperty(Slider, "defaultProps", {
 
 var Bars = _styled(extendedAnimated.div).withConfig({
   displayName: "Slider__Bars",
-  componentId: "sc-94djfe-3"
+  componentId: "sc-17waq4t-3"
 })(["position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);overflow:hidden;border-radius:2px;height:", "px;"], BAR_HEIGHT);
 var Bar = _styled(extendedAnimated.div).withConfig({
   displayName: "Slider__Bar",
-  componentId: "sc-94djfe-4"
+  componentId: "sc-17waq4t-4"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;"]);
 
 var _StyledBar2 = _styled(Bar).withConfig({
   displayName: "Slider___StyledBar2",
-  componentId: "sc-94djfe-5"
+  componentId: "sc-17waq4t-5"
 })(["transform-origin:0 0;background:", ";"], function (p) {
   return p._css3;
 });
 
 var _StyledBar = _styled(Bar).withConfig({
   displayName: "Slider___StyledBar",
-  componentId: "sc-94djfe-6"
+  componentId: "sc-17waq4t-6"
 })(["background:", ";"], function (p) {
   return p._css2;
 });
 
 var HandleClip = _styled.div.withConfig({
   displayName: "Slider__HandleClip",
-  componentId: "sc-94djfe-7"
+  componentId: "sc-17waq4t-7"
 })(["pointer-events:none;overflow:hidden;width:calc(100% + ", "px);height:calc(100% + ", "px);transform-origin:50% 50%;transform:translate( -", "px,-", "px );"], HANDLE_SIZE + HANDLE_SHADOW_MARGIN * 2, HANDLE_SHADOW_MARGIN * 2, HANDLE_SIZE / 2 + HANDLE_SHADOW_MARGIN, HANDLE_SHADOW_MARGIN);
 var HandlePosition = _styled(extendedAnimated.div).withConfig({
   displayName: "Slider__HandlePosition",
-  componentId: "sc-94djfe-8"
+  componentId: "sc-17waq4t-8"
 })(["width:calc(100% - ", "px);height:100%;transform-origin:50% 50%;"], HANDLE_SIZE + HANDLE_SHADOW_MARGIN * 2);
 var Slider$1 = (function (props) {
   var theme = useTheme();

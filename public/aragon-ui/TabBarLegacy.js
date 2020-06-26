@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-var toConsumableArray = require('./toConsumableArray-d8a4a2c3.js');
+var toConsumableArray = require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-var getPrototypeOf = require('./getPrototypeOf-2a661a20.js');
+var getPrototypeOf = require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -182,7 +182,7 @@ defineProperty$1._defineProperty(TabBar, "defaultProps", {
 
 var _StyledUl = _styled__default("ul").withConfig({
   displayName: "TabBarLegacy___StyledUl",
-  componentId: "sc-1hufqys-0"
+  componentId: "sc-17ah8td-0"
 })(["display:flex;border-bottom:", ";"], function (p) {
   return p._css;
 });
@@ -198,7 +198,7 @@ function Bar(_ref3) {
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "TabBarLegacy___StyledSpan",
-  componentId: "sc-1hufqys-1"
+  componentId: "sc-17ah8td-1"
 })(["display:none;position:absolute;top:-5px;left:-5px;right:-5px;bottom:-5px;border:2px solid ", ";border-radius:2px;"], function (p) {
   return p._css2;
 });
@@ -214,7 +214,7 @@ function FocusRing(_ref4) {
 
 var _StyledLi = _styled__default("li").withConfig({
   displayName: "TabBarLegacy___StyledLi",
-  componentId: "sc-1hufqys-2"
+  componentId: "sc-17ah8td-2"
 })(["position:relative;list-style:none;padding:0 30px;cursor:pointer;", ";", ";&:focus{outline:0;.TabBarLegacy-FocusRing{display:block;}}"], function (p) {
   return p._css3;
 }, function (p) {
@@ -235,7 +235,7 @@ function Tab(_ref5) {
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "TabBarLegacy___StyledSpan2",
-  componentId: "sc-1hufqys-3"
+  componentId: "sc-17ah8td-3"
 })(["display:flex;margin-bottom:-1px;padding:5px 0 3px;border-bottom:4px solid ", ";"], function (p) {
   return p._css5;
 });

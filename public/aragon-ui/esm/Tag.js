@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useMemo } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -113,7 +113,7 @@ function useLabel(_ref2) {
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "Tag___StyledSpan",
-  componentId: "sc-875dmt-0"
+  componentId: "sc-14tq8po-0"
 })(["display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;", ";", ";color:", ";background:", ";", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -126,14 +126,14 @@ var _StyledSpan = _styled("span").withConfig({
 
 var _StyledSpan2 = _styled("span").withConfig({
   displayName: "Tag___StyledSpan2",
-  componentId: "sc-875dmt-1"
+  componentId: "sc-14tq8po-1"
 })(["display:flex;align-items:center;margin-right:", "px;"], function (p) {
   return p._css5;
 });
 
 var _StyledSpan3 = _styled("span").withConfig({
   displayName: "Tag___StyledSpan3",
-  componentId: "sc-875dmt-2"
+  componentId: "sc-14tq8po-2"
 })(["overflow:hidden;text-overflow:ellipsis;margin-top:", ";"], function (p) {
   return p._css6;
 });

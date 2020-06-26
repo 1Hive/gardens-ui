@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useRef, useImperativeHandle, useCallback } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -32,12 +32,12 @@ import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import './Viewport-05d16edd.js';
 import './Layout.js';
 import './FocusVisible.js';
 import './ButtonBase.js';
-import './IconPropTypes-aab7337d.js';
+import './IconPropTypes-73aade7b.js';
 import './IconAddUser.js';
 import './IconAlert.js';
 import './IconAlignCenter.js';
@@ -150,14 +150,14 @@ import './Button.js';
 import ButtonIcon from './ButtonIcon.js';
 import TextInput from './TextInput.js';
 import { useToast } from './ToastHub.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import './RootPortal.js';
 
 var HEIGHT = 5 * GU;
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "TextCopy___StyledDiv",
-  componentId: "sc-1dg1uit-0"
+  componentId: "sc-1ywq36f-0"
 })(["position:relative;display:inline-flex;width:", "px;max-width:100%;height:", "px;padding-left:", ";"], function (p) {
   return p._css;
 }, HEIGHT, function (p) {
@@ -166,7 +166,7 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "TextCopy___StyledDiv2",
-  componentId: "sc-1dg1uit-1"
+  componentId: "sc-1ywq36f-1"
 })(["position:absolute;top:0;left:0;overflow:hidden;width:", "px;height:", "px;background:", ";border:1px solid ", ";border-right:0;border-radius:", "px 0.0001px 0.0001px ", "px;"], HEIGHT, HEIGHT, function (p) {
   return p._css3;
 }, function (p) {
@@ -175,7 +175,7 @@ var _StyledDiv2 = _styled("div").withConfig({
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "TextCopy___StyledDiv3",
-  componentId: "sc-1dg1uit-2"
+  componentId: "sc-1ywq36f-2"
 })(["display:flex;align-items:center;justify-content:center;width:", "px;height:", "px;"], function (p) {
   return p._css5;
 }, function (p) {
@@ -184,7 +184,7 @@ var _StyledDiv3 = _styled("div").withConfig({
 
 var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
   displayName: "TextCopy___StyledButtonIcon",
-  componentId: "sc-1dg1uit-3"
+  componentId: "sc-1ywq36f-3"
 })(["width:", "px;height:", "px;border-radius:0;color:", ";"], function (p) {
   return p._css7;
 }, function (p) {
@@ -195,10 +195,10 @@ var _StyledButtonIcon = _styled(ButtonIcon).withConfig({
 
 var _StyledTextInput = _styled(TextInput).withConfig({
   displayName: "TextCopy___StyledTextInput",
-  componentId: "sc-1dg1uit-4"
-})(["text-overflow:ellipsis;height:", "px;max-width:100%;border:1px solid ", ";", ";", ";&:read-only{color:", ";text-shadow:none;}"], HEIGHT, function (p) {
+  componentId: "sc-1ywq36f-4"
+})(["text-overflow:ellipsis;height:", "px;max-width:100%;border:1px solid ", ";border-radius:", "px;", ";", ";&:read-only{color:", ";text-shadow:none;}"], HEIGHT, function (p) {
   return p._css10;
-}, function (p) {
+}, RADIUS, function (p) {
   return p._css11;
 }, function (p) {
   return p._css12;

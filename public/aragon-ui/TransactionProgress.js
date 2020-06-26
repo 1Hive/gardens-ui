@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,12 +40,12 @@ var Theme = require('./Theme.js');
 require('./extends-40571110.js');
 require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+require('./Viewport-2b9ed1c1.js');
 require('./Layout.js');
 require('./FocusVisible.js');
 require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -157,14 +157,14 @@ require('./web-d0294535.js');
 require('./Button.js');
 var ButtonIcon = require('./ButtonIcon.js');
 require('./getDisplayName-7ab6d318.js');
-require('./index-bc84a358.js');
+require('./index-9eb4668d.js');
 var Link = require('./Link.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 require('./RootPortal.js');
 var proptypes = require('./proptypes-5b34673d.js');
 var Popover = require('./Popover.js');
 require('./observe.js');
-require('./index-030bfca8.js');
+require('./index-f6fa2811.js');
 require('./providers.js');
 var Info = require('./Info.js');
 var ProgressBar = require('./ProgressBar.js');
@@ -172,14 +172,14 @@ var Timer = require('./Timer.js');
 
 var _StyledSection = _styled__default("section").withConfig({
   displayName: "TransactionProgress___StyledSection",
-  componentId: "vvbhu5-0"
+  componentId: "o70irh-0"
 })(["padding:", "px;"], function (p) {
   return p._css;
 });
 
 var _StyledButtonIcon = _styled__default(ButtonIcon.default).withConfig({
   displayName: "TransactionProgress___StyledButtonIcon",
-  componentId: "vvbhu5-1"
+  componentId: "o70irh-1"
 })(["position:absolute;top:", "px;right:", "px;"], function (p) {
   return p._css2;
 }, function (p) {
@@ -188,12 +188,12 @@ var _StyledButtonIcon = _styled__default(ButtonIcon.default).withConfig({
 
 var _StyledH = _styled__default("h1").withConfig({
   displayName: "TransactionProgress___StyledH",
-  componentId: "vvbhu5-2"
+  componentId: "o70irh-2"
 })(["font-weight:600"]);
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "TransactionProgress___StyledDiv",
-  componentId: "vvbhu5-3"
+  componentId: "o70irh-3"
 })(["display:flex;justify-content:space-between;align-items:flex-end;margin:", "px 0 ", "px;"], function (p) {
   return p._css4;
 }, function (p) {
@@ -202,7 +202,7 @@ var _StyledDiv = _styled__default("div").withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "TransactionProgress___StyledSpan",
-  componentId: "vvbhu5-4"
+  componentId: "o70irh-4"
 })(["", ";color:", ";"], function (p) {
   return p._css6;
 }, function (p) {
@@ -211,14 +211,14 @@ var _StyledSpan = _styled__default("span").withConfig({
 
 var _StyledProgressBar = _styled__default(ProgressBar.default).withConfig({
   displayName: "TransactionProgress___StyledProgressBar",
-  componentId: "vvbhu5-5"
+  componentId: "o70irh-5"
 })(["color:", ";"], function (p) {
   return p._css8;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "TransactionProgress___StyledDiv2",
-  componentId: "vvbhu5-6"
+  componentId: "o70irh-6"
 })(["display:flex;justify-content:", ";align-items:center;padding-top:", "px;"], function (p) {
   return p._css9;
 }, function (p) {
@@ -227,14 +227,14 @@ var _StyledDiv2 = _styled__default("div").withConfig({
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "TransactionProgress___StyledDiv3",
-  componentId: "vvbhu5-7"
+  componentId: "o70irh-7"
 })(["margin-right:", "px;"], function (p) {
   return p._css11;
 });
 
 var _StyledLink = _styled__default(Link.default).withConfig({
   displayName: "TransactionProgress___StyledLink",
-  componentId: "vvbhu5-8"
+  componentId: "o70irh-8"
 })(["text-decoration:none"]);
 
 var TransactionProgress = React__default.memo(function TransactionProgress(_ref) {

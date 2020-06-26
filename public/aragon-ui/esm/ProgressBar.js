@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useState, useEffect, useImperativeHandle, useCallback } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled, { keyframes } from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -1886,7 +1886,7 @@ var indeterminateAnim = keyframes(["0%{transform:translate3d(calc(-100% - 1px),0
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "ProgressBar___StyledDiv",
-  componentId: "sc-1gly9sn-0"
+  componentId: "cwtxpx-0"
 })(["width:100%;height:", "px;background:", ";border-radius:", "px;overflow:hidden;"], BAR_HEIGHT, function (p) {
   return p._css;
 }, RADIUS);
@@ -1939,7 +1939,7 @@ var ProgressBar = React.memo(function (_ref) {
 });
 var Bar = _styled(extendedAnimated.div).withConfig({
   displayName: "ProgressBar__Bar",
-  componentId: "sc-1gly9sn-1"
+  componentId: "cwtxpx-1"
 })(["width:100%;height:", "px;transform-origin:0 0;animation:", " ", "ms ease-in-out infinite;animation-name:none;"], BAR_HEIGHT, indeterminateAnim, INDETERMINATE_DURATION);
 ProgressBar.defaultProps = {
   animate: true,

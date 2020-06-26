@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useContext } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS, GU } from './constants.js';
+import { BIG_RADIUS, GU } from './constants.js';
 import './breakpoints.js';
 import { springs } from './springs.js';
 import { textStyle } from './text-styles.js';
@@ -32,18 +32,18 @@ import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import { i } from './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import { u as useViewport } from './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import { u as useViewport } from './Viewport-05d16edd.js';
 import './objectWithoutPropertiesLoose-9606ad13.js';
 import 'react-dom';
 import { e as extendedAnimated, T as Transition } from './web-a351a0a1.js';
 import { ToastContext } from './ToastHub.js';
-import './index-f754c2df.js';
+import './index-a705d0f4.js';
 import RootPortal from './RootPortal.js';
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "FloatIndicator___StyledDiv",
-  componentId: "sc-1mhu8xn-0"
+  componentId: "tqht3z-0"
 })(["position:absolute;z-index:1;bottom:", "px;display:flex;justify-content:flex-end;width:100%;padding:0 ", "px 0 ", "px;"], function (p) {
   return p._css;
 }, function (p) {
@@ -54,7 +54,7 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   displayName: "FloatIndicator___StyledAnimatedDiv",
-  componentId: "sc-1mhu8xn-1"
+  componentId: "tqht3z-1"
 })(["flex-grow:", ";display:flex;align-items:center;height:", "px;padding:", "px ", "px;", ";white-space:nowrap;color:", ";background:", ";border:1px solid ", ";border-radius:", "px;cursor:default;justify-content:center;"], function (p) {
   return p._css4;
 }, function (p) {
@@ -71,7 +71,7 @@ var _StyledAnimatedDiv = _styled(extendedAnimated.div).withConfig({
   return p._css10;
 }, function (p) {
   return p._css11;
-}, RADIUS);
+}, BIG_RADIUS);
 
 var FloatIndicator = React.memo(function FloatIndicator(_ref) {
   var children = _ref.children,

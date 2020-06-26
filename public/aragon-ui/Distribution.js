@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,50 +40,50 @@ var Theme = require('./Theme.js');
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv",
-  componentId: "r4l1i4-0"
+  componentId: "sc-9n0rbx-0"
 })(["margin-bottom:", "px;"], function (p) {
   return p._css;
 });
 
 var _StyledH = _styled__default("h1").withConfig({
   displayName: "Distribution___StyledH",
-  componentId: "r4l1i4-1"
+  componentId: "sc-9n0rbx-1"
 })(["", ""], function (p) {
   return p._css2;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv2",
-  componentId: "r4l1i4-2"
+  componentId: "sc-9n0rbx-2"
 })(["display:flex;width:100%;overflow:hidden;margin:0 0 ", "px;border-radius:3px;div{height:6px;}"], function (p) {
   return p._css3;
 });
 
 var _StyledUl = _styled__default("ul").withConfig({
   displayName: "Distribution___StyledUl",
-  componentId: "r4l1i4-3"
+  componentId: "sc-9n0rbx-3"
 })(["margin-top:", "px;"], function (p) {
   return p._css4;
 });
 
 var _StyledLi = _styled__default("li").withConfig({
   displayName: "Distribution___StyledLi",
-  componentId: "r4l1i4-4"
+  componentId: "sc-9n0rbx-4"
 })(["display:flex;align-items:center;justify-content:space-between;margin-top:10px;list-style:none;"]);
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv3",
-  componentId: "r4l1i4-5"
+  componentId: "sc-9n0rbx-5"
 })(["display:flex;align-items:center;flex-shrink:1;flex-grow:1;"]);
 
 var _StyledDiv4 = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv4",
-  componentId: "r4l1i4-6"
+  componentId: "sc-9n0rbx-6"
 })(["width:0;flex-shrink:1;flex-grow:1;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"]);
 
 var _StyledDiv5 = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv5",
-  componentId: "r4l1i4-7"
+  componentId: "sc-9n0rbx-7"
 })(["padding-left:", "px;flex-shrink:0;"], function (p) {
   return p._css5;
 });
@@ -192,7 +192,7 @@ Distribution.defaultProps = {
 
 var _StyledDiv6 = _styled__default("div").withConfig({
   displayName: "Distribution___StyledDiv6",
-  componentId: "r4l1i4-8"
+  componentId: "sc-9n0rbx-8"
 })(["width:", "px;height:", "px;margin-right:", "px;border-radius:50%;flex-shrink:0;"], function (p) {
   return p._css6;
 }, function (p) {

@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useCallback } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import { KEY_ENTER } from './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS } from './constants.js';
+import { BIG_RADIUS } from './constants.js';
 import './breakpoints.js';
 import './springs.js';
 import { textStyle } from './text-styles.js';
@@ -70,10 +70,10 @@ function getElementProps(_ref) {
 
 var _StyledButton = _styled("button").withConfig({
   displayName: "ButtonBase___StyledButton",
-  componentId: "ur1q76-0"
+  componentId: "sc-1asovfx-0"
 })(["position:relative;display:inline-block;padding:0;white-space:nowrap;", ";text-decoration:none;text-align:center;background:none;border-radius:", "px;border:0;outline:0;cursor:", ";", ";&::-moz-focus-inner{border:0;}&:focus:after{content:'';display:", ";position:absolute;top:", "px;left:", "px;right:", "px;bottom:", "px;border-radius:", "px;border:2px solid ", ";}"], function (p) {
   return p._css;
-}, RADIUS, function (p) {
+}, BIG_RADIUS, function (p) {
   return p._css2;
 }, function (p) {
   return p._css3;

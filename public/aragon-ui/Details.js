@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -42,7 +42,7 @@ var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 var index$1 = require('./index-ecc57c9f.js');
 require('./FocusVisible.js');
 var ButtonBase = require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -162,21 +162,21 @@ function interpolateToggleElevation(value, fn) {
 
 var _StyledSection = _styled__default("section").withConfig({
   displayName: "Details___StyledSection",
-  componentId: "b3f99g-0"
+  componentId: "sc-1w5ebbf-0"
 })(["", ""], function (p) {
   return p._css;
 });
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "Details___StyledButtonBase",
-  componentId: "b3f99g-1"
+  componentId: "sc-1w5ebbf-1"
 })(["position:relative;width:100%;&:active{background:", ";}"], function (p) {
   return p._css2;
 });
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv",
-  componentId: "b3f99g-2"
+  componentId: "sc-1w5ebbf-2"
 })(["position:absolute;left:", "px;right:", "px;bottom:0;"], function (p) {
   return p._css3;
 }, function (p) {
@@ -185,12 +185,12 @@ var _StyledDiv = _styled__default("div").withConfig({
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv2",
-  componentId: "b3f99g-3"
+  componentId: "sc-1w5ebbf-3"
 })(["height:1px;box-shadow:0 1px 1px rgba(0,0,0,0.1);"]);
 
 var _StyledH = _styled__default("h1").withConfig({
   displayName: "Details___StyledH",
-  componentId: "b3f99g-4"
+  componentId: "sc-1w5ebbf-4"
 })(["display:flex;justify-content:flex-start;align-items:center;height:", "px;margin-left:", "px;color:", ";", " font-weight:400;"], function (p) {
   return p._css5;
 }, function (p) {
@@ -203,27 +203,27 @@ var _StyledH = _styled__default("h1").withConfig({
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv3",
-  componentId: "b3f99g-5"
+  componentId: "sc-1w5ebbf-5"
 })(["margin-top:2px;"]);
 
 var _StyledDiv4 = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv4",
-  componentId: "b3f99g-6"
+  componentId: "sc-1w5ebbf-6"
 })(["display:flex;align-items:center;justify-content:center;"]);
 
 var _StyledDiv5 = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv5",
-  componentId: "b3f99g-7"
+  componentId: "sc-1w5ebbf-7"
 })(["overflow:hidden"]);
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "Details___StyledAnimatedDiv",
-  componentId: "b3f99g-8"
+  componentId: "sc-1w5ebbf-8"
 })(["display:flex;flex-direction:column;justify-content:flex-end;"]);
 
 var _StyledDiv6 = _styled__default("div").withConfig({
   displayName: "Details___StyledDiv6",
-  componentId: "b3f99g-9"
+  componentId: "sc-1w5ebbf-9"
 })(["", ""], function (p) {
   return p._css9;
 });

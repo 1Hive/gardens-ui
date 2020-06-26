@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled, { css } from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -22,7 +22,7 @@ import './format.js';
 import './keycodes.js';
 import './url.js';
 import './web3.js';
-import { RADIUS, GU } from './constants.js';
+import { BIG_RADIUS, GU } from './constants.js';
 import './breakpoints.js';
 import './springs.js';
 import './text-styles.js';
@@ -52,7 +52,7 @@ function dimension(insideCardLayout, value, defaultValue) {
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Card___StyledDiv",
-  componentId: "sc-13r75gj-0"
+  componentId: "pnpjp8-0"
 })(["position:relative;width:", ";height:", ";background:", ";border:1px solid ", ";border-radius:", "px;cursor:", ";display:flex;flex-direction:column;align-items:center;justify-content:center;", ""], function (p) {
   return p._css;
 }, function (p) {
@@ -61,7 +61,7 @@ var _StyledDiv = _styled("div").withConfig({
   return p._css3;
 }, function (p) {
   return p._css4;
-}, RADIUS, function (p) {
+}, BIG_RADIUS, function (p) {
   return p._css5;
 }, function (p) {
   return p._css6;
@@ -84,7 +84,7 @@ function Card(_ref) {
   var interactiveProps = interactive ? {
     as: ButtonBase,
     element: 'div',
-    focusRingRadius: RADIUS,
+    focusRingRadius: BIG_RADIUS,
     onClick: onClick
   } : {};
   var cssWidth = dimension(insideCardLayout, width, "".concat(DEFAULT_WIDTH, "px"));

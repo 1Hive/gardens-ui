@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty$1 = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,12 +40,12 @@ var Theme = require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 var index$1 = require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-var Viewport = require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+var Viewport = require('./Viewport-2b9ed1c1.js');
 require('./Layout.js');
 require('./FocusVisible.js');
 require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -156,7 +156,7 @@ require('react-dom');
 var web = require('./web-d0294535.js');
 require('./Button.js');
 var ButtonIcon = require('./ButtonIcon.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 var RootPortal = require('./RootPortal.js');
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -170,21 +170,21 @@ var SidePanelContext = React__default.createContext(null);
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "SidePanel___StyledDiv",
-  componentId: "sc-1kjx6mk-0"
+  componentId: "sc-1g2q00o-0"
 })(["position:absolute;z-index:1;top:0;left:0;right:0;bottom:0;pointer-events:", ";overflow:hidden;"], function (p) {
   return p._css;
 });
 
 var _StyledAnimatedDiv = _styled__default(web.extendedAnimated.div).withConfig({
   displayName: "SidePanel___StyledAnimatedDiv",
-  componentId: "sc-1kjx6mk-1"
+  componentId: "sc-1g2q00o-1"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;background:", ";"], function (p) {
   return p._css2;
 });
 
 var _StyledHeader = _styled__default("header").withConfig({
   displayName: "SidePanel___StyledHeader",
-  componentId: "sc-1kjx6mk-2"
+  componentId: "sc-1g2q00o-2"
 })(["display:flex;flex-direction:column;justify-content:center;flex-shrink:0;position:relative;height:", "px;padding-left:", "px;border-bottom:1px solid ", ";", ";"], function (p) {
   return p._css3;
 }, CONTENT_PADDING, function (p) {
@@ -195,7 +195,7 @@ var _StyledHeader = _styled__default("header").withConfig({
 
 var _StyledH = _styled__default("h1").withConfig({
   displayName: "SidePanel___StyledH",
-  componentId: "sc-1kjx6mk-3"
+  componentId: "sc-1g2q00o-3"
 })(["color:", ";", ";"], function (p) {
   return p._css6;
 }, function (p) {
@@ -204,19 +204,19 @@ var _StyledH = _styled__default("h1").withConfig({
 
 var _StyledButtonIcon = _styled__default(ButtonIcon.default).withConfig({
   displayName: "SidePanel___StyledButtonIcon",
-  componentId: "sc-1kjx6mk-4"
+  componentId: "sc-1g2q00o-4"
 })(["position:absolute;", ""], function (p) {
   return p._css8;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "SidePanel___StyledDiv2",
-  componentId: "sc-1kjx6mk-5"
+  componentId: "sc-1g2q00o-5"
 })(["overflow-y:auto;height:100%;display:flex;flex-direction:column;"]);
 
 var _StyledDiv3 = _styled__default("div").withConfig({
   displayName: "SidePanel___StyledDiv3",
-  componentId: "sc-1kjx6mk-6"
+  componentId: "sc-1g2q00o-6"
 })(["min-height:0;flex-grow:1;flex-shrink:0;display:flex;flex-direction:column;width:100%;padding-right:", "px;padding-left:", "px;padding-bottom:", "px;"], CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING);
 
 function SidePanel(_ref2) {
@@ -359,7 +359,7 @@ SidePanel.defaultProps = {
 
 var _StyledAnimatedAside = _styled__default(web.extendedAnimated.aside).withConfig({
   displayName: "SidePanel___StyledAnimatedAside",
-  componentId: "sc-1kjx6mk-7"
+  componentId: "sc-1g2q00o-7"
 })(["position:absolute;top:0;right:0;display:flex;flex-direction:column;width:100%;height:100%;background:", ";box-shadow:-2px 0px 4px rgba(0,0,0,0.1);", ""], function (p) {
   return p._css9;
 }, function (p) {

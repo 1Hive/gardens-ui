@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 require('./defineProperty-0921a47c.js');
 require('styled-components');
 require('./miscellaneous.js');
@@ -16,6 +16,7 @@ var textStyles = require('./text-styles.js');
 
 
 
+exports.BIG_RADIUS = constants.BIG_RADIUS;
 exports.GU = constants.GU;
 exports.RADIUS = constants.RADIUS;
 exports.BREAKPOINTS = breakpoints.BREAKPOINTS;

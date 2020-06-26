@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -45,12 +45,12 @@ var ButtonBase = require('./ButtonBase.js');
 
 var _StyledLi = _styled__default("li").withConfig({
   displayName: "Tab___StyledLi",
-  componentId: "sc-1cgzd3b-0"
+  componentId: "wb6fdg-0"
 })(["list-style:none"]);
 
 var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
   displayName: "Tab___StyledButtonBase",
-  componentId: "sc-1cgzd3b-1"
+  componentId: "wb6fdg-1"
 })(["", ";border-radius:0;transition:background 50ms ease-in-out;&:active{background:", ";}"], function (p) {
   return p._css;
 }, function (p) {
@@ -59,7 +59,7 @@ var _StyledButtonBase = _styled__default(ButtonBase.default).withConfig({
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "Tab___StyledSpan",
-  componentId: "sc-1cgzd3b-2"
+  componentId: "wb6fdg-2"
 })(["display:flex;position:relative;align-items:center;height:", "px;padding:0 ", "px;white-space:nowrap;color:", ";"], function (p) {
   return p._css3;
 }, function (p) {
@@ -70,7 +70,7 @@ var _StyledSpan = _styled__default("span").withConfig({
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "Tab___StyledSpan2",
-  componentId: "sc-1cgzd3b-3"
+  componentId: "wb6fdg-3"
 })(["position:absolute;left:0;right:0;bottom:0;background:", ";height:2px;opacity:", ";transition-property:transform,opacity;transition-duration:150ms;transition-timing-function:ease-in-out;transform:scale3d(1,", ",1);transform-origin:0 100%;"], function (p) {
   return p._css6;
 }, function (p) {
@@ -94,7 +94,7 @@ function Tab(_ref) {
     onChange(index);
   }, [index, onChange]);
   return /*#__PURE__*/React__default.createElement(_StyledLi, null, /*#__PURE__*/React__default.createElement(_StyledButtonBase, {
-    focusRingRadius: constants.RADIUS,
+    focusRingRadius: constants.BIG_RADIUS,
     onClick: handleClick,
     _css: textStyles.textStyle('body2'),
     _css2: theme.surfacePressed

@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -78,8 +78,8 @@ function getModeStyles(theme, mode) {
 
 var _StyledSection = _styled__default("section").withConfig({
   displayName: "Info___StyledSection",
-  componentId: "sc-1kgnlbm-0"
-})(["color:", ";background:", ";border-left:2px solid ", ";padding:", "px;border-radius:", "px;word-wrap:break-word;", ";"], function (p) {
+  componentId: "sc-12553bt-0"
+})(["color:", ";background:", ";border:1px solid ", ";padding:", "px;border-radius:", "px;word-wrap:break-word;", ";"], function (p) {
   return p._css;
 }, function (p) {
   return p._css2;
@@ -87,13 +87,13 @@ var _StyledSection = _styled__default("section").withConfig({
   return p._css3;
 }, function (p) {
   return p._css4;
-}, constants.RADIUS, function (p) {
+}, constants.BIG_RADIUS, function (p) {
   return p._css5;
 });
 
 var _StyledH = _styled__default("h1").withConfig({
   displayName: "Info___StyledH",
-  componentId: "sc-1kgnlbm-1"
+  componentId: "sc-12553bt-1"
 })(["display:flex;align-items:center;color:", ";", ";margin-bottom:", "px;"], function (p) {
   return p._css6;
 }, function (p) {

@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import { _ as _defineProperty } from './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b96da1e1.js';
+import { _ as _inherits, a as _createClass, b as _classCallCheck, e as _assertThisInitialized, c as _getPrototypeOf, d as _possibleConstructorReturn } from './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -45,12 +45,12 @@ var RADIO_BULLET_SIZE = 10;
 
 var _StyledAnimatedSpan = _styled(extendedAnimated.span).withConfig({
   displayName: "Checkbox___StyledAnimatedSpan",
-  componentId: "sc-1avgrx5-0"
+  componentId: "sc-1v41gs7-0"
 })(["position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;transform-origin:50% 50%;"]);
 
 var _StyledButton = _styled("button").withConfig({
   displayName: "Checkbox___StyledButton",
-  componentId: "sc-1avgrx5-1"
+  componentId: "sc-1v41gs7-1"
 })(["display:inline-flex;position:relative;width:", "px;height:", "px;margin:", "px;padding:0;background:", ";border:1px solid ", ";border-radius:", ";outline:0;&::-moz-focus-inner{border:0;}", ";"], SIZE, SIZE, function (p) {
   return p._css;
 }, function (p) {
@@ -65,7 +65,7 @@ var _StyledButton = _styled("button").withConfig({
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "Checkbox___StyledSpan",
-  componentId: "sc-1avgrx5-2"
+  componentId: "sc-1v41gs7-2"
 })(["position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border:2px solid ", ";border-radius:", ";display:none;"], function (p) {
   return p._css6;
 }, function (p) {
@@ -244,7 +244,7 @@ var Check = function Check(_ref4) {
 
 var _StyledSpan2 = _styled("span").withConfig({
   displayName: "Checkbox___StyledSpan2",
-  componentId: "sc-1avgrx5-3"
+  componentId: "sc-1v41gs7-3"
 })(["display:block;width:", "px;height:", "px;border-radius:50%;background:", ";"], RADIO_BULLET_SIZE, RADIO_BULLET_SIZE, function (p) {
   return p._css8;
 });

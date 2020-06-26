@@ -1,12 +1,12 @@
-import { _ as _slicedToArray } from './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import { _ as _slicedToArray } from './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React, { useState, useMemo } from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled, { keyframes } from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -40,7 +40,7 @@ var lastInstanceId = 1;
 
 var _StyledSpan = _styled("span").withConfig({
   displayName: "LoadingRing___StyledSpan",
-  componentId: "iauf6f-0"
+  componentId: "toiva8-0"
 })(["position:relative;display:flex;align-items:center;justify-content:center;width:", "px;height:", "px;"], function (p) {
   return p._css;
 }, function (p) {
@@ -49,7 +49,7 @@ var _StyledSpan = _styled("span").withConfig({
 
 var _StyledCircle = _styled("circle").withConfig({
   displayName: "LoadingRing___StyledCircle",
-  componentId: "iauf6f-1"
+  componentId: "toiva8-1"
 })(["animation-duration:1s;animation-iteration-count:infinite;animation-timing-function:linear;animation-name:", ";transform-origin:50% 50%;"], function (p) {
   return p._css3;
 });

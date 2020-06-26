@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 var defineProperty = require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -46,7 +46,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var _StyledInput = _styled__default("input").withConfig({
   displayName: "TextInput___StyledInput",
-  componentId: "gngg3n-0"
+  componentId: "kab4be-0"
 })(["width:", ";height:", "px;padding:0 ", "px;background:", ";border:1px solid ", ";color:", ";border-radius:", "px;appearance:none;", ";", " &:focus{outline:none;border-color:", ";}&:read-only{color:", ";border-color:", ";}&::placeholder{color:", ";opacity:1;}&:invalid{box-shadow:none;}"], function (_ref) {
   var wide = _ref.wide;
   return wide ? '100%' : 'auto';
@@ -60,7 +60,7 @@ var _StyledInput = _styled__default("input").withConfig({
   return p._css4;
 }, function (p) {
   return p._css5;
-}, constants.RADIUS, function (p) {
+}, constants.BIG_RADIUS, function (p) {
   return p._css6;
 }, function (p) {
   return p._css7;
@@ -111,7 +111,7 @@ var TextInput = React__default.forwardRef(function (_ref2, ref) {
 
 var _StyledTextInput = _styled__default(TextInput).withConfig({
   displayName: "TextInput___StyledTextInput",
-  componentId: "gngg3n-1"
+  componentId: "kab4be-1"
 })(["", ":", "px;"], function (p) {
   return p._css13;
 }, function (p) {
@@ -133,14 +133,14 @@ TextInput.defaultProps = {
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "TextInput___StyledDiv",
-  componentId: "gngg3n-2"
+  componentId: "kab4be-2"
 })(["display:inline-flex;position:relative;width:", ";"], function (p) {
   return p._css12;
 });
 
 var _StyledDiv2 = _styled__default("div").withConfig({
   displayName: "TextInput___StyledDiv2",
-  componentId: "gngg3n-3"
+  componentId: "kab4be-3"
 })(["position:absolute;top:0;bottom:0;height:100%;", ":", "px;display:flex;align-items:center;justify-content:center;color:", ";"], function (p) {
   return p._css15;
 }, function (p) {

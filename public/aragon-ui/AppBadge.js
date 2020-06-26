@@ -4,17 +4,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var slicedToArray = require('./slicedToArray-0711941d.js');
-require('./unsupportedIterableToArray-68db1d3b.js');
+var slicedToArray = require('./slicedToArray-91557a6f.js');
+require('./unsupportedIterableToArray-d83f5963.js');
 var React = require('react');
 var React__default = _interopDefault(React);
 require('./_commonjsHelpers-72d386ba.js');
 var index = require('./index-b0606964.js');
 require('./defineProperty-0921a47c.js');
-require('./toConsumableArray-d8a4a2c3.js');
+require('./toConsumableArray-058507b6.js');
 var _styled = require('styled-components');
 var _styled__default = _interopDefault(_styled);
-require('./getPrototypeOf-2a661a20.js');
+require('./getPrototypeOf-ed0e3293.js');
 require('./color.js');
 require('./components.js');
 require('./contains-component.js');
@@ -40,12 +40,12 @@ require('./Theme.js');
 var _extends$1 = require('./extends-40571110.js');
 var objectWithoutProperties = require('./objectWithoutProperties-35db8ab0.js');
 require('./index-ecc57c9f.js');
-require('./isObject-ec755c87.js');
-require('./Viewport-15101437.js');
+require('./isObject-bae30f44.js');
+require('./Viewport-2b9ed1c1.js');
 require('./Layout.js');
 require('./FocusVisible.js');
 require('./ButtonBase.js');
-require('./IconPropTypes-56de5759.js');
+require('./IconPropTypes-93876458.js');
 require('./IconAddUser.js');
 require('./IconAlert.js');
 require('./IconAlignCenter.js');
@@ -157,11 +157,11 @@ require('./web-d0294535.js');
 require('./Button.js');
 require('./ButtonIcon.js');
 require('./getDisplayName-7ab6d318.js');
-require('./index-bc84a358.js');
+require('./index-9eb4668d.js');
 require('./Link.js');
 require('./TextInput.js');
 require('./ToastHub.js');
-require('./index-0db71dc1.js');
+require('./index-66bfe545.js');
 require('./RootPortal.js');
 require('./TextCopy.js');
 require('./taggedTemplateLiteral-227ed122.js');
@@ -181,7 +181,7 @@ var Tag = require('./Tag.js');
 require('./proptypes-5b34673d.js');
 require('./Popover.js');
 require('./observe.js');
-require('./index-030bfca8.js');
+require('./index-f6fa2811.js');
 require('./providers.js');
 require('./BadgePopoverBase.js');
 var AppBadgePopover = require('./AppBadgePopover.js');
@@ -190,17 +190,17 @@ var iconDefaultSvg = "data:image/svg+xml,%3Csvg%20width%3D%2256%22%20height%3D%2
 
 var _StyledDiv = _styled__default("div").withConfig({
   displayName: "AppBadge___StyledDiv",
-  componentId: "sc-5gkmrm-0"
+  componentId: "sfxk71-0"
 })(["display:grid;align-items:center;grid-template-columns:auto 1fr;"]);
 
 var _StyledSpan = _styled__default("span").withConfig({
   displayName: "AppBadge___StyledSpan",
-  componentId: "sc-5gkmrm-1"
+  componentId: "sfxk71-1"
 })(["display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"]);
 
 var _StyledTag = _styled__default(Tag.default).withConfig({
   displayName: "AppBadge___StyledTag",
-  componentId: "sc-5gkmrm-2"
+  componentId: "sfxk71-2"
 })(["margin-left:", "px;"], function (p) {
   return p._css;
 });
@@ -288,7 +288,7 @@ AppBadge.propTypes = {
 
 var _StyledSpan2 = _styled__default("span").withConfig({
   displayName: "AppBadge___StyledSpan2",
-  componentId: "sc-5gkmrm-3"
+  componentId: "sfxk71-3"
 })(["flex-shrink:0;width:", "px;height:", "px;margin-right:", "px;border-radius:", ";background-size:contain;background-position:50% 50%;background-repeat:no-repeat;background-image:url(", ");"], function (p) {
   return p._css2;
 }, function (p) {
@@ -311,7 +311,7 @@ var Icon = function Icon(_ref3) {
     _css2: size,
     _css3: size,
     _css4: 1 * constants.GU,
-    _css5: compact ? "".concat(constants.RADIUS, "px") : 0,
+    _css5: compact ? "".concat(constants.BIG_RADIUS, "px") : 0,
     _css6: src
   }));
 };

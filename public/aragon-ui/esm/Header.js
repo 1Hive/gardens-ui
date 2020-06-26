@@ -1,12 +1,12 @@
-import './slicedToArray-4e274c67.js';
-import './unsupportedIterableToArray-137e449b.js';
+import './slicedToArray-aa16fe4d.js';
+import './unsupportedIterableToArray-0301d1c7.js';
 import React from 'react';
 import './_commonjsHelpers-97e6d7b1.js';
 import { P as PropTypes } from './index-097535f1.js';
 import './defineProperty-a0480c32.js';
-import './toConsumableArray-127424c2.js';
+import './toConsumableArray-af8653d9.js';
 import _styled from 'styled-components';
-import './getPrototypeOf-b96da1e1.js';
+import './getPrototypeOf-b2c50af3.js';
 import './color.js';
 import './components.js';
 import './contains-component.js';
@@ -32,13 +32,13 @@ import { useTheme } from './Theme.js';
 import { _ as _extends } from './extends-db4f0c26.js';
 import { _ as _objectWithoutProperties } from './objectWithoutProperties-234758e1.js';
 import { i } from './index-422d37c0.js';
-import './isObject-3c6ec07e.js';
-import './Viewport-cc7debfb.js';
+import './isObject-ccc74451.js';
+import './Viewport-05d16edd.js';
 import { useLayout } from './Layout.js';
 
 var _StyledDiv = _styled("div").withConfig({
   displayName: "Header___StyledDiv",
-  componentId: "euryjq-0"
+  componentId: "w2zcmh-0"
 })(["padding:", "px 0;background:", ";margin-bottom:", "px;box-shadow:", ";"], function (p) {
   return p._css;
 }, function (p) {
@@ -51,7 +51,7 @@ var _StyledDiv = _styled("div").withConfig({
 
 var _StyledDiv2 = _styled("div").withConfig({
   displayName: "Header___StyledDiv2",
-  componentId: "euryjq-1"
+  componentId: "w2zcmh-1"
 })(["display:flex;align-items:center;justify-content:space-between;height:", "px;padding:0 ", "px;"], function (p) {
   return p._css5;
 }, function (p) {
@@ -60,14 +60,14 @@ var _StyledDiv2 = _styled("div").withConfig({
 
 var _StyledDiv3 = _styled("div").withConfig({
   displayName: "Header___StyledDiv3",
-  componentId: "euryjq-2"
+  componentId: "w2zcmh-2"
 })(["display:flex;min-width:0;flex-shrink:1;flex-grow:1;margin-right:", "px;"], function (p) {
   return p._css7;
 });
 
 var _StyledDiv4 = _styled("div").withConfig({
   displayName: "Header___StyledDiv4",
-  componentId: "euryjq-3"
+  componentId: "w2zcmh-3"
 })(["flex-shrink:0;"]);
 
 function Header(_ref) {
@@ -109,7 +109,7 @@ Header.propTypes = {
 
 var _StyledH = _styled("h1").withConfig({
   displayName: "Header___StyledH",
-  componentId: "euryjq-4"
+  componentId: "w2zcmh-4"
 })(["color:", ";overflow:hidden;text-overflow:ellipsis;white-space:nowrap;", ";"], function (p) {
   return p._css8;
 }, function (p) {
