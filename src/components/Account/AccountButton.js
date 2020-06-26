@@ -7,7 +7,7 @@ import {
   shortenAddress,
   textStyle,
   useTheme,
-} from '@aragon/ui'
+} from '@1hive/1hive-ui'
 
 import { useWallet } from 'use-wallet'
 import HeaderModule from '../Header/HeaderModule'

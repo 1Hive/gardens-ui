@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { GU, tokenIconUrl } from '@aragon/ui'
+import { GU, tokenIconUrl } from '@1hive/1hive-ui'
 
 import { formatTokenAmount } from '../lib/token-utils'
 import { ETHER_TOKEN_VERIFIED_BY_SYMBOL } from '../lib/verified-tokens'

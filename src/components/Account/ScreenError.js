@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { GU, Link, textStyle, useTheme } from '@aragon/ui'
+import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { UnsupportedChainError } from 'use-wallet'
 import { getNetworkName } from '../../lib/web3-utils'
 import connectionError from './assets/connection-error.png'

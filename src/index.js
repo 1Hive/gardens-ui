@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { Main } from '@aragon/ui'
+import { Main } from '@1hive/1hive-ui'
 import theme from './theme-1hive'
 
 import App from './App'

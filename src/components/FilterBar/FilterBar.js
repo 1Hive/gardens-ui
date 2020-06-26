@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { DropDown } from '@aragon/ui'
+import { DropDown } from '@1hive/1hive-ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
