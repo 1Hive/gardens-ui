@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, GU, textStyle, useTheme } from '@aragon/ui'
+import { Box, GU, textStyle, useLayout, useTheme } from '@aragon/ui'
 
 import honeySvg from '../assets/honey.svg'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -13,6 +13,9 @@ const Metrics = React.memo(function Metrics({
   totalActiveTokens,
   totalOpenProposals,
 }) {
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
+
   return (
     <Box
       heading="Honey"
@@ -23,15 +26,18 @@ const Metrics = React.memo(function Metrics({
     >
       <div
         css={`
-          display: flex;
+          display: ${compactMode ? 'block' : 'flex'};
           align-items: center;
-          justify-content: space-between;
+
+          & > div:not(:first-child) {
+            width: ${compactMode ? 'auto' : `${30 * GU}px`};
+          }
         `}
       >
         <div
           onClick={onExecuteIssuance}
           css={`
-            margin-left: ${2 * GU}px;
+            margin-right: ${4 * GU}px;
           `}
         >
           <img src={honeySvg} height="60" width="60" alt="" />
@@ -49,13 +55,13 @@ const Metrics = React.memo(function Metrics({
           />
         </div>
         <div>
+          <Metric label="Open proposals" value={totalOpenProposals} />
+        </div>
+        <div>
           <Metric
             label="Active"
             value={formatTokenAmount(totalActiveTokens, stakeToken.decimals)}
           />
-        </div>
-        <div>
-          <Metric label="Open proposals" value={totalOpenProposals} />
         </div>
       </div>
     </Box>

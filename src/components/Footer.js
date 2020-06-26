@@ -1,44 +1,37 @@
 import React from 'react'
-import {
-  GU,
-  Layout,
-  Link as AragonLink,
-  textStyle,
-  useTheme,
-  useViewport,
-} from '@aragon/ui'
 import styled from 'styled-components'
+import { GU, Link as AragonLink, textStyle, useTheme } from '@aragon/ui'
+import Layout from './Layout'
 import logoSvg from '../assets/logo.svg'
-import { BREAKPOINTS } from '../styles/breakpoints'
 
-export default function Footer() {
+export default function Footer({ compact }) {
   const theme = useTheme()
-  const { width: vw } = useViewport()
 
   return (
     <footer
       css={`
         flex-shrink: 0;
         width: 100%;
-        padding: ${5 * GU}px 0;
+        padding: ${5 * GU}px ${compact ? `${3 * GU}px` : 0};
         background: ${theme.surface};
       `}
     >
-      <Layout breakpoints={BREAKPOINTS} parentWidth={vw} paddingBottom={0}>
+      <Layout>
         <div
           css={`
-            display: flex;
+            display: ${compact ? 'block' : 'flex'};
             align-items: flex-start;
 
-            & > div:not(:first-child) {
-              width: ${25 * GU}px;
+            & > div {
+              margin-bottom: ${2 * GU}px;
+
+              &:not(:first-child) {
+                width: ${25 * GU}px;
+              }
             }
 
             & a {
               color: ${theme.contentSecondary};
-            }
-
-            & h5 {
             }
           `}
         >
@@ -53,7 +46,7 @@ export default function Footer() {
             <h5
               css={`
                 ${textStyle('body1')};
-                margin-bottom: ${1 * GU}px;
+                margin-bottom: ${1.5 * GU}px;
               `}
             >
               Community
@@ -75,7 +68,7 @@ export default function Footer() {
             <h5
               css={`
                 ${textStyle('body1')};
-                margin-bottom: ${1 * GU}px;
+                margin-bottom: ${1.5 * GU}px;
               `}
             >
               Tools
@@ -96,7 +89,7 @@ export default function Footer() {
 // TODO: Move to 1hive-ui
 const Link = styled(AragonLink)`
   display: block;
-  margin-bottom: ${1 * GU}px;
+  margin-bottom: ${1.5 * GU}px;
   text-align: left;
   text-decoration: none;
 `

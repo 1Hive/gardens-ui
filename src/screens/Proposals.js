@@ -82,40 +82,70 @@ const Proposals = React.memo(
 
     return (
       <div>
-        <Box padding={2 * GU}>
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            `}
-          >
-            {account && (
-              <Button
-                mode="strong"
-                onClick={onRequestNewProposal}
-                label="New proposal"
-                icon={<IconPlus />}
-                display={compactMode ? 'icon' : 'label'}
+        {!compactMode && (
+          <Box padding={2 * GU}>
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              `}
+            >
+              {account && (
+                <Button
+                  mode="strong"
+                  onClick={onRequestNewProposal}
+                  label="New proposal"
+                  icon={<IconPlus />}
+                  display={compactMode ? 'icon' : 'label'}
+                />
+              )}
+              <FilterBar
+                proposalsSize={filteredProposals.length}
+                proposalExecutionStatusFilter={proposalExecutionStatusFilter}
+                proposalStatusFilter={proposalSupportStatusFilter}
+                proposalTextFilter={proposalTextFilter}
+                handleExecutionStatusFilterChange={
+                  handleExecutionStatusFilterChange
+                }
+                handleProposalStatusFilterChange={
+                  handleProposalSupportFilterChange
+                }
+                handleTextFilterChange={updateTextFilter}
               />
-            )}
-            <FilterBar
-              proposalsSize={filteredProposals.length}
-              proposalExecutionStatusFilter={proposalExecutionStatusFilter}
-              proposalStatusFilter={proposalSupportStatusFilter}
-              proposalTextFilter={proposalTextFilter}
-              handleExecutionStatusFilterChange={
-                handleExecutionStatusFilterChange
-              }
-              handleProposalStatusFilterChange={
-                handleProposalSupportFilterChange
-              }
-              handleTextFilterChange={updateTextFilter}
-            />
-          </div>
-        </Box>
+            </div>
+          </Box>
+        )}
 
         <DataView
+          heading={
+            compactMode && (
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                `}
+              >
+                <strong
+                  css={`
+                    ${textStyle('body1')}
+                  `}
+                >
+                  Proposals
+                </strong>
+                {account && (
+                  <Button
+                    mode="strong"
+                    onClick={onRequestNewProposal}
+                    label="New proposal"
+                    icon={<IconPlus />}
+                    display={compactMode ? 'icon' : 'label'}
+                  />
+                )}
+              </div>
+            )
+          }
           fields={[
             { label: 'Proposal', align: 'start' },
             ...linkField,

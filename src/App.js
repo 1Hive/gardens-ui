@@ -22,7 +22,6 @@ const App = React.memo(function App() {
   } = useAppLogic()
 
   const { account } = useWallet()
-
   const selectedProposal = useSelectedProposal(proposals)
 
   const MainScreenComponent = (
