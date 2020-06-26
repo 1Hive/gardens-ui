@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import honeySvg from '../assets/honey.svg'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -13,35 +14,52 @@ const Metrics = React.memo(function Metrics({
   totalActiveTokens,
   totalOpenProposals,
 }) {
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
+
+  const TokenSupply = (
+    <div>
+      <Metric
+        label="Token Supply"
+        value={formatTokenAmount(totalSupply, stakeToken.decimals)}
+      />
+    </div>
+  )
+
   return (
     <Box
       heading="Honey"
-      padding={3 * GU}
       css={`
         margin-bottom: ${2 * GU}px;
       `}
     >
       <div
         css={`
-          display: flex;
+          display: ${compactMode ? 'block' : 'flex'};
           align-items: center;
           justify-content: space-between;
         `}
       >
         <div
-          onClick={onExecuteIssuance}
           css={`
-            margin-left: ${2 * GU}px;
+            display: flex;
+            align-items: center;
+            margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
           `}
         >
-          <img src={honeySvg} height="60" width="60" alt="" />
-        </div>
-        <div>
-          <Metric
-            label="Token Supply"
-            value={formatTokenAmount(totalSupply, stakeToken.decimals)}
+          <img
+            src={honeySvg}
+            height="60"
+            width="60"
+            alt=""
+            onClick={onExecuteIssuance}
+            css={`
+              margin-right: ${4 * GU}px;
+            `}
           />
+          {compactMode && TokenSupply}
         </div>
+        {!compactMode && TokenSupply}
         <div>
           <Metric
             label="Common Pool"
@@ -49,13 +67,13 @@ const Metrics = React.memo(function Metrics({
           />
         </div>
         <div>
+          <Metric label="Open proposals" value={totalOpenProposals} />
+        </div>
+        <div>
           <Metric
             label="Active"
             value={formatTokenAmount(totalActiveTokens, stakeToken.decimals)}
           />
-        </div>
-        <div>
-          <Metric label="Open proposals" value={totalOpenProposals} />
         </div>
       </div>
     </Box>

@@ -1,12 +1,12 @@
 import React from 'react'
-import { GU, Layout, useViewport } from '@1hive/1hive-ui'
+import { GU, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
 import Header from './Header'
-import { BREAKPOINTS } from '../styles/breakpoints'
+import Layout from './Layout'
 
 function MainView({ children }) {
-  const { width: vw, below } = useViewport()
+  const { below } = useViewport()
   const compactMode = below('medium')
 
   return (
@@ -17,26 +17,22 @@ function MainView({ children }) {
         height: 100vh;
       `}
     >
-      <Header compactMode={compactMode} />
+      <Header compact={compactMode} />
 
       <div
         css={`
-          transform: translateY(-${4 * GU}px);
+          ${!compactMode && `transform: translateY(-${4 * GU}px);`}
           flex: 1 0 auto;
         `}
       >
         <div
           css={`
-            display: flex;
-            flex-direction: column;
             height: 100%;
           `}
         >
-          <Layout breakpoints={BREAKPOINTS} parentWidth={vw} paddingBottom={0}>
-            {children}
-          </Layout>
+          <Layout>{children}</Layout>
         </div>
-        <Footer />
+        <Footer compact={compactMode} />
       </div>
     </div>
   )

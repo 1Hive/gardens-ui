@@ -6,7 +6,6 @@ import {
   IconConnect,
   springs,
   shortenAddress,
-  useLayout,
 } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
 
@@ -45,7 +44,7 @@ const SCREENS = [
   },
 ]
 
-function AccountModule() {
+function AccountModule({ compact }) {
   const buttonRef = useRef()
   const wallet = useWallet()
   const [opened, setOpened] = useState(false)
@@ -53,9 +52,6 @@ function AccountModule() {
   const [activatingDelayed, setActivatingDelayed] = useState(false)
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
-
-  const { layoutName } = useLayout()
-  const compact = layoutName === 'small'
 
   const { account, activating } = wallet
 
