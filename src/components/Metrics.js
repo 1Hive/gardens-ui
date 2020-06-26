@@ -29,7 +29,6 @@ const Metrics = React.memo(function Metrics({
   return (
     <Box
       heading="Honey"
-      padding={3 * GU}
       css={`
         margin-bottom: ${2 * GU}px;
       `}
