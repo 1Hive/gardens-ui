@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
-import { toDecimals } from '../lib/math-utils'
 import { toHex } from 'web3-utils'
 import { getAppAddressByName } from '../lib/data-utils'
 
@@ -10,34 +9,25 @@ const GAS_LIMIT = 250000
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
-  const {
-    convictionVoting,
-    installedApps,
-    organization,
-    requestToken,
-  } = useAppState()
+  const { convictionVoting, installedApps, organization } = useAppState()
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
-      const { decimals } = requestToken
-      const decimalAmount = toDecimals(amount.trim(), decimals).toString()
-
       sendIntent(
         organization,
         convictionVoting.appAddress,
         'addProposal',
-        [title, toHex(link), decimalAmount, beneficiary],
+        [title, toHex(link), amount, beneficiary],
         { ethers, from: account }
       )
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization, requestToken]
+    [account, convictionVoting, ethers, onDone, organization]
   )
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
-      console.log('STAKE ', typeof amount)
       sendIntent(
         organization,
         convictionVoting.appAddress,

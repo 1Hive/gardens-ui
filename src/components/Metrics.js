@@ -55,6 +55,7 @@ const Metrics = React.memo(function Metrics({
             onClick={onExecuteIssuance}
             css={`
               margin-right: ${4 * GU}px;
+              cursor: pointer;
             `}
           />
           {compactMode && TokenSupply}
