@@ -37,7 +37,7 @@ export function useProposals() {
 
     return proposals.map(proposal => {
       const stakes = stakesHistory.filter(
-        stake => stake.proposal === parseInt(proposal.id)
+        stake => parseInt(stake.proposalId) === parseInt(proposal.id)
       )
 
       const totalTokensStaked = proposal?.stakes.reduce(

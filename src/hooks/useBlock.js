@@ -1,7 +1,17 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import useInterval from './useInterval'
 import { useWallet } from '../providers/Wallet'
+import { getNetwork } from '../networks'
+
+const NETWORK_TIMES = new Map([
+  ['main', 13],
+  ['kovan', 4],
+  ['rinkeby', 14],
+  ['ropsten', 11],
+  ['goerli', 15],
+  ['xdai', 5],
+])
 
 export function useLatestBlock(updateEvery = 1000) {
   const { ethers } = useWallet()
@@ -18,4 +28,12 @@ export function useLatestBlock(updateEvery = 1000) {
   useInterval(fetchBlock, updateEvery, true)
 
   return block
+}
+
+export function useBlockTime() {
+  const network = getNetwork()
+
+  return useMemo(() => (network ? NETWORK_TIMES.get(network.type) : null), [
+    network,
+  ])
 }
