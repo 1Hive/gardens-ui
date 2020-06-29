@@ -9,12 +9,14 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
-import BigNumber from '../lib/bigNumber'
-import LineChart from './ModifiedLineChart'
 import styled from 'styled-components'
+import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
-import { formatTokenAmount } from '../lib/token-utils'
 import { useAppState } from '../providers/AppState'
+import { useBlockTime } from '../hooks/useBlock'
+
+import BigNumber from '../lib/bigNumber'
+import { formatTokenAmount } from '../lib/token-utils'
 
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
@@ -135,14 +137,6 @@ export function ConvictionCountdown({ proposal, shorter }) {
     return UNABLE_TO_PASS
   }, [currentConviction, executed, threshold, remainingTimeToPass])
 
-  const NOW = Date.now()
-
-  // TODO - create a file with block time per env
-  const BLOCK_TIME = 1000 * 15
-  const endDate =
-    !isNaN(new Date(NOW + remainingTimeToPass * BLOCK_TIME).getTime()) &&
-    new Date(NOW + remainingTimeToPass * BLOCK_TIME)
-
   return (
     <div
       css={`
@@ -152,7 +146,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
     >
       {view === UNABLE_TO_PASS ? (
         <>
-          <Outcome result={"Won't pass"} positive={false} />
+          <Outcome result="Won't pass" positive={false} />
           {!shorter && (
             <>
               <span
@@ -188,7 +182,11 @@ export function ConvictionCountdown({ proposal, shorter }) {
           )}
         </>
       ) : (
-        <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
+        <PositiveOutcome
+          remainingTimeToPass={remainingTimeToPass}
+          shorter={shorter}
+          view={view}
+        />
       )}
     </div>
   )
@@ -222,8 +220,16 @@ export function ConvictionTrend({ proposal }) {
   )
 }
 
-const PositiveOutcome = ({ endDate, shorter, view }) => {
+const PositiveOutcome = ({ remainingTimeToPass, shorter, view }) => {
   const theme = useTheme()
+
+  const NOW = Date.now()
+  const blockTimeInSeconds = useBlockTime()
+
+  const BLOCK_TIME = 1000 * blockTimeInSeconds
+  const endDate =
+    !isNaN(new Date(NOW + remainingTimeToPass * BLOCK_TIME).getTime()) &&
+    new Date(NOW + remainingTimeToPass * BLOCK_TIME)
 
   const text =
     view === MAY_PASS
@@ -235,7 +241,7 @@ const PositiveOutcome = ({ endDate, shorter, view }) => {
   return (
     <>
       <Outcome result={text} positive />
-      {!shorter && (
+      {!shorter && view === MAY_PASS && (
         <>
           <span
             css={`

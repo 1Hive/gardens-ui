@@ -61,8 +61,12 @@ const Proposals = React.memo(
       ? [{ label: 'Request amount', align: 'start' }]
       : []
 
-    const sortedProposals = filteredProposals.sort(
-      (a, b) => b.currentConviction - a.currentConviction // desc order
+    const sortedProposals = useMemo(
+      () =>
+        filteredProposals.sort(
+          (a, b) => b.currentConviction - a.currentConviction
+        ),
+      [filteredProposals]
     )
 
     const updateTextFilter = useCallback(
@@ -195,8 +199,11 @@ const Proposals = React.memo(
             if (proposal.executed) {
               entriesElements.push(
                 <IdentityBadge
-                  connectedAccount={addressesEqual(proposal.creator, account)}
-                  entity={proposal.creator}
+                  connectedAccount={addressesEqual(
+                    proposal.beneficiary,
+                    account
+                  )}
+                  entity={proposal.beneficiary}
                 />
               )
             }
