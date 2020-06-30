@@ -35,7 +35,9 @@ export function useStakesHistorySubscription(convictionVoting) {
   const stakesSubscription = useRef(null)
 
   const onStakesHandler = useCallback((stakes = []) => {
-    const transformedStakes = stakes.map(transformStakeHistoryData)
+    const transformedStakes = stakes
+      .map(transformStakeHistoryData)
+      .sort((s1, s2) => s1.time - s2.time) // TODO: Remove when subgraph query updated
     setStakes(transformedStakes)
   }, [])
 
