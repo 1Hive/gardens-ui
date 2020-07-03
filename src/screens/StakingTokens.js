@@ -25,6 +25,7 @@ function displayedStakes(stakes, total) {
 }
 
 const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
+  const theme = useTheme()
   const { below } = useViewport()
   const compact = below('large')
 
@@ -57,10 +58,13 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
     return null
   }
 
+  const colors = [theme.green, theme.red, theme.purple, theme.yellow]
+
   return (
     <Box heading="My supported proposals" padding={3 * GU}>
       <div>
         <Distribution
+          colors={colors}
           heading="Your active token distribution"
           items={stakes}
           renderLegendItem={({ item }) => {
