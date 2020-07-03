@@ -1,9 +1,9 @@
 import React from 'react'
-
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import honeySvg from '../assets/honey.svg'
 import { formatTokenAmount } from '../lib/token-utils'
+import { useTokenBalanceToUsd } from '../hooks/useTokenPrice'
 
 const Metrics = React.memo(function Metrics({
   totalSupply,
@@ -19,9 +19,10 @@ const Metrics = React.memo(function Metrics({
 
   const TokenSupply = (
     <div>
-      <Metric
+      <TokenBalance
         label="Token Supply"
-        value={formatTokenAmount(totalSupply, stakeToken.decimals)}
+        value={totalSupply}
+        token={stakeToken}
       />
     </div>
   )
@@ -36,7 +37,7 @@ const Metrics = React.memo(function Metrics({
       <div
         css={`
           display: ${compactMode ? 'block' : 'flex'};
-          align-items: center;
+          align-items: flex-start;
           justify-content: space-between;
         `}
       >
@@ -62,18 +63,20 @@ const Metrics = React.memo(function Metrics({
         </div>
         {!compactMode && TokenSupply}
         <div>
-          <Metric
+          <TokenBalance
             label="Common Pool"
-            value={formatTokenAmount(commonPool, requestToken.decimals)}
+            value={commonPool}
+            token={requestToken}
           />
         </div>
         <div>
           <Metric label="Open proposals" value={totalOpenProposals} />
         </div>
         <div>
-          <Metric
+          <TokenBalance
             label="Active"
-            value={formatTokenAmount(totalActiveTokens, stakeToken.decimals)}
+            value={totalActiveTokens}
+            token={stakeToken}
           />
         </div>
       </div>
@@ -101,6 +104,24 @@ function Metric({ label, value }) {
       >
         {value}
       </span>
+    </>
+  )
+}
+
+function TokenBalance({ label, token, value }) {
+  const theme = useTheme()
+  const usdValue = useTokenBalanceToUsd(value, token)
+
+  return (
+    <>
+      <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+      <div
+        css={`
+          color: ${theme.green};
+        `}
+      >
+        $ {usdValue}
+      </div>
     </>
   )
 }
