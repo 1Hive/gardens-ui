@@ -16,19 +16,18 @@ export default function useAppLogic() {
   const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
 
-  const { myStakes, totalActiveTokens, totalOpenProposals } = useMemo(() => {
+  const { myStakes, totalActiveTokens } = useMemo(() => {
     if (!stakeToken || !proposals) {
       return {
         myStakes: [],
         totalActiveTokens: new BigNumber('0'),
-        totalOpenProposals: 0,
       }
     }
 
     return proposals.reduce(
-      ({ myStakes, totalActiveTokens, totalOpenProposals }, proposal) => {
+      ({ myStakes, totalActiveTokens }, proposal) => {
         if (proposal.executed || !proposal.stakes) {
-          return { myStakes, totalActiveTokens, totalOpenProposals }
+          return { myStakes, totalActiveTokens }
         }
 
         const totalActive = proposal.stakes.reduce((accumulator, stake) => {
@@ -52,13 +51,11 @@ export default function useAppLogic() {
         return {
           myStakes,
           totalActiveTokens,
-          totalOpenProposals: totalOpenProposals + 1,
         }
       },
       {
         myStakes: [],
         totalActiveTokens: new BigNumber('0'),
-        totalOpenProposals: 0,
       }
     )
   }, [account, proposals, stakeToken])
@@ -72,6 +69,5 @@ export default function useAppLogic() {
     proposals,
     proposalPanel,
     totalActiveTokens,
-    totalOpenProposals,
   }
 }

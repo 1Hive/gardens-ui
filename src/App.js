@@ -18,7 +18,6 @@ const App = React.memo(function App() {
     proposals,
     proposalPanel,
     totalActiveTokens,
-    totalOpenProposals,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -36,7 +35,6 @@ const App = React.memo(function App() {
       proposals={proposals}
       selectedProposal={selectedProposal}
       totalActiveTokens={totalActiveTokens}
-      totalOpenProposals={totalOpenProposals}
     />
   )
 

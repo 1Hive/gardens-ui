@@ -1,9 +1,10 @@
 import React from 'react'
+import { Box, GU, Link, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
+import { useTokenBalanceToUsd } from '../hooks/useTokenPrice'
 
-import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
-
-import honeySvg from '../assets/honey.svg'
+import { bigNum } from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
+import honeySvg from '../assets/honey.svg'
 
 const Metrics = React.memo(function Metrics({
   totalSupply,
@@ -12,19 +13,9 @@ const Metrics = React.memo(function Metrics({
   stakeToken,
   requestToken,
   totalActiveTokens,
-  totalOpenProposals,
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-
-  const TokenSupply = (
-    <div>
-      <Metric
-        label="Token Supply"
-        value={formatTokenAmount(totalSupply, stakeToken.decimals)}
-      />
-    </div>
-  )
 
   return (
     <Box
@@ -36,7 +27,7 @@ const Metrics = React.memo(function Metrics({
       <div
         css={`
           display: ${compactMode ? 'block' : 'flex'};
-          align-items: center;
+          align-items: flex-start;
           justify-content: space-between;
         `}
       >
@@ -58,22 +49,28 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          {compactMode && TokenSupply}
+          {compactMode && <TokenPrice token={stakeToken} />}
         </div>
-        {!compactMode && TokenSupply}
+        {!compactMode && <TokenPrice token={stakeToken} />}
         <div>
-          <Metric
+          <TokenBalance
             label="Common Pool"
-            value={formatTokenAmount(commonPool, requestToken.decimals)}
+            value={commonPool}
+            token={requestToken}
           />
         </div>
         <div>
-          <Metric label="Open proposals" value={totalOpenProposals} />
+          <TokenBalance
+            label="Token Supply"
+            value={totalSupply}
+            token={stakeToken}
+          />
         </div>
         <div>
-          <Metric
+          <TokenBalance
             label="Active"
-            value={formatTokenAmount(totalActiveTokens, stakeToken.decimals)}
+            value={totalActiveTokens}
+            token={stakeToken}
           />
         </div>
       </div>
@@ -81,7 +78,7 @@ const Metrics = React.memo(function Metrics({
   )
 })
 
-function Metric({ label, value }) {
+function Metric({ label, value, color }) {
   const theme = useTheme()
 
   return (
@@ -97,11 +94,52 @@ function Metric({ label, value }) {
       <span
         css={`
           ${textStyle('title2')};
+          color: ${color || theme.content};
         `}
       >
         {value}
       </span>
     </>
+  )
+}
+
+function TokenBalance({ label, token, value }) {
+  const theme = useTheme()
+  const usdValue = useTokenBalanceToUsd(value, token)
+
+  return (
+    <>
+      <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+      <div
+        css={`
+          color: ${theme.green};
+        `}
+      >
+        $ {usdValue}
+      </div>
+    </>
+  )
+}
+
+function TokenPrice({ token }) {
+  const theme = useTheme()
+  const usdValue = useTokenBalanceToUsd(bigNum(1), token)
+
+  return (
+    <div>
+      <Metric label="Honey price" value={`$${usdValue}`} color={theme.green} />
+      <Link
+        href="https://uniswap.1hive.org/swap"
+        external
+        css={`
+          ${textStyle('body3')};
+          text-decoration: none;
+          display: flex;
+        `}
+      >
+        Trade
+      </Link>
+    </div>
   )
 }
 
