@@ -19,7 +19,6 @@ const MainScreen = React.memo(
     proposals,
     selectedProposal,
     totalActiveTokens,
-    totalOpenProposals,
   }) => {
     const {
       requestToken,
@@ -72,7 +71,6 @@ const MainScreen = React.memo(
               stakeToken={stakeToken}
               requestToken={requestToken}
               totalActiveTokens={totalActiveTokens}
-              totalOpenProposals={totalOpenProposals}
             />
             <Proposals
               filteredProposals={filteredProposals}
