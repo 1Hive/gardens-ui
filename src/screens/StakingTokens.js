@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '../lib/bigNumber'
@@ -14,7 +15,11 @@ function displayedStakes(stakes, total) {
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
   ).map((stake, index) => ({
-    item: stake.index === -1 ? 'Others' : `${stakes[stake.index].proposalName}`,
+    item: {
+      proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
+      proposalName:
+        stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
+    },
     percentage: stake.percentage,
   }))
 }
@@ -23,6 +28,14 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   const theme = useTheme()
   const { below } = useViewport()
   const compact = below('large')
+
+  const history = useHistory()
+  const handleSelectProposal = useCallback(
+    id => {
+      history.push(`/proposal/${id}`)
+    },
+    [history]
+  )
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
@@ -45,27 +58,23 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
     return null
   }
 
+  const colors = [theme.green, theme.red, theme.purple, theme.yellow]
+
   return (
     <Box heading="My supported proposals" padding={3 * GU}>
       <div>
         <Distribution
+          colors={colors}
           heading="Your active token distribution"
           items={stakes}
           renderLegendItem={({ item }) => {
             return (
-              <div
-                css={`
-                  background: ${theme.badge};
-                  border-radius: 3px;
-                  padding: ${0.5 * GU}px ${1 * GU}px;
-                  width: ${compact ? '100%' : `${18 * GU}px`};
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                `}
-              >
-                {item}
-              </div>
+              <DistributionItem
+                compact={compact}
+                proposalName={item.proposalName}
+                proposalId={item.proposalId}
+                selectProposal={handleSelectProposal}
+              />
             )
           }}
         />
@@ -73,5 +82,40 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
     </Box>
   )
 })
+
+const DistributionItem = ({
+  compact,
+  proposalId,
+  proposalName,
+  selectProposal,
+}) => {
+  const theme = useTheme()
+
+  const handleOnClick = useCallback(() => {
+    selectProposal(proposalId)
+  }, [proposalId, selectProposal])
+
+  return (
+    <div
+      css={`
+        background: ${theme.badge};
+        border-radius: 3px;
+        padding: ${0.5 * GU}px ${1 * GU}px;
+        width: ${compact ? '100%' : `${18 * GU}px`};
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        ${proposalId &&
+          `cursor: pointer; &:hover {
+          background: ${theme.badge.alpha(0.7)}
+        }`}
+      `}
+      onClick={proposalId ? handleOnClick : null}
+    >
+      {proposalName}
+    </div>
+  )
+}
 
 export default StakingTokens

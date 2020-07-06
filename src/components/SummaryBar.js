@@ -27,7 +27,7 @@ function SummaryBar({
           <CombinedBar>
             <BarPart
               style={{
-                backgroundColor: theme.infoSurfaceContent,
+                backgroundColor: theme.accent,
                 transform: progress.interpolate(
                   v => `scale3d(${firstSize * v}, 1, 1)`
                 ),
@@ -35,7 +35,7 @@ function SummaryBar({
             />
             <BarPart
               style={{
-                backgroundColor: theme.info,
+                backgroundColor: theme.accent,
                 transform: progress.interpolate(
                   v => `
                     translate3d(${100 * firstSize * v}%, 0, 0)
@@ -46,7 +46,7 @@ function SummaryBar({
             />
             <BarPart
               style={{
-                backgroundColor: thirdSize > 0 ? theme.info : theme.negative,
+                backgroundColor: thirdSize > 0 ? theme.accent : theme.negative,
                 opacity: thirdSize > 0 ? 0.2 : 0.8,
                 transform: progress.interpolate(
                   v => `

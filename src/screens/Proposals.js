@@ -6,7 +6,6 @@ import {
   Link,
   GU,
   IconPlus,
-  Text,
   textStyle,
   useLayout,
   useTheme,
@@ -230,11 +229,24 @@ const ProposalInfo = ({ proposal, requestToken }) => {
   )
 }
 
-const IdAndTitle = ({ id, name, selectProposal }) => (
-  <Link onClick={() => selectProposal(id)}>
-    <Text color={useTheme().surfaceContentSecondary.toString()}>{name}</Text>
-  </Link>
-)
+const IdAndTitle = ({ id, name, selectProposal }) => {
+  const theme = useTheme()
+  const handleOnClick = useCallback(() => {
+    selectProposal(id)
+  }, [id, selectProposal])
+
+  return (
+    <Link onClick={handleOnClick}>
+      <span
+        css={`
+          color: ${theme.surfaceContentSecondary};
+        `}
+      >
+        {name}
+      </span>
+    </Link>
+  )
+}
 
 const Amount = ({
   requestedAmount = 0,

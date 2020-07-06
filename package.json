@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@1hive/1hive-ui": "^1.0.1",
     "@1hive/connect-thegraph-conviction-voting": "^0.1.7",
     "@aragon/connect": "^0.3.0",
-    "@1hive/1hive-ui": "^1.0.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^2.8.6",
     "ethers": "^5.0.2",

@@ -23,7 +23,9 @@ function Header({ compact }) {
           background: url(${headerBackgroundSvg}) no-repeat;
           background-size: 811px 600px;
           background-position: center;
-          padding: ${compact ? `${3 * GU}px` : `${10 * GU}px 0`};
+          padding: ${compact
+            ? `${3 * GU}px`
+            : `${5.625 * GU}px 0 ${8.75 * GU}px 0`};
         `}
       >
         <Layout>
