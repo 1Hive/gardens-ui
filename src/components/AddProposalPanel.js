@@ -5,6 +5,7 @@ import {
   GU,
   Info,
   isAddress,
+  MEDIUM_RADIUS,
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -195,6 +196,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
                   css={`
                     background: ${theme.background};
                     border-left: 1px solid ${theme.border};
+                    border-radius: 0px ${MEDIUM_RADIUS}px ${MEDIUM_RADIUS}px 0px;
                     padding: 7px ${1.5 * GU}px;
                   `}
                 >
