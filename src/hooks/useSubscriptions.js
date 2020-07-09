@@ -23,7 +23,7 @@ export function useProposalsSubscription(convictionVoting) {
       onProposalsHandler
     )
 
-    return () => proposalsSubscription.current[0]()
+    return () => proposalsSubscription.current.unsubscribe()
   }, [convictionVoting, onProposalsHandler])
 
   return proposals
@@ -51,7 +51,7 @@ export function useStakesHistorySubscription(convictionVoting) {
     )
 
     return () => {
-      stakesSubscription.current[0]()
+      stakesSubscription.current.unsubscribe()
     }
   }, [convictionVoting, onStakesHandler])
 
