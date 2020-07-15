@@ -24,7 +24,7 @@ const SCREENS = [
     title: 'Ethereum providers',
     height:
       4 * GU + // header
-      (12 + 1.5) * GU * (getUseWalletProviders().length / 2) + // buttons
+      (12 + 1.5) * GU * Math.ceil(getUseWalletProviders().length / 2) + // buttons
       7 * GU, // footer
   },
   {
