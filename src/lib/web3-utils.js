@@ -5,7 +5,7 @@ import { getDefaultChain } from '../local-settings'
 const DEFAULT_LOCAL_CHAIN = ''
 
 export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
+  const providers = [{ id: 'injected' }]
 
   if (env('FORTMATIC_API_KEY')) {
     providers.push({
