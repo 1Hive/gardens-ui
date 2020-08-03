@@ -5,7 +5,14 @@ import { BREAKPOINTS } from '../styles/breakpoints'
 function CustomLayout({ children }) {
   const { width: vw } = useViewport()
   return (
-    <Layout breakpoints={BREAKPOINTS} parentWidth={vw} paddingBottom={0}>
+    <Layout
+      breakpoints={BREAKPOINTS}
+      parentWidth={vw}
+      paddingBottom={0}
+      css={`
+        min-width: auto;
+      `}
+    >
       {children}
     </Layout>
   )
