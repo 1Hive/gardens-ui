@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
+  Checkbox,
   Field,
   GU,
   Info,
@@ -18,6 +19,17 @@ import { calculateThreshold, getMaxConviction } from '../lib/conviction'
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
+const DEFAULT_FORM_DATA = {
+  title: '',
+  link: '',
+  signalingMode: false,
+  amount: {
+    value: '0',
+    valueBN: new BigNumber(0),
+  },
+  beneficiary: '',
+}
+
 const AddProposalPanel = React.memo(({ onSubmit }) => {
   const theme = useTheme()
   const {
@@ -30,15 +42,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     weight,
   } = useAppState()
 
-  const [formData, setFormData] = useState({
-    title: '',
-    link: '',
-    amount: {
-      value: '0',
-      valueBN: new BigNumber(0),
-    },
-    beneficiary: '',
-  })
+  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const handleAmountEditMode = useCallback(
     editMode => {
@@ -96,6 +100,14 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     },
     [stakeToken.decimals]
   )
+
+  const handleModeChange = useCallback(check => {
+    setFormData(formData => ({
+      ...formData,
+      signalingMode: check,
+      amount: check ? DEFAULT_FORM_DATA.amount : formData.amount,
+    }))
+  }, [])
 
   const handleBeneficiaryChange = useCallback(event => {
     const updatedBeneficiary = event.target.value
@@ -179,6 +191,25 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           required
         />
       </Field>
+      <div
+        css={`
+          display: flex;
+          margin-bottom: ${3 * GU}px;
+        `}
+      >
+        <Checkbox
+          checked={formData.signalingMode}
+          onChange={checked => handleModeChange(checked)}
+        />
+        <span
+          css={`
+            color: ${theme.contentSecondary};
+            margin-left: ${1 * GU}px;
+          `}
+        >
+          Signaling proposal
+        </span>
+      </div>
       {requestToken && (
         <>
           <Field
@@ -191,6 +222,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
               onChange={handleAmountChange}
               required
               wide
+              disabled={formData.signalingMode}
               adornment={
                 <span
                   css={`
@@ -205,6 +237,14 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
               }
               adornmentPosition="end"
               adornmentSettings={{ padding: 1 }}
+              css={`
+                color: ${formData.signalingMode
+                  ? theme.disabledContent
+                  : theme.surfaceContent};
+                background: ${formData.signalingMode
+                  ? theme.background
+                  : theme.surface};
+              `}
             />
           </Field>
           <Field label="Beneficiary">
