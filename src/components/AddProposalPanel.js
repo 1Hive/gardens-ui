@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
-  Checkbox,
+  DropDown,
   Field,
   GU,
   Info,
@@ -19,10 +19,14 @@ import { calculateThreshold, getMaxConviction } from '../lib/conviction'
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
+const NULL_PROPOSAL_TYPE = -1
+// const SIGNALING_PROPOSAL = 0
+const FUNDING_PROPOSAL = 1
+
 const DEFAULT_FORM_DATA = {
   title: '',
   link: '',
-  signalingMode: false,
+  proposalType: NULL_PROPOSAL_TYPE,
   amount: {
     value: '0',
     valueBN: new BigNumber(0),
@@ -43,6 +47,8 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
   } = useAppState()
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+
+  const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
   const handleAmountEditMode = useCallback(
     editMode => {
@@ -101,11 +107,10 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     [stakeToken.decimals]
   )
 
-  const handleModeChange = useCallback(check => {
+  const handleProposalTypeChange = useCallback(selected => {
     setFormData(formData => ({
       ...formData,
-      signalingMode: check,
-      amount: check ? DEFAULT_FORM_DATA.amount : formData.amount,
+      proposalType: selected,
     }))
   }, [])
 
@@ -168,16 +173,22 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <Info
-        title="Action"
+      <Field
+        label="Select proposal type"
         css={`
           margin-top: ${3 * GU}px;
         `}
       >
-        This action will create a proposal which can be voted on by staking{' '}
-        {stakeToken.symbol}. The action will be executable if the accrued total
-        stake reaches above the threshold.
-      </Info>
+        <DropDown
+          header="Select proposal type"
+          placeholder="Proposal type"
+          selected={formData.proposalType}
+          onChange={handleProposalTypeChange}
+          items={['Signaling proposal', 'Funding proposal']}
+          required
+          css="width: 100%;"
+        />
+      </Field>
       <Field
         label="Title"
         css={`
@@ -191,26 +202,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           required
         />
       </Field>
-      <div
-        css={`
-          display: flex;
-          margin-bottom: ${3 * GU}px;
-        `}
-      >
-        <Checkbox
-          checked={formData.signalingMode}
-          onChange={checked => handleModeChange(checked)}
-        />
-        <span
-          css={`
-            color: ${theme.contentSecondary};
-            margin-left: ${1 * GU}px;
-          `}
-        >
-          Signaling proposal
-        </span>
-      </div>
-      {requestToken && (
+      {requestToken && fundingMode && (
         <>
           <Field
             label="Requested Amount"
@@ -222,7 +214,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
               onChange={handleAmountChange}
               required
               wide
-              disabled={formData.signalingMode}
               adornment={
                 <span
                   css={`
@@ -237,14 +228,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
               }
               adornmentPosition="end"
               adornmentSettings={{ padding: 1 }}
-              css={`
-                color: ${formData.signalingMode
-                  ? theme.disabledContent
-                  : theme.surfaceContent};
-                background: ${formData.signalingMode
-                  ? theme.background
-                  : theme.surface};
-              `}
             />
           </Field>
           <Field label="Beneficiary">
@@ -260,6 +243,50 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       <Field label="Link">
         <TextInput onChange={handleLinkChange} value={formData.link} wide />
       </Field>
+      <Button wide mode="strong" type="submit" disabled={errors.length > 0}>
+        Submit
+      </Button>
+      {formData.proposalType !== NULL_PROPOSAL_TYPE && (
+        <Info
+          title="Action"
+          css={`
+            margin-top: ${3 * GU}px;
+          `}
+        >
+          {fundingMode ? (
+            <>
+              <span>
+                This action will create a proposal which can be voted on{' '}
+              </span>{' '}
+              <span
+                css={`
+                  font-weight: 700;
+                `}
+              >
+                by staking {stakeToken.symbol}.
+              </span>{' '}
+              <span>
+                The action will be executable if the accrued total stake reaches
+                above the threshold.
+              </span>
+            </>
+          ) : (
+            <>
+              <span>
+                This action will create a proposal which can be voted on,
+              </span>{' '}
+              <span
+                css={`
+                  font-weight: 700;
+                `}
+              >
+                it’s a proposal without a requested amount.
+              </span>{' '}
+              <span>The action will not be executable.</span>
+            </>
+          )}
+        </Info>
+      )}
       {errors.length > 0 && (
         <Info
           mode="warning"
@@ -272,10 +299,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           ))}
         </Info>
       )}
-      <Button wide mode="strong" type="submit" disabled={errors.length > 0}>
-        Submit
-      </Button>
-      {formData.amount.valueBN.gte(0) && (
+      {fundingMode && formData.amount.valueBN.gte(0) && (
         <Info
           mode={neededThreshold ? 'info' : 'warning'}
           css={`
