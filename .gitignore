@@ -3,6 +3,7 @@
 /node_modules
 /public/aragon-ui
 package-lock.json
+yarn.lock
 
 # production
 /build
