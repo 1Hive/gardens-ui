@@ -20,7 +20,6 @@ import { calculateThreshold, getMaxConviction } from '../lib/conviction'
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
 const NULL_PROPOSAL_TYPE = -1
-// const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
 
 const DEFAULT_FORM_DATA = {
@@ -171,6 +170,12 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     return Math.round((threshold / max) * 100)
   }, [alpha, formData.amount, maxRatio, totalSupply, vaultBalance, weight])
 
+  const submitDisabled =
+    formData.proposalType === NULL_PROPOSAL_TYPE ||
+    (formData.proposalType === FUNDING_PROPOSAL &&
+      (formData.amount.value === '0' || !formData.beneficiary)) ||
+    !formData.title
+
   return (
     <form onSubmit={handleFormSubmit}>
       <Field
@@ -186,7 +191,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           onChange={handleProposalTypeChange}
           items={['Signaling proposal', 'Funding proposal']}
           required
-          css="width: 100%;"
+          wide
         />
       </Field>
       <Field
@@ -243,7 +248,12 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       <Field label="Link">
         <TextInput onChange={handleLinkChange} value={formData.link} wide />
       </Field>
-      <Button wide mode="strong" type="submit" disabled={errors.length > 0}>
+      <Button
+        wide
+        mode="strong"
+        type="submit"
+        disabled={errors.length > 0 || submitDisabled}
+      >
         Submit
       </Button>
       {formData.proposalType !== NULL_PROPOSAL_TYPE && (
@@ -256,7 +266,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           {fundingMode ? (
             <>
               <span>
-                This action will create a proposal which can be voted on{' '}
+                This action will create a proposal which can be voted on
               </span>{' '}
               <span
                 css={`
@@ -287,18 +297,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           )}
         </Info>
       )}
-      {errors.length > 0 && (
-        <Info
-          mode="warning"
-          css={`
-            margin-bottom: ${2 * GU}px;
-          `}
-        >
-          {errors.map((err, index) => (
-            <div key={index}>{err}</div>
-          ))}
-        </Info>
-      )}
       {fundingMode && formData.amount.valueBN.gte(0) && (
         <Info
           mode={neededThreshold ? 'info' : 'warning'}
@@ -310,6 +308,19 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
             ? `Required conviction for requested amount in order for the proposal to
           pass is ~%${neededThreshold}`
             : `Proposal might never pass with requested amount`}
+        </Info>
+      )}
+
+      {errors.length > 0 && (
+        <Info
+          mode="warning"
+          css={`
+            margin-top: ${2 * GU}px;
+          `}
+        >
+          {errors.map((err, index) => (
+            <div key={index}>{err}</div>
+          ))}
         </Info>
       )}
     </form>
