@@ -21,6 +21,8 @@ import {
 
 // Organzation
 const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
+const ORG_SUBRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'
 
 // Convcition voting
 const APP_NAME = 'conviction-voting'
@@ -61,10 +63,19 @@ export function useOrganzation() {
   useEffect(() => {
     let cancelled = false
     const fetchOrg = async () => {
-      const organization = await connect(ORG_ADDRESS, 'thegraph', {
-        ethereum,
-        network: getDefaultChain(),
-      })
+      const organization = await connect(
+        ORG_ADDRESS,
+        [
+          'thegraph',
+          {
+            orgSubgraphUrl: ORG_SUBRAPH_URL,
+          },
+        ],
+        {
+          readProvider: ethereum || ethers,
+          chainId: getDefaultChain(),
+        }
+      )
 
       if (!cancelled) {
         setOrganization(organization)
