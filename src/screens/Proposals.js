@@ -29,9 +29,11 @@ const Proposals = React.memo(
     proposalExecutionStatusFilter,
     proposalSupportStatusFilter,
     proposalTextFilter,
+    proposalTypeFilter,
     handleProposalSupportFilterChange,
     handleExecutionStatusFilterChange,
     handleSearchTextFilterChange,
+    handleProposalTypeFilterChange,
     requestToken,
     onRequestNewProposal,
   }) => {
@@ -108,6 +110,7 @@ const Proposals = React.memo(
                 proposalExecutionStatusFilter={proposalExecutionStatusFilter}
                 proposalStatusFilter={proposalSupportStatusFilter}
                 proposalTextFilter={proposalTextFilter}
+                proposalTypeFilter={proposalTypeFilter}
                 handleExecutionStatusFilterChange={
                   handleExecutionStatusFilterChange
                 }
@@ -115,6 +118,7 @@ const Proposals = React.memo(
                   handleProposalSupportFilterChange
                 }
                 handleTextFilterChange={updateTextFilter}
+                handleProposalTypeFilterChange={handleProposalTypeFilterChange}
               />
             </div>
           </Box>
