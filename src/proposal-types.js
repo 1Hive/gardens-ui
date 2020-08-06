@@ -26,7 +26,7 @@ export function getProposalExecutionStatus({ executed }) {
 }
 
 export function getProposalType({ requestedAmount }) {
-  if (requestedAmount.eq(BigNumber('0'))) {
+  if (requestedAmount.eq(0)) {
     return PROPOSAL_TYPE_SIGNALING
   }
   return PROPOSAL_TYPE_FUNDING
