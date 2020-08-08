@@ -24,13 +24,22 @@ function Wallet({ myStakes }) {
   const balanceUsdValue = useTokenBalanceToUsd(accountBalance, stakeToken)
 
   useEffect(() => {
+    let cancelled = false
+
     async function getProfileForAccount() {
       if (account) {
         const { name } = await getProfile(account)
-        setProfileName(name)
+        if (!cancelled) {
+          setProfileName(name)
+        }
       }
     }
+
     getProfileForAccount()
+
+    return () => {
+      cancelled = true
+    }
   }, [account])
 
   const myActiveTokens = useMemo(() => {
