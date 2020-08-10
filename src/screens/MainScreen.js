@@ -32,9 +32,11 @@ const MainScreen = React.memo(
       proposalExecutionStatusFilter,
       proposalSupportStatusFilter,
       proposalTextFilter,
+      proposalTypeFilter,
       handleProposalSupportFilterChange,
       handleProposalExecutionFilterChange,
       handleSearchTextFilterChange,
+      handleProposalTypeFilterChange,
     } = useFilterProposals(proposals, myStakes)
 
     const history = useHistory()
@@ -77,11 +79,13 @@ const MainScreen = React.memo(
               proposalExecutionStatusFilter={proposalExecutionStatusFilter}
               proposalSupportStatusFilter={proposalSupportStatusFilter}
               proposalTextFilter={proposalTextFilter}
+              proposalTypeFilter={proposalTypeFilter}
               handleProposalSupportFilterChange={
                 handleProposalSupportFilterChange
               }
               handleExecutionStatusFilterChange={handleTabChange}
               handleSearchTextFilterChange={handleSearchTextFilterChange}
+              handleProposalTypeFilterChange={handleProposalTypeFilterChange}
               requestToken={requestToken}
               onRequestNewProposal={onRequestNewProposal}
             />

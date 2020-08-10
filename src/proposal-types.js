@@ -4,6 +4,9 @@ export const PROPOSAL_STATUS_ACCEPTED = 2
 export const PROPOSAL_STATUS_SUPPORTED = 1
 export const PROPOSAL_STATUS_NOT_SUPPORTED = 2
 
+export const PROPOSAL_TYPE_FUNDING = 1
+export const PROPOSAL_TYPE_SIGNALING = 2
+
 export function getProposalSupportStatus(stakes, proposal) {
   if (stakes.find(stake => stake.proposalId === proposal.id)) {
     return PROPOSAL_STATUS_SUPPORTED
@@ -18,4 +21,11 @@ export function getProposalExecutionStatus({ executed }) {
   } else {
     return PROPOSAL_STATUS_OPEN
   }
+}
+
+export function getProposalType({ requestedAmount }) {
+  if (requestedAmount.eq(0)) {
+    return PROPOSAL_TYPE_SIGNALING
+  }
+  return PROPOSAL_TYPE_FUNDING
 }

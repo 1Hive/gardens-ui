@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { DropDown } from '@1hive/1hive-ui'
+import { DropDown, GU } from '@1hive/1hive-ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
@@ -11,9 +11,11 @@ const FilterBar = React.memo(
     proposalExecutionStatusFilter,
     proposalStatusFilter,
     proposalTextFilter,
+    proposalTypeFilter,
     handleExecutionStatusFilterChange,
     handleProposalStatusFilterChange,
     handleTextFilterChange,
+    handleProposalTypeFilterChange,
   }) => {
     const [textFieldVisible, setTextFieldVisible] = useState(false)
     const textFilterOpener = useRef(null)
@@ -32,10 +34,20 @@ const FilterBar = React.memo(
         `}
       >
         <DropDown
+          header="Type"
+          placeholder="Type"
+          selected={proposalTypeFilter}
+          onChange={handleProposalTypeFilterChange}
+          items={['Funding', 'Signaling']}
+        />
+        <DropDown
           header="Status"
           selected={proposalExecutionStatusFilter}
           onChange={handleExecutionStatusFilterChange}
           items={['Open', 'Closed']}
+          css={`
+            margin-left: ${1.5 * GU}px;
+          `}
         />
         {!statusFilterDisabled && (
           <DropdownFilter
