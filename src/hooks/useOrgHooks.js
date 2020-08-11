@@ -6,6 +6,7 @@ import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
 import { connect } from '@aragon/connect'
 import { getDefaultChain } from '../local-settings'
 import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
+import { addressesEqual } from '../lib/web3-utils'
 import { useContractReadOnly } from './useContract'
 
 import BigNumber from '../lib/bigNumber'
@@ -104,8 +105,13 @@ export function useAppData(organization) {
 
     const fetchAppData = async () => {
       const apps = await organization.apps()
+      const permissions = await organization.permissions()
 
       const convictionApp = apps.find(app => app.name === APP_NAME)
+
+      const convictionAppPermissions = permissions.filter(({ appAddress }) =>
+        addressesEqual(appAddress, convictionApp.address)
+      )
 
       const convictionVoting = new ConvictionVoting(
         convictionApp.address,
@@ -121,6 +127,7 @@ export function useAppData(organization) {
           installedApps: apps,
           convictionVoting,
           organization,
+          permissions: convictionAppPermissions,
         }))
       }
     }
