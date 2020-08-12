@@ -18,6 +18,8 @@ import HeaderPopover from '../Header/HeaderPopover'
 
 import { getUseWalletProviders } from '../../lib/web3-utils'
 
+const AnimatedDiv = animated.div
+
 const SCREENS = [
   {
     id: 'providers',
@@ -207,7 +209,7 @@ function AccountModule({ compact }) {
             }}
           >
             {({ screen, activating, wallet }) => ({ opacity, transform }) => (
-              <animated.div
+              <AnimatedDiv
                 style={{ opacity, transform }}
                 css={`
                   position: absolute;
@@ -239,7 +241,7 @@ function AccountModule({ compact }) {
                   }
                   return <ScreenProviders onActivate={activate} />
                 })()}
-              </animated.div>
+              </AnimatedDiv>
             )}
           </Transition>
         </div>
