@@ -64,11 +64,15 @@ function ProposalDetail({
     if (!connectedAccount) {
       return false
     }
+
+    if (addressesEqual(creator, connectedAccount)) {
+      return true
+    }
+
     return permissions.find(
       ({ roleHash, granteeAddress }) =>
-        (roleHash === CANCEL_ROLE_HASH &&
-          addressesEqual(granteeAddress, connectedAccount)) ||
-        addressesEqual(creator, connectedAccount)
+        roleHash === CANCEL_ROLE_HASH &&
+        addressesEqual(granteeAddress, connectedAccount)
     )
   }, [connectedAccount, creator, permissions])
 
