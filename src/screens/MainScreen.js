@@ -11,9 +11,9 @@ const MainScreen = React.memo(
   ({
     isLoading,
     myStakes,
+    onCancelProposal,
     onExecuteIssuance,
     onExecuteProposal,
-    onCancelProposal,
     onRequestNewProposal,
     onStakeToProposal,
     onWithdrawFromProposal,

@@ -31,13 +31,13 @@ import {
   soliditySha3,
 } from '../lib/web3-utils'
 
-const cancelRoleHash = soliditySha3('CANCEL_PROPOSAL_ROLE')
+const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({
   proposal,
   onBack,
-  onExecuteProposal,
   onCancelProposal,
+  onExecuteProposal,
   onStakeToProposal,
   onWithdrawFromProposal,
   requestToken,
@@ -50,17 +50,6 @@ function ProposalDetail({
 
   const { account: connectedAccount } = useWallet()
 
-  const hasCancelRole = useMemo(() => {
-    if (!connectedAccount) {
-      return false
-    }
-    return permissions.find(
-      ({ roleHash, granteeAddress }) =>
-        roleHash === cancelRoleHash &&
-        addressesEqual(granteeAddress, connectedAccount)
-    )
-  }, [connectedAccount, permissions])
-
   const {
     id,
     name,
@@ -70,6 +59,18 @@ function ProposalDetail({
     requestedAmount,
     executed,
   } = proposal
+
+  const hasCancelRole = useMemo(() => {
+    if (!connectedAccount) {
+      return false
+    }
+    return permissions.find(
+      ({ roleHash, granteeAddress }) =>
+        (roleHash === CANCEL_ROLE_HASH &&
+          addressesEqual(granteeAddress, connectedAccount)) ||
+        addressesEqual(creator, connectedAccount)
+    )
+  }, [connectedAccount, creator, permissions])
 
   const handleCancelProposal = useCallback(() => {
     onCancelProposal(id)
