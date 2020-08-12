@@ -5,9 +5,9 @@
   "dependencies": {
     "3box": "^1.21.0",
     "@1hive/1hive-ui": "^1.0.2",
-    "@1hive/connect-thegraph-conviction-voting": "^0.1.7",
+    "@1hive/connect-conviction-voting": "^0.2.0",
     "@1hive/uniswap-sdk": "^1.0.0",
-    "@aragon/connect": "^0.3.0",
+    "@aragon/connect": "^0.5.3",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
     "ethers": "4.0.28",
@@ -23,14 +23,12 @@
     "web3-utils": "^1.2.0"
   },
   "scripts": {
-    "start": "npm run sync-assets && react-app-rewired start",
+    "start": "node scripts/start",
     "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
     "start:rinkeby": "cross-env REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
-    "build": "npm run sync-assets && react-app-rewired build",
-    "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
-    "test": "react-app-rewired test",
-    "sync-assets": "copy-aragon-ui-assets ./public"
+    "build": "node scripts/build",
+    "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build"
   },
   "browserslist": {
     "production": [
@@ -45,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.11.1",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
@@ -64,8 +63,9 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-standard": "^4.0.1",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
-    "react-app-rewired": "^2.1.5",
-    "react-dev-utils": "^10.2.1"
+    "react-dev-utils": "^10.2.1",
+    "rimraf": "^2.6.2"
   }
 }
