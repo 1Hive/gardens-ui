@@ -1,50 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
-import gql from 'graphql-tag'
-import { GraphQLWrapper } from '@aragon/connect-thegraph'
 
-import { ConvictionVoting } from '@1hive/connect-thegraph-conviction-voting'
+import connectConviction from '@1hive/connect-conviction-voting'
 import { connect } from '@aragon/connect'
-import { getDefaultChain } from '../local-settings'
-import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
-import { addressesEqual } from '../lib/web3-utils'
 import { useContractReadOnly } from './useContract'
-
-import BigNumber from '../lib/bigNumber'
-
-import vaultAbi from '../abi/vault-balance.json'
-import { useWallet } from '../providers/Wallet'
 import {
   useProposalsSubscription,
   useStakesHistorySubscription,
 } from './useSubscriptions'
+import { useWallet } from '../providers/Wallet'
 
-// Endpoints TODO: Move to endpoints file
+// utils
+import { getNetwork } from '../networks'
+import BigNumber from '../lib/bigNumber'
+import { addressesEqual } from '../lib/web3-utils'
+import { getDefaultChain } from '../local-settings'
+import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
 
-// Organzation
-const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
-const ORG_SUBRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'
+// abis
+import minimeTokenAbi from '../abi/minimeToken.json'
+import vaultAbi from '../abi/vault-balance.json'
 
 // Convcition voting
-const APP_NAME = 'conviction-voting'
-const APP_SUBRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-xdai'
-
-// Tokens app
-const TOKEN_MANAGER_SUBGRAPH =
-  'https://api.thegraph.com/subgraphs/name/1hive/aragon-tokens-xdai'
-const TOKEN_HOLDER_QUERY = `
-query miniMeToken($id: String!, $address: String!) {
-  miniMeToken(id: $id){
-    id
-    totalSupply
-    holders(where: {address: $address}){
-      address
-      balance
-    }
-  }
-}
-`
+const APP_NAME = 'conviction-beta' // TODO: save elsewhere
 
 const DEFAULT_APP_DATA = {
   convictionVoting: null,
@@ -64,19 +41,11 @@ export function useOrganzation() {
   useEffect(() => {
     let cancelled = false
     const fetchOrg = async () => {
-      const organization = await connect(
-        ORG_ADDRESS,
-        [
-          'thegraph',
-          {
-            orgSubgraphUrl: ORG_SUBRAPH_URL,
-          },
-        ],
-        {
-          readProvider: ethereum || ethers,
-          chainId: getDefaultChain(),
-        }
-      )
+      const orgAddress = getNetwork().honeypot
+      const organization = await connect(orgAddress, 'thegraph', {
+        ethereum: ethereum || ethers,
+        network: getDefaultChain(),
+      })
 
       if (!cancelled) {
         setOrganization(organization)
@@ -113,10 +82,7 @@ export function useAppData(organization) {
         addressesEqual(appAddress, convictionApp.address)
       )
 
-      const convictionVoting = new ConvictionVoting(
-        convictionApp.address,
-        APP_SUBRAPH_URL
-      )
+      const convictionVoting = await connectConviction(convictionApp)
 
       const config = await convictionVoting.config()
 
@@ -201,11 +167,13 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
   return vaultBalance
 }
 
-export function useTokenBalances(account, token) {
+export function useTokenBalances(account, token, timer = 3000) {
   const [balances, setBalances] = useState({
     balance: new BigNumber(-1),
     totalSupply: new BigNumber(-1),
   })
+
+  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
 
   useEffect(() => {
     if (!token.id) {
@@ -213,32 +181,41 @@ export function useTokenBalances(account, token) {
     }
 
     let cancelled = false
+    let timeoutId
 
-    const queryAccountStakeBalance = async () => {
-      const wrapper = new GraphQLWrapper(TOKEN_MANAGER_SUBGRAPH)
-      const results = await wrapper.performQuery(gql(TOKEN_HOLDER_QUERY), {
-        id: `tokenAddress-${token.id}`,
-        address: account || '',
-      })
+    const fetchAccountStakeBalance = async () => {
+      try {
+        let contractNewBalance = new BigNumber(-1)
+        if (account) {
+          contractNewBalance = await tokenContract.balanceOf(account)
+        }
 
-      if (!results.data) {
-        return
-      }
+        const contractTotalSupply = await tokenContract.totalSupply()
 
-      const { miniMeToken } = results.data
+        if (!cancelled) {
+          // Contract value is bn.js so we need to convert it to bignumber.js
+          const newBalance = new BigNumber(contractNewBalance.toString())
+          const newTotalSupply = new BigNumber(contractTotalSupply.toString())
 
-      if (!cancelled) {
-        setBalances({
-          balance: new BigNumber(miniMeToken.holders[0]?.balance || 0),
-          totalSupply: new BigNumber(miniMeToken.totalSupply),
-        })
+          if (
+            !newTotalSupply.eq(balances.totalSupply) ||
+            !newBalance.eq(balances.balance)
+          ) {
+            setBalances({ balance: newBalance, totalSupply: newTotalSupply })
+          }
+        }
+      } catch (err) {
+        console.error(`Error fetching balance: ${err} retrying...`)
       }
     }
 
-    queryAccountStakeBalance()
+    fetchAccountStakeBalance()
 
-    return () => (cancelled = true)
-  }, [account, token.id])
+    return () => {
+      cancelled = true
+      clearTimeout(timeoutId)
+    }
+  }, [account, balances, tokenContract, token.id])
 
   return balances
 }
