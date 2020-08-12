@@ -12,11 +12,8 @@
     "clipboard-polyfill": "^3.0.0-pre5",
     "ethers": "4.0.28",
     "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-app-rewired": "^2.1.5",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1",
     "react-spring": "^8.0.27",
     "styled-components": "^4.3.2",
     "use-wallet": "^0.5.0",
@@ -65,7 +62,6 @@
     "eslint-plugin-standard": "^4.0.1",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
-    "react-dev-utils": "^10.2.1",
     "rimraf": "^2.6.2"
   }
 }
