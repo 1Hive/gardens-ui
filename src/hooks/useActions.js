@@ -26,6 +26,21 @@ export default function useActions(onDone) {
     [account, convictionVoting, ethers, onDone, organization]
   )
 
+  const cancelProposal = useCallback(
+    async proposalId => {
+      sendIntent(
+        organization,
+        convictionVoting.appAddress,
+        'cancelProposal',
+        [proposalId],
+        { ethers, from: account }
+      )
+
+      onDone()
+    },
+    [account, convictionVoting, ethers, onDone, organization]
+  )
+
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
       sendIntent(
@@ -84,6 +99,7 @@ export default function useActions(onDone) {
     executeIssuance,
     executeProposal,
     newProposal,
+    cancelProposal,
     stakeToProposal,
     withdrawFromProposal,
   }

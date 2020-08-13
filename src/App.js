@@ -29,6 +29,7 @@ const App = React.memo(function App() {
       myStakes={myStakes}
       onExecuteIssuance={actions.executeIssuance}
       onExecuteProposal={actions.executeProposal}
+      onCancelProposal={actions.cancelProposal}
       onRequestNewProposal={proposalPanel.requestOpen}
       onStakeToProposal={actions.stakeToProposal}
       onWithdrawFromProposal={actions.withdrawFromProposal}

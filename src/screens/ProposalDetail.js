@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   BackButton,
   Bar,
   Box,
+  Button,
   GU,
   Link,
   SidePanel,
@@ -25,11 +26,17 @@ import usePanelState from '../hooks/usePanelState'
 import { useWallet } from '../providers/Wallet'
 
 import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
-import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
+import {
+  addressesEqualNoSum as addressesEqual,
+  soliditySha3,
+} from '../lib/web3-utils'
+
+const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({
   proposal,
   onBack,
+  onCancelProposal,
   onExecuteProposal,
   onStakeToProposal,
   onWithdrawFromProposal,
@@ -39,7 +46,8 @@ function ProposalDetail({
 
   const theme = useTheme()
   const panelState = usePanelState()
-  const { vaultBalance } = useAppState()
+  const { vaultBalance, permissions } = useAppState()
+
   const { account: connectedAccount } = useWallet()
 
   const {
@@ -51,6 +59,26 @@ function ProposalDetail({
     requestedAmount,
     executed,
   } = proposal
+
+  const hasCancelRole = useMemo(() => {
+    if (!connectedAccount) {
+      return false
+    }
+
+    if (addressesEqual(creator, connectedAccount)) {
+      return true
+    }
+
+    return permissions.find(
+      ({ roleHash, granteeAddress }) =>
+        roleHash === CANCEL_ROLE_HASH &&
+        addressesEqual(granteeAddress, connectedAccount)
+    )
+  }, [connectedAccount, creator, permissions])
+
+  const handleCancelProposal = useCallback(() => {
+    onCancelProposal(id)
+  }, [id, onCancelProposal])
 
   return (
     <div>
@@ -190,6 +218,26 @@ function ProposalDetail({
             {requestToken && (
               <Box heading="Status" padding={3 * GU}>
                 <ConvictionCountdown proposal={proposal} />
+              </Box>
+            )}
+            {hasCancelRole && (
+              <Box padding={3 * GU}>
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  You can remove this proposal from consideration
+                </span>
+                <Button
+                  onClick={handleCancelProposal}
+                  wide
+                  css={`
+                    margin-top: ${3 * GU}px;
+                  `}
+                >
+                  Remove proposal
+                </Button>
               </Box>
             )}
           </div>
