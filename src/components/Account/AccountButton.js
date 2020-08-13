@@ -14,13 +14,26 @@ import HeaderModule from '../Header/HeaderModule'
 
 function AccountButton({ onClick }) {
   const theme = useTheme()
-  const { account, name } = useProfile()
+  const { account, image, name } = useProfile()
 
   return (
     <HeaderModule
       icon={
         <div css="position: relative">
-          <EthIdenticon address={account} radius={RADIUS} />
+          {image ? (
+            <img
+              src={image}
+              height="28"
+              width="28"
+              alt=""
+              css={`
+                border-radius: 4px;
+                display: block;
+              `}
+            />
+          ) : (
+            <EthIdenticon address={account} radius={RADIUS} />
+          )}
           <div
             css={`
               position: absolute;

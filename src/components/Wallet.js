@@ -16,7 +16,7 @@ import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function Wallet({ myStakes }) {
   const theme = useTheme()
-  const { account, name } = useProfile()
+  const { account, image, name } = useProfile()
   const { accountBalance, stakeToken } = useAppState()
 
   const myActiveTokens = useMemo(() => {
@@ -45,14 +45,26 @@ function Wallet({ myStakes }) {
           border-bottom: 1px solid ${theme.border};
         `}
       >
-        <EthIdenticon
-          address={account}
-          radius={100}
-          scale={1.7}
+        <div
           css={`
             margin-right: ${1.5 * GU}px;
           `}
-        />
+        >
+          {image ? (
+            <img
+              src={image}
+              height="56"
+              width="56"
+              alt=""
+              css={`
+                border-radius: 50%;
+              `}
+            />
+          ) : (
+            <EthIdenticon address={account} radius={100} scale={1.7} />
+          )}
+        </div>
+
         <span
           css={`
             ${textStyle('title4')}
