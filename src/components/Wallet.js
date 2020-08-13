@@ -14,14 +14,12 @@ import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
-import { useTokenBalanceToUsd } from '../hooks/useTokenPrice'
 
 function Wallet({ myStakes }) {
   const [profileName, setProfileName] = useState(null)
   const theme = useTheme()
   const { account } = useWallet()
   const { accountBalance, stakeToken } = useAppState()
-  const balanceUsdValue = useTokenBalanceToUsd(accountBalance, stakeToken)
 
   useEffect(() => {
     let cancelled = false
@@ -104,7 +102,6 @@ function Wallet({ myStakes }) {
             decimals={stakeToken.decimals}
             label="Balance"
             symbol={stakeToken.symbol}
-            value={balanceUsdValue}
           />
           <LineSeparator border={theme.border} />
           <Balance
@@ -120,14 +117,7 @@ function Wallet({ myStakes }) {
   )
 }
 
-const Balance = ({
-  amount,
-  decimals,
-  inactive = false,
-  label,
-  symbol,
-  value,
-}) => {
+const Balance = ({ amount, decimals, inactive = false, label, symbol }) => {
   const theme = useTheme()
   const tokenIcon = getTokenIconBySymbol(symbol)
 
@@ -168,16 +158,6 @@ const Balance = ({
         >
           {formatTokenAmount(amount, decimals)}
         </span>
-        {value && (
-          <div
-            css={`
-              color: ${theme.green};
-              ${textStyle('body3')}';
-            `}
-          >
-            $ {value}
-          </div>
-        )}
       </div>
     </div>
   )
