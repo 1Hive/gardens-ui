@@ -5,6 +5,7 @@ import {
   GU,
   IconCheck,
   IconCopy,
+  Link,
   RADIUS,
   textStyle,
   useTheme,
@@ -94,9 +95,10 @@ function AccountScreenConnected({ wallet }) {
         css={`
           display: flex;
           align-items: center;
-          margin-top: ${1 * GU}px;
+          margin: ${1 * GU}px 0;
           color: ${theme.positive};
           ${textStyle('label2')};
+          border-bottom: 1px solid ${theme.border};
         `}
       >
         <IconCheck size="small" />
@@ -107,6 +109,10 @@ function AccountScreenConnected({ wallet }) {
         >
           {`Connected to Ethereum ${walletNetworkName} Network`}
         </span>
+      </div>
+
+      <div>
+        <Link href="/profile">My profile</Link>
       </div>
 
       <Button

@@ -161,10 +161,7 @@ function AccountModule({ compact }) {
       `}
     >
       {screen.id === 'connected' ? (
-        <AccountButton
-          label={shortenAddress(wallet.account)}
-          onClick={toggle}
-        />
+        <AccountButton onClick={toggle} />
       ) : (
         <Button
           icon={<IconConnect />}

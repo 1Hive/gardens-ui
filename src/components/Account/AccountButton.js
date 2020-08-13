@@ -9,18 +9,18 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useWallet } from 'use-wallet'
+import { useProfile } from '../../providers/Profile'
 import HeaderModule from '../Header/HeaderModule'
 
-function AccountButton({ label, onClick }) {
+function AccountButton({ onClick }) {
   const theme = useTheme()
-  const wallet = useWallet()
+  const { account, name } = useProfile()
 
   return (
     <HeaderModule
       icon={
         <div css="position: relative">
-          <EthIdenticon address={wallet.account} radius={RADIUS} />
+          <EthIdenticon address={account} radius={RADIUS} />
           <div
             css={`
               position: absolute;
@@ -43,20 +43,16 @@ function AccountButton({ label, onClick }) {
               ${textStyle('body2')}
             `}
           >
-            {label ? (
-              <div
-                css={`
-                  overflow: hidden;
-                  max-width: ${16 * GU}px;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                `}
-              >
-                {label}
-              </div>
-            ) : (
-              <div>{shortenAddress(wallet.account)}</div>
-            )}
+            <div
+              css={`
+                overflow: hidden;
+                max-width: ${16 * GU}px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              `}
+            >
+              {name || shortenAddress(account)}
+            </div>
           </div>
           <div
             css={`
@@ -73,7 +69,6 @@ function AccountButton({ label, onClick }) {
   )
 }
 AccountButton.propTypes = {
-  label: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 }
 

@@ -9,14 +9,14 @@ import {
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
+import { useProfile } from '../providers/Profile'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function Wallet({ myStakes }) {
   const theme = useTheme()
-  const { account } = useWallet()
+  const { account, name } = useProfile()
   const { accountBalance, stakeToken } = useAppState()
 
   const myActiveTokens = useMemo(() => {
@@ -58,7 +58,7 @@ function Wallet({ myStakes }) {
             ${textStyle('title4')}
           `}
         >
-          {shortenAddress(account, 4)}
+          {name || shortenAddress(account, 4)}
         </span>
       </div>
       <div
