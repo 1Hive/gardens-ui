@@ -30,7 +30,7 @@ export default function useActions(onDone) {
     async proposalId => {
       sendIntent(
         organization,
-        convictionVoting.appAddress,
+        convictionVoting.address,
         'cancelProposal',
         [proposalId],
         { ethers, from: account }
