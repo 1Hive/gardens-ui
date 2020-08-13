@@ -20,6 +20,7 @@ export function useProposalsSubscription(convictionVoting) {
     }
 
     proposalsSubscription.current = convictionVoting.onProposals(
+      {},
       onProposalsHandler
     )
 
@@ -47,6 +48,7 @@ export function useStakesHistorySubscription(convictionVoting) {
     }
 
     stakesSubscription.current = convictionVoting.onStakesHistory(
+      {},
       onStakesHandler
     )
 
