@@ -10,6 +10,7 @@ import {
 import { useWallet } from '../providers/Wallet'
 
 // utils
+import env from '../environment'
 import { getNetwork } from '../networks'
 import BigNumber from '../lib/bigNumber'
 import { addressesEqual } from '../lib/web3-utils'
@@ -19,9 +20,6 @@ import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
-
-// Convcition voting
-const APP_NAME = 'conviction-beta' // TODO: save elsewhere
 
 const DEFAULT_APP_DATA = {
   convictionVoting: null,
@@ -64,6 +62,7 @@ export function useOrganzation() {
 
 export function useAppData(organization) {
   const [appData, setAppData] = useState(DEFAULT_APP_DATA)
+  const appName = env('APP_NAME')
 
   useEffect(() => {
     if (!organization) {
@@ -76,7 +75,7 @@ export function useAppData(organization) {
       const apps = await organization.apps()
       const permissions = await organization.permissions()
 
-      const convictionApp = apps.find(app => app.name === APP_NAME)
+      const convictionApp = apps.find(app => app.name === appName)
 
       const convictionAppPermissions = permissions.filter(({ appAddress }) =>
         addressesEqual(appAddress, convictionApp.address)
@@ -103,7 +102,7 @@ export function useAppData(organization) {
     return () => {
       cancelled = true
     }
-  }, [organization])
+  }, [appName, organization])
 
   const proposals = useProposalsSubscription(appData.convictionVoting)
 
