@@ -17,6 +17,7 @@ import { useBlockTime } from '../hooks/useBlock'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
+import { PROPOSAL_STATUS_EXECUTED } from '../constants'
 
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
@@ -117,7 +118,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
 
   const theme = useTheme()
   const {
-    executed,
+    status,
     threshold,
     remainingTimeToPass,
     neededTokens,
@@ -125,7 +126,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
   } = proposal
 
   const view = useMemo(() => {
-    if (executed) {
+    if (status === PROPOSAL_STATUS_EXECUTED) {
       return EXECUTED
     }
     if (currentConviction.gte(threshold)) {
@@ -135,7 +136,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
       return MAY_PASS
     }
     return UNABLE_TO_PASS
-  }, [currentConviction, executed, threshold, remainingTimeToPass])
+  }, [currentConviction, status, threshold, remainingTimeToPass])
 
   return (
     <div

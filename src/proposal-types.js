@@ -1,5 +1,11 @@
+import {
+  PROPOSAL_STATUS_ACTIVE as PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_EXECUTED as PROPOSAL_STATUS_EXECUTED_STRING,
+} from './constants'
+
 export const PROPOSAL_STATUS_OPEN = 1
 export const PROPOSAL_STATUS_ACCEPTED = 2
+export const PROPOSAL_STATUS_CANCELLED = 3
 
 export const PROPOSAL_STATUS_SUPPORTED = 1
 export const PROPOSAL_STATUS_NOT_SUPPORTED = 2
@@ -15,12 +21,14 @@ export function getProposalSupportStatus(stakes, proposal) {
   return PROPOSAL_STATUS_NOT_SUPPORTED
 }
 
-export function getProposalExecutionStatus({ executed }) {
-  if (executed) {
+export function getProposalExecutionStatus({ status }) {
+  if (status === PROPOSAL_STATUS_EXECUTED_STRING) {
     return PROPOSAL_STATUS_ACCEPTED
-  } else {
+  }
+  if (status === PROPOSAL_STATUS_ACTIVE_STRING) {
     return PROPOSAL_STATUS_OPEN
   }
+  return PROPOSAL_STATUS_CANCELLED
 }
 
 export function getProposalType({ requestedAmount }) {

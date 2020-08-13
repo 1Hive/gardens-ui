@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   GU,
+  Info,
   Link,
   SidePanel,
   Split,
@@ -31,6 +32,12 @@ import {
   soliditySha3,
 } from '../lib/web3-utils'
 
+import {
+  PROPOSAL_STATUS_ACTIVE,
+  PROPOSAL_STATUS_CANCELLED,
+  PROPOSAL_STATUS_EXECUTED,
+} from '../constants'
+
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({
@@ -50,6 +57,8 @@ function ProposalDetail({
 
   const { account: connectedAccount } = useWallet()
 
+  console.log('PROPOSAL!!! ', proposal)
+
   const {
     id,
     name,
@@ -57,7 +66,7 @@ function ProposalDetail({
     beneficiary,
     link,
     requestedAmount,
-    executed,
+    status,
   } = proposal
 
   const hasCancelRole = useMemo(() => {
@@ -190,7 +199,7 @@ function ProposalDetail({
                   }
                 />
               </div>
-              {!executed && (
+              {status === PROPOSAL_STATUS_ACTIVE && (
                 <>
                   <DataField
                     label="Progress"
@@ -217,10 +226,16 @@ function ProposalDetail({
           <div>
             {requestToken && (
               <Box heading="Status" padding={3 * GU}>
-                <ConvictionCountdown proposal={proposal} />
+                {status === PROPOSAL_STATUS_CANCELLED ? (
+                  <Info mode="warning">
+                    This proposal was removed from consideration
+                  </Info>
+                ) : (
+                  <ConvictionCountdown proposal={proposal} />
+                )}
               </Box>
             )}
-            {hasCancelRole && (
+            {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE && (
               <Box padding={3 * GU}>
                 <span
                   css={`
