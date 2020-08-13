@@ -31,6 +31,8 @@ import {
   soliditySha3,
 } from '../lib/web3-utils'
 
+import { ZERO_ADDR } from '../constants'
+
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({
@@ -79,6 +81,8 @@ function ProposalDetail({
   const handleCancelProposal = useCallback(() => {
     onCancelProposal(id)
   }, [id, onCancelProposal])
+
+  const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
 
   return (
     <div>
@@ -163,7 +167,7 @@ function ProposalDetail({
                     )
                   }
                 />
-                {requestToken && (
+                {requestToken && !signalingProposal && (
                   <DataField
                     label="Beneficiary"
                     value={
