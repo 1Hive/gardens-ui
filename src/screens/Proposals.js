@@ -84,7 +84,7 @@ const Proposals = React.memo(
     const history = useHistory()
     const handleSelectProposal = useCallback(
       id => {
-        history.push(`/proposal/${id}`)
+        history.push(`${history.location.pathname}/proposal/${id}`)
       },
       [history]
     )

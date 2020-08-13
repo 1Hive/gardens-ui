@@ -42,7 +42,7 @@ const MainScreen = React.memo(
 
     const history = useHistory()
     const handleBack = useCallback(() => {
-      history.push(`/`)
+      history.goBack()
     }, [history])
 
     const handleTabChange = tabIndex => {
