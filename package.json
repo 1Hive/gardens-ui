@@ -10,7 +10,7 @@
     "@aragon/connect": "^0.5.3",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
-    "ethers": "4.0.28",
+    "ethers": "5.0.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",

@@ -13,6 +13,7 @@ const networks = {
     ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
     name: 'Rinkeby',
     type: 'rinkeby',
+    defaultEthNode: 'https://rinkeby.eth.aragon.network/',
   },
   xdai: {
     chainId: 100,

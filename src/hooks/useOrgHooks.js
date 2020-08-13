@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import gql from 'graphql-tag'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
 
-import { ConvictionVoting } from '@1hive/connect-conviction-voting'
+import connectConviction from '@1hive/connect-conviction-voting'
 import { connect } from '@aragon/connect'
 import { getDefaultChain } from '../local-settings'
 import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
@@ -21,12 +21,10 @@ import {
 // Endpoints TODO: Move to endpoints file
 
 // Organzation
-const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
+const ORG_ADDRESS = '0x7050ead31291e288fee6f34f8616b58a86064d4f'
 
 // Convcition voting
-const APP_NAME = 'conviction-voting'
-const APP_SUBRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-xdai'
+const APP_NAME = 'conviction-beta'
 
 // Tokens app
 const TOKEN_MANAGER_SUBGRAPH =
@@ -102,10 +100,7 @@ export function useAppData(organization) {
         addressesEqual(appAddress, convictionApp.address)
       )
 
-      const convictionVoting = new ConvictionVoting(
-        convictionApp.address,
-        APP_SUBRAPH_URL
-      )
+      const convictionVoting = await connectConviction(convictionApp)
 
       const config = await convictionVoting.config()
 
