@@ -13,34 +13,29 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
-import Balance from '../components/Balance'
-import {
-  ConvictionCountdown,
-  ConvictionBar,
-} from '../components/ConvictionVisuals'
-import IdentityBadge from '../components/IdentityBadge'
-import ProposalActions from '../components/ProposalActions'
-import SupportProposal from '../components/panels/SupportProposal'
-import SupportersDistribution from '../components/SupportersDistribution'
 
-import { useAppState } from '../providers/AppState'
-import usePanelState from '../hooks/usePanelState'
-import { useWallet } from '../providers/Wallet'
+import Balance from '../Balance'
+import { ConvictionCountdown, ConvictionBar } from '../ConvictionVisuals'
+import IdentityBadge from '../IdentityBadge'
+import ProposalActions from './ProposalActions'
+import SupportersDistribution from '../SupportersDistribution'
+import SupportProposalPanel from '../panels/SupportProposalPanel'
 
-import signalingBadge from '../assets/signalingBadge.svg'
+import { useAppState } from '../../providers/AppState'
+import usePanelState from '../../hooks/usePanelState'
+import { useWallet } from '../../providers/Wallet'
 
-import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
+import { getTokenIconBySymbol, formatTokenAmount } from '../../lib/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
-} from '../lib/web3-utils'
-import BigNumber from '../lib/bigNumber'
-
+} from '../../lib/web3-utils'
 import {
   PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,
   ZERO_ADDR,
-} from '../constants'
+} from '../../constants'
+import signalingBadge from '../../assets/signalingBadge.svg'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -282,7 +277,7 @@ function ProposalDetail({
         opened={panelState.visible}
         onClose={panelState.requestClose}
       >
-        <SupportProposal
+        <SupportProposalPanel
           id={id}
           onDone={panelState.requestClose}
           onStakeToProposal={onStakeToProposal}

@@ -1,9 +1,9 @@
 import React from 'react'
 import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
-import AddProposalPanel from '../components/AddProposalPanel'
-import MainScreen from './MainScreen'
-import StakingTokens from './StakingTokens'
+import AddProposalPanel from '../components/panels/AddProposalPanel'
+import MainScreen from '../components/Dashboard/MainScreen'
+import StakingTokens from '../components/Dashboard/StakingTokens'
 import Wallet from '../components/Wallet'
 
 import useAppLogic from '../app-logic'
@@ -17,7 +17,7 @@ const Dashboard = React.memo(function Dashboard() {
     myStakes,
     proposals,
     proposalPanel,
-    totalActiveTokens,
+    totalStaked,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -35,7 +35,7 @@ const Dashboard = React.memo(function Dashboard() {
       onWithdrawFromProposal={actions.withdrawFromProposal}
       proposals={proposals}
       selectedProposal={selectedProposal}
-      totalActiveTokens={totalActiveTokens}
+      totalActiveTokens={totalStaked}
     />
   )
 
@@ -53,7 +53,7 @@ const Dashboard = React.memo(function Dashboard() {
               <Wallet myStakes={myStakes} />
               <StakingTokens
                 myStakes={myStakes}
-                totalActiveTokens={totalActiveTokens}
+                totalActiveTokens={totalStaked}
               />
             </div>
           }
