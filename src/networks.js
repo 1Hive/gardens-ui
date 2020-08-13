@@ -13,6 +13,8 @@ const networks = {
     ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
     name: 'Rinkeby',
     type: 'rinkeby',
+    defaultEthNode: 'https://rinkeby.eth.aragon.network/',
+    honeypot: '0x7050ead31291e288fee6f34f8616b58a86064d4f',
   },
   xdai: {
     chainId: 100,
@@ -20,6 +22,7 @@ const networks = {
     name: 'xDai',
     type: 'xdai',
     defaultEthNode: 'https://xdai.poanetwork.dev/',
+    honeypot: '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e',
   },
 }
 
