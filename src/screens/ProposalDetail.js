@@ -20,6 +20,7 @@ import {
 import IdentityBadge from '../components/IdentityBadge'
 import ProposalActions from '../components/ProposalActions'
 import SupportProposal from '../components/panels/SupportProposal'
+import SupportersDistribution from '../components/SupportersDistribution'
 
 import { useAppState } from '../providers/AppState'
 import usePanelState from '../hooks/usePanelState'
@@ -30,6 +31,7 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '../lib/web3-utils'
+import BigNumber from '../lib/bigNumber'
 
 import { ZERO_ADDR } from '../constants'
 
@@ -60,6 +62,8 @@ function ProposalDetail({
     link,
     requestedAmount,
     executed,
+    stakes,
+    totalTokensStaked,
   } = proposal
 
   const hasCancelRole = useMemo(() => {
@@ -83,6 +87,10 @@ function ProposalDetail({
   }, [id, onCancelProposal])
 
   const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
+
+  const filteredStakes = stakes.filter(({ amount }) => {
+    return amount.gt(new BigNumber(0))
+  })
 
   return (
     <div>
@@ -243,6 +251,12 @@ function ProposalDetail({
                   Remove proposal
                 </Button>
               </Box>
+            )}
+            {filteredStakes.length > 0 && (
+              <SupportersDistribution
+                stakes={filteredStakes}
+                totalTokensStaked={totalTokensStaked}
+              />
             )}
           </div>
         }

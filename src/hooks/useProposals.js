@@ -112,6 +112,7 @@ export function useProposals() {
         neededTokens,
         remainingTimeToPass,
         convictionTrend,
+        totalTokensStaked,
       }
     })
   }, [
