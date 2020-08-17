@@ -57,8 +57,6 @@ function ProposalDetail({
 
   const { account: connectedAccount } = useWallet()
 
-  console.log('PROPOSAL!!! ', proposal)
-
   const {
     id,
     name,
