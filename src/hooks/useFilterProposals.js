@@ -1,9 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-
 import {
-  getProposalExecutionStatus,
-  getProposalSupportStatus,
-  getProposalType,
   PROPOSAL_STATUS_ACCEPTED,
   PROPOSAL_STATUS_CANCELLED,
   PROPOSAL_STATUS_NOT_SUPPORTED,
@@ -11,7 +7,12 @@ import {
   PROPOSAL_STATUS_SUPPORTED,
   PROPOSAL_TYPE_FUNDING,
   PROPOSAL_TYPE_SIGNALING,
-} from '../proposal-types'
+} from '../constants'
+import {
+  getProposalExecutionStatus,
+  getProposalSupportStatus,
+  getProposalType,
+} from '../lib/proposal-utils'
 import { checkInitialLetters } from '../lib/search-utils'
 
 const NULL_FILTER_STATE = -1

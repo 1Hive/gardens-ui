@@ -33,8 +33,8 @@ import {
 } from '../lib/web3-utils'
 
 import {
-  PROPOSAL_STATUS_ACTIVE,
-  PROPOSAL_STATUS_CANCELLED,
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
   ZERO_ADDR,
 } from '../constants'
 
@@ -201,7 +201,7 @@ function ProposalDetail({
                   }
                 />
               </div>
-              {status === PROPOSAL_STATUS_ACTIVE && (
+              {status === PROPOSAL_STATUS_ACTIVE_STRING && (
                 <>
                   <DataField
                     label="Progress"
@@ -228,7 +228,7 @@ function ProposalDetail({
           <div>
             {requestToken && (
               <Box heading="Status" padding={3 * GU}>
-                {status === PROPOSAL_STATUS_CANCELLED ? (
+                {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
                   <Info mode="warning">
                     This proposal was removed from consideration
                   </Info>
@@ -237,7 +237,7 @@ function ProposalDetail({
                 )}
               </Box>
             )}
-            {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE && (
+            {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE_STRING && (
               <Box padding={3 * GU}>
                 <span
                   css={`
