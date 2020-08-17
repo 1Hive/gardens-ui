@@ -7,14 +7,18 @@ import MainProfile from '../components/Profile/MainProfile'
 import { useProfile } from '../providers/Profile'
 
 function Profile() {
-  const { name } = useProfile()
+  const { account, auth, box } = useProfile()
   const history = useHistory()
 
   useEffect(() => {
-    if (!name) {
-      history.push('/')
+    if (!account) {
+      return history.goBack()
     }
-  }, [history, name])
+
+    if (!box) {
+      auth()
+    }
+  }, [account, auth, box, history])
 
   return (
     <Split

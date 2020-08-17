@@ -1,5 +1,12 @@
 import React from 'react'
-import { Box, GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  Box,
+  GU,
+  Link,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import { useProfile } from '../../providers/Profile'
 
 const IMAGE_DIMENSION = 20 * GU
@@ -7,7 +14,7 @@ const BOX_PADDING = 5 * GU
 
 function MainProfile() {
   const theme = useTheme()
-  const { account, description, image, name } = useProfile()
+  const { account, description, image, name, verifiedAccounts } = useProfile()
 
   return (
     <Box padding={BOX_PADDING}>
@@ -55,6 +62,31 @@ function MainProfile() {
               {shortenAddress(account)}
             </div>
           </div>
+          {verifiedAccounts?.length && (
+            <div
+              css={`
+                display: flex;
+                justify-content: space-evenly;
+                margin-top: ${2 * GU}px;
+              `}
+            >
+              {verifiedAccounts.map((verifiedAccount, index) => {
+                return (
+                  <div key={index}>
+                    <Link href={verifiedAccount.url}>
+                      <img
+                        src={verifiedAccount.icon}
+                        width="24"
+                        height="24"
+                        alt=""
+                        css="display:block"
+                      />
+                    </Link>{' '}
+                  </div>
+                )
+              })}
+            </div>
+          )}
           {description && (
             <>
               <div
@@ -78,6 +110,7 @@ function MainProfile() {
                 </h4>
                 <p
                   css={`
+                    margin-top: ${1 * GU}px;
                     color: ${theme.contentSecondary};
                   `}
                 >

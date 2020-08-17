@@ -4,3 +4,6 @@ import { isLocalOrUnknownNetwork } from './lib/web3-utils'
 export const IPFS_ENDPOINT = isLocalOrUnknownNetwork()
   ? 'http://127.0.0.1:8080/ipfs'
   : 'https://ipfs.eth.aragon.network/ipfs'
+
+export const GITHUB_ENDPOINT = 'https://github.com/'
+export const TWITTER_ENDPOINT = 'https://twitter.com/'

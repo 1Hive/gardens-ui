@@ -1,40 +1,75 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { getProfile, getVerifiedAccounts } from '3box'
 
 import { useWallet } from './Wallet'
-import { IPFS_ENDPOINT } from '../endpoints'
+import {
+  getAccountPrivateData,
+  getProfileForAccount,
+  openBoxForAccount,
+} from '../lib/profile'
 
 const ProfileContext = React.createContext()
 
 function ProfileProvider({ children }) {
-  const { account } = useWallet()
+  const { account, ethereum } = useWallet()
+  const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
 
   useEffect(() => {
     let cancelled = false
 
-    async function getProfileForAccount() {
-      if (account) {
-        const profile = await getProfile(account)
-        const verifiedAccounts = await getVerifiedAccounts(profile)
-        const parsedData = parseProfileData(profile, verifiedAccounts)
+    async function fetchProfileAccount() {
+      const profile = await getProfileForAccount(account)
 
-        if (!cancelled) {
-          setProfile(parsedData)
-        }
+      if (!cancelled) {
+        setProfile(profile)
       }
     }
 
-    getProfileForAccount()
+    fetchProfileAccount()
 
     return () => {
       cancelled = true
     }
   }, [account])
 
+  // Users private data is not accesible unless the user has authenticated
+  useEffect(() => {
+    if (!box) {
+      return
+    }
+
+    let cancelled = false
+
+    async function fetchPrivateData() {
+      const privateData = await getAccountPrivateData(box)
+
+      if (!cancelled) {
+        setProfile(profile => ({ ...profile, ...privateData }))
+      }
+    }
+
+    fetchPrivateData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [box])
+
+  const auth = useCallback(async () => {
+    try {
+      const box = await openBoxForAccount(account, ethereum)
+
+      console.log('box', box)
+
+      setBox(box)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [account, ethereum])
+
   return (
-    <ProfileContext.Provider value={{ ...profile, account }}>
+    <ProfileContext.Provider value={{ ...profile, account, auth }}>
       {children}
     </ProfileContext.Provider>
   )
@@ -46,16 +81,6 @@ ProfileProvider.propTypes = {
 
 function useProfile() {
   return useContext(ProfileContext)
-}
-
-function parseProfileData(profile, verifiedAccounts) {
-  let image
-
-  if (profile.image.length > 0) {
-    image = `${IPFS_ENDPOINT}/${profile.image[0].contentUrl['/']}`
-  }
-
-  return { ...profile, image, verifiedAccounts }
 }
 
 export { ProfileProvider, useProfile }
