@@ -90,7 +90,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
             margin-top: ${3 * GU}px;
             display: flex;
             justify-content: space-between;
-            ${textStyle('body4')}
+            ${textStyle('body3')}
           `}
         >
           <span>Total </span>
@@ -124,6 +124,7 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
         entity={entity}
         connectedAccount={isCurrentUser}
         compact
+        labelStyle={`${textStyle('body4')}`}
         css={`
           width: ${compactMode ? 'auto' : '110px'};
         `}
@@ -131,14 +132,13 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
       <div
         css={`
           display: flex;
-          float: right;
+          ${textStyle('body4')};
         `}
       >
         <span
           css={`
             margin-right: ${0.5 * GU}px;
             color: ${theme.contentSecondary};
-            ${textStyle('body4')};
           `}
         >
           {percentage}%
@@ -146,7 +146,6 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
 
         <span
           css={`
-            ${textStyle('body4')};
             margin-right: ${0.5 * GU}px;
           `}
         >

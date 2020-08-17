@@ -88,9 +88,13 @@ function ProposalDetail({
 
   const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
 
-  const filteredStakes = stakes.filter(({ amount }) => {
-    return amount.gt(new BigNumber(0))
-  })
+  const filteredStakes = useMemo(
+    () =>
+      stakes.filter(({ amount }) => {
+        return amount.gt(new BigNumber(0))
+      }),
+    [stakes]
+  )
 
   return (
     <div>
