@@ -5,6 +5,7 @@ import {
   GU,
   IdentityBadge,
   textStyle,
+  useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 import { useWallet } from '../providers/Wallet'
@@ -62,34 +63,24 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
                 css={`
                   display: flex;
                   align-items: center;
-                  justify-content: space-between;
                   width: 100%;
                 `}
               >
                 <div
-                  id="DIV3"
                   css={`
-                    display: flex;
-                    align-items: center;
-                    width: 100%;
+                    background: ${color};
+                    width: 8px;
+                    height: 8px;
+                    margin-right: ${0.5 * GU}px;
+                    border-radius: 50%;
                   `}
-                >
-                  <div
-                    css={`
-                      background: ${color};
-                      width: 8px;
-                      height: 8px;
-                      margin-right: ${0.5 * GU}px;
-                      border-radius: 50%;
-                    `}
-                  />
-                  <DistributionItem
-                    amount={item.amount}
-                    entity={item.entity}
-                    percentage={percentage}
-                    stakeToken={stakeToken}
-                  />
-                </div>
+                />
+                <DistributionItem
+                  amount={item.amount}
+                  entity={item.entity}
+                  percentage={percentage}
+                  stakeToken={stakeToken}
+                />
               </div>
             )
           }}
@@ -118,6 +109,8 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
   const theme = useTheme()
   const { account } = useWallet()
   const isCurrentUser = addressesEqual(entity, account)
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   return (
     <div
@@ -132,28 +125,36 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
         connectedAccount={isCurrentUser}
         compact
         css={`
-          width: 100px;
+          width: ${compactMode ? 'auto' : '110px'};
         `}
       />
-      <span
+      <div
         css={`
-          margin-right: ${0.5 * GU}px;
-          color: ${theme.contentSecondary};
-          ${textStyle('body4')};
+          display: flex;
+          float: right;
         `}
       >
-        {percentage}%
-      </span>
+        <span
+          css={`
+            margin-right: ${0.5 * GU}px;
+            color: ${theme.contentSecondary};
+            ${textStyle('body4')};
+          `}
+        >
+          {percentage}%
+        </span>
 
-      <span
-        css={`
-          ${textStyle('body4')};
-        `}
-      >
-        {amount}
-        {` `}
-        {stakeToken.symbol}
-      </span>
+        <span
+          css={`
+            ${textStyle('body4')};
+            margin-right: ${0.5 * GU}px;
+          `}
+        >
+          {amount}
+          {` `}
+          {stakeToken.symbol}
+        </span>
+      </div>
     </div>
   )
 }
