@@ -60,13 +60,13 @@ function ProfileProvider({ children }) {
     try {
       const box = await openBoxForAccount(account, ethereum)
 
-      console.log('box', box)
-
       setBox(box)
     } catch (err) {
       console.error(err)
     }
   }, [account, ethereum])
+
+  console.log('profile', profile)
 
   return (
     <ProfileContext.Provider value={{ ...profile, account, auth }}>

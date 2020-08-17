@@ -13,10 +13,10 @@ const VERIFIED_ACCOUNTS = {
 }
 
 export async function getAccountPrivateData(box) {
-  const privateData = await box.private.all({ metadata: 'porfavor' })
-  console.log('privateData', privateData)
+  const birthday = await box.private.get('birthday')
+  const email = await box.private.get('email')
 
-  return privateData
+  return { birthday, email }
 }
 
 export async function getProfileForAccount(account) {
