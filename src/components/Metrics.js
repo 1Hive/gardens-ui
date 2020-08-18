@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, GU, Link, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { formatTokenAmount } from '../lib/token-utils'
 import honeySvg from '../assets/honey.svg'
