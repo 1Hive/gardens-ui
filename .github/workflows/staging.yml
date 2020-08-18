@@ -5,7 +5,7 @@ name: staging deployment
 on:
   push:
     branches:
-      -  development
+      -  master
 
 jobs:
   deploy:
