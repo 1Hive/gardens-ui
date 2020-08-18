@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   GU,
+  Info,
   Link,
   SidePanel,
   Split,
@@ -31,7 +32,11 @@ import {
   soliditySha3,
 } from '../lib/web3-utils'
 
-import { ZERO_ADDR } from '../constants'
+import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  ZERO_ADDR,
+} from '../constants'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -59,7 +64,7 @@ function ProposalDetail({
     beneficiary,
     link,
     requestedAmount,
-    executed,
+    status,
   } = proposal
 
   const hasCancelRole = useMemo(() => {
@@ -194,7 +199,7 @@ function ProposalDetail({
                   }
                 />
               </div>
-              {!executed && (
+              {status === PROPOSAL_STATUS_ACTIVE_STRING && (
                 <>
                   <DataField
                     label="Progress"
@@ -221,10 +226,16 @@ function ProposalDetail({
           <div>
             {requestToken && (
               <Box heading="Status" padding={3 * GU}>
-                <ConvictionCountdown proposal={proposal} />
+                {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
+                  <Info mode="warning">
+                    This proposal was removed from consideration
+                  </Info>
+                ) : (
+                  <ConvictionCountdown proposal={proposal} />
+                )}
               </Box>
             )}
-            {hasCancelRole && (
+            {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE_STRING && (
               <Box padding={3 * GU}>
                 <span
                   css={`

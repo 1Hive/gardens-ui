@@ -44,7 +44,7 @@ const FilterBar = React.memo(
           header="Status"
           selected={proposalExecutionStatusFilter}
           onChange={handleExecutionStatusFilterChange}
-          items={['Open', 'Closed']}
+          items={['Open', 'Closed', 'Removed']}
           css={`
             margin-left: ${1.5 * GU}px;
           `}

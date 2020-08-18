@@ -1,16 +1,18 @@
 import { useCallback, useMemo, useState } from 'react'
-
+import {
+  PROPOSAL_STATUS_ACCEPTED,
+  PROPOSAL_STATUS_CANCELLED,
+  PROPOSAL_STATUS_NOT_SUPPORTED,
+  PROPOSAL_STATUS_OPEN,
+  PROPOSAL_STATUS_SUPPORTED,
+  PROPOSAL_TYPE_FUNDING,
+  PROPOSAL_TYPE_SIGNALING,
+} from '../constants'
 import {
   getProposalExecutionStatus,
   getProposalSupportStatus,
   getProposalType,
-  PROPOSAL_STATUS_SUPPORTED,
-  PROPOSAL_STATUS_NOT_SUPPORTED,
-  PROPOSAL_STATUS_OPEN,
-  PROPOSAL_STATUS_ACCEPTED,
-  PROPOSAL_TYPE_FUNDING,
-  PROPOSAL_TYPE_SIGNALING,
-} from '../proposal-types'
+} from '../lib/proposal-utils'
 import { checkInitialLetters } from '../lib/search-utils'
 
 const NULL_FILTER_STATE = -1
@@ -18,6 +20,7 @@ const STAKE_STATUS_FILTER_SUPPORTED = 1
 const STAKE_STATUS_FILTER_NOT_SUPPORTED = 2
 const EXECUTION_STATUS_FILTER_OPEN = 0
 const EXECUTION_STATUS_FILTER_ACCEPTED = 1
+const EXECUTION_STATUS_FILTER_CANCELLED = 2
 const TYPE_FILTER_FUNDING = 0
 const TYPE_FILTER_SIGNALING = 1
 
@@ -36,7 +39,9 @@ function testExecutionFilter(filter, proposalStatus) {
     (filter === EXECUTION_STATUS_FILTER_OPEN &&
       proposalStatus === PROPOSAL_STATUS_OPEN) ||
     (filter === EXECUTION_STATUS_FILTER_ACCEPTED &&
-      proposalStatus === PROPOSAL_STATUS_ACCEPTED)
+      proposalStatus === PROPOSAL_STATUS_ACCEPTED) ||
+    (filter === EXECUTION_STATUS_FILTER_CANCELLED &&
+      proposalStatus === PROPOSAL_STATUS_CANCELLED)
   )
 }
 
