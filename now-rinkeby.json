@@ -1,8 +1,6 @@
 {
   "version": 2,
   "public": true,
-  "scope": "1hive",
-  "alias": "honey-pot-staging",
   "build": {
     "env": {
       "REACT_APP_CHAIN_ID": "4",
