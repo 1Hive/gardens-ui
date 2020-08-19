@@ -24,7 +24,10 @@
     "start:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
     "build": "node scripts/build",
-    "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build"
+    "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
+    "build:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn build",
+    "lint": "eslint ./src"
+
   },
   "browserslist": {
     "production": [
