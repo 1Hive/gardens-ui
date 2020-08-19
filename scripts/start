@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const version = require('../package.json').version
 const execute = require('child_process').execSync
 
 const clientPort = 3000
@@ -9,7 +8,6 @@ execute(`copy-aragon-ui-assets -n aragon-ui ./build`, {
   stdio: 'inherit',
 })
 
-process.env.ARAGON_PACKAGE_VERSION = version
 execute(
   `parcel serve src/index.html --port ${clientPort} --out-dir ./build --no-cache`,
   { stdio: 'inherit' }
