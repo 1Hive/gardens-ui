@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3box": "^1.21.0",
     "@1hive/1hive-ui": "^1.0.2",
     "@1hive/connect-conviction-voting": "^0.2.0",
     "@aragon/connect": "^0.5.3",

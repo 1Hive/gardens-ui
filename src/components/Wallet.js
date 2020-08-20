@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
   Box,
   EthIdenticon,
@@ -8,7 +8,6 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
-import { getProfile } from '3box'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 
@@ -16,29 +15,9 @@ import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function Wallet({ myStakes }) {
-  const [profileName, setProfileName] = useState(null)
   const theme = useTheme()
   const { account } = useWallet()
   const { accountBalance, stakeToken } = useAppState()
-
-  useEffect(() => {
-    let cancelled = false
-
-    async function getProfileForAccount() {
-      if (account) {
-        const { name } = await getProfile(account)
-        if (!cancelled) {
-          setProfileName(name)
-        }
-      }
-    }
-
-    getProfileForAccount()
-
-    return () => {
-      cancelled = true
-    }
-  }, [account])
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
@@ -79,7 +58,7 @@ function Wallet({ myStakes }) {
             ${textStyle('title4')}
           `}
         >
-          {profileName || shortenAddress(account, 4)}
+          {shortenAddress(account, 4)}
         </span>
       </div>
       <div
