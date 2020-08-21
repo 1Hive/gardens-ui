@@ -1,4 +1,5 @@
 import React from 'react'
+import pMap from 'p-map' // eslint-disable-line
 import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from './components/AddProposalPanel'

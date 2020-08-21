@@ -27,6 +27,8 @@ import { useAppState } from '../providers/AppState'
 import usePanelState from '../hooks/usePanelState'
 import { useWallet } from '../providers/Wallet'
 
+import signalingBadge from '../assets/signalingBadge.svg'
+
 import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
@@ -140,7 +142,7 @@ function ProposalDetail({
                     />
                     <div
                       css={`
-                        margin-top: ${2.5 * GU}px;
+                        margin-top: ${2 * GU}px;
                         grid-column: span 2;
                         width: ${50 * GU}px;
                         color: ${theme.contentSecondary};
@@ -295,18 +297,40 @@ const Amount = ({
   requestedAmount = 0,
   requestToken: { symbol, decimals, verified },
 }) => {
+  const signalingProposal = requestedAmount.eq(0)
   const tokenIcon = getTokenIconBySymbol(symbol)
   return (
     <DataField
-      label="Request Amount"
+      label={!signalingProposal && 'Request Amount'}
       value={
-        <Balance
-          amount={requestedAmount}
-          decimals={decimals}
-          symbol={symbol}
-          verified={verified}
-          icon={tokenIcon}
-        />
+        signalingProposal ? (
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <img src={signalingBadge} alt="" />
+            <span
+              css={`
+                margin-left: ${1 * GU}px;
+                ${textStyle('body2')};
+                font-weight: 300;
+              `}
+            >
+              {' '}
+              Signaling proposal
+            </span>
+          </div>
+        ) : (
+          <Balance
+            amount={requestedAmount}
+            decimals={decimals}
+            symbol={symbol}
+            verified={verified}
+            icon={tokenIcon}
+          />
+        )
       }
     />
   )

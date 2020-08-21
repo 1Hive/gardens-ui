@@ -85,6 +85,15 @@ const Proposals = React.memo(
       [history]
     )
 
+    const columns = [
+      { label: 'Proposal', align: 'start' },
+      ...linkField,
+      ...requestedField,
+      ...convictionFields,
+      ...beneficiaryField,
+    ]
+
+    console.log('COLUMNS!!! ', columns)
     return (
       <div>
         {!compactMode && (

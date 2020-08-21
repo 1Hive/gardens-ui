@@ -25,19 +25,27 @@
     recursive-copy "^2.0.9"
     use-inside "^0.2.0"
 
-"@1hive/connect-conviction-voting@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-conviction-voting/-/connect-conviction-voting-0.2.0.tgz#037537314154e64afe841f9cad4af79231f4166a"
-  integrity sha512-/8UncQR40Sy22TxmMofykiKoiUVhx9isBAQk5xiz1tniGFAmRuHtesn15FDTVgiAn8SGDQD8rvBCkPmf5CsC6w==
+"@1hive/connect-conviction-voting@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-conviction-voting/-/connect-conviction-voting-0.2.1.tgz#3469c80050474339985c37cd54175af984bafe23"
+  integrity sha512-ywfl7eTTgEJMu3EY4qsiwfKJlEeVuYB6PMXc5H6QNgWg8G22vVcn8LIgbIMbAU4ISQFFLe1fMkiXiKFxZ1c1uA==
   dependencies:
-    "@aragon/connect-core" "^0.5.2"
-    "@aragon/connect-thegraph" "^0.5.2"
+    "@aragon/connect-core" "^0.6.0"
+    "@aragon/connect-thegraph" "^0.6.0"
     graphql-tag "^2.10.3"
 
-"@aragon/connect-core@^0.5.2", "@aragon/connect-core@^0.5.3":
+"@aragon/connect-core@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.5.3.tgz#88aa5f5a3492e940ce1f900fe4b05c2fc41fae82"
   integrity sha512-pMnwP1Ff2lK8qDfhK/7W52H5FBOWP8c0CmKo00kaPXCk2qJlY97pPLOAqPLKV4j8JsJD86x+UKDafke0E86MuA==
+  dependencies:
+    ethers "^5.0.7"
+    radspec "^2.0.0-rc.1"
+
+"@aragon/connect-core@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.6.0.tgz#dcbf818e203c5c547dd0f93b6c4c53362688e467"
+  integrity sha512-dxb80Tfkkljw+B8ZxG01U+1pnod3a8qz22BUMsMBet//ZvN7lr6w5ftWOKJxOgDn0mzNLn5yy6X2zq6j9KaKrw==
   dependencies:
     ethers "^5.0.7"
     radspec "^2.0.0-rc.1"
@@ -49,12 +57,25 @@
   dependencies:
     "@aragon/connect-core" "^0.5.3"
 
-"@aragon/connect-thegraph@^0.5.2", "@aragon/connect-thegraph@^0.5.3":
+"@aragon/connect-thegraph@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.5.3.tgz#7536189cc0f1258c14d1210f2d0617e75d178ecd"
   integrity sha512-LK+WDi95LbIngA6FWXWcmniYoAdPesPxwVoHkphMDifukTjLZr93Fm8B3qR2hmV/8HhnYLL8JfP5IzjWPMTHog==
   dependencies:
     "@aragon/connect-core" "^0.5.3"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
+
+"@aragon/connect-thegraph@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.6.0.tgz#a93bd391668f79abe432c700a3deefd17ec8ec0b"
+  integrity sha512-fqkgjAUZNN3gXnmOFyzcIz76flB8N9qvF+dlIxCecSs7PRj6hX1YCBM+S+N7G+MHpuxZHQF3pXHdewZasitYXw==
+  dependencies:
+    "@aragon/connect-core" "^0.6.0"
     "@urql/core" "^1.11.7"
     graphql "^15.0.0"
     graphql-tag "^2.10.3"
@@ -1530,15 +1551,15 @@
     deepmerge "^4.2.2"
     loglevel "^1.6.8"
 
-"@toruslabs/torus-embed@^1.2.4":
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/@toruslabs/torus-embed/-/torus-embed-1.8.2.tgz#6652b8f751c5f041749ccbfcaa0c08ced5f4f278"
-  integrity sha512-SlApK4BavoQYNenoQxjUs9/rrqrGDK5+Z9coABA6J7pLcbSL7QnBl8bKwTTYhI9Hri2GRbUM8XzNNpZfy5RiIQ==
+"@toruslabs/torus-embed@^1.8.0":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@toruslabs/torus-embed/-/torus-embed-1.8.3.tgz#3c1e5c6ca755628381529402650f00e5c0e4d407"
+  integrity sha512-wI+mDF3oj6QsHPcLrApVEXmddBcIzrB5JMdxR/V5Jag2Rlk3bRFf7VkxI4mXz0+Qf+He6+fa2VXWCITZMlaDeQ==
   dependencies:
     "@chaitanyapotti/random-id" "^1.0.3"
     "@toruslabs/fetch-node-details" "^2.3.0"
     "@toruslabs/http-helpers" "^1.3.4"
-    "@toruslabs/torus.js" "^2.2.4"
+    "@toruslabs/torus.js" "^2.2.5"
     create-hash "^1.2.0"
     deepmerge "^4.2.2"
     eth-json-rpc-errors "^2.0.2"
@@ -1554,7 +1575,7 @@
     safe-event-emitter "^1.0.1"
     web3 "^0.20.7"
 
-"@toruslabs/torus.js@^2.2.4":
+"@toruslabs/torus.js@^2.2.5":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@toruslabs/torus.js/-/torus.js-2.2.5.tgz#8994ae7727d980e2c0600b1154d547260ea52ec4"
   integrity sha512-fxrIQmtNo4p3uEy5KdiIrZiB32KGPtaV70PoPg/vQB4IL/gjrQSYSIcC0VyP04yBfjHLccJe/HKOhlofpKcjAg==
@@ -1725,7 +1746,7 @@
     enc-utils "2.1.0"
     js-sha3 "0.8.0"
 
-"@walletconnect/web3-provider@^1.0.11":
+"@walletconnect/web3-provider@^1.2.0-alpha.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/web3-provider/-/web3-provider-1.2.1.tgz#5fd968fc62cd6f9ac2a0df3d16b6b1ed0dee35f9"
   integrity sha512-uvRiiHU1etEHv/O8WvzGCR1Dtwms8Ic8bMOFs0cogc+fywsxD0dZ/xSxZwwKHqWFY8euERpw+FDhFPcYOfOr8w==
@@ -1745,9 +1766,9 @@
     "@web3-react/types" "^6.0.7"
 
 "@web3-react/authereum-connector@^6.0.8":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@web3-react/authereum-connector/-/authereum-connector-6.1.1.tgz#b5069209338b3c0496234b543fb987aa4a6ba5dd"
-  integrity sha512-VJgA5NvWJ7IXheXOpte8BsdIc44w9USsxQ62nbeb0PTT250IuRCs0zcbamv5SRvpjRbm4C1eSiNkhkClBZFA/w==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/authereum-connector/-/authereum-connector-6.1.6.tgz#2aefc653578d880238719418e0b1818347f4a18e"
+  integrity sha512-SeU7PSSkN5MHEnYiveVwctuniXSbBKqm4dl0HUSUK/L+Kzs5lAcSYE0Iyu9Ke7RpSQJ6qe1SxbcAMguyQVOeKQ==
   dependencies:
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
@@ -1765,9 +1786,9 @@
     tiny-warning "^1.0.3"
 
 "@web3-react/fortmatic-connector@^6.0.7":
-  version "6.0.9"
-  resolved "https://registry.yarnpkg.com/@web3-react/fortmatic-connector/-/fortmatic-connector-6.0.9.tgz#1362f2149b639da19749bfcb08fbcab84407f786"
-  integrity sha512-RBnPg1aPB6AgdVaITu/XxsbdVkTn2b1mRaTbYjJnDslDy4D+bm7O3mlFTEDaEC+fT+v+/eQDXnUtWFFy6YeOew==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/fortmatic-connector/-/fortmatic-connector-6.1.6.tgz#99836c4ff4428432e34ed859b55c5842b02726a5"
+  integrity sha512-AKiEVvKlZPpRj5pADXyucl2FBt3ymf7PSsRhraHeI8hJCfCEACQ2+bq7okvJq9sNqaeUKukzwUYJmgBYn0qkYQ==
   dependencies:
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
@@ -1794,9 +1815,9 @@
     tiny-warning "^1.0.3"
 
 "@web3-react/portis-connector@^6.0.7":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@web3-react/portis-connector/-/portis-connector-6.1.1.tgz#67be750dc2e50a9079fd944a23511e9e3672948f"
-  integrity sha512-SeqnCVAcI+ijSIc8bqSj30j7R6biWjmb7EHhAQoPBIZZeQOyMJb5jJmQKG6iQH9plvy0tWNIz0egGd55yNyKlQ==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/portis-connector/-/portis-connector-6.1.6.tgz#e98847864c05a35e06e593e3aea0358749aae162"
+  integrity sha512-c9qyPoGVG+wLKcIJGzVTDP6oZ/Wn+EbE2cVjeCDTR2opzOO6kJoG7SOZMLXIX1F9v/N6bB8NI6XWlDjROK8zMw==
   dependencies:
     "@portis/web3" "^2.0.0-beta.54"
     "@web3-react/abstract-connector" "^6.0.7"
@@ -1804,9 +1825,9 @@
     tiny-invariant "^1.0.6"
 
 "@web3-react/squarelink-connector@^6.0.7":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@web3-react/squarelink-connector/-/squarelink-connector-6.1.1.tgz#56ff9d4899b22aeb0447edc9ad43d798e8f969ff"
-  integrity sha512-ykrG/6a6uPNwCvI8MJen7abyIWRPvRvzjJfC5XVWNhA+11y+/G6BcWkyuJaIaqm2q0usoe9C7rZ+IIx1x6kQjw==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/squarelink-connector/-/squarelink-connector-6.1.6.tgz#26d496a0c4551220115f36e5c29a5b38c80675fa"
+  integrity sha512-OD/WhpgbuQvEy8WhSmniw1VQUUcqobS/kv/eDDEX2rN7w+o8Ip78lPX52eEux9HRQXUslkP/y1DCKRz+USWhGA==
   dependencies:
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
@@ -1814,11 +1835,11 @@
     tiny-invariant "^1.0.6"
 
 "@web3-react/torus-connector@^6.0.8":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@web3-react/torus-connector/-/torus-connector-6.1.1.tgz#685e2c83856c90385881f15a0daa08d1fb272934"
-  integrity sha512-rCprV8V937tig3papFXeVisQITt3kms+jRVuTvvH7eB9ciFGkBnnjwsEiUaVAwh+MttslFCUp/Ns4KPqY+/gPw==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/torus-connector/-/torus-connector-6.1.6.tgz#d3a8227a2e2c765e082016db003e53e18abe2de7"
+  integrity sha512-Pqyfqj+E+0XYYOLZygzDpSqIodZz+Ojg1qnBkdfIpChiZ17uFqOHRy1txZP/ps4Af1z8FxRmcNeP3g7fEMXHMw==
   dependencies:
-    "@toruslabs/torus-embed" "^1.2.4"
+    "@toruslabs/torus-embed" "^1.8.0"
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
 
@@ -1828,19 +1849,19 @@
   integrity sha512-ofGmfDhxmNT1/P/MgVa8IKSkCStFiyvXe+U5tyZurKdrtTDFU+wJ/LxClPDtFerWpczNFPUSrKcuhfPX1sI6+A==
 
 "@web3-react/walletconnect-connector@^6.0.7":
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-connector/-/walletconnect-connector-6.1.4.tgz#fc811df26a25b8c81d02f5b5c953ceb6417954a1"
-  integrity sha512-2Bv+qo7aGOgsmnon87DWft8gbGdr35xhYwFAlEJxSXHGiRTZAi6ymGTyjb2X5B4sQTb0VWBwC0nGlzYHN1Sm1Q==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-connector/-/walletconnect-connector-6.1.6.tgz#8c216b2e38db94c60afac8453be31d31019205b7"
+  integrity sha512-subMnG0/SmP7bg5ZGxX6z32GjlSFspc7AO+A2pUrifP5My/837sp900uhBxLl5ex2SMe/rDgor+7jUstAkmH8g==
   dependencies:
-    "@walletconnect/web3-provider" "^1.0.11"
+    "@walletconnect/web3-provider" "^1.2.0-alpha.0"
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
     tiny-invariant "^1.0.6"
 
 "@web3-react/walletlink-connector@^6.0.7":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.1.1.tgz#191753105a05f6b41ab8cdc81586d1aafdf253ad"
-  integrity sha512-mff4RHUQ4KUNVmJd9VvnL9vYZ0iD6UsWxcsP4S1SojuNNcBC1nYjy75vwzFnIHWq8L6Q7XF8Qt8RZCyZByVNgg==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.1.6.tgz#1db2672ac1d19917c6f8755fcc1050a9d8292f52"
+  integrity sha512-uWpz9ARqAKYw0ss2CYoQDrlvj5Koo4RoeTLns+ZoZPeMqCIcgDZvlkpWCkPNSs9eSP2PtbqWEzhm0vag7hCCBw==
   dependencies:
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
@@ -1902,6 +1923,14 @@ aes-js@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
   integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
+
+aggregate-error@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.0.1.tgz#db2fe7246e536f40d9b5442a39e117d7dd6a24e0"
+  integrity sha512-quoaXsZ9/BLNae5yiNoUz+Nhkwz83GhWwtYFglcjEQB2NDHCIpApbqXxIFnm4Pq/Nvhrsq5sYJFyohrrxnTGAA==
+  dependencies:
+    clean-stack "^2.0.0"
+    indent-string "^4.0.0"
 
 airbnb-prop-types@^2.9.0:
   version "2.16.0"
@@ -3282,6 +3311,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+clean-stack@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
+  integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
+
 cli-cursor@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"
@@ -3794,9 +3828,9 @@ date-fns@2.0.0-alpha.22:
   integrity sha512-ovlz0I0OFhyn9bgTfqFAUvJvo8VS9mUuOxZ6cwKwBjSx42lMpXPGolcINYZoTNAG2M4YJ3QoApiQQljQEuy/Uw==
 
 dayjs@^1.8.14, dayjs@^1.8.28:
-  version "1.8.33"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.33.tgz#18bc4a2b6c1c6f4d67b4c4f2536c0b97e5b766f7"
-  integrity sha512-881TDLZCdpJFKbraWRHcUG8zfMLLX400ENf9rFZDuWc5zYMss6xifo2PhlDX0ftOmR2NRmaIY47bAa4gKQfXqw==
+  version "1.8.34"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.34.tgz#d3ad33cc43d6b0f24cb8686b90aad2c653708069"
+  integrity sha512-Olb+E6EoMvdPmAMq2QoucuyZycKHjTlBXmRx8Ada+wGtq4SIXuDCdtoaX4KkK0yjf1fJLnwXQURr8gQKWKaybw==
 
 deasync@^0.1.14:
   version "0.1.20"
@@ -4122,9 +4156,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.3.523:
-  version "1.3.536"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.536.tgz#78a4ff753111283489f3b6ad19664902245ab876"
-  integrity sha512-aU16nvH8/zNNeFIQ7H2SKRQlJ/srw7mCn/JDj2ImWUA7Lk2+3zJFpDGJNP2qRxPAZsC+qgnlgNTYIvT6EOdJFQ==
+  version "1.3.539"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.539.tgz#9952fb0bf3fb4295282e7df35f6e7a2a8b89d3fd"
+  integrity sha512-rM0LWDIstdqfaRUADZetNrL6+zd/0NBmavbMEhBXgc2u/CC1d1GaDyN5hho29fFvBiOVFwrSWZkzmNcZnCEDog==
 
 elliptic@6.5.2:
   version "6.5.2"
@@ -5780,6 +5814,11 @@ indent-string@^3.0.0:
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-3.2.0.tgz#4a5fd6d27cc332f37e5419a504dbb837105c9289"
   integrity sha1-Sl/W0nzDMvN+VBmlBNu4NxBckok=
 
+indent-string@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
+  integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
+
 indexes-of@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
@@ -7325,6 +7364,13 @@ p-locate@^3.0.0:
   integrity sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==
   dependencies:
     p-limit "^2.0.0"
+
+p-map@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/p-map/-/p-map-4.0.0.tgz#bb2f95a5eda2ec168ec9274e06a747c3e2904d2b"
+  integrity sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==
+  dependencies:
+    aggregate-error "^3.0.0"
 
 p-try@^1.0.0:
   version "1.0.0"

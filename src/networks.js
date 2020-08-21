@@ -14,7 +14,7 @@ const networks = {
     name: 'Rinkeby',
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
-    honeypot: '0x7050ead31291e288fee6f34f8616b58a86064d4f',
+    honeypot: '0xace2faa375ffc251fafc7360bc3defbc6184e5fe',
   },
   xdai: {
     chainId: 100,

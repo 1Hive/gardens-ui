@@ -59,10 +59,12 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
     stakedConviction,
     futureStakedConviction,
     neededConviction,
+    requestedAmount,
   } = proposal
 
   const secondSize = stakedConviction.minus(userStakedConviction)
   const thirdSize = futureStakedConviction.minus(stakedConviction)
+  const signalingProposal = requestedAmount.eq(0)
 
   return (
     <div>
@@ -80,30 +82,31 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
           `}
         >
           {Math.round(stakedConviction * 100)}%{' '}
-          {withThreshold ? (
-            <span
-              css={`
-                color: ${theme.contentSecondary};
-              `}
-            >
-              {neededConviction
-                ? `(${Math.round(
-                    neededConviction.multipliedBy(new BigNumber('100'))
-                  )}% needed)`
-                : `(&infin; needed)`}
-            </span>
-          ) : (
-            <span
-              css={`
-                color: ${theme.contentSecondary};
-              `}
-            >
-              {Math.round(stakedConviction * 100) !==
-              Math.round(futureStakedConviction * 100)
-                ? `(predicted: ${Math.round(futureStakedConviction * 100)}%)`
-                : `(stable)`}
-            </span>
-          )}
+          {!signalingProposal &&
+            (withThreshold ? (
+              <span
+                css={`
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                {neededConviction
+                  ? `(${Math.round(
+                      neededConviction.multipliedBy(new BigNumber('100'))
+                    )}% needed)`
+                  : `(threshold out of range)`}
+              </span>
+            ) : (
+              <span
+                css={`
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                {Math.round(stakedConviction * 100) !==
+                Math.round(futureStakedConviction * 100)
+                  ? `(predicted: ${Math.round(futureStakedConviction * 100)}%)`
+                  : `(stable)`}
+              </span>
+            ))}
         </span>
       </div>
     </div>

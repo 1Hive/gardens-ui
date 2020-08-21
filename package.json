@@ -4,11 +4,12 @@
   "private": true,
   "dependencies": {
     "@1hive/1hive-ui": "^1.0.2",
-    "@1hive/connect-conviction-voting": "^0.2.0",
+    "@1hive/connect-conviction-voting": "^0.2.1",
     "@aragon/connect": "^0.5.3",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
     "ethers": "5.0.8",
+    "p-map": "^4.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -26,7 +27,6 @@
     "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
     "build:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn build",
     "lint": "eslint ./src"
-
   },
   "browserslist": {
     "production": [

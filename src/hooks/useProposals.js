@@ -28,6 +28,8 @@ export function useProposals() {
     weight,
   } = useAppState()
 
+  console.log('TOTAL SUPPLY ', totalSupply)
+
   const latestBlock = useLatestBlock()
 
   const proposalsWithData = useMemo(() => {
@@ -36,6 +38,12 @@ export function useProposals() {
     }
 
     return proposals.map(proposal => {
+      let threshold = null
+      let neededConviction = null
+      let minTokensNeeded = null
+      let neededTokens = null
+      let remainingTimeToPass = null
+
       const stakes = stakesHistory.filter(
         stake => parseInt(stake.proposalId) === parseInt(proposal.id)
       )
@@ -45,15 +53,6 @@ export function useProposals() {
           return accumulator.plus(stake.amount)
         },
         new BigNumber('0')
-      )
-
-      const threshold = calculateThreshold(
-        proposal.requestedAmount,
-        vaultBalance || new BigNumber('0'),
-        totalSupply || new BigNumber('0'),
-        alpha,
-        maxRatio,
-        weight
       )
 
       const maxConviction = getMaxConviction(
@@ -76,19 +75,6 @@ export function useProposals() {
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
       const futureStakedConviction = futureConviction.div(maxConviction)
-      const neededConviction = threshold.div(maxConviction)
-
-      const minTokensNeeded = getMinNeededStake(threshold, alpha)
-
-      const neededTokens = minTokensNeeded.minus(totalTokensStaked)
-
-      const remainingTimeToPass = getRemainingTimeToPass(
-        threshold,
-        currentConviction,
-        totalTokensStaked,
-        alpha
-      )
-
       const convictionTrend = getConvictionTrend(
         stakes,
         maxConviction,
@@ -96,6 +82,31 @@ export function useProposals() {
         alpha,
         TIME_UNIT
       )
+
+      // Funding proposal needed values
+      if (!proposal.requestedAmount.eq(0)) {
+        threshold = calculateThreshold(
+          proposal.requestedAmount,
+          vaultBalance || new BigNumber('0'),
+          totalSupply || new BigNumber('0'),
+          alpha,
+          maxRatio,
+          weight
+        )
+
+        neededConviction = threshold?.div(maxConviction)
+
+        minTokensNeeded = getMinNeededStake(threshold, alpha)
+
+        neededTokens = minTokensNeeded.minus(totalTokensStaked)
+
+        remainingTimeToPass = getRemainingTimeToPass(
+          threshold,
+          currentConviction,
+          totalTokensStaked,
+          alpha
+        )
+      }
 
       return {
         ...proposal,

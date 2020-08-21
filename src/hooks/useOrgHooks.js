@@ -83,7 +83,10 @@ export function useAppData(organization) {
 
       const convictionVoting = await connectConviction(convictionApp)
 
+      console.log('Conviction Voting ', convictionVoting)
+
       const config = await convictionVoting.config()
+      console.log('config ', config)
 
       if (!cancelled) {
         setAppData(appData => ({
