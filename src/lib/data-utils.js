@@ -7,6 +7,7 @@ export function transformConfigData(config) {
     maxRatio: new BigNumber(config.maxRatio).div(config.pctBase),
     weight: new BigNumber(config.weight).div(config.pctBase),
     pctBase: new BigNumber(config.pctBase),
+    totalStaked: new BigNumber(config.totalStaked),
   }
 }
 

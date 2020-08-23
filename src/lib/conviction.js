@@ -1,4 +1,6 @@
 import BigNumber from './bigNumber'
+import { addressesEqual } from './web3-utils'
+
 const oneBN = new BigNumber('1')
 /**
  * Calculate the amount of conviction at certain time from an initial conviction
@@ -312,7 +314,7 @@ function convictionFromStakes(stakes, alpha) {
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ entity: _entity }) => entity === _entity)
+    .filter(({ entity: _entity }) => addressesEqual(entity, _entity))
     .map(({ time, tokensStaked, conviction }) => ({
       time,
       totalTokensStaked: tokensStaked,

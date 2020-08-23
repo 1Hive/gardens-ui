@@ -1,5 +1,4 @@
 import React from 'react'
-import pMap from 'p-map' // eslint-disable-line
 import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from './components/AddProposalPanel'
@@ -18,7 +17,7 @@ const App = React.memo(function App() {
     myStakes,
     proposals,
     proposalPanel,
-    totalActiveTokens,
+    totalStaked,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -36,7 +35,7 @@ const App = React.memo(function App() {
       onWithdrawFromProposal={actions.withdrawFromProposal}
       proposals={proposals}
       selectedProposal={selectedProposal}
-      totalActiveTokens={totalActiveTokens}
+      totalActiveTokens={totalStaked}
     />
   )
 
@@ -54,7 +53,7 @@ const App = React.memo(function App() {
               <Wallet myStakes={myStakes} />
               <StakingTokens
                 myStakes={myStakes}
-                totalActiveTokens={totalActiveTokens}
+                totalActiveTokens={totalStaked}
               />
             </div>
           }

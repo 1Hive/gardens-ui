@@ -23,12 +23,10 @@ export function useProposals() {
     maxRatio,
     proposals = [],
     stakesHistory = [],
-    totalSupply,
     vaultBalance,
     weight,
+    effectiveSupply,
   } = useAppState()
-
-  console.log('TOTAL SUPPLY ', totalSupply)
 
   const latestBlock = useLatestBlock()
 
@@ -56,21 +54,22 @@ export function useProposals() {
       )
 
       const maxConviction = getMaxConviction(
-        totalSupply || new BigNumber('0'),
+        effectiveSupply || new BigNumber('0'),
         alpha
       )
-
       const currentConviction = getCurrentConviction(
         stakes,
         latestBlock.number,
         alpha
       )
+
       const userConviction = getCurrentConvictionByEntity(
         stakes,
         account,
         latestBlock.number,
         alpha
       )
+
       const userStakedConviction = userConviction.div(maxConviction)
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
@@ -88,7 +87,7 @@ export function useProposals() {
         threshold = calculateThreshold(
           proposal.requestedAmount,
           vaultBalance || new BigNumber('0'),
-          totalSupply || new BigNumber('0'),
+          effectiveSupply || new BigNumber('0'),
           alpha,
           maxRatio,
           weight
@@ -134,7 +133,7 @@ export function useProposals() {
     maxRatio,
     proposals,
     stakesHistory,
-    totalSupply,
+    effectiveSupply,
     vaultBalance,
     weight,
   ])

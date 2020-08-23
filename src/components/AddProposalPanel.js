@@ -40,7 +40,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     maxRatio,
     requestToken,
     stakeToken,
-    totalSupply,
+    effectiveSupply,
     vaultBalance,
     weight,
   } = useAppState()
@@ -164,16 +164,16 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     const threshold = calculateThreshold(
       formData.amount.valueBN,
       vaultBalance,
-      totalSupply,
+      effectiveSupply,
       alpha,
       maxRatio,
       weight
     )
 
-    const max = getMaxConviction(totalSupply, alpha)
+    const max = getMaxConviction(effectiveSupply, alpha)
 
     return Math.round((threshold / max) * 100)
-  }, [alpha, formData.amount, maxRatio, totalSupply, vaultBalance, weight])
+  }, [alpha, formData.amount, maxRatio, effectiveSupply, vaultBalance, weight])
 
   const submitDisabled =
     formData.proposalType === NULL_PROPOSAL_TYPE ||
