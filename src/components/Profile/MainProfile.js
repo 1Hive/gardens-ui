@@ -14,7 +14,15 @@ const BOX_PADDING = 5 * GU
 
 function MainProfile() {
   const theme = useTheme()
-  const { account, description, image, name, verifiedAccounts } = useProfile()
+  const {
+    account,
+    description,
+    email,
+    image,
+    name,
+    verifiedAccounts,
+    website,
+  } = useProfile()
 
   return (
     <Box padding={BOX_PADDING}>
@@ -62,31 +70,61 @@ function MainProfile() {
               {shortenAddress(account)}
             </div>
           </div>
-          {verifiedAccounts && (
-            <div
-              css={`
-                display: flex;
-                justify-content: space-evenly;
-                margin-top: ${2 * GU}px;
-              `}
-            >
-              {Object.values(verifiedAccounts).map((verifiedAccount, index) => {
-                return (
-                  <div key={index}>
-                    <Link href={verifiedAccount.url}>
-                      <img
-                        src={verifiedAccount.icon}
-                        width="24"
-                        height="24"
-                        alt=""
-                        css="display:block"
-                      />
-                    </Link>{' '}
-                  </div>
-                )
-              })}
+          <div
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            <div>
+              {email && (
+                <div
+                  css={`
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    ${textStyle('body2')}
+                  `}
+                >
+                  {email}
+                </div>
+              )}
+              {website && (
+                <div
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  {website}
+                </div>
+              )}
             </div>
-          )}
+            {verifiedAccounts && (
+              <div
+                css={`
+                  display: flex;
+                  justify-content: space-evenly;
+                `}
+              >
+                {Object.values(verifiedAccounts).map(
+                  (verifiedAccount, index) => {
+                    return (
+                      <div key={index}>
+                        <Link href={verifiedAccount.url}>
+                          <img
+                            src={verifiedAccount.icon}
+                            width="24"
+                            height="24"
+                            alt=""
+                            css="display:block"
+                          />
+                        </Link>{' '}
+                      </div>
+                    )
+                  }
+                )}
+              </div>
+            )}
+          </div>
           {description && (
             <>
               <div
