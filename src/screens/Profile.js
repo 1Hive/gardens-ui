@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Button, GU, Split, useLayout } from '@1hive/1hive-ui'
+import { Button, GU, Split, SyncIndicator, useLayout } from '@1hive/1hive-ui'
 
 import Activity from '../components/Profile/Activity'
 import EditProfile from '../components/Profile/EditProfile'
@@ -12,7 +12,7 @@ function Profile() {
 
   const history = useHistory()
   const { name: layout } = useLayout()
-  const { account, auth, box } = useProfile()
+  const { account, auth, authenticated, box } = useProfile()
   const oneColumn = layout === 'small' || layout === 'medium'
 
   useEffect(() => {
@@ -29,23 +29,32 @@ function Profile() {
     setEditMode(mode => !mode)
   }, [])
 
-  return editMode ? (
-    <EditProfile onBack={toggleEditMode} />
-  ) : (
+  return (
     <div>
-      <div
-        css={`
-          text-align: right;
-          margin-bottom: ${2 * GU}px;
-        `}
-      >
-        <Button label="Edit profile" onClick={toggleEditMode} />
-      </div>
-      <Split
-        primary={<Activity />}
-        secondary={<MainProfile />}
-        invert={oneColumn ? 'vertical' : 'horizontal'}
-      />
+      <SyncIndicator label="Opening box..." visible={!authenticated} />
+      {editMode ? (
+        <EditProfile onBack={toggleEditMode} />
+      ) : (
+        <>
+          <div
+            css={`
+              text-align: right;
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            <Button
+              label="Edit profile"
+              onClick={toggleEditMode}
+              disabled={!authenticated}
+            />
+          </div>
+          <Split
+            primary={<Activity />}
+            secondary={<MainProfile />}
+            invert={oneColumn ? 'vertical' : 'horizontal'}
+          />
+        </>
+      )}
     </div>
   )
 }

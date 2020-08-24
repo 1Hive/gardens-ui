@@ -67,7 +67,6 @@ function ProfileProvider({ children }) {
   const auth = useCallback(async () => {
     try {
       const box = await openBoxForAccount(account, ethereum)
-
       setBox(box)
     } catch (err) {
       console.error(err)
@@ -106,7 +105,13 @@ function ProfileProvider({ children }) {
 
   return (
     <ProfileContext.Provider
-      value={{ ...profile, account, auth, updateProfile }}
+      value={{
+        ...profile,
+        account,
+        auth,
+        authenticated: Boolean(box),
+        updateProfile,
+      }}
     >
       {children}
     </ProfileContext.Provider>
