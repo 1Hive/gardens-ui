@@ -238,7 +238,7 @@ function ProposalDetail({
         }
         secondary={
           <div>
-            {requestToken && (
+            {!signalingProposal && requestToken && (
               <Box heading="Status" padding={3 * GU}>
                 {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
                   <Info mode="warning">
@@ -269,12 +269,11 @@ function ProposalDetail({
                 </Button>
               </Box>
             )}
-            {filteredStakes.length > 0 && (
-              <SupportersDistribution
-                stakes={filteredStakes}
-                totalTokensStaked={totalTokensStaked}
-              />
-            )}
+
+            <SupportersDistribution
+              stakes={filteredStakes}
+              totalTokensStaked={totalTokensStaked}
+            />
           </div>
         }
       />
