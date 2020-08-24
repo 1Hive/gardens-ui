@@ -8,6 +8,7 @@ import {
   useAppData,
 } from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
+import { bigNum } from '../lib/bigNumber'
 
 const AppStateContext = React.createContext()
 
@@ -37,7 +38,7 @@ function AppStateProvider({ children }) {
     }
     const percentageOfTotalSupply = totalSupply
       .multipliedBy(minThresholdStakePercentage)
-      .div(1)
+      .div(bigNum(1))
 
     if (totalStaked.lt(percentageOfTotalSupply)) {
       return percentageOfTotalSupply
