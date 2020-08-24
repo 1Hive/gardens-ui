@@ -14,9 +14,9 @@ const VERIFIED_ACCOUNTS = {
 
 export async function getAccountPrivateData(box) {
   const birthday = await box.private.get('birthday')
-  const email = await box.private.get('email')
+  const email = await box.verified.email()
 
-  return { birthday, email }
+  return { birthday, email: email?.email_address }
 }
 
 export async function getProfileForAccount(account) {
@@ -51,18 +51,18 @@ function parseVerifiedAccounts(verifiedAccounts) {
     (acc, [platformKey, account]) => {
       const platform = VERIFIED_ACCOUNTS[platformKey]
       if (platform) {
-        return [
+        return {
           ...acc,
-          {
+          [platformKey]: {
             icon: platform.icon,
             url: `${platform.endpoint}${account.username}`,
             username: account.username,
           },
-        ]
+        }
       }
 
       return acc
     },
-    []
+    null
   )
 }

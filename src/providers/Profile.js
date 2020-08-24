@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import PropTypes from 'prop-types'
 
 import { useWallet } from './Wallet'
@@ -15,23 +21,35 @@ function ProfileProvider({ children }) {
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
 
+  const cancelled = useRef(false)
+
+  const fetchAccountProfile = useCallback(async account => {
+    const publicProfile = await getProfileForAccount(account)
+
+    if (!cancelled.current) {
+      setProfile(profile => ({ ...profile, ...publicProfile }))
+    }
+  }, [])
+
+  const fetchPrivateData = useCallback(async box => {
+    const privateData = await getAccountPrivateData(box)
+
+    if (!cancelled.current) {
+      setProfile(profile => ({ ...profile, ...privateData }))
+    }
+  }, [])
+
   useEffect(() => {
-    let cancelled = false
-
-    async function fetchProfileAccount() {
-      const profile = await getProfileForAccount(account)
-
-      if (!cancelled) {
-        setProfile(profile)
-      }
+    if (!account) {
+      return setProfile(null)
     }
 
-    fetchProfileAccount()
+    fetchAccountProfile(account)
 
     return () => {
-      cancelled = true
+      cancelled.current = true
     }
-  }, [account])
+  }, [account, fetchAccountProfile])
 
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
@@ -39,22 +57,12 @@ function ProfileProvider({ children }) {
       return
     }
 
-    let cancelled = false
-
-    async function fetchPrivateData() {
-      const privateData = await getAccountPrivateData(box)
-
-      if (!cancelled) {
-        setProfile(profile => ({ ...profile, ...privateData }))
-      }
-    }
-
-    fetchPrivateData()
+    fetchPrivateData(box)
 
     return () => {
-      cancelled = true
+      cancelled.current = true
     }
-  }, [box])
+  }, [box, fetchPrivateData])
 
   const auth = useCallback(async () => {
     try {
@@ -66,10 +74,40 @@ function ProfileProvider({ children }) {
     }
   }, [account, ethereum])
 
-  console.log('profile', profile)
+  const updateProfile = useCallback(
+    async (updatedFields, removedFields) => {
+      // Updated fields
+      for (const [key, value] of updatedFields.public) {
+        await box.public.set(key, value)
+      }
+
+      for (const [key, value] of updatedFields.private) {
+        await box.private.set(key, value)
+      }
+
+      // Removed fields
+      for (const key of removedFields.public) {
+        await box.public.remove(key)
+      }
+      for (const key of removedFields.private) {
+        await box.private.remove(key)
+      }
+
+      box.onSyncDone(() => {
+        // re-fetch profile
+        fetchAccountProfile(account)
+        fetchPrivateData(box)
+      })
+    },
+    [account, box, fetchAccountProfile, fetchPrivateData]
+  )
+
+  console.log(profile)
 
   return (
-    <ProfileContext.Provider value={{ ...profile, account, auth }}>
+    <ProfileContext.Provider
+      value={{ ...profile, account, auth, updateProfile }}
+    >
       {children}
     </ProfileContext.Provider>
   )

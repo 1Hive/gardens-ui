@@ -8,6 +8,7 @@
     "@aragon/connect": "^0.6.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
+    "dayjs": "^1.8.34",
     "ethers": "5.0.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

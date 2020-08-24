@@ -74,6 +74,7 @@ export function useProposals() {
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
       const futureStakedConviction = futureConviction.div(maxConviction)
+
       const convictionTrend = getConvictionTrend(
         stakes,
         maxConviction,
