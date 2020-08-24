@@ -62,7 +62,7 @@ function MainProfile() {
               {shortenAddress(account)}
             </div>
           </div>
-          {verifiedAccounts?.length && (
+          {verifiedAccounts && (
             <div
               css={`
                 display: flex;
@@ -70,7 +70,7 @@ function MainProfile() {
                 margin-top: ${2 * GU}px;
               `}
             >
-              {verifiedAccounts.map((verifiedAccount, index) => {
+              {Object.values(verifiedAccounts).map((verifiedAccount, index) => {
                 return (
                   <div key={index}>
                     <Link href={verifiedAccount.url}>
