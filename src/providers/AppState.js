@@ -37,7 +37,7 @@ function AppStateProvider({ children }) {
     }
     const percentageOfTotalSupply = totalSupply
       .multipliedBy(minThresholdStakePercentage)
-      .div(pctBase)
+      .div(1)
 
     if (totalStaked.lt(percentageOfTotalSupply)) {
       return percentageOfTotalSupply

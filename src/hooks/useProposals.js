@@ -62,7 +62,6 @@ export function useProposals() {
         latestBlock.number,
         alpha
       )
-
       const userConviction = getCurrentConvictionByEntity(
         stakes,
         account,
@@ -71,6 +70,7 @@ export function useProposals() {
       )
 
       const userStakedConviction = userConviction.div(maxConviction)
+
       const stakedConviction = currentConviction.div(maxConviction)
       const futureConviction = getMaxConviction(totalTokensStaked, alpha)
       const futureStakedConviction = futureConviction.div(maxConviction)
