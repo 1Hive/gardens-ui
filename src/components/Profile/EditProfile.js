@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   Button,
   GU,
@@ -26,6 +26,9 @@ function EditProfile({ onBack }) {
   const { name: layout } = useLayout()
   const { account, image, name } = useProfile()
   const oneColumn = layout === 'small' || layout === 'medium'
+
+  const imageInput = useRef(null)
+  const handleImageChange = useCallback(event => {}, [])
 
   const TabContent = CONTENT[selectedTab]
 
@@ -70,52 +73,63 @@ function EditProfile({ onBack }) {
                     border-radius: 50%;
                   `}
                 />
+                {selectedTab === 0 && (
+                  <div
+                    css={`
+                      position: absolute;
+                      top: 0;
+                      bottom: 0;
+                      left: 0;
+                      right: 0;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      height: ${IMAGE_DIMENSION}px;
+                      opacity: 0;
+                      background: white;
+                      border-radius: 50%;
+                      cursor: pointer;
+
+                      transition: opacity 0.2s ease;
+
+                      &:hover {
+                        opacity: 0.5;
+                      }
+                    `}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={imageInput}
+                      onChange={handleImageChange}
+                    >
+                      <div
+                        css={`
+                          width: ${IMAGE_DIMENSION / 2}px;
+                        `}
+                      >
+                        Change picture
+                      </div>
+                    </input>
+                  </div>
+                )}
+              </div>
+              {selectedTab === 0 && (image || imageInput?.files[0]) && (
                 <div
                   css={`
                     position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: ${IMAGE_DIMENSION}px;
-                    opacity: 0;
-                    background: white;
+                    bottom: ${1 * GU}px;
+                    left: ${IMAGE_DIMENSION / 2 + 1 * GU}px;
+                    color: ${theme.contentSecondary};
+                    padding: ${0.5 * GU}px;
+                    background: ${theme.surface};
                     border-radius: 50%;
-                    cursor: pointer;
-
-                    transition: opacity 0.2s ease;
-
-                    &:hover {
-                      opacity: 0.5;
-                    }
+                    display: flex;
                   `}
                 >
-                  <div
-                    css={`
-                      width: ${IMAGE_DIMENSION / 2}px;
-                    `}
-                  >
-                    Change picture
-                  </div>
+                  <IconCross />
                 </div>
-              </div>
-              <div
-                css={`
-                  position: absolute;
-                  bottom: ${1 * GU}px;
-                  left: ${IMAGE_DIMENSION / 2 + 1 * GU}px;
-                  color: ${theme.contentSecondary};
-                  padding: ${0.5 * GU}px;
-                  background: ${theme.surface};
-                  border-radius: 50%;
-                  display: flex;
-                `}
-              >
-                <IconCross />
-              </div>
+              )}
             </div>
             <div
               css={`
