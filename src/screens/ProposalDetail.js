@@ -309,7 +309,7 @@ const Amount = ({
               align-items: center;
             `}
           >
-            <img src={signalingBadge} alt="" />
+            <img src={signalingBadge} alt="" height="24" width="24" />
             <span
               css={`
                 margin-left: ${1 * GU}px;
@@ -317,7 +317,6 @@ const Amount = ({
                 font-weight: 300;
               `}
             >
-              {' '}
               Signaling proposal
             </span>
           </div>

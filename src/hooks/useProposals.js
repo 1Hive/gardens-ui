@@ -83,7 +83,7 @@ export function useProposals() {
       )
 
       // Funding proposal needed values
-      if (!proposal.requestedAmount.eq(0)) {
+      if (proposal.requestedAmount.gt(0)) {
         threshold = calculateThreshold(
           proposal.requestedAmount,
           vaultBalance || new BigNumber('0'),
@@ -128,12 +128,12 @@ export function useProposals() {
   }, [
     account,
     alpha,
+    effectiveSupply,
     isLoading,
     latestBlock,
     maxRatio,
     proposals,
     stakesHistory,
-    effectiveSupply,
     vaultBalance,
     weight,
   ])

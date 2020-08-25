@@ -8,7 +8,7 @@ import {
   useAppData,
 } from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
-import { bigNum } from '../lib/bigNumber'
+import { STAKE_PCT_BASE } from '../constants'
 
 const AppStateContext = React.createContext()
 
@@ -18,11 +18,10 @@ function AppStateProvider({ children }) {
   const {
     convictionVoting,
     installedApps,
+    minThresholdStakePercentage,
     requestToken,
     stakeToken,
     totalStaked,
-    minThresholdStakePercentage,
-    pctBase,
     ...appData
   } = useAppData(organization)
 
@@ -31,20 +30,18 @@ function AppStateProvider({ children }) {
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
 
   const effectiveSupply = useMemo(() => {
-    if (
-      !(totalSupply && totalStaked && minThresholdStakePercentage && pctBase)
-    ) {
+    if (!(totalSupply && totalStaked && minThresholdStakePercentage)) {
       return
     }
     const percentageOfTotalSupply = totalSupply
       .multipliedBy(minThresholdStakePercentage)
-      .div(bigNum(1))
+      .div(STAKE_PCT_BASE)
 
     if (totalStaked.lt(percentageOfTotalSupply)) {
       return percentageOfTotalSupply
     }
     return totalStaked
-  }, [totalSupply, totalStaked, minThresholdStakePercentage, pctBase])
+  }, [totalSupply, totalStaked, minThresholdStakePercentage])
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
   const appLoading = !convictionVoting || balancesLoading || !effectiveSupply
@@ -55,14 +52,14 @@ function AppStateProvider({ children }) {
         ...appData,
         accountBalance: balance,
         convictionVoting,
+        effectiveSupply,
         installedApps,
         isLoading: appLoading,
         requestToken,
         stakeToken,
+        totalStaked,
         totalSupply: totalSupply,
         vaultBalance,
-        totalStaked,
-        effectiveSupply,
       }}
     >
       {children}

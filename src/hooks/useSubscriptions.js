@@ -6,11 +6,14 @@ import {
 } from '../lib/data-utils'
 
 export function useConfigSubscription(convictionVoting) {
-  const [config, setConfig] = useState([])
+  const [config, setConfig] = useState(null)
 
   const configSubscription = useRef(null)
 
   const onConfigHandler = useCallback(config => {
+    if (!config) {
+      return
+    }
     const transformedConfig = transformConfigData(config)
     setConfig(transformedConfig)
   }, [])
