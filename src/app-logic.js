@@ -5,6 +5,7 @@ import { useWallet } from './providers/Wallet'
 import usePanelState from './hooks/usePanelState'
 import useActions from './hooks/useActions'
 import { addressesEqual } from './lib/web3-utils'
+import { PROPOSAL_STATUS_EXECUTED_STRING } from './constants'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
@@ -24,7 +25,10 @@ export default function useAppLogic() {
 
     return proposals.reduce(
       ({ myStakes }, proposal) => {
-        if (proposal.executed || !proposal.stakes) {
+        if (
+          proposal.status === PROPOSAL_STATUS_EXECUTED_STRING ||
+          !proposal.stakes
+        ) {
           return { myStakes }
         }
 
