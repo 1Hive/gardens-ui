@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "public": true,
+    "build": {
+      "env": {
+        "REACT_APP_CHAIN_ID": "100",
+        "REACT_APP_APP_NAME":"conviction"
+      }
+    }
+  }
+  
