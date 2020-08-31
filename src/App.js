@@ -17,7 +17,7 @@ const App = React.memo(function App() {
     myStakes,
     proposals,
     proposalPanel,
-    totalActiveTokens,
+    totalStaked,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -35,7 +35,7 @@ const App = React.memo(function App() {
       onWithdrawFromProposal={actions.withdrawFromProposal}
       proposals={proposals}
       selectedProposal={selectedProposal}
-      totalActiveTokens={totalActiveTokens}
+      totalActiveTokens={totalStaked}
     />
   )
 
@@ -53,7 +53,7 @@ const App = React.memo(function App() {
               <Wallet myStakes={myStakes} />
               <StakingTokens
                 myStakes={myStakes}
-                totalActiveTokens={totalActiveTokens}
+                totalActiveTokens={totalStaked}
               />
             </div>
           }

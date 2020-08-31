@@ -1,8 +1,35 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
+  transformConfigData,
   transformProposalData,
   transformStakeHistoryData,
 } from '../lib/data-utils'
+
+export function useConfigSubscription(convictionVoting) {
+  const [config, setConfig] = useState(null)
+
+  const configSubscription = useRef(null)
+
+  const onConfigHandler = useCallback(config => {
+    if (!config) {
+      return
+    }
+    const transformedConfig = transformConfigData(config)
+    setConfig(transformedConfig)
+  }, [])
+
+  useEffect(() => {
+    if (!convictionVoting) {
+      return
+    }
+
+    configSubscription.current = convictionVoting.onConfig(onConfigHandler)
+
+    return () => configSubscription.current.unsubscribe()
+  }, [convictionVoting, onConfigHandler])
+
+  return config
+}
 
 export function useProposalsSubscription(convictionVoting) {
   const [proposals, setProposals] = useState([])
