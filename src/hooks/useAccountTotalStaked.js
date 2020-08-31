@@ -3,6 +3,7 @@ import BigNumber from '../lib/bigNumber'
 import { addressesEqual } from '../lib/web3-utils'
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
+import { PROPOSAL_STATUS_ACTIVE_STRING } from '../constants'
 
 export default function useAccountTotalStaked() {
   const { proposals = [] } = useAppState()
@@ -11,7 +12,7 @@ export default function useAccountTotalStaked() {
   const totalStaked = useMemo(
     () =>
       proposals
-        .filter(({ executed }) => !executed)
+        .filter(({ status }) => status === PROPOSAL_STATUS_ACTIVE_STRING)
         .reduce((acc, { stakes }) => {
           const myStake = stakes.find(({ entity }) =>
             addressesEqual(entity, account)

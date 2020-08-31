@@ -4,37 +4,33 @@ import { useProposals } from './hooks/useProposals'
 import { useWallet } from './providers/Wallet'
 import usePanelState from './hooks/usePanelState'
 import useActions from './hooks/useActions'
-
-import BigNumber from './lib/bigNumber'
 import { addressesEqual } from './lib/web3-utils'
+import { PROPOSAL_STATUS_ACTIVE_STRING } from './constants'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
   const { account } = useWallet()
 
-  const { isLoading, stakeToken } = useAppState()
+  const { isLoading, stakeToken, totalStaked } = useAppState()
+
   const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
 
-  const { myStakes, totalActiveTokens } = useMemo(() => {
+  const { myStakes } = useMemo(() => {
     if (!stakeToken || !proposals) {
       return {
         myStakes: [],
-        totalActiveTokens: new BigNumber('0'),
       }
     }
 
     return proposals.reduce(
-      ({ myStakes, totalActiveTokens }, proposal) => {
-        if (proposal.executed || !proposal.stakes) {
-          return { myStakes, totalActiveTokens }
+      ({ myStakes }, proposal) => {
+        if (
+          !proposal.status === PROPOSAL_STATUS_ACTIVE_STRING ||
+          !proposal.stakes
+        ) {
+          return { myStakes }
         }
-
-        const totalActive = proposal.stakes.reduce((accumulator, stake) => {
-          return accumulator.plus(stake.amount)
-        }, new BigNumber('0'))
-
-        totalActiveTokens = totalActiveTokens.plus(totalActive)
 
         const myStake = proposal.stakes.find(
           stake => addressesEqual(stake.entity, account) && stake.amount.gt(0)
@@ -50,12 +46,10 @@ export default function useAppLogic() {
 
         return {
           myStakes,
-          totalActiveTokens,
         }
       },
       {
         myStakes: [],
-        totalActiveTokens: new BigNumber('0'),
       }
     )
   }, [account, proposals, stakeToken])
@@ -68,6 +62,6 @@ export default function useAppLogic() {
     myStakes,
     proposals,
     proposalPanel,
-    totalActiveTokens,
+    totalStaked,
   }
 }

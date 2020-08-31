@@ -4,6 +4,7 @@ import connectConviction from '@1hive/connect-conviction-voting'
 import { connect } from '@aragon/connect'
 import { useContractReadOnly } from './useContract'
 import {
+  useConfigSubscription,
   useProposalsSubscription,
   useStakesHistorySubscription,
 } from './useSubscriptions'
@@ -15,7 +16,7 @@ import { getNetwork } from '../networks'
 import BigNumber from '../lib/bigNumber'
 import { addressesEqual } from '../lib/web3-utils'
 import { getDefaultChain } from '../local-settings'
-import { transformConfigData, getAppAddressByName } from '../lib/data-utils'
+import { getAppAddressByName } from '../lib/data-utils'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
@@ -83,12 +84,9 @@ export function useAppData(organization) {
 
       const convictionVoting = await connectConviction(convictionApp)
 
-      const config = await convictionVoting.config()
-
       if (!cancelled) {
         setAppData(appData => ({
           ...appData,
-          ...transformConfigData(config),
           installedApps: apps,
           convictionVoting,
           organization,
@@ -104,13 +102,14 @@ export function useAppData(organization) {
     }
   }, [appName, organization])
 
+  const config = useConfigSubscription(appData.convictionVoting)
   const proposals = useProposalsSubscription(appData.convictionVoting)
 
   // Stakes done across all proposals on this app
   // Includes old and current stakes
   const stakesHistory = useStakesHistorySubscription(appData.convictionVoting)
 
-  return { ...appData, proposals, stakesHistory }
+  return { ...appData, ...config, proposals, stakesHistory }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {

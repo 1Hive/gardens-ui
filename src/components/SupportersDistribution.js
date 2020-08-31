@@ -14,6 +14,8 @@ import { formatTokenAmount } from '../lib/token-utils'
 import { stakesPercentages } from '../lib/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
+import noSupportIllustration from '../assets/noSupportIllustration.svg'
+
 const DISTRIBUTION_ITEMS_MAX = 6
 
 function displayedStakes(stakes, total, stakeToken) {
@@ -53,54 +55,81 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
 
   return (
     <Box heading="Supported by" padding={2 * GU}>
-      <div>
-        <Distribution
-          colors={colors}
-          items={transformedStakes}
-          renderFullLegendItem={({ color, item, index, percentage }) => {
-            return (
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  width: 100%;
-                `}
-              >
+      {stakes.length > 0 ? (
+        <>
+          <Distribution
+            colors={colors}
+            items={transformedStakes}
+            renderFullLegendItem={({ color, item, index, percentage }) => {
+              return (
                 <div
                   css={`
-                    background: ${color};
-                    width: 8px;
-                    height: 8px;
-                    margin-right: ${0.5 * GU}px;
-                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
                   `}
-                />
-                <DistributionItem
-                  amount={item.amount}
-                  entity={item.entity}
-                  percentage={percentage}
-                  stakeToken={stakeToken}
-                />
-              </div>
-            )
-          }}
-        />
-        <div
-          css={`
-            margin-top: ${3 * GU}px;
-            display: flex;
-            justify-content: space-between;
-            ${textStyle('body3')}
-          `}
-        >
-          <span>Total </span>
-          <span>
-            {formatTokenAmount(totalTokensStaked, stakeToken.decimals)}
-            {` `}
-            {stakeToken.symbol}
-          </span>
-        </div>
-      </div>
+                >
+                  <div
+                    css={`
+                      background: ${color};
+                      width: 8px;
+                      height: 8px;
+                      margin-right: ${0.5 * GU}px;
+                      border-radius: 50%;
+                    `}
+                  />
+                  <DistributionItem
+                    amount={item.amount}
+                    entity={item.entity}
+                    percentage={percentage}
+                    stakeToken={stakeToken}
+                  />
+                </div>
+              )
+            }}
+          />
+          <div
+            css={`
+              margin-top: ${3 * GU}px;
+              display: flex;
+              justify-content: space-between;
+              ${textStyle('body3')}
+            `}
+          >
+            <span>Total </span>
+            <span>
+              {formatTokenAmount(totalTokensStaked, stakeToken.decimals)}
+              {` `}
+              {stakeToken.symbol}
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <div
+            css={`
+              display: flex;
+              justify-content: center;
+            `}
+          >
+            <img src={noSupportIllustration} alt="" />
+          </div>
+          <div
+            css={`
+              margin-top: ${3 * GU}px;
+              text-align: center;
+            `}
+          >
+            <span
+              css={`
+                ${textStyle('body2')};
+              `}
+            >
+              This proposal doesn’t have support yet
+            </span>
+          </div>
+        </>
+      )}
     </Box>
   )
 })

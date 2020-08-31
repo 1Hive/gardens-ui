@@ -5,7 +5,7 @@ name: xdai deployment
 on:
   push:
     branches:
-      -  development
+      -  master
 
 jobs:
   deploy:
@@ -23,7 +23,7 @@ jobs:
     - name: now
       run: >
         now
-        -A now-staging.json
+        -A now-xdai.json
         --confirm
         --prod
         --token=${{ secrets.ZEIT_TOKEN }}
