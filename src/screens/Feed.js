@@ -3,7 +3,6 @@ import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
 import MainScreen from '../components/Feed/MainScreen'
-import StakingTokens from '../components/Feed/StakingTokens'
 import Wallet from '../components/Wallet'
 
 import useAppLogic from '../app-logic'
@@ -57,6 +56,7 @@ const Feed = React.memo(function Feed() {
               />
             </div>
           }
+          secondary={<Wallet myStakes={myStakes} />}
           invert="horizontal"
         />
       )}

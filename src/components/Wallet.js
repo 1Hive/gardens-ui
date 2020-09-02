@@ -1,22 +1,13 @@
 import React, { useMemo } from 'react'
-import {
-  Box,
-  EthIdenticon,
-  GU,
-  shortenAddress,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Box, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import { useAppState } from '../providers/AppState'
-import { useProfile } from '../providers/Profile'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function Wallet({ myStakes }) {
   const theme = useTheme()
-  const { account, image, name } = useProfile()
   const { accountBalance, stakeToken } = useAppState()
 
   const myActiveTokens = useMemo(() => {
@@ -39,55 +30,9 @@ function Wallet({ myStakes }) {
     <Box padding={0}>
       <div
         css={`
-          display: flex;
-          align-items: center;
-          padding: ${3 * GU}px;
-          border-bottom: 1px solid ${theme.border};
-        `}
-      >
-        <div
-          css={`
-            margin-right: ${1.5 * GU}px;
-          `}
-        >
-          {image ? (
-            <img
-              src={image}
-              height="56"
-              width="56"
-              alt=""
-              css={`
-                border-radius: 50%;
-                object-fit: cover;
-              `}
-            />
-          ) : (
-            <EthIdenticon address={account} radius={100} scale={1.7} />
-          )}
-        </div>
-
-        <span
-          css={`
-            ${textStyle('title4')}
-          `}
-        >
-          {name || shortenAddress(account, 4)}
-        </span>
-      </div>
-      <div
-        css={`
           padding: ${3 * GU}px;
         `}
       >
-        <h5
-          css={`
-            ${textStyle('title4')};
-            color: ${theme.contentSecondary};
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          Wallet
-        </h5>
         <div>
           <Balance
             amount={accountBalance}
@@ -100,7 +45,7 @@ function Wallet({ myStakes }) {
             amount={inactiveTokens}
             decimals={stakeToken.decimals}
             inactive
-            label="Inactive"
+            label="Idle"
             symbol={stakeToken.symbol}
           />
         </div>
@@ -157,7 +102,7 @@ const Balance = ({ amount, decimals, inactive = false, label, symbol }) => {
 
 const LineSeparator = styled.div`
   height: 1px;
-  border: 0.5px solid ${({ border }) => border};
+  border-bottom: 0.5px solid ${({ border }) => border};
   margin: ${3 * GU}px 0;
 `
 
