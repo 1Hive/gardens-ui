@@ -1,6 +1,7 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import {
   Button,
+  EthIdenticon,
   GU,
   IconCross,
   Split,
@@ -15,12 +16,18 @@ import ProposalSupporting from './ProposalSupporting'
 import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
 import { useProfile } from '../../providers/Profile'
+import { UPLOAD_IPFS_ENDPOINT } from '../../endpoints'
 
 const IMAGE_DIMENSION = 16 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
 
 function EditProfile({ onBack }) {
   const [selectedTab, setSelectedTab] = useState(0)
+  const [profilePic, setProfilePic] = useState({
+    buffer: null,
+    updated: false,
+    removed: false,
+  })
 
   const theme = useTheme()
   const { name: layout } = useLayout()
@@ -28,9 +35,45 @@ function EditProfile({ onBack }) {
   const oneColumn = layout === 'small' || layout === 'medium'
 
   const imageInput = useRef(null)
-  const handleImageChange = useCallback(event => {}, [])
 
-  const TabContent = CONTENT[selectedTab]
+  const handleImageChange = useCallback(event => {
+    const newPhotoFile = event.target.files[0]
+
+    if (newPhotoFile.size >= 2500000) {
+      console.error('File exceeds 2.5 MB')
+    }
+
+    const formData = new FormData()
+    formData.append('path', newPhotoFile)
+
+    setProfilePic({ buffer: formData, updated: true, removed: false })
+  }, [])
+
+  const handleImageRemoval = useCallback(() => {
+    setProfilePic({ buffer: null, updated: false, removed: true })
+  }, [])
+
+  const handlePicFetch = useCallback(async buffer => {
+    const res = await fetch(UPLOAD_IPFS_ENDPOINT, {
+      method: 'post',
+      'Content-Type': 'multipart/form-data',
+      body: buffer,
+    })
+
+    return res.json()
+  }, [])
+
+  const [Content, props] = useMemo(() => {
+    const TabContent = CONTENT[selectedTab]
+
+    const props = {}
+    if (selectedTab === 0) {
+      props.profilePic = profilePic
+      props.fetchProfilePic = handlePicFetch
+    }
+
+    return [TabContent, props]
+  }, [handlePicFetch, profilePic, selectedTab])
 
   return (
     <div>
@@ -43,7 +86,7 @@ function EditProfile({ onBack }) {
         <Button label="Change background" />
       </div>
       <Split
-        primary={<TabContent onBack={onBack} />}
+        primary={<Content onBack={onBack} {...props} />}
         secondary={
           <div
             css={`
@@ -64,15 +107,27 @@ function EditProfile({ onBack }) {
                   position: relative;
                 `}
               >
-                <img
-                  src={image}
-                  width={IMAGE_DIMENSION}
-                  height={IMAGE_DIMENSION}
-                  alt=""
-                  css={`
-                    border-radius: 50%;
-                  `}
-                />
+                {!profilePic.removed &&
+                (image ||
+                  (imageInput.current?.files &&
+                    imageInput.current.files[0])) ? (
+                  <img
+                    src={
+                      imageInput.current?.files && imageInput.current.files[0]
+                        ? URL.createObjectURL(imageInput.current?.files[0])
+                        : image
+                    }
+                    width={IMAGE_DIMENSION}
+                    height={IMAGE_DIMENSION}
+                    alt=""
+                    css={`
+                      border-radius: 50%;
+                      object-fit: cover;
+                    `}
+                  />
+                ) : (
+                  <EthIdenticon address={account} radius={100} scale={5} />
+                )}
                 {selectedTab === 0 && (
                   <div
                     css={`
@@ -88,7 +143,6 @@ function EditProfile({ onBack }) {
                       opacity: 0;
                       background: white;
                       border-radius: 50%;
-                      cursor: pointer;
 
                       transition: opacity 0.2s ease;
 
@@ -97,39 +151,58 @@ function EditProfile({ onBack }) {
                       }
                     `}
                   >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      ref={imageInput}
-                      onChange={handleImageChange}
+                    <label
+                      htmlFor="profilePic"
+                      css={`
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+
+                        cursor: pointer;
+                      `}
                     >
-                      <div
+                      <input
+                        id="profilePic"
+                        type="file"
+                        accept="image/*"
+                        ref={imageInput}
+                        onChange={handleImageChange}
                         css={`
-                          width: ${IMAGE_DIMENSION / 2}px;
+                          visibility: hidden;
+                          height: 0;
                         `}
-                      >
-                        Change picture
-                      </div>
-                    </input>
+                      />
+                      <div>Change picture</div>
+                    </label>
                   </div>
                 )}
               </div>
-              {selectedTab === 0 && (image || imageInput?.files[0]) && (
-                <div
-                  css={`
-                    position: absolute;
-                    bottom: ${1 * GU}px;
-                    left: ${IMAGE_DIMENSION / 2 + 1 * GU}px;
-                    color: ${theme.contentSecondary};
-                    padding: ${0.5 * GU}px;
-                    background: ${theme.surface};
-                    border-radius: 50%;
-                    display: flex;
-                  `}
-                >
-                  <IconCross />
-                </div>
-              )}
+              {selectedTab === 0 &&
+                !profilePic.removed &&
+                (image || (imageInput?.files && imageInput?.files[0])) && (
+                  <div
+                    onClick={handleImageRemoval}
+                    css={`
+                      position: absolute;
+                      bottom: ${1 * GU}px;
+                      left: ${IMAGE_DIMENSION / 2 + 1 * GU}px;
+                      color: ${theme.contentSecondary};
+                      padding: ${0.5 * GU}px;
+                      background: ${theme.surface};
+                      border-radius: 50%;
+                      display: flex;
+                      cursor: pointer;
+
+                      & :hover {
+                        bacgkround: ${theme.surfacePressed};
+                      }
+                    `}
+                  >
+                    <IconCross />
+                  </div>
+                )}
             </div>
             <div
               css={`

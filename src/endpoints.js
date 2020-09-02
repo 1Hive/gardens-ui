@@ -7,3 +7,5 @@ export const IPFS_ENDPOINT = isLocalOrUnknownNetwork()
 
 export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
+
+export const UPLOAD_IPFS_ENDPOINT = 'https://ipfs.infura.io:5001/api/v0/add'

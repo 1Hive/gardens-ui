@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   Box,
+  EthIdenticon,
   GU,
   Link,
   shortenAddress,
@@ -39,15 +40,20 @@ function MainProfile() {
             width: 100%;
           `}
         >
-          <img
-            src={image}
-            width={IMAGE_DIMENSION}
-            height={IMAGE_DIMENSION}
-            alt=""
-            css={`
-              border-radius: 50%;
-            `}
-          />
+          {image ? (
+            <img
+              src={image}
+              width={IMAGE_DIMENSION}
+              height={IMAGE_DIMENSION}
+              alt=""
+              css={`
+                border-radius: 50%;
+                object-fit: cover;
+              `}
+            />
+          ) : (
+            <EthIdenticon address={account} radius={100} scale={7} />
+          )}
         </div>
         <div
           css={`
@@ -117,7 +123,7 @@ function MainProfile() {
                             alt=""
                             css="display:block"
                           />
-                        </Link>{' '}
+                        </Link>
                       </div>
                     )
                   }

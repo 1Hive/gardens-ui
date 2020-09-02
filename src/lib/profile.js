@@ -37,7 +37,7 @@ export function openBoxForAccount(account, provider) {
 function parseProfileData(profile, verifiedAccounts) {
   let image
 
-  if (profile.image.length > 0) {
+  if (profile.image?.length > 0) {
     image = `${IPFS_ENDPOINT}/${profile.image[0].contentUrl['/']}`
   }
 

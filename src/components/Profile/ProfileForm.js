@@ -17,7 +17,7 @@ import { useProfile } from '../../providers/Profile'
 import { dateFormat } from '../../utils/date-utils'
 import { validateEmail } from '../../utils/validate-utils'
 
-function ProfileForm({ onBack }) {
+function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
@@ -148,18 +148,43 @@ function ProfileForm({ onBack }) {
     async event => {
       event.preventDefault()
 
+      if (profilePic.updated) {
+        // Upload updated image to IPFS and update it on 3box
+        const data = await fetchProfilePic(profilePic.buffer)
+
+        if (data.Type !== 'error') {
+          updatedFields.public.push([
+            'image',
+            [{ '@type': 'ImageObject', contentUrl: { '/': data.Hash } }],
+          ])
+        } else {
+          console.error('Could not fetch profile pic: ', data)
+        }
+      } else if (profilePic.removed) {
+        removedFields.public.push('image')
+      }
+
       await updateProfile(updatedFields, removedFields)
 
       onBack()
     },
-    [onBack, removedFields, updatedFields, updateProfile]
+    [
+      fetchProfilePic,
+      onBack,
+      profilePic,
+      removedFields,
+      updatedFields,
+      updateProfile,
+    ]
   )
 
   const saveDisabled =
     updatedFields.public.length === 0 &&
     updatedFields.private.length === 0 &&
     removedFields.public.length === 0 &&
-    removedFields.private.length === 0
+    removedFields.private.length === 0 &&
+    !profilePic.updated &&
+    !profilePic.removed
 
   return (
     <Box>

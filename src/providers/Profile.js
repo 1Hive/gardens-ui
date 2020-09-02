@@ -101,8 +101,6 @@ function ProfileProvider({ children }) {
     [account, box, fetchAccountProfile, fetchPrivateData]
   )
 
-  console.log(profile)
-
   return (
     <ProfileContext.Provider
       value={{
