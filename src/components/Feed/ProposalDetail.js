@@ -25,6 +25,7 @@ import { useAppState } from '../../providers/AppState'
 import usePanelState from '../../hooks/usePanelState'
 import { useWallet } from '../../providers/Wallet'
 
+import BigNumber from '../../lib/bigNumber'
 import { getTokenIconBySymbol, formatTokenAmount } from '../../lib/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,

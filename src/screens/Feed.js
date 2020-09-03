@@ -2,15 +2,15 @@ import React from 'react'
 import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
-import MainScreen from '../components/Dashboard/MainScreen'
-import StakingTokens from '../components/Dashboard/StakingTokens'
+import MainScreen from '../components/Feed/MainScreen'
+import StakingTokens from '../components/Feed/StakingTokens'
 import Wallet from '../components/Wallet'
 
 import useAppLogic from '../app-logic'
 import { useWallet } from '../providers/Wallet'
 import useSelectedProposal from '../hooks/useSelectedProposal'
 
-const Dashboard = React.memo(function Dashboard() {
+const Feed = React.memo(function Feed() {
   const {
     actions,
     isLoading,
@@ -72,4 +72,4 @@ const Dashboard = React.memo(function Dashboard() {
   )
 })
 
-export default Dashboard
+export default Feed
