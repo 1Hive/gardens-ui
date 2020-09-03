@@ -46,7 +46,7 @@ export function useMyStakesHistory() {
             proposal => proposal.id === stake.proposalId
           )
 
-          return { ...stake, proposalName: proposal.name }
+          return { ...stake, proposalName: proposal?.name }
         }),
     [account, proposals, stakesHistory]
   )
