@@ -34,44 +34,56 @@ function Profile() {
   }, [])
 
   return (
-    <div
-      css={`
-        background: url(${profileHeaderSvg}) no-repeat;
-        background-size: 811px 600px;
-        background-position: center;
-      `}
-    >
-      <SyncIndicator label="Opening box..." visible={!authenticated} />
-      {editMode ? (
-        <EditProfile onBack={toggleEditMode} />
-      ) : (
-        <>
-          <div
-            css={`
-              text-align: right;
-              margin-bottom: ${2 * GU}px;
-            `}
-          >
-            <Button
-              label="Edit profile"
-              onClick={toggleEditMode}
-              disabled={!authenticated}
+    <>
+      <div
+        css={`
+          position: absolute;
+          height: ${(editMode ? 15 : 50) * GU}px;
+          top: 67px;
+          left: 0;
+          right: 0;
+
+          background: url(${profileHeaderSvg}) no-repeat;
+          background-size: cover;
+        `}
+      />
+      <div
+        css={`
+          transform: translateY(${(editMode ? 4 : 20) * GU}px);
+        `}
+      >
+        <SyncIndicator label="Opening box..." visible={!authenticated} />
+        {editMode ? (
+          <EditProfile onBack={toggleEditMode} />
+        ) : (
+          <>
+            <div
+              css={`
+                text-align: right;
+                margin-bottom: ${2 * GU}px;
+              `}
+            >
+              <Button
+                label="Edit profile"
+                onClick={toggleEditMode}
+                disabled={!authenticated}
+              />
+            </div>
+            <Split
+              primary={<Activity />}
+              secondary={
+                <>
+                  <MainProfile />
+                  <Wallet myStakes={myStakes} />
+                  <StakingTokens myStakes={myStakes} />
+                </>
+              }
+              invert={oneColumn ? 'vertical' : 'horizontal'}
             />
-          </div>
-          <Split
-            primary={<Activity />}
-            secondary={
-              <>
-                <MainProfile />
-                <Wallet myStakes={myStakes} />
-                <StakingTokens myStakes={myStakes} />
-              </>
-            }
-            invert={oneColumn ? 'vertical' : 'horizontal'}
-          />
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   )
 }
 
