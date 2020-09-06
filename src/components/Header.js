@@ -1,10 +1,8 @@
 import React from 'react'
 import { GU } from '@1hive/1hive-ui'
 import AccountModule from './Account/AccountModule'
-import Layout from './Layout'
 
 import beeSvg from '../assets/bee.svg'
-import headerBackgroundSvg from '../assets/header-background.svg'
 import logoSvg from '../assets/logotext.svg'
 
 function Header({ compact }) {
@@ -20,39 +18,26 @@ function Header({ compact }) {
     >
       <div
         css={`
-          background: url(${headerBackgroundSvg}) no-repeat;
-          background-size: 811px 600px;
-          background-position: center;
-          padding: ${compact
-            ? `${3 * GU}px`
-            : `${5.625 * GU}px 0 ${8.75 * GU}px 0`};
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         `}
       >
-        <Layout>
-          <div
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <div
-              css={`
-                width: ${headerItemsWidth}px;
-              `}
-            >
-              {compact ? BeeIcon : <img src={logoSvg} height="30" alt="" />}
-            </div>
-            {!compact && <div>{BeeIcon}</div>}
-            <div
-              css={`
-                width: ${headerItemsWidth}px;
-              `}
-            >
-              <AccountModule compact={compact} />
-            </div>
-          </div>
-        </Layout>
+        <div
+          css={`
+            width: ${headerItemsWidth}px;
+          `}
+        >
+          {compact ? BeeIcon : <img src={logoSvg} height="30" alt="" />}
+        </div>
+        {!compact && <div>{BeeIcon}</div>}
+        <div
+          css={`
+            width: ${headerItemsWidth}px;
+          `}
+        >
+          <AccountModule compact={compact} />
+        </div>
       </div>
     </header>
   )

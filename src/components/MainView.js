@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, useViewport } from '@1hive/1hive-ui'
+import { useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
 import Header from './Header'
@@ -21,7 +21,6 @@ function MainView({ children }) {
 
       <div
         css={`
-          ${!compactMode && `transform: translateY(-${4 * GU}px);`}
           flex: 1 0 auto;
         `}
       >

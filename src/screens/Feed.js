@@ -47,15 +47,6 @@ const Feed = React.memo(function Feed() {
       ) : (
         <Split
           primary={MainScreenComponent}
-          secondary={
-            <div>
-              <Wallet myStakes={myStakes} />
-              <StakingTokens
-                myStakes={myStakes}
-                totalActiveTokens={totalStaked}
-              />
-            </div>
-          }
           secondary={<Wallet myStakes={myStakes} />}
           invert="horizontal"
         />

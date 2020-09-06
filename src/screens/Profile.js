@@ -11,6 +11,8 @@ import Wallet from '../components/Wallet'
 import { useMyStakes } from '../hooks/useStakes'
 import { useProfile } from '../providers/Profile'
 
+import profileHeaderSvg from '../assets/profileHeader.svg'
+
 function Profile() {
   const [editMode, setEditMode] = useState(false)
 
@@ -32,7 +34,13 @@ function Profile() {
   }, [])
 
   return (
-    <div>
+    <div
+      css={`
+        background: url(${profileHeaderSvg}) no-repeat;
+        background-size: 811px 600px;
+        background-position: center;
+      `}
+    >
       <SyncIndicator label="Opening box..." visible={!authenticated} />
       {editMode ? (
         <EditProfile onBack={toggleEditMode} />
