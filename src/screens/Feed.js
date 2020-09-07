@@ -1,12 +1,10 @@
 import React from 'react'
-import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
+import { SidePanel, SyncIndicator } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
 import MainScreen from '../components/Feed/MainScreen'
-import Wallet from '../components/Wallet'
 
 import useAppLogic from '../app-logic'
-import { useWallet } from '../providers/Wallet'
 import useSelectedProposal from '../hooks/useSelectedProposal'
 
 const Feed = React.memo(function Feed() {
@@ -19,38 +17,25 @@ const Feed = React.memo(function Feed() {
     totalStaked,
   } = useAppLogic()
 
-  const { account } = useWallet()
   const selectedProposal = useSelectedProposal(proposals)
-
-  const MainScreenComponent = (
-    <MainScreen
-      isLoading={isLoading}
-      myStakes={myStakes}
-      onExecuteIssuance={actions.executeIssuance}
-      onExecuteProposal={actions.executeProposal}
-      onCancelProposal={actions.cancelProposal}
-      onRequestNewProposal={proposalPanel.requestOpen}
-      onStakeToProposal={actions.stakeToProposal}
-      onWithdrawFromProposal={actions.withdrawFromProposal}
-      proposals={proposals}
-      selectedProposal={selectedProposal}
-      totalActiveTokens={totalStaked}
-    />
-  )
 
   return (
     <div>
       <SyncIndicator visible={isLoading} />
 
-      {!account ? (
-        MainScreenComponent
-      ) : (
-        <Split
-          primary={MainScreenComponent}
-          secondary={<Wallet myStakes={myStakes} />}
-          invert="horizontal"
-        />
-      )}
+      <MainScreen
+        isLoading={isLoading}
+        myStakes={myStakes}
+        onExecuteIssuance={actions.executeIssuance}
+        onExecuteProposal={actions.executeProposal}
+        onCancelProposal={actions.cancelProposal}
+        onRequestNewProposal={proposalPanel.requestOpen}
+        onStakeToProposal={actions.stakeToProposal}
+        onWithdrawFromProposal={actions.withdrawFromProposal}
+        proposals={proposals}
+        selectedProposal={selectedProposal}
+        totalActiveTokens={totalStaked}
+      />
 
       <SidePanel
         title="New proposal"

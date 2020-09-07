@@ -2,7 +2,7 @@ import React from 'react'
 import { useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
-import Header from './Header'
+import Header from './Header/Header'
 import Layout from './Layout'
 
 function MainView({ children }) {

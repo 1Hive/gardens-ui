@@ -26,7 +26,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const goToProfile = useCallback(() => {
     history.push('/profile')
     onClosePopover()
-  }, [history])
+  }, [history, onClosePopover])
 
   return (
     <div
