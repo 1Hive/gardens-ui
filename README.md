@@ -30,5 +30,5 @@ yarn start:[network]
 
 ```
 REACT_APP_APP_NAME # Name of the app (if empty, defaults to conviction-voting)
-REACT_APP_ORG_ADDRESS # Address of the organization (if empty, defaults to address specified in netowrks.js file)
+REACT_APP_ORG_ADDRESS # Address of the organization (if empty, defaults to address specified in networks.js file)
 ```
