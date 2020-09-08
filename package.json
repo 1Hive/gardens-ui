@@ -8,24 +8,27 @@
     "@aragon/connect": "^0.6.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
+    "customize-cra": "^1.0.0",
     "ethers": "5.0.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
     "react-spring": "^8.0.27",
     "styled-components": "^4.3.2",
     "use-wallet": "^0.5.0",
     "web3-utils": "^1.2.0"
   },
   "scripts": {
-    "start": "node scripts/start",
+    "start": "npm run sync-assets && react-app-rewired start",
     "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
     "start:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
-    "build": "node scripts/build",
+    "build": "npm run sync-assets && react-app-rewired build",
     "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
     "build:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn build",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "sync-assets": "copy-aragon-ui-assets ./public"
   },
   "browserslist": {
     "production": [
@@ -61,6 +64,9 @@
     "eslint-plugin-standard": "^4.0.1",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-app-rewired": "^2.1.6",
+    "react-dev-utils": "^10.2.1",
     "rimraf": "^2.6.2"
   }
 }
