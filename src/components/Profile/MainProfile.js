@@ -109,6 +109,8 @@ function MainProfile() {
                 css={`
                   display: flex;
                   justify-content: space-evenly;
+
+                  margin-top: ${2 * GU}px;
                 `}
               >
                 {Object.values(verifiedAccounts).map(
