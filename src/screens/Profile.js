@@ -94,7 +94,7 @@ function AnimatedBackground({ height }) {
   return (
     <Spring
       config={springs.smooth}
-      from={{ height: `${38 * GU}px` }}
+      from={{ height: `${40 * GU}px` }}
       to={{ height: `${height}px` }}
       native
     >
