@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
 
 import { addressesEqual } from '../lib/web3-utils'
 
 // TODO: See how to merge it with the implementation done at app-logic
-export function useMyStakes() {
-  const { account } = useWallet()
+export function useAccountStakes(account) {
   const { proposals } = useAppState()
 
   return useMemo(
@@ -33,8 +31,7 @@ export function useMyStakes() {
   )
 }
 
-export function useMyStakesHistory() {
-  const { account } = useWallet()
+export function useAccountStakesHistory(account) {
   const { proposals, stakesHistory } = useAppState()
 
   return useMemo(
