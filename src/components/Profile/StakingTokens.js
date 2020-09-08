@@ -61,11 +61,11 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
 
   return (
-    <Box heading="My supported proposals" padding={3 * GU}>
+    <Box heading="Supported proposals" padding={3 * GU}>
       <div>
         <Distribution
           colors={colors}
-          heading="Your active token distribution"
+          heading="Active token distribution"
           items={stakes}
           renderLegendItem={({ item }) => {
             return (
