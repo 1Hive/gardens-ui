@@ -10,14 +10,14 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../providers/AppState'
+import { useAppState } from '../../providers/AppState'
 
-import BigNumber from '../lib/bigNumber'
-import { toDecimals } from '../lib/math-utils'
-import { formatTokenAmount } from '../lib/token-utils'
-import { calculateThreshold, getMaxConviction } from '../lib/conviction'
+import BigNumber from '../../lib/bigNumber'
+import { toDecimals } from '../../lib/math-utils'
+import { formatTokenAmount } from '../../lib/token-utils'
+import { calculateThreshold, getMaxConviction } from '../../lib/conviction'
 
-import { ZERO_ADDR } from '../constants'
+import { ZERO_ADDR } from '../../constants'
 
 const NULL_PROPOSAL_TYPE = -1
 const FUNDING_PROPOSAL = 1

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Button,
   ButtonBase,
   GU,
   IconCheck,
   IconCopy,
+  Link,
   RADIUS,
   textStyle,
   useTheme,
@@ -13,13 +15,18 @@ import IdentityBadge from '../IdentityBadge'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 
-function AccountScreenConnected({ wallet }) {
+function AccountScreenConnected({ onClosePopover, wallet }) {
   const theme = useTheme()
+  const history = useHistory()
   const copy = useCopyToClipboard()
 
   const walletNetworkName = wallet.networkName
-
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
+
+  const goToProfile = useCallback(() => {
+    history.push('/profile')
+    onClosePopover()
+  }, [history])
 
   return (
     <div
@@ -92,28 +99,50 @@ function AccountScreenConnected({ wallet }) {
       </div>
       <div
         css={`
-          display: flex;
-          align-items: center;
-          margin-top: ${1 * GU}px;
-          color: ${theme.positive};
-          ${textStyle('label2')};
+          padding: ${2 * GU}px 0;
+          border-bottom: 1px solid ${theme.border};
         `}
       >
-        <IconCheck size="small" />
-        <span
+        <div
           css={`
-            margin-left: ${0.5 * GU}px;
+            display: flex;
+            align-items: center;
+            color: ${theme.positive};
+            ${textStyle('label2')};
           `}
         >
-          {`Connected to Ethereum ${walletNetworkName} Network`}
-        </span>
+          <IconCheck size="small" />
+          <span
+            css={`
+              margin-left: ${0.5 * GU}px;
+            `}
+          >
+            {`Connected to Ethereum ${walletNetworkName} Network`}
+          </span>
+        </div>
+      </div>
+
+      <div
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      >
+        <Link
+          onClick={goToProfile}
+          external={false}
+          css={`
+            color: ${theme.contentSecondary};
+          `}
+        >
+          My profile
+        </Link>
       </div>
 
       <Button
         onClick={() => wallet.deactivate()}
         wide
         css={`
-          margin-top: ${1 * GU}px;
+          margin-top: ${2 * GU}px;
         `}
       >
         Disconnect wallet

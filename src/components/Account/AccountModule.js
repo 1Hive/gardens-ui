@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
-import {
-  Button,
-  GU,
-  IconConnect,
-  springs,
-  shortenAddress,
-} from '@1hive/1hive-ui'
+import { Button, GU, IconConnect, springs } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
 
 import ScreenError from './ScreenError'
@@ -37,7 +31,7 @@ const SCREENS = [
   {
     id: 'connected',
     title: 'Active wallet',
-    height: 22 * GU,
+    height: 30 * GU,
   },
   {
     id: 'error',
@@ -161,10 +155,7 @@ function AccountModule({ compact }) {
       `}
     >
       {screen.id === 'connected' ? (
-        <AccountButton
-          label={shortenAddress(wallet.account)}
-          onClick={toggle}
-        />
+        <AccountButton onClick={toggle} />
       ) : (
         <Button
           icon={<IconConnect />}
@@ -229,7 +220,12 @@ function AccountModule({ compact }) {
                     )
                   }
                   if (screen.id === 'connected') {
-                    return <ScreenConnected wallet={wallet} />
+                    return (
+                      <ScreenConnected
+                        onClosePopover={toggle}
+                        wallet={wallet}
+                      />
+                    )
                   }
                   if (screen.id === 'error') {
                     return (

@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Button, Field, GU, Info, Slider, TextInput } from '@1hive/1hive-ui'
 
-import useAccountTotalStaked from '../hooks/useAccountTotalStaked'
-import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
+import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
+import { useAppState } from '../../providers/AppState'
+import { useWallet } from '../../providers/Wallet'
 
-import { addressesEqual } from '../lib/web3-utils'
-import BigNumber from '../lib/bigNumber'
-import { formatTokenAmount } from '../lib/token-utils'
-import { round, safeDiv, toDecimals } from '../lib/math-utils'
-import AccountNotConnected from './AccountNotConnected'
+import { addressesEqual } from '../../lib/web3-utils'
+import BigNumber from '../../lib/bigNumber'
+import { formatTokenAmount } from '../../lib/token-utils'
+import { round, safeDiv, toDecimals } from '../../lib/math-utils'
+import AccountNotConnected from '../AccountNotConnected'
 
 const MAX_INPUT_DECIMAL_BASE = 6
 

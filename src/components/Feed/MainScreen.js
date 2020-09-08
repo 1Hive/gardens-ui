@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import Metrics from '../components/Metrics'
+import Metrics from '../Metrics'
 import Proposals from './Proposals'
 import ProposalDetail from './ProposalDetail'
-import { useAppState } from '../providers/AppState'
-import useFilterProposals from '../hooks/useFilterProposals'
+import { useAppState } from '../../providers/AppState'
+import useFilterProposals from '../../hooks/useFilterProposals'
 
 const MainScreen = React.memo(
   ({
@@ -42,7 +42,7 @@ const MainScreen = React.memo(
 
     const history = useHistory()
     const handleBack = useCallback(() => {
-      history.push(`/`)
+      history.goBack()
     }, [history])
 
     const handleTabChange = tabIndex => {
