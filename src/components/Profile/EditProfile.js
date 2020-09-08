@@ -15,13 +15,12 @@ import ProfileForm from './ProfileForm'
 import ProposalSupporting from './ProposalSupporting'
 import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
-import { useProfile } from '../../providers/Profile'
 import { UPLOAD_IPFS_ENDPOINT } from '../../endpoints'
 
 const IMAGE_DIMENSION = 16 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
 
-function EditProfile({ onBack }) {
+function EditProfile({ onBack, profile }) {
   const [selectedTab, setSelectedTab] = useState(0)
   const [profilePic, setProfilePic] = useState({
     buffer: null,
@@ -31,7 +30,7 @@ function EditProfile({ onBack }) {
 
   const theme = useTheme()
   const { name: layout } = useLayout()
-  const { account, image, name } = useProfile()
+  const { account, image, name } = profile || {}
   const oneColumn = layout === 'small' || layout === 'medium'
 
   const imageInput = useRef(null)
@@ -68,12 +67,13 @@ function EditProfile({ onBack }) {
 
     const props = {}
     if (selectedTab === 0) {
-      props.profilePic = profilePic
       props.fetchProfilePic = handlePicFetch
+      props.profile = profile
+      props.profilePic = profilePic
     }
 
     return [TabContent, props]
-  }, [handlePicFetch, profilePic, selectedTab])
+  }, [handlePicFetch, profile, profilePic, selectedTab])
 
   return (
     <div>

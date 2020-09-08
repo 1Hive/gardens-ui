@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Button, GU, Split, SyncIndicator, useLayout } from '@1hive/1hive-ui'
 
 import Activity from '../components/Profile/Activity'
@@ -8,55 +8,79 @@ import MainProfile from '../components/Profile/MainProfile'
 import StakingTokens from '../components/Profile/StakingTokens'
 import Wallet from '../components/Wallet'
 
-import { useMyStakes } from '../hooks/useStakes'
-import { useProfile } from '../providers/Profile'
+import { useAccountStakes } from '../hooks/useStakes'
+import useSelectedProfile from '../hooks/useSelectedProfile'
+import { useWallet } from '../providers/Wallet'
+
+import { addressesEqual } from '../lib/web3-utils'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)
 
   const history = useHistory()
   const { name: layout } = useLayout()
-  const { account, auth, authenticated, box } = useProfile()
+  const { account: connectedAccount } = useWallet()
   const oneColumn = layout === 'small' || layout === 'medium'
 
-  const myStakes = useMyStakes()
+  // Selected account
+  const query = useQuery()
+  const selectedAccount = query.get('account')
+  const accountStakes = useAccountStakes(selectedAccount || connectedAccount)
+
+  const selectedProfile = useSelectedProfile(
+    selectedAccount || connectedAccount
+  )
 
   useEffect(() => {
-    if (!account) {
+    if (!connectedAccount && !selectedAccount) {
       return history.push('/')
     }
-  }, [account, auth, box, history])
+  }, [connectedAccount, history, selectedAccount])
 
   const toggleEditMode = useCallback(() => {
     setEditMode(mode => !mode)
   }, [])
 
+  const isConnectedAccountProfile =
+    (connectedAccount && !selectedAccount) ||
+    addressesEqual(connectedAccount, selectedAccount)
+
   return (
     <div>
-      <SyncIndicator label="Opening box..." visible={!authenticated} />
+      {isConnectedAccountProfile && (
+        <SyncIndicator
+          label="Opening box..."
+          visible={!selectedProfile?.authenticated}
+        />
+      )}
       {editMode ? (
-        <EditProfile onBack={toggleEditMode} />
+        <EditProfile onBack={toggleEditMode} profile={selectedProfile} />
       ) : (
         <>
-          <div
-            css={`
-              text-align: right;
-              margin-bottom: ${2 * GU}px;
-            `}
-          >
-            <Button
-              label="Edit profile"
-              onClick={toggleEditMode}
-              disabled={!authenticated}
-            />
-          </div>
+          {isConnectedAccountProfile && (
+            <div
+              css={`
+                text-align: right;
+                margin-bottom: ${2 * GU}px;
+              `}
+            >
+              <Button
+                label="Edit profile"
+                onClick={toggleEditMode}
+                disabled={!selectedProfile?.authenticated}
+              />
+            </div>
+          )}
           <Split
-            primary={<Activity />}
+            primary={<Activity account={selectedAccount || connectedAccount} />}
             secondary={
               <>
-                <MainProfile />
-                <Wallet myStakes={myStakes} />
-                <StakingTokens myStakes={myStakes} />
+                <MainProfile profile={selectedProfile} />
+                <Wallet
+                  account={selectedAccount || connectedAccount}
+                  myStakes={accountStakes}
+                />
+                <StakingTokens myStakes={accountStakes} />
               </>
             }
             invert={oneColumn ? 'vertical' : 'horizontal'}
@@ -65,6 +89,11 @@ function Profile() {
       )}
     </div>
   )
+}
+
+function useQuery() {
+  const { search } = useLocation()
+  return new URLSearchParams(search)
 }
 
 export default Profile
