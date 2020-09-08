@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import { useAppState } from '../providers/AppState'
@@ -11,9 +11,9 @@ import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function BalanceModule() {
   const theme = useTheme()
-  const { history } = useHistory()
+  const history = useHistory()
   const { accountBalance, stakeToken } = useAppState()
-  const tokenIcon = getTokenIconBySymbol('HNY' || stakeToken.symbol) // TODO: remove
+  const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
   const myStakes = useMyStakes()
 
@@ -33,7 +33,7 @@ function BalanceModule() {
     return accountBalance.minus(myActiveTokens)
   }, [accountBalance, myActiveTokens])
 
-  const handleOnClick = useCallback(() => history.push('/profile'), [history])
+  const handleOnClick = useCallback(() => history.push('/profile'), [history]) // TODO: Send to profile/stake managerment section
 
   const idlePct = inactiveTokens.eq('0')
     ? '0'
@@ -46,11 +46,7 @@ function BalanceModule() {
     <HeaderModule
       icon={<img src={tokenIcon} height="28" width="28" alt="" />}
       content={
-        <div
-          css={`
-            min-width: ${20 * GU}px;
-          `}
-        >
+        <div>
           <div
             css={`
               margin-bottom: -2px;

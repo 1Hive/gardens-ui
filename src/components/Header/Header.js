@@ -69,6 +69,7 @@ function Header({ compact }) {
         css={`
           display: flex;
           align-items: center;
+          ${account && `min-width: ${42.5 * GU}px`};
         `}
       >
         <AccountModule compact={compact} />
@@ -76,9 +77,8 @@ function Header({ compact }) {
           <>
             <div
               css={`
-                width: 1px;
+                width: 0.5px;
                 height: ${3.5 * GU}px;
-                padding: ${0.5 * GU}px;
                 border-left: 0.5px solid ${theme.border};
               `}
             />

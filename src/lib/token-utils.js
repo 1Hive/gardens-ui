@@ -40,7 +40,10 @@ const KNOWN_TOKENS_FALLBACK = new Map([
   ],
 ])
 
-const LOCAL_TOKEN_ICONS = new Map([['HNY', honeyIconSvg]])
+const LOCAL_TOKEN_ICONS = new Map([
+  ['HNY', honeyIconSvg],
+  ['CVTN', honeyIconSvg], // TODO: Remove
+])
 
 export const tokenDataFallback = (tokenAddress, fieldName, networkType) => {
   // The fallback list is without checksums
