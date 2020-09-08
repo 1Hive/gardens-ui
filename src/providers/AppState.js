@@ -15,15 +15,16 @@ const AppStateContext = React.createContext()
 function AppStateProvider({ children }) {
   const { account } = useWallet()
   const organization = useOrganzation()
+  const { config, convictionVoting, installedApps, ...appData } = useAppData(
+    organization
+  )
+
   const {
-    convictionVoting,
-    installedApps,
     minThresholdStakePercentage,
     requestToken,
     stakeToken,
     totalStaked,
-    ...appData
-  } = useAppData(organization)
+  } = config
 
   const vaultBalance = useVaultBalance(installedApps, requestToken)
 

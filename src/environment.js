@@ -1,6 +1,6 @@
 import { getNetwork } from './networks'
 
-// rinkeby
+// xdai
 const DEFAULT_CHAIN_ID = 100
 const DEFAULT_APP_NAME = 'conviction-voting'
 

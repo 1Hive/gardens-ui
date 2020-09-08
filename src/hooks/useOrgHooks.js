@@ -102,14 +102,17 @@ export function useAppData(organization) {
     }
   }, [appName, organization])
 
-  const config = useConfigSubscription(appData.convictionVoting)
+  const config = useConfigSubscription(appData.convictionVoting) || {
+    requestToken: { id: null },
+    stakeToken: { id: null },
+  }
   const proposals = useProposalsSubscription(appData.convictionVoting)
 
   // Stakes done across all proposals on this app
   // Includes old and current stakes
   const stakesHistory = useStakesHistorySubscription(appData.convictionVoting)
 
-  return { ...appData, ...config, proposals, stakesHistory }
+  return { ...appData, config, proposals, stakesHistory }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
@@ -125,7 +128,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract) {
+    if (!vaultContract || !token.id) {
       return
     }
 
