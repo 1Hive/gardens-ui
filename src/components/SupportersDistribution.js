@@ -3,7 +3,6 @@ import {
   Box,
   Distribution,
   GU,
-  IdentityBadge,
   textStyle,
   useLayout,
   useTheme,
@@ -15,6 +14,7 @@ import { stakesPercentages } from '../lib/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
 import noSupportIllustration from '../assets/noSupportIllustration.svg'
+import IdentityBadge from './IdentityBadge'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -137,8 +137,9 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
 const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
   const theme = useTheme()
   const { account } = useWallet()
-  const isCurrentUser = addressesEqual(entity, account)
   const { layoutName } = useLayout()
+
+  const isCurrentUser = addressesEqual(entity, account)
   const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   return (
