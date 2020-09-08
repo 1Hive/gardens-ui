@@ -33,7 +33,7 @@ function BalanceModule() {
     return accountBalance.minus(myActiveTokens)
   }, [accountBalance, myActiveTokens])
 
-  const handleOnClick = useCallback(() => history.push('/profile'), [history]) // TODO: Send to profile/stake managerment section
+  const handleOnClick = useCallback(() => history.push('/profile'), [history]) // TODO: Send to profile/stake management section
 
   const idlePct = inactiveTokens.eq('0')
     ? '0'
