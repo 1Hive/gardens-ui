@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Modal } from '@1hive/1hive-ui'
 
 import { useWallet } from './Wallet'
 import {
@@ -83,10 +82,18 @@ function ProfileProvider({ children }) {
         await box.private.remove(key)
       }
 
-      box.onSyncDone(() => {
-        // re-fetch profile
-        fetchAccountProfile(account)
-        fetchPrivateData(box)
+      return new Promise(resolve => {
+        setTimeout(
+          () =>
+            box.onSyncDone(async () => {
+              // re-fetch profile
+              await fetchAccountProfile(account)
+              await fetchPrivateData(box)
+
+              resolve()
+            }),
+          2000
+        )
       })
     },
     [account, box, fetchAccountProfile, fetchPrivateData]
