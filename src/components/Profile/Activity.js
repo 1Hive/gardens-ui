@@ -36,7 +36,7 @@ function Activity({ account }) {
                   }
                 `}
               >
-                You supported <ProposalIcon /> Proposal{' '}
+                Supported <ProposalIcon /> Proposal{' '}
                 <Link
                   href={`/#/proposal/${stake.proposalId}`}
                   external={false}

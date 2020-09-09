@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { IdentityBadge as Badge } from '@1hive/1hive-ui'
 
 import { getNetworkType } from '../lib/web3-utils'
@@ -8,6 +9,11 @@ const addressCache = new Map()
 
 function IdentityBadge({ entity, useBox, ...props }) {
   const [profileName, setProfileName] = useState(null)
+
+  const history = useHistory()
+  const handleViewProfile = useCallback(() => {
+    history.push(`/profile?account=${entity}`)
+  }, [entity, history])
 
   useEffect(() => {
     let cancelled = false
@@ -36,6 +42,7 @@ function IdentityBadge({ entity, useBox, ...props }) {
       entity={entity}
       networkType={getNetworkType()}
       {...props}
+      popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
     />
   )
 }
