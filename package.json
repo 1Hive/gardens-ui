@@ -43,6 +43,9 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "3box/**/ipfs-log": "4.6.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
