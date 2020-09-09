@@ -111,10 +111,18 @@ function ProfileProvider({ children }) {
         await box.private.remove(key)
       }
 
-      box.onSyncDone(() => {
-        // re-fetch profile
-        fetchAccountProfile(account)
-        fetchPrivateData(box)
+      return new Promise(resolve => {
+        setTimeout(
+          () =>
+            box.onSyncDone(async () => {
+              // re-fetch profile
+              await fetchAccountProfile(account)
+              await fetchPrivateData(box)
+
+              resolve()
+            }),
+          2000
+        )
       })
     },
     [account, box, fetchAccountProfile, fetchPrivateData]

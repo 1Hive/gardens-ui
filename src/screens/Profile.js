@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import {
   Button,
@@ -21,11 +21,13 @@ import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'
 
 import { addressesEqual } from '../lib/web3-utils'
+import usePicture from '../hooks/usePicture'
 
-import profileHeaderSvg from '../assets/profileHeader.svg'
+import profileCoverDefaultSvg from '../assets/profileCoverDefault.svg'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)
+  const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
   const history = useHistory()
   const { name: layout } = useLayout()
@@ -40,6 +42,9 @@ function Profile() {
   const selectedProfile = useSelectedProfile(
     selectedAccount || connectedAccount
   )
+  const { coverPhoto } = selectedProfile || {}
+
+  const imageInput = useRef(null)
 
   useEffect(() => {
     if (!connectedAccount && !selectedAccount) {
@@ -55,9 +60,22 @@ function Profile() {
     (connectedAccount && !selectedAccount) ||
     addressesEqual(connectedAccount, selectedAccount)
 
+  const coverSrc = useMemo(() => {
+    if (editMode) {
+      if (coverPic.removed) {
+        return profileCoverDefaultSvg
+      }
+
+      if (imageInput.current?.files && imageInput.current.files[0]) {
+        return URL.createObjectURL(imageInput.current?.files[0])
+      }
+    }
+    return coverPhoto || profileCoverDefaultSvg
+  }, [coverPhoto, coverPic, editMode])
+
   return (
     <>
-      <AnimatedBackground height={(editMode ? 15 : 50) * GU} />
+      <AnimatedBackground height={(editMode ? 15 : 50) * GU} image={coverSrc} />
 
       <Spring
         config={springs.smooth}
@@ -74,7 +92,18 @@ function Profile() {
               />
             )}
             {editMode ? (
-              <EditProfile onBack={toggleEditMode} profile={selectedProfile} />
+              <EditProfile
+                coverPic={coverPic}
+                coverPicRemovalEnabled={
+                  !coverPic.removed &&
+                  (coverPhoto || (imageInput?.files && imageInput?.files[0]))
+                }
+                onBack={toggleEditMode}
+                onCoverPicChange={onCoverPicChange}
+                onCoverPicRemoval={onCoverPicRemoval}
+                profile={selectedProfile}
+                ref={imageInput}
+              />
             ) : (
               <>
                 {isConnectedAccountProfile && (
@@ -116,7 +145,7 @@ function Profile() {
   )
 }
 
-function AnimatedBackground({ height }) {
+function AnimatedBackground({ height, image }) {
   return (
     <Spring
       config={springs.smooth}
@@ -132,11 +161,16 @@ function AnimatedBackground({ height }) {
             top: `62px`,
             left: '0',
             right: '0',
-
-            background: `url(${profileHeaderSvg}) no-repeat`,
-            backgroundSize: 'cover',
           }}
-        />
+        >
+          <div
+            css={`
+              background: url(${image}) no-repeat;
+              background-size: cover;
+              height: 100%;
+            `}
+          />
+        </animated.div>
       )}
     </Spring>
   )
