@@ -7,6 +7,7 @@ import {
   Field,
   GU,
   IconCheck,
+  Modal,
   TextInput,
   textStyle,
   useLayout,
@@ -15,10 +16,11 @@ import {
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 import { useProfile } from '../../providers/Profile'
 
+import { fetchPic } from '../../services'
 import { dateFormat } from '../../utils/date-utils'
 import { validateEmail } from '../../utils/validate-utils'
 
-function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
+function ProfileForm({ coverPic, onBack, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
@@ -30,6 +32,7 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
     verifiedAccounts,
     website,
   } = useProfile()
+  const [updatingProfile, setUpdatingProfile] = useState(false)
   const [formData, setFormData] = useState({
     birthday,
     description,
@@ -149,34 +152,41 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
     async event => {
       event.preventDefault()
 
-      if (profilePic.updated) {
-        // Upload updated image to IPFS and update it on 3box
-        const data = await fetchProfilePic(profilePic.buffer)
+      try {
+        setUpdatingProfile(true)
 
-        if (data.Type !== 'error') {
-          updatedFields.public.push([
-            'image',
-            [{ '@type': 'ImageObject', contentUrl: { '/': data.Hash } }],
-          ])
-        } else {
-          console.error('Could not fetch profile pic: ', data)
+        // Check if cover or profile pictures have been updated or removed
+        for (const pic of [
+          { key: 'coverPhoto', ...coverPic },
+          { key: 'image', ...profilePic },
+        ]) {
+          if (pic.updated) {
+            // Upload updated image to IPFS and update it on 3box
+            const data = await fetchPic(pic.buffer)
+
+            if (data.Type !== 'error') {
+              updatedFields.public.push([
+                pic.key,
+                [{ '@type': 'ImageObject', contentUrl: { '/': data.Hash } }],
+              ])
+            } else {
+              console.error('Could not fetch profile pic: ', data)
+            }
+          } else if (pic.removed) {
+            removedFields.public.push(pic.key)
+          }
         }
-      } else if (profilePic.removed) {
-        removedFields.public.push('image')
+
+        await updateProfile(updatedFields, removedFields)
+      } catch (err) {
+        console.error(err)
       }
 
-      await updateProfile(updatedFields, removedFields)
+      setUpdatingProfile(false)
 
       onBack()
     },
-    [
-      fetchProfilePic,
-      onBack,
-      profilePic,
-      removedFields,
-      updatedFields,
-      updateProfile,
-    ]
+    [coverPic, onBack, profilePic, removedFields, updatedFields, updateProfile]
   )
 
   const saveDisabled =
@@ -185,126 +195,131 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
     removedFields.public.length === 0 &&
     removedFields.private.length === 0 &&
     !profilePic.updated &&
-    !profilePic.removed
+    !profilePic.removed &&
+    !coverPic.updated &&
+    !coverPic.removed
 
   return (
-    <Box>
-      <BackButton
-        onClick={onBack}
-        css={`
-          padding: ${1 * GU}px;
-          border: 0;
-          margin-bottom: ${3 * GU}px;
-          border-radius: ${1 * GU}px 0 0 ${1 * GU}px;
-        `}
-      />
-      <form onSubmit={handleFormSubmit}>
-        <div
+    <>
+      <Modal visible={updatingProfile}>Updating profile...</Modal>
+      <Box>
+        <BackButton
+          onClick={onBack}
           css={`
-            width: ${layout === 'small' ? '100%' : '50%'};
+            padding: ${1 * GU}px;
+            border: 0;
+            margin-bottom: ${3 * GU}px;
+            border-radius: ${1 * GU}px 0 0 ${1 * GU}px;
           `}
-        >
-          <Section title="Basic">
-            <Field label="Name">
-              <TextInput
-                name="name"
-                value={formData.name}
-                onChange={handleDataChange}
-                wide
+        />
+        <form onSubmit={handleFormSubmit}>
+          <div
+            css={`
+              width: ${layout === 'small' ? '100%' : '50%'};
+            `}
+          >
+            <Section title="Basic">
+              <Field label="Name">
+                <TextInput
+                  name="name"
+                  value={formData.name}
+                  onChange={handleDataChange}
+                  wide
+                />
+              </Field>
+              <Field label="About me">
+                <TextInput
+                  name="description"
+                  value={formData.description}
+                  onChange={handleDataChange}
+                  multiline
+                  wide
+                />
+              </Field>
+            </Section>
+            <Section title="Contact">
+              <VerifiedAccount
+                label="Email"
+                name="email"
+                removed={formData.email.removed}
+                validation={validateEmail}
+                value={formData.email.value}
+                verified={formData.email.verified}
+                onChange={handleAccountChange}
+                onRemove={handleAccountRemove}
+                onCancelRemove={handleAccountCancelRemove}
               />
-            </Field>
-            <Field label="About me">
-              <TextInput
-                name="description"
-                value={formData.description}
-                onChange={handleDataChange}
-                multiline
-                wide
+            </Section>
+            <Section title="Linked identities">
+              <VerifiedAccount
+                label="github.com/"
+                name="github"
+                removed={formData.github.removed}
+                value={formData.github.value}
+                verified={formData.github.verified}
+                onChange={handleAccountChange}
+                onRemove={handleAccountRemove}
+                onCancelRemove={handleAccountCancelRemove}
               />
-            </Field>
-          </Section>
-          <Section title="Contact">
-            <VerifiedAccount
-              label="Email"
-              name="email"
-              removed={formData.email.removed}
-              validation={validateEmail}
-              value={formData.email.value}
-              verified={formData.email.verified}
-              onChange={handleAccountChange}
-              onRemove={handleAccountRemove}
-              onCancelRemove={handleAccountCancelRemove}
-            />
-          </Section>
-          <Section title="Linked identities">
-            <VerifiedAccount
-              label="github.com/"
-              name="github"
-              removed={formData.github.removed}
-              value={formData.github.value}
-              verified={formData.github.verified}
-              onChange={handleAccountChange}
-              onRemove={handleAccountRemove}
-              onCancelRemove={handleAccountCancelRemove}
-            />
-            <VerifiedAccount
-              label="twitter.com/"
-              name="twitter"
-              removed={formData.twitter.removed}
-              value={formData.twitter.value}
-              verified={formData.twitter.verified}
-              onChange={handleAccountChange}
-              onRemove={handleAccountRemove}
-              onCancelRemove={handleAccountCancelRemove}
-            />
-          </Section>
-          <Section title="About">
-            <Field label="Location">
-              <TextInput
-                name="location"
-                value={formData.location}
-                onChange={handleDataChange}
-                wide
+              <VerifiedAccount
+                label="twitter.com/"
+                name="twitter"
+                removed={formData.twitter.removed}
+                value={formData.twitter.value}
+                verified={formData.twitter.verified}
+                onChange={handleAccountChange}
+                onRemove={handleAccountRemove}
+                onCancelRemove={handleAccountCancelRemove}
               />
-            </Field>
-            <Field label="Website or url">
-              <TextInput
-                name="website"
-                value={formData.website}
-                onChange={handleDataChange}
-                wide
-              />
-            </Field>
-            <Field label="Birthday">
-              <SingleDatePicker
-                format="iso"
-                initialDate={formData.birthday}
-                onChange={handleBirthdayChange}
-              />
-            </Field>
-          </Section>
-        </div>
+            </Section>
+            <Section title="About">
+              <Field label="Location">
+                <TextInput
+                  name="location"
+                  value={formData.location}
+                  onChange={handleDataChange}
+                  wide
+                />
+              </Field>
+              <Field label="Website or url">
+                <TextInput
+                  name="website"
+                  value={formData.website}
+                  onChange={handleDataChange}
+                  wide
+                />
+              </Field>
+              <Field label="Birthday">
+                <SingleDatePicker
+                  format="iso"
+                  initialDate={formData.birthday}
+                  onChange={handleBirthdayChange}
+                />
+              </Field>
+            </Section>
+          </div>
 
-        <div
-          css={`
+          <div
+            css={`
           text-align: right;
           margin-top: ${3 * GU}px display:flex; 
           align-items:center;
         `}
-        >
-          <Button label="Cancel" onClick={onBack} />
-          <Button
-            label="Save changes"
-            mode="strong"
-            type="submit"
-            disabled={saveDisabled}
-            css={`
-              margin-left: ${1 * GU}px;
-            `}
-          />
-        </div>
-      </form>
-    </Box>
+          >
+            <Button label="Cancel" onClick={onBack} />
+            <Button
+              label="Save changes"
+              mode="strong"
+              type="submit"
+              disabled={saveDisabled}
+              css={`
+                margin-left: ${1 * GU}px;
+              `}
+            />
+          </div>
+        </form>
+      </Box>
+    </>
   )
 }
 
