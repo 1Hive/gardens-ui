@@ -58,7 +58,7 @@ function BalanceModule() {
           </div>
           <div>
             <span>
-              {formatTokenAmount(myActiveTokens, stakeToken.decimals)}
+              {formatTokenAmount(accountBalance, stakeToken.decimals)}
             </span>{' '}
             <span
               css={`
