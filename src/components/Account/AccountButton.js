@@ -29,6 +29,7 @@ function AccountButton({ onClick }) {
               css={`
                 border-radius: 4px;
                 display: block;
+                object-fit: cover;
               `}
             />
           ) : (

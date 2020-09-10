@@ -58,6 +58,7 @@ function Wallet({ myStakes }) {
               alt=""
               css={`
                 border-radius: 50%;
+                object-fit: cover;
               `}
             />
           ) : (

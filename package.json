@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "3box": "^1.21.0",
     "@1hive/1hive-ui": "^1.0.2",
     "@1hive/connect-conviction-voting": "^0.3.0",
     "@aragon/connect": "^0.6.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
-    "customize-cra": "^1.0.0",
+    "dayjs": "^1.8.34",
     "ethers": "5.0.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -42,6 +43,9 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "3box/**/ipfs-log": "4.6.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
@@ -50,6 +54,7 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-styled-components": "^1.10.6",
     "cross-env": "^7.0.2",
+    "customize-cra": "^1.0.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-config-standard": "^14.1.0",
