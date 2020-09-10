@@ -15,7 +15,8 @@ import ProfileForm from './ProfileForm'
 import ProposalSupporting from './ProposalSupporting'
 import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
-import { UPLOAD_IPFS_ENDPOINT } from '../../endpoints'
+
+import { IPFS_ENDPOINT } from '../../endpoints'
 
 const IMAGE_DIMENSION = 16 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
@@ -53,7 +54,7 @@ function EditProfile({ onBack, profile }) {
   }, [])
 
   const handlePicFetch = useCallback(async buffer => {
-    const res = await fetch(UPLOAD_IPFS_ENDPOINT, {
+    const res = await fetch(IPFS_ENDPOINT.upload, {
       method: 'post',
       'Content-Type': 'multipart/form-data',
       body: buffer,
@@ -230,7 +231,7 @@ function EditProfile({ onBack, profile }) {
                 </div>
               </div>
               <Tabs
-                items={['Profile', 'Stake Managment', 'Proposals supporting']}
+                items={['Profile', 'Stake managment', 'Proposals supporting']}
                 selected={selectedTab}
                 onChange={setSelectedTab}
               />
