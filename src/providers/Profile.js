@@ -1,17 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Modal } from '@1hive/1hive-ui'
 
+import { useAppState } from './AppState'
 import { useWallet } from './Wallet'
 import {
   getAccountPrivateData,
   getProfileForAccount,
   openBoxForAccount,
-} from '../lib/profile'
+} from '../lib/3box'
+import { getNetwork } from '../networks'
 
 const ProfileContext = React.createContext()
 
 function ProfileProvider({ children }) {
+  const { convictionVoting } = useAppState()
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
@@ -92,6 +94,8 @@ function ProfileProvider({ children }) {
     [account, box, fetchAccountProfile, fetchPrivateData]
   )
 
+  const SPACE_NAME = `honeypot-${getNetwork().type}${convictionVoting.address}`
+
   // TODO: Add modal for 3box loader
   return (
     <ProfileContext.Provider
@@ -100,6 +104,7 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
+        spaceName: SPACE_NAME,
         updateProfile,
       }}
     >

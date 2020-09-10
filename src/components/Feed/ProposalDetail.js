@@ -23,6 +23,7 @@ import SupportProposalPanel from '../panels/SupportProposalPanel'
 
 import { useAppState } from '../../providers/AppState'
 import usePanelState from '../../hooks/usePanelState'
+import useThread from '../../hooks/useThread'
 import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
@@ -56,6 +57,9 @@ function ProposalDetail({
   const { vaultBalance, permissions } = useAppState()
 
   const { account: connectedAccount } = useWallet()
+
+  const thread = useThread(proposal.id)
+  console.log('thread', thread)
 
   const {
     id,

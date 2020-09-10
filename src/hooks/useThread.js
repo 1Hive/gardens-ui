@@ -6,11 +6,10 @@ import { useProfile } from '../providers/Profile'
 
 export default function useThread(proposalId) {
   const { convictionVoting } = useAppState()
-  const { space } = useProfile()
+  const { space, spaceName } = useProfile()
   const [thread, setThread] = useState(null)
 
   const threadName = `proposal#${proposalId}`
-  const spaceName = `honeypot-${getNetwork().type}${convictionVoting.address}` // TODO: Move to separate file
 
   useEffect(() => {
     let cancelled = false
