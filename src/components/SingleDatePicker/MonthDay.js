@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
 import { useTheme, textStyle, GU } from '@1hive/1hive-ui'
@@ -8,10 +8,13 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
   const theme = useTheme()
   const [isHovered, setIsHovered] = useState(false)
 
+  const handleMouseEnter = useCallback(() => setIsHovered(true), [])
+  const handleMouseLeave = useCallback(() => setIsHovered(false), [])
+
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       css={`
         position: relative;
         display: flex;

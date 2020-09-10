@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Box,
   Button,
@@ -51,6 +51,18 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
     },
     website,
   })
+
+  // Private data might not be ready yet
+  useEffect(() => {
+    if (birthday || email) {
+      setFormData(formData => ({
+        ...formData,
+        birthday,
+        email: { removed: false, value: email, verified: Boolean(email) },
+      }))
+    }
+    return () => {}
+  }, [birthday, email])
 
   const handleAccountChange = useCallback(event => {
     const { name, value } = event.target
@@ -332,13 +344,13 @@ function Section({ children, title }) {
 function VerifiedAccount({
   label,
   name,
+  onChange,
+  onRemove,
+  onCancelRemove,
   removed,
   validation,
   value,
   verified,
-  onChange,
-  onRemove,
-  onCancelRemove,
 }) {
   const theme = useTheme()
 
