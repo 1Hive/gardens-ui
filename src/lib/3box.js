@@ -29,12 +29,16 @@ export async function getProfileForAccount(account) {
   return parseProfileData(profile, verifiedAccounts)
 }
 
-export async function getSpaceThread(spaceName, threadName) {
+export function getSpaceThread(spaceName, threadName) {
   return getThread(spaceName, threadName)
 }
 
 export function openBoxForAccount(account, provider) {
   return openBox(account, provider)
+}
+
+export function openSpaceByName(box, spaceName) {
+  return box.openSpace(spaceName)
 }
 
 // parsers

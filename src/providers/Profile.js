@@ -13,6 +13,7 @@ import {
   getAccountPrivateData,
   getProfileForAccount,
   openBoxForAccount,
+  openSpaceByName,
 } from '../lib/3box'
 import { getNetwork } from '../networks'
 
@@ -20,12 +21,18 @@ const ProfileContext = React.createContext()
 
 const boxCache = new Map([])
 
+function getSpaceName(address) {
+  return address ? `honeypot-${getNetwork().type}${address}` : ''
+}
+
 function ProfileProvider({ children }) {
   const { convictionVoting } = useAppState()
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
+  const [space, setSpace] = useState(null)
   const [profile, setProfile] = useState(null)
 
+  const SPACE_NAME = getSpaceName(convictionVoting?.address)
   const cancelled = useRef(false)
 
   const auth = useCallback(async () => {
@@ -45,6 +52,7 @@ function ProfileProvider({ children }) {
     }
   }, [account, ethereum])
 
+  // Fetch account's public data
   const fetchAccountProfile = useCallback(async account => {
     const publicProfile = await getProfileForAccount(account)
 
@@ -53,6 +61,7 @@ function ProfileProvider({ children }) {
     }
   }, [])
 
+  // Fetch account's private data
   const fetchPrivateData = useCallback(async box => {
     const privateData = await getAccountPrivateData(box)
 
@@ -61,7 +70,29 @@ function ProfileProvider({ children }) {
     }
   }, [])
 
+  // Fetch space
+  const fetchSpace = useCallback(
+    async box => {
+      if (!SPACE_NAME) {
+        return
+      }
+
+      try {
+        const space = await openSpaceByName(box, SPACE_NAME)
+
+        if (!cancelled.current) {
+          setSpace(space)
+        }
+      } catch (err) {
+        console.error('Failed to open space: ', err)
+      }
+    },
+    [SPACE_NAME]
+  )
+
+  // Right after the users connect their account we'll fetch their public data
   useEffect(() => {
+    // If users change account we reset the profile
     setProfile(null)
     if (!account) {
       return
@@ -74,10 +105,12 @@ function ProfileProvider({ children }) {
     return () => (cancelled.current = true)
   }, [account, fetchAccountProfile])
 
-  // Users private data is not accesible unless the user has authenticated
+  // Users private data and space are not accesible unless the user has authenticated
   useEffect(() => {
     if (!account) {
-      return setBox(null)
+      setBox(null)
+      setSpace(null)
+      return
     }
 
     if (boxCache.has(account)) {
@@ -89,12 +122,16 @@ function ProfileProvider({ children }) {
     auth()
   }, [account, auth])
 
+  // After user has authenticated, we'll fetch his/her
+  // privtae data and open the honeypot space
   useEffect(() => {
     if (box) {
       fetchPrivateData(box)
+      fetchSpace(box)
     }
-  }, [box, fetchPrivateData])
+  }, [box, fetchPrivateData, fetchSpace])
 
+  // Function for updating user's profile
   const updateProfile = useCallback(
     async (updatedFields, removedFields) => {
       // Updated fields
@@ -123,8 +160,6 @@ function ProfileProvider({ children }) {
     [account, box, fetchAccountProfile, fetchPrivateData]
   )
 
-  const SPACE_NAME = `honeypot-${getNetwork().type}${convictionVoting.address}`
-
   // TODO: Add modal for 3box loader
   return (
     <ProfileContext.Provider
@@ -133,6 +168,7 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
+        space,
         spaceName: SPACE_NAME,
         updateProfile,
       }}

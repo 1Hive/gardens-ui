@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useAppState } from '../providers/AppState'
-import { getNetwork } from '../networks'
 import { getSpaceThread } from '../lib/3box'
 import { useProfile } from '../providers/Profile'
 
 export default function useThread(proposalId) {
-  const { convictionVoting } = useAppState()
   const { space, spaceName } = useProfile()
   const [thread, setThread] = useState(null)
 

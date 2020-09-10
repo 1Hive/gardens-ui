@@ -11,8 +11,8 @@ import { WalletProvider } from './providers/Wallet'
 function App() {
   return (
     <WalletProvider>
-      <ProfileProvider>
-        <AppStateProvider>
+      <AppStateProvider>
+        <ProfileProvider>
           <Main assetsUrl="/aragon-ui/" layout={false}>
             <HashRouter>
               <MainView>
@@ -20,8 +20,8 @@ function App() {
               </MainView>
             </HashRouter>
           </Main>
-        </AppStateProvider>
-      </ProfileProvider>
+        </ProfileProvider>
+      </AppStateProvider>
     </WalletProvider>
   )
 }
