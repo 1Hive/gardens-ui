@@ -1,7 +1,8 @@
 import React from 'react'
+import { Box } from '@1hive/1hive-ui'
 
 function StakeManagment() {
-  return <div>Manage stakes!</div>
+  return <Box>Manage stakes!</Box>
 }
 
 export default StakeManagment

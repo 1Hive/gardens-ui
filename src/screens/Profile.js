@@ -5,6 +5,10 @@ import { Button, GU, Split, SyncIndicator, useLayout } from '@1hive/1hive-ui'
 import Activity from '../components/Profile/Activity'
 import EditProfile from '../components/Profile/EditProfile'
 import MainProfile from '../components/Profile/MainProfile'
+import StakingTokens from '../components/Profile/StakingTokens'
+import Wallet from '../components/Wallet'
+
+import { useMyStakes } from '../hooks/useStakes'
 import { useProfile } from '../providers/Profile'
 
 function Profile() {
@@ -15,13 +19,11 @@ function Profile() {
   const { account, auth, authenticated, box } = useProfile()
   const oneColumn = layout === 'small' || layout === 'medium'
 
+  const myStakes = useMyStakes()
+
   useEffect(() => {
     if (!account) {
       return history.push('/')
-    }
-
-    if (!box) {
-      auth()
     }
   }, [account, auth, box, history])
 
@@ -50,7 +52,13 @@ function Profile() {
           </div>
           <Split
             primary={<Activity />}
-            secondary={<MainProfile />}
+            secondary={
+              <>
+                <MainProfile />
+                <Wallet myStakes={myStakes} />
+                <StakingTokens myStakes={myStakes} />
+              </>
+            }
             invert={oneColumn ? 'vertical' : 'horizontal'}
           />
         </>

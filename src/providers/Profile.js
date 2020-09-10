@@ -1,11 +1,6 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { Modal } from '@1hive/1hive-ui'
 
 import { useWallet } from './Wallet'
 import {
@@ -21,22 +16,29 @@ function ProfileProvider({ children }) {
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
 
-  const cancelled = useRef(false)
+  const auth = useCallback(async () => {
+    if (!(account && ethereum)) {
+      return
+    }
+
+    try {
+      const box = await openBoxForAccount(account, ethereum)
+      setBox(box)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [account, ethereum])
 
   const fetchAccountProfile = useCallback(async account => {
     const publicProfile = await getProfileForAccount(account)
 
-    if (!cancelled.current) {
-      setProfile(profile => ({ ...profile, ...publicProfile }))
-    }
+    setProfile(profile => ({ ...profile, ...publicProfile }))
   }, [])
 
   const fetchPrivateData = useCallback(async box => {
     const privateData = await getAccountPrivateData(box)
 
-    if (!cancelled.current) {
-      setProfile(profile => ({ ...profile, ...privateData }))
-    }
+    setProfile(profile => ({ ...profile, ...privateData }))
   }, [])
 
   useEffect(() => {
@@ -45,33 +47,22 @@ function ProfileProvider({ children }) {
     }
 
     fetchAccountProfile(account)
-
-    return () => {
-      cancelled.current = true
-    }
   }, [account, fetchAccountProfile])
 
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
+    if (!account) {
+      setBox(null)
+      return
+    }
+
     if (!box) {
+      auth()
       return
     }
 
     fetchPrivateData(box)
-
-    return () => {
-      cancelled.current = true
-    }
-  }, [box, fetchPrivateData])
-
-  const auth = useCallback(async () => {
-    try {
-      const box = await openBoxForAccount(account, ethereum)
-      setBox(box)
-    } catch (err) {
-      console.error(err)
-    }
-  }, [account, ethereum])
+  }, [account, auth, box, fetchPrivateData])
 
   const updateProfile = useCallback(
     async (updatedFields, removedFields) => {
@@ -101,6 +92,7 @@ function ProfileProvider({ children }) {
     [account, box, fetchAccountProfile, fetchPrivateData]
   )
 
+  // TODO: Add modal for 3box loader
   return (
     <ProfileContext.Provider
       value={{
