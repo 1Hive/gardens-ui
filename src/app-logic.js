@@ -1,8 +1,8 @@
-import { useAppState } from './providers/AppState'
-import { useProposals } from './hooks/useProposals'
-import usePanelState from './hooks/usePanelState'
 import useActions from './hooks/useActions'
+import { useAppState } from './providers/AppState'
 import { useMyStakes } from './hooks/useStakes'
+import usePanelState from './hooks/usePanelState'
+import { useProposals } from './hooks/useProposals'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
