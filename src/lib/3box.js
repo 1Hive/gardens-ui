@@ -1,4 +1,4 @@
-import { getProfile, getVerifiedAccounts, openBox } from '3box'
+import { getProfile, getThread, getVerifiedAccounts, openBox } from '3box'
 
 import { GITHUB_ENDPOINT, IPFS_ENDPOINT, TWITTER_ENDPOINT } from '../endpoints'
 import githubSvg from '../assets/github.svg'
@@ -27,6 +27,10 @@ export async function getProfileForAccount(account) {
   const profile = await getProfile(account)
   const verifiedAccounts = await getVerifiedAccounts(profile)
   return parseProfileData(profile, verifiedAccounts)
+}
+
+export async function getSpaceThread(spaceName, threadName) {
+  return getThread(spaceName, threadName)
 }
 
 export function openBoxForAccount(account, provider) {
