@@ -35,7 +35,7 @@ function BalanceModule() {
 
   const handleOnClick = useCallback(() => history.push('/profile'), [history]) // TODO: Send to profile/stake management section
 
-  const idlePct = inactiveTokens.eq('0')
+  const inactivePct = inactiveTokens.eq('0')
     ? '0'
     : inactiveTokens
         .times('100')
@@ -65,7 +65,7 @@ function BalanceModule() {
                 color: ${theme.contentSecondary};
               `}
             >
-              ({idlePct}% idle)
+              ({inactivePct}% idle)
             </span>
           </div>
         </div>

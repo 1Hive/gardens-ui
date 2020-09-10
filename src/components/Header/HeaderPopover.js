@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { GU, Popover, springs } from '@1hive/1hive-ui'
-import { Spring, animated } from 'react-spring/renderprops'
+import { animated, Spring } from 'react-spring/renderprops'
 
 const AnimatedSection = animated.section
 
@@ -9,10 +9,10 @@ function HeaderPopover({
   animateHeight,
   children,
   height,
-  width,
   onClose,
   opener,
   visible,
+  width,
 }) {
   return (
     <Popover
