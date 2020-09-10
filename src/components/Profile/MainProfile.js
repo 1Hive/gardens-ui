@@ -8,12 +8,11 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useProfile } from '../../providers/Profile'
 
 const IMAGE_DIMENSION = 20 * GU
 const BOX_PADDING = 5 * GU
 
-function MainProfile() {
+function MainProfile({ profile }) {
   const theme = useTheme()
   const {
     account,
@@ -23,7 +22,7 @@ function MainProfile() {
     name,
     verifiedAccounts,
     website,
-  } = useProfile()
+  } = profile || {}
 
   return (
     <Box padding={BOX_PADDING}>
@@ -88,7 +87,6 @@ function MainProfile() {
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
-                    ${textStyle('body2')}
                   `}
                 >
                   {email}
@@ -98,6 +96,9 @@ function MainProfile() {
                 <div
                   css={`
                     color: ${theme.contentSecondary};
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                   `}
                 >
                   {website}

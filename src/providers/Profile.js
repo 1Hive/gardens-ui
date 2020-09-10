@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import PropTypes from 'prop-types'
 
 import { useAppState } from './AppState'
@@ -12,11 +18,15 @@ import { getNetwork } from '../networks'
 
 const ProfileContext = React.createContext()
 
+const boxCache = new Map([])
+
 function ProfileProvider({ children }) {
   const { convictionVoting } = useAppState()
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
+
+  const cancelled = useRef(false)
 
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
@@ -25,7 +35,11 @@ function ProfileProvider({ children }) {
 
     try {
       const box = await openBoxForAccount(account, ethereum)
-      setBox(box)
+      boxCache.set(account, box)
+
+      if (!cancelled.current) {
+        setBox(box)
+      }
     } catch (err) {
       console.error(err)
     }
@@ -34,37 +48,52 @@ function ProfileProvider({ children }) {
   const fetchAccountProfile = useCallback(async account => {
     const publicProfile = await getProfileForAccount(account)
 
-    setProfile(profile => ({ ...profile, ...publicProfile }))
+    if (!cancelled.current) {
+      setProfile(profile => ({ ...profile, ...publicProfile }))
+    }
   }, [])
 
   const fetchPrivateData = useCallback(async box => {
     const privateData = await getAccountPrivateData(box)
 
-    setProfile(profile => ({ ...profile, ...privateData }))
+    if (!cancelled.current) {
+      setProfile(profile => ({ ...profile, ...privateData }))
+    }
   }, [])
 
   useEffect(() => {
+    setProfile(null)
     if (!account) {
-      return setProfile(null)
+      return
     }
 
+    cancelled.current = false
+
     fetchAccountProfile(account)
+
+    return () => (cancelled.current = true)
   }, [account, fetchAccountProfile])
 
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
     if (!account) {
-      setBox(null)
+      return setBox(null)
+    }
+
+    if (boxCache.has(account)) {
+      setBox(boxCache.get(account))
       return
     }
 
-    if (!box) {
-      auth()
-      return
-    }
+    setBox(null)
+    auth()
+  }, [account, auth])
 
-    fetchPrivateData(box)
-  }, [account, auth, box, fetchPrivateData])
+  useEffect(() => {
+    if (box) {
+      fetchPrivateData(box)
+    }
+  }, [box, fetchPrivateData])
 
   const updateProfile = useCallback(
     async (updatedFields, removedFields) => {
