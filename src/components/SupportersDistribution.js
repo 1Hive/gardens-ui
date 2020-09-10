@@ -3,11 +3,12 @@ import {
   Box,
   Distribution,
   GU,
-  IdentityBadge,
   textStyle,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+import IdentityBadge from './IdentityBadge'
+
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -137,8 +138,9 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
 const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
   const theme = useTheme()
   const { account } = useWallet()
-  const isCurrentUser = addressesEqual(entity, account)
   const { layoutName } = useLayout()
+
+  const isCurrentUser = addressesEqual(entity, account)
   const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   return (
