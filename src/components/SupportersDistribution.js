@@ -7,6 +7,8 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+import IdentityBadge from './IdentityBadge'
+
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -14,7 +16,6 @@ import { stakesPercentages } from '../lib/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
 
 import noSupportIllustration from '../assets/noSupportIllustration.svg'
-import IdentityBadge from './IdentityBadge'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
