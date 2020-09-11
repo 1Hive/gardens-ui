@@ -6,7 +6,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-function HeaderModule({ icon, content, hasPopover = true, onClick }) {
+function HeaderModule({ content, hasPopover = true, icon, onClick }) {
   const { above } = useViewport()
   const theme = useTheme()
 

@@ -28,6 +28,13 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
     onClosePopover()
   }, [history, onClosePopover])
 
+  const handleCopyAddress = useCallback(() => copy(wallet.account), [
+    copy,
+    wallet,
+  ])
+
+  const handleDeactivate = useCallback(() => wallet.deactivate(), [wallet])
+
   return (
     <div
       css={`
@@ -110,7 +117,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
             `}
           >
             <ButtonBase
-              onClick={() => copy(wallet.account)}
+              onClick={handleCopyAddress}
               focusRingRadius={RADIUS}
               css={`
                 display: flex;
@@ -155,14 +162,14 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
                 margin-left: ${0.5 * GU}px;
               `}
             >
-              {`Connected to Ethereum ${walletNetworkName} Network`}
+              {`Connected to ${walletNetworkName} Network`}
             </span>
           </div>
         </div>
       </div>
 
       <Button
-        onClick={() => wallet.deactivate()}
+        onClick={handleDeactivate}
         wide
         css={`
           margin-top: ${2 * GU}px;

@@ -42,7 +42,7 @@ function parseProfileData(profile, verifiedAccounts) {
   }
 
   if (profile.image?.length > 0) {
-    image = `${IPFS_ENDPOINT}/${profile.image[0].contentUrl['/']}`
+    image = `${IPFS_ENDPOINT.read}/${profile.image[0].contentUrl['/']}`
   }
 
   const parsedVerifiedAccounts = parseVerifiedAccounts(verifiedAccounts)

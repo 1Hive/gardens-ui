@@ -250,7 +250,11 @@ const EditProfile = React.forwardRef(
                   </div>
                 </div>
                 <Tabs
-                  items={['Profile', 'Stake Managment', 'Proposals supporting']}
+                  items={[
+                    'Profile',
+                    'Stake management',
+                    'Proposals supporting',
+                  ]}
                   selected={selectedTab}
                   onChange={setSelectedTab}
                 />
