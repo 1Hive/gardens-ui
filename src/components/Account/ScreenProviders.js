@@ -5,8 +5,8 @@ import {
   GU,
   Link,
   RADIUS,
-  useTheme,
   textStyle,
+  useTheme,
 } from '@1hive/1hive-ui'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { getUseWalletProviders } from '../../lib/web3-utils'
@@ -17,43 +17,61 @@ const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
 ])
 
 function ScreenProviders({ onActivate }) {
+  const theme = useTheme()
+
   return (
-    <div
-      css={`
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        padding: ${2 * GU}px ${2 * GU}px 0;
-      `}
-    >
-      <div
+    <div>
+      <h4
         css={`
-          display: grid;
-          grid-gap: ${1.5 * GU}px;
-          grid-auto-flow: row;
-          grid-template-columns: repeat(2, 1fr);
+          padding-top: ${2 * GU}px;
+          padding-left: ${2 * GU}px;
+          ${textStyle('label2')};
+          color: ${theme.contentSecondary};
+          margin-bottom: ${2 * GU}px;
         `}
       >
-        {PROVIDERS_INFO.map(([id, provider]) => (
-          <ProviderButton
-            key={id}
-            id={id}
-            provider={provider}
-            onActivate={onActivate}
-          />
-        ))}
-      </div>
+        Ethereum providers
+      </h4>
       <div
         css={`
           display: flex;
+          flex-direction: column;
           justify-content: center;
-          margin-top: ${2 * GU}px;
+          width: 100%;
+          padding: ${2 * GU}px ${2 * GU}px 0;
         `}
       >
-        <Link href="https://ethereum.org/wallets/" css="text-decoration: none">
-          What is an Ethereum provider?
-        </Link>
+        <div
+          css={`
+            display: grid;
+            grid-gap: ${1.5 * GU}px;
+            grid-auto-flow: row;
+            grid-template-columns: repeat(2, 1fr);
+          `}
+        >
+          {PROVIDERS_INFO.map(([id, provider]) => (
+            <ProviderButton
+              key={id}
+              id={id}
+              provider={provider}
+              onActivate={onActivate}
+            />
+          ))}
+        </div>
+        <div
+          css={`
+            display: flex;
+            justify-content: center;
+            margin-top: ${2 * GU}px;
+          `}
+        >
+          <Link
+            href="https://ethereum.org/wallets/"
+            css="text-decoration: none"
+          >
+            What is an Ethereum provider?
+          </Link>
+        </div>
       </div>
     </div>
   )
