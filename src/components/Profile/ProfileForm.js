@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  BackButton,
   Box,
   Button,
   ButtonBase,
@@ -200,6 +201,15 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
 
   return (
     <Box>
+      <BackButton
+        onClick={onBack}
+        css={`
+          padding: ${1 * GU}px;
+          border: 0;
+          margin-bottom: ${3 * GU}px;
+          border-radius: ${1 * GU}px 0 0 ${1 * GU}px;
+        `}
+      />
       <form onSubmit={handleFormSubmit}>
         <div
           css={`
