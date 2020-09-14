@@ -1,0 +1,34 @@
+{
+  "name": "honey-pot",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "./scripts/build-graph.sh",
+    "build:rinkeby": "NETWORK=rinkeby npm run build",
+    "build:mainnet": "NETWORK=mainnet npm run build",
+    "build:xdai": "NETWORK=xdai npm run build",
+    "codegen": "./scripts/codegen.sh",
+    "codegen:rinkeby": "NETWORK=rinkeby npm run codegen",
+    "codegen:mainnet": "NETWORK=mainnet npm run codegen",
+    "codegen:xdai": "NETWORK=xdai npm run codegen",
+    "deploy": "./scripts/deploy.sh",
+    "deploy:rinkeby": "NETWORK=rinkeby npm run deploy",
+    "deploy:mainnet": "NETWORK=mainnet npm run deploy",
+    "deploy:xdai": "NETWORK=xdai npm run deploy",
+    "manifest": "./scripts/build-manifest.sh",
+    "manifest:rinkeby": "NETWORK=rinkeby npm run manifest",
+    "manifest:mainnet": "NETWORK=mainnet npm run manifest",
+    "manifest:xdai": "NETWORK=xdai npm run manifest"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "mustache": "^4.0.1",
+    "truffle": "^5.0.4",
+    "truffle-contract": "^4.0.5",
+    "truffle-hdwallet-provider": "^1.0.4"
+  }
+}
