@@ -1,0 +1,86 @@
+type ConvictionConfig @entity {
+  id: ID!
+  decay: BigInt!
+  weight: BigInt!
+  maxRatio: BigInt!
+  pctBase: BigInt!
+  stakeToken: Token
+  totalStaked: BigInt!
+  maxStakedProposals: Int!
+  minThresholdStakePercentage: BigInt!
+  requestToken: Token
+}
+
+type Proposal @entity {
+  id: ID!
+  number: BigInt!
+  creator: Bytes!
+  status: ProposalStatus!
+  type: ProposalType!
+  createdAt: BigInt!
+  
+  # Proposal data
+  name: String
+  link: String
+  stakes: [Stake!] @derviedFrom(field: "proposal")
+  beneficiary: Bytes
+  requestedAmount: BigInt
+  totalTokensStaked: BigInt
+
+  # Voting data
+  metadata: String
+  startBlock: BigInt
+  executionBlock: BigInt
+  snapshotBlock: BigInt
+  supportRequiredPct: BigInt
+  minAcceptQuorum: BigInt
+  yea: BigInt
+  nay: BigInt
+  votingPower: BigInt
+  script: Bytes
+  casts: [Cast!] @derivedFrom(field: "proposal")
+}
+
+type Cast @entity {
+  id: ID!
+  voter: Bytes!
+  supports: Boolean!
+  voterStake: BigInt!
+  proposal: Proposal!
+}
+
+type Stake @entity {
+  id: ID!
+  entity: Bytes!
+  proposal: Proposal!
+  amount: BigInt!
+}
+
+type StakeHistory @entity {
+  id: ID!
+  entity: Bytes!
+  proposal: Proposal!
+  tokensStaked: BigInt!
+  totalTokensStaked: BigInt!
+  time: BigInt!
+  conviction: BigInt!
+}
+
+type Token @entity {
+  id:ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+}
+
+enum ProposalStatus {
+  Active
+  Cancelled
+  Executed
+}
+
+enum ProposalType {
+  Suggestion # Signaling proposal
+  Proposal   # Proposal requesting funds
+  Decision   # Vote
+}
