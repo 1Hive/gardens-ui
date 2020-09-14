@@ -1,0 +1,12 @@
+# Do not edit subgraph.yaml,this is a generated file.
+# Instead, edit subgraph.template.yaml and run `yarn manifest-<network>-[staging]`
+specVersion: 0.0.2
+description: A template for Honey pot subgraph
+repository: https://github.com/1hive/honey-pot
+schema:
+  file: ./schema.graphql
+dataSources:
+{{> Organization.template.yaml}}
+templates:
+{{> ConvictionVoting.template.yaml}}
+{{> DandelionVoting.template.yaml}}
