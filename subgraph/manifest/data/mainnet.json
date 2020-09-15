@@ -2,6 +2,5 @@
   "network": "mainnet",
   "address": "0x0000000000000000000000000000000000000000",
   "startBlock": 0,
-  "orgAddress": "0x0000000000000000000000000000000000000000",
   "orgName": "Honeypot DAO"
 }
