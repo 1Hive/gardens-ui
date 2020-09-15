@@ -1,28 +1,47 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
+  ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
   ProposalAdded as ProposalAddedEvent,
-  StakeAdded as StakeAddedEvent,
-  StakeWithdrawn as StakeWithdrawnEvent,
   ProposalCancelled as ProposalCancelledEvent,
   ProposalExecuted as ProposalExecutedEvent,
+  StakeAdded as StakeAddedEvent,
+  StakeWithdrawn as StakeWithdrawnEvent,
 } from '../generated/templates/ConvictionVoting/ConvictionVoting'
 import { Proposal as ProposalEntity } from '../generated/schema'
 import {
-  getConfigEntity,
+  getConvictionConfigEntity,
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
-  getOrgAddress,
+  populateProposalDataFromEvent
 } from './helpers'
-import { STATUS_CANCELLED, STATUS_EXECUTED } from './proposal-statuses'
+import { STATUS_CANCELLED, STATUS_EXECUTED } from './statuses'
+import { 
+  PROPOSAL_TYPE_PROPOSAL, 
+  PROPOSAL_TYPE_SUGGESTION, 
+  STAKE_TYPE_ADD, 
+  STAKE_TYPE_WITHDRAW 
+} from './types'
 
+export function handleConfigChange(event: ConvictionSettingsChangedEvent): void {
+  let convictionConfig = getConvictionConfigEntity(event.address)
+  convictionConfig.decay = event.params.decay
+  convictionConfig.maxRatio = event.params.maxRatio
+  convictionConfig.weight = event.params.weight
+  convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
+  convictionConfig.save()
+}
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
-
-  _populateProposalDataFromEvent(proposal, event)
+  let proposal = getProposalEntity(event.address, event.params.id)
+  
+  populateProposalDataFromEvent(proposal, event)
+  
+  let proposalType = event.params.amount.gt(BigInt.fromI32(0)) ? PROPOSAL_TYPE_PROPOSAL : PROPOSAL_TYPE_SUGGESTION
+  proposal.type = proposalType
+  proposal.stakes = []
 
   proposal.save()
 }
@@ -30,39 +49,43 @@ export function handleProposalAdded(event: ProposalAddedEvent): void {
 export function handleStakeAdded(event: StakeAddedEvent): void {
   _onNewStake(
     event.address,
+    STAKE_TYPE_ADD,
     event.params.entity,
     event.params.id,
     event.params.amount,
     event.params.tokensStaked,
     event.params.totalTokensStaked,
     event.params.conviction,
-    event.block.number
+    event.block.number,
+    event.block.timestamp
   )
 }
 
 export function handleStakeWithdrawn(event: StakeWithdrawnEvent): void {
   _onNewStake(
     event.address,
+    STAKE_TYPE_WITHDRAW,
     event.params.entity,
     event.params.id,
     event.params.amount,
     event.params.tokensStaked,
     event.params.totalTokensStaked,
     event.params.conviction,
-    event.block.number
+    event.block.number,
+    event.block.timestamp
   )
 }
 
 
 export function handleProposalExecuted(event: ProposalExecutedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_EXECUTED
   
   proposal.save()
 }
 
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_CANCELLED
 
   proposal.save()
@@ -70,65 +93,61 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 
 function _onNewStake(
   appAddress: Address,
+  type: string,
   entity: Address,
   proposalId: BigInt,
   amount: BigInt,
   tokensStaked: BigInt,
   totalTokensStaked: BigInt,
   conviction: BigInt,
-  blockNumber: BigInt
+  blockNumber: BigInt,
+  timestamp: BigInt
 ): void {
-  const proposal = getProposalEntity(appAddress, proposalId)
+  let proposal = getProposalEntity(appAddress, proposalId)
 
   // Hotfix: Orgs managed to stake to non existing proposals 
-  if (proposal.creator.toHexString() == '0x') {
+  if (!proposal.creator) {
     return 
   }
 
-  const config = getConfigEntity(appAddress)
+  let convictionConfig = getConvictionConfigEntity(appAddress)
 
   // If the old totalTokensStaked is less than the new means that is a stake else a withdraw
   if (proposal.totalTokensStaked < totalTokensStaked){
-    config.totalStaked = config.totalStaked.plus(amount)
+    convictionConfig.totalStaked = convictionConfig.totalStaked.plus(amount)
   } else {
-    config.totalStaked = config.totalStaked.minus(amount)
+    convictionConfig.totalStaked = convictionConfig.totalStaked.minus(amount)
   }
-  config.save()
+  convictionConfig.save()
 
   proposal.totalTokensStaked = totalTokensStaked
 
-  _updateProposalStakes(proposal, entity, tokensStaked)
+  _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
   _updateStakeHistory(
     proposal,
-    appAddress,
+    type,
     entity,
     tokensStaked,
     totalTokensStaked,
     conviction,
-    blockNumber
+    blockNumber,
+    timestamp
   )
-}
-
-function _populateProposalDataFromEvent(
-  proposal: ProposalEntity | null,
-  event: ProposalAddedEvent
-): void {
-  proposal.name = event.params.title
-  proposal.link = event.params.link.toString()
-  proposal.requestedAmount = event.params.amount
-  proposal.creator = event.params.entity
-  proposal.beneficiary = event.params.beneficiary
 }
 
 function _updateProposalStakes(
   proposal: ProposalEntity | null,
+  type: string,
   entity: Address,
-  tokensStaked: BigInt
+  tokensStaked: BigInt,
+  timestamp: BigInt
 ): void {
-  const stake = getStakeEntity(proposal, entity)
+  let stake = getStakeEntity(proposal, entity)
   stake.amount = tokensStaked
+  stake.createdAt = timestamp
+  stake.type = type
 
-  const stakes = proposal.stakes
+  let stakes = proposal.stakes
   stakes.push(stake.id)
   proposal.stakes = stakes
 
@@ -138,18 +157,22 @@ function _updateProposalStakes(
 
 function _updateStakeHistory(
   proposal: ProposalEntity | null,
-  appAddress: Address,
+  type: string,
   entity: Address,
   tokensStaked: BigInt,
   totalTokensStaked: BigInt,
   conviction: BigInt,
-  blockNumber: BigInt
+  blockNumber: BigInt,
+  timestamp: BigInt
 ): void {
-  const stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
+  let stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
 
+  stakeHistory.type = type
   stakeHistory.tokensStaked = tokensStaked
   stakeHistory.totalTokensStaked = totalTokensStaked
   stakeHistory.conviction = conviction
+  stakeHistory.createdAt = timestamp
+
 
   stakeHistory.save()
 }

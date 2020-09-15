@@ -1,48 +1,93 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
-  StartVote as StartVoteEvent,
-  CastVote as CastVoteEvent,
-  DandelionVoting as DandelionVotingContract
+  CastVote as CastVoteEvent, 
+  DandelionVoting as DandelionVotingContract,
+  StartVote as StartVoteEvent
 } from '../../generated/templates/DandelionVoting/DandelionVoting'
 import {
-  Vote as VoteEntity,
-  Cast as CastEntity
+  Cast as CastEntity,
+  Proposal as ProposalEntity,
+  VotingConfig as VotingConfigEntity,
 } from '../../generated/schema'
+import { loadOrCreateConfig, loadTokenData } from '.'
+import { STATUS_ACTIVE, STATUS_EXECUTED } from '../statuses'
 
-export function _getCastEntityId(vote: VoteEntity, numCast: number): string {
-  return vote.id + '-castNum:' + numCast.toString()
+//////  Voting config entity //////
+function getVotingConfigEntityId(appAddress: Address): string {
+  return appAddress.toHexString()
 }
 
-export function _getVoteEntityId(appAddress: Address, voteNum: BigInt): string {
-  return 'appAddress:' + appAddress.toHexString() + '-voteId:' + voteNum.toHexString()
+function getVotingConfigEntity(appAddress: Address): VotingConfigEntity | null {
+  let configEntityId = getVotingConfigEntityId(appAddress)
+
+  let config = VotingConfigEntity.load(configEntityId)
+
+  if (!config) {
+    config = new VotingConfigEntity(configEntityId)
+  }
+
+  return config
 }
 
-export function _populateVoteDataFromContract(vote: VoteEntity, appAddress: Address, voteNum: BigInt): void {
-  let dandelionVoting = DandelionVotingContract.bind(appAddress)
+export function loadVotingConfig(orgAddress: Address, appAddress: Address): void {
+    // General org config
+    let config = loadOrCreateConfig(orgAddress)
 
-  let voteData = dandelionVoting.getVote(voteNum)
-
-  vote.executed = voteData.value1
-  vote.startBlock = voteData.value2
-  vote.executionBlock = voteData.value3
-  vote.snapshotBlock = voteData.value4
-  vote.votingPower = voteData.value5
-  vote.supportRequiredPct = voteData.value6
-  vote.minAcceptQuorum = voteData.value7
-  vote.yea = voteData.value8
-  vote.nay = voteData.value9
-  vote.script = voteData.value10
-  vote.orgAddress = dandelionVoting.kernel()
-  vote.appAddress = appAddress
+    // Dandelion Voting config
+    let votingConfig = getVotingConfigEntity(appAddress)
+    let dandelionVoting = DandelionVotingContract.bind(appAddress)
+    // Load token data
+    let token = dandelionVoting.token()
+    let success = loadTokenData(token)
+    if (success) {
+      votingConfig.token = token.toHexString()
+    }
+  
+    // Load conviction params
+    votingConfig.supportRequiredPct = dandelionVoting.supportRequiredPct()
+    votingConfig.minAcceptQuorumPct = dandelionVoting.minAcceptQuorumPct()
+    votingConfig.durationBlocks = dandelionVoting.durationBlocks()
+    votingConfig.bufferBlocks = dandelionVoting.bufferBlocks()
+    votingConfig.executionDelayBlocks = dandelionVoting.executionDelayBlocks()
+  
+    votingConfig.save()
+  
+    config.voting = votingConfig.id
+    config.save()
 }
 
-export function _populateVoteDataFromEvent(vote: VoteEntity, event: StartVoteEvent): void {
-  vote.creator = event.params.creator
-  vote.metadata = event.params.metadata
+////// Cast Entity //////
+export function getCastEntityId(proposal: ProposalEntity | null, numCast: number): string {
+  return proposal.id + '-castNum:' + numCast.toString()
 }
 
-export function _populateCastDataFromEvent(cast: CastEntity, event: CastVoteEvent): void {
+export function populateCastDataFromEvent(cast: CastEntity, event: CastVoteEvent): void {
   cast.voter = event.params.voter
   cast.supports = event.params.supports
   cast.voterStake = event.params.stake
+  cast.createdAt = event.block.timestamp
+}
+
+////// Proposal Entity //////
+export function populateVotingDataFromEvent(proposal: ProposalEntity | null, event: StartVoteEvent): void {
+  proposal.creator = event.params.creator
+  proposal.metadata = event.params.metadata
+  proposal.createdAt = event.block.timestamp
+}
+
+
+export function populateVotingDataFromContract(proposal: ProposalEntity | null, appAddress: Address, voteNum: BigInt): void {
+  let dandelionVoting = DandelionVotingContract.bind(appAddress)
+  let voteData = dandelionVoting.getVote(voteNum)
+
+  proposal.status = voteData.value1 ? STATUS_EXECUTED : STATUS_ACTIVE
+  proposal.startBlock = voteData.value2
+  proposal.executionBlock = voteData.value3
+  proposal.snapshotBlock = voteData.value4
+  proposal.supportRequiredPct = voteData.value6
+  proposal.minAcceptQuorum = voteData.value7
+  proposal.yea = voteData.value8
+  proposal.nay = voteData.value9
+  proposal.votingPower = voteData.value5
+  proposal.script = voteData.value10
 }

@@ -1,3 +1,9 @@
+type Config @entity {
+  id: ID!
+  conviction: ConvictionConfig
+  voting: VotingConfig
+}
+
 type ConvictionConfig @entity {
   id: ID!
   decay: BigInt!
@@ -9,6 +15,16 @@ type ConvictionConfig @entity {
   maxStakedProposals: Int!
   minThresholdStakePercentage: BigInt!
   requestToken: Token
+}
+
+type VotingConfig @entity {
+    id: ID!
+    token: Token!
+    supportRequiredPct: BigInt!
+    minAcceptQuorumPct: BigInt!
+    durationBlocks: BigInt!
+    bufferBlocks: BigInt!
+    executionDelayBlocks: BigInt!
 }
 
 type Proposal @entity {
@@ -47,23 +63,28 @@ type Cast @entity {
   supports: Boolean!
   voterStake: BigInt!
   proposal: Proposal!
+  createdAt: BigInt!
 }
 
 type Stake @entity {
   id: ID!
+  type: StakeType!
   entity: Bytes!
   proposal: Proposal!
   amount: BigInt!
+  createdAt: BigInt!
 }
 
 type StakeHistory @entity {
   id: ID!
+  type: StakeType!
   entity: Bytes!
   proposal: Proposal!
   tokensStaked: BigInt!
   totalTokensStaked: BigInt!
-  time: BigInt!
   conviction: BigInt!
+  time: BigInt!      # Block at which was created
+  createdAt: BigInt! # Timestamp at which was created
 }
 
 type Token @entity {
@@ -83,4 +104,9 @@ enum ProposalType {
   Suggestion # Signaling proposal
   Proposal   # Proposal requesting funds
   Decision   # Vote
+}
+
+enum StakeType {
+  Add
+  Withdraw
 }

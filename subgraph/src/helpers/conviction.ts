@@ -4,37 +4,20 @@ import {
   Proposal as ProposalEntity,
   Stake as StakeEntity,
   StakeHistory as StakeHistoryEntity,
-  Token as TokenEntity,
 } from '../../generated/schema'
-import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
-import { ConvictionVoting as ConvictionVotingContract } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
+import { 
+  ConvictionVoting as ConvictionVotingContract,
+  ProposalAdded as ProposalAddedEvent
+} from '../../generated/templates/ConvictionVoting/ConvictionVoting'
+import { loadOrCreateConfig, loadTokenData } from './'
 
-
-function loadTokenData(address: Address): boolean {
-  const tokenContract = MiniMeTokenContract.bind(address)
-  const token = new TokenEntity(address.toHexString())
-
-  // App could be instantiated without a vault which means request token could be invalid
-  const symbol = tokenContract.try_symbol()
-  if (symbol.reverted) {
-    return false
-  }
-
-  token.symbol = symbol.value
-  token.name = tokenContract.name()
-  token.decimals = tokenContract.decimals()
-
-  token.save()
-
-  return true
-}
-
-function getConfigEntityId(appAddress: Address): string {
+////// Conviction config entity //////
+function getConvictionConfigEntityId(appAddress: Address): string {
   return appAddress.toHexString()
 }
 
-export function getConfigEntity(appAddress: Address): ConvictionConfigEntity | null {
-  const configEntityId = getConfigEntityId(appAddress)
+export function getConvictionConfigEntity(appAddress: Address): ConvictionConfigEntity | null {
+  let configEntityId = getConvictionConfigEntityId(appAddress)
 
   let config = ConvictionConfigEntity.load(configEntityId)
 
@@ -45,47 +28,52 @@ export function getConfigEntity(appAddress: Address): ConvictionConfigEntity | n
   return config
 }
 
-export function loadAppConfig(appAddress: Address): void {
-  const config = getConfigEntity(appAddress)
-  const convictionVoting = ConvictionVotingContract.bind(appAddress)
+export function loadConvictionConfig(orgAddress: Address, appAddress: Address): void {
+  // General org config
+  let config = loadOrCreateConfig(orgAddress)
+
+  // Conviction voting config
+  let convictionConfig = getConvictionConfigEntity(appAddress)
+  let convictionVoting = ConvictionVotingContract.bind(appAddress)
   // Load tokens data
-  const stakeToken = convictionVoting.stakeToken()
+  let stakeToken = convictionVoting.stakeToken()
   let success = loadTokenData(stakeToken)
   if (success) {
-    config.stakeToken = stakeToken.toHexString()
+    convictionConfig.stakeToken = stakeToken.toHexString()
   }
 
-  const requestToken = convictionVoting.requestToken()
+  let requestToken = convictionVoting.requestToken()
   // App could be instantiated without a vault
   success = loadTokenData(requestToken)
   if (success) {
-    config.requestToken = requestToken.toHexString()
+    convictionConfig.requestToken = requestToken.toHexString()
   }
 
   // Load conviction params
-  config.decay = convictionVoting.decay()
-  config.weight = convictionVoting.weight()
-  config.maxRatio = convictionVoting.maxRatio()
-  config.pctBase = convictionVoting.D()
-  config.totalStaked = convictionVoting.totalStaked()
-  config.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
-  config.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
+  convictionConfig.decay = convictionVoting.decay()
+  convictionConfig.weight = convictionVoting.weight()
+  convictionConfig.maxRatio = convictionVoting.maxRatio()
+  convictionConfig.pctBase = convictionVoting.D()
+  convictionConfig.totalStaked = convictionVoting.totalStaked()
+  convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
+  convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
 
-  config.appAddress = appAddress
-  config.orgAddress = convictionVoting.kernel()
+  convictionConfig.save()
 
+  config.conviction = convictionConfig.id
   config.save()
 }
 
-export function getStakeEntityId(proposalId: BigInt, entity: Bytes): string {
-  return proposalId.toHexString() + '-entity:' + entity.toHexString()
+////// Stake entity //////
+export function getStakeEntityId(proposalNumber: BigInt, entity: Bytes): string {
+  return proposalNumber.toHexString() + '-entity:' + entity.toHexString()
 }
 
 export function getStakeEntity(
   proposal: ProposalEntity | null,
   entity: Bytes
 ): StakeEntity | null {
-  const stakeId = getStakeEntityId(proposal.number, entity)
+  let stakeId = getStakeEntityId(proposal.number, entity)
 
   let stake = StakeEntity.load(stakeId)
   if (!stake) {
@@ -96,13 +84,15 @@ export function getStakeEntity(
 
   return stake
 }
+
+////// Stake History entity //////
 export function getStakeHistoryEntityId(
-  proposalId: BigInt,
+  proposalNumber: BigInt,
   entity: Bytes,
   timestamp: BigInt
 ): string {
   return (
-    proposalId.toHexString() +
+    proposalNumber.toHexString() +
     '-entity:' +
     entity.toHexString() +
     '-time:' +
@@ -115,14 +105,14 @@ export function getStakeHistoryEntity(
   entity: Bytes,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
-  const stakeHistoryId = getStakeHistoryEntityId(
+  let stakeHistoryId = getStakeHistoryEntityId(
     proposal.number,
     entity,
     blockNumber
   )
 
-  const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
-  stakeHistory.proposalId = proposal.number
+  let stakeHistory = new StakeHistoryEntity(stakeHistoryId)
+  stakeHistory.proposal = proposal.id
   stakeHistory.entity = entity
   stakeHistory.time = blockNumber
 
@@ -130,6 +120,19 @@ export function getStakeHistoryEntity(
 }
 
 export function getOrgAddress(appAddress: Address): Address {
-  const convictionVoting = ConvictionVotingContract.bind(appAddress)
+  let convictionVoting = ConvictionVotingContract.bind(appAddress)
   return convictionVoting.kernel()
+}
+
+////// Proposal entity //////
+export function populateProposalDataFromEvent(
+  proposal: ProposalEntity | null,
+  event: ProposalAddedEvent
+): void {
+  proposal.name = event.params.title
+  proposal.link = event.params.link.toString()
+  proposal.requestedAmount = event.params.amount
+  proposal.creator = event.params.entity
+  proposal.createdAt = event.block.timestamp
+  proposal.beneficiary = event.params.beneficiary
 }

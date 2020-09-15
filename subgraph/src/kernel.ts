@@ -1,6 +1,6 @@
 import { Address, DataSourceTemplate, TypedMap } from '@graphprotocol/graph-ts'
 import { NewAppProxy as NewAppProxyEvent } from '../generated/Kernel/Kernel'
-import { loadAppConfig } from './helpers'
+import { loadConvictionConfig, loadVotingConfig } from './helpers'
 
 const DANDELION_VOTING_APP_IDS: string[] = [
   '0x2d7442e1c4cb7a7013aecc419f938bdfa55ad32d90002fb92ee5969e27b2bf07' // dandelion-voting.aragonpm.eth
@@ -10,10 +10,10 @@ const CONIVCTION_VOTING_APP_IDS: string[] = [
 ]
 
 export function handleNewAppProxy(event: NewAppProxyEvent): void {
-  processApp(event.params.proxy, event.params.appId.toHexString())
+  processApp(event.address, event.params.proxy, event.params.appId.toHexString())
 }
   
- function processApp(appAddress: Address, appId: string): void {
+ function processApp(orgAddress: Address, appAddress: Address, appId: string): void {
     let template: string
 
     if (DANDELION_VOTING_APP_IDS.includes(appId)) {
@@ -24,12 +24,17 @@ export function handleNewAppProxy(event: NewAppProxyEvent): void {
 
     if (template) {
       DataSourceTemplate.create(template, [appAddress.toHexString()])
-      onAppTemplateCreated(appAddress, appId)
+      onAppTemplateCreated(orgAddress, appAddress, appId)
     }
 }
 
-function onAppTemplateCreated(appAddress: Address, appId: string): void {
+function onAppTemplateCreated(orgAddress: Address, appAddress: Address, appId: string): void {
   if (CONIVCTION_VOTING_APP_IDS.includes(appId)) {
-    loadAppConfig(appAddress)
+    loadConvictionConfig(orgAddress, appAddress)
+    return 
   }
+
+  if (DANDELION_VOTING_APP_IDS.includes(appId)) {
+    loadVotingConfig(orgAddress, appAddress)
+  } 
 }

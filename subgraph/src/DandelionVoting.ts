@@ -1,71 +1,58 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   StartVote as StartVoteEvent,
   CastVote as CastVoteEvent,
   ExecuteVote as ExecuteVoteEvent,
-  DandelionVoting as DandelionVotingContract
 } from '../generated/templates/DandelionVoting/DandelionVoting'
 import {
-  Vote as VoteEntity,
   Cast as CastEntity
 } from '../generated/schema'
-import { _getCastEntityId, _getVoteEntityId, _populateCastDataFromEvent, _populateVoteDataFromContract, _populateVoteDataFromEvent } from './helpers'
+import { getProposalEntity, getCastEntityId, populateCastDataFromEvent, populateVotingDataFromEvent, populateVotingDataFromContract } from './helpers'
+import { STATUS_EXECUTED } from './statuses'
+import { PROPOSAL_TYPE_DECISION } from './types'
 
 export function handleStartVote(event: StartVoteEvent): void {
-  let vote = _getVoteEntity(event.address, event.params.voteId)
+  let proposal = getProposalEntity(event.address, event.params.voteId)
 
-  _populateVoteDataFromEvent(vote, event)
-  _populateVoteDataFromContract(vote, event.address, vote.voteNum)
+  populateVotingDataFromEvent(proposal, event)
+  populateVotingDataFromContract(proposal, event.address, proposal.number)
 
-  vote.save()
+  proposal.type = PROPOSAL_TYPE_DECISION
+  proposal.casts = []
+
+  proposal.save()
 }
 
 export function handleCastVote(event: CastVoteEvent): void {
-  let vote = _getVoteEntity(event.address, event.params.voteId)
+  let proposal = getProposalEntity(event.address, event.params.voteId)
 
-  let numCasts = vote.casts.length
+  let numCasts = proposal.casts.length
 
-  let castId = _getCastEntityId(vote, numCasts)
+  let castId = getCastEntityId(proposal, numCasts)
   let cast = new CastEntity(castId)
 
-  _populateCastDataFromEvent(cast, event)
-  cast.voteNum = vote.voteNum
-  cast.voteId = vote.id
+  populateCastDataFromEvent(cast, event)
+  cast.proposal = proposal.id
 
-  let casts = vote.casts
+  let casts = proposal.casts
   casts.push(castId)
-  vote.casts = casts
+  proposal.casts = casts
 
   if (event.params.supports == true) {
-    vote.yea = vote.yea.plus(event.params.stake)
+    proposal.yea = proposal.yea.plus(event.params.stake)
   } else {
-    vote.nay = vote.nay.plus(event.params.stake)
+    proposal.nay = proposal.nay.plus(event.params.stake)
   }
 
-  vote.save()
+  proposal.save()
   cast.save()
 }
 
 export function handleExecuteVote(event: ExecuteVoteEvent): void {
-  let vote = _getVoteEntity(event.address, event.params.voteId)
+  let proposal = getProposalEntity(event.address, event.params.voteId)
 
-  vote.executed = true
+  proposal.status = STATUS_EXECUTED
 
-  vote.save()
+  proposal.save()
 }
 
-function _getVoteEntity(appAddress: Address, voteNum: BigInt): VoteEntity {
-  let voteEntityId = _getVoteEntityId(appAddress, voteNum)
-
-  let vote = VoteEntity.load(voteEntityId)
-  if (!vote) {
-    vote = new VoteEntity(voteEntityId)
-
-    vote.voteNum = voteNum
-    vote.executed = false
-    vote.casts = []
-  }
-
-  return vote!
-}
 
