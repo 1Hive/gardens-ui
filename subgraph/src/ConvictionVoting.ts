@@ -147,10 +147,6 @@ function _updateProposalStakes(
   stake.createdAt = timestamp
   stake.type = type
 
-  let stakes = proposal.stakes
-  stakes.push(stake.id)
-  proposal.stakes = stakes
-
   stake.save()
   proposal.save()
 }

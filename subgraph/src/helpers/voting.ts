@@ -57,11 +57,23 @@ export function loadVotingConfig(orgAddress: Address, appAddress: Address): void
 }
 
 ////// Cast Entity //////
-export function getCastEntityId(proposal: ProposalEntity | null, numCast: number): string {
+function getCastEntityId(proposal: ProposalEntity | null, numCast: number): string {
   return proposal.id + '-castNum:' + numCast.toString()
 }
 
-export function populateCastDataFromEvent(cast: CastEntity, event: CastVoteEvent): void {
+export function getCastEntity(
+  proposal: ProposalEntity | null
+): CastEntity | null {
+  let numCasts = proposal.casts.length
+  let castId = getCastEntityId(proposal, numCasts)
+ 
+  let cast = new CastEntity(castId)
+  cast.proposal = proposal.id
+
+  return cast
+}
+
+export function populateCastDataFromEvent(cast: CastEntity | null, event: CastVoteEvent): void {
   cast.voter = event.params.voter
   cast.supports = event.params.supports
   cast.voterStake = event.params.stake
