@@ -4,7 +4,7 @@
 set -o errexit
 
 # Run codegen
-npm run codegen
+yarn codegen
 
 # Run build
 npx graph build

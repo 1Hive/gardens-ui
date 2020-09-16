@@ -4,18 +4,13 @@
 set -o errexit
 
 # Run graph build
-npm run build:graph
+yarn build
 
 GRAPH_NODE="https://api.thegraph.com/deploy/"
 IPFS_NODE="https://api.thegraph.com/ipfs/"
 SUBGRAPH_EXT="-${NETWORK}"
 
-# Create subgraph if missing
-{
-  graph create 1hive/honey-pot${SUBGRAPH_EXT} --node ${GRAPH_NODE}
-} || {
-  echo 'Subgraph was already created'
-}
+echo Deploying subgraph 1hive/honey-pot${SUBGRAPH_EXT}
 
 # Deploy subgraph
-graph deploy 1hive/honey-pot${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
+graph deploy 1hive/honey-pot${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}

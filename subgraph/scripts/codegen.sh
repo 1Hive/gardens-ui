@@ -4,7 +4,7 @@
 set -o errexit
 
 # Create manifest
-npm run manifest
+yarn manifest
 
 # Run codegen
 rm -rf ./generated && graph codegen
