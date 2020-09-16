@@ -8,7 +8,7 @@
     apiVersion: 0.0.1
     language: wasm/assemblyscript
     entities:
-      - Config
+      - ConvictionConfig
       - Proposal
       - Stake
       - StakeHistory
