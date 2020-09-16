@@ -9,7 +9,7 @@ import {
   ConvictionVoting as ConvictionVotingContract,
   ProposalAdded as ProposalAddedEvent
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
-import { loadOrCreateConfig, loadTokenData } from './'
+import { loadOrCreateConfig, loadTokenData } from '.'
 
 ////// Conviction config entity //////
 function getConvictionConfigEntityId(appAddress: Address): string {
