@@ -50,10 +50,8 @@ export const CONFIG = (type: string) => gql`
 `
 
 export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($appAddress: String!, $first: Int!, $skip: Int!) {
-    proposals(where: {
-      appAddress: $appAddress
-    }, first: $first, skip: $skip) {
+  ${type} Proposals($first: Int!, $skip: Int!) {
+    proposals(first: $first, skip: $skip) {
       id
       number
       creator
@@ -67,14 +65,18 @@ export const ALL_PROPOSALS = (type: string) => gql`
       stakes {
         id
         type
-        entity
+        entity {
+          id
+        }
         amount
         createdAt
       }
       stakesHistory {
         id
         type
-        entity
+        entity {
+          id
+        }
         tokensStaked
         totalTokensStaked
         conviction
@@ -98,10 +100,11 @@ export const ALL_PROPOSALS = (type: string) => gql`
       script
       casts {
         id
-        voter
+        entity {
+          id
+        }
         supports
-        voterStake
-        proposal
+        stake
         createdAt
       }
     }
@@ -140,7 +143,7 @@ export const SUPPORTER = (type: string) => gql`
       casts {
         id
         supports
-        voterStake
+        stake
         proposal {
           id
           number

@@ -1,4 +1,5 @@
 
+import { Organization } from '@aragon/connect-core'
 import HonyePot from './models/Honeypot'
 import HoneyPotConnectorTheGraph, {
   pollIntervalFromChainId,
@@ -10,11 +11,12 @@ type Config = {
   pollInterval?: number
 }
 
-export default function connectHoneypot(organization: any, config:  Config) {
-  const { network, orgConnector } = organization.location
+export default function connectHoneypot(organization: Organization, config?: Config) {
+  console.log('connection',organization.connection)
+  const { network, orgConnector } = organization.connection
 
   const subgraphUrl =
-    config.subgraphUrl ?? subgraphUrlFromChainId(network.chainId)
+    config?.subgraphUrl ?? subgraphUrlFromChainId(network.chainId) ?? undefined
 
   let pollInterval
   if (orgConnector.name === 'thegraph') {
