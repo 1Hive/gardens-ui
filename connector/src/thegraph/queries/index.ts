@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 // TODO: Filters
 export const CONFIG = (type: string) => gql`
-  ${type} Config($id: String!) {
+  ${type} Config($id: ID!) {
     config(id: $id) {
       id
 
@@ -62,7 +62,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       name
       link
-      stakes {
+      stakes(orderBy: createdAt, orderDirection: asc) {
         id
         type
         entity {
@@ -71,7 +71,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
         amount
         createdAt
       }
-      stakesHistory {
+      stakesHistory(orderBy: createdAt, orderDirection: asc) {
         id
         type
         entity {
@@ -135,7 +135,7 @@ export const ALL_STAKE_HISTORY = (type: string) => gql`
 `
 
 export const SUPPORTER = (type: string) => gql`
-  ${type} Supporter($id: string) {
+  ${type} Supporter($id: ID!) {
     supporter(id: $id) {
       id
       address
@@ -154,7 +154,7 @@ export const SUPPORTER = (type: string) => gql`
 
       }
       # proposals stakes
-      stakes(orderBy: cratedAt, orderDirection: desc) {
+      stakes(orderBy: createdAt, orderDirection: desc) {
         id
         type
         proposal {
@@ -167,7 +167,7 @@ export const SUPPORTER = (type: string) => gql`
         createdAt
       }
       # proposal stakes history
-      stakesHistory(orderBy: cratedAt, orderDirection: desc) {
+      stakesHistory(orderBy: createdAt, orderDirection: desc) {
         id
         type
         proposal {

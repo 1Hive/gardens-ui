@@ -12,7 +12,6 @@ type Config = {
 }
 
 export default function connectHoneypot(organization: Organization, config?: Config) {
-  console.log('connection',organization.connection)
   const { network, orgConnector } = organization.connection
 
   const subgraphUrl =
