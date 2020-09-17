@@ -4,11 +4,9 @@ import {
 } from '../../generated/templates/DandelionVoting/DandelionVoting'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
-} from '../../generated/schema'
-
-import {
   Config as ConfigEntity,
   Proposal as ProposalEntity,
+  Supporter as SupporterEntity,
   Token as TokenEntity,
 } from '../../generated/schema'
 import { STATUS_ACTIVE } from '../statuses'
@@ -50,6 +48,20 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
   return config
 }
 
+////// Supporter Entity //////
+export function createSupporter(address: Address): void {
+  let id = address.toHexString()
+  let supporter = SupporterEntity.load(id)
+
+  if (supporter !== null) {
+    return
+  }
+
+  supporter = new SupporterEntity(id)
+  supporter.address = address
+  supporter.save()
+}
+
 ////// Proposal Entity //////
 export function getProposalEntityId(
   appAddress: Address,
@@ -72,7 +84,7 @@ export function getProposalEntity(
   let proposal = ProposalEntity.load(proposalEntityId)
   if (!proposal) {
     proposal = new ProposalEntity(proposalEntityId)
-    proposal.number = proposalId // TODO: check number
+    proposal.number = proposalId
     proposal.status = STATUS_ACTIVE
   }
 

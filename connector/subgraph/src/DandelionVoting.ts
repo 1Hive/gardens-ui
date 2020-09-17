@@ -4,6 +4,7 @@ import {
   ExecuteVote as ExecuteVoteEvent,
 } from '../generated/templates/DandelionVoting/DandelionVoting'
 import { 
+  createSupporter,
   getCastEntity, 
   getProposalEntity, 
   populateCastDataFromEvent, 
@@ -26,9 +27,9 @@ export function handleStartVote(event: StartVoteEvent): void {
 
 export function handleCastVote(event: CastVoteEvent): void {
   let proposal = getProposalEntity(event.address, event.params.voteId)
+  createSupporter(event.params.voter)
 
   let cast = getCastEntity(proposal)
-
   populateCastDataFromEvent(cast, event)
 
   if (event.params.supports == true) {

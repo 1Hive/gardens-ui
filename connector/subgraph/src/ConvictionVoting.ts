@@ -14,6 +14,7 @@ import {
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
+  createSupporter,
   populateProposalDataFromEvent
 } from './helpers'
 import { STATUS_CANCELLED, STATUS_EXECUTED } from './statuses'
@@ -142,6 +143,8 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
+  createSupporter(entity)
+
   let stake = getStakeEntity(proposal, entity)
   stake.amount = tokensStaked
   stake.createdAt = timestamp
@@ -161,8 +164,9 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  let stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
+  createSupporter(entity)
 
+  let stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
   stakeHistory.type = type
   stakeHistory.tokensStaked = tokensStaked
   stakeHistory.totalTokensStaked = totalTokensStaked

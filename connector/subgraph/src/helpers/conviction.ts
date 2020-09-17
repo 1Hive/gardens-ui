@@ -78,7 +78,7 @@ export function getStakeEntity(
   let stake = StakeEntity.load(stakeId)
   if (!stake) {
     stake = new StakeEntity(stakeId)
-    stake.entity = entity
+    stake.entity = entity.toHexString()
     stake.proposal = proposal.id
   }
 
@@ -113,7 +113,7 @@ export function getStakeHistoryEntity(
 
   let stakeHistory = new StakeHistoryEntity(stakeHistoryId)
   stakeHistory.proposal = proposal.id
-  stakeHistory.entity = entity
+  stakeHistory.entity = entity.toHexString()
   stakeHistory.time = blockNumber
 
   return stakeHistory

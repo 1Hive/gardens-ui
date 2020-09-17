@@ -74,7 +74,7 @@ export function getCastEntity(
 }
 
 export function populateCastDataFromEvent(cast: CastEntity | null, event: CastVoteEvent): void {
-  cast.voter = event.params.voter
+  cast.entity = event.params.voter.toHexString()
   cast.supports = event.params.supports
   cast.voterStake = event.params.stake
   cast.createdAt = event.block.timestamp
