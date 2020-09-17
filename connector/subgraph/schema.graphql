@@ -62,7 +62,7 @@ type Cast @entity {
   id: ID!
   entity: Supporter!
   supports: Boolean!
-  voterStake: BigInt!
+  stake: BigInt!
   proposal: Proposal!
   createdAt: BigInt!
 }
