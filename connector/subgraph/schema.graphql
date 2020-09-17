@@ -18,13 +18,13 @@ type ConvictionConfig @entity {
 }
 
 type VotingConfig @entity {
-    id: ID!
-    token: Token!
-    supportRequiredPct: BigInt!
-    minAcceptQuorumPct: BigInt!
-    durationBlocks: BigInt!
-    bufferBlocks: BigInt!
-    executionDelayBlocks: BigInt!
+  id: ID!
+  token: Token!
+  supportRequiredPct: BigInt!
+  minAcceptQuorumPct: BigInt!
+  durationBlocks: BigInt!
+  bufferBlocks: BigInt!
+  executionDelayBlocks: BigInt!
 }
 
 type Proposal @entity {
@@ -39,6 +39,7 @@ type Proposal @entity {
   name: String
   link: String
   stakes: [Stake!] @derviedFrom(field: "proposal")
+  stakesHistory: [StakeHistory!] @derviedFrom(field: "proposal")
   beneficiary: Bytes
   requestedAmount: BigInt
   totalTokensStaked: BigInt
@@ -59,7 +60,7 @@ type Proposal @entity {
 
 type Cast @entity {
   id: ID!
-  voter: Bytes!
+  entity: Supporter!
   supports: Boolean!
   voterStake: BigInt!
   proposal: Proposal!
@@ -69,7 +70,7 @@ type Cast @entity {
 type Stake @entity {
   id: ID!
   type: StakeType!
-  entity: Bytes!
+  entity: Supporter!
   proposal: Proposal!
   amount: BigInt!
   createdAt: BigInt!
@@ -78,13 +79,21 @@ type Stake @entity {
 type StakeHistory @entity {
   id: ID!
   type: StakeType!
-  entity: Bytes!
+  entity: Supporter!
   proposal: Proposal!
   tokensStaked: BigInt!
   totalTokensStaked: BigInt!
   conviction: BigInt!
   time: BigInt!      # Block at which was created
   createdAt: BigInt! # Timestamp at which was created
+}
+
+type Supporter @entity {
+  id: ID!
+  address: Bytes!
+  casts: [Cast!] @derivedFrom(field: "entity")
+  stakes: [Stake!] @derivedFrom(field: "entity")
+  stakesHistory: [StakeHistory!] @derivedFrom(field: "entity")
 }
 
 type Token @entity {
