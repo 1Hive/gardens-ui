@@ -7,6 +7,7 @@ import {
   Field,
   GU,
   IconCheck,
+  Info,
   Modal,
   TextInput,
   textStyle,
@@ -32,6 +33,7 @@ function ProfileForm({ coverPic, onBack, profilePic }) {
     verifiedAccounts,
     website,
   } = useProfile()
+  const [error, setError] = useState(null)
   const [updatingProfile, setUpdatingProfile] = useState(false)
   const [formData, setFormData] = useState({
     birthday,
@@ -192,6 +194,7 @@ function ProfileForm({ coverPic, onBack, profilePic }) {
         await updateProfile(updatedFields, removedFields)
       } catch (err) {
         console.error(err)
+        return setError(`Could not update profile: ${err.message}`)
       }
 
       setUpdatingProfile(false)
@@ -313,21 +316,25 @@ function ProfileForm({ coverPic, onBack, profilePic }) {
 
           <div
             css={`
-          text-align: right;
-          margin-top: ${3 * GU}px display:flex; 
-          align-items:center;
-        `}
+              margin-top: ${3 * GU}px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            `}
           >
-            <Button label="Cancel" onClick={onBack} />
-            <Button
-              label="Save changes"
-              mode="strong"
-              type="submit"
-              disabled={saveDisabled}
-              css={`
-                margin-left: ${1 * GU}px;
-              `}
-            />
+            <div>{error && <Info mode="error">{error}</Info>}</div>
+            <div>
+              <Button label="Cancel" onClick={onBack} />
+              <Button
+                label="Save changes"
+                mode="strong"
+                type="submit"
+                disabled={saveDisabled}
+                css={`
+                  margin-left: ${1 * GU}px;
+                `}
+              />
+            </div>
           </div>
         </form>
       </Box>
