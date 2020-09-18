@@ -35,7 +35,11 @@ export function openBoxForAccount(account, provider) {
 
 // parsers
 function parseProfileData(profile, verifiedAccounts) {
-  let image
+  let coverPhoto, image
+
+  if (profile.coverPhoto?.length > 0) {
+    coverPhoto = `${IPFS_ENDPOINT.read}/${profile.coverPhoto[0].contentUrl['/']}`
+  }
 
   if (profile.image?.length > 0) {
     image = `${IPFS_ENDPOINT.read}/${profile.image[0].contentUrl['/']}`
@@ -43,7 +47,12 @@ function parseProfileData(profile, verifiedAccounts) {
 
   const parsedVerifiedAccounts = parseVerifiedAccounts(verifiedAccounts)
 
-  return { ...profile, image, verifiedAccounts: parsedVerifiedAccounts }
+  return {
+    ...profile,
+    coverPhoto,
+    image,
+    verifiedAccounts: parsedVerifiedAccounts,
+  }
 }
 
 function parseVerifiedAccounts(verifiedAccounts) {
