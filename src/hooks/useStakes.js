@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
 
 import { addressesEqual } from '../lib/web3-utils'
 import { PROPOSAL_STATUS_ACTIVE_STRING } from '../constants'
 
-export function useMyStakes() {
-  const { account } = useWallet()
+export function useAccountStakes(account) {
   const { proposals, stakeToken } = useAppState()
 
   return useMemo(() => {
@@ -42,8 +40,7 @@ export function useMyStakes() {
   }, [account, proposals, stakeToken])
 }
 
-export function useMyStakesHistory() {
-  const { account } = useWallet()
+export function useAccountStakesHistory(account) {
   const { proposals, stakesHistory } = useAppState()
 
   return useMemo(

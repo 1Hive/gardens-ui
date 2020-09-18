@@ -13,12 +13,11 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
-import { useProfile } from '../../providers/Profile'
 
 import { dateFormat } from '../../utils/date-utils'
 import { validateEmail } from '../../utils/validate-utils'
 
-function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
+function ProfileForm({ fetchProfilePic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
@@ -29,7 +28,7 @@ function ProfileForm({ fetchProfilePic, onBack, profilePic }) {
     updateProfile,
     verifiedAccounts,
     website,
-  } = useProfile()
+  } = profile
   const [formData, setFormData] = useState({
     birthday,
     description,
