@@ -1,6 +1,5 @@
 import Config from './Config'
 import Proposal from './Proposal'
-import StakeHistory from './StakeHistory'
 import Supporter from './Supporter'
 import {
   IHoneypotConnector,

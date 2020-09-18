@@ -63,10 +63,21 @@ async function main(): Promise<void> {
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
+
+
+
+  console.log(`#####Subscriptions\n\n`)
+  honeypot.onProposals({}, (err: any, proposals = []) => {
+    console.log('proposals', proposals)
+    if (!proposals) {
+      return
+    }
+
+    proposals.map(describeProposal)
+  })
 }
 
 main()
-  .then(() => process.exit(0))
   .catch(err => {
     console.error('')
     console.error(err)
