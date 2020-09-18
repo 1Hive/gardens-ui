@@ -1,14 +1,16 @@
 import React, { useMemo } from 'react'
-import { Box, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import styled from 'styled-components'
+import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useAppState } from '../providers/AppState'
+import { useTokenBalances } from '../hooks/useOrgHooks'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
-function Wallet({ myStakes }) {
+function Wallet({ account, myStakes }) {
   const theme = useTheme()
-  const { accountBalance, stakeToken } = useAppState()
+  const { stakeToken } = useAppState()
+  const { balance: accountBalance } = useTokenBalances(account, stakeToken)
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
@@ -38,6 +40,7 @@ function Wallet({ myStakes }) {
             amount={accountBalance}
             decimals={stakeToken.decimals}
             label="Balance"
+            loading={accountBalance.lt(0)}
             symbol={stakeToken.symbol}
           />
           <LineSeparator border={theme.border} />
@@ -54,7 +57,14 @@ function Wallet({ myStakes }) {
   )
 }
 
-const Balance = ({ amount, decimals, inactive = false, label, symbol }) => {
+const Balance = ({
+  amount,
+  decimals,
+  inactive = false,
+  label,
+  loading,
+  symbol,
+}) => {
   const theme = useTheme()
   const tokenIcon = getTokenIconBySymbol(symbol)
 
@@ -87,14 +97,18 @@ const Balance = ({ amount, decimals, inactive = false, label, symbol }) => {
         >
           {label}
         </h5>
-        <span
-          css={`
-            ${textStyle('title4')};
-            color: ${theme[inactive ? 'negative' : 'content']};
-          `}
-        >
-          {formatTokenAmount(amount, decimals)}
-        </span>
+        {loading ? (
+          <LoadingRing />
+        ) : (
+          <span
+            css={`
+              ${textStyle('title4')};
+              color: ${theme[inactive ? 'negative' : 'content']};
+            `}
+          >
+            {formatTokenAmount(amount, decimals)}
+          </span>
+        )}
       </div>
     </div>
   )

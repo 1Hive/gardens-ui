@@ -1,16 +1,18 @@
 import useActions from './hooks/useActions'
 import { useAppState } from './providers/AppState'
-import { useMyStakes } from './hooks/useStakes'
+import { useAccountStakes } from './hooks/useStakes'
 import usePanelState from './hooks/usePanelState'
 import { useProposals } from './hooks/useProposals'
+import { useWallet } from './providers/Wallet'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
+  const wallet = useWallet()
   const { isLoading, totalStaked } = useAppState()
 
   const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
-  const myStakes = useMyStakes()
+  const myStakes = useAccountStakes(wallet.account)
 
   const actions = useActions(proposalPanel.requestClose)
 

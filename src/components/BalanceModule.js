@@ -4,18 +4,20 @@ import { textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import { useAppState } from '../providers/AppState'
-import { useMyStakes } from '../hooks/useStakes'
+import { useAccountStakes } from '../hooks/useStakes'
+import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function BalanceModule() {
   const theme = useTheme()
+  const wallet = useWallet()
   const history = useHistory()
   const { accountBalance, stakeToken } = useAppState()
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
-  const myStakes = useMyStakes()
+  const myStakes = useAccountStakes(wallet.account)
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {

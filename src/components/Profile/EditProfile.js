@@ -16,7 +16,6 @@ import ProposalSupporting from './ProposalSupporting'
 import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
 import usePicture from '../../hooks/usePicture'
-import { useProfile } from '../../providers/Profile'
 
 const IMAGE_DIMENSION = 16 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
@@ -29,6 +28,7 @@ const EditProfile = React.forwardRef(
       onBack,
       onCoverPicChange,
       onCoverPicRemoval,
+      profile,
     },
     coverPicInputRef
   ) => {
@@ -39,7 +39,7 @@ const EditProfile = React.forwardRef(
 
     const theme = useTheme()
     const { name: layout } = useLayout()
-    const { account, image, name } = useProfile()
+    const { account, image, name } = profile || {}
     const oneColumn = layout === 'small' || layout === 'medium'
 
     const imageInput = useRef(null)
@@ -50,11 +50,12 @@ const EditProfile = React.forwardRef(
       const props = {}
       if (selectedTab === 0) {
         props.coverPic = coverPic
+        props.profile = profile
         props.profilePic = profilePic
       }
 
       return [TabContent, props]
-    }, [coverPic, profilePic, selectedTab])
+    }, [coverPic, profile, profilePic, selectedTab])
 
     return (
       <div>

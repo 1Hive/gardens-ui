@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import {
   Button,
   GU,
@@ -16,9 +16,11 @@ import MainProfile from '../components/Profile/MainProfile'
 import StakingTokens from '../components/Profile/StakingTokens'
 import Wallet from '../components/Wallet'
 
-import { useMyStakes } from '../hooks/useStakes'
+import { useAccountStakes } from '../hooks/useStakes'
 import usePicture from '../hooks/usePicture'
-import { useProfile } from '../providers/Profile'
+import useSelectedProfile from '../hooks/useSelectedProfile'
+import { useWallet } from '../providers/Wallet'
+import { addressesEqual } from '../lib/web3-utils'
 
 import profileCoverDefaultSvg from '../assets/profileCoverDefault.svg'
 
@@ -26,20 +28,26 @@ function Profile() {
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
+  const { account: connectedAccount } = useWallet()
   const history = useHistory()
   const { name: layout } = useLayout()
-  const { account, auth, authenticated, box, coverPhoto } = useProfile()
   const oneColumn = layout === 'small' || layout === 'medium'
 
   const imageInput = useRef(null)
 
-  const myStakes = useMyStakes()
+  // Selected account
+  const query = useQuery()
+  const selectedAccount = query.get('account') || connectedAccount
+  const accountStakes = useAccountStakes(selectedAccount)
+
+  const selectedProfile = useSelectedProfile(selectedAccount)
+  const { coverPhoto } = selectedProfile
 
   useEffect(() => {
-    if (!account) {
+    if (!selectedAccount) {
       return history.push('/')
     }
-  }, [account, auth, box, history])
+  }, [connectedAccount, history, selectedAccount])
 
   const toggleEditMode = useCallback(() => {
     setEditMode(mode => !mode)
@@ -58,6 +66,10 @@ function Profile() {
     return coverPhoto || profileCoverDefaultSvg
   }, [coverPhoto, coverPic, editMode])
 
+  const isConnectedAccountProfile =
+    (connectedAccount && !selectedAccount) ||
+    addressesEqual(connectedAccount, selectedAccount)
+
   return (
     <>
       <AnimatedBackground height={(editMode ? 15 : 50) * GU} image={coverSrc} />
@@ -70,7 +82,12 @@ function Profile() {
       >
         {({ transform }) => (
           <animated.div style={{ transform }}>
-            <SyncIndicator label="Opening box..." visible={!authenticated} />
+            {isConnectedAccountProfile && (
+              <SyncIndicator
+                label="Opening box..."
+                visible={!selectedProfile?.authenticated}
+              />
+            )}
             {editMode ? (
               <EditProfile
                 coverPic={coverPic}
@@ -81,29 +98,35 @@ function Profile() {
                 onBack={toggleEditMode}
                 onCoverPicChange={onCoverPicChange}
                 onCoverPicRemoval={onCoverPicRemoval}
+                profile={selectedProfile}
                 ref={imageInput}
               />
             ) : (
               <>
-                <div
-                  css={`
-                    text-align: right;
-                    margin-bottom: ${2 * GU}px;
-                  `}
-                >
-                  <Button
-                    label="Edit profile"
-                    onClick={toggleEditMode}
-                    disabled={!authenticated}
-                  />
-                </div>
+                {isConnectedAccountProfile && (
+                  <div
+                    css={`
+                      text-align: right;
+                      margin-bottom: ${2 * GU}px;
+                    `}
+                  >
+                    <Button
+                      label="Edit profile"
+                      onClick={toggleEditMode}
+                      disabled={!selectedProfile?.authenticated}
+                    />
+                  </div>
+                )}
                 <Split
-                  primary={<Activity />}
+                  primary={<Activity account={selectedAccount} />}
                   secondary={
                     <>
-                      <MainProfile />
-                      <Wallet myStakes={myStakes} />
-                      <StakingTokens myStakes={myStakes} />
+                      <MainProfile profile={selectedProfile} />
+                      <Wallet
+                        account={selectedAccount}
+                        myStakes={accountStakes}
+                      />
+                      <StakingTokens myStakes={accountStakes} />
                     </>
                   }
                   invert={oneColumn ? 'vertical' : 'horizontal'}
@@ -146,6 +169,11 @@ function AnimatedBackground({ height, image }) {
       )}
     </Spring>
   )
+}
+
+function useQuery() {
+  const { search } = useLocation()
+  return new URLSearchParams(search)
 }
 
 export default Profile
