@@ -1,7 +1,7 @@
-const { UPLOAD_IPFS_ENDPOINT } = require('./endpoints')
+import { IPFS_ENDPOINT } from './endpoints'
 
 export async function fetchPic(buffer) {
-  const res = await fetch(UPLOAD_IPFS_ENDPOINT, {
+  const res = await fetch(IPFS_ENDPOINT.upload, {
     method: 'post',
     'Content-Type': 'multipart/form-data',
     body: buffer,

@@ -192,12 +192,12 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
         }
 
         await updateProfile(updatedFields, removedFields)
+        setUpdatingProfile(false)
       } catch (err) {
         console.error(err)
+        setUpdatingProfile(false)
         return setError(`Could not update profile: ${err.message}`)
       }
-
-      setUpdatingProfile(false)
 
       onBack()
     },

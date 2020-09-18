@@ -41,7 +41,7 @@ function Profile() {
   const accountStakes = useAccountStakes(selectedAccount)
 
   const selectedProfile = useSelectedProfile(selectedAccount)
-  const { coverPhoto } = selectedProfile
+  const { coverPhoto } = selectedProfile || {}
 
   useEffect(() => {
     if (!selectedAccount) {

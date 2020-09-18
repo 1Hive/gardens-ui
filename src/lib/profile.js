@@ -38,7 +38,7 @@ function parseProfileData(profile, verifiedAccounts) {
   let coverPhoto, image
 
   if (profile.coverPhoto?.length > 0) {
-    coverPhoto = `${IPFS_ENDPOINT}/${profile.coverPhoto[0].contentUrl['/']}`
+    coverPhoto = `${IPFS_ENDPOINT.read}/${profile.coverPhoto[0].contentUrl['/']}`
   }
 
   if (profile.image?.length > 0) {
