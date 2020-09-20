@@ -35,16 +35,17 @@ const FilterBar = React.memo(
       >
         <DropDown
           header="Type"
-          placeholder="Type"
+          placeholder="All"
           selected={proposalTypeFilter}
           onChange={handleProposalTypeFilterChange}
-          items={['Funding', 'Signaling']}
+          items={['All', 'Funding', 'Signaling']}
         />
         <DropDown
           header="Status"
+          placeholder="All"
           selected={proposalExecutionStatusFilter}
           onChange={handleExecutionStatusFilterChange}
-          items={['Open', 'Closed', 'Removed']}
+          items={['All', 'Open', 'Closed', 'Removed']}
           css={`
             margin-left: ${1.5 * GU}px;
           `}
