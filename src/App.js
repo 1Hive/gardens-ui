@@ -1,7 +1,8 @@
 import React from 'react'
-import { SidePanel, Split, SyncIndicator } from '@1hive/1hive-ui'
+import { SidePanel, Split } from '@1hive/1hive-ui'
 
 import AddProposalPanel from './components/AddProposalPanel'
+import AppLoader from './components/AppLoader'
 import MainScreen from './screens/MainScreen'
 import StakingTokens from './screens/StakingTokens'
 import Wallet from './components/Wallet'
@@ -41,8 +42,7 @@ const App = React.memo(function App() {
 
   return (
     <div>
-      <SyncIndicator visible={isLoading} />
-
+      {isLoading && <AppLoader />}
       {!account ? (
         MainScreenComponent
       ) : (
