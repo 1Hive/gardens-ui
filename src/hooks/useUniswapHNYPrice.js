@@ -28,7 +28,11 @@ export function useUniswapHnyPrice() {
       try {
         const result = await graphqlClient.query(HNY_PRICE_QUERY).toPromise()
 
-        const { pair } = result?.data
+        if (!result?.data) {
+          return
+        }
+
+        const { pair } = result.data
         const hnyPrice = pair.token1Price
 
         if (!cancelled) {
