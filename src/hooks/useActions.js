@@ -77,7 +77,7 @@ export default function useActions(onDone) {
         organization,
         convictionVoting.address,
         'executeProposal',
-        [proposalId, true],
+        [proposalId],
         { ethers, from: account }
       )
 
