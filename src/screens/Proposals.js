@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
   Box,
   Button,
@@ -44,6 +44,7 @@ const Proposals = React.memo(
     const { account } = useWallet()
     const { layoutName } = useLayout()
     const compactMode = layoutName === 'small'
+    const [currentPage, setCurrentPage] = useState(0)
 
     const {
       convictionFields = [],
@@ -222,6 +223,8 @@ const Proposals = React.memo(
           }}
           tableRowHeight={14 * GU}
           entriesPerPage={ENTRIES_PER_PAGE}
+          page={currentPage}
+          onPageChange={setCurrentPage}
         />
       </div>
     )
