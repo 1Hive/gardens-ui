@@ -50,16 +50,23 @@ const Proposals = React.memo(
       beneficiaryField = [],
       linkField = [],
     } = useMemo(() => {
-      if (proposalExecutionStatusFilter === 0) {
-        return {
-          convictionFields: [{ label: 'Progress', align: 'start' }],
-        }
-      }
-
-      return {
+      const fields = {
+        convictionFields: [{ label: 'Progress', align: 'start' }],
         beneficiaryField: [{ label: 'Beneficiary', align: 'start' }],
         linkField: [{ label: 'Link', align: 'start' }],
       }
+      if (proposalExecutionStatusFilter === -1) {
+        return fields
+      }
+
+      if (proposalExecutionStatusFilter === 1) {
+        delete fields.beneficiaryField
+        delete fields.linkField
+        return fields
+      }
+
+      delete fields.convictionFields
+      return fields
     }, [proposalExecutionStatusFilter])
 
     const requestedField = requestToken
@@ -192,6 +199,8 @@ const Proposals = React.memo(
                   Read more
                 </Link>
               )
+            } else if (linkField.length) {
+              entriesElements.push(<div />)
             }
             if (requestToken) {
               entriesElements.push(
@@ -205,6 +214,8 @@ const Proposals = React.memo(
               entriesElements.push(
                 <ProposalInfo proposal={proposal} requestToken={requestToken} />
               )
+            } else if (convictionFields.length) {
+              entriesElements.push(<div />)
             }
             if (proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) {
               entriesElements.push(
