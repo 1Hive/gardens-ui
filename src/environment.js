@@ -22,6 +22,9 @@ const ENV_VARS = {
   PORTIS_DAPP_ID() {
     return process.env.REACT_APP_PORTIS_DAPP_ID || ''
   },
+  INSTANCE() {
+    return process.env.REACT_APP_APP_INSTANCE || ''
+  },
 }
 
 export default function env(name) {
