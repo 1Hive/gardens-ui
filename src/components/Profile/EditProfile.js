@@ -19,6 +19,7 @@ import usePicture from '../../hooks/usePicture'
 
 const IMAGE_DIMENSION = 16 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
+const TAB_ITEMS = ['Profile', 'Stake management', 'Proposals supporting']
 
 const EditProfile = React.forwardRef(
   (
@@ -251,11 +252,7 @@ const EditProfile = React.forwardRef(
                   </div>
                 </div>
                 <Tabs
-                  items={[
-                    'Profile',
-                    'Stake management',
-                    'Proposals supporting',
-                  ]}
+                  items={TAB_ITEMS}
                   selected={selectedTab}
                   onChange={setSelectedTab}
                 />
