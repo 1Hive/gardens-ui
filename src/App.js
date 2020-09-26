@@ -10,6 +10,7 @@ import Wallet from './components/Wallet'
 import useAppLogic from './app-logic'
 import { useWallet } from './providers/Wallet'
 import useSelectedProposal from './hooks/useSelectedProposal'
+import NetworkErrorModal from './components/NetworkErrorModal'
 
 const App = React.memo(function App() {
   const {
@@ -42,6 +43,7 @@ const App = React.memo(function App() {
 
   return (
     <div>
+      <NetworkErrorModal visible={true} />
       {isLoading && <AppLoader />}
       {!account ? (
         MainScreenComponent
