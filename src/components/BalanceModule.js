@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import { formatTokenAmount, textStyle, useTheme } from '@1hive/1hive-ui'
+import { textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import { useAppState } from '../providers/AppState'
@@ -8,7 +8,7 @@ import { useAccountStakes } from '../hooks/useStakes'
 import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
-import { getTokenIconBySymbol } from '../lib/token-utils'
+import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function BalanceModule() {
   const theme = useTheme()
@@ -39,7 +39,10 @@ function BalanceModule() {
 
   const inactivePct = inactiveTokens.eq('0')
     ? '0'
-    : inactiveTokens.times('100').div(accountBalance)
+    : inactiveTokens
+        .times('100')
+        .div(accountBalance)
+        .toString()
 
   return (
     <HeaderModule

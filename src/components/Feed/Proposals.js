@@ -275,7 +275,7 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
 
 const Amount = ({
   requestedAmount = 0,
-  requestToken: { symbol, decimals, verified },
+  requestToken: { symbol, decimals },
 }) => {
   const tokenIcon = getTokenIconBySymbol(symbol)
   return (
@@ -283,9 +283,8 @@ const Amount = ({
       <Balance
         amount={requestedAmount}
         decimals={decimals}
-        symbol={symbol}
-        verified={verified}
         icon={tokenIcon}
+        symbol={symbol}
       />
     </div>
   )
