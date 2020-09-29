@@ -121,7 +121,7 @@ function ProfileProvider({ children }) {
 
               resolve()
             }),
-          2000
+          2500
         )
       })
     },

@@ -36,8 +36,8 @@ function Profile() {
   const imageInput = useRef(null)
 
   // Selected account
-  const query = useQuery()
-  const selectedAccount = query.get('account') || connectedAccount
+  const searchParams = useSearchParams()
+  const selectedAccount = searchParams.get('account') || connectedAccount
   const accountStakes = useAccountStakes(selectedAccount)
 
   const selectedProfile = useSelectedProfile(selectedAccount)
@@ -171,7 +171,7 @@ function AnimatedBackground({ height, image }) {
   )
 }
 
-function useQuery() {
+function useSearchParams() {
   const { search } = useLocation()
   return new URLSearchParams(search)
 }
