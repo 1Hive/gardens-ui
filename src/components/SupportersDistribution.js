@@ -30,7 +30,7 @@ function displayedStakes(stakes, total, stakeToken) {
     item: {
       entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity,
       amount: formatTokenAmount(
-        stakes[stake.index].amount,
+        stake.index === -1 ? 0 : stakes[stake.index].amount,
         stakeToken.decimals
       ),
     },

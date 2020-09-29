@@ -2,7 +2,7 @@ import { getNetwork } from './networks'
 
 // rinkeby
 const DEFAULT_CHAIN_ID = 100
-const DEFAULT_APP_NAME = 'conviction-voting'
+const DEFAULT_APP_NAME = 'conviction-beta'
 
 const ENV_VARS = {
   APP_NAME() {
