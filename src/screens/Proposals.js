@@ -265,6 +265,9 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
       <span
         css={`
           color: ${theme.surfaceContentSecondary};
+          white-space:normal;
+          float:left;
+          text-align:left;
         `}
       >
         {name}
