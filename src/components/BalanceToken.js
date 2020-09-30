@@ -39,7 +39,9 @@ const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
           icon || tokenIconUrl(tokenAddress, symbol, network && network.type)
         }
       />
-      {amount !== undefined ? splitAmount(amount, decimals) : ' - '}
+      {amount !== undefined && amount !== null
+        ? splitAmount(amount, decimals)
+        : ' - '}
       {symbol || ''}
     </div>
   )
