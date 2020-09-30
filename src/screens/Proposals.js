@@ -106,6 +106,7 @@ const Proposals = React.memo(
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                white-space:normal;
               `}
             >
               {account && (
@@ -189,6 +190,7 @@ const Proposals = React.memo(
                 id={proposal.id}
                 name={proposal.name}
                 selectProposal={handleSelectProposal}
+
               />,
             ]
             if (
@@ -229,7 +231,7 @@ const Proposals = React.memo(
                 />
               )
             }
-
+            
             return entriesElements
           }}
           tableRowHeight={14 * GU}
@@ -261,13 +263,16 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
   }, [id, selectProposal])
 
   return (
-    <Link onClick={handleOnClick}>
+    <Link
+      onClick={handleOnClick}
+      css={`
+      white-space: normal;
+      text-align: left;
+    `}
+    >
       <span
         css={`
           color: ${theme.surfaceContentSecondary};
-          white-space:normal;
-          float:left;
-          text-align:left;
         `}
       >
         {name}
