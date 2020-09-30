@@ -189,7 +189,6 @@ const Proposals = React.memo(
                 id={proposal.id}
                 name={proposal.name}
                 selectProposal={handleSelectProposal}
-
               />,
             ]
             if (
@@ -230,7 +229,7 @@ const Proposals = React.memo(
                 />
               )
             }
-            
+
             return entriesElements
           }}
           tableRowHeight={14 * GU}
