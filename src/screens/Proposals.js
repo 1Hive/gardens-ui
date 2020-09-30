@@ -106,7 +106,6 @@ const Proposals = React.memo(
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                white-space:normal;
               `}
             >
               {account && (
