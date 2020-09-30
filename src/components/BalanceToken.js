@@ -7,8 +7,8 @@ import { formatTokenAmount } from '../lib/token-utils'
 import { ETHER_TOKEN_VERIFIED_BY_SYMBOL } from '../lib/verified-tokens'
 import { getNetwork } from '../networks'
 
-const splitAmount = amount => {
-  const [integer, fractional] = formatTokenAmount(amount).split('.')
+const splitAmount = (amount, decimals) => {
+  const [integer, fractional] = formatTokenAmount(amount, decimals).split('.')
   return (
     <span
       css={`
@@ -21,7 +21,7 @@ const splitAmount = amount => {
   )
 }
 
-const BalanceToken = ({ amount, symbol, color, size, icon }) => {
+const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
   const network = getNetwork()
   const tokenAddress =
     symbol && ETHER_TOKEN_VERIFIED_BY_SYMBOL.get(symbol.toUpperCase())
@@ -39,7 +39,9 @@ const BalanceToken = ({ amount, symbol, color, size, icon }) => {
           icon || tokenIconUrl(tokenAddress, symbol, network && network.type)
         }
       />
-      {amount !== undefined ? splitAmount(amount.toFixed(3)) : ' - '}
+      {amount !== undefined && amount !== null
+        ? splitAmount(amount, decimals)
+        : ' - '}
       {symbol || ''}
     </div>
   )

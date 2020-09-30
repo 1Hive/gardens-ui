@@ -18,11 +18,11 @@ import { checkInitialLetters } from '../lib/search-utils'
 const NULL_FILTER_STATE = -1
 const STAKE_STATUS_FILTER_SUPPORTED = 1
 const STAKE_STATUS_FILTER_NOT_SUPPORTED = 2
-const EXECUTION_STATUS_FILTER_OPEN = 0
-const EXECUTION_STATUS_FILTER_ACCEPTED = 1
-const EXECUTION_STATUS_FILTER_CANCELLED = 2
-const TYPE_FILTER_FUNDING = 0
-const TYPE_FILTER_SIGNALING = 1
+const EXECUTION_STATUS_FILTER_OPEN = 1
+const EXECUTION_STATUS_FILTER_ACCEPTED = 2
+const EXECUTION_STATUS_FILTER_CANCELLED = 3
+const TYPE_FILTER_FUNDING = 1
+const TYPE_FILTER_SIGNALING = 2
 
 function testSupportFilter(filter, proposalStatus) {
   return (
@@ -36,6 +36,7 @@ function testSupportFilter(filter, proposalStatus) {
 
 function testExecutionFilter(filter, proposalStatus) {
   return (
+    filter === NULL_FILTER_STATE ||
     (filter === EXECUTION_STATUS_FILTER_OPEN &&
       proposalStatus === PROPOSAL_STATUS_OPEN) ||
     (filter === EXECUTION_STATUS_FILTER_ACCEPTED &&
@@ -104,7 +105,7 @@ const useFilterProposals = (proposals, myStakes) => {
     proposalTypeFilter: typeFilter,
     proposalTextFilter: textSearch,
     handleProposalExecutionFilterChange: useCallback(
-      index => setExecutionFilter(index),
+      index => setExecutionFilter(index || NULL_FILTER_STATE),
       [setExecutionFilter]
     ),
     handleProposalSupportFilterChange: useCallback(
@@ -117,9 +118,10 @@ const useFilterProposals = (proposals, myStakes) => {
       },
       [setTextSearch]
     ),
-    handleProposalTypeFilterChange: useCallback(index => setTypeFilter(index), [
-      setTypeFilter,
-    ]),
+    handleProposalTypeFilterChange: useCallback(
+      index => setTypeFilter(index || NULL_FILTER_STATE),
+      [setTypeFilter]
+    ),
   }
 }
 

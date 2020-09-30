@@ -29,10 +29,10 @@
     orbit-db-storage-adapter "^0.5.3"
     postmsg-rpc "^2.4.0"
 
-"3box@^1.21.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/3box/-/3box-1.21.0.tgz#c2620c318d50bc8152c009199860711dee3ddb22"
-  integrity sha512-4D8+VeRyXFF6ECaBgPdengxgKRRfA3nlllAVtsZupv8MKpAGkoc/c+5k+XBwWtbozbv3EFY0we/QWpS7Uf1GRA==
+"3box@^1.22.2":
+  version "1.22.2"
+  resolved "https://registry.yarnpkg.com/3box/-/3box-1.22.2.tgz#9b091129e3abb4528760ddf1bf58a26cf5c892fc"
+  integrity sha512-xgq7AF5UYHYdJCEUwZ+dISf7acSu2NPzNQle+0X+mQ6hxrzFeVnBEVOsaaHf1nQy84Sc++0+GdKlj2M8L5kNAw==
   dependencies:
     "3box-orbitdb-plugins" "^2.1.2"
     "3box-shared-cache" "^1.1.0"
@@ -49,7 +49,7 @@
     https-did-resolver "^1.0.0"
     ipfs "^0.46.0"
     ipfs-did-document "^1.2.3"
-    ipfs-log "^4.6.1"
+    ipfs-log "^4.6.5"
     ipfs-pubsub-room "^2.0.1"
     ipfs-repo "^3.0.2"
     is-ipfs "^1.0.3"
@@ -59,7 +59,7 @@
     lodash.merge "^4.6.2"
     muport-did-resolver "^1.0.2"
     node-fetch "^2.6.0"
-    orbit-db "^0.24.2"
+    orbit-db "^0.25.1"
     orbit-db-cache "^0.3.0"
     orbit-db-identity-provider "^0.3.0"
     orbit-db-storage-adapter "^0.5.3"
@@ -2223,6 +2223,11 @@
   dependencies:
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
+
+"@multiformats/base-x@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@multiformats/base-x/-/base-x-4.0.1.tgz#95ff0fa58711789d53aefb2590a8b7a4e715d121"
+  integrity sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==
 
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
@@ -5449,6 +5454,17 @@ cids@^0.8.0, cids@^0.8.3, cids@~0.8.0, cids@~0.8.1, cids@~0.8.3:
     multibase "^1.0.0"
     multicodec "^1.0.1"
     multihashes "^1.0.1"
+
+cids@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cids/-/cids-1.0.1.tgz#119d50a686be06b51e972831bbf4149d9617c7cf"
+  integrity sha512-A5DvnNMr7ABdP3IWFPEdbpued8Sw2cHu6n4+Hke9MpzEqhQH74Pm6Zk2TB59aNHIuue1Oh/jZi/t0wgISWgOow==
+  dependencies:
+    class-is "^1.1.0"
+    multibase "^3.0.1"
+    multicodec "^2.0.1"
+    multihashes "^3.0.1"
+    uint8arrays "^1.1.0"
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
@@ -9973,7 +9989,7 @@ ipfs-http-response@^0.5.0:
     multihashes "~0.4.19"
     p-try-each "^1.0.1"
 
-ipfs-log@4.6.2, ipfs-log@^4.5.4, ipfs-log@^4.6.1, ipfs-log@~4.6.2:
+ipfs-log@4.6.2, ipfs-log@^4.5.4, ipfs-log@^4.6.5, ipfs-log@~4.6.2, ipfs-log@~4.6.4:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/ipfs-log/-/ipfs-log-4.6.2.tgz#3c4d3f267701b86364e12d4affa34fe6bb480385"
   integrity sha512-jfSY1IpxEFWOlqSc4YLtSMHCUxNxtEgk9vyT25fFKFlnP+2LMX4oDIAxQ80pMEbEWE9YEWvP8ijH7PLVVlfi9Q==
@@ -13474,6 +13490,14 @@ multibase@^3.0.0:
     base-x "^3.0.8"
     web-encoding "^1.0.2"
 
+multibase@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/multibase/-/multibase-3.0.1.tgz#31e8b0de5b2fd5f7dc9f04dddf0a4fcc667284bf"
+  integrity sha512-MRU5WpnSg81/vYO977MweoeUAxBdXl7+F5Af2Es+X6Vcgfk/g/EjIqXTgm3kb+xO3m1Kzr+aIV14oRX7nv5Z9w==
+  dependencies:
+    "@multiformats/base-x" "^4.0.1"
+    web-encoding "^1.0.2"
+
 multibase@~0.6.0:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/multibase/-/multibase-0.6.1.tgz#b76df6298536cc17b9f6a6db53ec88f85f8cc12b"
@@ -13511,6 +13535,14 @@ multicodec@^1.0.0, multicodec@^1.0.1, multicodec@^1.0.2, multicodec@^1.0.3, mult
     buffer "^5.6.0"
     varint "^5.0.0"
 
+multicodec@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-2.0.1.tgz#0971bbef83fcb354315c837c9a3f3e2e422af371"
+  integrity sha512-YDYeWn9iGa76hOHAyyZa0kbt3tr5FLg1ZXUHrZUJltjnxxdbTIbHnxWLd2zTcMOjdT3QyO+Xs4bQgJUcC2RWUA==
+  dependencies:
+    uint8arrays "1.0.0"
+    varint "^5.0.0"
+
 multihashes@^0.4.12, multihashes@^0.4.19, multihashes@~0.4.13, multihashes@~0.4.14, multihashes@~0.4.15, multihashes@~0.4.19:
   version "0.4.21"
   resolved "https://registry.yarnpkg.com/multihashes/-/multihashes-0.4.21.tgz#dc02d525579f334a7909ade8a122dabb58ccfcb5"
@@ -13529,7 +13561,7 @@ multihashes@^1.0.1:
     multibase "^1.0.1"
     varint "^5.0.0"
 
-multihashes@^3.0.1:
+multihashes@^3.0.1, multihashes@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/multihashes/-/multihashes-3.0.1.tgz#607c243d5e04ec022ac76c9c114e08416216f019"
   integrity sha512-fFY67WOtb0359IjDZxaCU3gJILlkwkFbxbwrK9Bej5+NqNaYztzLOj8/NgMNMg/InxmhK+Uu8S/U4EcqsHzB7Q==
@@ -14299,6 +14331,13 @@ orbit-db-cache@^0.3.0, orbit-db-cache@~0.3.0:
   dependencies:
     logplease "~1.2.15"
 
+orbit-db-counterstore@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-counterstore/-/orbit-db-counterstore-1.11.0.tgz#1a480d22df62aadcb5e8d0c13cff6212d75d111a"
+  integrity sha512-CnHWU4/JfxLDfZ9LMW66AhF8GWnyCW/wiD5uDPls51zk0iI+FhMrxLHZgSFdlkIvfakZiufnRqly6rWSfh1hMg==
+  dependencies:
+    crdts "~0.1.2"
+
 orbit-db-counterstore@~1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/orbit-db-counterstore/-/orbit-db-counterstore-1.9.0.tgz#9ce630660db06968d84bf196ddb6961a527485fb"
@@ -14306,6 +14345,13 @@ orbit-db-counterstore@~1.9.0:
   dependencies:
     crdts "~0.1.2"
     orbit-db-store "~3.3.0"
+
+orbit-db-docstore@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-docstore/-/orbit-db-docstore-1.11.0.tgz#a98f156296b3e4ab0dd7d164e11c96cfdb0453e0"
+  integrity sha512-3RjR1sA1hcDWL+paYwYDsVqEMWljVTykDq7ExwHUlvxWnSscwIXSJe71E2cX8CFSipzraiPl4flPkVFEYyPbsA==
+  dependencies:
+    p-map "~1.1.1"
 
 orbit-db-docstore@~1.9.0:
   version "1.9.1"
@@ -14315,12 +14361,24 @@ orbit-db-docstore@~1.9.0:
     orbit-db-store "~3.3.0"
     p-map "~1.1.1"
 
+orbit-db-eventstore@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-eventstore/-/orbit-db-eventstore-1.11.0.tgz#622a3ae27e3e22b89e3e7e9b41405d133e31a49a"
+  integrity sha512-fXDlvJg3SJSosf/V9LcPO+UVnx5hlMWf8jO5UijglZzXE5QYkCsCF6MQTuj3rTffvgBW8XdpHhun6/b68g+n2g==
+
 orbit-db-eventstore@~1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/orbit-db-eventstore/-/orbit-db-eventstore-1.9.0.tgz#b696c831dca85db53990a325235f7b6c57e3f078"
   integrity sha512-KoRa1JUnUWjCCEZgc+1PhW4OeFaegEh6ySjPhsQhz4hdMCD3komqakrToEBeKzxLXjL4Oy+/YNhtZiqo9r+o+w==
   dependencies:
     orbit-db-store "~3.3.0"
+
+orbit-db-feedstore@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-feedstore/-/orbit-db-feedstore-1.11.0.tgz#096ba6c16eb1036f2ff75aacb2cb9c05835bce3e"
+  integrity sha512-UpRe8fBt6PsnlxEKB+CWG1MDYzwIyYpGchqiob4PvpBGQ/vdg4Bymm4WBYwG1Gl6v2TFuVJSYnR+qXYAHf3nvg==
+  dependencies:
+    orbit-db-eventstore "~1.11.0"
 
 orbit-db-feedstore@~1.9.0:
   version "1.9.0"
@@ -14360,6 +14418,11 @@ orbit-db-keystore@~0.3.0, orbit-db-keystore@~0.3.5:
     mkdirp "^0.5.5"
     safe-buffer "^5.2.1"
 
+orbit-db-kvstore@~1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-1.11.0.tgz#7adb2f9589f6289fe20296e0fb6a057a3550893d"
+  integrity sha512-IIsEwFqXJfFoGp1j3KvhANq5QRCHnnfE3R45QLrL1eiwGYRvXQwrIIEw6HzDgynj+Ae/2brnvav/3isM4pzjnQ==
+
 orbit-db-kvstore@~1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-1.9.0.tgz#0fdedb1a0b1659ba5d3833f2853ea2eb61187b7d"
@@ -14398,7 +14461,21 @@ orbit-db-store@~3.3.0:
     p-queue "^6.6.1"
     readable-stream "~3.6.0"
 
-orbit-db@^0.24.1, orbit-db@^0.24.2:
+orbit-db-store@~3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-store/-/orbit-db-store-3.5.0.tgz#88b17da911c469f041f6642222b411791a5d571e"
+  integrity sha512-y17PSbZwKCIax2zNHXRVcMQzOd/rCXx1Oei9gX/XHW9+nlqBKx96BWVnkw01TAWtf1GJlj0sJwvxAkWlWVcM5A==
+  dependencies:
+    ipfs-log "~4.6.4"
+    it-to-stream "^0.1.2"
+    logplease "^1.2.14"
+    orbit-db-io "~0.2.0"
+    p-each-series "^2.1.0"
+    p-map "^4.0.0"
+    p-queue "^6.6.1"
+    readable-stream "~3.6.0"
+
+orbit-db@^0.24.1:
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.24.2.tgz#0b45182abb95abc08359d637ef24279bf9c109f0"
   integrity sha512-F9QPHVHvDDI8qwkzt5KuYOCCVBS4woHU3lUeZkxtQ4yXVlEhsJYshTZo8z3CLkJcT7Wbx76JZ94GbtdE0FtZiA==
@@ -14422,6 +14499,31 @@ orbit-db@^0.24.1, orbit-db@^0.24.2:
     orbit-db-pubsub "~0.5.5"
     orbit-db-storage-adapter "~0.5.3"
     orbit-db-store "~3.3.0"
+
+orbit-db@^0.25.1:
+  version "0.25.3"
+  resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.25.3.tgz#a4b197f74bcce6d717eee2e56cea8bf5d690bae6"
+  integrity sha512-8DTGZmanXYhcRh7JT2o7tje+Jgp3a6RZSnc3Uvmn+bvnMH2U0xBv6y2WQDC0nlFxP1nIZKR6ULVbgvhSS9ucww==
+  dependencies:
+    cids "^1.0.0"
+    ipfs-pubsub-1on1 "~0.0.6"
+    is-node "^1.0.2"
+    localstorage-down "^0.6.7"
+    logplease "^1.2.14"
+    multihashes "~3.0.1"
+    orbit-db-access-controllers "^0.2.2"
+    orbit-db-cache "~0.3.0"
+    orbit-db-counterstore "~1.11.0"
+    orbit-db-docstore "~1.11.0"
+    orbit-db-eventstore "~1.11.0"
+    orbit-db-feedstore "~1.11.0"
+    orbit-db-identity-provider "~0.3.0"
+    orbit-db-io "~0.2.0"
+    orbit-db-keystore "~0.3.0"
+    orbit-db-kvstore "~1.11.0"
+    orbit-db-pubsub "~0.5.5"
+    orbit-db-storage-adapter "~0.5.3"
+    orbit-db-store "~3.5.0"
 
 original@^1.0.0:
   version "1.0.2"
@@ -18876,7 +18978,15 @@ typical@^6.0.0:
   resolved "https://registry.yarnpkg.com/typical/-/typical-6.0.1.tgz#89bd1a6aa5e5e96fa907fb6b7579223bff558a06"
   integrity sha512-+g3NEp7fJLe9DPa1TArHm9QAA7YciZmWnfAqEaFrBihQ7epOv9i99rjtgb6Iz0wh3WuQDjsCTDfgRoGnmHN81A==
 
-uint8arrays@^1.0.0:
+uint8arrays@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/uint8arrays/-/uint8arrays-1.0.0.tgz#9cf979517f85c32d6ef54adf824e3499bb715331"
+  integrity sha512-14tqEVujDREW7YwonSZZwLvo7aFDfX7b6ubvM/U7XvZol+CC/LbhaX/550VlWmhddAL9Wou1sxp0Of3tGqXigg==
+  dependencies:
+    multibase "^3.0.0"
+    web-encoding "^1.0.2"
+
+uint8arrays@^1.0.0, uint8arrays@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/uint8arrays/-/uint8arrays-1.1.0.tgz#d034aa65399a9fd213a1579e323f0b29f67d0ed2"
   integrity sha512-cLdlZ6jnFczsKf5IH1gPHTtcHtPGho5r4CvctohmQjw8K7Q3gFdfIGHxSTdTaCKrL4w09SsPRJTqRS0drYeszA==
