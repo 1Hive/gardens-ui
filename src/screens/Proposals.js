@@ -264,9 +264,9 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
     <Link
       onClick={handleOnClick}
       css={`
-      white-space: normal;
-      text-align: left;
-    `}
+        white-space: normal;
+        text-align: left;
+      `}
     >
       <span
         css={`
