@@ -176,7 +176,10 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
         ]) {
           if (pic.updated) {
             // Upload updated image to IPFS and update it on 3box
-            const data = await fetchPic(pic.buffer)
+            const { data, error } = await fetchPic(pic.buffer)
+            if (error) {
+              throw error
+            }
 
             if (data.Type !== 'error') {
               updatedFields.public.push([
