@@ -10,6 +10,8 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
+import { useProfile } from '../../providers/Profile'
+
 import { getUseWalletProviders } from '../../lib/web3-utils'
 
 const AnimatedDiv = animated.div
@@ -45,11 +47,19 @@ function AccountModule({ compact }) {
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
 
+  const { authenticated, onboardingSkipped } = useProfile()
+
   const { account, activating } = wallet
 
   const clearError = useCallback(() => setActivationError(null), [])
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
+
+  useEffect(() => {
+    if (onboardingSkipped) {
+      setOpened(false)
+    }
+  }, [onboardingSkipped])
 
   const handleCancelConnection = useCallback(() => {
     wallet.deactivate()
@@ -168,7 +178,11 @@ function AccountModule({ compact }) {
         width={51 * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
-        visible={opened}
+        visible={
+          screen.id === 'connected' && !authenticated && !onboardingSkipped
+            ? false
+            : opened
+        }
       >
         <div ref={popoverFocusElement} tabIndex="0" css="outline: 0">
           <Transition

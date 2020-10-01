@@ -38,6 +38,7 @@ function ProfileProvider({ children }) {
         setBox(box)
       }
     } catch (err) {
+      setProfile(profile => ({ ...profile, onboardingSkipped: true }))
       console.error(err)
     }
   }, [account, ethereum])

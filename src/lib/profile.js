@@ -49,6 +49,7 @@ function parseProfileData(profile, verifiedAccounts) {
 
   return {
     ...profile,
+    proof_did: profile?.proof_did,
     coverPhoto,
     image,
     verifiedAccounts: parsedVerifiedAccounts,
