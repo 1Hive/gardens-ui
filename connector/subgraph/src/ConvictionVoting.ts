@@ -25,7 +25,7 @@ import {
   STAKE_TYPE_WITHDRAW 
 } from './types'
 
-export function handleConfigChange(event: ConvictionSettingsChangedEvent): void {
+export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
   let convictionConfig = getConvictionConfigEntity(event.address)
   convictionConfig.decay = event.params.decay
   convictionConfig.maxRatio = event.params.maxRatio
