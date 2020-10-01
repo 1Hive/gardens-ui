@@ -18,18 +18,21 @@ import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
 import { fetchPic } from '../../services'
 import { dateFormat } from '../../utils/date-utils'
-import { validateEmail } from '../../utils/validate-utils'
+import { validate } from '../../utils/validate-utils'
+import VerificationModal from './VerificationModal'
 
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
+    did,
     description,
     email,
     location,
     name,
     updateProfile,
     verifiedAccounts,
+    verifyTwitter,
     website,
   } = profile
   const [error, setError] = useState(null)
@@ -42,6 +45,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
       removed: false,
       value: email,
       verified: Boolean(email),
+      verifying: false,
     },
     location,
     name,
@@ -49,11 +53,13 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
       removed: false,
       value: verifiedAccounts?.github?.username,
       verified: Boolean(verifiedAccounts?.github),
+      verifying: false,
     },
     twitter: {
       removed: false,
       value: verifiedAccounts?.twitter?.username,
       verified: Boolean(verifiedAccounts?.twitter),
+      verifying: false,
     },
     website,
   })
@@ -91,6 +97,32 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
       [account]: { ...formData[account], removed: false },
     }))
   }, [])
+
+  const handleStartVerification = useCallback(account => {
+    setFormData(formData => ({
+      ...formData,
+      [account]: { ...formData[account], verifying: true },
+    }))
+  }, [])
+
+  const handleVerificationCancelled = useCallback(account => {
+    setFormData(formData => ({
+      ...formData,
+      [account]: { ...formData[account], verifying: false },
+    }))
+  }, [])
+
+  const handleTwitterVerification = useCallback(async () => {
+    const twitterUsername = await verifyTwitter(formData.twitter.value, did)
+    if (!twitterUsername) {
+      throw new Error('Verification failed')
+    }
+
+    setFormData(formData => ({
+      ...formData,
+      twitter: { ...formData.twitter, verified: true },
+    }))
+  }, [did, formData.twitter.value, verifyTwitter])
 
   const handleDataChange = useCallback(event => {
     const { name, value: newValue } = event.target
@@ -256,38 +288,51 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
               </Field>
             </Section>
             <Section title="Contact">
-              <VerifiedAccount
+              <LinkedIdentity
+                account="email"
+                did={did}
                 label="Email"
-                name="email"
                 removed={formData.email.removed}
-                validation={validateEmail}
+                validation={validate}
                 value={formData.email.value}
                 verified={formData.email.verified}
+                verifying={formData.email.verifying}
                 onChange={handleAccountChange}
                 onRemove={handleAccountRemove}
                 onCancelRemove={handleAccountCancelRemove}
               />
             </Section>
             <Section title="Linked identities">
-              <VerifiedAccount
+              <LinkedIdentity
+                account="github"
+                did={did}
                 label="github.com/"
-                name="github"
                 removed={formData.github.removed}
+                validation={validate}
                 value={formData.github.value}
                 verified={formData.github.verified}
+                verifying={formData.github.verifying}
                 onChange={handleAccountChange}
                 onRemove={handleAccountRemove}
                 onCancelRemove={handleAccountCancelRemove}
+                onStartVerification={handleStartVerification}
+                onCancelVerification={handleVerificationCancelled}
               />
-              <VerifiedAccount
+              <LinkedIdentity
+                account="twitter"
+                did={did}
                 label="twitter.com/"
-                name="twitter"
                 removed={formData.twitter.removed}
+                validation={validate}
                 value={formData.twitter.value}
                 verified={formData.twitter.verified}
+                verifying={formData.twitter.verifying}
+                onCancelRemove={handleAccountCancelRemove}
+                onCancelVerification={handleVerificationCancelled}
                 onChange={handleAccountChange}
                 onRemove={handleAccountRemove}
-                onCancelRemove={handleAccountCancelRemove}
+                onStartVerification={handleStartVerification}
+                onVerify={handleTwitterVerification}
               />
             </Section>
             <Section title="About">
@@ -376,89 +421,109 @@ function Section({ children, title }) {
   )
 }
 
-function VerifiedAccount({
+function LinkedIdentity({
+  account,
+  did,
   label,
-  name,
+  onCancelRemove,
+  onCancelVerification,
   onChange,
   onRemove,
-  onCancelRemove,
+  onStartVerification,
+  onVerify,
   removed,
   validation,
   value,
   verified,
+  verifying,
 }) {
   const theme = useTheme()
 
-  const verificationDisabled = validation && !validation(value)
+  const verificationDisabled = validation && !validation(account, value)
+
+  const handleCloseModal = useCallback(() => {
+    onCancelVerification(account)
+  }, [account, onCancelVerification])
 
   return (
-    <Field label={label}>
-      {() =>
-        verified ? (
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            `}
-          >
+    <>
+      <Field label={label}>
+        {() =>
+          verified ? (
             <div
               css={`
-                height: ${3 * GU}px;
                 display: flex;
                 align-items: center;
-                color: ${theme.content};
+                justify-content: space-between;
               `}
             >
-              {!removed && (
-                <>
-                  <span>{value}</span>
-                  <IconCheck
-                    css={`
-                      margin-left: ${1 * GU}px;
-                      color: ${theme.positive};
-                      border: 2px solid ${theme.positive};
-                      border-radius: 50%;
-                    `}
-                  />
-                </>
-              )}
-            </div>
-            <ButtonBase
-              onClick={() => (removed ? onCancelRemove : onRemove)(name)}
-              css={`
-                ${textStyle('label1')};
-              `}
-            >
-              {removed ? 'Cancel' : 'Remove'}
-            </ButtonBase>
-          </div>
-        ) : (
-          <TextInput
-            name={name}
-            onChange={onChange}
-            wide
-            adornment={
-              <ButtonBase
-                disabled={verificationDisabled}
-                onClick={() => window.alert('verify!')}
+              <div
                 css={`
-                  ${textStyle('label1')};
-                  color: ${theme[
-                    verificationDisabled ? 'contentSecondary' : 'positive'
-                  ]};
-                  opacity: ${verificationDisabled ? 0.5 : 1};
+                  height: ${3 * GU}px;
+                  display: flex;
+                  align-items: center;
+                  color: ${theme.content};
                 `}
               >
-                Verify
+                {!removed && (
+                  <>
+                    <span>{value}</span>
+                    <IconCheck
+                      css={`
+                        margin-left: ${1 * GU}px;
+                        color: ${theme.positive};
+                        border: 2px solid ${theme.positive};
+                        border-radius: 50%;
+                      `}
+                    />
+                  </>
+                )}
+              </div>
+              <ButtonBase
+                onClick={() => (removed ? onCancelRemove : onRemove)(account)}
+                css={`
+                  ${textStyle('label1')};
+                `}
+              >
+                {removed ? 'Cancel' : 'Remove'}
               </ButtonBase>
-            }
-            adornmentPosition="end"
-            adornmentSettings={{ padding: 2 * GU }}
-          />
-        )
-      }
-    </Field>
+            </div>
+          ) : (
+            <TextInput
+              name={account}
+              onChange={onChange}
+              wide
+              adornment={
+                <ButtonBase
+                  disabled={verificationDisabled}
+                  onClick={() => onStartVerification(account)}
+                  css={`
+                    ${textStyle('label1')};
+                    color: ${theme[
+                      verificationDisabled ? 'contentSecondary' : 'positive'
+                    ]};
+                    opacity: ${verificationDisabled ? 0.5 : 1};
+                  `}
+                >
+                  Verify
+                </ButtonBase>
+              }
+              adornmentPosition="end"
+              adornmentSettings={{ padding: 2 * GU }}
+            />
+          )
+        }
+      </Field>
+      {verifying && (
+        <VerificationModal
+          account={account}
+          did={did}
+          onClose={handleCloseModal}
+          onVerify={onVerify}
+          verified={verified}
+        />
+      )}
+    </>
   )
 }
 

@@ -22,3 +22,25 @@ export async function fetchPic(buffer) {
     return { error: err }
   }
 }
+
+export async function twitterVerification(account, did) {
+  try {
+    const response = await fetch('https://verifications.3box.io/twitter', {
+      method: 'POST',
+      body: JSON.stringify({
+        did,
+        twitter_handle: account,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Verification failed')
+    }
+
+    const claim = await response.json()
+    return claim
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}

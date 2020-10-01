@@ -13,6 +13,7 @@ import {
   getProfileForAccount,
   openBoxForAccount,
 } from '../lib/profile'
+import { twitterVerification } from '../services'
 
 const ProfileContext = React.createContext()
 
@@ -71,26 +72,13 @@ function ProfileProvider({ children }) {
     return () => (cancelled.current = true)
   }, [account, fetchAccountProfile])
 
-  // Users private data is not accesible unless the user has authenticated
-  useEffect(() => {
-    if (!account) {
-      return setBox(null)
-    }
-
-    if (boxCache.has(account)) {
-      setBox(boxCache.get(account))
-      return
-    }
-
-    setBox(null)
-    auth()
-  }, [account, auth])
-
-  useEffect(() => {
-    if (box) {
-      fetchPrivateData(box)
-    }
-  }, [box, fetchPrivateData])
+  const verifyTwitter = useCallback(
+    async (account, did) => {
+      const claim = await twitterVerification(account, did)
+      return box.verified.addTwitter(claim.data.verification)
+    },
+    [box]
+  )
 
   const updateProfile = useCallback(
     async (updatedFields, removedFields) => {
@@ -128,6 +116,27 @@ function ProfileProvider({ children }) {
     [account, box, fetchAccountProfile, fetchPrivateData]
   )
 
+  // Users private data is not accesible unless the user has authenticated
+  useEffect(() => {
+    if (!account) {
+      return setBox(null)
+    }
+
+    if (boxCache.has(account)) {
+      setBox(boxCache.get(account))
+      return
+    }
+
+    setBox(null)
+    auth()
+  }, [account, auth])
+
+  useEffect(() => {
+    if (box) {
+      fetchPrivateData(box)
+    }
+  }, [box, fetchPrivateData])
+
   // TODO: Add modal for 3box loader
   return (
     <ProfileContext.Provider
@@ -136,6 +145,7 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
+        verifyTwitter,
         updateProfile,
       }}
     >
