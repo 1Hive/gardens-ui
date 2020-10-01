@@ -261,7 +261,13 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
   }, [id, selectProposal])
 
   return (
-    <Link onClick={handleOnClick}>
+    <Link
+      onClick={handleOnClick}
+      css={`
+        white-space: normal;
+        text-align: left;
+      `}
+    >
       <span
         css={`
           color: ${theme.surfaceContentSecondary};
