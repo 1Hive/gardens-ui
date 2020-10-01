@@ -67,7 +67,7 @@ function BalanceModule() {
                 color: ${theme.contentSecondary};
               `}
             >
-              ({inactivePct}% idle)
+              ({parseFloat(inactivePct).toFixed(2)}% idle)
             </span>
           </div>
         </div>

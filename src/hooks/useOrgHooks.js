@@ -125,7 +125,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract) {
+    if (!vaultContract || !token.id) {
       return
     }
 
