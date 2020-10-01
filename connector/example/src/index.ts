@@ -1,5 +1,9 @@
 import { connect } from '@aragon/connect'
-import connectHoneypot, { Config, Proposal, Supporter } from '@1hive/connect-honey-pot'
+import connectHoneypot, {
+  Config,
+  Proposal,
+  Supporter,
+} from '@1hive/connect-honey-pot'
 
 const ORG_ADDRESS = '0x0381374d658b2c2e564e954219d9a3cfc6ae3fcb'
 
@@ -26,16 +30,20 @@ function describeProposal(proposal: Proposal): void {
   console.log(`\n`)
 }
 
-function describeConfig(config: Config) {
-  console.log(`Conviction config: ${JSON.stringify(config.conviction, null, 2)}`)
+function describeConfig(config: Config): void {
+  console.log(
+    `Conviction config: ${JSON.stringify(config.conviction, null, 2)}`
+  )
   console.log(`Voting config: ${JSON.stringify(config.voting, null, 2)}`)
 }
 
-function describeSupporter(supporter: Supporter) {
+function describeSupporter(supporter: Supporter): void {
   console.log('SUPPORTER', supporter.address)
   console.log(`casts: ${JSON.stringify(supporter.casts, null, 2)}`)
   console.log(`stakes: ${JSON.stringify(supporter.stakes, null, 2)}`)
-  console.log(`stakes history: ${JSON.stringify(supporter.stakesHistory, null, 2)}`)
+  console.log(
+    `stakes history: ${JSON.stringify(supporter.stakesHistory, null, 2)}`
+  )
 }
 
 async function main(): Promise<void> {
@@ -55,7 +63,9 @@ async function main(): Promise<void> {
   console.log(`\n`)
 
   console.log(`\n#################Supporter:`)
-  const supporter = await honeypot.supporter({ id: '0x49C01b61Aa3e4cD4C4763c78EcFE75888b49ef50'.toLocaleLowerCase()})
+  const supporter = await honeypot.supporter({
+    id: '0x49C01b61Aa3e4cD4C4763c78EcFE75888b49ef50'.toLocaleLowerCase(),
+  })
   describeSupporter(supporter)
   console.log(`\n`)
 
@@ -64,25 +74,31 @@ async function main(): Promise<void> {
   proposals.map(describeProposal)
   console.log(`\n`)
 
-
-
   console.log(`#####Subscriptions\n\n`)
-  honeypot.onProposals({}, (err: any, proposals = []) => {
+  honeypot.onProposals({}, (err: any, proposals) => {
     console.log('proposals', proposals)
-    if (!proposals) {
+    if (err || !proposals) {
       return
     }
 
     proposals.map(describeProposal)
   })
+
+  honeypot.onConfig((err: any, config) => {
+    console.log('config', config)
+    if (err || !config) {
+      return
+    }
+
+    describeConfig(config)
+  })
 }
 
-main()
-  .catch(err => {
-    console.error('')
-    console.error(err)
-    console.log(
-      'Please report any problem to https://github.com/aragon/connect/issues'
-    )
-    process.exit(1)
-  })
+main().catch(err => {
+  console.error('')
+  console.error(err)
+  console.log(
+    'Please report any problem to https://github.com/aragon/connect/issues'
+  )
+  process.exit(1)
+})
