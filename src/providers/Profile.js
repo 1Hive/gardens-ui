@@ -37,7 +37,6 @@ function ProfileProvider({ children }) {
 
       if (!cancelled.current) {
         setBox(box)
-        // setLoadingBox(false)
       }
     } catch (err) {
       setProfile(profile => ({
