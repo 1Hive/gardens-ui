@@ -47,7 +47,7 @@ function AccountModule({ compact }) {
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
 
-  const { loadingProfile, onboardingSkipped, profileExists } = useProfile()
+  const { openBox } = useProfile()
 
   const { account, activating } = wallet
 
@@ -56,10 +56,10 @@ function AccountModule({ compact }) {
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   useEffect(() => {
-    if (!loadingProfile && account && !profileExists && !onboardingSkipped) {
+    if (account && openBox) {
       setOpened(false)
     }
-  }, [account, loadingProfile, onboardingSkipped, profileExists])
+  }, [account, openBox])
 
   const handleCancelConnection = useCallback(() => {
     wallet.deactivate()
