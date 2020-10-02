@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -21,15 +22,28 @@ const boxCache = new Map([])
 function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
+  const [loadingBox, setLoadingBox] = useState(true)
   const [profile, setProfile] = useState(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
 
   const cancelled = useRef(false)
 
+  const openBox = useMemo(() => {
+    if (!profile || profile.confirmationFailed) {
+      return false
+    }
+
+    const boxExist = Boolean(box)
+    return (
+      !loadingProfile && !loadingBox && (!profile.profileExists || !boxExist)
+    )
+  }, [box, loadingBox, loadingProfile, profile])
+
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
       return
     }
+    setLoadingBox(true)
 
     try {
       const box = await openBoxForAccount(account, ethereum)
@@ -41,7 +55,7 @@ function ProfileProvider({ children }) {
     } catch (err) {
       setProfile(profile => ({
         ...profile,
-        onboardingSkipped: true,
+        confirmationFailed: true,
       }))
 
       console.error(err)
@@ -49,6 +63,7 @@ function ProfileProvider({ children }) {
   }, [account, ethereum])
 
   const fetchAccountProfile = useCallback(async account => {
+    setLoadingProfile(true)
     const publicProfile = await getProfileForAccount(account)
 
     if (!cancelled.current) {
@@ -70,8 +85,8 @@ function ProfileProvider({ children }) {
 
   useEffect(() => {
     setProfile(null)
-    setLoadingProfile(true)
     if (!account) {
+      setLoadingProfile(true)
       return
     }
 
@@ -95,6 +110,7 @@ function ProfileProvider({ children }) {
 
     setBox(null)
     auth()
+    setLoadingBox(false)
   }, [account, auth])
 
   useEffect(() => {
@@ -144,10 +160,10 @@ function ProfileProvider({ children }) {
     <ProfileContext.Provider
       value={{
         ...profile,
-        loadingProfile,
         account,
         auth,
         authenticated: Boolean(box),
+        openBox,
         updateProfile,
       }}
     >
