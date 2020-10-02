@@ -45,6 +45,7 @@ export interface StakeData {
   id: string
   type: string
   entity: SupporterData
+  proposal: ProposalData
   amount: string
   createdAt: string
 }
