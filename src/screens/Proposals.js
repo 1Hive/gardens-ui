@@ -139,161 +139,178 @@ const Proposals = React.memo(
         <DataView
           heading={
             compactMode && (
-              <div
-                css={`
+              <div>
+                <div
+                  css={`
                   display: flex;
                   align-items: center;
                   justify-content: space-between;
                 `}
-              >
-                <strong
-                  css={`
+                >
+                  <strong
+                    css={`
                     ${textStyle('body1')}
                   `}
-                >
-                  Proposals
+                  >
+                    Proposals
                 </strong>
-                {account && (
-                  <Button
-                    mode="strong"
-                    onClick={onRequestNewProposal}
-                    label="New proposal"
-                    icon={<IconPlus />}
-                    display={compactMode ? 'icon' : 'label'}
+                  {account && (
+                    <Button
+                      mode="strong"
+                      onClick={onRequestNewProposal}
+                      label="New proposal"
+                      icon={<IconPlus />}
+                      display={compactMode ? 'icon' : 'label'}
+                    />
+                  )}
+                </div>
+                <FilterBar
+                  proposalsSize={filteredProposals.length}
+                  proposalExecutionStatusFilter={proposalExecutionStatusFilter}
+                  proposalStatusFilter={proposalSupportStatusFilter}
+                  proposalTextFilter={proposalTextFilter}
+                  proposalTypeFilter={proposalTypeFilter}
+                  handleExecutionStatusFilterChange={
+                    handleExecutionStatusFilterChange
+                  }
+                  handleProposalStatusFilterChange={
+                    handleProposalSupportFilterChange
+                  }
+                  handleTextFilterChange={updateTextFilter}
+                  handleProposalTypeFilterChange={handleProposalTypeFilterChange}
                   />
-                )}
               </div>
             )
           }
           fields={[
-            { label: 'Proposal', align: 'start' },
-            ...linkField,
-            ...requestedField,
-            ...convictionFields,
-            ...beneficiaryField,
-          ]}
+                  { label: 'Proposal', align: 'start' },
+                  ...linkField,
+                  ...requestedField,
+                  ...convictionFields,
+                  ...beneficiaryField,
+                ]}
           emptyState={
-            <p
-              css={`
+                  <p
+                    css={`
                 ${textStyle('title2')};
                 font-weight: 600;
               `}
-            >
-              No proposals yet!
+                  >
+                    No proposals yet!
             </p>
-          }
+                }
           entries={sortedProposals}
           renderEntry={proposal => {
-            const entriesElements = [
-              <IdAndTitle
-                id={proposal.id}
-                name={proposal.name}
-                selectProposal={handleSelectProposal}
-              />,
-            ]
-            if (
-              proposal.status === PROPOSAL_STATUS_EXECUTED_STRING ||
-              !requestToken
-            ) {
-              entriesElements.push(
-                <Link href={proposal.link} external>
-                  Read more
+                  const entriesElements = [
+                    <IdAndTitle
+                      id={proposal.id}
+                      name={proposal.name}
+                      selectProposal={handleSelectProposal}
+                    />,
+                  ]
+                  if (
+                    proposal.status === PROPOSAL_STATUS_EXECUTED_STRING ||
+                    !requestToken
+                  ) {
+                    entriesElements.push(
+                      <Link href={proposal.link} external>
+                        Read more
                 </Link>
-              )
-            } else if (linkField.length) {
-              entriesElements.push(<div />)
-            }
-            if (requestToken) {
-              entriesElements.push(
-                <Amount
-                  requestedAmount={proposal.requestedAmount}
-                  requestToken={requestToken}
-                />
-              )
-            }
-            if (proposal.status === PROPOSAL_STATUS_ACTIVE_STRING) {
-              entriesElements.push(
-                <ProposalInfo proposal={proposal} requestToken={requestToken} />
-              )
-            } else if (convictionFields.length) {
-              entriesElements.push(<div />)
-            }
-            if (proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) {
-              entriesElements.push(
-                <IdentityBadge
-                  connectedAccount={addressesEqual(
-                    proposal.beneficiary,
-                    account
-                  )}
-                  entity={proposal.beneficiary}
-                />
-              )
-            }
+                    )
+                  } else if (linkField.length) {
+                    entriesElements.push(<div />)
+                  }
+                  if (requestToken) {
+                    entriesElements.push(
+                      <Amount
+                        requestedAmount={proposal.requestedAmount}
+                        requestToken={requestToken}
+                      />
+                    )
+                  }
+                  if (proposal.status === PROPOSAL_STATUS_ACTIVE_STRING) {
+                    entriesElements.push(
+                      <ProposalInfo proposal={proposal} requestToken={requestToken} />
+                    )
+                  } else if (convictionFields.length) {
+                    entriesElements.push(<div />)
+                  }
+                  if (proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) {
+                    entriesElements.push(
+                      <IdentityBadge
+                        connectedAccount={addressesEqual(
+                          proposal.beneficiary,
+                          account
+                        )}
+                        entity={proposal.beneficiary}
+                      />
+                    )
+                  }
 
-            return entriesElements
-          }}
+                  return entriesElements
+                }}
           tableRowHeight={14 * GU}
           entriesPerPage={ENTRIES_PER_PAGE}
           page={currentPage}
           onPageChange={setCurrentPage}
         />
-      </div>
-    )
-  }
+              </div>
+            )
+          }
 )
 
-const ProposalInfo = ({ proposal, requestToken }) => {
+const ProposalInfo = ({ proposal, requestToken}) => {
   return (
-    <div
-      css={`
+        <div
+          css={`
         width: ${23 * GU}px;
       `}
-    >
-      <ConvictionBar proposal={proposal} withThreshold={requestToken} />
-    </div>
+        >
+          <ConvictionBar proposal={proposal} withThreshold={requestToken} />
+        </div>
   )
 }
 
-const IdAndTitle = ({ id, name, selectProposal }) => {
+const IdAndTitle = ({ id, name, selectProposal}) => {
   const theme = useTheme()
   const handleOnClick = useCallback(() => {
-    selectProposal(id)
-  }, [id, selectProposal])
+          selectProposal(id)
+        }, [id, selectProposal])
 
   return (
-    <Link
-      onClick={handleOnClick}
-      css={`
+        <Link
+          onClick={handleOnClick}
+          css={`
         white-space: normal;
         text-align: left;
       `}
-    >
-      <span
-        css={`
+        >
+          <span
+            css={`
           color: ${theme.surfaceContentSecondary};
         `}
-      >
-        {name}
-      </span>
-    </Link>
+          >
+            {name}
+          </span>
+        </Link>
   )
 }
 
 const Amount = ({
-  requestedAmount = 0,
-  requestToken: { symbol, decimals, verified },
+          requestedAmount = 0,
+          requestToken: { symbol, decimals, verified},
 }) => {
   const tokenIcon = getTokenIconBySymbol(symbol)
   return (
-    <div>
-      <Balance
-        amount={requestedAmount}
-        decimals={decimals}
-        symbol={symbol}
-        verified={verified}
-        icon={tokenIcon}
-      />
-    </div>
+        <div>
+          <Balance
+            amount={requestedAmount}
+            decimals={decimals}
+            symbol={symbol}
+            verified={verified}
+            icon={tokenIcon}
+          />
+        </div>
   )
 }
 

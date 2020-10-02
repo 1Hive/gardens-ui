@@ -30,7 +30,9 @@ const FilterBar = React.memo(
       <div
         css={`
           display: flex;
-          align-itmes: center;
+          align-items: center;
+          flex-wrap:wrap;
+          margin-top: ${1.5 * GU}px;
         `}
       >
         <DropDown
