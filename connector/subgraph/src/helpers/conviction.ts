@@ -65,15 +65,15 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
 }
 
 ////// Stake entity //////
-export function getStakeEntityId(proposalNumber: BigInt, entity: Bytes): string {
-  return proposalNumber.toHexString() + '-entity:' + entity.toHexString()
+export function getStakeEntityId(proposalId: string, entity: Bytes): string {
+  return proposalId + '-entity:' + entity.toHexString()
 }
 
 export function getStakeEntity(
   proposal: ProposalEntity | null,
   entity: Bytes
 ): StakeEntity | null {
-  let stakeId = getStakeEntityId(proposal.number, entity)
+  let stakeId = getStakeEntityId(proposal.id, entity)
 
   let stake = StakeEntity.load(stakeId)
   if (!stake) {
@@ -87,12 +87,12 @@ export function getStakeEntity(
 
 ////// Stake History entity //////
 export function getStakeHistoryEntityId(
-  proposalNumber: BigInt,
+  proposalId: string,
   entity: Bytes,
   timestamp: BigInt
 ): string {
   return (
-    proposalNumber.toHexString() +
+    proposalId +
     '-entity:' +
     entity.toHexString() +
     '-time:' +
@@ -106,7 +106,7 @@ export function getStakeHistoryEntity(
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
   let stakeHistoryId = getStakeHistoryEntityId(
-    proposal.number,
+    proposal.id,
     entity,
     blockNumber
   )
