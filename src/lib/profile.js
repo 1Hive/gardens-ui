@@ -49,6 +49,7 @@ function parseProfileData(profile, verifiedAccounts) {
 
   return {
     ...profile,
+    profileExists: Boolean(Object.keys(profile).length),
     coverPhoto,
     image,
     verifiedAccounts: parsedVerifiedAccounts,

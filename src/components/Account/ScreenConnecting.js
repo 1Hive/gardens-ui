@@ -18,7 +18,10 @@ const spin = keyframes`
   }
 `
 
-function AccountModuleConnectingScreen({ onCancel, providerId }) {
+const AccountModuleConnectingScreen = React.memo(function({
+  onCancel,
+  providerId,
+}) {
   const theme = useTheme()
   const provider = getProviderFromUseWalletId(providerId)
   return (
@@ -105,7 +108,7 @@ function AccountModuleConnectingScreen({ onCancel, providerId }) {
       </div>
     </section>
   )
-}
+})
 
 AccountModuleConnectingScreen.propTypes = {
   providerId: PropTypes.string,

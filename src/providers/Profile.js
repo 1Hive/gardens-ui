@@ -22,6 +22,7 @@ function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
+  const [loadingProfile, setLoadingProfile] = useState(true)
 
   const cancelled = useRef(false)
 
@@ -36,9 +37,14 @@ function ProfileProvider({ children }) {
 
       if (!cancelled.current) {
         setBox(box)
+        // setLoadingBox(false)
       }
     } catch (err) {
-      setProfile(profile => ({ ...profile, onboardingSkipped: true }))
+      setProfile(profile => ({
+        ...profile,
+        onboardingSkipped: true,
+      }))
+
       console.error(err)
     }
   }, [account, ethereum])
@@ -47,7 +53,11 @@ function ProfileProvider({ children }) {
     const publicProfile = await getProfileForAccount(account)
 
     if (!cancelled.current) {
-      setProfile(profile => ({ ...profile, ...publicProfile }))
+      setProfile(profile => ({
+        ...profile,
+        ...publicProfile,
+      }))
+      setLoadingProfile(false)
     }
   }, [])
 
@@ -61,6 +71,7 @@ function ProfileProvider({ children }) {
 
   useEffect(() => {
     setProfile(null)
+    setLoadingProfile(true)
     if (!account) {
       return
     }
@@ -134,6 +145,7 @@ function ProfileProvider({ children }) {
     <ProfileContext.Provider
       value={{
         ...profile,
+        loadingProfile,
         account,
         auth,
         authenticated: Boolean(box),

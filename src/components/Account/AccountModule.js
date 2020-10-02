@@ -47,7 +47,7 @@ function AccountModule({ compact }) {
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
 
-  const { authenticated, onboardingSkipped } = useProfile()
+  const { loadingProfile, onboardingSkipped, profileExists } = useProfile()
 
   const { account, activating } = wallet
 
@@ -56,10 +56,10 @@ function AccountModule({ compact }) {
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   useEffect(() => {
-    if (onboardingSkipped) {
+    if (!loadingProfile && account && !profileExists && !onboardingSkipped) {
       setOpened(false)
     }
-  }, [onboardingSkipped])
+  }, [account, loadingProfile, onboardingSkipped, profileExists])
 
   const handleCancelConnection = useCallback(() => {
     wallet.deactivate()
@@ -112,10 +112,12 @@ function AccountModule({ compact }) {
 
   const { screenIndex, direction } = useMemo(() => {
     const screenId = (() => {
+      if (!activationError && !activatingDelayed && !account) {
+        return 'providers'
+      }
       if (activationError) return 'error'
       if (activatingDelayed) return 'connecting'
       if (account) return 'connected'
-      return 'providers'
     })()
 
     const screenIndex = SCREENS.findIndex(screen => screen.id === screenId)
@@ -179,9 +181,8 @@ function AccountModule({ compact }) {
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={
-          screen.id === 'connected' && !authenticated && !onboardingSkipped
-            ? false
-            : opened
+          // account && !profileExists && !onboardingSkipped ? false : opened
+          opened
         }
       >
         <div ref={popoverFocusElement} tabIndex="0" css="outline: 0">
