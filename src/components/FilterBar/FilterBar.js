@@ -32,7 +32,7 @@ const FilterBar = React.memo(
           display: flex;
           align-items: center;
           flex-wrap:wrap;
-          margin-top: ${1.5 * GU}px;
+          margin-left: -${1.5 * GU}px;
         `}
       >
         <DropDown
@@ -41,6 +41,9 @@ const FilterBar = React.memo(
           selected={proposalTypeFilter}
           onChange={handleProposalTypeFilterChange}
           items={['All', 'Funding', 'Signaling']}
+          css={`
+            margin-left: ${1.5 * GU}px;
+          `}
         />
         <DropDown
           header="Status"
