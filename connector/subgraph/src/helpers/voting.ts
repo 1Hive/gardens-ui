@@ -57,15 +57,15 @@ export function loadVotingConfig(orgAddress: Address, appAddress: Address): void
 }
 
 ////// Cast Entity //////
-function getCastEntityId(proposal: ProposalEntity | null, numCast: number): string {
-  return proposal.id + '-castNum:' + numCast.toString()
+function getCastEntityId(proposal: ProposalEntity | null, voter: Address): string {
+  return proposal.id + '-entity:' + voter.toHexString()
 }
 
 export function getCastEntity(
-  proposal: ProposalEntity | null
+  proposal: ProposalEntity | null,
+  voter: Address
 ): CastEntity | null {
-  let numCasts = proposal.casts.length
-  let castId = getCastEntityId(proposal, numCasts)
+  let castId = getCastEntityId(proposal, voter)
  
   let cast = new CastEntity(castId)
   cast.proposal = proposal.id
