@@ -38,8 +38,8 @@ type Proposal @entity {
   # Proposal data
   name: String
   link: String
-  stakes: [Stake!] @derviedFrom(field: "proposal")
-  stakesHistory: [StakeHistory!] @derviedFrom(field: "proposal")
+  stakes: [Stake!] @derivedFrom(field: "proposal")
+  stakesHistory: [StakeHistory!] @derivedFrom(field: "proposal")
   beneficiary: Bytes
   requestedAmount: BigInt
   totalTokensStaked: BigInt

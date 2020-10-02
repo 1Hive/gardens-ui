@@ -1,7 +1,4 @@
 import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
-import {
-  DandelionVoting as DandelionVotingContract
-} from '../../generated/templates/DandelionVoting/DandelionVoting'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
   Config as ConfigEntity,

@@ -29,7 +29,7 @@ export function handleCastVote(event: CastVoteEvent): void {
   let proposal = getProposalEntity(event.address, event.params.voteId)
   createSupporter(event.params.voter)
 
-  let cast = getCastEntity(proposal)
+  let cast = getCastEntity(proposal, event.params.voter)
   populateCastDataFromEvent(cast, event)
 
   if (event.params.supports == true) {

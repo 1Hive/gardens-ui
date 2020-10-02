@@ -42,7 +42,6 @@ export function handleProposalAdded(event: ProposalAddedEvent): void {
   
   let proposalType = event.params.amount.gt(BigInt.fromI32(0)) ? PROPOSAL_TYPE_PROPOSAL : PROPOSAL_TYPE_SUGGESTION
   proposal.type = proposalType
-  proposal.stakes = []
 
   proposal.save()
 }
@@ -111,10 +110,9 @@ function _onNewStake(
     return 
   }
 
+  // Update totalStaked
   let convictionConfig = getConvictionConfigEntity(appAddress)
-
-  // If the old totalTokensStaked is less than the new means that is a stake else a withdraw
-  if (proposal.totalTokensStaked < totalTokensStaked){
+  if (type === STAKE_TYPE_ADD){
     convictionConfig.totalStaked = convictionConfig.totalStaked.plus(amount)
   } else {
     convictionConfig.totalStaked = convictionConfig.totalStaked.minus(amount)
@@ -134,6 +132,8 @@ function _onNewStake(
     blockNumber,
     timestamp
   )
+
+  proposal.save()
 }
 
 function _updateProposalStakes(
@@ -149,9 +149,7 @@ function _updateProposalStakes(
   stake.amount = tokensStaked
   stake.createdAt = timestamp
   stake.type = type
-
   stake.save()
-  proposal.save()
 }
 
 function _updateStakeHistory(
@@ -172,7 +170,5 @@ function _updateStakeHistory(
   stakeHistory.totalTokensStaked = totalTokensStaked
   stakeHistory.conviction = conviction
   stakeHistory.createdAt = timestamp
-
-
   stakeHistory.save()
 }
