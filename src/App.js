@@ -20,6 +20,7 @@ const App = React.memo(function App() {
     proposals,
     proposalPanel,
     totalStaked,
+    convictionVotingExists,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -40,10 +41,10 @@ const App = React.memo(function App() {
       totalActiveTokens={totalStaked}
     />
   )
-
+  
   return (
     <div>
-      <NetworkErrorModal visible={true} />
+      <NetworkErrorModal visible={!isLoading && !convictionVotingExists} />
       {isLoading && <AppLoader />}
       {!account ? (
         MainScreenComponent
