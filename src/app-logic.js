@@ -6,12 +6,13 @@ import usePanelState from './hooks/usePanelState'
 import useActions from './hooks/useActions'
 import { addressesEqual } from './lib/web3-utils'
 import { PROPOSAL_STATUS_ACTIVE_STRING } from './constants'
+import { ConvictionVoting } from '@1hive/connect-conviction-voting'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
   const { account } = useWallet()
 
-  const { isLoading, stakeToken, totalStaked } = useAppState()
+  const { isLoading, stakeToken, totalStaked, convictionVoting } = useAppState()
 
   const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
@@ -58,10 +59,11 @@ export default function useAppLogic() {
 
   return {
     actions,
-    isLoading: isLoading || !blockHasLoaded,
+    isLoading: !Boolean(convictionVoting) ? false : isLoading || !blockHasLoaded,
     myStakes,
     proposals,
     proposalPanel,
     totalStaked,
+    convictionVotingExists: Boolean(convictionVoting), 
   }
 }
