@@ -3,33 +3,30 @@ import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
 import flowerError from '../assets/flowerError.svg'
 
 function NetworkErrorModal({ visible }) {
-    const { below } = useViewport()
-    const compactMode = below('medium')
-
+    const { width } = useViewport()
+    
     return (
-        <Modal padding={7 * GU} visible={visible} width={compactMode ? '200px' : '400px'}>
+        <Modal padding={7 * GU} visible={visible} width={Math.min(55 * GU, width-40)}>
         <div
             css={`
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align:center;
             `}
         >
             <img src={flowerError} alt="" height="88" width="71"/>
             <h3
             css={`
-                ${textStyle('title3')}
-                line-height: 40px;
+                ${textStyle('title2')}
                 margin-top: 24px;
                 margin-bottom: 8px;
-                text-align:center;
             `}>
             Something went wrong
             </h3>
             <h4
                 css={`
-                    ${textStyle("body4")}
-                    text-align:center;
+                    ${textStyle("body3")}
                 `}>
                     An error has occurred with the network connection.
                 </h4>
