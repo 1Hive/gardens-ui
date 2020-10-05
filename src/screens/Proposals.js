@@ -142,18 +142,18 @@ const Proposals = React.memo(
               <div>
                 <div
                   css={`
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                `}
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  `}
                 >
                   <strong
                     css={`
-                    ${textStyle('body1')}
-                  `}
+                      ${textStyle('body1')}
+                    `}
                   >
                     Proposals
-                </strong>
+                  </strong>
                   {account && (
                     <Button
                       mode="strong"
@@ -177,7 +177,9 @@ const Proposals = React.memo(
                     handleProposalSupportFilterChange
                   }
                   handleTextFilterChange={updateTextFilter}
-                  handleProposalTypeFilterChange={handleProposalTypeFilterChange}
+                  handleProposalTypeFilterChange={
+                    handleProposalTypeFilterChange
+                  }
                 />
               </div>
             )
