@@ -31,7 +31,7 @@ const FilterBar = React.memo(
         css={`
           display: flex;
           align-items: center;
-          flex-wrap:wrap;
+          flex-wrap: wrap;
           margin-left: -${1.5 * GU}px;
         `}
       >
