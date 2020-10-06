@@ -14,6 +14,7 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+import BrightIdStatus from './BrightIdStatus'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
 import { fetchPic } from '../../services'
@@ -24,10 +25,12 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
+    brightIdVerificationInfo,
     description,
     email,
     location,
     name,
+    sponsorshipInfo,
     updateProfile,
     verifiedAccounts,
     website,
@@ -288,6 +291,12 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
                 onChange={handleAccountChange}
                 onRemove={handleAccountRemove}
                 onCancelRemove={handleAccountCancelRemove}
+              />
+            </Section>
+            <Section title="Bright Id">
+              <BrightIdStatus
+                brightIdVerificationInfo={brightIdVerificationInfo}
+                sponsorshipInfo={sponsorshipInfo}
               />
             </Section>
             <Section title="About">

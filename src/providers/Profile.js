@@ -13,6 +13,7 @@ import {
   getProfileForAccount,
   openBoxForAccount,
 } from '../lib/profile'
+import { useBrightIdVerification } from '../hooks/useBrightIdVerification'
 
 const ProfileContext = React.createContext()
 
@@ -22,6 +23,13 @@ function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
   const [profile, setProfile] = useState(null)
+
+  const { sponsorshipInfo, brightIdVerificationInfo } = useBrightIdVerification(
+    account
+  )
+
+  console.log('sponsorshipInfo ', sponsorshipInfo)
+  console.log('verificationInfo ', brightIdVerificationInfo)
 
   const cancelled = useRef(false)
 
@@ -136,6 +144,8 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
+        brightIdVerificationInfo,
+        sponsorshipInfo,
         updateProfile,
       }}
     >

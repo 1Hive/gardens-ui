@@ -41,6 +41,7 @@ function Profile() {
   const accountStakes = useAccountStakes(selectedAccount)
 
   const selectedProfile = useSelectedProfile(selectedAccount)
+  console.log('SELECTED PROFILE!!! ', selectedProfile)
   const { coverPhoto } = selectedProfile || {}
 
   useEffect(() => {
@@ -113,7 +114,7 @@ function Profile() {
                     <Button
                       label="Edit profile"
                       onClick={toggleEditMode}
-                      disabled={!selectedProfile?.authenticated}
+                      disabled={false}
                     />
                   </div>
                 )}
