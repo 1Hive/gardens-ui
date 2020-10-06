@@ -6,11 +6,13 @@ import { GU, Popover, SearchInput, useLayout } from '@1hive/1hive-ui'
 const TextFilter = React.memo(
   ({ textFilter, updateTextFilter, placeholder = '' }) => {
     const { layoutName } = useLayout()
+    const compactMode = layoutName === 'small'
 
     return (
       <div
         css={`
           margin-left: ${1.5 * GU}px;
+          ${compactMode && `margin-bottom: ${1.5 * GU}px;`}
         `}
       >
         <SearchInput
@@ -57,10 +59,6 @@ TextFilterPopover.propTypes = {
 TextFilter.propTypes = {
   textFilter: PropTypes.string.isRequired,
   updateTextFilter: PropTypes.func.isRequired,
-  openerRef: PropTypes.object,
-  visible: PropTypes.bool.isRequired,
-  setVisible: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 export default TextFilter
