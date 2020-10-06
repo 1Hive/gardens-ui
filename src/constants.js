@@ -1,5 +1,7 @@
 import { bigNum } from './lib/bigNumber'
 
+export const CONTEXT_ID = '1hive'
+
 export const PROPOSAL_STATUS_ACTIVE_STRING = 'Active'
 export const PROPOSAL_STATUS_CANCELLED_STRING = 'Cancelled'
 export const PROPOSAL_STATUS_EXECUTED_STRING = 'Executed'
