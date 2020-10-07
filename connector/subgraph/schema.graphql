@@ -43,6 +43,7 @@ type Proposal @entity {
   stakes: [Stake!] @derivedFrom(field: "proposal")
   stakesHistory: [StakeHistory!] @derivedFrom(field: "proposal")
   beneficiary: Bytes
+  convictionLast: BigInt
   requestedAmount: BigInt
   totalTokensStaked: BigInt
 

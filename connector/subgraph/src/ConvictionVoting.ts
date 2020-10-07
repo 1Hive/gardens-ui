@@ -129,6 +129,7 @@ function _onNewStake(
   convictionConfig.save()
 
   proposal.totalTokensStaked = totalTokensStaked
+  proposal.convictionLast = conviction
 
   _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
   _updateStakeHistory(
