@@ -32,7 +32,9 @@ type Proposal @entity {
   number: BigInt!
   creator: Bytes!
   status: ProposalStatus!
+  statusInt: Int!
   type: ProposalType!
+  typeInt: Int!
   createdAt: BigInt!
   
   # Proposal data

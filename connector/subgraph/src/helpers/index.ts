@@ -6,7 +6,7 @@ import {
   Supporter as SupporterEntity,
   Token as TokenEntity,
 } from '../../generated/schema'
-import { STATUS_ACTIVE } from '../statuses'
+import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
 ////// Token Entity //////
 export function loadTokenData(address: Address): boolean {
@@ -83,6 +83,7 @@ export function getProposalEntity(
     proposal = new ProposalEntity(proposalEntityId)
     proposal.number = proposalId
     proposal.status = STATUS_ACTIVE
+    proposal.statusInt = STATUS_ACTIVE_NUM
   }
 
   return proposal

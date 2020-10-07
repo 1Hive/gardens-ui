@@ -12,7 +12,7 @@ import {
   populateVotingDataFromEvent
 } from './helpers'
 import { STATUS_EXECUTED } from './statuses'
-import { PROPOSAL_TYPE_DECISION } from './types'
+import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from './types'
 
 export function handleStartVote(event: StartVoteEvent): void {
   let proposal = getProposalEntity(event.address, event.params.voteId)
@@ -21,6 +21,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   populateVotingDataFromContract(proposal, event.address, proposal.number)
 
   proposal.type = PROPOSAL_TYPE_DECISION
+  proposal.typeNum = PROPOSAL_TYPE_DECISION_NUM
 
   proposal.save()
 }

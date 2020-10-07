@@ -17,10 +17,12 @@ import {
   createSupporter,
   populateProposalDataFromEvent
 } from './helpers'
-import { STATUS_CANCELLED, STATUS_EXECUTED } from './statuses'
+import { STATUS_CANCELLED, STATUS_CANCELLED_NUM, STATUS_EXECUTED, STATUS_EXECUTED_NUM } from './statuses'
 import { 
   PROPOSAL_TYPE_PROPOSAL, 
+  PROPOSAL_TYPE_PROPOSAL_NUM, 
   PROPOSAL_TYPE_SUGGESTION, 
+  PROPOSAL_TYPE_SUGGESTION_NUM, 
   STAKE_TYPE_ADD, 
   STAKE_TYPE_WITHDRAW 
 } from './types'
@@ -40,8 +42,19 @@ export function handleProposalAdded(event: ProposalAddedEvent): void {
   
   populateProposalDataFromEvent(proposal, event)
   
-  let proposalType = event.params.amount.gt(BigInt.fromI32(0)) ? PROPOSAL_TYPE_PROPOSAL : PROPOSAL_TYPE_SUGGESTION
+
+  let proposalType, proposalTypeNum
+  
+  if (event.params.amount.gt(BigInt.fromI32(0))) {
+    proposalType = PROPOSAL_TYPE_PROPOSAL
+    proposalTypeNum = PROPOSAL_TYPE_PROPOSAL_NUM
+  } else {
+    proposalType = PROPOSAL_TYPE_SUGGESTION
+    proposalTypeNum = PROPOSAL_TYPE_SUGGESTION_NUM
+  }
+
   proposal.type = proposalType
+  proposal.typeNum = proposalTypeNum 
 
   proposal.save()
 }
@@ -80,6 +93,7 @@ export function handleStakeWithdrawn(event: StakeWithdrawnEvent): void {
 export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_EXECUTED
+  proposal.statusInt = STATUS_EXECUTED_NUM
   
   proposal.save()
 }
@@ -87,6 +101,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
   let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_CANCELLED
+  proposal.status = STATUS_CANCELLED_NUM
 
   proposal.save()
 }
