@@ -8,7 +8,13 @@ import headerBackgroundSvg from '../assets/header-background.svg'
 import logoSvg from '../assets/logotext.svg'
 
 function Header({ compact }) {
-  const BeeIcon = <img src={beeSvg} height={compact ? 40 : 60} alt="" />
+  const BeeIcon = (
+    <a href="https://1hive.org">
+      {' '}
+      <img src={beeSvg} height={compact ? 40 : 60} alt="" />
+    </a>
+  )
+
   const headerItemsWidth = compact ? 'auto' : 25 * GU
 
   return (
