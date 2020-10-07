@@ -110,6 +110,69 @@ export const ALL_PROPOSALS = (type: string) => gql`
     }
   }
 `
+
+export const PROPOSAL = (type: string) => gql`
+  ${type} Proposal($id: ID!) {
+    proposal(id: $id) {
+      id
+      number
+      creator
+      status
+      type
+      createdAt
+
+      # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
+      name
+      link
+      stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
+        id
+        type
+        entity {
+          id
+        }
+        amount
+        createdAt
+      }
+      stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
+        id
+        type
+        entity {
+          id
+        }
+        tokensStaked
+        totalTokensStaked
+        conviction
+        time      # Block at which was created
+        createdAt # Timestamp at which was created
+      }
+      beneficiary
+      requestedAmount
+      totalTokensStaked
+     
+      # Decision data (votes)
+      metadata
+      startBlock
+      executionBlock
+      snapshotBlock
+      supportRequiredPct
+      minAcceptQuorum
+      yea
+      nay
+      votingPower
+      script
+      casts {
+        id
+        entity {
+          id
+        }
+        supports
+        stake
+        createdAt
+      }
+    }
+  }
+`
+
 export const SUPPORTER = (type: string) => gql`
   ${type} Supporter($id: ID!) {
     supporter(id: $id) {

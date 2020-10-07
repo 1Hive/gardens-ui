@@ -5,7 +5,7 @@ import Config from '../models/Config'
 import Proposal from '../models/Proposal'
 import Supporter from '../models/Supporter'
 import * as queries from './queries'
-import { parseConfig, parseProposals, parseSupporter  } from './parsers'
+import { parseConfig, parseProposal, parseProposals, parseSupporter  } from './parsers'
 
 const BLOCK_TIMES = new Map([
   [1, 13],  // mainnet
@@ -76,6 +76,28 @@ export default class HoneypotConnectorTheGraph
     )
   }
 
+  async proposal(
+    id: string,
+  ): Promise<Proposal> {
+    return this.#gql.performQueryWithParser(
+      queries.PROPOSAL('query'),
+      { id },
+      (result: QueryResult) => parseProposal(result, this)
+    )
+  }
+
+  onProposal(
+    id: string,
+    callback: Function
+  ): SubscriptionHandler {
+    return this.#gql.subscribeToQueryWithParser(
+      queries.PROPOSAL('subscription'),
+      { id },
+      callback,
+      (result: QueryResult) => parseProposal(result, this)
+    )
+  }
+  
   async proposals(
     first: number,
     skip: number,

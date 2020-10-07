@@ -8,6 +8,7 @@ import {
   IHoneypotConnector,
   SubscriptionHandler, 
 } from '../types'
+import { buildProposalId } from '../helpers'
 
 export default class Honeypot {
   #address: Address
@@ -28,6 +29,16 @@ export default class Honeypot {
   
   onConfig(callback: Function): SubscriptionHandler {
     return this.#connector.onConfig(this.#address, callback)
+  }
+
+  async proposal({ number = '', appAddress = '' } = {}): Promise<Proposal> {
+    const proposalId = buildProposalId(parseInt(number), appAddress)
+    return this.#connector.proposal(proposalId)
+  }
+
+  onProposal({ number = '', appAddress = ''  } = {}, callback: Function): SubscriptionHandler {
+    const proposalId = buildProposalId(parseInt(number), appAddress)
+    return this.#connector.onProposal(number, callback)
   }
   
   async proposals(

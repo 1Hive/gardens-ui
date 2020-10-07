@@ -67,6 +67,14 @@ async function main(): Promise<void> {
   proposals.map(describeProposal)
   console.log(`\n`)
 
+
+  const proposal = await honeypot.proposal({ number: '1', appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f' })
+  console.log(`\n#################Unique Proposal:`)
+  describeProposal(proposal)
+  console.log(`\n`)
+
+
+
   // console.log(`#####Subscriptions\n\n`)
   // honeypot.onProposals({}, (err: any, proposals) => {
   //   console.log('proposals', proposals)

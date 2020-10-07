@@ -121,6 +121,13 @@ export interface IHoneypotConnector {
     id: string, 
     callback: Function
   ): SubscriptionHandler
+  proposal(
+    id: string
+  ): Promise<Proposal>
+  onProposal(
+    id: string,
+    callback: Function
+  ): SubscriptionHandler
   proposals(
     first: number,
     skip: number,

@@ -1,3 +1,3 @@
 export { parseConfig } from './config'
-export { parseProposals } from './proposals'
+export { parseProposal, parseProposals } from './proposals'
 export { parseSupporter } from './supporter'
