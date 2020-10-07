@@ -2,6 +2,9 @@ import Config from './models/Config'
 import Proposal from './models/Proposal'
 import Supporter from './models/Supporter'
 
+export const ALL_PROPOSAL_TYPES = [0, 1, 2]     // [Suggestion, Proposal, Decision]
+export const ALL_PROPOSAL_STATUSES = [0, 1, 2]  // [Active, Cancelled, Executed]
+
 export type SubscriptionHandler = { unsubscribe: () => void }
 
 export type Address = string
@@ -120,11 +123,19 @@ export interface IHoneypotConnector {
   ): SubscriptionHandler
   proposals(
     first: number,
-    skip: number
+    skip: number,
+    orderBy: string, 
+    orderDirection: string,
+    types: number[],
+    statuses: number[]
   ): Promise<Proposal[]>
   onProposals(
     first: number,
     skip: number,
+    orderBy: string, 
+    orderDirection: string,
+    types: number[],
+    statuses: number[],
     callback: Function
   ): SubscriptionHandler
   supporter(

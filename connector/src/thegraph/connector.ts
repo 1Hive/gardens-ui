@@ -78,11 +78,15 @@ export default class HoneypotConnectorTheGraph
 
   async proposals(
     first: number,
-    skip: number
+    skip: number,
+    orderBy: string,
+    orderDirection: string,
+    types: number[],
+    statuses: number[]
   ): Promise<Proposal[]> {
     return this.#gql.performQueryWithParser(
       queries.ALL_PROPOSALS('query'),
-      { first, skip },
+      { first, skip, orderBy, orderDirection, proposalTypes: types, statuses },
       (result: QueryResult) => parseProposals(result, this)
     )
   }
@@ -90,11 +94,15 @@ export default class HoneypotConnectorTheGraph
   onProposals(
     first: number,
     skip: number,
+    orderBy: string, 
+    orderDirection: string,
+    types: number[],
+    statuses: number[],
     callback: Function
   ): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.ALL_PROPOSALS('subscription'),
-      { first, skip },
+      { first, skip, orderBy, orderDirection, proposalTypes: types, statuses },
       callback,
       (result: QueryResult) => parseProposals(result, this)
     )

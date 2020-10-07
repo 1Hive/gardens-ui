@@ -5,7 +5,7 @@ import connectHoneypot, {
   Supporter,
 } from '@1hive/connect-honey-pot'
 
-const ORG_ADDRESS = '0x0381374d658b2c2e564e954219d9a3cfc6ae3fcb'
+const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
 
 function proposalId(proposal: Proposal): string {
   return (
@@ -23,10 +23,10 @@ function describeProposal(proposal: Proposal): void {
   console.log(`Link: ${proposal.link}`)
   console.log(`Requested amount: ${proposal.requestedAmount}`)
   console.log(`Beneficiary: ${proposal.beneficiary}`)
-  console.log(`Stake history: `)
-  console.log(JSON.stringify(proposal.stakesHistory, null, 2))
-  console.log(`Casts: `)
-  console.log(JSON.stringify(proposal.casts, null, 2))
+  // console.log(`Stake history: `)
+  // console.log(JSON.stringify(proposal.stakesHistory, null, 2))
+  // console.log(`Casts: `)
+  // console.log(JSON.stringify(proposal.casts, null, 2))
   console.log(`\n`)
 }
 
@@ -47,7 +47,7 @@ function describeSupporter(supporter: Supporter): void {
 }
 
 async function main(): Promise<void> {
-  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
+  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 100 })
   console.log('\n##################Organization:', org, `(${org.address})`)
 
   const honeypot = await connectHoneypot(org)
@@ -62,36 +62,29 @@ async function main(): Promise<void> {
   describeConfig(config)
   console.log(`\n`)
 
-  console.log(`\n#################Supporter:`)
-  const supporter = await honeypot.supporter({
-    id: '0x49C01b61Aa3e4cD4C4763c78EcFE75888b49ef50'.toLocaleLowerCase(),
-  })
-  describeSupporter(supporter)
-  console.log(`\n`)
-
-  const proposals = await honeypot.proposals()
+  const proposals = await honeypot.proposals({ first: 10 })
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
 
-  console.log(`#####Subscriptions\n\n`)
-  honeypot.onProposals({}, (err: any, proposals) => {
-    console.log('proposals', proposals)
-    if (err || !proposals) {
-      return
-    }
+  // console.log(`#####Subscriptions\n\n`)
+  // honeypot.onProposals({}, (err: any, proposals) => {
+  //   console.log('proposals', proposals)
+  //   if (err || !proposals) {
+  //     return
+  //   }
 
-    proposals.map(describeProposal)
-  })
+  //   proposals.map(describeProposal)
+  // })
 
-  honeypot.onConfig((err: any, config) => {
-    console.log('config', config)
-    if (err || !config) {
-      return
-    }
+  // honeypot.onConfig((err: any, config) => {
+  //   console.log('config', config)
+  //   if (err || !config) {
+  //     return
+  //   }
 
-    describeConfig(config)
-  })
+  //   describeConfig(config)
+  // })
 }
 
 main().catch(err => {

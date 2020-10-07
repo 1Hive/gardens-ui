@@ -50,8 +50,8 @@ export const CONFIG = (type: string) => gql`
 `
 
 export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($first: Int!, $skip: Int!) {
-    proposals(first: $first, skip: $skip) {
+  ${type} Proposals($first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $orderBy: String!, $orderDirection: String!) {
+    proposals(where: { typeInt_in: $proposalTypes, statusInt_in: $statuses },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
       number
       creator
@@ -62,7 +62,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       name
       link
-      stakes(orderBy: createdAt, orderDirection: asc) {
+      stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         entity {
@@ -71,7 +71,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
         amount
         createdAt
       }
-      stakesHistory(orderBy: createdAt, orderDirection: asc) {
+      stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         entity {
@@ -110,30 +110,6 @@ export const ALL_PROPOSALS = (type: string) => gql`
     }
   }
 `
-
-export const ALL_STAKE_HISTORY = (type: string) => gql`
-  ${type} StakeHistory($first: Int!, $skip: Int!, $entity: Bytes) {
-    stakeHistories(where: { entity: $entity }, first: $first, skip: $skip, orderBy: createdAt, orderDirection: desc) {
-      id
-      type
-      entity
-      proposal {
-        id
-        number
-        type
-        name
-        status
-        metadata
-      }
-      tokensStaked
-      totalTokensStaked
-      conviction
-      time      # Block at which was created
-      createdAt # Timestamp at which was created
-    }
-  }
-`
-
 export const SUPPORTER = (type: string) => gql`
   ${type} Supporter($id: ID!) {
     supporter(id: $id) {

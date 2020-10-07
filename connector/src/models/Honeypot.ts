@@ -2,9 +2,11 @@ import Config from './Config'
 import Proposal from './Proposal'
 import Supporter from './Supporter'
 import {
-  IHoneypotConnector,
   Address,
-  SubscriptionHandler,
+  ALL_PROPOSAL_STATUSES,
+  ALL_PROPOSAL_TYPES,
+  IHoneypotConnector,
+  SubscriptionHandler, 
 } from '../types'
 
 export default class Honeypot {
@@ -28,15 +30,30 @@ export default class Honeypot {
     return this.#connector.onConfig(this.#address, callback)
   }
   
-  async proposals({ first = 1000, skip = 0 } = {}): Promise<Proposal[]> {
-    return this.#connector.proposals(first, skip)
+  async proposals(
+    { 
+      first = 1000,
+      skip = 0,
+      orderBy = 'createdAt',
+      orderDirection = 'desc',
+      types = ALL_PROPOSAL_TYPES,
+      statuses = ALL_PROPOSAL_STATUSES
+    } = {}): Promise<Proposal[]> {
+    return this.#connector.proposals(first, skip, orderBy, orderDirection, types, statuses)
   }
 
   onProposals(
-    { first = 1000, skip = 0 } = {},
+    { 
+      first = 1000,
+      skip = 0, 
+      orderBy = 'createdAt', 
+      orderDirection = 'desc', 
+      types = ALL_PROPOSAL_TYPES, 
+      statuses = ALL_PROPOSAL_STATUSES
+    } = {},
     callback: Function
   ): SubscriptionHandler {
-    return this.#connector.onProposals(first, skip, callback)
+    return this.#connector.onProposals(first, skip, orderBy, orderDirection, types, statuses, callback)
   }
   
   async supporter({ id = '' } = {}): Promise<Supporter> {
