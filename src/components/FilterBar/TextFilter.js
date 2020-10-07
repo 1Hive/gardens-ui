@@ -1,25 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  Button,
-  GU,
-  IconSearch,
-  Popover,
-  SearchInput,
-  useLayout,
-} from '@1hive/1hive-ui'
+import { GU, Popover, SearchInput, useLayout } from '@1hive/1hive-ui'
 
 const TextFilter = React.memo(
-  ({
-    textFilter,
-    updateTextFilter,
-    placeholder = '',
-    openerRef,
-    visible,
-    setVisible,
-    onClick,
-  }) => {
+  ({ textFilter, updateTextFilter, placeholder = '' }) => {
     const { layoutName } = useLayout()
     const compactMode = layoutName === 'small'
 
@@ -27,35 +12,17 @@ const TextFilter = React.memo(
       <div
         css={`
           margin-left: ${1.5 * GU}px;
+          ${compactMode && `margin-bottom: ${1.5 * GU}px;`}
         `}
       >
-        {!compactMode ? (
-          <SearchInput
-            value={textFilter}
-            onChange={updateTextFilter}
-            placeholder={placeholder}
-            css={`
-              width: ${32 * GU}px;
-            `}
-          />
-        ) : (
-          <React.Fragment>
-            <Button
-              display="icon"
-              icon={<IconSearch />}
-              ref={openerRef}
-              label="Search Proposal"
-              onClick={onClick}
-            />
-            <TextFilterPopover
-              textFilter={textFilter}
-              updateTextFilter={updateTextFilter}
-              visible={visible}
-              setVisible={setVisible}
-              opener={openerRef.current}
-            />
-          </React.Fragment>
-        )}
+        <SearchInput
+          value={textFilter}
+          onChange={updateTextFilter}
+          placeholder={placeholder}
+          css={`
+            width: ${32 * GU}px;
+          `}
+        />
       </div>
     )
   }
@@ -92,10 +59,6 @@ TextFilterPopover.propTypes = {
 TextFilter.propTypes = {
   textFilter: PropTypes.string.isRequired,
   updateTextFilter: PropTypes.func.isRequired,
-  openerRef: PropTypes.object,
-  visible: PropTypes.bool.isRequired,
-  setVisible: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 export default TextFilter
