@@ -10,7 +10,7 @@ import {
   VotingConfig as VotingConfigEntity,
 } from '../../generated/schema'
 import { loadOrCreateConfig, loadTokenData } from '.'
-import { STATUS_ACTIVE, STATUS_EXECUTED } from '../statuses'
+import { STATUS_ACTIVE, STATUS_ACTIVE_NUM, STATUS_EXECUTED, STATUS_EXECUTED_NUM } from '../statuses'
 
 //////  Voting config entity //////
 function getVotingConfigEntityId(appAddress: Address): string {
@@ -93,6 +93,7 @@ export function populateVotingDataFromContract(proposal: ProposalEntity | null, 
   let voteData = dandelionVoting.getVote(voteNum)
 
   proposal.status = voteData.value1 ? STATUS_EXECUTED : STATUS_ACTIVE
+  proposal.statusInt = voteData.value1 ? STATUS_EXECUTED_NUM: STATUS_ACTIVE_NUM
   proposal.startBlock = voteData.value2
   proposal.executionBlock = voteData.value3
   proposal.snapshotBlock = voteData.value4

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt,  } from '@graphprotocol/graph-ts'
 import {
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
   ProposalAdded as ProposalAddedEvent,
@@ -42,19 +42,13 @@ export function handleProposalAdded(event: ProposalAddedEvent): void {
   
   populateProposalDataFromEvent(proposal, event)
   
-
-  let proposalType, proposalTypeNum
-  
   if (event.params.amount.gt(BigInt.fromI32(0))) {
-    proposalType = PROPOSAL_TYPE_PROPOSAL
-    proposalTypeNum = PROPOSAL_TYPE_PROPOSAL_NUM
+    proposal.type = PROPOSAL_TYPE_PROPOSAL
+    proposal.typeInt = PROPOSAL_TYPE_PROPOSAL_NUM
   } else {
-    proposalType = PROPOSAL_TYPE_SUGGESTION
-    proposalTypeNum = PROPOSAL_TYPE_SUGGESTION_NUM
+    proposal.type = PROPOSAL_TYPE_SUGGESTION
+    proposal.typeInt = PROPOSAL_TYPE_SUGGESTION_NUM 
   }
-
-  proposal.type = proposalType
-  proposal.typeNum = proposalTypeNum 
 
   proposal.save()
 }
@@ -101,7 +95,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
   let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_CANCELLED
-  proposal.status = STATUS_CANCELLED_NUM
+  proposal.statusInt = STATUS_CANCELLED_NUM
 
   proposal.save()
 }
