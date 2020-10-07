@@ -38,7 +38,7 @@ export default class Honeypot {
 
   onProposal({ number = '', appAddress = ''  } = {}, callback: Function): SubscriptionHandler {
     const proposalId = buildProposalId(parseInt(number), appAddress)
-    return this.#connector.onProposal(number, callback)
+    return this.#connector.onProposal(proposalId, callback)
   }
   
   async proposals(
