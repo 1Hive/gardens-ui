@@ -1,27 +1,31 @@
 import React from 'react'
-import { ButtonBase, GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
+import { ButtonBase, GU, Info, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
 
-function BrightIdStatus({ brightIdVerificationInfo, sponsorshipInfo }) {
+function BrightIdStatus({
+  brightIdVerificationInfo,
+  onVerify,
+  sponsorshipInfo,
+}) {
   const theme = useTheme()
   const {
-    addressExist,
+    // addressExist,
     // addressUnique,
     // signature,
     // timestamp,
     // userAddresses,
-    // userSponsored,
+    userSponsored,
     userVerified,
     // fetching,
   } = brightIdVerificationInfo
 
-  if (!userVerified && !addressExist) {
+  if (!userSponsored) {
     return (
       <div>
         <Tag background={theme.negativeSurface} color={theme.negative}>
           Not verified
         </Tag>
         <ButtonBase
-          onClick={() => window.alert('verify!')}
+          onClick={onVerify}
           css={`
             ${textStyle('label1')};
             color: ${theme.positive};
@@ -31,6 +35,13 @@ function BrightIdStatus({ brightIdVerificationInfo, sponsorshipInfo }) {
           Verify
         </ButtonBase>
       </div>
+    )
+  }
+  if (!userVerified) {
+    return (
+      <Info mode="warning">
+        You are yet to be identified as a unique individual by BrightID
+      </Info>
     )
   }
 }

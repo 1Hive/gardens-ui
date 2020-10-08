@@ -15,6 +15,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import BrightIdStatus from './BrightIdStatus'
+import BrightIdModal from './BrightIdModal'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
 import { fetchPic } from '../../services'
@@ -37,6 +38,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   } = profile
   const [error, setError] = useState(null)
   const [updatingProfile, setUpdatingProfile] = useState(false)
+  const [brightIdModalVisible, setBrightIdModalVisible] = useState(false)
 
   const [formData, setFormData] = useState({
     birthday,
@@ -103,6 +105,10 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const handleBirthdayChange = useCallback(date => {
     const dateFormatted = dateFormat(date, 'iso')
     setFormData(formData => ({ ...formData, birthday: dateFormatted }))
+  }, [])
+
+  const handleOnVerifyBrightId = useCallback(() => {
+    setBrightIdModalVisible(true)
   }, [])
 
   const [updatedFields, removedFields] = useMemo(() => {
@@ -297,6 +303,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
               <BrightIdStatus
                 brightIdVerificationInfo={brightIdVerificationInfo}
                 sponsorshipInfo={sponsorshipInfo}
+                onVerify={handleOnVerifyBrightId}
               />
             </Section>
             <Section title="About">
@@ -350,6 +357,10 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
           </div>
         </form>
       </Box>
+      <BrightIdModal
+        visible={brightIdModalVisible}
+        addressExist={brightIdVerificationInfo.addressExist}
+      />
     </>
   )
 }
