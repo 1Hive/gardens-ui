@@ -10,7 +10,6 @@ import logoSvg from '../assets/logotext.svg'
 function Header({ compact }) {
   const BeeIcon = (
     <a href="https://1hive.org">
-      {' '}
       <img src={beeSvg} height={compact ? 40 : 60} alt="" />
     </a>
   )
