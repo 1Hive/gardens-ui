@@ -11,6 +11,7 @@
     "clipboard-polyfill": "^3.0.0-pre5",
     "dayjs": "^1.8.34",
     "ethers": "5.0.8",
+    "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
