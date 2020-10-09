@@ -51,6 +51,7 @@ function parseProfileData(profile, verifiedAccounts) {
     ...profile,
     coverPhoto,
     image,
+    profileExists: Boolean(Object.keys(profile).length),
     verifiedAccounts: parsedVerifiedAccounts,
   }
 }
