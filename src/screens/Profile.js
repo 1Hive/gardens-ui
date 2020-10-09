@@ -113,7 +113,7 @@ function Profile() {
                     <Button
                       label="Edit profile"
                       onClick={toggleEditMode}
-                      disabled={false}
+                      disabled={!selectedProfile?.authenticated}
                     />
                   </div>
                 )}
