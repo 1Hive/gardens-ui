@@ -6,8 +6,11 @@ export const NODE_URL = 'http:%2f%2fnode.brightid.org'
 export const BRIGHT_ID_ENDPOINT_V5 = 'https://app.brightid.org/node/v5'
 export const BRIGHTID_VERIFICATION_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/verifications`
 export const BRIGHTID_1HIVE_INFO_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/apps/1hive`
+export const BRIGHTID_SUBSCRIPTION_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/operations`
 
 export const BRIGHT_ID_APP_DEEPLINK = `brightid://link-verification/${NODE_URL}/${CONTEXT_ID}`
+
+export const UTC_API_ENDPOINT = `http://worldclockapi.com/api/json/utc/now`
 
 // IPFS endpoint
 export const IPFS_ENDPOINT = {
