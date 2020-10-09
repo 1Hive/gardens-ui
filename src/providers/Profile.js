@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -22,7 +23,9 @@ const boxCache = new Map([])
 function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
+  const [loadingBox, setLoadingBox] = useState(true)
   const [profile, setProfile] = useState(null)
+  const [loadingProfile, setLoadingProfile] = useState(true)
 
   const { sponsorshipInfo, brightIdVerificationInfo } = useBrightIdVerification(
     account
@@ -30,10 +33,22 @@ function ProfileProvider({ children }) {
 
   const cancelled = useRef(false)
 
+  const openBox = useMemo(() => {
+    if (!profile || profile.confirmationFailed) {
+      return false
+    }
+
+    const boxExist = Boolean(box)
+    return (
+      !loadingProfile && !loadingBox && (!profile.profileExists || !boxExist)
+    )
+  }, [box, loadingBox, loadingProfile, profile])
+
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
       return
     }
+    setLoadingBox(true)
 
     try {
       const box = await openBoxForAccount(account, ethereum)
@@ -43,15 +58,25 @@ function ProfileProvider({ children }) {
         setBox(box)
       }
     } catch (err) {
+      setProfile(profile => ({
+        ...profile,
+        confirmationFailed: true,
+      }))
+
       console.error(err)
     }
   }, [account, ethereum])
 
   const fetchAccountProfile = useCallback(async account => {
+    setLoadingProfile(true)
     const publicProfile = await getProfileForAccount(account)
 
     if (!cancelled.current) {
-      setProfile(profile => ({ ...profile, ...publicProfile }))
+      setProfile(profile => ({
+        ...profile,
+        ...publicProfile,
+      }))
+      setLoadingProfile(false)
     }
   }, [])
 
@@ -66,6 +91,7 @@ function ProfileProvider({ children }) {
   useEffect(() => {
     setProfile(null)
     if (!account) {
+      setLoadingProfile(true)
       return
     }
 
@@ -89,6 +115,7 @@ function ProfileProvider({ children }) {
 
     setBox(null)
     auth()
+    setLoadingBox(false)
   }, [account, auth])
 
   useEffect(() => {
@@ -143,6 +170,7 @@ function ProfileProvider({ children }) {
         authenticated: Boolean(box),
         brightIdVerificationInfo,
         sponsorshipInfo,
+        openBox,
         updateProfile,
       }}
     >
