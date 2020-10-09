@@ -28,9 +28,6 @@ function ProfileProvider({ children }) {
     account
   )
 
-  console.log('sponsorshipInfo ', sponsorshipInfo)
-  console.log('verificationInfo ', brightIdVerificationInfo)
-
   const cancelled = useRef(false)
 
   const auth = useCallback(async () => {

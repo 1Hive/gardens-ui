@@ -302,8 +302,8 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
             <Section title="Bright Id">
               <BrightIdStatus
                 brightIdVerificationInfo={brightIdVerificationInfo}
-                sponsorshipInfo={sponsorshipInfo}
                 onVerify={handleOnVerifyBrightId}
+                sponsorshipInfo={sponsorshipInfo}
               />
             </Section>
             <Section title="About">

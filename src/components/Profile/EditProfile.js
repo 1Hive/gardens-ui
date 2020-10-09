@@ -58,8 +58,6 @@ const EditProfile = React.forwardRef(
       return [TabContent, props]
     }, [coverPic, profile, profilePic, selectedTab])
 
-    console.log('PROPS!!! ', props)
-
     return (
       <div>
         <div

@@ -1,5 +1,16 @@
 import React from 'react'
-import { ButtonBase, GU, Info, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  ButtonBase,
+  GU,
+  Info,
+  Link,
+  Tag,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
+import IdentityBadge from '../IdentityBadge'
+
+import verifiedCheck from '../../assets/verifiedCheck.svg'
 
 function BrightIdStatus({
   brightIdVerificationInfo,
@@ -8,15 +19,39 @@ function BrightIdStatus({
 }) {
   const theme = useTheme()
   const {
-    // addressExist,
-    // addressUnique,
-    // signature,
-    // timestamp,
-    // userAddresses,
+    userAddresses,
     userSponsored,
     userVerified,
-    // fetching,
   } = brightIdVerificationInfo
+
+  const primaryAddress = userAddresses.length > 0 ? userAddresses[0] : ''
+
+  if (primaryAddress && userVerified) {
+    return (
+      <div
+        css={`
+          display: flex;
+        `}
+      >
+        <IdentityBadge entity={primaryAddress} />
+        <img
+          src={verifiedCheck}
+          css={`
+            margin-left: ${2 * GU}px;
+          `}
+        />
+      </div>
+    )
+  }
+
+  if (!sponsorshipInfo.availableSponsorships) {
+    return (
+      <Info mode="warning">
+        Unfortunately we don’t have more sponsorships available, please contact
+        us on the <Link href="https://discord.gg/sBzpmxK">1Hive Discord</Link>
+      </Info>
+    )
+  }
 
   if (!userSponsored) {
     return (
