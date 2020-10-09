@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
+import { Box, GU, textStyle, Link, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { formatTokenAmount } from '../lib/token-utils'
 import honeySvg from '../assets/honey.svg'
+import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 
 const Metrics = React.memo(function Metrics({
   totalSupply,
@@ -24,8 +25,9 @@ const Metrics = React.memo(function Metrics({
     >
       <div
         css={`
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr;
+          display: ${compactMode ? 'block' : 'flex'};
+          align-items: flex-start;
+          justify-content: space-between;
         `}
       >
         <div
@@ -46,7 +48,9 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
+          {compactMode && <TokenPrice token={stakeToken} />}
         </div>
+        {!compactMode && <TokenPrice token={stakeToken} />}
         <div>
           <TokenBalance
             label="Common Pool"
@@ -99,8 +103,44 @@ function Metric({ label, value, color }) {
 }
 
 function TokenBalance({ label, token, value }) {
+  const theme = useTheme()
+
+  const price = useUniswapHnyPrice()
+  const usdValue = value * price
+
   return (
-    <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+    <>
+      <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+      <div
+        css={`
+          color: ${theme.green};
+        `}
+      >
+        $ {formatTokenAmount(usdValue, token.decimals)}
+      </div>
+    </>
+  )
+}
+
+function TokenPrice({ token }) {
+  const theme = useTheme()
+  const price = useUniswapHnyPrice()
+
+  return (
+    <div>
+      <Metric label="Honey price" value={`$${price}`} color={theme.green} />
+      <Link
+        href={`https://honeyswap.org/#/swap?inputCurrency=${token.id}`}
+        external
+        css={`
+          ${textStyle('body3')};
+          text-decoration: none;
+          display: flex;
+        `}
+      >
+        Trade
+      </Link>
+    </div>
   )
 }
 
