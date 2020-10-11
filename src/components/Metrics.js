@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, GU, textStyle, Link, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../lib/token-utils'
+import { formatTokenAmount, formatDecimals } from '../lib/token-utils'
 import honeySvg from '../assets/honey.svg'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 
@@ -128,7 +128,11 @@ function TokenPrice({ token }) {
 
   return (
     <div>
-      <Metric label="Honey price" value={`$${price}`} color={theme.green} />
+      <Metric
+        label="Honey price"
+        value={`$${formatDecimals(price, 2)}`}
+        color={theme.green}
+      />
       <Link
         href={`https://honeyswap.org/#/swap?inputCurrency=${token.id}`}
         external
