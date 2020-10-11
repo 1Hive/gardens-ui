@@ -9,7 +9,7 @@ import logoSvg from '../assets/logotext.svg'
 
 function Header({ compact }) {
   const BeeIcon = (
-    <Link href="/" external={false}>
+    <Link href="/#" external={false}>
       <img src={beeSvg} height={compact ? 40 : 60} alt="" />
     </Link>
   )
