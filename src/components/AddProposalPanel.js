@@ -266,13 +266,11 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       </Field>
       <Info title="Proposal creation guidelines">
         In order to create a proposal you must first create a post on the{' '}
-        <Link href="https://forum.1hive.org/">1Hive Forum</Link> under the 🌿
-        Proposals category and paste the link to the corresponding post in the
-        LINK field. You can use a template for proposal creation{' '}
-        <Link href="https://forum.1hive.org/t/creating-better-proposals/200/2?">
-          from here
-        </Link>
-        .
+        <Link href="https://forum.1hive.org/new-topic?category=proposals">
+          1Hive Forum
+        </Link>{' '}
+        under the 🌿 Proposals category and paste the link to the corresponding
+        post in the LINK field.
       </Info>
       <Button
         wide
