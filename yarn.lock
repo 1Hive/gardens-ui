@@ -25,10 +25,10 @@
     recursive-copy "^2.0.9"
     use-inside "^0.2.0"
 
-"@1hive/connect-conviction-voting@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-conviction-voting/-/connect-conviction-voting-0.3.0.tgz#b1a45f70a0c07a52eede9ba62e32e50c6430e91d"
-  integrity sha512-TyMOqjiJw7MkRDHTVUwHa8/ZrR52+mzPQSJclktyyfaa1WaT+KdSe1mkDFPgm0f+cqXgkJ5kHUwXcydFjnojDA==
+"@1hive/connect-conviction-voting@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-conviction-voting/-/connect-conviction-voting-0.3.1.tgz#0fd73a99fd7254caa89722b7e06e7831ce267ebc"
+  integrity sha512-mtG9XigPsOdUiINm/kCpuj3SrddCHG9sB4UXPtkh6T5hAwxCAK0GOyr8hsbgXorOZBXEwH6zasqkIRMAQfmxcw==
   dependencies:
     "@aragon/connect-core" "^0.6.0"
     "@aragon/connect-thegraph" "^0.6.0"
