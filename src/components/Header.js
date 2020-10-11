@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU } from '@1hive/1hive-ui'
+import { GU, Link } from '@1hive/1hive-ui'
 import AccountModule from './Account/AccountModule'
 import Layout from './Layout'
 
@@ -8,7 +8,12 @@ import headerBackgroundSvg from '../assets/header-background.svg'
 import logoSvg from '../assets/logotext.svg'
 
 function Header({ compact }) {
-  const BeeIcon = <img src={beeSvg} height={compact ? 40 : 60} alt="" />
+  const BeeIcon = (
+    <Link href="/#" external={false}>
+      <img src={beeSvg} height={compact ? 40 : 60} alt="" />
+    </Link>
+  )
+
   const headerItemsWidth = compact ? 'auto' : 25 * GU
 
   return (
