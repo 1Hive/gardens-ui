@@ -20,7 +20,7 @@ const App = React.memo(function App() {
     proposals,
     proposalPanel,
     totalStaked,
-    convictionVotingExists,
+    errorFetchingApp,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -44,7 +44,7 @@ const App = React.memo(function App() {
   
   return (
     <div>
-      <NetworkErrorModal visible={!isLoading && !convictionVotingExists} />
+      {/* <NetworkErrorModal visible={errorFetchingApp} /> */}
       {isLoading && <AppLoader />}
       {!account ? (
         MainScreenComponent
