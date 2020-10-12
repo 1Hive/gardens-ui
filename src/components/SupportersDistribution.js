@@ -81,7 +81,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
                   />
                   <DistributionItem
                     amount={item.amount}
-                    entity={item.entity}
+                    entity={item.entity.id}
                     percentage={percentage}
                     stakeToken={stakeToken}
                   />
