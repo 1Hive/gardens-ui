@@ -1,32 +1,17 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
+import useAccountTokens from '../hooks/useAccountTokens'
 import { useAppState } from '../providers/AppState'
 import { useTokenBalances } from '../hooks/useOrgHooks'
 
-import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
-function Wallet({ account, myStakes }) {
+function Wallet({ account }) {
   const theme = useTheme()
   const { stakeToken } = useAppState()
-  const { balance: accountBalance } = useTokenBalances(account, stakeToken)
-
-  const myActiveTokens = useMemo(() => {
-    if (!myStakes) {
-      return new BigNumber('0')
-    }
-    return myStakes.reduce((accumulator, stake) => {
-      return accumulator.plus(stake.amount)
-    }, new BigNumber('0'))
-  }, [myStakes])
-
-  const inactiveTokens = useMemo(() => {
-    if (!accountBalance.gte(0) || !myActiveTokens) {
-      return new BigNumber('0')
-    }
-    return accountBalance.minus(myActiveTokens)
-  }, [accountBalance, myActiveTokens])
+  const { balance } = useTokenBalances(account, stakeToken)
+  const { inactiveTokens } = useAccountTokens(account, balance)
 
   return (
     <Box padding={0}>
@@ -37,10 +22,10 @@ function Wallet({ account, myStakes }) {
       >
         <div>
           <Balance
-            amount={accountBalance}
+            amount={balance}
             decimals={stakeToken.decimals}
             label="Balance"
-            loading={accountBalance.lt(0)}
+            loading={balance.lt(0)}
             symbol={stakeToken.symbol}
           />
           <LineSeparator border={theme.border} />
