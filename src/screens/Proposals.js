@@ -139,29 +139,48 @@ const Proposals = React.memo(
         <DataView
           heading={
             compactMode && (
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                `}
-              >
-                <strong
+              <div>
+                <div
                   css={`
-                    ${textStyle('body1')}
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
                   `}
                 >
-                  Proposals
-                </strong>
-                {account && (
-                  <Button
-                    mode="strong"
-                    onClick={onRequestNewProposal}
-                    label="New proposal"
-                    icon={<IconPlus />}
-                    display={compactMode ? 'icon' : 'label'}
-                  />
-                )}
+                  <strong
+                    css={`
+                      ${textStyle('body1')}
+                    `}
+                  >
+                    Proposals
+                  </strong>
+                  {account && (
+                    <Button
+                      mode="strong"
+                      onClick={onRequestNewProposal}
+                      label="New proposal"
+                      icon={<IconPlus />}
+                      display={compactMode ? 'icon' : 'label'}
+                    />
+                  )}
+                </div>
+                <FilterBar
+                  proposalsSize={filteredProposals.length}
+                  proposalExecutionStatusFilter={proposalExecutionStatusFilter}
+                  proposalStatusFilter={proposalSupportStatusFilter}
+                  proposalTextFilter={proposalTextFilter}
+                  proposalTypeFilter={proposalTypeFilter}
+                  handleExecutionStatusFilterChange={
+                    handleExecutionStatusFilterChange
+                  }
+                  handleProposalStatusFilterChange={
+                    handleProposalSupportFilterChange
+                  }
+                  handleTextFilterChange={updateTextFilter}
+                  handleProposalTypeFilterChange={
+                    handleProposalTypeFilterChange
+                  }
+                />
               </div>
             )
           }
@@ -261,7 +280,13 @@ const IdAndTitle = ({ id, name, selectProposal }) => {
   }, [id, selectProposal])
 
   return (
-    <Link onClick={handleOnClick}>
+    <Link
+      onClick={handleOnClick}
+      css={`
+        white-space: normal;
+        text-align: left;
+      `}
+    >
       <span
         css={`
           color: ${theme.surfaceContentSecondary};

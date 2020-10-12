@@ -2,7 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { DropDown, GU, textStyle, Tag, useTheme } from '@1hive/1hive-ui'
+import {
+  DropDown,
+  GU,
+  textStyle,
+  Tag,
+  useTheme,
+  useLayout,
+} from '@1hive/1hive-ui'
 
 const DropwdownFilter = React.memo(
   ({
@@ -11,6 +18,8 @@ const DropwdownFilter = React.memo(
     proposalsSize = -1,
   }) => {
     const theme = useTheme()
+    const { layoutName } = useLayout()
+    const compactMode = layoutName === 'small'
     return (
       <DropDown
         header="Support"
@@ -31,6 +40,7 @@ const DropwdownFilter = React.memo(
         ]}
         css={`
           margin-left: ${1.5 * GU}px;
+          ${compactMode && `margin-bottom: ${1.5 * GU}px;`}
         `}
       />
     )

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { DropDown, GU } from '@1hive/1hive-ui'
+import { DropDown, GU, useLayout } from '@1hive/1hive-ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
@@ -19,6 +19,8 @@ const FilterBar = React.memo(
   }) => {
     const [textFieldVisible, setTextFieldVisible] = useState(false)
     const textFilterOpener = useRef(null)
+    const { layoutName } = useLayout()
+    const compactMode = layoutName === 'small'
 
     const handlerTextFilterClick = useCallback(() => {
       setTextFieldVisible(true)
@@ -30,7 +32,10 @@ const FilterBar = React.memo(
       <div
         css={`
           display: flex;
-          align-itmes: center;
+          align-items: center;
+          flex-wrap: wrap;
+          ${compactMode && `margin-top: ${1.5 * GU}px;`}
+          ${compactMode && `margin-left: -${1.5 * GU}px;`}
         `}
       >
         <DropDown
@@ -39,6 +44,10 @@ const FilterBar = React.memo(
           selected={proposalTypeFilter}
           onChange={handleProposalTypeFilterChange}
           items={['All', 'Funding', 'Signaling']}
+          css={`
+            ${compactMode && `margin-left: ${1.5 * GU}px;`}
+            ${compactMode && `margin-bottom: ${1.5 * GU}px;`}
+          `}
         />
         <DropDown
           header="Status"
@@ -48,6 +57,7 @@ const FilterBar = React.memo(
           items={['All', 'Open', 'Closed', 'Removed']}
           css={`
             margin-left: ${1.5 * GU}px;
+            ${compactMode && `margin-bottom: ${1.5 * GU}px;`}
           `}
         />
         {!statusFilterDisabled && (
