@@ -2,6 +2,8 @@ import React from 'react'
 import { GU, SidePanel } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
+import FilterSidebar from '../components/FilterSidebar/FilterSidebar'
+import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import ProposalsList from '../components/Feed/ProposalsList'
 
@@ -30,8 +32,18 @@ const Home = React.memo(function Home() {
             display: flex;
           `}
         >
-          {/* // TODO: Add filters and hero banner */}
-          <div>filter sidebar</div>
+          <FilterSidebar
+            itemsStatus={filters.status.items}
+            itemsSupport={filters.support.items}
+            itemsType={filters.type.items}
+            proposalStatusFilter={filters.status.filter}
+            proposalSupportFilter={filters.support.filter}
+            proposalTypeFilter={filters.type.filter}
+            onClearFilters={filters.onClear}
+            onStatusFilterChange={filters.status.onChange}
+            onSupportFilterChange={filters.support.onChange}
+            onTypeFilterChange={filters.type.onChange}
+          />
           <ProposalsList
             activeFilters={filters.isActive}
             proposals={proposals}
@@ -42,7 +54,7 @@ const Home = React.memo(function Home() {
             rankingItems={filters.ranking.items}
             selectedRanking={filters.ranking.filter}
           />
-          <div>Hero banner</div>
+          <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
         </div>
       )}
 
