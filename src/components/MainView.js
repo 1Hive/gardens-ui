@@ -1,9 +1,10 @@
 import React from 'react'
-import { useViewport } from '@1hive/1hive-ui'
+import { GU, Root, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
+import ScrollView from './ScrollView'
 
 function MainView({ children }) {
   const { below } = useViewport()
@@ -17,22 +18,39 @@ function MainView({ children }) {
         height: 100vh;
       `}
     >
-      <Header compact={compactMode} />
-
       <div
         css={`
-          flex: 1 0 auto;
+          flex-shrink: 0;
         `}
       >
-        <div
-          css={`
-            height: 100%;
-          `}
-        >
-          <Layout>{children}</Layout>
-        </div>
-        <Footer compact={compactMode} />
+        <Header compact={compactMode} />
       </div>
+      <Root.Provider
+        css={`
+          flex-grow: 1;
+          height: 100%;
+          position: relative;
+        `}
+      >
+        <ScrollView>
+          <div
+            css={`
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            `}
+          >
+            <div
+              css={`
+                flex: 1 0 auto;
+              `}
+            >
+              <Layout paddingBottom={3 * GU}>{children}</Layout>
+            </div>
+            <Footer compact={compactMode} />
+          </div>
+        </ScrollView>
+      </Root.Provider>
     </div>
   )
 }
