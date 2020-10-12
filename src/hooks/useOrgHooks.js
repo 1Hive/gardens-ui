@@ -39,13 +39,14 @@ export function useOrganzation() {
 
   useEffect(() => {
     let cancelled = false
+    
     const fetchOrg = async () => {
       const orgAddress = getNetwork().honeypot
       const organization = await connect(orgAddress, 'thegraph', {
         ethereum: ethereum || ethers,
         network: getDefaultChain(),
       })
-
+      console.log("@@@@@@")
       if (!cancelled) {
         setOrganization(organization)
       }
@@ -73,24 +74,36 @@ export function useAppData(organization) {
     let cancelled = false
 
     const fetchAppData = async () => {
-      const apps = await organization.apps()
-      const permissions = await organization.permissions()
+      try {
+        const apps = await organization.apps()
+        const permissions = await organization.permissions()
 
-      const convictionApp = apps.find(app => app.name === appName)
+        const convictionApp = apps.find(app => app.name === appName)
+        console.log("!!!!!",convictionApp)
+        if (!convictionApp) { 
+          throw new Error("Conviction App not found.")
+        }
 
-      const convictionAppPermissions = permissions.filter(({ appAddress }) =>
-        addressesEqual(appAddress, convictionApp.address)
-      )
+        const convictionAppPermissions = permissions.filter(({ appAddress }) =>
+          addressesEqual(appAddress, convictionApp.address)
+        )
 
-      const convictionVoting = await connectConviction(convictionApp)
+        const convictionVoting = await connectConviction(convictionApp)
+      
 
-      if (!cancelled) {
+        if (!cancelled) {
+          setAppData(appData => ({
+            ...appData,
+            installedApps: apps,
+            convictionVoting,
+            organization,
+            permissions: convictionAppPermissions,
+          }))
+        }
+      } catch (error) {
         setAppData(appData => ({
           ...appData,
-          installedApps: apps,
-          convictionVoting,
-          organization,
-          permissions: convictionAppPermissions,
+          errorFetchingApp: true,
         }))
       }
     }

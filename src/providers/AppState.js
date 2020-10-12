@@ -22,6 +22,7 @@ function AppStateProvider({ children }) {
     requestToken,
     stakeToken,
     totalStaked,
+    errorFetchingApp,
     ...appData
   } = useAppData(organization)
 
@@ -44,7 +45,7 @@ function AppStateProvider({ children }) {
   }, [totalSupply, totalStaked, minThresholdStakePercentage])
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = !convictionVoting || balancesLoading || !effectiveSupply
+  const appLoading = errorFetchingApp ? false : !convictionVoting || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
