@@ -2,12 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { useAccountStakesHistory } from '../../hooks/useStakes'
-
 function Activity({ account }) {
   const theme = useTheme()
 
-  const myStakeHistory = useAccountStakesHistory(account)
+  const myStakeHistory = []
 
   return (
     <Box>
