@@ -188,6 +188,7 @@ export const SUPPORTER = (type: string) => gql`
           number
           status
           metadata
+          type
         }
         createdAt
 
@@ -201,6 +202,7 @@ export const SUPPORTER = (type: string) => gql`
           number
           status
           name
+          type
         }
         amount 
         createdAt
@@ -214,6 +216,7 @@ export const SUPPORTER = (type: string) => gql`
           number
           status
           name
+          type
         }
         totalTokensStaked
         conviction
