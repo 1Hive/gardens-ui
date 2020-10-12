@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Field, GU, Info, Slider, TextInput } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '../hooks/useAccountTotalStaked'
@@ -7,8 +7,7 @@ import { useWallet } from '../providers/Wallet'
 
 import { addressesEqual } from '../lib/web3-utils'
 import BigNumber from '../lib/bigNumber'
-import { formatTokenAmount } from '../lib/token-utils'
-import { round, safeDiv, toDecimals } from '../lib/math-utils'
+import { toDecimals, fromDecimals } from '../lib/math-utils'
 import AccountNotConnected from './AccountNotConnected'
 
 const MAX_INPUT_DECIMAL_BASE = 6
@@ -34,35 +33,25 @@ function ProposalActions({
     [stakes, connectedAccount]
   )
 
-  const nonStakedTokens = useMemo(
+  const maxAvailable = useMemo(
     () => accountBalance.minus(totalStaked).plus(myStake.amount),
     [myStake.amount, accountBalance, totalStaked]
   )
 
-  const myStakeAmountFormatted = formatTokenAmount(
-    myStake.amount,
-    stakeToken.decimals
+  const roundSlider = bigNum =>
+    bigNum
+      .shiftedBy(-stakeToken.decimals)
+      .decimalPlaces(Math.min(MAX_INPUT_DECIMAL_BASE, stakeToken.decimals))
+      .toString()
+
+  const [inputValue, setInputValue] = useState(
+    myStake?.amount &&
+      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
   )
-
-  const formattedMaxAvailableAmount = useMemo(() => {
-    if (!stakeToken) {
-      return '0'
-    }
-    return formatTokenAmount(nonStakedTokens, stakeToken.decimals)
-  }, [stakeToken, nonStakedTokens])
-
-  const rounding = Math.min(MAX_INPUT_DECIMAL_BASE, stakeToken.decimals)
-
-  const [
-    { value: inputValue, max: maxAvailable, progress },
-    setAmount,
-    setProgress,
-  ] = useAmount(
-    myStakeAmountFormatted.replace(',', ''),
-    formattedMaxAvailableAmount.replace(',', ''),
-    rounding
+  const amount = BigNumber.minimum(
+    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
+    maxAvailable
   )
-
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
@@ -80,22 +69,25 @@ function ProposalActions({
   }, [id, onExecuteProposal])
 
   const handleChangeSupport = useCallback(() => {
-    const newValue = new BigNumber(toDecimals(inputValue, stakeToken.decimals))
-
-    if (newValue.lt(myStake.amount)) {
-      onWithdrawFromProposal(id, myStake.amount.minus(newValue).toString(10))
+    if (amount.lt(myStake.amount)) {
+      onWithdrawFromProposal(
+        id,
+        myStake.amount
+          .minus(amount)
+          .integerValue()
+          .toString(10)
+      )
       return
     }
 
-    onStakeToProposal(id, newValue.minus(myStake.amount).toString(10))
-  }, [
-    id,
-    inputValue,
-    myStake.amount,
-    stakeToken.decimals,
-    onStakeToProposal,
-    onWithdrawFromProposal,
-  ])
+    onStakeToProposal(
+      id,
+      amount
+        .minus(myStake.amount)
+        .integerValue()
+        .toString(10)
+    )
+  }, [id, amount, myStake.amount, onStakeToProposal, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
     if (mode === 'execute') {
@@ -109,11 +101,10 @@ function ProposalActions({
 
     if (mode === 'update') {
       return {
-        text: 'Change support',
+        text: amount.toString() === '0' ? 'Withdraw support' : 'Change support',
         action: handleChangeSupport,
         mode: 'normal',
-        disabled:
-          myStakeAmountFormatted.replace(',', '') === inputValue.toString(),
+        disabled: myStake.amount.toString() === amount.toString(),
       }
     }
     return {
@@ -123,13 +114,13 @@ function ProposalActions({
       disabled: !accountBalance.gt(0),
     }
   }, [
+    mode,
+    onRequestSupportProposal,
     accountBalance,
     handleExecute,
+    amount,
     handleChangeSupport,
-    inputValue,
-    mode,
-    myStakeAmountFormatted,
-    onRequestSupportProposal,
+    myStake.amount,
   ])
 
   return connectedAccount ? (
@@ -143,8 +134,14 @@ function ProposalActions({
             `}
           >
             <Slider
-              value={progress}
-              onUpdate={setProgress}
+              value={
+                maxAvailable.gt(0) ? amount.div(maxAvailable).toNumber() : 0
+              }
+              onUpdate={newProgress =>
+                setInputValue(
+                  roundSlider(maxAvailable.multipliedBy(newProgress))
+                )
+              }
               css={`
                 padding-left: 0;
                 width: 100%;
@@ -152,11 +149,11 @@ function ProposalActions({
             />
             <TextInput
               value={inputValue}
-              onChange={setAmount}
               type="number"
-              max={maxAvailable}
+              onChange={event => setInputValue(event.target.value)}
+              max={fromDecimals(maxAvailable.toString(), stakeToken.decimals)}
               min="0"
-              required
+              step="any"
               css={`
                 width: ${18 * GU}px;
               `}
@@ -189,75 +186,6 @@ function ProposalActions({
   ) : (
     <AccountNotConnected />
   )
-}
-
-const useAmount = (balance, maxAvailable, rounding) => {
-  const [amount, setAmount] = useState({
-    value: balance, // TODO: Use BNs
-    max: maxAvailable,
-    progress: safeDiv(balance, maxAvailable),
-  })
-
-  useEffect(() => {
-    setAmount(prevState => {
-      if (prevState.max === maxAvailable) {
-        return prevState
-      }
-      const newValue = round(prevState.progress * maxAvailable, rounding)
-
-      return {
-        ...prevState,
-        value: String(newValue),
-        max: maxAvailable,
-      }
-    })
-  }, [maxAvailable, rounding])
-
-  useEffect(() => {
-    setAmount(prevState => {
-      if (prevState.value === balance) {
-        return prevState
-      }
-
-      return {
-        ...prevState,
-        value: balance,
-        progress: safeDiv(balance, maxAvailable),
-      }
-    })
-  }, [balance, maxAvailable])
-
-  const handleAmountChange = useCallback(
-    event => {
-      const newValue = Math.min(event.target.value, maxAvailable)
-      const newProgress = safeDiv(newValue, maxAvailable)
-
-      setAmount(prevState => ({
-        ...prevState,
-        value: String(newValue),
-        progress: newProgress,
-      }))
-    },
-    [maxAvailable]
-  )
-
-  const handleSliderChange = useCallback(
-    newProgress => {
-      const newValue =
-        newProgress === 1
-          ? round(Number(maxAvailable), rounding)
-          : round(newProgress * maxAvailable, 2)
-
-      setAmount(prevState => ({
-        ...prevState,
-        value: String(newValue),
-        progress: newProgress,
-      }))
-    },
-    [maxAvailable, rounding]
-  )
-
-  return [amount, handleAmountChange, handleSliderChange]
 }
 
 export default ProposalActions
