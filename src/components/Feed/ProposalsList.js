@@ -4,11 +4,11 @@ import EmptyResults from './EmptyResults'
 
 function ProposalsList({
   activeFilters,
-  proposals,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
   onWithdrawFromProposal,
+  proposals,
   rankingItems,
   selectedRanking,
 }) {

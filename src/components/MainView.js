@@ -1,10 +1,9 @@
 import React from 'react'
-import { GU, Root, useViewport } from '@1hive/1hive-ui'
+import { GU, Root, ScrollView, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
-import ScrollView from './ScrollView'
 
 function MainView({ children }) {
   const { below } = useViewport()

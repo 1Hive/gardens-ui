@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
-const Loader = () => {
+function Loader() {
   const defaultOptions = {
     animationData: beeAnimation,
   }
