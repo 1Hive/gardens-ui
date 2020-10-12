@@ -2,16 +2,17 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   transformConfigData,
   transformProposalData,
-  transformStakeHistoryData,
+  transformSupporterData,
 } from '../lib/data-utils'
+import { useAppState } from '../providers/AppState'
 
-export function useConfigSubscription(convictionVoting) {
+export function useConfigSubscription(honeypot) {
   const [config, setConfig] = useState(null)
 
   const configSubscription = useRef(null)
 
-  const onConfigHandler = useCallback(config => {
-    if (!config) {
+  const onConfigHandler = useCallback((err, config) => {
+    if (err || !config) {
       return
     }
     const transformedConfig = transformConfigData(config)
@@ -19,70 +20,121 @@ export function useConfigSubscription(convictionVoting) {
   }, [])
 
   useEffect(() => {
-    if (!convictionVoting) {
+    if (!honeypot) {
       return
     }
 
-    configSubscription.current = convictionVoting.onConfig(onConfigHandler)
+    configSubscription.current = honeypot.onConfig(onConfigHandler)
 
     return () => configSubscription.current.unsubscribe()
-  }, [convictionVoting, onConfigHandler])
+  }, [honeypot, onConfigHandler])
 
   return config
 }
 
-export function useProposalsSubscription(convictionVoting) {
+export function useProposalsSubscription(filters) {
+  const { honeypot } = useAppState()
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
 
-  const onProposalsHandler = useCallback((proposals = []) => {
+  const onProposalsHandler = useCallback((err, proposals = []) => {
+    if (err || !proposals) {
+      return
+    }
+
     const transformedProposals = proposals.map(transformProposalData)
     setProposals(transformedProposals)
   }, [])
 
   useEffect(() => {
-    if (!convictionVoting) {
+    if (!honeypot) {
       return
     }
 
-    proposalsSubscription.current = convictionVoting.onProposals(
-      {},
+    proposalsSubscription.current = honeypot.onProposals(
+      {
+        first: filters.proposalCount,
+        ...filters.ranking.queryArgs,
+        ...filters.status.queryArgs,
+        ...filters.type.queryArgs,
+      },
       onProposalsHandler
     )
 
     return () => proposalsSubscription.current.unsubscribe()
-  }, [convictionVoting, onProposalsHandler])
+  }, [
+    filters.proposalCount,
+    filters.ranking,
+    filters.status,
+    filters.type,
+    honeypot,
+    onProposalsHandler,
+  ])
 
   return proposals
 }
 
-export function useStakesHistorySubscription(convictionVoting) {
-  const [stakes, setStakes] = useState([])
+// TODO: Handle errors
+export function useProposalSubscription(proposalId, appAddress) {
+  const { honeypot } = useAppState()
+  const [proposal, setProposal] = useState(null)
 
-  const stakesSubscription = useRef(null)
+  const proposalSubscription = useRef(null)
 
-  const onStakesHandler = useCallback((stakes = []) => {
-    const transformedStakes = stakes
-      .map(transformStakeHistoryData)
-      .sort((s1, s2) => s1.time - s2.time) // TODO: Remove when subgraph query updated
-    setStakes(transformedStakes)
-  }, [])
-
-  useEffect(() => {
-    if (!convictionVoting) {
+  const onProposalHandler = useCallback((err, proposal) => {
+    if (err || !proposal) {
       return
     }
 
-    stakesSubscription.current = convictionVoting.onStakesHistory(
-      {},
-      onStakesHandler
+    const transformedProposal = transformProposalData(proposal)
+    setProposal(transformedProposal)
+  }, [])
+
+  useEffect(() => {
+    if (!honeypot || !proposalId || !appAddress) {
+      return
+    }
+
+    proposalSubscription.current = honeypot.onProposal(
+      { number: proposalId, appAddress },
+      onProposalHandler
+    )
+
+    return () => proposalSubscription.current.unsubscribe()
+  }, [appAddress, honeypot, onProposalHandler, proposalId])
+
+  return proposal
+}
+
+export function useSupporterSubscription(honeypot, account) {
+  const [supporter, setSupporter] = useState(null)
+
+  const supporterSubscription = useRef(null)
+
+  const onSupporterHandler = useCallback((err, supporter) => {
+    if (err || !supporter) {
+      return
+    }
+
+    const transformedSupported = transformSupporterData(supporter)
+    setSupporter(transformedSupported)
+  }, [])
+
+  useEffect(() => {
+    if (!honeypot || !account) {
+      return
+    }
+
+    supporterSubscription.current = honeypot.onSupporter(
+      { id: account.toLowerCase() },
+      onSupporterHandler
     )
 
     return () => {
-      stakesSubscription.current.unsubscribe()
+      supporterSubscription.current.unsubscribe()
     }
-  }, [convictionVoting, onStakesHandler])
+  }, [account, honeypot, onSupporterHandler])
 
-  return stakes
+  return supporter
 }

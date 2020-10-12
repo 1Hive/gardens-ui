@@ -125,14 +125,22 @@
     recursive-copy "^2.0.9"
     use-inside "^0.2.0"
 
-"@1hive/connect-conviction-voting@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-conviction-voting/-/connect-conviction-voting-0.3.0.tgz#b1a45f70a0c07a52eede9ba62e32e50c6430e91d"
-  integrity sha512-TyMOqjiJw7MkRDHTVUwHa8/ZrR52+mzPQSJclktyyfaa1WaT+KdSe1mkDFPgm0f+cqXgkJ5kHUwXcydFjnojDA==
+"@1hive/connect-honey-pot@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-honey-pot/-/connect-honey-pot-0.0.7.tgz#7e0a39f63fd27de8c9b8af261588cf0866af098c"
+  integrity sha512-jpenO/t2Crs2sarKSPDWpmi7WGkdwZ88iHGHFbNGjSZWz8JIfEGTOpJ0a+wzC8VlJegVqJLcXqQKMrrjhRZA8g==
   dependencies:
-    "@aragon/connect-core" "^0.6.0"
-    "@aragon/connect-thegraph" "^0.6.0"
+    "@aragon/connect-core" "0.7.0"
+    "@aragon/connect-thegraph" "0.7.0"
     graphql-tag "^2.10.3"
+
+"@aragon/connect-core@0.7.0", "@aragon/connect-core@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.7.0.tgz#2464a1ce136fb1166d0de32fcada5a8c5da6e2dc"
+  integrity sha512-Edt42nVzuuQ1weVIVILIZts8k8//40AYzmikROH9WtWxGQyR41PPf3rLTkVtFnuekfVk/3qr1NSeRXuEJBXzXQ==
+  dependencies:
+    ethers "^5.0.7"
+    radspec "^2.0.0-rc.2"
 
 "@aragon/connect-core@^0.6.0":
   version "0.6.0"
@@ -148,6 +156,19 @@
   integrity sha512-qRpZwYKCz9qm+kxiyqrUuJDMbKTZAt+t9Cgvs99NRvF2G/opr4lHX6LjdIYIuUUo8QJBD78pun41bavTUHm8Zg==
   dependencies:
     "@aragon/connect-core" "^0.6.0"
+
+"@aragon/connect-thegraph@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.7.0.tgz#f4331d19ab78f33047b852adbd970efd6cd547b1"
+  integrity sha512-2s7uqMdoMEqr3M4r6tAoNAlOo3+yQRoRwxRy0i8r3mBhmo5kjU/jkfnLQO1SpS3HRHZrMZcc9Tkrj0zlijurDw==
+  dependencies:
+    "@aragon/connect-core" "^0.7.0"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
 
 "@aragon/connect-thegraph@^0.6.0":
   version "0.6.0"
@@ -12877,6 +12898,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-web@^5.1.3:
+  version "5.7.3"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.3.tgz#dbe542270665be5dd5b32deae19e27de6e77728c"
+  integrity sha512-ftN4AdiNmtoVpCfN1doiUIUbhOrDSMikH1Yl64/xO5lzQ31AO0+G82bqrCNHIW5Ec2zE/g7y4iz7zBR1YJwDaA==
+
 loud-rejection@^1.0.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/loud-rejection/-/loud-rejection-1.6.0.tgz#5b46f80147edee578870f086d04821cf998e551f"
@@ -16458,7 +16484,7 @@ rabin-wasm@^0.1.1:
     node-fetch "^2.6.0"
     readable-stream "^3.6.0"
 
-radspec@^2.0.0-rc.1:
+radspec@^2.0.0-rc.1, radspec@^2.0.0-rc.2:
   version "2.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/radspec/-/radspec-2.0.0-rc.2.tgz#0ab09853586ab34be3099dde774880a200d14047"
   integrity sha512-etB24HzGpuqngCqTLOKCmJw6YWcyaaHMZth5mzpTHB5jqkL2VWkr8O0rjzxqV0DKZmKBF07mEQuHbod9sKo8mw==
@@ -16599,6 +16625,14 @@ react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-lottie@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-lottie/-/react-lottie-1.2.3.tgz#8544b96939e088658072eea5e12d912cdaa3acc1"
+  integrity sha512-qLCERxUr8M+4mm1LU0Ruxw5Y5Fn/OmYkGfnA+JDM/dZb3oKwVAJCjwnjkj9TMHtzR2U6sMEUD3ZZ1RaHagM7kA==
+  dependencies:
+    babel-runtime "^6.26.0"
+    lottie-web "^5.1.3"
 
 react-onclickout@^2.0.8:
   version "2.0.8"

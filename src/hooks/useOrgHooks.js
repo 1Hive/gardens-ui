@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
-import connectConviction from '@1hive/connect-conviction-voting'
+import connectHoneypot from '@1hive/connect-honey-pot'
 import { connect } from '@aragon/connect'
 import { useContractReadOnly } from './useContract'
-import {
-  useConfigSubscription,
-  useProposalsSubscription,
-  useStakesHistorySubscription,
-} from './useSubscriptions'
+import { useConfigSubscription } from './useSubscriptions'
 import { useWallet } from '../providers/Wallet'
 
 // utils
@@ -23,14 +19,10 @@ import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
 const DEFAULT_APP_DATA = {
-  convictionVoting: null,
-  stakeToken: {},
-  requestToken: {},
-  proposals: [],
-  stakesHistory: [],
-  alpha: BigNumber(0),
-  maxRatio: BigNumber(0),
-  weight: BigNumber(0),
+  honeypot: null,
+  installedApps: [],
+  organization: null,
+  permissions: [],
 }
 
 export function useOrganzation() {
@@ -40,14 +32,18 @@ export function useOrganzation() {
   useEffect(() => {
     let cancelled = false
     const fetchOrg = async () => {
-      const orgAddress = getNetwork().honeypot
-      const organization = await connect(orgAddress, 'thegraph', {
-        ethereum: ethereum || ethers,
-        network: getDefaultChain(),
-      })
+      try {
+        const orgAddress = getNetwork().honeypot
+        const organization = await connect(orgAddress, 'thegraph', {
+          ethereum: ethereum || ethers,
+          network: getDefaultChain(),
+        })
 
-      if (!cancelled) {
-        setOrganization(organization)
+        if (!cancelled) {
+          setOrganization(organization)
+        }
+      } catch (err) {
+        console.error(`Error fetching organization: ${err}`)
       }
     }
 
@@ -73,25 +69,27 @@ export function useAppData(organization) {
     let cancelled = false
 
     const fetchAppData = async () => {
-      const apps = await organization.apps()
-      const permissions = await organization.permissions()
+      try {
+        const apps = await organization.apps()
+        const permissions = await organization.permissions()
+        const convictionApp = apps.find(app => app.name === appName)
+        const convictionAppPermissions = permissions.filter(({ appAddress }) =>
+          addressesEqual(appAddress, convictionApp.address)
+        )
 
-      const convictionApp = apps.find(app => app.name === appName)
+        const honeypot = await connectHoneypot(organization)
 
-      const convictionAppPermissions = permissions.filter(({ appAddress }) =>
-        addressesEqual(appAddress, convictionApp.address)
-      )
-
-      const convictionVoting = await connectConviction(convictionApp)
-
-      if (!cancelled) {
-        setAppData(appData => ({
-          ...appData,
-          installedApps: apps,
-          convictionVoting,
-          organization,
-          permissions: convictionAppPermissions,
-        }))
+        if (!cancelled) {
+          setAppData(appData => ({
+            ...appData,
+            honeypot,
+            installedApps: apps,
+            organization,
+            permissions: convictionAppPermissions,
+          }))
+        }
+      } catch (err) {
+        console.error(`Error fetching app data: ${err}`)
       }
     }
 
@@ -102,14 +100,9 @@ export function useAppData(organization) {
     }
   }, [appName, organization])
 
-  const config = useConfigSubscription(appData.convictionVoting)
-  const proposals = useProposalsSubscription(appData.convictionVoting)
+  const config = useConfigSubscription(appData.honeypot)
 
-  // Stakes done across all proposals on this app
-  // Includes old and current stakes
-  const stakesHistory = useStakesHistorySubscription(appData.convictionVoting)
-
-  return { ...appData, ...config, proposals, stakesHistory }
+  return { ...appData, config }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
@@ -125,7 +118,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract || !token.id) {
+    if (!vaultContract || !token?.id) {
       return
     }
 
@@ -160,7 +153,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token.id])
+  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token])
 
   return vaultBalance
 }
@@ -171,10 +164,10 @@ export function useTokenBalances(account, token, timer = 3000) {
     totalSupply: new BigNumber(-1),
   })
 
-  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
+  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
 
   useEffect(() => {
-    if (!token.id) {
+    if (!token?.id || !tokenContract) {
       return
     }
 
@@ -213,7 +206,7 @@ export function useTokenBalances(account, token, timer = 3000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [account, balances, tokenContract, token.id])
+  }, [account, balances, tokenContract, token])
 
   return balances
 }
