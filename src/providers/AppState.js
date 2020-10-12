@@ -14,7 +14,7 @@ const AppStateContext = React.createContext()
 
 function AppStateProvider({ children }) {
   const { account } = useWallet()
-  const organization = useOrganzation()
+  const [organization, errorFetchingOrg]= useOrganzation()
   const {
     convictionVoting,
     installedApps,
@@ -45,7 +45,7 @@ function AppStateProvider({ children }) {
   }, [totalSupply, totalStaked, minThresholdStakePercentage])
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = errorFetchingApp ? false : !convictionVoting || balancesLoading || !effectiveSupply
+  const appLoading = errorFetchingApp || errorFetchingOrg ? false : !convictionVoting || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
@@ -54,6 +54,7 @@ function AppStateProvider({ children }) {
         accountBalance: balance,
         convictionVoting,
         effectiveSupply,
+        errorFetchingOrg,
         installedApps,
         isLoading: appLoading,
         requestToken,

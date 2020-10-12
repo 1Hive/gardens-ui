@@ -35,6 +35,7 @@ const DEFAULT_APP_DATA = {
 
 export function useOrganzation() {
   const [organzation, setOrganization] = useState(null)
+  const [errorFetchingOrg, setErrorFetchingOrg] = useState(false)
   const { ethereum, ethers } = useWallet()
 
   useEffect(() => {
@@ -42,13 +43,17 @@ export function useOrganzation() {
     
     const fetchOrg = async () => {
       const orgAddress = getNetwork().honeypot
-      const organization = await connect(orgAddress, 'thegraph', {
-        ethereum: ethereum || ethers,
-        network: getDefaultChain(),
-      })
-      console.log("@@@@@@")
-      if (!cancelled) {
-        setOrganization(organization)
+      try {
+        const organization = await connect(orgAddress, 'thegraph', {
+          ethereum: ethereum || ethers,
+          network: getDefaultChain(),
+        })
+        
+        if (!cancelled) {
+          setOrganization(organization)
+        }
+      } catch (error) {
+        setErrorFetchingOrg(true)
       }
     }
 
@@ -59,7 +64,7 @@ export function useOrganzation() {
     }
   }, [ethers, ethereum])
 
-  return organzation
+  return [organzation, errorFetchingOrg]
 }
 
 export function useAppData(organization) {
@@ -79,7 +84,6 @@ export function useAppData(organization) {
         const permissions = await organization.permissions()
 
         const convictionApp = apps.find(app => app.name === appName)
-        console.log("!!!!!",convictionApp)
         if (!convictionApp) { 
           throw new Error("Conviction App not found.")
         }
