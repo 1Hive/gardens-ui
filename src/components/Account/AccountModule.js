@@ -10,6 +10,7 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
+import { useAppState } from '../../providers/AppState'
 import { useProfile } from '../../providers/Profile'
 
 import { getUseWalletProviders } from '../../lib/web3-utils'
@@ -50,6 +51,7 @@ function AccountModule({ compact }) {
   const { openBox } = useProfile()
 
   const { account, activating } = wallet
+  const { isLoading } = useAppState()
 
   const clearError = useCallback(() => setActivationError(null), [])
 
@@ -168,6 +170,7 @@ function AccountModule({ compact }) {
           label="Enable account"
           onClick={toggle}
           display={compact ? 'icon' : 'all'}
+          disabled={isLoading}
         />
       )}
 
