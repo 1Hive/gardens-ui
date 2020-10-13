@@ -13,7 +13,7 @@ function App() {
     <WalletProvider>
       <ProfileProvider>
         <AppStateProvider>
-          <Main assetsUrl="/aragon-ui/" layout={false}>
+          <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
             <HashRouter>
               <MainView>
                 <Routes />

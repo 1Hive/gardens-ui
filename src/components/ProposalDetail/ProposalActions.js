@@ -24,11 +24,13 @@ function ProposalActions({
   const { account: connectedAccount } = useWallet()
   const { id, currentConviction, stakes, threshold } = proposal
 
-  const totalStaked = useAccountTotalStaked()
+  const totalStaked = useAccountTotalStaked(connectedAccount)
 
   const myStake = useMemo(
     () =>
-      stakes.find(({ entity }) => addressesEqual(entity, connectedAccount)) || {
+      stakes.find(({ entity }) =>
+        addressesEqual(entity.id, connectedAccount)
+      ) || {
         amount: new BigNumber('0'),
       },
     [stakes, connectedAccount]

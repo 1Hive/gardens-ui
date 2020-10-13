@@ -1,59 +1,33 @@
 import { useMemo } from 'react'
 import { useAppState } from '../providers/AppState'
-
-import { addressesEqual } from '../lib/web3-utils'
+import { useSupporterSubscription } from './useSubscriptions'
 import { PROPOSAL_STATUS_ACTIVE_STRING } from '../constants'
 
 export function useAccountStakes(account) {
-  const { proposals, stakeToken } = useAppState()
+  const { honeypot, stakeToken } = useAppState()
+  const supporter = useSupporterSubscription(honeypot, account)
 
   return useMemo(() => {
-    if (!stakeToken || !proposals) {
+    if (!stakeToken || !supporter) {
       return []
     }
 
-    return proposals.reduce((acc, proposal) => {
+    return supporter.stakes.reduce((acc, stake) => {
       if (
-        !proposal.status === PROPOSAL_STATUS_ACTIVE_STRING ||
-        !proposal.stakes
+        stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING ||
+        stake.amount.eq(0)
       ) {
-        return acc
-      }
-
-      const myStake = proposal.stakes.find(
-        stake => addressesEqual(stake.entity, account) && stake.amount.gt(0)
-      )
-
-      if (!myStake) {
         return acc
       }
 
       return [
         ...acc,
         {
-          proposalId: proposal.id,
-          proposalName: proposal.name,
-          amount: myStake.amount,
+          proposalId: stake.proposal.id,
+          proposalName: stake.proposal.name,
+          amount: stake.amount,
         },
       ]
     }, [])
-  }, [account, proposals, stakeToken])
-}
-
-export function useAccountStakesHistory(account) {
-  const { proposals, stakesHistory } = useAppState()
-
-  return useMemo(
-    () =>
-      stakesHistory
-        .filter(stake => addressesEqual(stake.entity, account))
-        .map(stake => {
-          const proposal = proposals.find(
-            proposal => proposal.id === stake.proposalId
-          )
-
-          return { ...stake, proposalName: proposal?.name }
-        }),
-    [account, proposals, stakesHistory]
-  )
+  }, [stakeToken, supporter])
 }
