@@ -1,13 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
+import useAccountTokens from '../hooks/useAccountTokens'
 import { useAppState } from '../providers/AppState'
-import { useAccountStakes } from '../hooks/useStakes'
 import { useWallet } from '../providers/Wallet'
 
-import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
 
 function BalanceModule() {
@@ -17,23 +16,7 @@ function BalanceModule() {
   const { accountBalance, stakeToken } = useAppState()
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
-  const myStakes = useAccountStakes(wallet.account)
-
-  const myActiveTokens = useMemo(() => {
-    if (!myStakes) {
-      return new BigNumber('0')
-    }
-    return myStakes.reduce((accumulator, stake) => {
-      return accumulator.plus(stake.amount)
-    }, new BigNumber('0'))
-  }, [myStakes])
-
-  const inactiveTokens = useMemo(() => {
-    if (!accountBalance.gte(0) || !myActiveTokens) {
-      return new BigNumber('0')
-    }
-    return accountBalance.minus(myActiveTokens)
-  }, [accountBalance, myActiveTokens])
+  const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
   const handleOnClick = useCallback(() => history.push('/profile'), [history]) // TODO: Send to profile/stake management section
 

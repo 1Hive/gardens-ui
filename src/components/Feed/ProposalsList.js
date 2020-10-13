@@ -1,14 +1,16 @@
 import React, { useRef } from 'react'
 import { Button, GU } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
+import ProposalCard from './ProposalCard'
+import ProposalRankings from './ProposalRankings'
 
 function ProposalsList({
   activeFilters,
+  proposals,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
   onWithdrawFromProposal,
-  proposals,
   rankingItems,
   selectedRanking,
 }) {
@@ -21,13 +23,23 @@ function ProposalsList({
         flex-basis: 50%;
       `}
     >
-      {/* TODO: ADD rankings */}
-      <div>Proposal rankings</div>
+      <ProposalRankings
+        items={rankingItems}
+        onChange={onRankingFilterChange}
+        selected={selectedRanking}
+      />
       <div>
         {proposals.length ? (
           <>
             {proposals.map((proposal, index) => {
-              return <div>Proposal # {proposal.id}</div>
+              return (
+                <ProposalCard
+                  key={index}
+                  proposal={proposal}
+                  onStakeToProposal={onStakeToProposal}
+                  onWithdrawFromProposal={onWithdrawFromProposal}
+                />
+              )
             })}
             <div
               css={`
