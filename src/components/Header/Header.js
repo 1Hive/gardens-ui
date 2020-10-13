@@ -4,6 +4,7 @@ import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useWallet } from '../../providers/Wallet'
+import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
 
 import beeSvg from '../../assets/bee.svg'
 import logoSvg from '../../assets/logo.svg'
@@ -60,7 +61,7 @@ function Header({ compact }) {
                 Home
               </Link>
               <Link
-                href="https://honeyswap.org/#/swap?inputCurrency=0x71850b7e9ee3f13ab46d67167341e4bdc905eef9"
+                href={HONEYSWAP_TRADE_HONEY}
                 css={`
                   text-decoration: none;
                   color: ${theme.contentSecondary};

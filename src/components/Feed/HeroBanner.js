@@ -24,7 +24,6 @@ function HeroBanner({ onRequestNewProposal }) {
         flex-basis: 25%;
         height: fit-content;
         margin-left: ${3 * GU}px;
-
         top: ${3 * GU}px;
         position: sticky;
       `}
@@ -32,7 +31,6 @@ function HeroBanner({ onRequestNewProposal }) {
       <div
         css={`
           background: url(${banner}) no-repeat;
-
           height: 520px;
           width: 327px;
           padding: ${8 * GU}px;

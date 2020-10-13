@@ -1,13 +1,14 @@
 import React from 'react'
-import { GU } from '@1hive/1hive-ui'
+import { GU, useTheme } from '@1hive/1hive-ui'
 import { ProposalTypes } from '../types'
 
 function ProposalIcon({ type }) {
+  const theme = useTheme()
   let color
   if (type === ProposalTypes.Decision) {
     color = '#FFC3AB'
   } else {
-    color = type === ProposalTypes.Proposal ? '#ffdd0f' : '#71EEB8'
+    color = type === ProposalTypes.Proposal ? theme.yellow : theme.green
   }
 
   return (

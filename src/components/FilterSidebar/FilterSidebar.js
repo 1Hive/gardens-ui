@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import ListFilter from './ListFilter'
 import { useWallet } from '../../providers/Wallet'
+import { STATUS_FILTER_OPEN } from '../../utils/filter-utils'
 
 const FilterSidebar = React.memo(
   ({
@@ -19,7 +20,8 @@ const FilterSidebar = React.memo(
   }) => {
     const theme = useTheme()
     const { account } = useWallet()
-    const supportFilterDisabled = proposalStatusFilter > 1 || !account
+    const supportFilterDisabled =
+      proposalStatusFilter > STATUS_FILTER_OPEN || !account
 
     return (
       <div
