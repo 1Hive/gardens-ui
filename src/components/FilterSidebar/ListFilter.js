@@ -35,7 +35,7 @@ function ListItem({ index, item, selected, onSelect }) {
           ? `
           color:${theme.content}
         `
-          : 'cursor:pointer;'};
+          : 'cursor:pointer'};
       `}
     >
       {item}
