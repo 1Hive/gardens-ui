@@ -12,11 +12,14 @@ import {
 import styled from 'styled-components'
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
+
 import { useAppState } from '../providers/AppState'
 import { useBlockTime } from '../hooks/useBlock'
+import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
+import { isEntitySupporting } from '../lib/conviction'
 import { PROPOSAL_STATUS_EXECUTED_STRING } from '../constants'
 
 const UNABLE_TO_PASS = 0
@@ -53,6 +56,7 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
 
 export function ConvictionBar({ proposal, withThreshold = true }) {
   const theme = useTheme()
+  const { account } = useWallet()
 
   const {
     userStakedConviction,
@@ -66,6 +70,8 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
   const thirdSize = futureStakedConviction.minus(stakedConviction)
   const signalingProposal = requestedAmount.eq(0)
 
+  const isSupporting = isEntitySupporting(proposal, account)
+
   return (
     <div>
       <SummaryBar
@@ -76,11 +82,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
         compact
       />
       <div>
-        <span
-          css={`
-            ${textStyle('body3')}
-          `}
-        >
+        <span>
           {Math.round(stakedConviction * 100)}%{' '}
           {!signalingProposal &&
             (withThreshold ? (
@@ -107,6 +109,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
                   : `(stable)`}
               </span>
             ))}
+          {isSupporting && <Tag>Supported</Tag>}
         </span>
       </div>
     </div>
