@@ -24,7 +24,7 @@ function IdentityBadge({ entity, useBox, ...props }) {
       }
 
       const profile = await getProfileForAccount(entity)
-      if (!cancelled) {
+      if (profile && !cancelled) {
         setProfileName(profile.name)
         addressCache.set(entity, profile.name)
       }
