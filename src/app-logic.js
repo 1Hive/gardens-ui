@@ -11,7 +11,7 @@ import { PROPOSAL_STATUS_ACTIVE_STRING } from './constants'
 export default function useAppLogic() {
   const { account } = useWallet()
 
-  const { isLoading, stakeToken, totalStaked, errorFetchingApp, errorFetchingOrg } = useAppState()
+  const { isLoading, stakeToken, totalStaked, fetchingErrors } = useAppState()
 
   const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
@@ -56,14 +56,15 @@ export default function useAppLogic() {
 
   const actions = useActions(proposalPanel.requestClose)
 
+  console.log("ERRORS: ", fetchingErrors);
+
   return {
     actions,
+    fetchingErrors,
     isLoading: isLoading || !blockHasLoaded,
     myStakes,
     proposals,
     proposalPanel,
     totalStaked,
-    errorFetchingApp,
-    errorFetchingOrg,
   }
 }

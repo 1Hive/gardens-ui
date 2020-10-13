@@ -45,7 +45,8 @@ function AppStateProvider({ children }) {
   }, [totalSupply, totalStaked, minThresholdStakePercentage])
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = errorFetchingApp || errorFetchingOrg ? false : !convictionVoting || balancesLoading || !effectiveSupply
+  const fetchingErrors = errorFetchingApp || errorFetchingOrg
+  const appLoading = fetchingErrors ? false : !convictionVoting || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
@@ -54,7 +55,7 @@ function AppStateProvider({ children }) {
         accountBalance: balance,
         convictionVoting,
         effectiveSupply,
-        errorFetchingOrg,
+        fetchingErrors,
         installedApps,
         isLoading: appLoading,
         requestToken,
