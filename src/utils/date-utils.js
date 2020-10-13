@@ -7,6 +7,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 const KNOWN_FORMATS = {
   onlyDate: 'DD/MM/YYYY',
   iso: 'YYYY-MM-DD',
+  custom: 'DD MMMM HH:mm',
 }
 
 // dayjs plugins
