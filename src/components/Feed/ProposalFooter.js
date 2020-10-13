@@ -68,7 +68,7 @@ function ProposalFooter({
             {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
           </div>
         </div>
-        <div>Status : {proposal.status}</div>
+        <div>Status: {proposal.status}</div>
       </div>
     </div>
   )
