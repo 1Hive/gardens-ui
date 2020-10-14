@@ -86,3 +86,37 @@ export function useStakesHistorySubscription(convictionVoting) {
 
   return stakes
 }
+
+export function useStakesHistoryByProposalSubscription(
+  convictionVoting,
+  proposalId
+) {
+  const [stakes, setStakes] = useState([])
+
+  const stakesSubscription = useRef(null)
+
+  const onStakesHandler = useCallback((stakes = []) => {
+    const transformedStakes = stakes
+      .map(transformStakeHistoryData)
+      .sort((s1, s2) => s1.time - s2.time) // TODO: Remove when subgraph query updated
+    setStakes(transformedStakes)
+  }, [])
+
+  useEffect(() => {
+    if (!convictionVoting) {
+      return
+    }
+
+    stakesSubscription.current = convictionVoting.onStakesHistoryByProposal(
+      proposalId,
+      {},
+      onStakesHandler
+    )
+
+    return () => {
+      stakesSubscription.current.unsubscribe()
+    }
+  }, [convictionVoting, onStakesHandler, proposalId])
+
+  return stakes
+}

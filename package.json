@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@1hive/1hive-ui": "^1.0.2",
-    "@1hive/connect-conviction-voting": "0.3.1",
+    "@1hive/connect-conviction-voting": "0.4.1",
     "@aragon/connect": "^0.6.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
