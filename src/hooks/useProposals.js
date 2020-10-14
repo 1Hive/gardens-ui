@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useOrganization } from '@aragon/connect-react'
 import BigNumber from '../lib/bigNumber'
 import { useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
@@ -20,6 +21,7 @@ import {
 } from '../lib/conviction'
 import { testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
+import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -82,6 +84,7 @@ export function useProposal(proposalId, appAddress) {
   const { account } = useWallet()
   const proposal = useProposalSubscription(proposalId, appAddress)
   const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
+  const [org] = useOrganization()
 
   const latestBlock = useLatestBlock()
   const blockHasLoaded = latestBlock.number !== 0
@@ -90,14 +93,23 @@ export function useProposal(proposalId, appAddress) {
     return [null, blockHasLoaded]
   }
 
-  const proposalWithData = processProposal(
-    proposal,
-    latestBlock,
-    effectiveSupply,
-    vaultBalance,
-    account,
-    config?.conviction
-  )
+  console.log('USE PROPOSAL ', proposal)
+
+  const proposalWithData =
+    proposal.type === ProposalTypes.Decision
+      ? proposal
+      : processProposal(
+          proposal,
+          latestBlock,
+          effectiveSupply,
+          vaultBalance,
+          account,
+          config?.conviction
+        )
+
+  const { describedSteps } = org.describeScript(proposalWithData.script)
+
+  console.log(describedSteps)
 
   return [proposalWithData, blockHasLoaded]
 }

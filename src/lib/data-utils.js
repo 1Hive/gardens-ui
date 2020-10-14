@@ -1,4 +1,4 @@
-import { convertFromString } from '../types'
+import { convertFromString, ProposalTypes } from '../types'
 import BigNumber from './bigNumber'
 
 export function transformConfigData(config) {
@@ -26,6 +26,13 @@ export function transformConfigData(config) {
 
 export function transformProposalData(proposal) {
   // TODO: transform casts
+
+  return convertFromString(proposal.type) === ProposalTypes.Decision
+    ? transformDecisionData(proposal)
+    : transformConvictionProposalData(proposal)
+}
+
+function transformConvictionProposalData(proposal) {
   return {
     ...proposal,
     createdAt: parseInt(proposal.createdAt, 10) * 1000,
@@ -35,6 +42,28 @@ export function transformProposalData(proposal) {
     stakesHistory: proposal.stakesHistory.map(transformStakeHistoryData),
     type: convertFromString(proposal.type),
     totalTokensStaked: new BigNumber(proposal.totalTokensStaked),
+  }
+}
+
+function transformDecisionData(proposal) {
+  console.log('RETURN HERE')
+  return {
+    ...proposal,
+    id: proposal.number,
+    creator: proposal.creator,
+    status: proposal.status,
+    type: convertFromString(proposal.type),
+    createdAt: proposal.createdAt,
+    metadata: proposal.metadata,
+    startBlock: parseInt(proposal.startBlock, 10),
+    executionBlock: parseInt(proposal.executionBlock, 10),
+    snapshotBlock: parseInt(proposal.snapshotBlock, 10),
+    yea: parseInt(proposal.yea, 10),
+    nay: parseInt(proposal.nay, 10),
+    votingPower: parseInt(proposal.votingPower, 10),
+    script: proposal.script,
+    casts: proposal.casts,
+    requestedAmount: new BigNumber(proposal.requestedAmount),
   }
 }
 
