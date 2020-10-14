@@ -38,20 +38,13 @@ function ProposalActions({
     [myStake.amount, accountBalance, totalStaked]
   )
 
-  const roundSlider = bigNum =>
-    bigNum
-      .shiftedBy(-stakeToken.decimals)
-      .decimalPlaces(Math.min(MAX_INPUT_DECIMAL_BASE, stakeToken.decimals))
-      .toString()
+  const [
+    inputValue, // tokens amount formatted as a string
+    amount, // tokens amount formatted as a big number
+    handleAmountChange,
+    handleSliderChange,
+  ] = useAmount(myStake, stakeToken, maxAvailable)
 
-  const [inputValue, setInputValue] = useState(
-    myStake?.amount &&
-      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
-  )
-  const amount = BigNumber.minimum(
-    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
-    maxAvailable
-  )
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
@@ -87,7 +80,7 @@ function ProposalActions({
         .integerValue()
         .toString(10)
     )
-  }, [id, amount, myStake.amount, onStakeToProposal, onWithdrawFromProposal])
+  }, [amount, id, myStake.amount, onStakeToProposal, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
     if (mode === 'execute') {
@@ -114,13 +107,13 @@ function ProposalActions({
       disabled: !accountBalance.gt(0),
     }
   }, [
-    mode,
-    onRequestSupportProposal,
     accountBalance,
-    handleExecute,
     amount,
     handleChangeSupport,
+    handleExecute,
+    mode,
     myStake.amount,
+    onRequestSupportProposal,
   ])
 
   return connectedAccount ? (
@@ -137,11 +130,7 @@ function ProposalActions({
               value={
                 maxAvailable.gt(0) ? amount.div(maxAvailable).toNumber() : 0
               }
-              onUpdate={newProgress =>
-                setInputValue(
-                  roundSlider(maxAvailable.multipliedBy(newProgress))
-                )
-              }
+              onUpdate={handleSliderChange}
               css={`
                 padding-left: 0;
                 width: 100%;
@@ -150,7 +139,7 @@ function ProposalActions({
             <TextInput
               value={inputValue}
               type="number"
-              onChange={event => setInputValue(event.target.value)}
+              onChange={handleAmountChange}
               max={fromDecimals(maxAvailable.toString(), stakeToken.decimals)}
               min="0"
               step="any"
@@ -186,6 +175,35 @@ function ProposalActions({
   ) : (
     <AccountNotConnected />
   )
+}
+
+const useAmount = (myStake, stakeToken, maxAvailable) => {
+  const roundSlider = useCallback(
+    bigNum =>
+      bigNum
+        .shiftedBy(-stakeToken.decimals)
+        .decimalPlaces(Math.min(MAX_INPUT_DECIMAL_BASE, stakeToken.decimals))
+        .toString(),
+    [stakeToken.decimals]
+  )
+
+  const [inputValue, setInputValue] = useState(
+    myStake?.amount &&
+      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
+  )
+  const amount = BigNumber.minimum(
+    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
+    maxAvailable
+  )
+
+  const handleAmountChange = event => setInputValue(event.target.value)
+
+  const handleSliderChange = useCallback(
+    newProgress =>
+      setInputValue(roundSlider(maxAvailable.multipliedBy(newProgress))),
+    [maxAvailable, roundSlider]
+  )
+  return [inputValue, amount, handleAmountChange, handleSliderChange]
 }
 
 export default ProposalActions
