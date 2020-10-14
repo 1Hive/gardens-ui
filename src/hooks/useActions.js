@@ -9,13 +9,14 @@ const GAS_LIMIT = 450000
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
-  const { convictionVoting, installedApps, organization } = useAppState()
+  const { config, installedApps, organization } = useAppState()
+  const convictionVotingAddress = config?.conviction.id
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
       sendIntent(
         organization,
-        convictionVoting.address,
+        convictionVotingAddress,
         'addProposal',
         [title, link ? toHex(link) : '0x', amount, beneficiary],
         { ethers, from: account }
@@ -23,14 +24,14 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingAddress, ethers, onDone, organization]
   )
 
   const cancelProposal = useCallback(
     async proposalId => {
       sendIntent(
         organization,
-        convictionVoting.address,
+        convictionVotingAddress,
         'cancelProposal',
         [proposalId],
         { ethers, from: account }
@@ -38,14 +39,14 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingAddress, ethers, onDone, organization]
   )
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
       sendIntent(
         organization,
-        convictionVoting.address,
+        convictionVotingAddress,
         'stakeToProposal',
         [proposalId, amount],
         { ethers, from: account }
@@ -53,29 +54,37 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingAddress, ethers, onDone, organization]
   )
 
   const withdrawFromProposal = useCallback(
     (proposalId, amount) => {
+      const params = [proposalId]
+      if (amount) {
+        params.push(amount)
+      }
+
       sendIntent(
         organization,
-        convictionVoting.address,
-        'withdrawFromProposal',
-        [proposalId, amount],
-        { ethers, from: account }
+        convictionVotingAddress,
+        amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
+        params,
+        {
+          ethers,
+          from: account,
+        }
       )
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingAddress, ethers, onDone, organization]
   )
 
   const executeProposal = useCallback(
     proposalId => {
       sendIntent(
         organization,
-        convictionVoting.address,
+        convictionVotingAddress,
         'executeProposal',
         [proposalId],
         { ethers, from: account }
@@ -83,7 +92,7 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingAddress, ethers, onDone, organization]
   )
 
   const executeIssuance = useCallback(() => {
