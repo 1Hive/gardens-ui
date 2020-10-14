@@ -63,7 +63,7 @@ export default function useAppLogic() {
   return {
     actions,
     fetchingErrors,
-    isLoading: isLoading,
+    isLoading,
     myStakes,
     proposals,
     proposalPanel,

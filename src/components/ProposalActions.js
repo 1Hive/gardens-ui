@@ -31,7 +31,7 @@ function ProposalActions({
     threshold,
   } = useProposalConvictionData(proposal)
 
-  const totalStaked = useAccountTotalStaked(proposal)
+  const totalStaked = useAccountTotalStaked()
 
   const myStake = useMemo(
     () =>

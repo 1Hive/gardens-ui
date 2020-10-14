@@ -99,19 +99,20 @@ export function useProposalConvictionData(proposal) {
 
   return {
     ...proposal,
+    convictionTrend,
     currentConviction,
-    userConviction,
-    userStakedConviction,
-    stakedConviction,
     futureConviction,
     futureStakedConviction,
-    neededConviction,
+    loading: latestBlock.number === 0,
     maxConviction,
-    threshold,
     minTokensNeeded,
+    neededConviction,
     neededTokens,
     remainingTimeToPass,
-    convictionTrend,
+    stakedConviction,
+    threshold,
     totalTokensStaked,
+    userConviction,
+    userStakedConviction,
   }
 }

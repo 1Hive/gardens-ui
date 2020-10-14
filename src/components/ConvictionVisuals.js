@@ -3,6 +3,7 @@ import {
   GU,
   IconCheck,
   IconCross,
+  LoadingRing,
   Tag,
   textStyle,
   Timer,
@@ -54,22 +55,14 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
 
 export function ConvictionBar({ proposal, withThreshold = true }) {
   const theme = useTheme()
-  // const { alpha, convictionVoting, effectiveSupply } = useAppState()
-
-  // const {
-  //   userStakedConviction,
-  //   // stakedConviction,
-  //   futureStakedConviction,
-  //   neededConviction,
-  //   requestedAmount,
-  // } = proposal
 
   const {
-    userStakedConviction,
-    stakedConviction,
     futureStakedConviction,
+    loading,
     neededConviction,
     requestedAmount,
+    stakedConviction,
+    userStakedConviction,
   } = useProposalConvictionData(proposal)
 
   const secondSize = stakedConviction.minus(userStakedConviction)
@@ -86,38 +79,46 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
         compact
       />
       <div>
-        <span
-          css={`
-            ${textStyle('body3')}
-          `}
-        >
-          {Math.round(stakedConviction * 100)}%{' '}
-          {!signalingProposal &&
-            (withThreshold ? (
-              <span
-                css={`
-                  color: ${theme.contentSecondary};
-                `}
-              >
-                {neededConviction
-                  ? `(${Math.round(
-                      neededConviction.multipliedBy(new BigNumber('100'))
-                    )}% needed)`
-                  : `(threshold out of range)`}
-              </span>
-            ) : (
-              <span
-                css={`
-                  color: ${theme.contentSecondary};
-                `}
-              >
-                {Math.round(stakedConviction * 100) !==
-                Math.round(futureStakedConviction * 100)
-                  ? `(predicted: ${Math.round(futureStakedConviction * 100)}%)`
-                  : `(stable)`}
-              </span>
-            ))}
-        </span>
+        {loading ? (
+          <div>
+            <LoadingRing />
+          </div>
+        ) : (
+          <span
+            css={`
+              ${textStyle('body3')}
+            `}
+          >
+            {Math.round(stakedConviction * 100)}%{' '}
+            {!signalingProposal &&
+              (withThreshold ? (
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  {neededConviction
+                    ? `(${Math.round(
+                        neededConviction.multipliedBy(new BigNumber('100'))
+                      )}% needed)`
+                    : `(threshold out of range)`}
+                </span>
+              ) : (
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  {Math.round(stakedConviction * 100) !==
+                  Math.round(futureStakedConviction * 100)
+                    ? `(predicted: ${Math.round(
+                        futureStakedConviction * 100
+                      )}%)`
+                    : `(stable)`}
+                </span>
+              ))}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -132,11 +133,12 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const theme = useTheme()
 
   const {
+    currentConviction,
+    loading,
+    neededTokens,
+    remainingTimeToPass,
     status,
     threshold,
-    remainingTimeToPass,
-    neededTokens,
-    currentConviction,
   } = useProposalConvictionData(proposal)
 
   const view = useMemo(() => {
@@ -152,7 +154,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
     return UNABLE_TO_PASS
   }, [currentConviction, status, threshold, remainingTimeToPass])
 
-  return (
+  return loading ? (
+    <LoadingRing label="Loading" />
+  ) : (
     <div
       css={`
         display: grid;
