@@ -110,7 +110,7 @@ function processProposal(
   account,
   config
 ) {
-  const { alpha, maxRatio, totalStaked, weight } = config || {}
+  const { alpha, maxRatio, weight } = config || {}
 
   let threshold = null
   let neededConviction = null
@@ -137,7 +137,7 @@ function processProposal(
   const userStakedConviction = userConviction.div(maxConviction)
 
   const stakedConviction = currentConviction.div(maxConviction)
-  const futureConviction = getMaxConviction(totalStaked, alpha)
+  const futureConviction = getMaxConviction(proposal.totalTokensStaked, alpha)
   const futureStakedConviction = futureConviction.div(maxConviction)
   const convictionTrend = getConvictionTrend(
     proposal.stakesHistory,
@@ -162,12 +162,12 @@ function processProposal(
 
     minTokensNeeded = getMinNeededStake(threshold, alpha)
 
-    neededTokens = minTokensNeeded.minus(totalStaked)
+    neededTokens = minTokensNeeded.minus(proposal.totalTokensStaked)
 
     remainingTimeToPass = getRemainingTimeToPass(
       threshold,
       currentConviction,
-      totalStaked,
+      proposal.totalTokensStaked,
       alpha
     )
   }
@@ -187,6 +187,5 @@ function processProposal(
     neededTokens,
     remainingTimeToPass,
     convictionTrend,
-    totalStaked,
   }
 }
