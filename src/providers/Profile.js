@@ -58,7 +58,7 @@ function ProfileProvider({ children }) {
         confirmationFailed: true,
       }))
 
-      console.error(err)
+      console.error(`Error opening box for account: ${err}`)
     }
   }, [account, ethereum])
 
