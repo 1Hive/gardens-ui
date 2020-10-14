@@ -31,6 +31,7 @@ const DEFAULT_APP_DATA = {
   alpha: BigNumber(0),
   maxRatio: BigNumber(0),
   weight: BigNumber(0),
+  errorFetchingApp: false,
 }
 
 export function useOrganzation() {
@@ -48,7 +49,6 @@ export function useOrganzation() {
           ethereum: ethereum || ethers,
           network: getDefaultChain(),
         })
-        
         if (!cancelled) {
           setOrganization(organization)
         }
