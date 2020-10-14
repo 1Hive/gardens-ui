@@ -4,6 +4,7 @@ import { SidePanel, Split } from '@1hive/1hive-ui'
 import AddProposalPanel from './components/AddProposalPanel'
 import AppLoader from './components/AppLoader'
 import MainScreen from './screens/MainScreen'
+import NetworkErrorModal from './components/NetworkErrorModal'
 import StakingTokens from './screens/StakingTokens'
 import Wallet from './components/Wallet'
 
@@ -19,6 +20,7 @@ const App = React.memo(function App() {
     proposals,
     proposalPanel,
     totalStaked,
+    fetchingErrors,
   } = useAppLogic()
 
   const { account } = useWallet()
@@ -39,9 +41,10 @@ const App = React.memo(function App() {
       totalActiveTokens={totalStaked}
     />
   )
-
+  
   return (
     <div>
+      <NetworkErrorModal visible={fetchingErrors} />
       {isLoading && <AppLoader />}
       {!account ? (
         MainScreenComponent

@@ -31,23 +31,29 @@ const DEFAULT_APP_DATA = {
   alpha: BigNumber(0),
   maxRatio: BigNumber(0),
   weight: BigNumber(0),
+  errorFetchingApp: false,
 }
 
 export function useOrganzation() {
   const [organzation, setOrganization] = useState(null)
+  const [errorFetchingOrg, setErrorFetchingOrg] = useState(false)
   const { ethereum, ethers } = useWallet()
 
   useEffect(() => {
     let cancelled = false
+    
     const fetchOrg = async () => {
       const orgAddress = getNetwork().honeypot
-      const organization = await connect(orgAddress, 'thegraph', {
-        ethereum: ethereum || ethers,
-        network: getDefaultChain(),
-      })
-
-      if (!cancelled) {
-        setOrganization(organization)
+      try {
+        const organization = await connect(orgAddress, 'thegraph', {
+          ethereum: ethereum || ethers,
+          network: getDefaultChain(),
+        })
+        if (!cancelled) {
+          setOrganization(organization)
+        }
+      } catch (error) {
+        setErrorFetchingOrg(true)
       }
     }
 
@@ -58,7 +64,7 @@ export function useOrganzation() {
     }
   }, [ethers, ethereum])
 
-  return organzation
+  return [organzation, errorFetchingOrg]
 }
 
 export function useAppData(organization) {
@@ -73,24 +79,35 @@ export function useAppData(organization) {
     let cancelled = false
 
     const fetchAppData = async () => {
-      const apps = await organization.apps()
-      const permissions = await organization.permissions()
+      try {
+        const apps = await organization.apps()
+        const permissions = await organization.permissions()
 
-      const convictionApp = apps.find(app => app.name === appName)
+        const convictionApp = apps.find(app => app.name === appName)
+        if (!convictionApp) { 
+          throw new Error("Conviction App not found.")
+        }
 
-      const convictionAppPermissions = permissions.filter(({ appAddress }) =>
-        addressesEqual(appAddress, convictionApp.address)
-      )
+        const convictionAppPermissions = permissions.filter(({ appAddress }) =>
+          addressesEqual(appAddress, convictionApp.address)
+        )
 
-      const convictionVoting = await connectConviction(convictionApp)
+        const convictionVoting = await connectConviction(convictionApp)
+      
 
-      if (!cancelled) {
+        if (!cancelled) {
+          setAppData(appData => ({
+            ...appData,
+            installedApps: apps,
+            convictionVoting,
+            organization,
+            permissions: convictionAppPermissions,
+          }))
+        }
+      } catch (error) {
         setAppData(appData => ({
           ...appData,
-          installedApps: apps,
-          convictionVoting,
-          organization,
-          permissions: convictionAppPermissions,
+          errorFetchingApp: true,
         }))
       }
     }
