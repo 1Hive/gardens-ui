@@ -111,6 +111,7 @@ function processProposal(
   config
 ) {
   const { alpha, maxRatio, weight } = config || {}
+  const { requestedAmount, stakesHistory, totalTokensStaked } = proposal
 
   let threshold = null
   let neededConviction = null
@@ -123,12 +124,12 @@ function processProposal(
     alpha
   )
   const currentConviction = getCurrentConviction(
-    proposal.stakesHistory,
+    stakesHistory,
     latestBlock.number,
     alpha
   )
   const userConviction = getCurrentConvictionByEntity(
-    proposal.stakesHistory,
+    stakesHistory,
     account,
     latestBlock.number,
     alpha
@@ -137,10 +138,10 @@ function processProposal(
   const userStakedConviction = userConviction.div(maxConviction)
 
   const stakedConviction = currentConviction.div(maxConviction)
-  const futureConviction = getMaxConviction(proposal.totalTokensStaked, alpha)
+  const futureConviction = getMaxConviction(totalTokensStaked, alpha)
   const futureStakedConviction = futureConviction.div(maxConviction)
   const convictionTrend = getConvictionTrend(
-    proposal.stakesHistory,
+    stakesHistory,
     maxConviction,
     latestBlock.number,
     alpha,
@@ -148,9 +149,9 @@ function processProposal(
   )
 
   // Funding proposal needed values
-  if (proposal.requestedAmount.gt(0)) {
+  if (requestedAmount.gt(0)) {
     threshold = calculateThreshold(
-      proposal.requestedAmount,
+      requestedAmount,
       vaultBalance || new BigNumber('0'),
       effectiveSupply || new BigNumber('0'),
       alpha,
@@ -159,15 +160,12 @@ function processProposal(
     )
 
     neededConviction = threshold?.div(maxConviction)
-
     minTokensNeeded = getMinNeededStake(threshold, alpha)
-
-    neededTokens = minTokensNeeded.minus(proposal.totalTokensStaked)
-
+    neededTokens = minTokensNeeded.minus(totalTokensStaked)
     remainingTimeToPass = getRemainingTimeToPass(
       threshold,
       currentConviction,
-      proposal.totalTokensStaked,
+      totalTokensStaked,
       alpha
     )
   }
