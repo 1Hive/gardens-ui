@@ -10,10 +10,12 @@ import {
   useSidePanelFocusOnReady,
   useTheme,
 } from '@1hive/1hive-ui'
-import { toDecimals, round, pct } from '../../lib/math-utils'
 import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
-import { formatTokenAmount } from '../../lib/token-utils'
 import { useAppState } from '../../providers/AppState'
+import { useWallet } from '../../providers/Wallet'
+
+import { toDecimals, round, pct } from '../../lib/math-utils'
+import { formatTokenAmount } from '../../lib/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
@@ -26,11 +28,11 @@ const SupportProposal = React.memo(function SupportProposal({
     valueBN: new BigNumber('0'),
   })
 
-  const { accountBalance, stakeToken } = useAppState()
+  const { account } = useWallet()
   const inputRef = useSidePanelFocusOnReady()
+  const { accountBalance, stakeToken } = useAppState()
 
-  const totalStaked = useAccountTotalStaked()
-
+  const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
