@@ -63,7 +63,7 @@ function Activity({ account }) {
                     margin-bottom: ${1 * GU}px;
                   `}
                 >
-                  You supported the <ProposalIcon type={stake.proposal.type} />{' '}
+                  Supported the <ProposalIcon type={stake.proposal.type} />{' '}
                   {convertToString(stake.proposal.type)}{' '}
                   <Link
                     href={`/#/proposal/${stake.proposal.id}`}
