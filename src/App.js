@@ -4,13 +4,13 @@ import { SidePanel, Split } from '@1hive/1hive-ui'
 import AddProposalPanel from './components/AddProposalPanel'
 import AppLoader from './components/AppLoader'
 import MainScreen from './screens/MainScreen'
+import NetworkErrorModal from './components/NetworkErrorModal'
 import StakingTokens from './screens/StakingTokens'
 import Wallet from './components/Wallet'
 
 import useAppLogic from './app-logic'
 import { useWallet } from './providers/Wallet'
 import useSelectedProposal from './hooks/useSelectedProposal'
-import NetworkErrorModal from './components/NetworkErrorModal'
 
 const App = React.memo(function App() {
   const {
