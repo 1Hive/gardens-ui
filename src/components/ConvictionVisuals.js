@@ -14,7 +14,6 @@ import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
 import { useAppState } from '../providers/AppState'
-import { useBlockTime } from '../hooks/useBlock'
 import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
@@ -126,7 +125,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const {
     status,
     threshold,
-    remainingTimeToPass,
+    endDate,
     neededTokens,
     currentConviction,
   } = proposal
@@ -138,11 +137,11 @@ export function ConvictionCountdown({ proposal, shorter }) {
     if (currentConviction.gte(threshold)) {
       return AVAILABLE
     }
-    if (remainingTimeToPass > 0) {
+    if (endDate) {
       return MAY_PASS
     }
     return UNABLE_TO_PASS
-  }, [currentConviction, status, threshold, remainingTimeToPass])
+  }, [currentConviction, endDate, status, threshold])
 
   return (
     <div
@@ -189,11 +188,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
           )}
         </>
       ) : (
-        <PositiveOutcome
-          remainingTimeToPass={remainingTimeToPass}
-          shorter={shorter}
-          view={view}
-        />
+        <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
       )}
     </div>
   )
@@ -227,16 +222,8 @@ export function ConvictionTrend({ proposal }) {
   )
 }
 
-const PositiveOutcome = ({ remainingTimeToPass, shorter, view }) => {
+const PositiveOutcome = ({ endDate, shorter, view }) => {
   const theme = useTheme()
-
-  const NOW = Date.now()
-  const blockTimeInSeconds = useBlockTime()
-
-  const BLOCK_TIME = 1000 * blockTimeInSeconds
-  const endDate =
-    !isNaN(new Date(NOW + remainingTimeToPass * BLOCK_TIME).getTime()) &&
-    new Date(NOW + remainingTimeToPass * BLOCK_TIME)
 
   const text =
     view === MAY_PASS
