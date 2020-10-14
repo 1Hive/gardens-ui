@@ -25,7 +25,7 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
   const { account } = useWallet()
-  const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
   const latestBlock = useLatestBlock()
   const filters = useProposalFilters()
