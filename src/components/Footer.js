@@ -12,34 +12,25 @@ export default function Footer({ compact }) {
       css={`
         flex-shrink: 0;
         width: 100%;
-        padding: ${5 * GU}px ${compact ? `${3 * GU}px` : 0};
+        padding: ${5 * GU}px ${3 * GU}px;
         background: ${theme.surface};
       `}
     >
       <Layout>
         <div
           css={`
-            display: ${compact ? 'block' : 'flex'};
-            align-items: flex-start;
-
-            & > div {
-              margin-bottom: ${2 * GU}px;
-
-              &:not(:first-child) {
-                width: ${25 * GU}px;
-              }
-            }
+            display: grid;
+            grid-template-columns: ${compact
+              ? 'none'
+              : `${40 * GU}px ${25 * GU}px ${25 * GU}px`};
+            grid-row-gap: ${2 * GU}px;
 
             & a {
               color: ${theme.contentSecondary};
             }
           `}
         >
-          <div
-            css={`
-              width: ${40 * GU}px;
-            `}
-          >
+          <div>
             <img src={logoSvg} height="40" alt="" />
           </div>
           <div>
