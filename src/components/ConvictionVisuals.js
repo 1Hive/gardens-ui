@@ -14,6 +14,7 @@ import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 import { useAppState } from '../providers/AppState'
 import { useBlockTime } from '../hooks/useBlock'
+import { useProposalConvictionData } from '../hooks/useProposals'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -53,6 +54,15 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
 
 export function ConvictionBar({ proposal, withThreshold = true }) {
   const theme = useTheme()
+  // const { alpha, convictionVoting, effectiveSupply } = useAppState()
+
+  // const {
+  //   userStakedConviction,
+  //   // stakedConviction,
+  //   futureStakedConviction,
+  //   neededConviction,
+  //   requestedAmount,
+  // } = proposal
 
   const {
     userStakedConviction,
@@ -60,7 +70,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
     futureStakedConviction,
     neededConviction,
     requestedAmount,
-  } = proposal
+  } = useProposalConvictionData(proposal)
 
   const secondSize = stakedConviction.minus(userStakedConviction)
   const thirdSize = futureStakedConviction.minus(stakedConviction)
@@ -120,13 +130,14 @@ export function ConvictionCountdown({ proposal, shorter }) {
   } = useAppState()
 
   const theme = useTheme()
+
   const {
     status,
     threshold,
     remainingTimeToPass,
     neededTokens,
     currentConviction,
-  } = proposal
+  } = useProposalConvictionData(proposal)
 
   const view = useMemo(() => {
     if (status === PROPOSAL_STATUS_EXECUTED_STRING) {

@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { useAppState } from './providers/AppState'
-import { useProposals } from './hooks/useProposals'
 import { useWallet } from './providers/Wallet'
 import usePanelState from './hooks/usePanelState'
 import useActions from './hooks/useActions'
@@ -11,9 +10,14 @@ import { PROPOSAL_STATUS_ACTIVE_STRING } from './constants'
 export default function useAppLogic() {
   const { account } = useWallet()
 
-  const { isLoading, stakeToken, totalStaked, fetchingErrors } = useAppState()
+  const {
+    isLoading,
+    stakeToken,
+    totalStaked,
+    fetchingErrors,
+    proposals,
+  } = useAppState()
 
-  const [proposals, blockHasLoaded] = useProposals()
   const proposalPanel = usePanelState()
 
   const { myStakes } = useMemo(() => {
@@ -59,7 +63,7 @@ export default function useAppLogic() {
   return {
     actions,
     fetchingErrors,
-    isLoading: isLoading || !blockHasLoaded,
+    isLoading: isLoading,
     myStakes,
     proposals,
     proposalPanel,

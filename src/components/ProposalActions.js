@@ -10,6 +10,7 @@ import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
 import { round, safeDiv, toDecimals } from '../lib/math-utils'
 import AccountNotConnected from './AccountNotConnected'
+import { useProposalConvictionData } from '../hooks/useProposals'
 
 const MAX_INPUT_DECIMAL_BASE = 6
 
@@ -22,9 +23,15 @@ function ProposalActions({
 }) {
   const { stakeToken, accountBalance } = useAppState()
   const { account: connectedAccount } = useWallet()
-  const { id, currentConviction, stakes, threshold } = proposal
 
-  const totalStaked = useAccountTotalStaked()
+  const {
+    id,
+    currentConviction,
+    stakes,
+    threshold,
+  } = useProposalConvictionData(proposal)
+
+  const totalStaked = useAccountTotalStaked(proposal)
 
   const myStake = useMemo(
     () =>

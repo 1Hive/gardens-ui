@@ -41,7 +41,7 @@ export function useOrganzation() {
 
   useEffect(() => {
     let cancelled = false
-    
+
     const fetchOrg = async () => {
       const orgAddress = getNetwork().honeypot
       try {
@@ -84,8 +84,8 @@ export function useAppData(organization) {
         const permissions = await organization.permissions()
 
         const convictionApp = apps.find(app => app.name === appName)
-        if (!convictionApp) { 
-          throw new Error("Conviction App not found.")
+        if (!convictionApp) {
+          throw new Error('Conviction App not found.')
         }
 
         const convictionAppPermissions = permissions.filter(({ appAddress }) =>
@@ -93,7 +93,6 @@ export function useAppData(organization) {
         )
 
         const convictionVoting = await connectConviction(convictionApp)
-      
 
         if (!cancelled) {
           setAppData(appData => ({
