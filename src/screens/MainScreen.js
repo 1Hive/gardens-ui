@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import Metrics from '../components/Metrics'
@@ -21,6 +21,7 @@ const MainScreen = React.memo(
     selectedProposal,
     totalActiveTokens,
   }) => {
+    const [currentProposalListPage, setCurrentProposalListPage] = useState(0)
     const {
       requestToken,
       stakeToken,
@@ -77,19 +78,19 @@ const MainScreen = React.memo(
               totalActiveTokens={totalActiveTokens}
             />
             <Proposals
+              currentPage={currentProposalListPage}
               filteredProposals={filteredProposals}
+              handleExecutionStatusFilterChange={handleTabChange}
+              handleProposalSupportFilterChange={handleProposalSupportFilterChange}
+              handleProposalTypeFilterChange={handleProposalTypeFilterChange}
+              handleProposalPageChange={setCurrentProposalListPage}
+              handleSearchTextFilterChange={handleSearchTextFilterChange}
+              onRequestNewProposal={onRequestNewProposal}
               proposalExecutionStatusFilter={proposalExecutionStatusFilter}
               proposalSupportStatusFilter={proposalSupportStatusFilter}
               proposalTextFilter={proposalTextFilter}
               proposalTypeFilter={proposalTypeFilter}
-              handleProposalSupportFilterChange={
-                handleProposalSupportFilterChange
-              }
-              handleExecutionStatusFilterChange={handleTabChange}
-              handleSearchTextFilterChange={handleSearchTextFilterChange}
-              handleProposalTypeFilterChange={handleProposalTypeFilterChange}
               requestToken={requestToken}
-              onRequestNewProposal={onRequestNewProposal}
             />
           </>
         )}
