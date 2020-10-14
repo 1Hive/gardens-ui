@@ -3,6 +3,7 @@ import {
   GU,
   IconCheck,
   IconCross,
+  LoadingRing,
   Tag,
   textStyle,
   Timer,
@@ -14,6 +15,7 @@ import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 import { useAppState } from '../providers/AppState'
 import { useBlockTime } from '../hooks/useBlock'
+import { useProposalConvictionData } from '../hooks/useProposals'
 
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -55,12 +57,13 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
   const theme = useTheme()
 
   const {
-    userStakedConviction,
-    stakedConviction,
     futureStakedConviction,
+    loading,
     neededConviction,
     requestedAmount,
-  } = proposal
+    stakedConviction,
+    userStakedConviction,
+  } = useProposalConvictionData(proposal)
 
   const secondSize = stakedConviction.minus(userStakedConviction)
   const thirdSize = futureStakedConviction.minus(stakedConviction)
@@ -76,38 +79,46 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
         compact
       />
       <div>
-        <span
-          css={`
-            ${textStyle('body3')}
-          `}
-        >
-          {Math.round(stakedConviction * 100)}%{' '}
-          {!signalingProposal &&
-            (withThreshold ? (
-              <span
-                css={`
-                  color: ${theme.contentSecondary};
-                `}
-              >
-                {neededConviction
-                  ? `(${Math.round(
-                      neededConviction.multipliedBy(new BigNumber('100'))
-                    )}% needed)`
-                  : `(threshold out of range)`}
-              </span>
-            ) : (
-              <span
-                css={`
-                  color: ${theme.contentSecondary};
-                `}
-              >
-                {Math.round(stakedConviction * 100) !==
-                Math.round(futureStakedConviction * 100)
-                  ? `(predicted: ${Math.round(futureStakedConviction * 100)}%)`
-                  : `(stable)`}
-              </span>
-            ))}
-        </span>
+        {loading ? (
+          <div>
+            <LoadingRing />
+          </div>
+        ) : (
+          <span
+            css={`
+              ${textStyle('body3')}
+            `}
+          >
+            {Math.round(stakedConviction * 100)}%{' '}
+            {!signalingProposal &&
+              (withThreshold ? (
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  {neededConviction
+                    ? `(${Math.round(
+                        neededConviction.multipliedBy(new BigNumber('100'))
+                      )}% needed)`
+                    : `(threshold out of range)`}
+                </span>
+              ) : (
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  {Math.round(stakedConviction * 100) !==
+                  Math.round(futureStakedConviction * 100)
+                    ? `(predicted: ${Math.round(
+                        futureStakedConviction * 100
+                      )}%)`
+                    : `(stable)`}
+                </span>
+              ))}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -120,13 +131,15 @@ export function ConvictionCountdown({ proposal, shorter }) {
   } = useAppState()
 
   const theme = useTheme()
+
   const {
+    currentConviction,
+    loading,
+    neededTokens,
+    remainingTimeToPass,
     status,
     threshold,
-    remainingTimeToPass,
-    neededTokens,
-    currentConviction,
-  } = proposal
+  } = useProposalConvictionData(proposal)
 
   const view = useMemo(() => {
     if (status === PROPOSAL_STATUS_EXECUTED_STRING) {
@@ -141,7 +154,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
     return UNABLE_TO_PASS
   }, [currentConviction, status, threshold, remainingTimeToPass])
 
-  return (
+  return loading ? (
+    <LoadingRing label="Loading" />
+  ) : (
     <div
       css={`
         display: grid;

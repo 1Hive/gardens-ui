@@ -26,6 +26,7 @@ import SupportersDistribution from '../components/SupportersDistribution'
 import { useAppState } from '../providers/AppState'
 import usePanelState from '../hooks/usePanelState'
 import { useWallet } from '../providers/Wallet'
+import { useProposalConvictionData } from '../hooks/useProposals'
 
 import signalingBadge from '../assets/signalingBadge.svg'
 
@@ -71,7 +72,7 @@ function ProposalDetail({
     stakes,
     totalTokensStaked,
     status,
-  } = proposal
+  } = useProposalConvictionData(proposal)
 
   const hasCancelRole = useMemo(() => {
     if (!connectedAccount) {
