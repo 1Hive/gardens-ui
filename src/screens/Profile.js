@@ -12,11 +12,13 @@ import { animated, Spring } from 'react-spring/renderprops'
 
 import Activity from '../components/Profile/Activity'
 import EditProfile from '../components/Profile/EditProfile'
+import Loader from '../components/Loader'
 import MainProfile from '../components/Profile/MainProfile'
 import StakingTokens from '../components/Profile/StakingTokens'
 import Wallet from '../components/Wallet'
 
 import { useAccountStakes } from '../hooks/useStakes'
+import { useAppState } from '../providers/AppState'
 import usePicture from '../hooks/usePicture'
 import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'
@@ -28,6 +30,7 @@ function Profile() {
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
+  const { isLoading } = useAppState()
   const { account: connectedAccount } = useWallet()
   const history = useHistory()
   const { name: layout } = useLayout()
@@ -71,72 +74,82 @@ function Profile() {
     addressesEqual(connectedAccount, selectedAccount)
 
   return (
-    <>
-      <AnimatedBackground height={(editMode ? 15 : 50) * GU} image={coverSrc} />
+    <div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <AnimatedBackground
+            height={(editMode ? 15 : 50) * GU}
+            image={coverSrc}
+          />
 
-      <Spring
-        config={springs.smooth}
-        from={{ transform: `translateY(${20 * GU}px` }}
-        to={{ transform: ` translateY(${(editMode ? 4 : 20) * GU}px)` }}
-        native
-      >
-        {({ transform }) => (
-          <animated.div style={{ transform }}>
-            {isConnectedAccountProfile && (
-              <SyncIndicator
-                label="Opening box..."
-                visible={!selectedProfile?.authenticated}
-              />
-            )}
-            {editMode ? (
-              <EditProfile
-                coverPic={coverPic}
-                coverPicRemovalEnabled={
-                  !coverPic.removed &&
-                  (coverPhoto || (imageInput?.files && imageInput?.files[0]))
-                }
-                onBack={toggleEditMode}
-                onCoverPicChange={onCoverPicChange}
-                onCoverPicRemoval={onCoverPicRemoval}
-                profile={selectedProfile}
-                ref={imageInput}
-              />
-            ) : (
-              <>
+          <Spring
+            config={springs.smooth}
+            from={{ marginTop: `${20 * GU}px` }}
+            to={{ marginTop: ` ${(editMode ? 4 : 20) * GU}px` }}
+            native
+          >
+            {({ marginTop }) => (
+              <animated.div style={{ marginTop }}>
                 {isConnectedAccountProfile && (
-                  <div
-                    css={`
-                      text-align: right;
-                      margin-bottom: ${2 * GU}px;
-                    `}
-                  >
-                    <Button
-                      label="Edit profile"
-                      onClick={toggleEditMode}
-                      disabled={!selectedProfile?.authenticated}
-                    />
-                  </div>
+                  <SyncIndicator
+                    label="Opening box..."
+                    visible={!selectedProfile?.authenticated}
+                  />
                 )}
-                <Split
-                  primary={<Activity account={selectedAccount} />}
-                  secondary={
-                    <>
-                      <MainProfile profile={selectedProfile} />
-                      <Wallet
-                        account={selectedAccount}
-                        myStakes={accountStakes}
-                      />
-                      <StakingTokens myStakes={accountStakes} />
-                    </>
-                  }
-                  invert={oneColumn ? 'vertical' : 'horizontal'}
-                />
-              </>
+                {editMode ? (
+                  <EditProfile
+                    coverPic={coverPic}
+                    coverPicRemovalEnabled={
+                      !coverPic.removed &&
+                      (coverPhoto ||
+                        (imageInput?.files && imageInput?.files[0]))
+                    }
+                    onBack={toggleEditMode}
+                    onCoverPicChange={onCoverPicChange}
+                    onCoverPicRemoval={onCoverPicRemoval}
+                    profile={selectedProfile}
+                    ref={imageInput}
+                  />
+                ) : (
+                  <>
+                    {isConnectedAccountProfile && (
+                      <div
+                        css={`
+                          text-align: right;
+                          margin-bottom: ${2 * GU}px;
+                        `}
+                      >
+                        <Button
+                          label="Edit profile"
+                          onClick={toggleEditMode}
+                          disabled={!selectedProfile?.authenticated}
+                        />
+                      </div>
+                    )}
+                    <Split
+                      primary={<Activity account={selectedAccount} />}
+                      secondary={
+                        <>
+                          <MainProfile profile={selectedProfile} />
+                          <Wallet
+                            account={selectedAccount}
+                            myStakes={accountStakes}
+                          />
+                          <StakingTokens myStakes={accountStakes} />
+                        </>
+                      }
+                      invert={oneColumn ? 'vertical' : 'horizontal'}
+                    />
+                  </>
+                )}
+              </animated.div>
             )}
-          </animated.div>
-        )}
-      </Spring>
-    </>
+          </Spring>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -153,7 +166,7 @@ function AnimatedBackground({ height, image }) {
           style={{
             height,
             position: 'absolute',
-            top: `62px`,
+            top: '0',
             left: '0',
             right: '0',
           }}
