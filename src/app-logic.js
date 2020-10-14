@@ -56,8 +56,6 @@ export default function useAppLogic() {
 
   const actions = useActions(proposalPanel.requestClose)
 
-  console.log("ERRORS: ", fetchingErrors);
-
   return {
     actions,
     fetchingErrors,
