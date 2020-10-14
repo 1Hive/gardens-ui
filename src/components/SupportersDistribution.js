@@ -28,9 +28,9 @@ function displayedStakes(stakes, total, stakeToken) {
     }
   ).map((stake, index) => ({
     item: {
-      entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity,
+      entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity.id,
       amount: formatTokenAmount(
-        stake.index === -1 ? 0 : stakes[stake.index].amount,
+        stake.index === -1 ? stake.amount : stakes[stake.index].amount,
         stakeToken.decimals
       ),
     },
@@ -81,7 +81,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
                   />
                   <DistributionItem
                     amount={item.amount}
-                    entity={item.entity.id}
+                    entity={item.entity}
                     percentage={percentage}
                     stakeToken={stakeToken}
                   />

@@ -134,13 +134,20 @@ export function stakesPercentages(
   })
 
   // Add the “Rest” item
-  const addRest = (stakes, percentage) => [...stakes, { index: -1, percentage }]
+  const addRest = (stakes, percentage, amount) => [
+    ...stakes,
+    { index: -1, percentage, amount },
+  ]
 
   const addCalculatedRest = (includedStakes, excludedStakes) =>
     addRest(
       includedStakes,
       excludedStakes.reduce(
         (total, stake) => total.plus(stake.percentage),
+        new BigNumber(0)
+      ),
+      excludedStakes.reduce(
+        (total, stake) => total.plus(stake.amount),
         new BigNumber(0)
       )
     )
