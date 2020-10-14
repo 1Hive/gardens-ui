@@ -108,7 +108,15 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
                   : `(stable)`}
               </span>
             ))}
-          {isSupporting && <Tag>Supported</Tag>}
+          {isSupporting && (
+            <Tag
+              css={`
+                margin-left: ${0.5 * GU}px;
+              `}
+            >
+              Supported
+            </Tag>
+          )}
         </span>
       </div>
     </div>
