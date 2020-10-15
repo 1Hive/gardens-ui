@@ -30,7 +30,7 @@ export default function useAppLogic() {
     return proposals.reduce(
       ({ myStakes }, proposal) => {
         if (
-          !proposal.status === PROPOSAL_STATUS_ACTIVE_STRING ||
+          proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING ||
           !proposal.stakes
         ) {
           return { myStakes }
