@@ -29,22 +29,23 @@ const ENTRIES_PER_PAGE = 5
 
 const Proposals = React.memo(
   ({
+    currentPage,
     filteredProposals,
-    proposalExecutionStatusFilter,
-    proposalSupportStatusFilter,
-    proposalTextFilter,
-    proposalTypeFilter,
     handleProposalSupportFilterChange,
     handleExecutionStatusFilterChange,
     handleSearchTextFilterChange,
     handleProposalTypeFilterChange,
-    requestToken,
+    handleProposalPageChange,
     onRequestNewProposal,
+    proposalExecutionStatusFilter,
+    proposalSupportStatusFilter,
+    proposalTextFilter,
+    proposalTypeFilter,
+    requestToken,
   }) => {
     const { account } = useWallet()
     const { layoutName } = useLayout()
     const compactMode = layoutName === 'small'
-    const [currentPage, setCurrentPage] = useState(0)
 
     const {
       convictionFields = [],
@@ -254,7 +255,7 @@ const Proposals = React.memo(
           tableRowHeight={14 * GU}
           entriesPerPage={ENTRIES_PER_PAGE}
           page={currentPage}
-          onPageChange={setCurrentPage}
+          onPageChange={handleProposalPageChange}
         />
       </div>
     )
