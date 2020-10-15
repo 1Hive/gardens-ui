@@ -20,7 +20,7 @@ function ProposalsList({
     <div
       ref={listRef}
       css={`
-        flex-basis: 50%;
+        flex-grow: 1;
       `}
     >
       <ProposalRankings
