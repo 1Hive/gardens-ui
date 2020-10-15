@@ -11,7 +11,7 @@ const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
   medium: { image: tabletBanner, aspectRatio: '36%' },
   large: { image: desktopBanner, aspectRatio: '159%' },
-  max: { image: desktopBanner, aspectRatio: '118%' },
+  max: { image: desktopBanner, aspectRatio: '159%' },
 }
 
 function HeroBanner({ onRequestNewProposal }) {
@@ -29,7 +29,6 @@ function HeroBanner({ onRequestNewProposal }) {
 
         ${!compactMode &&
           `
-          flex-basis: 25%;
           top: ${3 * GU}px;
           position: sticky;
         `}
