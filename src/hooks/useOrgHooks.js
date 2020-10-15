@@ -22,6 +22,10 @@ import { getAppAddressByName } from '../lib/data-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
+const RETRY_EVERY = 3000
+
+const CURRENCIES_URL = 'https://api.exchangeratesapi.io/latest?base=USD'
+
 const DEFAULT_APP_DATA = {
   convictionVoting: null,
   stakeToken: {},
@@ -216,4 +220,37 @@ export function useTokenBalances(account, token, timer = 3000) {
   }, [account, balances, tokenContract, token.id])
 
   return balances
+}
+
+export function useCurrencies() {
+  const [rates, setRates] = useState(0)
+  useEffect(() => {
+    let cancelled = false
+    let retryTimer
+    async function fetchPrice() {
+      try {
+        const result = await (await fetch(CURRENCIES_URL)).json()
+        if (!result?.rates) {
+          return
+        }
+
+        const rates = result.rates
+
+        if (!cancelled) {
+          setRates(rates)
+        }
+      } catch (err) {
+        retryTimer = setTimeout(fetchPrice, RETRY_EVERY)
+      }
+    }
+
+    fetchPrice()
+
+    return () => {
+      cancelled = true
+      clearTimeout(retryTimer)
+    }
+  }, [])
+
+  return rates
 }

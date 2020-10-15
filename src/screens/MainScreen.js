@@ -6,6 +6,7 @@ import Proposals from './Proposals'
 import ProposalDetail from './ProposalDetail'
 import { useAppState } from '../providers/AppState'
 import useFilterProposals from '../hooks/useFilterProposals'
+// import { useCurrencies } from '../components/CurrencyContext'
 
 const MainScreen = React.memo(
   ({
@@ -26,7 +27,9 @@ const MainScreen = React.memo(
       stakeToken,
       totalSupply,
       vaultBalance,
+      currencies,
     } = useAppState()
+    // const currencies = useCurrencies()
 
     const {
       filteredProposals,
@@ -75,6 +78,7 @@ const MainScreen = React.memo(
               stakeToken={stakeToken}
               requestToken={requestToken}
               totalActiveTokens={totalActiveTokens}
+              currencies={currencies}
             />
             <Proposals
               filteredProposals={filteredProposals}

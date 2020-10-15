@@ -6,6 +6,7 @@ import {
   useTokenBalances,
   useOrganzation,
   useAppData,
+  useCurrencies,
 } from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
 import { STAKE_PCT_BASE } from '../constants'
@@ -28,6 +29,8 @@ function AppStateProvider({ children }) {
   const vaultBalance = useVaultBalance(installedApps, requestToken)
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
+
+  const currencies = useCurrencies()
 
   const effectiveSupply = useMemo(() => {
     if (!(totalSupply && totalStaked && minThresholdStakePercentage)) {
@@ -60,6 +63,7 @@ function AppStateProvider({ children }) {
         totalStaked,
         totalSupply: totalSupply,
         vaultBalance,
+        currencies: currencies,
       }}
     >
       {children}
