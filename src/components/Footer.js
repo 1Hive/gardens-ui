@@ -16,7 +16,7 @@ export default function Footer({ compact }) {
         background: ${theme.surface};
       `}
     >
-      <Layout>
+      <Layout paddingBottom={0}>
         <div
           css={`
             display: grid;

@@ -47,7 +47,7 @@ function MainView({ children }) {
                 flex: 1 0 auto;
               `}
             >
-              <Layout paddingBottom={3 * GU}>{children}</Layout>
+              <Layout>{children}</Layout>
             </div>
             <Footer compact={compactMode} />
           </div>

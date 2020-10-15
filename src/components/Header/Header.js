@@ -23,7 +23,7 @@ function Header({ compact }) {
         box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
       `}
     >
-      <Layout>
+      <Layout paddingBottom={0}>
         <div
           css={`
             display: flex;
