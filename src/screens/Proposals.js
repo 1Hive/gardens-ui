@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Box,
@@ -75,11 +76,29 @@ const Proposals = React.memo(
       ? [{ label: 'Request amount', align: 'start' }]
       : []
 
+    // TODO: This is technically not entirely correct
+    // as it does not sort based on conviction but the
+    // amount of staked HNY. There was no simple
+    // way to fetch the conviction for the proposals.
     const sortedProposals = useMemo(
       () =>
-        filteredProposals.sort(
-          (a, b) => b.currentConviction - a.currentConviction
-        ),
+        filteredProposals.sort((a, b) => {
+          const aStaked = a.stakes.reduce(
+            (sum, { amount }) => sum.plus(amount),
+            new BigNumber(0)
+          )
+          const bStaked = b.stakes.reduce(
+            (sum, { amount }) => sum.plus(amount),
+            new BigNumber(0)
+          )
+          if (bStaked.lt(aStaked)) {
+            return -1
+          } else if (bStaked.gt(aStaked)) {
+            return 1
+          }
+
+          return 0
+        }),
       [filteredProposals]
     )
 
