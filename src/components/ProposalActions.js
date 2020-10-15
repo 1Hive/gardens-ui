@@ -178,6 +178,11 @@ function ProposalActions({
 }
 
 const useAmount = (myStake, stakeToken, maxAvailable) => {
+  const [inputValue, setInputValue] = useState(
+    myStake?.amount &&
+      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
+  )
+
   const roundSlider = useCallback(
     bigNum =>
       bigNum
@@ -187,22 +192,22 @@ const useAmount = (myStake, stakeToken, maxAvailable) => {
     [stakeToken.decimals]
   )
 
-  const [inputValue, setInputValue] = useState(
-    myStake?.amount &&
-      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
+  const handleAmountChange = useCallback(
+    event => setInputValue(event.target.value),
+    []
   )
-  const amount = BigNumber.minimum(
-    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
-    maxAvailable
-  )
-
-  const handleAmountChange = event => setInputValue(event.target.value)
 
   const handleSliderChange = useCallback(
     newProgress =>
       setInputValue(roundSlider(maxAvailable.multipliedBy(newProgress))),
     [maxAvailable, roundSlider]
   )
+
+  const amount = BigNumber.minimum(
+    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
+    maxAvailable
+  )
+
   return [inputValue, amount, handleAmountChange, handleSliderChange]
 }
 
