@@ -18,7 +18,7 @@ import {
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
-import { testSupportFilter } from '../utils/filter-utils'
+import { sortProposals, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
@@ -59,7 +59,9 @@ export function useProposals() {
     vaultBalance,
   ])
 
-  return [proposalsWithData, filters, latestBlock.number !== 0]
+  const sortedProposals = sortProposals(filters, proposalsWithData)
+
+  return [sortedProposals, filters, latestBlock.number !== 0]
 }
 
 function useFilteredProposals(filters, account) {

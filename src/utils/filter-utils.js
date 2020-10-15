@@ -49,3 +49,15 @@ export function testSupportFilter(filter, proposalSupportStatus) {
       proposalSupportStatus === PROPOSAL_SUPPORT_NOT_SUPPORTED)
   )
 }
+
+export function sortProposals(filters, proposals) {
+  // When sorting by top we are sorting by lastConviction which is not entirely accurate
+  // as conviction on proposals can accrue at different speeds
+  if (filters.ranking.filter === RANKING_FILTER_TOP) {
+    return proposals.sort(
+      (p1, p2) => p2.currentConviction - p1.currentConviction
+    )
+  }
+
+  return proposals
+}
