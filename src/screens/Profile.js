@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import {
-  Button,
-  GU,
-  Split,
-  springs,
-  SyncIndicator,
-  useLayout,
-} from '@1hive/1hive-ui'
+import { Button, GU, Split, springs, SyncIndicator } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
 
 import Activity from '../components/Profile/Activity'
@@ -19,6 +12,7 @@ import Wallet from '../components/Wallet'
 
 import { useAccountStakes } from '../hooks/useStakes'
 import { useAppState } from '../providers/AppState'
+import { useLayout } from '../components/Layout'
 import usePicture from '../hooks/usePicture'
 import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'

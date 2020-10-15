@@ -1,61 +1,93 @@
 import React from 'react'
-import { Button, GU, IconPlus, textStyle, useLayout } from '@1hive/1hive-ui'
+import { Button, GU, IconPlus, textStyle } from '@1hive/1hive-ui'
+import { useLayout } from '../Layout'
 import { useWallet } from '../../providers/Wallet'
 
 import desktopBanner from '../../assets/banner.png'
 import mobileBanner from '../../assets/banner-mobile.png'
+import tabletBanner from '../../assets/banner-tablet.png'
 
 const BANNERS = {
-  small: mobileBanner,
-  medium: desktopBanner,
-  large: desktopBanner,
+  small: { image: mobileBanner, aspectRatio: '54%' },
+  medium: { image: tabletBanner, aspectRatio: '36%' },
+  large: { image: desktopBanner, aspectRatio: '159%' },
+  max: { image: desktopBanner, aspectRatio: '118%' },
 }
 
 function HeroBanner({ onRequestNewProposal }) {
   const { account } = useWallet()
-
   const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
+
+  console.log('layoutName', layoutName)
   const banner = BANNERS[layoutName]
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   return (
     <div
       css={`
-        flex-basis: 25%;
         height: fit-content;
-        margin-left: ${3 * GU}px;
-        top: ${3 * GU}px;
-        position: sticky;
+
+        ${!compactMode &&
+          `
+          flex-basis: 25%;
+          top: ${3 * GU}px;
+          position: sticky;
+        `}
       `}
     >
       <div
         css={`
-          background: url(${banner}) no-repeat;
-          height: 520px;
-          width: 327px;
-          padding: ${8 * GU}px;
-          text-align: center;
+          background: url(${banner.image}) no-repeat;
+          background-size: cover;
+          width: ${compactMode ? '100%' : '327px'};
+          height: 0;
+          padding-top: ${banner.aspectRatio};
+          position: relative;
         `}
       >
-        <h2
+        <div
           css={`
-            ${textStyle('title2')};
-            margin-bottom: ${3 * GU}px;
+            padding: ${8 * GU}px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: ${compactMode ? 'center' : 'flex-start'};
           `}
         >
-          {account
-            ? `The community wants to hear from you!`
-            : `Connect your account to create a proposal`}
-        </h2>
-        {account && (
-          <Button
-            mode="strong"
-            onClick={onRequestNewProposal}
-            label="Create proposal"
-            icon={<IconPlus />}
-            display={compactMode ? 'icon' : 'label'}
-          />
-        )}
+          <div
+            css={`
+              text-align: center;
+              width: 100%;
+            `}
+          >
+            <h2
+              css={`
+                ${textStyle(compactMode ? 'title3' : 'title2')};
+                margin: 0 auto;
+                max-width: 300px;
+              `}
+            >
+              {account
+                ? `The community wants to hear from you!`
+                : `Connect your account to create a proposal`}
+            </h2>
+            {account && (
+              <Button
+                mode="strong"
+                onClick={onRequestNewProposal}
+                label="Create proposal"
+                icon={<IconPlus />}
+                display="label"
+                css={`
+                  margin-top: ${3 * GU}px;
+                `}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

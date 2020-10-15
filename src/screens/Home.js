@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, SidePanel } from '@1hive/1hive-ui'
+import { GU, SidePanel, useViewport } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
 import FilterSidebar from '../components/FilterSidebar/FilterSidebar'
@@ -9,6 +9,7 @@ import Metrics from '../components/Metrics'
 import ProposalsList from '../components/Feed/ProposalsList'
 
 import useAppLogic from '../logic/app-logic'
+import { useLayout } from '../components/Layout'
 
 const Home = React.memo(function Home() {
   const {
@@ -22,39 +23,45 @@ const Home = React.memo(function Home() {
     totalSupply,
   } = useAppLogic()
 
+  // min layout is never returned
+  const { below } = useViewport()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
+
   return (
-    <div
-      css={`
-        margin: ${3 * GU}px;
-        margin-bottom: 0;
-      `}
-    >
+    <div>
       {isLoading ? (
         <Loader />
       ) : (
         <div
           css={`
             display: flex;
+            flex-direction: ${compactMode ? 'column-reverse' : 'row'};
           `}
         >
-          <div
-            css={`
-              flex-grow: 1;
-            `}
-          >
-            <div>
-              <Metrics
-                commonPool={commonPool}
-                onExecuteIssuance={actions.executeIssuance}
-                totalActiveTokens={totalStaked}
-                totalSupply={totalSupply}
-              />
+          <div>
+            <div
+              css={`
+                margin: ${(below('medium') ? 0 : 3) * GU}px;
+              `}
+            >
+              {!compactMode && (
+                <Metrics
+                  commonPool={commonPool}
+                  onExecuteIssuance={actions.executeIssuance}
+                  totalActiveTokens={totalStaked}
+                  totalSupply={totalSupply}
+                />
+              )}
               <div
                 css={`
                   display: flex;
+                  flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
+                  column-gap: ${8 * GU}px;
                 `}
               >
                 <FilterSidebar
+                  compact={compactMode}
                   itemsStatus={filters.status.items}
                   itemsSupport={filters.support.items}
                   itemsType={filters.type.items}

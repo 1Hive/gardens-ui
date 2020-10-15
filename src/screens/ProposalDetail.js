@@ -11,7 +11,6 @@ import {
   SidePanel,
   Split,
   textStyle,
-  useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 
@@ -29,6 +28,7 @@ import SupportProposalPanel from '../components/panels/SupportProposalPanel'
 
 // Hooks
 import useProposalLogic from '../logic/proposal-logic'
+import { useLayout } from '../components/Layout'
 import { useWallet } from '../providers/Wallet'
 
 // utils

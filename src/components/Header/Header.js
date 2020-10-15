@@ -26,10 +26,11 @@ function Header({ compact }) {
       <Layout paddingBottom={0}>
         <div
           css={`
+            height: ${8 * GU}px;
+            margin: 0 ${3 * GU}px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: ${8 * GU}px;
           `}
         >
           <div
@@ -41,57 +42,59 @@ function Header({ compact }) {
             <Link href="#/home" external={false}>
               {compact ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
             </Link>
-            <nav
-              css={`
-                display: flex;
-                align-items: center;
+            {!compact && (
+              <nav
+                css={`
+                  display: flex;
+                  align-items: center;
 
-                height: 100%;
-                margin-left: ${6.5 * GU}px;
-              `}
-            >
-              <Link
-                href="#/home"
-                external={false}
-                css={`
-                  text-decoration: none;
-                  color: ${theme.contentSecondary};
+                  height: 100%;
+                  margin-left: ${6.5 * GU}px;
                 `}
               >
-                Home
-              </Link>
-              <Link
-                href={HONEYSWAP_TRADE_HONEY}
-                css={`
-                  text-decoration: none;
-                  color: ${theme.contentSecondary};
-                  margin-left: ${4 * GU}px;
-                `}
-              >
-                Get Honey
-              </Link>
-              <Link
-                href="https://about.1hive.org/"
-                css={`
-                  text-decoration: none;
-                  color: ${theme.contentSecondary};
-                  margin-left: ${4 * GU}px;
-                `}
-              >
-                About
-              </Link>
-            </nav>
+                <Link
+                  href="#/home"
+                  external={false}
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  Home
+                </Link>
+                <Link
+                  href={HONEYSWAP_TRADE_HONEY}
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Get Honey
+                </Link>
+                <Link
+                  href="https://about.1hive.org/"
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  About
+                </Link>
+              </nav>
+            )}
           </div>
 
           <div
             css={`
               display: flex;
               align-items: center;
-              ${account && `min-width: ${42.5 * GU}px`};
+              ${account && !compact && `min-width: ${42.5 * GU}px`};
             `}
           >
             <AccountModule compact={compact} />
-            {account && (
+            {account && !compact && (
               <>
                 <div
                   css={`
