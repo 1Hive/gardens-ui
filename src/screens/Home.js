@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { GU, SidePanel, useViewport } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
@@ -22,6 +22,12 @@ const Home = React.memo(function Home() {
     totalStaked,
     totalSupply,
   } = useAppLogic()
+
+  const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
+
+  const handleFilterSliderToggle = useCallback(() => {
+    setFilterSidlerVisible(visible => !visible)
+  }, [])
 
   // min layout is never returned
   const { below } = useViewport()
@@ -72,6 +78,7 @@ const Home = React.memo(function Home() {
                   onStatusFilterChange={filters.status.onChange}
                   onSupportFilterChange={filters.support.onChange}
                   onTypeFilterChange={filters.type.onChange}
+                  sliderVisible={filterSliderVisible}
                 />
                 <ProposalsList
                   activeFilters={filters.isActive}
@@ -79,6 +86,7 @@ const Home = React.memo(function Home() {
                   onProposalCountIncrease={filters.onProposalCountIncrease}
                   onRankingFilterChange={filters.ranking.onChange}
                   onStakeToProposal={actions.stakeToProposal}
+                  onToggleFilterSlider={handleFilterSliderToggle}
                   onWithdrawFromProposal={actions.withdrawFromProposal}
                   rankingItems={filters.ranking.items}
                   selectedRanking={filters.ranking.filter}

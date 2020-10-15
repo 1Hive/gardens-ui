@@ -1,8 +1,11 @@
 import React, { useRef } from 'react'
-import { Button, GU } from '@1hive/1hive-ui'
+import { BIG_RADIUS, Button, GU, useTheme } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
+import { useLayout } from '../Layout'
+
+import filterToggleSvg from '../../assets/filter.svg'
 
 function ProposalsList({
   activeFilters,
@@ -10,11 +13,16 @@ function ProposalsList({
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
+  onToggleFilterSlider,
   onWithdrawFromProposal,
   rankingItems,
   selectedRanking,
 }) {
   const listRef = useRef()
+
+  const theme = useTheme()
+  const { layoutName } = useLayout()
+  const compact = layoutName === 'small'
 
   return (
     <div
@@ -23,11 +31,32 @@ function ProposalsList({
         flex-grow: 1;
       `}
     >
-      <ProposalRankings
-        items={rankingItems}
-        onChange={onRankingFilterChange}
-        selected={selectedRanking}
-      />
+      <div
+        css={`
+          margin: 0 ${(compact ? 1 : 0) * GU}px;
+          position: sticky;
+          top: 0;
+          z-index: 3;
+          padding-top: ${3 * GU}px;
+          padding-bottom: ${0.5 * GU}px;
+          background-color: ${theme.background};
+        `}
+      >
+        <div
+          css={`
+            margin-bottom: ${1 * GU}px;
+            display: flex;
+            align-items: center;
+          `}
+        >
+          {compact && <FilterToggle onToggle={onToggleFilterSlider} />}
+          <ProposalRankings
+            items={rankingItems}
+            onChange={onRankingFilterChange}
+            selected={selectedRanking}
+          />
+        </div>
+      </div>
       <div>
         {proposals.length ? (
           <>
@@ -64,6 +93,21 @@ function ProposalsList({
         )}
       </div>
     </div>
+  )
+}
+
+function FilterToggle({ onToggle }) {
+  return (
+    <Button
+      icon={<img src={filterToggleSvg} />}
+      display="icon"
+      label=""
+      onClick={onToggle}
+      css={`
+        margin-right: ${1 * GU}px;
+        border-radius: ${BIG_RADIUS}px;
+      `}
+    />
   )
 }
 
