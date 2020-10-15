@@ -117,7 +117,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Calculate percentages
   const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
-  const stakedPct = 100 - nonStakedPct
+  const stakedPct = round(100 - nonStakedPct)
 
   return (
     <form onSubmit={handleSubmit}>
