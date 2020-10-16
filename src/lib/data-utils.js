@@ -46,7 +46,6 @@ function transformConvictionProposalData(proposal) {
 }
 
 function transformDecisionData(proposal) {
-  console.log('RETURN HERE')
   return {
     ...proposal,
     id: proposal.number,

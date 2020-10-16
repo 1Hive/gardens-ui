@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useOrganization } from '@aragon/connect-react'
 import BigNumber from '../lib/bigNumber'
 import { useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
@@ -82,9 +81,11 @@ function useFilteredProposals(filters, account) {
 
 export function useProposal(proposalId, appAddress) {
   const { account } = useWallet()
-  const proposal = useProposalSubscription(proposalId, appAddress)
+  const [proposal, loadingProposal] = useProposalSubscription(
+    proposalId,
+    appAddress
+  )
   const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
-  const [org] = useOrganization()
 
   const latestBlock = useLatestBlock()
   const blockHasLoaded = latestBlock.number !== 0
@@ -92,8 +93,6 @@ export function useProposal(proposalId, appAddress) {
   if (isLoading || !proposal) {
     return [null, blockHasLoaded]
   }
-
-  console.log('USE PROPOSAL ', proposal)
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
@@ -107,11 +106,10 @@ export function useProposal(proposalId, appAddress) {
           config?.conviction
         )
 
-  const { describedSteps } = org.describeScript(proposalWithData.script)
+  if (proposal.type === ProposalTypes.Decision) {
+  }
 
-  console.log(describedSteps)
-
-  return [proposalWithData, blockHasLoaded]
+  return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
 function processProposal(

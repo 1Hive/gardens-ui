@@ -1,108 +1,111 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import connectHoneypot from '@1hive/connect-honey-pot'
-import { connect } from '@aragon/connect'
+import {
+  useApp,
+  useApps,
+  useOrganization,
+  usePermissions,
+} from '@aragon/connect-react'
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
-import { useWallet } from '../providers/Wallet'
 
 // utils
 import env from '../environment'
-import { getNetwork } from '../networks'
 import BigNumber from '../lib/bigNumber'
 import { addressesEqual } from '../lib/web3-utils'
-import { getDefaultChain } from '../local-settings'
 import { getAppAddressByName } from '../lib/data-utils'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
-const DEFAULT_APP_DATA = {
-  honeypot: null,
-  installedApps: [],
-  organization: null,
-  permissions: [],
-}
+// const DEFAULT_ORG_DATA = {
+//   honeypot: null,
+//   installedApps: [],
+//   organization: null,
+//   permissions: [],
+//   loadingAppData: true,
+// }
 
-export function useOrganzation() {
-  const [organzation, setOrganization] = useState(null)
-  const { ethereum, ethers } = useWallet()
-
-  useEffect(() => {
-    let cancelled = false
-    const fetchOrg = async () => {
-      try {
-        const orgAddress = getNetwork().honeypot
-        const organization = await connect(orgAddress, 'thegraph', {
-          ethereum: ethereum || ethers,
-          network: getDefaultChain(),
-        })
-
-        if (!cancelled) {
-          setOrganization(organization)
-        }
-      } catch (err) {
-        console.error(`Error fetching organization: ${err}`)
-      }
-    }
-
-    fetchOrg()
-
-    return () => {
-      cancelled = true
-    }
-  }, [ethers, ethereum])
-
-  return organzation
-}
-
-export function useAppData(organization) {
-  const [appData, setAppData] = useState(DEFAULT_APP_DATA)
+export function useOrgData() {
   const appName = env('APP_NAME')
 
+  const [honeyPot, setHoneyPot] = useState(null)
+  const [organization, orgStatus] = useOrganization()
+  const [apps, appsStatus] = useApps()
+  const [convictionApp] = useApp(appName)
+  const [permissions, permissionsStatus] = usePermissions()
+
+  const convictionAppPermissions = useMemo(() => {
+    if (
+      !permissions ||
+      permissionsStatus.loading ||
+      permissionsStatus.error ||
+      !convictionApp
+    ) {
+      return
+    }
+    return permissions.filter(({ appAddress }) =>
+      addressesEqual(appAddress, convictionApp.address)
+    )
+  }, [convictionApp, permissions, permissionsStatus])
+
+  const loadingData =
+    orgStatus.loading || appsStatus.loading || permissionsStatus.loading
+
   useEffect(() => {
+    console.log('organization ', organization)
     if (!organization) {
       return
     }
 
     let cancelled = false
 
-    const fetchAppData = async () => {
+    const fetchHoneyPotConnector = async () => {
       try {
-        const apps = await organization.apps()
-        const permissions = await organization.permissions()
-        const convictionApp = apps.find(app => app.name === appName)
-        const convictionAppPermissions = permissions.filter(({ appAddress }) =>
-          addressesEqual(appAddress, convictionApp.address)
-        )
-
-        const honeypot = await connectHoneypot(organization)
+        const honeypotData = await connectHoneypot(organization)
+        // console.log('honeypotData ', honeypotData)
 
         if (!cancelled) {
-          setAppData(appData => ({
-            ...appData,
-            honeypot,
-            installedApps: apps,
-            organization,
-            permissions: convictionAppPermissions,
-          }))
+          setHoneyPot(honeyPot => ({ ...honeyPot, ...honeypotData }))
         }
       } catch (err) {
-        console.error(`Error fetching app data: ${err}`)
+        console.error(`Error fetching honey pot connector: ${err}`)
       }
     }
 
-    fetchAppData()
+    fetchHoneyPotConnector()
 
     return () => {
       cancelled = true
     }
-  }, [appName, organization])
+  }, [organization, honeyPot])
 
-  const config = useConfigSubscription(appData.honeypot)
+  console.log('honeyPot ', honeyPot)
+  const config = useConfigSubscription(honeyPot?.honeypotData)
 
-  return { ...appData, config }
+  console.log('config ', config)
+
+  return useMemo(() => {
+    return {
+      config: config,
+      honeypot: honeyPot,
+      installedApps: apps,
+      organization: organization,
+      permissions: convictionAppPermissions,
+      loadingAppData: loadingData,
+    }
+  }, [
+    apps,
+    config,
+    convictionAppPermissions,
+    honeyPot,
+    loadingData,
+    organization,
+  ])
+
+  // return { ...appData, config, organization }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {

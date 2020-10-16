@@ -1,11 +1,16 @@
 import React from 'react'
 import { GU } from '@1hive/1hive-ui'
 
-import useProposalLogic from '../logic/proposal-logic'
+import { useDescribeVote } from '../hooks/useDescribeVote'
 
-function DecisionDetail({ match }) {
-  const { proposal } = useProposalLogic(match)
-  console.log('INSIDE DETAIL ', proposal)
+function DecisionDetail({ proposal }) {
+  const {
+    description,
+    emptyScript,
+    loading: descriptionLoading,
+  } = useDescribeVote(proposal?.script, proposal?.id)
+
+  console.log('DESCRIBED ', description, emptyScript, descriptionLoading)
 
   return (
     <div

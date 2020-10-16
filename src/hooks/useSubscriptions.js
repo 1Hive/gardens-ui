@@ -79,16 +79,19 @@ export function useProposalsSubscription(filters) {
 export function useProposalSubscription(proposalId, appAddress) {
   const { honeypot } = useAppState()
   const [proposal, setProposal] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const proposalSubscription = useRef(null)
 
   const onProposalHandler = useCallback((err, proposal) => {
     if (err || !proposal) {
+      setLoading(true)
       return
     }
 
     const transformedProposal = transformProposalData(proposal)
     setProposal(transformedProposal)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -104,7 +107,7 @@ export function useProposalSubscription(proposalId, appAddress) {
     return () => proposalSubscription.current.unsubscribe()
   }, [appAddress, honeypot, onProposalHandler, proposalId])
 
-  return proposal
+  return [proposal, loading]
 }
 
 export function useSupporterSubscription(honeypot, account) {
