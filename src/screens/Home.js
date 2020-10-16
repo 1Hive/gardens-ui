@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { GU, SidePanel, useViewport } from '@1hive/1hive-ui'
+import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
 import FilterSidebar from '../components/FilterSidebar/FilterSidebar'
@@ -9,7 +9,6 @@ import Metrics from '../components/Metrics'
 import ProposalsList from '../components/Feed/ProposalsList'
 
 import useAppLogic from '../logic/app-logic'
-import { useLayout } from '../components/Layout'
 
 const Home = React.memo(function Home() {
   const {

@@ -1,9 +1,15 @@
 import React, { useRef } from 'react'
-import { BIG_RADIUS, Button, GU, useTheme, useViewport } from '@1hive/1hive-ui'
+import {
+  BIG_RADIUS,
+  Button,
+  GU,
+  useTheme,
+  useLayout,
+  useViewport,
+} from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
-import { useLayout } from '../Layout'
 
 import filterToggleSvg from '../../assets/filter.svg'
 

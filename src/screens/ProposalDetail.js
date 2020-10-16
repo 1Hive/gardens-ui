@@ -11,6 +11,7 @@ import {
   SidePanel,
   Split,
   textStyle,
+  useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 
@@ -28,7 +29,6 @@ import SupportProposalPanel from '../components/panels/SupportProposalPanel'
 
 // Hooks
 import useProposalLogic from '../logic/proposal-logic'
-import { useLayout } from '../components/Layout'
 import { useWallet } from '../providers/Wallet'
 
 // utils
@@ -131,8 +131,14 @@ function ProposalDetail({ match }) {
       </Bar>
       <div
         css={`
-          > div > div:nth-child(2) {
-            width: ${oneColumn ? '100%' : `${40 * GU}px`};
+          > div {
+            display: ${oneColumn ? 'block' : 'flex'};
+
+            > div:nth-child(2) {
+              width: ${oneColumn ? '100%' : `${40 * GU}px`};
+              margin-left: ${!oneColumn ? 2 * GU : 0}px;
+              padding-top: ${oneColumn ? 2 * GU : 0}px;
+            }
           }
         `}
       >

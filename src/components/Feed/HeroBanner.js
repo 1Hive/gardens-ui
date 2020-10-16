@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button, GU, IconPlus, textStyle } from '@1hive/1hive-ui'
-import { useLayout } from '../Layout'
+import { Button, GU, IconPlus, textStyle, useLayout } from '@1hive/1hive-ui'
 import { useWallet } from '../../providers/Wallet'
 
 import desktopBanner from '../../assets/banner.png'
