@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
-import FilterSidebar from '../components/FilterSidebar/FilterSidebar'
+import Filters from '../components/FilterSidebar/Filters'
 import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
@@ -69,7 +69,7 @@ const Home = React.memo(function Home() {
                   column-gap: ${8 * GU}px;
                 `}
               >
-                <FilterSidebar
+                <Filters
                   compact={compactMode}
                   itemsStatus={filters.status.items}
                   itemsSupport={filters.support.items}

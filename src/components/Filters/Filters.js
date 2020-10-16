@@ -13,7 +13,7 @@ import ListFilter from './ListFilter'
 import { useWallet } from '../../providers/Wallet'
 import { STATUS_FILTER_OPEN } from '../../utils/filter-utils'
 
-const FilterSidebar = React.memo(({ compact, ...props }) => {
+const Filters = React.memo(({ compact, ...props }) => {
   const theme = useTheme()
   const { account } = useWallet()
 
@@ -198,7 +198,7 @@ function CompactFilterSlider({ ...props }) {
   return <div>Slider</div>
 }
 
-FilterSidebar.propTypes = {
+Filters.propTypes = {
   itemsStatus: PropTypes.array.isRequired,
   itemsSupport: PropTypes.array.isRequired,
   itemsType: PropTypes.array.isRequired,
@@ -210,4 +210,4 @@ FilterSidebar.propTypes = {
   onTypeFilterChange: PropTypes.func.isRequired,
 }
 
-export default FilterSidebar
+export default Filters
