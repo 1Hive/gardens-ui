@@ -51,11 +51,7 @@ export function useOrgData() {
     )
   }, [convictionApp, permissions, permissionsStatus])
 
-  const loadingData =
-    orgStatus.loading || appsStatus.loading || permissionsStatus.loading
-
   useEffect(() => {
-    console.log('organization ', organization)
     if (!organization) {
       return
     }
@@ -64,11 +60,11 @@ export function useOrgData() {
 
     const fetchHoneyPotConnector = async () => {
       try {
-        const honeypotData = await connectHoneypot(organization)
+        const honeypotConnector = await connectHoneypot(organization)
         // console.log('honeypotData ', honeypotData)
 
         if (!cancelled) {
-          setHoneyPot(honeyPot => ({ ...honeyPot, ...honeypotData }))
+          setHoneyPot(() => honeypotConnector)
         }
       } catch (err) {
         console.error(`Error fetching honey pot connector: ${err}`)
@@ -82,28 +78,23 @@ export function useOrgData() {
     }
   }, [organization, honeyPot])
 
-  console.log('honeyPot ', honeyPot)
-  const config = useConfigSubscription(honeyPot?.honeypotData)
+  const config = useConfigSubscription(honeyPot)
 
-  console.log('config ', config)
+  const loadingData =
+    orgStatus.loading ||
+    appsStatus.loading ||
+    permissionsStatus.loading ||
+    !config
 
-  return useMemo(() => {
-    return {
-      config: config,
-      honeypot: honeyPot,
-      installedApps: apps,
-      organization: organization,
-      permissions: convictionAppPermissions,
-      loadingAppData: loadingData,
-    }
-  }, [
-    apps,
-    config,
-    convictionAppPermissions,
-    honeyPot,
-    loadingData,
-    organization,
-  ])
+  console.log('loadingData ', loadingData)
+  return {
+    config: config,
+    honeypot: honeyPot,
+    installedApps: apps,
+    organization: organization,
+    permissions: convictionAppPermissions,
+    loadingAppData: loadingData,
+  }
 
   // return { ...appData, config, organization }
 }
