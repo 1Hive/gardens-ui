@@ -38,6 +38,7 @@ const Filters = React.memo(({ compact, ...props }) => {
         min-width: 270px;
         height: fit-content;
         margin-top: ${3 * GU}px;
+        margin-right: ${8 * GU}px;
 
         top: ${3 * GU}px;
         position: sticky;

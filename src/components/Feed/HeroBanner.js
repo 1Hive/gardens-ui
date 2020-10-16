@@ -29,7 +29,7 @@ function HeroBanner({ onRequestNewProposal }) {
           `
           top: ${3 * GU}px;
           position: sticky;
-          margin-right: ${3 * GU}px;
+          margin-top: ${3 * GU}px;
         `}
       `}
     >

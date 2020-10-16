@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import {
   BIG_RADIUS,
-  Button,
   DropDown,
   GU,
   IconCross,
@@ -159,8 +158,9 @@ function CompactFilterSlider({
             justify-content: space-between;
           `}
         >
-          <Button label="Clear" />
-          <Button label="Apply" mode="strong" />
+          {/* TODO: select filters locally */}
+          {/* <Button label="Clear" />
+          <Button label="Apply" mode="strong" /> */}
         </div>
       </div>
     </AnimatedSlider>

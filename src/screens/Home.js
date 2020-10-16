@@ -31,8 +31,10 @@ const Home = React.memo(function Home() {
   // min layout is never returned
   const { below } = useViewport()
   const { layoutName } = useLayout()
+  const largeMode = layoutName === 'large'
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
+  // TODO: Refactor components positioning with a grid layout
   return (
     <div>
       {isLoading ? (
@@ -66,7 +68,6 @@ const Home = React.memo(function Home() {
                 css={`
                   display: flex;
                   flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
-                  column-gap: ${8 * GU}px;
                 `}
               >
                 <Filters
@@ -95,10 +96,29 @@ const Home = React.memo(function Home() {
                   rankingItems={filters.ranking.items}
                   selectedRanking={filters.ranking.filter}
                 />
+                {largeMode && (
+                  <div
+                    css={`
+                      margin-left: ${3 * GU}px;
+                    `}
+                  >
+                    <HeroBanner
+                      onRequestNewProposal={proposalPanel.requestOpen}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
+          {!largeMode && (
+            <div
+              css={`
+                margin-right: ${3 * GU}px;
+              `}
+            >
+              <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
+            </div>
+          )}
         </div>
       )}
 
