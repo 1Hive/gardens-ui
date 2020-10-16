@@ -2,6 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useWallet } from '../providers/Wallet'
 import {
   filterArgsMapping,
+  FILTER_KEY_COUNT,
+  FILTER_KEY_RANKING,
+  FILTER_KEY_STATUS,
+  FILTER_KEY_SUPPORT,
+  FILTER_KEY_TYPE,
   NULL_FILTER_STATE,
   RANKING_FILTER_TOP,
   RANKING_ITEMS,
@@ -14,44 +19,68 @@ import {
 const INITIAL_PROPOSAL_COUNT = 10
 const PROPOSAL_COUNT_STEP = 5
 
+const filtersCache = new Map([])
+
 // Status and Type filters will be used as subgraph query args.
 // Support will be filtered locally as there is not an easy way to achieve this only by querying the subgraph.
 export default function useProposalFilters() {
   const { account } = useWallet()
-  const [proposalCount, setProposalCount] = useState(INITIAL_PROPOSAL_COUNT)
-  const [rankingFilter, setRankingFilter] = useState(RANKING_FILTER_TOP)
-  const [statusFilter, setStatusFilter] = useState(STATUS_FILTER_OPEN)
-  const [supportFilter, setSupportFilter] = useState(NULL_FILTER_STATE)
-  const [typeFilter, setTypeFilter] = useState(NULL_FILTER_STATE)
+  const [proposalCount, setProposalCount] = useState(
+    filtersCache.get(FILTER_KEY_COUNT) || INITIAL_PROPOSAL_COUNT
+  )
+  const [rankingFilter, setRankingFilter] = useState(
+    filtersCache.get(FILTER_KEY_RANKING) || RANKING_FILTER_TOP
+  )
+  const [statusFilter, setStatusFilter] = useState(
+    filtersCache.get(FILTER_KEY_STATUS) || STATUS_FILTER_OPEN
+  )
+  const [supportFilter, setSupportFilter] = useState(
+    filtersCache.get(FILTER_KEY_SUPPORT) || NULL_FILTER_STATE
+  )
+  const [typeFilter, setTypeFilter] = useState(
+    filtersCache.get(FILTER_KEY_TYPE) || NULL_FILTER_STATE
+  )
 
-  const handlePoposalCountIncrease = useCallback(index => {
-    setProposalCount(count => count + PROPOSAL_COUNT_STEP)
-  }, [])
+  const handlePoposalCountIncrease = useCallback(
+    index => {
+      const newCount = proposalCount + PROPOSAL_COUNT_STEP
+      setProposalCount(newCount)
+      filtersCache.set(FILTER_KEY_COUNT, newCount)
+    },
+    [proposalCount]
+  )
   const handleRankingFilterChange = useCallback(index => {
     setRankingFilter(index)
+    filtersCache.set(FILTER_KEY_RANKING, index)
   }, [])
-  const handleStatusFilterChange = useCallback(
-    index => setStatusFilter(index || NULL_FILTER_STATE),
-    []
-  )
-  const handleSupportFilterChange = useCallback(
-    index => setSupportFilter(index || NULL_FILTER_STATE),
-    []
-  )
-  const handleTypeFilterChange = useCallback(
-    index => setTypeFilter(index || NULL_FILTER_STATE),
-    []
-  )
+  const handleStatusFilterChange = useCallback(index => {
+    const newStatus = index || NULL_FILTER_STATE
+    setStatusFilter(newStatus)
+    filtersCache.set(FILTER_KEY_STATUS, newStatus)
+  }, [])
+  const handleSupportFilterChange = useCallback(index => {
+    const newSupport = index || NULL_FILTER_STATE
+    setSupportFilter(newSupport)
+    filtersCache.set(FILTER_KEY_SUPPORT, newSupport)
+  }, [])
+  const handleTypeFilterChange = useCallback(index => {
+    const newType = index || NULL_FILTER_STATE
+    setTypeFilter(newType)
+    filtersCache.set(FILTER_KEY_TYPE, newType)
+  }, [])
 
   const handleClearFilters = useCallback(() => {
     setStatusFilter(STATUS_FILTER_OPEN)
     setSupportFilter(NULL_FILTER_STATE)
     setTypeFilter(NULL_FILTER_STATE)
+
+    filtersCache.clear()
   }, [])
 
   useEffect(() => {
     if (!account) {
       setSupportFilter(NULL_FILTER_STATE)
+      filtersCache.set(FILTER_KEY_SUPPORT, NULL_FILTER_STATE)
     }
   }, [account])
 
