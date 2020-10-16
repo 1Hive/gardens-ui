@@ -109,7 +109,7 @@ function FilterToggle({ onToggle }) {
     <Button
       icon={<img src={filterToggleSvg} />}
       display="icon"
-      label=""
+      label="filter"
       onClick={onToggle}
       css={`
         margin-right: ${1 * GU}px;

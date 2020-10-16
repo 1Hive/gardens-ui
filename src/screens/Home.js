@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import AddProposalPanel from '../components/panels/AddProposalPanel'
-import Filters from '../components/FilterSidebar/Filters'
+import Filters from '../components/Filters/Filters'
 import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
@@ -81,6 +81,7 @@ const Home = React.memo(function Home() {
                   onStatusFilterChange={filters.status.onChange}
                   onSupportFilterChange={filters.support.onChange}
                   onTypeFilterChange={filters.type.onChange}
+                  onToggleFilterSlider={handleFilterSliderToggle}
                   sliderVisible={filterSliderVisible}
                 />
                 <ProposalsList
