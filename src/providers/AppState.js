@@ -6,6 +6,7 @@ import {
   useTokenBalances,
   useOrganzation,
   useAppData,
+  useCurrencies,
 } from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
 import { STAKE_PCT_BASE } from '../constants'
@@ -14,7 +15,7 @@ const AppStateContext = React.createContext()
 
 function AppStateProvider({ children }) {
   const { account } = useWallet()
-  const [organization, errorFetchingOrg]= useOrganzation()
+  const [organization, errorFetchingOrg] = useOrganzation()
   const {
     convictionVoting,
     installedApps,
@@ -29,6 +30,7 @@ function AppStateProvider({ children }) {
   const vaultBalance = useVaultBalance(installedApps, requestToken)
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
+  const currencies = useCurrencies()
 
   const effectiveSupply = useMemo(() => {
     if (!(totalSupply && totalStaked && minThresholdStakePercentage)) {
@@ -46,7 +48,9 @@ function AppStateProvider({ children }) {
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
   const fetchingErrors = errorFetchingApp || errorFetchingOrg
-  const appLoading = fetchingErrors ? false : !convictionVoting || balancesLoading || !effectiveSupply
+  const appLoading = fetchingErrors
+    ? false
+    : !convictionVoting || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
@@ -63,6 +67,7 @@ function AppStateProvider({ children }) {
         totalStaked,
         totalSupply: totalSupply,
         vaultBalance,
+        currencies: currencies,
       }}
     >
       {children}

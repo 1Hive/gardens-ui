@@ -27,6 +27,7 @@ const MainScreen = React.memo(
       stakeToken,
       totalSupply,
       vaultBalance,
+      currencies,
     } = useAppState()
 
     const {
@@ -76,12 +77,15 @@ const MainScreen = React.memo(
               stakeToken={stakeToken}
               requestToken={requestToken}
               totalActiveTokens={totalActiveTokens}
+              currencies={currencies}
             />
             <Proposals
               currentPage={currentProposalListPage}
               filteredProposals={filteredProposals}
               handleExecutionStatusFilterChange={handleTabChange}
-              handleProposalSupportFilterChange={handleProposalSupportFilterChange}
+              handleProposalSupportFilterChange={
+                handleProposalSupportFilterChange
+              }
               handleProposalTypeFilterChange={handleProposalTypeFilterChange}
               handleProposalPageChange={setCurrentProposalListPage}
               handleSearchTextFilterChange={handleSearchTextFilterChange}
