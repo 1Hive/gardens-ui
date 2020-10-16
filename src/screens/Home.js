@@ -45,7 +45,11 @@ const Home = React.memo(function Home() {
             flex-direction: ${compactMode ? 'column-reverse' : 'row'};
           `}
         >
-          <div>
+          <div
+            css={`
+              flex-grow: 1;
+            `}
+          >
             <div
               css={`
                 margin: ${(below('medium') ? 0 : 3) * GU}px;

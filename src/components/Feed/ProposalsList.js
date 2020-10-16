@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { BIG_RADIUS, Button, GU, useTheme } from '@1hive/1hive-ui'
+import { BIG_RADIUS, Button, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
@@ -21,35 +21,37 @@ function ProposalsList({
   const listRef = useRef()
 
   const theme = useTheme()
+  const { below } = useViewport()
   const { layoutName } = useLayout()
-  const compact = layoutName === 'small'
+  const compact = layoutName === 'small' || layoutName === 'medium'
 
   return (
     <div
       ref={listRef}
       css={`
+        flex-basis: auto;
         flex-grow: 1;
       `}
     >
       <div
         css={`
-          margin: 0 ${(compact ? 1 : 0) * GU}px;
-          position: sticky;
           top: 0;
           z-index: 3;
-          padding-top: ${3 * GU}px;
-          padding-bottom: ${0.5 * GU}px;
+          position: sticky;
+          padding: ${2 * GU}px 0;
+          margin: 0 ${(below('medium') ? 1 : 0) * GU}px;
           background-color: ${theme.background};
+
+          ${!compact && `padding-top: ${3 * GU}px;`}
         `}
       >
         <div
           css={`
-            margin-bottom: ${1 * GU}px;
             display: flex;
             align-items: center;
           `}
         >
-          {compact && <FilterToggle onToggle={onToggleFilterSlider} />}
+          {below('medium') && <FilterToggle onToggle={onToggleFilterSlider} />}
           <ProposalRankings
             items={rankingItems}
             onChange={onRankingFilterChange}

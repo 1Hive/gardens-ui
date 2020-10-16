@@ -6,5 +6,5 @@ export const BREAKPOINTS = {
   small: 480,
   medium: 96 * GU,
   large: 160 * GU,
-  max: 210 * GU,
+  max: 200 * GU,
 }

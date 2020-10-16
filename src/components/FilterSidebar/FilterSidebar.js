@@ -42,8 +42,7 @@ const FilterSidebar = React.memo(({ compact, ...props }) => {
   return (
     <div
       css={`
-        flex-basis: 33%;
-        min-width: 260px;
+        min-width: 300px;
         height: fit-content;
         margin-top: ${3 * GU}px;
 

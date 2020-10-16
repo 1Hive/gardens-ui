@@ -18,7 +18,6 @@ function HeroBanner({ onRequestNewProposal }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
 
-  console.log('layoutName', layoutName)
   const banner = BANNERS[layoutName]
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
@@ -31,6 +30,7 @@ function HeroBanner({ onRequestNewProposal }) {
           `
           top: ${3 * GU}px;
           position: sticky;
+          margin-right: ${3 * GU}px;
         `}
       `}
     >

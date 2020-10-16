@@ -72,7 +72,7 @@ function Layout({
     <LayoutProvider parentWidth={parentWidth} breakpoints={breakpoints}>
       <LayoutWidthLimiter
         minWidth={mergedBreakpoints.min}
-        max-width={mergedBreakpoints.max}
+        maxWidth={mergedBreakpoints.max}
         paddingBottom={paddingBottom}
         {...props}
       >
@@ -142,14 +142,20 @@ function LayoutWidthLimiter({
         width: auto;
         min-width: ${minWidth}px;
         max-width: ${maxWidth}px;
-        margin: 0
-          ${layoutName === 'small' || layoutName === 'medium'
-            ? 'auto'
-            : `${10 * GU}px`};
+        margin: 0 auto;
         padding-bottom: ${paddingBottom}px;
       `}
     >
-      {children}
+      <div
+        css={`
+          margin: 0
+            ${layoutName === 'small' || layoutName === 'medium'
+              ? 0
+              : `${8 * GU}px`};
+        `}
+      >
+        {children}
+      </div>
     </div>
   )
 }
