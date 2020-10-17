@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import {
-  Button,
-  GU,
-  Split,
-  springs,
-  SyncIndicator,
-  useLayout,
-} from '@1hive/1hive-ui'
+import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
 
 import Activity from '../components/Profile/Activity'
@@ -91,13 +84,7 @@ function Profile() {
             native
           >
             {({ marginTop }) => (
-              <animated.div style={{ marginTop }}>
-                {isConnectedAccountProfile && (
-                  <SyncIndicator
-                    label="Opening box..."
-                    visible={!selectedProfile?.authenticated}
-                  />
-                )}
+              <animated.div style={{ marginTop, position: 'relative' }}>
                 {editMode ? (
                   <EditProfile
                     coverPic={coverPic}
@@ -117,12 +104,28 @@ function Profile() {
                     {isConnectedAccountProfile && (
                       <div
                         css={`
-                          text-align: right;
-                          margin-bottom: ${2 * GU}px;
+                          position: absolute;
+                          z-index: 1;
+
+                          ${oneColumn
+                            ? `
+                            left: 0;
+                            right: 0;
+                            text-align: center;
+                            top: 50px;
+                            `
+                            : `
+                            top: -54px;
+                            right: 0;
+                          `}
                         `}
                       >
                         <Button
-                          label="Edit profile"
+                          label={
+                            selectedProfile?.authenticated
+                              ? 'Edit profile'
+                              : 'Opening box…'
+                          }
                           onClick={toggleEditMode}
                           disabled={!selectedProfile?.authenticated}
                         />

@@ -61,6 +61,8 @@ function Activity({ account }) {
                     display: flex;
                     align-items: center;
                     margin-bottom: ${1 * GU}px;
+                    flex-wrap: wrap;
+                    column-gap: ${0.75 * GU}px;
                   `}
                 >
                   Supported the <ProposalIcon type={stake.proposal.type} />{' '}
@@ -69,7 +71,6 @@ function Activity({ account }) {
                     href={`/#/proposal/${stake.proposal.id}`}
                     external={false}
                     css={`
-                      margin-left: ${1 * GU}px;
                       text-decoration: none;
                     `}
                   >

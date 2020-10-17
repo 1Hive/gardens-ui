@@ -18,7 +18,7 @@ function ProposalIcon({ type }) {
         height: ${1.5 * GU}px;
         background: ${color};
         transform: rotate(45deg);
-        margin: 0 ${1 * GU}px;
+        margin: 0 ${0.5 * GU}px;
       `}
     />
   )
