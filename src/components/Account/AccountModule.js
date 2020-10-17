@@ -31,7 +31,7 @@ const SCREENS = [
   },
   {
     id: 'connected',
-    height: 37 * GU,
+    height: 32.5 * GU,
   },
   {
     id: 'error',
