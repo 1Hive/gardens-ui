@@ -40,7 +40,7 @@ const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
 
   return (
     <Badge
-      customLabel={profileName}
+      label={profileName}
       entity={entity}
       networkType={networkType === 'xdai' ? 'private' : networkType}
       {...props}
