@@ -69,6 +69,7 @@ function targetDataFromTransactionRequest(apps, transactionRequest) {
   // Populate details via our apps list if it's available
   if (apps.some(({ address }) => addressesEqual(address, targetAppAddress))) {
     const { humanName, iconSrc } = getAppPresentation(apps, targetAppAddress)
+
     return {
       address: targetAppAddress,
       name: humanName,

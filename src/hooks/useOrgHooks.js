@@ -20,14 +20,6 @@ import { getAppAddressByName } from '../lib/data-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
-// const DEFAULT_ORG_DATA = {
-//   honeypot: null,
-//   installedApps: [],
-//   organization: null,
-//   permissions: [],
-//   loadingAppData: true,
-// }
-
 export function useOrgData() {
   const appName = env('APP_NAME')
 
@@ -61,10 +53,9 @@ export function useOrgData() {
     const fetchHoneyPotConnector = async () => {
       try {
         const honeypotConnector = await connectHoneypot(organization)
-        // console.log('honeypotData ', honeypotData)
 
         if (!cancelled) {
-          setHoneyPot(() => honeypotConnector)
+          setHoneyPot(honeypotConnector)
         }
       } catch (err) {
         console.error(`Error fetching honey pot connector: ${err}`)
@@ -76,7 +67,7 @@ export function useOrgData() {
     return () => {
       cancelled = true
     }
-  }, [organization, honeyPot])
+  }, [organization])
 
   const config = useConfigSubscription(honeyPot)
 
@@ -86,7 +77,6 @@ export function useOrgData() {
     permissionsStatus.loading ||
     !config
 
-  console.log('loadingData ', loadingData)
   return {
     config: config,
     honeypot: honeyPot,
@@ -95,8 +85,6 @@ export function useOrgData() {
     permissions: convictionAppPermissions,
     loadingAppData: loadingData,
   }
-
-  // return { ...appData, config, organization }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {

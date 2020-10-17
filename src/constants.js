@@ -13,3 +13,7 @@ export const STAKE_PCT_BASE = bigNum(1)
 export const QUICK_STAKE_PCT = bigNum(5, 16)
 
 export const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
+
+export const VOTE_ABSENT = 'VOTE_ABSENT'
+export const VOTE_YEA = 'VOTE_YEA'
+export const VOTE_NAY = 'VOTE_NAY'
