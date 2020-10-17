@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, Link, useTheme } from '@1hive/1hive-ui'
+import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
@@ -9,10 +9,13 @@ import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
 import beeSvg from '../../assets/bee.svg'
 import logoSvg from '../../assets/logo.svg'
 
-function Header({ compact }) {
+function Header() {
   const theme = useTheme()
   const { account } = useWallet()
-  const BeeIcon = <img src={beeSvg} height={compact ? 40 : 60} alt="" />
+  const { below } = useViewport()
+  const layoutSmall = below('medium')
+
+  const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
 
   return (
     <header
@@ -40,9 +43,9 @@ function Header({ compact }) {
             `}
           >
             <Link href="#/home" external={false}>
-              {compact ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
+              {layoutSmall ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
             </Link>
-            {!compact && (
+            {!below('large') && (
               <nav
                 css={`
                   display: flex;
@@ -90,11 +93,11 @@ function Header({ compact }) {
             css={`
               display: flex;
               align-items: center;
-              ${account && !compact && `min-width: ${42.5 * GU}px`};
+              ${account && !layoutSmall && `min-width: ${42.5 * GU}px`};
             `}
           >
-            <AccountModule compact={compact} />
-            {account && !compact && (
+            <AccountModule compact={layoutSmall} />
+            {account && !layoutSmall && (
               <>
                 <div
                   css={`

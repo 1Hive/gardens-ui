@@ -7,7 +7,7 @@ import Layout from './Layout'
 
 function MainView({ children }) {
   const { below } = useViewport()
-  const compactMode = below('medium')
+  const compactMode = below('large')
 
   return (
     <div
@@ -22,7 +22,7 @@ function MainView({ children }) {
           flex-shrink: 0;
         `}
       >
-        <Header compact={compactMode} />
+        <Header />
       </div>
       <Root.Provider
         css={`
@@ -37,19 +37,17 @@ function MainView({ children }) {
               min-height: 100vh;
               margin: 0;
               display: grid;
-              grid-template-rows: 1fr ${compactMode
-                  ? `${60 * GU}px`
-                  : `${40 * GU}px`};
+              grid-template-rows: 1fr ${compactMode ? 'auto' : `${40 * GU}px`};
             `}
           >
             <div
               css={`
-                flex: 1 0 auto;
+                margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
               `}
             >
               <Layout>{children}</Layout>
             </div>
-            <Footer compact={compactMode} />
+            <Footer />
           </div>
         </ScrollView>
       </Root.Provider>
