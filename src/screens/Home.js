@@ -113,7 +113,7 @@ const Home = React.memo(function Home() {
           {!largeMode && (
             <div
               css={`
-                margin-right: ${3 * GU}px;
+                margin-right: ${(compactMode ? 0 : 3) * GU}px;
               `}
             >
               <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
