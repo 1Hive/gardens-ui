@@ -41,7 +41,7 @@ function ProposalsList({
     >
       <div
         css={`
-          top: 0;
+          top: -1px;
           z-index: 3;
           position: sticky;
           padding: ${2 * GU}px 0;

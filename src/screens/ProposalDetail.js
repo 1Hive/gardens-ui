@@ -178,7 +178,7 @@ function ProposalDetail({ match }) {
                         css={`
                           margin-top: ${2 * GU}px;
                           grid-column: span 2;
-                          width: ${50 * GU}px;
+                          min-width: ${40 * GU}px;
                           color: ${theme.contentSecondary};
                         `}
                       >

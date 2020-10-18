@@ -80,19 +80,29 @@ function ProposalCreator({ proposal }) {
           css={`
             display: flex;
             align-items: center;
-            column-gap: ${0.75 * GU}px;
           `}
         >
           {addressesEqual(proposal.creator, ZERO_ADDR) ? (
             ProposalType
           ) : (
             <>
-              <strong>
+              <strong
+                css={`
+                  margin-right: ${1 * GU}px;
+                `}
+              >
                 {profile?.name
                   ? profile.name
                   : shortenAddress(proposal.creator)}
               </strong>
-              <span>created a</span> {ProposalType}
+              <span
+                css={`
+                  margin-right: ${0.5 * GU}px;
+                `}
+              >
+                created a
+              </span>{' '}
+              {ProposalType}
             </>
           )}
         </div>
