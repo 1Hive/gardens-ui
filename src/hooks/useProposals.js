@@ -35,16 +35,6 @@ export function useProposals() {
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
 
-  const decisionsStates = useMemo(
-    () =>
-      proposals.map(
-        p =>
-          p.type === ProposalTypes.Decision &&
-          getDecisionTransition(p, latestBlock, blockTime)
-      ),
-    [blockTime, latestBlock, proposals]
-  )
-
   const proposalsWithData = useMemo(() => {
     if (isLoading) {
       return proposals
@@ -52,7 +42,7 @@ export function useProposals() {
 
     return proposals.map((proposal, i) =>
       proposal.type === ProposalTypes.Decision
-        ? { ...proposal, data: { ...proposal.data, ...decisionsStates[i] } }
+        ? processDecision(proposal, latestBlock, blockTime)
         : processProposal(
             proposal,
             latestBlock,
@@ -64,7 +54,7 @@ export function useProposals() {
     )
   }, [
     account,
-    decisionsStates,
+    blockTime,
     config,
     effectiveSupply,
     isLoading,
@@ -103,7 +93,7 @@ export function useProposal(proposalId, appAddress) {
   )
   const latestBlock = useLatestBlock()
   const blockTime = useBlockTime()
-  const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -113,10 +103,7 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? {
-          ...proposal,
-          data: getDecisionTransition(proposal, latestBlock, blockTime),
-        }
+      ? processDecision(proposal, latestBlock, blockTime)
       : processProposal(
           proposal,
           latestBlock,
@@ -218,5 +205,15 @@ function processProposal(
     remainingTimeToPass,
     convictionTrend,
     totalStaked,
+  }
+}
+
+function processDecision(proposal, latestBlock, blockTime) {
+  return {
+    ...proposal,
+    data: {
+      ...proposal.data,
+      ...getDecisionTransition(proposal, latestBlock, blockTime),
+    },
   }
 }

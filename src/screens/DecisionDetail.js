@@ -40,7 +40,7 @@ function DecisionDetail({ proposal, actions }) {
     description,
     // emptyScript,
     loading: descriptionLoading,
-  } = useDescribeVote(proposal?.script, proposal?.id)
+  } = useDescribeVote(proposal.script, proposal.id)
 
   const connectedAccountVote = getConnectedAccountVote(
     proposal,

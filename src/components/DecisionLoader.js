@@ -1,19 +1,16 @@
 import React from 'react'
-import useProposalLogic from '../logic/proposal-logic'
-import { useAppState } from '../providers/AppState'
-
 import DecisionDetail from '../screens/DecisionDetail'
 import Loader from './Loader'
+import useProposalLogic from '../logic/proposal-logic'
 
 function DecisionLoader({ match }) {
   const {
     actions: { dandelionActions },
     proposal,
-    isLoading: proposalLoading,
+    isLoading,
   } = useProposalLogic(match)
-  const { isLoading } = useAppState()
 
-  if (isLoading || !proposal || proposalLoading) {
+  if (!proposal || isLoading) {
     return <Loader />
   }
 
