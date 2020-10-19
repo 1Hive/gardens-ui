@@ -6,20 +6,16 @@ import { useAppState } from '../providers/AppState'
 import usePromise from './usePromise'
 import { useWallet } from '../providers/Wallet'
 
-import { getAppAddressByName } from '../lib/data-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '../lib/token-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import dandelionVotingAbi from '../abi/DandelionVoting.json'
 
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()
-  const { config, installedApps } = useAppState()
+  const { config } = useAppState()
   const { stakeToken } = config?.conviction || {}
+  const { id: dandelionVotingAddress } = config?.voting || {}
 
-  const dandelionVotingAddress = getAppAddressByName(
-    installedApps,
-    'dandelion-voting'
-  )
   const dandelionVotingContract = useContractReadOnly(
     dandelionVotingAddress,
     dandelionVotingAbi.abi
