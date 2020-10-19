@@ -52,8 +52,6 @@ function DecisionDetail({ proposal, actions }) {
 
   const { number, creator } = proposal || {}
 
-  console.log('proposal ', proposal)
-
   const handleBack = useCallback(() => {
     history.push('/home')
   }, [history])

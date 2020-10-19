@@ -35,8 +35,6 @@ export function useProposals() {
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
 
-  console.log('FILTERED ', proposals)
-
   const decisionsStates = useMemo(
     () =>
       proposals.map(
@@ -103,9 +101,10 @@ export function useProposal(proposalId, appAddress) {
     proposalId,
     appAddress
   )
+  const latestBlock = useLatestBlock()
+  const blockTime = useBlockTime()
   const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
 
-  const latestBlock = useLatestBlock()
   const blockHasLoaded = latestBlock.number !== 0
 
   if (isLoading || !proposal) {
@@ -114,7 +113,10 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? proposal
+      ? {
+          ...proposal,
+          data: getDecisionTransition(proposal, latestBlock, blockTime),
+        }
       : processProposal(
           proposal,
           latestBlock,
@@ -138,7 +140,6 @@ function processProposal(
   account,
   config
 ) {
-  console.log('PROCESSS PROPOSAL ', proposal)
   const { alpha, maxRatio, totalStaked, weight } = config || {}
 
   let threshold = null
