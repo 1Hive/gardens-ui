@@ -139,42 +139,6 @@ export default function useActions(onDone) {
     [account, ethers, installedApps, organization]
   )
 
-  const canExecuteDecision = useCallback(
-    voteId => {
-      const dandelionVotingAddress = getAppAddressByName(
-        installedApps,
-        'dandelion-voting'
-      )
-
-      sendIntent(organization, dandelionVotingAddress, 'canExecute', [voteId], {
-        ethers,
-        from: account,
-      })
-    },
-    [account, ethers, installedApps, organization]
-  )
-
-  const canUserVote = useCallback(
-    voteId => {
-      const dandelionVotingAddress = getAppAddressByName(
-        installedApps,
-        'dandelion-voting'
-      )
-
-      sendIntent(
-        organization,
-        dandelionVotingAddress,
-        'canVote',
-        [voteId, account],
-        {
-          ethers,
-          from: account,
-        }
-      )
-    },
-    [account, ethers, installedApps, organization]
-  )
-
   return {
     convictionActions: {
       executeIssuance,
@@ -185,8 +149,6 @@ export default function useActions(onDone) {
       withdrawFromProposal,
     },
     dandelionActions: {
-      canExecuteDecision,
-      canUserVote,
       executeDecision,
       voteOnDecision,
     },
@@ -201,7 +163,6 @@ async function sendIntent(
   { ethers, from }
 ) {
   try {
-    console.log('organization ', organization)
     const intent = organization.appIntent(appAddress, fn, params)
 
     const txPath = await intent.paths(from)

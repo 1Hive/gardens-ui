@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function usePromise(fn, memoParams, defaultValue) {
+export default function usePromise(fn, memoParams, defaultValue, number) {
   const [result, setResult] = useState(defaultValue)
   useEffect(() => {
     let cancelled = false
