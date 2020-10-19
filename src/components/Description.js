@@ -1,7 +1,7 @@
 import React from 'react'
 import { GU, IdentityBadge, useTheme } from '@1hive/1hive-ui'
 
-function Description({ disableBadgeInteraction, path }) {
+function Description({ disableBadgeInteraction, path, ...props }) {
   return (
     <span
       css={`
@@ -12,6 +12,7 @@ function Description({ disableBadgeInteraction, path }) {
         overflow-wrap: anywhere;
         word-break: break-word;
       `}
+      {...props}
     >
       {path
         ? path.map((step, index) => (
