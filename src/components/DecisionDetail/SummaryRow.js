@@ -42,9 +42,7 @@ function SummaryRow({ color, label, pct, token }) {
           margin-left: ${2 * GU}px;
         `}
       >
-        {formatTokenAmount(token.amount, token.decimals, {
-          symbol: token.symbol,
-        })}
+        {formatTokenAmount(token.amount, token.decimals)} {token.symbol}
       </div>
     </div>
   )

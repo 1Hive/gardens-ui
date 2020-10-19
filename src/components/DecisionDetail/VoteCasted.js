@@ -78,7 +78,7 @@ function VoteCasted({ vote }) {
                 font-weight: 600;
               `}
             >
-              {userBalance === -1 ? '…' : userBalance} {stakeToken.tokenSymbol}
+              {userBalance === -1 ? '…' : userBalance} {stakeToken.symbol}
             </span>
             .
           </div>
