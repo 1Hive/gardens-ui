@@ -17,6 +17,7 @@ import Loader from '../components/Loader'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteCasted from '../components/DecisionDetail/VoteCasted'
+import VoteActions from '../components/DecisionDetail/VoteActions'
 
 import { useWallet } from '../providers/Wallet'
 import { useDescribeVote } from '../hooks/useDescribeVote'
@@ -28,7 +29,7 @@ import { getConnectedAccountVote } from '../lib/vote-utils'
 
 import { VOTE_NAY, VOTE_YEA } from '../constants'
 
-function DecisionDetail({ proposal }) {
+function DecisionDetail({ proposal, actions }) {
   // const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
@@ -51,9 +52,23 @@ function DecisionDetail({ proposal }) {
 
   const { number, creator } = proposal || {}
 
+  console.log('proposal ', proposal)
+
   const handleBack = useCallback(() => {
     history.push('/home')
   }, [history])
+
+  const handleVoteNo = useCallback(() => {
+    actions.voteOnDecision(proposal.number, VOTE_NAY)
+  }, [actions, proposal.number])
+
+  const handleVoteYes = useCallback(() => {
+    actions.voteOnDecision(proposal.number, VOTE_YEA)
+  }, [actions, proposal.number])
+
+  const handleExecute = useCallback(() => {
+    actions.executeDecision(proposal.number)
+  }, [actions, proposal.number])
 
   if (descriptionLoading) {
     return <Loader />
@@ -114,6 +129,12 @@ function DecisionDetail({ proposal }) {
             </section>
             <SummaryInfo vote={proposal} />
             {youVoted && <VoteCasted vote={proposal} />}
+            <VoteActions
+              onExecute={handleExecute}
+              onVoteNo={handleVoteNo}
+              onVoteYes={handleVoteYes}
+              vote={proposal}
+            />
           </Box>
         }
         secondary={<div />}

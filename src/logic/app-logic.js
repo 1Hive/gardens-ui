@@ -11,6 +11,8 @@ export default function useAppLogic() {
   const actions = useActions(proposalPanel.requestClose)
   const [proposals, filters, blockHasLoaded] = useProposals()
 
+  console.log('OUTSIDEEE DATA ', proposals)
+
   return {
     actions,
     filters,

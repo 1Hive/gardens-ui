@@ -4,6 +4,8 @@ import { useWallet } from '../providers/Wallet'
 import { toHex } from 'web3-utils'
 import { getAppAddressByName } from '../lib/data-utils'
 
+import { VOTE_YEA } from '../constants'
+
 const GAS_LIMIT = 450000
 
 export default function useActions(onDone) {
@@ -95,13 +97,99 @@ export default function useActions(onDone) {
     })
   }, [account, ethers, installedApps, organization])
 
+  const voteOnDecision = useCallback(
+    (voteId, voteType) => {
+      const dandelionVotingAddress = getAppAddressByName(
+        installedApps,
+        'dandelion-voting'
+      )
+
+      sendIntent(
+        organization,
+        dandelionVotingAddress,
+        'vote',
+        [voteId, voteType === VOTE_YEA],
+        {
+          ethers,
+          from: account,
+        }
+      )
+    },
+    [account, ethers, installedApps, organization]
+  )
+
+  const executeDecision = useCallback(
+    voteId => {
+      const dandelionVotingAddress = getAppAddressByName(
+        installedApps,
+        'dandelion-voting'
+      )
+
+      sendIntent(
+        organization,
+        dandelionVotingAddress,
+        'executeVote',
+        [voteId],
+        {
+          ethers,
+          from: account,
+        }
+      )
+    },
+    [account, ethers, installedApps, organization]
+  )
+
+  const canExecuteDecision = useCallback(
+    voteId => {
+      const dandelionVotingAddress = getAppAddressByName(
+        installedApps,
+        'dandelion-voting'
+      )
+
+      sendIntent(organization, dandelionVotingAddress, 'canExecute', [voteId], {
+        ethers,
+        from: account,
+      })
+    },
+    [account, ethers, installedApps, organization]
+  )
+
+  const canUserVote = useCallback(
+    voteId => {
+      const dandelionVotingAddress = getAppAddressByName(
+        installedApps,
+        'dandelion-voting'
+      )
+
+      sendIntent(
+        organization,
+        dandelionVotingAddress,
+        'canVote',
+        [voteId, account],
+        {
+          ethers,
+          from: account,
+        }
+      )
+    },
+    [account, ethers, installedApps, organization]
+  )
+
   return {
-    executeIssuance,
-    executeProposal,
-    newProposal,
-    cancelProposal,
-    stakeToProposal,
-    withdrawFromProposal,
+    convictionActions: {
+      executeIssuance,
+      executeProposal,
+      newProposal,
+      cancelProposal,
+      stakeToProposal,
+      withdrawFromProposal,
+    },
+    dandelionActions: {
+      canExecuteDecision,
+      canUserVote,
+      executeDecision,
+      voteOnDecision,
+    },
   }
 }
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
-import { useLatestBlock } from './useBlock'
+import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
 import { useAppState } from '../providers/AppState'
 import useProposalFilters from './useProposalFilters'
@@ -20,6 +20,7 @@ import {
 } from '../lib/conviction'
 import { testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
+import { getDecisionTransition } from '../lib/vote-utils'
 import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
@@ -29,26 +30,43 @@ export function useProposals() {
   const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
 
   const latestBlock = useLatestBlock()
+  const blockTime = useBlockTime()
+
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
+
+  console.log('FILTERED ', proposals)
+
+  const decisionsStates = useMemo(
+    () =>
+      proposals.map(
+        p =>
+          p.type === ProposalTypes.Decision &&
+          getDecisionTransition(p, latestBlock, blockTime)
+      ),
+    [blockTime, latestBlock, proposals]
+  )
 
   const proposalsWithData = useMemo(() => {
     if (isLoading) {
       return proposals
     }
 
-    return proposals.map(proposal =>
-      processProposal(
-        proposal,
-        latestBlock,
-        effectiveSupply,
-        vaultBalance,
-        account,
-        config?.conviction
-      )
+    return proposals.map((proposal, i) =>
+      proposal.type === ProposalTypes.Decision
+        ? { ...proposal, data: { ...proposal.data, ...decisionsStates[i] } }
+        : processProposal(
+            proposal,
+            latestBlock,
+            effectiveSupply,
+            vaultBalance,
+            account,
+            config?.conviction
+          )
     )
   }, [
     account,
+    decisionsStates,
     config,
     effectiveSupply,
     isLoading,
@@ -120,6 +138,7 @@ function processProposal(
   account,
   config
 ) {
+  console.log('PROCESSS PROPOSAL ', proposal)
   const { alpha, maxRatio, totalStaked, weight } = config || {}
 
   let threshold = null

@@ -30,6 +30,20 @@ export function useLatestBlock(updateEvery = 1000) {
   return block
 }
 
+export function useBlockTimeStamp(blockNumber) {
+  const { ethers } = useWallet()
+  const [block, setBlock] = useState({ number: blockNumber, timeStamp: 0 })
+
+  const fetchBlock = useCallback(async () => {
+    const { number, timestamp } = await ethers.getBlock(blockNumber)
+    setBlock({ number, timestamp })
+  }, [blockNumber, ethers])
+
+  fetchBlock()
+
+  return block
+}
+
 export function useBlockTime() {
   const network = getNetwork()
 

@@ -152,3 +152,17 @@ export async function getUserBalanceAt(
 
   return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
 }
+
+export async function getUserBalanceNow(
+  connectedAccount,
+  tokenContract,
+  tokenDecimals
+) {
+  if (!tokenContract || !connectedAccount) {
+    return -1
+  }
+
+  const balance = await tokenContract.balanceOf(connectedAccount)
+
+  return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
+}

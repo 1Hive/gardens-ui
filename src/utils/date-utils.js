@@ -23,4 +23,6 @@ function durationTime(seconds) {
   return dayjs.duration(seconds, 'seconds').humanize()
 }
 
+export function noop() {}
+
 export { dayjs, dateFormat, durationTime }
