@@ -10,6 +10,7 @@ const addressCache = new Map()
 function IdentityBadge({ entity, useBox, ...props }) {
   const [profileName, setProfileName] = useState(null)
 
+  const networkType = getNetworkType()
   const history = useHistory()
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${entity}`)
@@ -22,7 +23,6 @@ function IdentityBadge({ entity, useBox, ...props }) {
         setProfileName(addressCache.get(entity))
         return
       }
-
       const profile = await getProfileForAccount(entity)
       if (profile && !cancelled) {
         setProfileName(profile.name)
@@ -40,7 +40,7 @@ function IdentityBadge({ entity, useBox, ...props }) {
     <Badge
       customLabel={profileName}
       entity={entity}
-      networkType={getNetworkType()}
+      networkType={networkType === 'xdai' ? 'private' : networkType}
       {...props}
       popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
     />
