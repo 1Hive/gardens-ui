@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 import { toHex } from 'web3-utils'
-import { getAppAddressByName } from '../lib/data-utils'
+import { getAppByName } from '../lib/data-utils'
 
 import { VOTE_YEA } from '../constants'
 
@@ -11,13 +11,15 @@ const GAS_LIMIT = 450000
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
-  const { convictionVoting, installedApps, organization } = useAppState()
+  const { installedApps } = useAppState()
+  const convictionVotingApp = getAppByName(installedApps, 'conviction-beta')
+  const dandelionVotingApp = getAppByName(installedApps, 'dandelion-voting')
+  const issuanceApp = getAppByName(installedApps, 'issuance')
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
       sendIntent(
-        organization,
-        convictionVoting.address,
+        convictionVotingApp,
         'addProposal',
         [title, link ? toHex(link) : '0x', amount, beneficiary],
         { ethers, from: account }
@@ -25,44 +27,37 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingApp, ethers, onDone]
   )
 
   const cancelProposal = useCallback(
     async proposalId => {
-      sendIntent(
-        organization,
-        convictionVoting.address,
-        'cancelProposal',
-        [proposalId],
-        { ethers, from: account }
-      )
+      sendIntent(convictionVotingApp, 'cancelProposal', [proposalId], {
+        ethers,
+        from: account,
+      })
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingApp, ethers, onDone]
   )
 
   const stakeToProposal = useCallback(
     (proposalId, amount) => {
-      sendIntent(
-        organization,
-        convictionVoting.address,
-        'stakeToProposal',
-        [proposalId, amount],
-        { ethers, from: account }
-      )
+      sendIntent(convictionVotingApp, 'stakeToProposal', [proposalId, amount], {
+        ethers,
+        from: account,
+      })
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingApp, ethers, onDone]
   )
 
   const withdrawFromProposal = useCallback(
     (proposalId, amount) => {
       sendIntent(
-        organization,
-        convictionVoting.address,
+        convictionVotingApp,
         'withdrawFromProposal',
         [proposalId, amount],
         { ethers, from: account }
@@ -70,73 +65,46 @@ export default function useActions(onDone) {
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingApp, ethers, onDone]
   )
 
   const executeProposal = useCallback(
     proposalId => {
-      sendIntent(
-        organization,
-        convictionVoting.address,
-        'executeProposal',
-        [proposalId],
-        { ethers, from: account }
-      )
+      sendIntent(convictionVotingApp, 'executeProposal', [proposalId], {
+        ethers,
+        from: account,
+      })
 
       onDone()
     },
-    [account, convictionVoting, ethers, onDone, organization]
+    [account, convictionVotingApp, ethers, onDone]
   )
 
   const executeIssuance = useCallback(() => {
-    const issuanceAddress = getAppAddressByName(installedApps, 'issuance')
-
-    sendIntent(organization, issuanceAddress, 'executeIssuance', [], {
+    sendIntent(issuanceApp, 'executeIssuance', [], {
       ethers,
       from: account,
     })
-  }, [account, ethers, installedApps, organization])
+  }, [account, ethers, issuanceApp])
 
   const voteOnDecision = useCallback(
     (voteId, voteType) => {
-      const dandelionVotingAddress = getAppAddressByName(
-        installedApps,
-        'dandelion-voting'
-      )
-
-      sendIntent(
-        organization,
-        dandelionVotingAddress,
-        'vote',
-        [voteId, voteType === VOTE_YEA],
-        {
-          ethers,
-          from: account,
-        }
-      )
+      sendIntent(dandelionVotingApp, 'vote', [voteId, voteType === VOTE_YEA], {
+        ethers,
+        from: account,
+      })
     },
-    [account, ethers, installedApps, organization]
+    [account, ethers, dandelionVotingApp]
   )
 
   const executeDecision = useCallback(
     voteId => {
-      const dandelionVotingAddress = getAppAddressByName(
-        installedApps,
-        'dandelion-voting'
-      )
-
-      sendIntent(
-        organization,
-        dandelionVotingAddress,
-        'executeVote',
-        [voteId],
-        {
-          ethers,
-          from: account,
-        }
-      )
+      sendIntent(dandelionVotingApp, 'executeVote', [voteId], {
+        ethers,
+        from: account,
+      })
     },
-    [account, ethers, installedApps, organization]
+    [account, dandelionVotingApp, ethers]
   )
 
   return {
@@ -155,19 +123,11 @@ export default function useActions(onDone) {
   }
 }
 
-async function sendIntent(
-  organization,
-  appAddress,
-  fn,
-  params,
-  { ethers, from }
-) {
+async function sendIntent(app, fn, params, { ethers, from }) {
   try {
-    const intent = organization.appIntent(appAddress, fn, params)
+    const intent = await app.intent(fn, params, { actAs: from })
+    const { to, data } = intent.transactions[0] // TODO: Handle errors when no tx path is found
 
-    const txPath = await intent.paths(from)
-
-    const { to, data } = txPath.transactions[0] // TODO: Handle errors when no tx path is found
     ethers.getSigner().sendTransaction({ data, to, gasLimit: GAS_LIMIT })
   } catch (err) {
     console.error('Could not create tx:', err)
