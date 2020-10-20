@@ -104,7 +104,7 @@ export function getVoteRemainingBlocks(voteData, currentBlockNumber) {
 export const getQuorumProgress = ({ yea, votingPower }) => yea.div(votingPower)
 
 export function getVoteSuccess(vote, pctBase) {
-  const { yea, minAcceptQuorum, nay, supportRequired, votingPower } = vote
+  const { yea, minAcceptQuorum, nay, supportRequiredPct, votingPower } = vote
 
   const totalVotes = yea.plus(nay)
   if (totalVotes.isZero()) {
@@ -118,8 +118,8 @@ export function getVoteSuccess(vote, pctBase) {
   //   (yea / totalVotes > supportRequired &&
   //    yea / votingPower > minAcceptQuorum)
   return (
-    yeaOfTotalPowerPct.gt(supportRequired) ||
-    (yeaPct.gt(supportRequired) && yeaOfTotalPowerPct.gt(minAcceptQuorum))
+    yeaOfTotalPowerPct.gt(supportRequiredPct) ||
+    (yeaPct.gt(supportRequiredPct) && yeaOfTotalPowerPct.gt(minAcceptQuorum))
   )
 }
 
