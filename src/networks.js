@@ -14,7 +14,7 @@ const networks = {
     name: 'Rinkeby',
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
-    honeypot: '0xace2faa375ffc251fafc7360bc3defbc6184e5fe',
+    honeypot: '0x512385375f087251667963e3cb8185e49597f2be',
   },
   xdai: {
     chainId: 100,
@@ -23,6 +23,7 @@ const networks = {
     type: 'xdai',
     defaultEthNode: 'https://xdai.poanetwork.dev/',
     honeypot: '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e',
+    ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
   },
 }
 

@@ -11,7 +11,6 @@ const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
   const [profileName, setProfileName] = useState(null)
 
   const networkType = getNetworkType()
-
   const history = useHistory()
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${entity}`)
@@ -24,7 +23,6 @@ const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
         setProfileName(addressCache.get(entity))
         return
       }
-
       const profile = await getProfileForAccount(entity)
       if (profile && !cancelled) {
         setProfileName(profile.name)

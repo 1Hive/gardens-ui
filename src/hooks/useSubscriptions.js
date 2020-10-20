@@ -9,12 +9,21 @@ import { useAppState } from '../providers/AppState'
 export function useConfigSubscription(honeypot) {
   const [config, setConfig] = useState(null)
 
+  const rawConfigRef = useRef(null)
   const configSubscription = useRef(null)
 
   const onConfigHandler = useCallback((err, config) => {
     if (err || !config) {
       return
     }
+
+    const rawConfig = JSON.stringify(config)
+    if (rawConfigRef?.current === rawConfig) {
+      return
+    }
+
+    rawConfigRef.current = rawConfig
+
     const transformedConfig = transformConfigData(config)
     setConfig(transformedConfig)
   }, [])
@@ -33,19 +42,24 @@ export function useConfigSubscription(honeypot) {
 }
 
 export function useProposalsSubscription(filters) {
-  const { honeypot } = useAppState()
+  const { honeypot, config } = useAppState()
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
 
-  const onProposalsHandler = useCallback((err, proposals = []) => {
-    if (err || !proposals) {
-      return
-    }
+  const onProposalsHandler = useCallback(
+    (err, proposals = []) => {
+      if (err || !proposals) {
+        return
+      }
 
-    const transformedProposals = proposals.map(transformProposalData)
-    setProposals(transformedProposals)
-  }, [])
+      const transformedProposals = proposals.map(p =>
+        transformProposalData(p, config)
+      )
+      setProposals(transformedProposals)
+    },
+    [config]
+  )
 
   useEffect(() => {
     if (!honeypot) {
@@ -77,19 +91,33 @@ export function useProposalsSubscription(filters) {
 
 // TODO: Handle errors
 export function useProposalSubscription(proposalId, appAddress) {
-  const { honeypot } = useAppState()
+  const { honeypot, config } = useAppState()
   const [proposal, setProposal] = useState(null)
+  const [loading, setLoading] = useState(true)
 
+  const rawProposalRef = useRef(null)
   const proposalSubscription = useRef(null)
 
-  const onProposalHandler = useCallback((err, proposal) => {
-    if (err || !proposal) {
-      return
-    }
+  const onProposalHandler = useCallback(
+    (err, proposal) => {
+      if (err || !proposal) {
+        setLoading(true)
+        return
+      }
 
-    const transformedProposal = transformProposalData(proposal)
-    setProposal(transformedProposal)
-  }, [])
+      const rawProposal = JSON.stringify(proposal)
+      if (rawProposalRef?.current === rawProposal) {
+        return
+      }
+
+      rawProposalRef.current = rawProposal
+
+      const transformedProposal = transformProposalData(proposal, config)
+      setProposal(transformedProposal)
+      setLoading(false)
+    },
+    [config]
+  )
 
   useEffect(() => {
     if (!honeypot || !proposalId || !appAddress) {
@@ -104,7 +132,7 @@ export function useProposalSubscription(proposalId, appAddress) {
     return () => proposalSubscription.current.unsubscribe()
   }, [appAddress, honeypot, onProposalHandler, proposalId])
 
-  return proposal
+  return [proposal, loading]
 }
 
 export function useSupporterSubscription(honeypot, account) {

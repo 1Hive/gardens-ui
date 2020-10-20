@@ -134,3 +134,35 @@ export function formatTokenAmount(
 export function getTokenIconBySymbol(symbol) {
   return LOCAL_TOKEN_ICONS.get(symbol)
 }
+
+export async function getUserBalanceAt(
+  connectedAccount,
+  snapshotBlock,
+  tokenContract,
+  tokenDecimals
+) {
+  if (!tokenContract || !connectedAccount) {
+    return -1
+  }
+
+  const balance = await tokenContract.balanceOfAt(
+    connectedAccount,
+    snapshotBlock
+  )
+
+  return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
+}
+
+export async function getUserBalanceNow(
+  connectedAccount,
+  tokenContract,
+  tokenDecimals
+) {
+  if (!tokenContract || !connectedAccount) {
+    return -1
+  }
+
+  const balance = await tokenContract.balanceOf(connectedAccount)
+
+  return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
+}

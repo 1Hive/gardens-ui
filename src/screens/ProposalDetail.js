@@ -49,12 +49,7 @@ const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({ match }) {
   const {
-    actions: {
-      cancelProposal,
-      executeProposal,
-      stakeToProposal,
-      withdrawFromProposal,
-    },
+    actions: { convictionActions },
     isLoading,
     panelState,
     permissions,
@@ -87,8 +82,8 @@ function ProposalDetail({ match }) {
   }, [history])
 
   const handleCancelProposal = useCallback(() => {
-    cancelProposal(id)
-  }, [id, cancelProposal])
+    convictionActions.cancelProposal(id)
+  }, [id, convictionActions])
 
   const hasCancelRole = useMemo(() => {
     if (!connectedAccount) {
@@ -260,10 +255,12 @@ function ProposalDetail({ match }) {
                     />
                     <ProposalActions
                       proposal={proposal}
-                      onExecuteProposal={executeProposal}
+                      onExecuteProposal={convictionActions.executeProposal}
                       onRequestSupportProposal={panelState.requestOpen}
-                      onStakeToProposal={stakeToProposal}
-                      onWithdrawFromProposal={withdrawFromProposal}
+                      onStakeToProposal={convictionActions.stakeToProposal}
+                      onWithdrawFromProposal={
+                        convictionActions.withdrawFromProposal
+                      }
                     />
                   </>
                 )}
@@ -320,7 +317,7 @@ function ProposalDetail({ match }) {
         <SupportProposalPanel
           id={id}
           onDone={panelState.requestClose}
-          onStakeToProposal={stakeToProposal}
+          onStakeToProposal={convictionActions.stakeToProposal}
         />
       </SidePanel>
     </div>
