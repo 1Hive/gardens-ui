@@ -13,6 +13,7 @@ import { isEntitySupporting } from '../../lib/conviction'
 import {
   PCT_BASE,
   PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
   QUICK_STAKE_PCT,
   VOTE_NAY,
   VOTE_YEA,
@@ -73,6 +74,19 @@ function ProposalFooter({
   const canSupport = inactiveTokens.gt(0)
   const isSupporting = isEntitySupporting(proposal, account)
 
+  // TODO: Use mapping and status symbol
+  const proposalStatusLabel = useMemo(() => {
+    if (proposal.status === PROPOSAL_STATUS_ACTIVE_STRING) {
+      return 'Open'
+    }
+
+    if (proposal.status === PROPOSAL_STATUS_CANCELLED_STRING) {
+      return 'Removed'
+    }
+
+    return 'Closed'
+  }, [proposal.status])
+
   return (
     <Main color={theme.contentSecondary}>
       <div
@@ -93,7 +107,7 @@ function ProposalFooter({
           {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
         </div>
       </div>
-      <div>Status: {proposal.status}</div>
+      <div>Status: {proposalStatusLabel}</div>
     </Main>
   )
 }
