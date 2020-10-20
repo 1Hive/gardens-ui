@@ -20,6 +20,8 @@ import {
 } from '../lib/conviction'
 import { testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
+import { getDecisionTransition } from '../lib/vote-utils'
+import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -29,6 +31,7 @@ export function useProposals() {
 
   const blockTime = useBlockTime()
   const latestBlock = useLatestBlock()
+
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
 
@@ -38,15 +41,17 @@ export function useProposals() {
     }
 
     return proposals.map(proposal =>
-      processProposal(
-        proposal,
-        latestBlock,
-        blockTime,
-        effectiveSupply,
-        vaultBalance,
-        account,
-        config?.conviction
-      )
+      proposal.type === ProposalTypes.Decision
+        ? processDecision(proposal, latestBlock, blockTime)
+        : processProposal(
+            proposal,
+            latestBlock,
+            blockTime,
+            effectiveSupply,
+            vaultBalance,
+            account,
+            config?.conviction
+          )
     )
   }, [
     account,
@@ -83,28 +88,34 @@ function useFilteredProposals(filters, account) {
 
 export function useProposal(proposalId, appAddress) {
   const { account } = useWallet()
-  const proposal = useProposalSubscription(proposalId, appAddress)
-  const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
-
-  const blockTime = useBlockTime()
+  const [proposal, loadingProposal] = useProposalSubscription(
+    proposalId,
+    appAddress
+  )
   const latestBlock = useLatestBlock()
+  const blockTime = useBlockTime()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
+
   const blockHasLoaded = latestBlock.number !== 0
 
   if (isLoading || !proposal) {
     return [null, blockHasLoaded]
   }
 
-  const proposalWithData = processProposal(
-    proposal,
-    latestBlock,
-    blockTime,
-    effectiveSupply,
-    vaultBalance,
-    account,
-    config?.conviction
-  )
+  const proposalWithData =
+    proposal.type === ProposalTypes.Decision
+      ? processDecision(proposal, latestBlock, blockTime)
+      : processProposal(
+          proposal,
+          latestBlock,
+          blockTime,
+          effectiveSupply,
+          vaultBalance,
+          account,
+          config?.conviction
+        )
 
-  return [proposalWithData, blockHasLoaded]
+  return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
 function processProposal(
@@ -200,5 +211,15 @@ function processProposal(
     threshold,
     userConviction,
     userStakedConviction,
+  }
+}
+
+function processDecision(proposal, latestBlock, blockTime) {
+  return {
+    ...proposal,
+    data: {
+      ...proposal.data,
+      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
+    },
   }
 }

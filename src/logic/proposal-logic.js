@@ -20,11 +20,14 @@ export default function useProposalLogic(match) {
 
   const panelState = usePanelState()
   const actions = useActions(panelState.requestClose)
-  const [proposal, blockHasLoaded] = useProposal(proposalId, appAddress)
+  const [proposal, blockHasLoaded, loadingProposal] = useProposal(
+    proposalId,
+    appAddress
+  )
 
   return {
     actions,
-    isLoading: isLoading || !blockHasLoaded,
+    isLoading: isLoading || !blockHasLoaded || loadingProposal,
     panelState,
     permissions,
     proposal,
