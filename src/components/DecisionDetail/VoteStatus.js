@@ -20,7 +20,7 @@ import {
 } from '../../constants'
 import { getVoteStatus } from '../../lib/vote-utils'
 
-const getStatusAttributes = (status, theme) => {
+export const getStatusAttributes = (status, theme) => {
   if (status === VOTE_STATUS_UPCOMING) {
     return {
       label: 'Upcoming',
