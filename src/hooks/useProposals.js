@@ -213,7 +213,7 @@ function processDecision(proposal, latestBlock, blockTime) {
     ...proposal,
     data: {
       ...proposal.data,
-      ...getDecisionTransition(proposal, latestBlock, blockTime),
+      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
     },
   }
 }

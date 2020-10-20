@@ -39,6 +39,7 @@ export function getDecisionTransition(
   if (!currentBlockNumber) return { closed: true }
 
   const { startBlock, endBlock, executionBlock } = vote
+  const blockTimestampMiliseconds = currentBlockTimestamp * ONE_SECOND
   const blockTimeMiliseconds = blockTime * ONE_SECOND
   const state = {}
 
@@ -63,7 +64,7 @@ export function getDecisionTransition(
 
   // Save the end time for the next state transition
   state.transitionAt = new Date(
-    currentBlockTimestamp + remainingBlocks * blockTimeMiliseconds
+    blockTimestampMiliseconds + remainingBlocks * blockTimeMiliseconds
   )
 
   return state

@@ -18,7 +18,7 @@ export default function useExtendedVoteData(vote) {
 
   const dandelionVotingContract = useContractReadOnly(
     dandelionVotingAddress,
-    dandelionVotingAbi.abi
+    dandelionVotingAbi
   )
 
   const tokenContract = useContractReadOnly(stakeToken?.id, minimeTokenAbi)
@@ -46,14 +46,7 @@ export default function useExtendedVoteData(vote) {
 
   const canExecute = usePromise(canExecutePromise, [], false, 2)
 
-  const canUserVotePromise = useMemo(() => {
-    if (!dandelionVotingContract) {
-      return
-    }
-    return dandelionVotingContract.canVote(vote.id, connectedAccount)
-  }, [connectedAccount, dandelionVotingContract, vote.id])
-
-  const canUserVote = usePromise(canUserVotePromise, [], false, 3)
+  const { canUserVote, canUserVotePromise } = useCanUserVote()
 
   const userBalanceNowPromise = useMemo(
     () =>
@@ -75,4 +68,26 @@ export default function useExtendedVoteData(vote) {
     userBalanceNowPromise,
     startTimestamp,
   }
+}
+
+export function useCanUserVote(vote) {
+  const { config } = useAppState()
+  const { account: connectedAccount } = useWallet()
+  const { id: dandelionVotingAddress } = config?.voting || {}
+
+  const dandelionVotingContract = useContractReadOnly(
+    dandelionVotingAddress,
+    dandelionVotingAbi
+  )
+
+  const canUserVotePromise = useMemo(() => {
+    if (!dandelionVotingContract) {
+      return
+    }
+    return dandelionVotingContract.canVote(vote.id, connectedAccount)
+  }, [connectedAccount, dandelionVotingContract, vote.id])
+
+  const canUserVote = usePromise(canUserVotePromise, [], false, 3)
+
+  return { canUserVote, canUserVotePromise }
 }

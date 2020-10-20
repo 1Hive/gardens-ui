@@ -5,7 +5,7 @@ import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { formatTokenAmount } from '../../lib/token-utils'
 
 /* eslint-disable react/prop-types */
-function SummaryRow({ color, label, pct, token }) {
+function SummaryRow({ color, label, pct, token, ...props }) {
   const theme = useTheme()
   return (
     <div
@@ -18,6 +18,7 @@ function SummaryRow({ color, label, pct, token }) {
         white-space: nowrap;
         ${textStyle('body2')};
       `}
+      {...props}
     >
       <div
         css={`
@@ -36,14 +37,16 @@ function SummaryRow({ color, label, pct, token }) {
         </div>
         <div>{pct}%</div>
       </div>
-      <div
-        css={`
-          color: ${theme.surfaceContentSecondary};
-          margin-left: ${2 * GU}px;
-        `}
-      >
-        {formatTokenAmount(token.amount, token.decimals)} {token.symbol}
-      </div>
+      {token && (
+        <div
+          css={`
+            color: ${theme.surfaceContentSecondary};
+            margin-left: ${2 * GU}px;
+          `}
+        >
+          {formatTokenAmount(token.amount, token.decimals)} {token.symbol}
+        </div>
+      )}
     </div>
   )
 }
@@ -53,7 +56,7 @@ const Bullet = styled.div`
   display: block;
   width: ${1 * GU}px;
   height: ${1 * GU}px;
-  margin-right: ${2 * GU}px;
+  margin-right: ${1 * GU}px;
   border-radius: 50%;
   background: ${({ color }) => color};
 `
