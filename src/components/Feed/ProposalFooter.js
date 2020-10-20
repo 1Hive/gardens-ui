@@ -9,6 +9,8 @@ import { useCanUserVote } from '../../hooks/useExtendedVoteData'
 import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
+import { getVoteStatus } from '../../lib/vote-utils'
+import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
 import {
   PCT_BASE,
@@ -116,6 +118,9 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
   const theme = useTheme()
   const { account } = useWallet()
 
+  const status = getVoteStatus(proposal, PCT_BASE)
+  const { label: statusLabel } = getStatusAttributes(status, theme)
+
   const votesCount = proposal.casts.length
 
   return (
@@ -133,7 +138,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
       </div>
-      <div>Status: {proposal.status}</div>
+      <div>Status: {statusLabel}</div>
     </Main>
   )
 }
