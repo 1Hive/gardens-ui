@@ -9,12 +9,21 @@ import { useAppState } from '../providers/AppState'
 export function useConfigSubscription(honeypot) {
   const [config, setConfig] = useState(null)
 
+  const rawConfigRef = useRef(null)
   const configSubscription = useRef(null)
 
   const onConfigHandler = useCallback((err, config) => {
     if (err || !config) {
       return
     }
+
+    const rawConfig = JSON.stringify(config)
+    if (rawConfigRef?.current === rawConfig) {
+      return
+    }
+
+    rawConfigRef.current = rawConfig
+
     const transformedConfig = transformConfigData(config)
     setConfig(transformedConfig)
   }, [])
@@ -86,6 +95,7 @@ export function useProposalSubscription(proposalId, appAddress) {
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const rawProposalRef = useRef(null)
   const proposalSubscription = useRef(null)
 
   const onProposalHandler = useCallback(
@@ -94,6 +104,13 @@ export function useProposalSubscription(proposalId, appAddress) {
         setLoading(true)
         return
       }
+
+      const rawProposal = JSON.stringify(proposal)
+      if (rawProposalRef?.current === rawProposal) {
+        return
+      }
+
+      rawProposalRef.current = rawProposal
 
       const transformedProposal = transformProposalData(proposal, config)
       setProposal(transformedProposal)

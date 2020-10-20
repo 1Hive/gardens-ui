@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import useInterval from './useInterval'
 import { useWallet } from '../providers/Wallet'
@@ -34,12 +34,22 @@ export function useBlockTimeStamp(blockNumber) {
   const { ethers } = useWallet()
   const [block, setBlock] = useState({ number: blockNumber, timeStamp: 0 })
 
-  const fetchBlock = useCallback(async () => {
-    const { number, timestamp } = await ethers.getBlock(blockNumber)
-    setBlock({ number, timestamp })
-  }, [blockNumber, ethers])
+  useEffect(() => {
+    let cancelled = false
+    const fetchBlock = async () => {
+      const { number, timestamp } = await ethers.getBlock(blockNumber)
 
-  fetchBlock()
+      if (!cancelled) {
+        setBlock({ number, timestamp })
+      }
+    }
+
+    fetchBlock()
+
+    return () => {
+      cancelled = true
+    }
+  }, [blockNumber, ethers])
 
   return block
 }

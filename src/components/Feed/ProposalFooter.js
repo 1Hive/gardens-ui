@@ -11,9 +11,9 @@ import { useWallet } from '../../providers/Wallet'
 import BigNumber from '../../lib/bigNumber'
 import { isEntitySupporting } from '../../lib/conviction'
 import {
+  PCT_BASE,
   PROPOSAL_STATUS_ACTIVE_STRING,
   QUICK_STAKE_PCT,
-  STAKE_PCT_BASE,
   VOTE_NAY,
   VOTE_YEA,
 } from '../../constants'
@@ -59,7 +59,7 @@ function ProposalFooter({
     // Staking the minimum between account's inactive tokens and 5% of account's balance
     const amount = BigNumber.min(
       inactiveTokens,
-      accountBalance.times(QUICK_STAKE_PCT).div(STAKE_PCT_BASE)
+      accountBalance.times(QUICK_STAKE_PCT).div(PCT_BASE)
     )
 
     onStakeToProposal(proposal.id, amount.toFixed(0))

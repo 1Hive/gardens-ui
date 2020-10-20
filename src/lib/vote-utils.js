@@ -19,6 +19,14 @@ export function isVoteAction(vote) {
   return vote.script && vote.data.script !== EMPTY_SCRIPT
 }
 
+export function getAccountCastStake(vote, account) {
+  const userCast = vote.casts.find(cast =>
+    addressesEqual(cast.entity.id, account)
+  )
+
+  return userCast?.stake || 0
+}
+
 export function getConnectedAccountVote(vote, account) {
   const userCast = vote.casts.find(cast =>
     addressesEqual(cast.entity.id, account)
@@ -132,4 +140,12 @@ export function getVoteStatus(vote, pctBase) {
       ? VOTE_STATUS_ENACTED
       : VOTE_STATUS_PENDING_ENACTMENT
     : VOTE_STATUS_ACCEPTED
+}
+
+export async function getCanUserVote(votingContract, voteId, account) {
+  if (!votingContract || !account) {
+    return false
+  }
+
+  return votingContract.canVote(voteId, account)
 }

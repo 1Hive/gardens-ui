@@ -40,22 +40,24 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     startTimestamp,
   } = useExtendedVoteData(vote)
 
-  console.log('AFTER DATAAAAAAA', canUserVote, canExecute)
-
   const hasVoted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountVote)
 
   useEffect(() => {
     let cancelled = false
 
     const whenReady = async () => {
-      await Promise.all([
-        canUserVotePromise,
-        canExecutePromise,
-        userBalancePromise,
-        userBalanceNowPromise,
-      ])
-      if (!cancelled) {
-        setReady(true)
+      try {
+        await Promise.all([
+          canUserVotePromise,
+          canExecutePromise,
+          userBalancePromise,
+          userBalanceNowPromise,
+        ])
+        if (!cancelled) {
+          setReady(true)
+        }
+      } catch (err) {
+        console.error(`Error fetching voting extended data ${err}`)
       }
     }
     setReady(false)
@@ -80,10 +82,21 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
       <React.Fragment>
         {canExecute && !delayed && isVoteAction(vote) && (
           <React.Fragment>
-            <Button mode="strong" onClick={onExecute} wide>
+            <Button
+              mode="strong"
+              onClick={onExecute}
+              wide
+              css={`
+                margin-top: ${2.5 * GU}px;
+              `}
+            >
               Enact this vote
             </Button>
-            <Info>
+            <Info
+              css={`
+                margin-top: ${2.5 * GU}px;
+              `}
+            >
               The voting period is closed and the vote has passed.{' '}
               <strong>Anyone</strong> can now enact this vote to execute its
               action.
@@ -213,27 +226,31 @@ const TokenReference = ({
   tokenSymbol,
   userBalance,
   userBalanceNow,
-}) => (
-  <Info>
-    Voting with{' '}
-    <strong>
-      {userBalance} {tokenSymbol}
-    </strong>{' '}
-    due to the snapshot taken at block <strong>{snapshotBlock}</strong> at{' '}
-    <strong>{dateFormat(startDate)}</strong>.{' '}
-    {userBalance !== userBalanceNow ? (
-      <span>
-        Your current balance is{' '}
-        <strong>
-          {userBalanceNow} {tokenSymbol}
-        </strong>
-        )
-      </span>
-    ) : (
-      ''
-    )}
-  </Info>
-)
+}) => {
+  const votingWith = Math.min(userBalance, userBalanceNow)
+
+  return (
+    <Info>
+      Voting with{' '}
+      <strong>
+        {votingWith} {tokenSymbol}
+      </strong>
+      .Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
+      at <strong>{dateFormat(startDate)}</strong> is {userBalance} {tokenSymbol}
+      {userBalance !== userBalanceNow ? (
+        <span>
+          Your current balance is{' '}
+          <strong>
+            {userBalanceNow} {tokenSymbol}
+          </strong>
+          )
+        </span>
+      ) : (
+        ''
+      )}
+    </Info>
+  )
+}
 
 const VotingButton = styled(Button)`
   ${textStyle('body2')};

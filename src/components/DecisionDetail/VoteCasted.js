@@ -1,13 +1,13 @@
 import React from 'react'
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
-import useExtendedVoteData from '../../hooks/useExtendedVoteData'
 import { useAppState } from '../../providers/AppState'
+import { formatTokenAmount } from '../../lib/token-utils'
+import { getAccountCastStake } from '../../lib/vote-utils'
 import { VOTE_YEA } from '../../constants'
 
-function VoteCasted({ vote }) {
-  const { connectedAccountVote } = vote
-  const { userBalance } = useExtendedVoteData(vote)
+function VoteCasted({ account, accountVote, vote }) {
   const { config } = useAppState()
+  const accountStake = getAccountCastStake(vote, account)
   const { stakeToken } = config?.conviction || {}
 
   const theme = useTheme()
@@ -69,7 +69,7 @@ function VoteCasted({ vote }) {
                 text-transform: uppercase;
               `}
             >
-              {connectedAccountVote === VOTE_YEA ? 'yes' : 'no'}
+              {accountVote === VOTE_YEA ? 'yes' : 'no'}
             </span>{' '}
             with{' '}
             <span
@@ -78,7 +78,10 @@ function VoteCasted({ vote }) {
                 font-weight: 600;
               `}
             >
-              {userBalance === -1 ? '…' : userBalance} {stakeToken.symbol}
+              {accountStake === 0
+                ? '…'
+                : formatTokenAmount(accountStake, stakeToken.decimals)}{' '}
+              {stakeToken.symbol}
             </span>
             .
           </div>

@@ -23,7 +23,7 @@ import vaultAbi from '../abi/vault-balance.json'
 export function useOrgData() {
   const appName = env('APP_NAME')
 
-  const [honeyPot, setHoneyPot] = useState(null)
+  const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
   const [convictionApp] = useApp(appName)
@@ -50,26 +50,26 @@ export function useOrgData() {
 
     let cancelled = false
 
-    const fetchHoneyPotConnector = async () => {
+    const fetchHoneypotConnector = async () => {
       try {
         const honeypotConnector = await connectHoneypot(organization)
 
         if (!cancelled) {
-          setHoneyPot(honeypotConnector)
+          setHoneypot(honeypotConnector)
         }
       } catch (err) {
         console.error(`Error fetching honey pot connector: ${err}`)
       }
     }
 
-    fetchHoneyPotConnector()
+    fetchHoneypotConnector()
 
     return () => {
       cancelled = true
     }
   }, [organization])
 
-  const config = useConfigSubscription(honeyPot)
+  const config = useConfigSubscription(honeypot)
 
   const loadingData =
     orgStatus.loading ||
@@ -78,10 +78,10 @@ export function useOrgData() {
     !config
 
   return {
-    config: config,
-    honeypot: honeyPot,
+    config,
+    honeypot,
     installedApps: apps,
-    organization: organization,
+    organization,
     permissions: convictionAppPermissions,
     loadingAppData: loadingData,
   }

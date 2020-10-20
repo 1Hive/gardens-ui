@@ -6,6 +6,7 @@ import {
   Box,
   GU,
   IconTime,
+  LoadingRing,
   Split,
   textStyle,
   Timer,
@@ -15,7 +16,6 @@ import {
 
 import Description from '../components/Description'
 import IdentityBadge from '../components/IdentityBadge'
-import Loader from '../components/Loader'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteCasted from '../components/DecisionDetail/VoteCasted'
@@ -36,7 +36,7 @@ import {
 } from '../lib/vote-utils'
 import { dateFormat } from '../utils/date-utils'
 
-import { VOTE_NAY, VOTE_YEA, STAKE_PCT_BASE } from '../constants'
+import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'
 
 function DecisionDetail({ proposal, actions }) {
   const theme = useTheme()
@@ -47,10 +47,9 @@ function DecisionDetail({ proposal, actions }) {
     config: { voting: votingConfig },
   } = useAppState()
 
-  // const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const {
     description,
-    // emptyScript,
+    emptyScript,
     loading: descriptionLoading,
   } = useDescribeVote(proposal.script, proposal.id)
 
@@ -62,9 +61,7 @@ function DecisionDetail({ proposal, actions }) {
   const youVoted =
     connectedAccountVote === VOTE_YEA || connectedAccountVote === VOTE_NAY
 
-  const { number, creator } = proposal || {}
-
-  const { minAcceptQuorum, nay, yea } = proposal
+  const { creator, minAcceptQuorum, nay, number, yea } = proposal || {}
 
   const totalVotes = parseFloat(yea) + parseFloat(nay)
   const yeasPct = safeDiv(parseFloat(yea), totalVotes)
@@ -86,10 +83,6 @@ function DecisionDetail({ proposal, actions }) {
   const handleExecute = useCallback(() => {
     actions.executeDecision(proposal.number)
   }, [actions, proposal.number])
-
-  if (descriptionLoading) {
-    return <Loader />
-  }
 
   return (
     <div
@@ -128,7 +121,14 @@ function DecisionDetail({ proposal, actions }) {
               >
                 <DataField
                   label="Description"
-                  value={<Description path={description} />}
+                  value={
+                    emptyScript ? (
+                      proposal.metadata
+                    ) : (
+                      <Description path={description} />
+                    )
+                  }
+                  loading={descriptionLoading}
                 />
                 <DataField
                   label="Submitted by"
@@ -150,7 +150,13 @@ function DecisionDetail({ proposal, actions }) {
               `}
             >
               <SummaryInfo vote={proposal} />
-              {youVoted && <VoteCasted vote={proposal} />}
+              {youVoted && (
+                <VoteCasted
+                  account={connectedAccount}
+                  accountVote={connectedAccountVote}
+                  vote={proposal}
+                />
+              )}
             </div>
             <VoteActions
               onExecute={handleExecute}
@@ -179,7 +185,7 @@ function DecisionDetail({ proposal, actions }) {
                 >
                   (
                   {votingConfig.supportRequiredPct
-                    .div(STAKE_PCT_BASE.div(100))
+                    .div(PCT_BASE.div(100))
                     .toNumber()}
                   % support needed)
                 </span>
@@ -206,7 +212,7 @@ function DecisionDetail({ proposal, actions }) {
                 >
                   (
                   {votingConfig.minAcceptQuorumPct
-                    .div(STAKE_PCT_BASE.div(100))
+                    .div(PCT_BASE.div(100))
                     .toNumber()}
                   % approval needed)
                 </span>
@@ -226,7 +232,7 @@ function DecisionDetail({ proposal, actions }) {
   )
 }
 
-function DataField({ label, value }) {
+function DataField({ label, value, loading = false }) {
   const theme = useTheme()
 
   return (
@@ -242,13 +248,17 @@ function DataField({ label, value }) {
         {label}
       </h2>
 
-      <div
-        css={`
-          ${textStyle('body2')};
-        `}
-      >
-        {value}
-      </div>
+      {loading ? (
+        <LoadingRing />
+      ) : (
+        <div
+          css={`
+            ${textStyle('body2')};
+          `}
+        >
+          {value}
+        </div>
+      )}
     </div>
   )
 }
@@ -318,7 +328,6 @@ function Status({ vote }) {
   const { pctBase } = convictionConfig
 
   const { endBlock } = vote
-
   const { upcoming, open, delayed, closed, transitionAt } = vote.data
 
   const endBlockTimeStamp = useBlockTimeStamp(endBlock)

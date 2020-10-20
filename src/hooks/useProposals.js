@@ -113,9 +113,6 @@ export function useProposal(proposalId, appAddress) {
           config?.conviction
         )
 
-  if (proposal.type === ProposalTypes.Decision) {
-  }
-
   return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
