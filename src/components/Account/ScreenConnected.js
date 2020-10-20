@@ -54,7 +54,6 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
             color: ${theme.contentSecondary};
             padding-bottom: ${2 * GU}px;
             border-bottom: 1px solid ${theme.border};
-
             display: flex;
             align-items: center;
             column-gap: ${1 * GU}px;
