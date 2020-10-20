@@ -10,6 +10,7 @@ import {
   VOTE_STATUS_UPCOMING,
   VOTE_STATUS_PENDING_ENACTMENT,
   VOTE_STATUS_DELAYED,
+  PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
 
 const ONE_SECOND = 1000
@@ -136,7 +137,7 @@ export function getVoteStatus(vote, pctBase) {
   // Only if the vote has an action do we consider it possible for enactment
   const hasAction = isVoteAction(vote)
   return hasAction
-    ? vote.data.executed
+    ? vote.status === PROPOSAL_STATUS_EXECUTED_STRING
       ? VOTE_STATUS_ENACTED
       : VOTE_STATUS_PENDING_ENACTMENT
     : VOTE_STATUS_ACCEPTED

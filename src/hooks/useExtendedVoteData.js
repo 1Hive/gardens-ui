@@ -49,7 +49,7 @@ export default function useExtendedVoteData(vote) {
       return
     }
     return dandelionVotingContract.canExecute(vote.id)
-  }, [dandelionVotingContract, vote.id])
+  }, [dandelionVotingContract, vote])
 
   const canExecute = usePromise(canExecutePromise, [], false, 2)
 
@@ -89,7 +89,7 @@ export function useCanUserVote(vote) {
 
   const canUserVotePromise = useMemo(() => {
     return getCanUserVote(dandelionVotingContract, vote.id, connectedAccount)
-  }, [connectedAccount, dandelionVotingContract, vote.id])
+  }, [connectedAccount, dandelionVotingContract, vote])
 
   const canUserVote = usePromise(canUserVotePromise, [], false, 3)
 

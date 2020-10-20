@@ -322,17 +322,13 @@ function SummaryInfo({ vote }) {
 
 function Status({ vote }) {
   const theme = useTheme()
-  const {
-    config: { conviction: convictionConfig },
-  } = useAppState()
-  const { pctBase } = convictionConfig
 
   const { endBlock } = vote
   const { upcoming, open, delayed, closed, transitionAt } = vote.data
 
   const endBlockTimeStamp = useBlockTimeStamp(endBlock)
 
-  if (!closed || (delayed && getVoteSuccess(vote, pctBase))) {
+  if (!closed || (delayed && getVoteSuccess(vote, PCT_BASE))) {
     return (
       <React.Fragment>
         <div
