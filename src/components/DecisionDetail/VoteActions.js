@@ -80,7 +80,7 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   if (!open) {
     return (
       <React.Fragment>
-        {canExecute && !delayed && isVoteAction(vote) && (
+        {connectedAccount && canExecute && !delayed && isVoteAction(vote) && (
           <React.Fragment>
             <Button
               mode="strong"
@@ -217,7 +217,7 @@ const Buttons = ({ onClickYes = noop, onClickNo = noop, disabled = false }) => (
 
 const ButtonsContainer = styled.div`
   display: flex;
-  margin-bottom: ${2 * GU}px;
+  margin: ${2 * GU}px 0;
 `
 
 const TokenReference = ({
@@ -235,7 +235,7 @@ const TokenReference = ({
       <strong>
         {votingWith} {tokenSymbol}
       </strong>
-      .Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
+      . Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
       at <strong>{dateFormat(startDate)}</strong> is {userBalance} {tokenSymbol}
       {userBalance !== userBalanceNow ? (
         <span>

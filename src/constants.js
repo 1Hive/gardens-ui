@@ -1,6 +1,6 @@
 import { bigNum } from './lib/bigNumber'
 
-export const PROPOSAL_STATUS_ACTIVE_STRING = 'Active'
+export const PROPOSAL_STATUS_ACTIVE_STRING = 'Active' // TODO: Convert to symbol
 export const PROPOSAL_STATUS_CANCELLED_STRING = 'Cancelled'
 export const PROPOSAL_STATUS_EXECUTED_STRING = 'Executed'
 

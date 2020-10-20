@@ -32,15 +32,15 @@ export function useLatestBlock(updateEvery = 1000) {
 
 export function useBlockTimeStamp(blockNumber) {
   const { ethers } = useWallet()
-  const [block, setBlock] = useState({ number: blockNumber, timeStamp: 0 })
+  const [timestamp, setTimestamp] = useState(0)
 
   useEffect(() => {
     let cancelled = false
     const fetchBlock = async () => {
-      const { number, timestamp } = await ethers.getBlock(blockNumber)
+      const { timestamp } = await ethers.getBlock(blockNumber)
 
       if (!cancelled) {
-        setBlock({ number, timestamp })
+        setTimestamp(timestamp * 1000)
       }
     }
 
@@ -51,7 +51,7 @@ export function useBlockTimeStamp(blockNumber) {
     }
   }, [blockNumber, ethers])
 
-  return block
+  return timestamp
 }
 
 export function useBlockTime() {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
@@ -125,8 +125,6 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
 }
 
 function VoteActions({ proposal, onVote }) {
-  const [ready, setReady] = useState(false)
-
   const handleThumbsUp = useCallback(() => {
     onVote(proposal.id, VOTE_YEA)
   }, [onVote, proposal.id])
@@ -135,28 +133,7 @@ function VoteActions({ proposal, onVote }) {
     onVote(proposal.id, VOTE_NAY)
   }, [onVote, proposal.id])
 
-  const { canUserVote, canUserVotePromise } = useCanUserVote(proposal)
-
-  useEffect(() => {
-    let cancelled = false
-
-    const whenReady = async () => {
-      await canUserVotePromise
-      if (!cancelled) {
-        setReady(true)
-      }
-    }
-    setReady(false)
-    whenReady()
-
-    return () => {
-      cancelled = true
-    }
-  }, [canUserVotePromise])
-
-  if (!ready) {
-    return null
-  }
+  const { canUserVote } = useCanUserVote(proposal)
 
   return (
     <QuickActions
