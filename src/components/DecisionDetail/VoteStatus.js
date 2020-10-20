@@ -8,8 +8,8 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../../providers/AppState'
 import {
+  PCT_BASE,
   VOTE_STATUS_ONGOING,
   VOTE_STATUS_REJECTED,
   VOTE_STATUS_ACCEPTED,
@@ -74,11 +74,8 @@ const getStatusAttributes = (status, theme) => {
 
 const VoteStatus = ({ vote }) => {
   const theme = useTheme()
-  const {
-    config: { conviction: convictionConfig },
-  } = useAppState()
-  const { pctBase } = convictionConfig
-  const status = getVoteStatus(vote, pctBase)
+
+  const status = getVoteStatus(vote, PCT_BASE)
   const { Icon, color, label } = getStatusAttributes(status, theme)
 
   return (

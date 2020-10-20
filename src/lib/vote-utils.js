@@ -19,6 +19,14 @@ export function isVoteAction(vote) {
   return vote.script && vote.data.script !== EMPTY_SCRIPT
 }
 
+export function getAccountCastStake(vote, account) {
+  const userCast = vote.casts.find(cast =>
+    addressesEqual(cast.entity.id, account)
+  )
+
+  return userCast?.stake || 0
+}
+
 export function getConnectedAccountVote(vote, account) {
   const userCast = vote.casts.find(cast =>
     addressesEqual(cast.entity.id, account)
