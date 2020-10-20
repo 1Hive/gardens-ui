@@ -5,8 +5,10 @@ import {
   BackButton,
   Box,
   GU,
+  IconTime,
   Split,
   textStyle,
+  Timer,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -17,23 +19,33 @@ import Loader from '../components/Loader'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteCasted from '../components/DecisionDetail/VoteCasted'
-// import VoteActions from '../components/DecisionDetail/VoteActions'
+import VoteActions from '../components/DecisionDetail/VoteActions'
+import VoteStatus from '../components/DecisionDetail/VoteStatus'
 
 import { useWallet } from '../providers/Wallet'
 import { useDescribeVote } from '../hooks/useDescribeVote'
 import { useAppState } from '../providers/AppState'
+import { useBlockTimeStamp } from '../hooks/useBlock'
 
 import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
-import { safeDiv } from '../lib/math-utils'
-import { getConnectedAccountVote } from '../lib/vote-utils'
+import { round, safeDiv } from '../lib/math-utils'
+import {
+  getConnectedAccountVote,
+  getQuorumProgress,
+  getVoteSuccess,
+} from '../lib/vote-utils'
+import { dateFormat } from '../utils/date-utils'
 
-import { VOTE_NAY, VOTE_YEA } from '../constants'
+import { VOTE_NAY, VOTE_YEA, STAKE_PCT_BASE } from '../constants'
 
 function DecisionDetail({ proposal, actions }) {
-  // const theme = useTheme()
+  const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account: connectedAccount } = useWallet()
+  const {
+    config: { voting: votingConfig },
+  } = useAppState()
 
   // const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const {
@@ -52,21 +64,28 @@ function DecisionDetail({ proposal, actions }) {
 
   const { number, creator } = proposal || {}
 
+  const { minAcceptQuorum, nay, yea } = proposal
+
+  const totalVotes = parseFloat(yea) + parseFloat(nay)
+  const yeasPct = safeDiv(parseFloat(yea), totalVotes)
+
+  const quorumProgress = getQuorumProgress(proposal)
+
   const handleBack = useCallback(() => {
     history.push('/home')
   }, [history])
 
-  // const handleVoteNo = useCallback(() => {
-  //   actions.voteOnDecision(proposal.number, VOTE_NAY)
-  // }, [actions, proposal.number])
+  const handleVoteNo = useCallback(() => {
+    actions.voteOnDecision(proposal.number, VOTE_NAY)
+  }, [actions, proposal.number])
 
-  // const handleVoteYes = useCallback(() => {
-  //   actions.voteOnDecision(proposal.number, VOTE_YEA)
-  // }, [actions, proposal.number])
+  const handleVoteYes = useCallback(() => {
+    actions.voteOnDecision(proposal.number, VOTE_YEA)
+  }, [actions, proposal.number])
 
-  // const handleExecute = useCallback(() => {
-  //   actions.executeDecision(proposal.number)
-  // }, [actions, proposal.number])
+  const handleExecute = useCallback(() => {
+    actions.executeDecision(proposal.number)
+  }, [actions, proposal.number])
 
   if (descriptionLoading) {
     return <Loader />
@@ -125,17 +144,83 @@ function DecisionDetail({ proposal, actions }) {
                 />
               </div>
             </section>
-            <SummaryInfo vote={proposal} />
-            {youVoted && <VoteCasted vote={proposal} />}
-            {/* <VoteActions
+            <div
+              css={`
+                margin-top: ${2 * GU}px;
+              `}
+            >
+              <SummaryInfo vote={proposal} />
+              {youVoted && <VoteCasted vote={proposal} />}
+            </div>
+            <VoteActions
               onExecute={handleExecute}
               onVoteNo={handleVoteNo}
               onVoteYes={handleVoteYes}
               vote={proposal}
-            /> */}
+            />
           </Box>
         }
-        secondary={<div />}
+        secondary={
+          <>
+            <Box heading="Status">
+              <Status vote={proposal} />
+            </Box>
+            <Box heading="Relative support %">
+              <div
+                css={`
+                  ${textStyle('body2')};
+                `}
+              >
+                {round(yeasPct * 100, 2)}%{' '}
+                <span
+                  css={`
+                    color: ${theme.surfaceContentSecondary};
+                  `}
+                >
+                  (
+                  {votingConfig.supportRequiredPct
+                    .div(STAKE_PCT_BASE.div(100))
+                    .toNumber()}
+                  % support needed)
+                </span>
+              </div>
+              <SummaryBar
+                positiveSize={yeasPct}
+                requiredSize={votingConfig.supportRequiredPct}
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              />
+            </Box>
+            <Box heading="Minimum approval %">
+              <div
+                css={`
+                  ${textStyle('body2')};
+                `}
+              >
+                {round(quorumProgress * 100, 2)}%{' '}
+                <span
+                  css={`
+                    color: ${theme.surfaceContentSecondary};
+                  `}
+                >
+                  (
+                  {votingConfig.minAcceptQuorumPct
+                    .div(STAKE_PCT_BASE.div(100))
+                    .toNumber()}
+                  % approval needed)
+                </span>
+              </div>
+              <SummaryBar
+                positiveSize={quorumProgress}
+                requiredSize={minAcceptQuorum}
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              />
+            </Box>
+          </>
+        }
       />
     </div>
   )
@@ -221,9 +306,74 @@ function SummaryInfo({ vote }) {
           </>
         }
       />
-
-      {/* <StatusInfo vote={vote} /> */}
     </div>
+  )
+}
+
+function Status({ vote }) {
+  const theme = useTheme()
+  const {
+    config: { conviction: convictionConfig },
+  } = useAppState()
+  const { pctBase } = convictionConfig
+
+  const { endBlock } = vote
+
+  const { upcoming, open, delayed, closed, transitionAt } = vote.data
+
+  const endBlockTimeStamp = useBlockTimeStamp(endBlock)
+
+  if (!closed || (delayed && getVoteSuccess(vote, pctBase))) {
+    return (
+      <React.Fragment>
+        <div
+          css={`
+            ${textStyle('body2')};
+            color: ${theme.surfaceContentSecondary};
+            margin-bottom: ${1 * GU}px;
+          `}
+        >
+          {upcoming
+            ? `Time to start `
+            : open
+            ? ` Time remaining`
+            : `Time for enactment`}
+        </div>
+        <Timer end={transitionAt} maxUnits={4} />
+      </React.Fragment>
+    )
+  }
+
+  const dateHasLoaded = endBlockTimeStamp
+  return (
+    <React.Fragment>
+      <VoteStatus vote={vote} />
+      <div
+        css={`
+          margin-top: ${1 * GU}px;
+          display: inline-grid;
+          grid-template-columns: auto auto;
+          grid-gap: ${1 * GU}px;
+          align-items: center;
+          color: ${theme.surfaceContentSecondary};
+          ${textStyle('body2')};
+        `}
+      >
+        <IconTime size="small" />{' '}
+        {dateHasLoaded ? (
+          dateFormat(new Date(endBlockTimeStamp))
+        ) : (
+          <div
+            css={`
+              height: 25px;
+              width: 150px;
+              background: #f9fafc;
+              border-radius: 6px;
+            `}
+          />
+        )}
+      </div>
+    </React.Fragment>
   )
 }
 

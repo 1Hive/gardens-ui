@@ -1,5 +1,16 @@
 import { addressesEqual } from './web3-utils'
-import { VOTE_ABSENT, VOTE_NAY, VOTE_YEA } from '../constants'
+import {
+  VOTE_ABSENT,
+  VOTE_NAY,
+  VOTE_YEA,
+  VOTE_STATUS_ONGOING,
+  VOTE_STATUS_REJECTED,
+  VOTE_STATUS_ACCEPTED,
+  VOTE_STATUS_ENACTED,
+  VOTE_STATUS_UPCOMING,
+  VOTE_STATUS_PENDING_ENACTMENT,
+  VOTE_STATUS_DELAYED,
+} from '../constants'
 
 const ONE_SECOND = 1000
 const EMPTY_SCRIPT = '0x00000001'
@@ -79,4 +90,45 @@ export function getVoteRemainingBlocks(voteData, currentBlockNumber) {
   }
 
   return remainingBlocks
+}
+
+export const getQuorumProgress = ({ yea, votingPower }) => yea.div(votingPower)
+
+export function getVoteSuccess(vote, pctBase) {
+  const { yea, minAcceptQuorum, nay, supportRequired, votingPower } = vote
+
+  const totalVotes = yea.plus(nay)
+  if (totalVotes.isZero()) {
+    return false
+  }
+  const yeaPct = yea.times(pctBase).div(totalVotes)
+  const yeaOfTotalPowerPct = yea.times(pctBase).div(votingPower)
+
+  // Mirror on-chain calculation
+  // yea / votingPower > supportRequired ||
+  //   (yea / totalVotes > supportRequired &&
+  //    yea / votingPower > minAcceptQuorum)
+  return (
+    yeaOfTotalPowerPct.gt(supportRequired) ||
+    (yeaPct.gt(supportRequired) && yeaOfTotalPowerPct.gt(minAcceptQuorum))
+  )
+}
+
+export function getVoteStatus(vote, pctBase) {
+  if (vote.data.upcoming) return VOTE_STATUS_UPCOMING
+  if (vote.data.open) return VOTE_STATUS_ONGOING
+
+  if (!getVoteSuccess(vote, pctBase)) {
+    return VOTE_STATUS_REJECTED
+  }
+
+  if (vote.data.delayed) return VOTE_STATUS_DELAYED
+
+  // Only if the vote has an action do we consider it possible for enactment
+  const hasAction = isVoteAction(vote)
+  return hasAction
+    ? vote.data.executed
+      ? VOTE_STATUS_ENACTED
+      : VOTE_STATUS_PENDING_ENACTMENT
+    : VOTE_STATUS_ACCEPTED
 }
