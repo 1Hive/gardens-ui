@@ -16,6 +16,7 @@ import filterToggleSvg from '../../assets/filter.svg'
 function ProposalsList({
   activeFilters,
   proposals,
+  proposalCount,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
@@ -78,16 +79,18 @@ function ProposalsList({
                 />
               )
             })}
-            <div
-              css={`
-                width: 100%;
-                text-align: center;
-                margin-top: ${6 * GU}px;
-                margin-bottom: ${3 * GU}px;
-              `}
-            >
-              <Button label="Load more" onClick={onProposalCountIncrease} />
-            </div>
+            {proposals.length === proposalCount && (
+              <div
+                css={`
+                  width: 100%;
+                  text-align: center;
+                  margin-top: ${6 * GU}px;
+                  margin-bottom: ${3 * GU}px;
+                `}
+              >
+                <Button label="Load more" onClick={onProposalCountIncrease} />
+              </div>
+            )}
           </>
         ) : (
           <EmptyResults
