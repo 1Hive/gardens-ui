@@ -28,6 +28,7 @@ export function useDescribeVote(script, voteId) {
 
   useEffect(() => {
     if (emptyScript) {
+      setLoading(false)
       return
     }
 

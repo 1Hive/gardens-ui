@@ -31,26 +31,20 @@ function ProposalSupport({ proposal }) {
         Current {proposal.type !== ProposalTypes.Decision ? 'support' : 'votes'}
       </div>
       {proposal.type !== ProposalTypes.Decision ? (
-        <ProposalInfo proposal={proposal} requestToken={requestToken} />
+        <div>
+          <ConvictionBar
+            proposal={proposal}
+            withThreshold={Boolean(requestToken)}
+          />
+        </div>
       ) : (
-        <DecisionInfo proposal={proposal} />
+        <DecisionSummaryBar proposal={proposal} />
       )}
     </div>
   )
 }
 
-function ProposalInfo({ proposal, requestToken }) {
-  return (
-    <div>
-      <ConvictionBar
-        proposal={proposal}
-        withThreshold={Boolean(requestToken)}
-      />
-    </div>
-  )
-}
-
-function DecisionInfo({ proposal }) {
+function DecisionSummaryBar({ proposal }) {
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
   const { minAcceptQuorum, nay, yea } = proposal

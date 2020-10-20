@@ -1,14 +1,44 @@
-import React, { useCallback, useMemo } from 'react'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
+import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
-import { useAppState } from '../../providers/AppState'
 import useAccountTokens from '../../hooks/useAccountTokens'
+import { useAppState } from '../../providers/AppState'
+import { useCanUserVote } from '../../hooks/useExtendedVoteData'
 import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
 import { isEntitySupporting } from '../../lib/conviction'
-import { QUICK_STAKE_PCT, STAKE_PCT_BASE } from '../../constants'
+import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  QUICK_STAKE_PCT,
+  STAKE_PCT_BASE,
+  VOTE_NAY,
+  VOTE_YEA,
+} from '../../constants'
+import { ProposalTypes } from '../../types'
+
+function ProposalCardFooter({
+  proposal,
+  onStakeToProposal,
+  onVoteOnDecision,
+  onWithdrawFromProposal,
+}) {
+  if (proposal.type === ProposalTypes.Decision) {
+    return (
+      <DecisionFooter proposal={proposal} onVoteOnDecision={onVoteOnDecision} />
+    )
+  }
+
+  return (
+    <ProposalFooter
+      proposal={proposal}
+      onStakeToProposal={onStakeToProposal}
+      onWithdrawFromProposal={onWithdrawFromProposal}
+    />
+  )
+}
 
 function ProposalFooter({
   proposal,
@@ -40,50 +70,110 @@ function ProposalFooter({
     onWithdrawFromProposal(proposal.id)
   }, [proposal.id, onWithdrawFromProposal])
 
+  const canSupport = inactiveTokens.gt(0)
+  const isSupporting = isEntitySupporting(proposal, account)
+
   return (
-    <div>
+    <Main color={theme.contentSecondary}>
       <div
         css={`
           display: flex;
           align-items: center;
-          justify-content: space-between;
-
-          color: ${theme.contentSecondary};
-          ${textStyle('body3')};
         `}
       >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-          `}
-        >
+        {account && proposal.status === PROPOSAL_STATUS_ACTIVE_STRING && (
           <QuickActions
-            canSupport={inactiveTokens.gt(0)}
-            proposal={proposal}
+            canThumbsUp={canSupport}
+            canThumbsDown={isSupporting}
             onThumbsUp={handleThumbsUp}
             onThumbsDown={handleThumbsDown}
           />
-          <div>
-            {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
-          </div>
+        )}
+        <div>
+          {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
         </div>
-        <div>Status: {proposal.status}</div>
       </div>
-    </div>
+      <div>Status: {proposal.status}</div>
+    </Main>
   )
 }
 
-// TODO: Add logic for dandelion votes
-function QuickActions({ canSupport, proposal, onThumbsUp, onThumbsDown }) {
+function DecisionFooter({ proposal, onVoteOnDecision }) {
+  const theme = useTheme()
   const { account } = useWallet()
 
-  if (!account) {
+  const votesCount = proposal.casts.length
+
+  return (
+    <Main color={theme.contentSecondary}>
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        {account && proposal.data.open && (
+          <VoteActions proposal={proposal} onVote={onVoteOnDecision} />
+        )}
+        <div>
+          {votesCount} Vote{votesCount === 1 ? '' : 's'}
+        </div>
+      </div>
+      <div>Status: {proposal.status}</div>
+    </Main>
+  )
+}
+
+function VoteActions({ proposal, onVote }) {
+  const [ready, setReady] = useState(false)
+
+  const handleThumbsUp = useCallback(() => {
+    onVote(proposal.id, VOTE_YEA)
+  }, [onVote, proposal.id])
+
+  const handleThumbsDown = useCallback(() => {
+    onVote(proposal.id, VOTE_NAY)
+  }, [onVote, proposal.id])
+
+  const { canUserVote, canUserVotePromise } = useCanUserVote(proposal)
+
+  useEffect(() => {
+    let cancelled = false
+
+    const whenReady = async () => {
+      await canUserVotePromise
+      if (!cancelled) {
+        setReady(true)
+      }
+    }
+    setReady(false)
+    whenReady()
+
+    return () => {
+      cancelled = true
+    }
+  }, [canUserVotePromise])
+
+  if (!ready) {
     return null
   }
 
-  const isSupporting = isEntitySupporting(proposal, account)
+  return (
+    <QuickActions
+      canThumbsUp={canUserVote}
+      canThumbsDown={canUserVote}
+      onThumbsUp={handleThumbsUp}
+      onThumbsDown={handleThumbsDown}
+    />
+  )
+}
 
+function QuickActions({
+  canThumbsUp,
+  canThumbsDown,
+  onThumbsUp,
+  onThumbsDown,
+}) {
   return (
     <div
       css={`
@@ -91,29 +181,38 @@ function QuickActions({ canSupport, proposal, onThumbsUp, onThumbsDown }) {
         align-items: center;
       `}
     >
-      <div
-        onClick={canSupport ? onThumbsUp : null}
+      <ButtonBase
+        onClick={canThumbsUp ? onThumbsUp : null}
         css={`
           display: flex;
           margin-right: ${1 * GU}px;
-          ${canSupport && 'cursor: pointer'};
         `}
+        disabled={!canThumbsUp}
       >
-        <ThumbsUpIcon disabled={!canSupport} />
-      </div>
+        <ThumbsUpIcon disabled={!canThumbsUp} />
+      </ButtonBase>
 
-      <div
-        onClick={isSupporting ? onThumbsDown : null}
+      <ButtonBase
+        onClick={canThumbsDown ? onThumbsDown : null}
         css={`
           display: flex;
           margin-right: ${1.5 * GU}px;
-          ${isSupporting && 'cursor: pointer'};
         `}
+        disabled={!canThumbsDown}
       >
-        <ThumbsDownIcon disabled={!isSupporting} />
-      </div>
+        <ThumbsDownIcon disabled={!canThumbsDown} />
+      </ButtonBase>
     </div>
   )
 }
 
-export default ProposalFooter
+const Main = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: ${({ color }) => color};
+  ${textStyle('body3')};
+`
+
+export default ProposalCardFooter

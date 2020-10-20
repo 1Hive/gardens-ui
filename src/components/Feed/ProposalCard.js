@@ -2,14 +2,18 @@ import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { GU, useTheme } from '@1hive/1hive-ui'
 
-import ProposalDescription from './ProposalDescription'
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
-import ProposalSupport from './ProposalSupport'
+import ProposalInfo from './ProposalInfo'
 
 import { ProposalTypes } from '../../types'
 
-function ProposalCard({ proposal, onStakeToProposal, onWithdrawFromProposal }) {
+function ProposalCard({
+  proposal,
+  onStakeToProposal,
+  onVoteOnDecision,
+  onWithdrawFromProposal,
+}) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -33,14 +37,14 @@ function ProposalCard({ proposal, onStakeToProposal, onWithdrawFromProposal }) {
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
       />
-      <ProposalDescription
+      <ProposalInfo
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
       />
-      <ProposalSupport proposal={proposal} />
       <ProposalFooter
         proposal={proposal}
         onStakeToProposal={onStakeToProposal}
+        onVoteOnDecision={onVoteOnDecision}
         onWithdrawFromProposal={onWithdrawFromProposal}
       />
     </div>

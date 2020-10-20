@@ -50,6 +50,7 @@ const Home = React.memo(function Home() {
             onProposalCountIncrease={filters.onProposalCountIncrease}
             onRankingFilterChange={filters.ranking.onChange}
             onStakeToProposal={actions.convictionActions.stakeToProposal}
+            onVoteOnDecision={actions.dandelionActions.voteOnDecision}
             onWithdrawFromProposal={
               actions.convictionActions.withdrawFromProposal
             }
