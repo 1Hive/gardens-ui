@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { STAKE_PCT_BASE } from '../constants'
+import { PCT_BASE } from '../constants'
 
 export default function useEffectiveSupply(totalSupply, config) {
   return useMemo(() => {
@@ -11,7 +11,7 @@ export default function useEffectiveSupply(totalSupply, config) {
 
     const percentageOfTotalSupply = totalSupply
       .multipliedBy(minThresholdStakePercentage)
-      .div(STAKE_PCT_BASE)
+      .div(PCT_BASE)
 
     return totalStaked.lt(percentageOfTotalSupply)
       ? percentageOfTotalSupply

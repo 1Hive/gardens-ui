@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
-import { useLatestBlock } from './useBlock'
+import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
 import { useAppState } from '../providers/AppState'
 import useProposalFilters from './useProposalFilters'
@@ -20,6 +20,8 @@ import {
 } from '../lib/conviction'
 import { testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
+import { getDecisionTransition } from '../lib/vote-utils'
+import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -28,6 +30,8 @@ export function useProposals() {
   const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
 
   const latestBlock = useLatestBlock()
+  const blockTime = useBlockTime()
+
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
 
@@ -36,18 +40,21 @@ export function useProposals() {
       return proposals
     }
 
-    return proposals.map(proposal =>
-      processProposal(
-        proposal,
-        latestBlock,
-        effectiveSupply,
-        vaultBalance,
-        account,
-        config?.conviction
-      )
+    return proposals.map((proposal, i) =>
+      proposal.type === ProposalTypes.Decision
+        ? processDecision(proposal, latestBlock, blockTime)
+        : processProposal(
+            proposal,
+            latestBlock,
+            effectiveSupply,
+            vaultBalance,
+            account,
+            config?.conviction
+          )
     )
   }, [
     account,
+    blockTime,
     config,
     effectiveSupply,
     isLoading,
@@ -80,26 +87,33 @@ function useFilteredProposals(filters, account) {
 
 export function useProposal(proposalId, appAddress) {
   const { account } = useWallet()
-  const proposal = useProposalSubscription(proposalId, appAddress)
-  const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
-
+  const [proposal, loadingProposal] = useProposalSubscription(
+    proposalId,
+    appAddress
+  )
   const latestBlock = useLatestBlock()
+  const blockTime = useBlockTime()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
+
   const blockHasLoaded = latestBlock.number !== 0
 
   if (isLoading || !proposal) {
     return [null, blockHasLoaded]
   }
 
-  const proposalWithData = processProposal(
-    proposal,
-    latestBlock,
-    effectiveSupply,
-    vaultBalance,
-    account,
-    config?.conviction
-  )
+  const proposalWithData =
+    proposal.type === ProposalTypes.Decision
+      ? processDecision(proposal, latestBlock, blockTime)
+      : processProposal(
+          proposal,
+          latestBlock,
+          effectiveSupply,
+          vaultBalance,
+          account,
+          config?.conviction
+        )
 
-  return [proposalWithData, blockHasLoaded]
+  return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
 function processProposal(
@@ -188,5 +202,15 @@ function processProposal(
     remainingTimeToPass,
     convictionTrend,
     totalStaked,
+  }
+}
+
+function processDecision(proposal, latestBlock, blockTime) {
+  return {
+    ...proposal,
+    data: {
+      ...proposal.data,
+      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
+    },
   }
 }
