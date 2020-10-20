@@ -97,10 +97,10 @@ export function populateVotingDataFromContract(proposal: ProposalEntity | null, 
   proposal.startBlock = voteData.value2
   proposal.executionBlock = voteData.value3
   proposal.snapshotBlock = voteData.value4
-  proposal.supportRequiredPct = voteData.value6
-  proposal.minAcceptQuorum = voteData.value7
+  proposal.supportRequiredPct = voteData.value5
+  proposal.minAcceptQuorum = voteData.value6
   proposal.yea = voteData.value8
   proposal.nay = voteData.value9
-  proposal.votingPower = voteData.value5
+  proposal.votingPower = voteData.value7
   proposal.script = voteData.value10
 }
