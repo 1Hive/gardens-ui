@@ -1,8 +1,10 @@
 import { useCallback } from 'react'
+import { toHex } from 'web3-utils'
+
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
-import { toHex } from 'web3-utils'
 import { getAppByName } from '../lib/data-utils'
+import env from '../environment'
 
 import { VOTE_YEA } from '../constants'
 
@@ -12,9 +14,12 @@ export default function useActions(onDone) {
   const { account, ethers } = useWallet()
 
   const { installedApps } = useAppState()
-  const convictionVotingApp = getAppByName(installedApps, 'conviction-beta')
-  const dandelionVotingApp = getAppByName(installedApps, 'dandelion-voting')
-  const issuanceApp = getAppByName(installedApps, 'issuance')
+  const convictionVotingApp = getAppByName(
+    installedApps,
+    env('CONVICTION_APP_NAME')
+  )
+  const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
+  const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
