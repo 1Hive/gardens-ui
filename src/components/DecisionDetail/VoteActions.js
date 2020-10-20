@@ -40,8 +40,6 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     startTimestamp,
   } = useExtendedVoteData(vote)
 
-  console.log('AFTER DATAAAAAAA', canUserVote, canExecute)
-
   const hasVoted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountVote)
 
   useEffect(() => {
