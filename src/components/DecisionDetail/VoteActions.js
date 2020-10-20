@@ -46,14 +46,18 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     let cancelled = false
 
     const whenReady = async () => {
-      await Promise.all([
-        canUserVotePromise,
-        canExecutePromise,
-        userBalancePromise,
-        userBalanceNowPromise,
-      ])
-      if (!cancelled) {
-        setReady(true)
+      try {
+        await Promise.all([
+          canUserVotePromise,
+          canExecutePromise,
+          userBalancePromise,
+          userBalanceNowPromise,
+        ])
+        if (!cancelled) {
+          setReady(true)
+        }
+      } catch (err) {
+        console.error(`Error fetching voting extended data ${err}`)
       }
     }
     setReady(false)

@@ -6,6 +6,7 @@ import { useAppState } from '../providers/AppState'
 import usePromise from './usePromise'
 import { useWallet } from '../providers/Wallet'
 
+import { getCanUserVote } from '../lib/vote-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '../lib/token-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import dandelionVotingAbi from '../abi/DandelionVoting.json'
@@ -87,10 +88,7 @@ export function useCanUserVote(vote) {
   )
 
   const canUserVotePromise = useMemo(() => {
-    if (!dandelionVotingContract) {
-      return
-    }
-    return dandelionVotingContract.canVote(vote.id, connectedAccount)
+    return getCanUserVote(dandelionVotingContract, vote.id, connectedAccount)
   }, [connectedAccount, dandelionVotingContract, vote.id])
 
   const canUserVote = usePromise(canUserVotePromise, [], false, 3)

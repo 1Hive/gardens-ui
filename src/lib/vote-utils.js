@@ -133,3 +133,11 @@ export function getVoteStatus(vote, pctBase) {
       : VOTE_STATUS_PENDING_ENACTMENT
     : VOTE_STATUS_ACCEPTED
 }
+
+export async function getCanUserVote(votingContract, voteId, account) {
+  if (!votingContract || !account) {
+    return false
+  }
+
+  return votingContract.canVote(voteId, account)
+}
