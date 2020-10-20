@@ -115,3 +115,7 @@ function transformStakeHistoryData(stake) {
 export function getAppAddressByName(apps, appName) {
   return apps?.find(app => app.name === appName)?.address || ''
 }
+
+export function getAppByName(apps, appName) {
+  return apps?.find(app => app.name === appName)
+}
