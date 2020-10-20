@@ -37,10 +37,10 @@ export function useBlockTimeStamp(blockNumber) {
   useEffect(() => {
     let cancelled = false
     const fetchBlock = async () => {
-      const { number, timestamp } = await ethers.getBlock(blockNumber)
+      const block = await ethers.getBlock(blockNumber)
 
-      if (!cancelled) {
-        setBlock({ number, timestamp })
+      if (block && !cancelled) {
+        setBlock({ number: block.number, timestamp: block.timestamp })
       }
     }
 
