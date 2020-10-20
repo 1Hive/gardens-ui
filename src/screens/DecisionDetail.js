@@ -192,7 +192,7 @@ function DecisionDetail({ proposal, actions }) {
               </div>
               <SummaryBar
                 positiveSize={yeasPct}
-                requiredSize={votingConfig.supportRequiredPct}
+                requiredSize={votingConfig.supportRequiredPct.div(PCT_BASE)}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}
@@ -219,7 +219,7 @@ function DecisionDetail({ proposal, actions }) {
               </div>
               <SummaryBar
                 positiveSize={quorumProgress}
-                requiredSize={minAcceptQuorum}
+                requiredSize={minAcceptQuorum.div(PCT_BASE)}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}
@@ -357,31 +357,33 @@ function Status({ vote }) {
   return (
     <React.Fragment>
       <VoteStatus vote={vote} />
-      <div
-        css={`
-          margin-top: ${1 * GU}px;
-          display: inline-grid;
-          grid-template-columns: auto auto;
-          grid-gap: ${1 * GU}px;
-          align-items: center;
-          color: ${theme.surfaceContentSecondary};
-          ${textStyle('body2')};
-        `}
-      >
-        <IconTime size="small" />{' '}
-        {dateHasLoaded ? (
-          dateFormat(new Date(endBlockTimeStamp))
-        ) : (
-          <div
-            css={`
-              height: 25px;
-              width: 150px;
-              background: #f9fafc;
-              border-radius: 6px;
-            `}
-          />
-        )}
-      </div>
+      {!closed && (
+        <div
+          css={`
+            margin-top: ${1 * GU}px;
+            display: inline-grid;
+            grid-template-columns: auto auto;
+            grid-gap: ${1 * GU}px;
+            align-items: center;
+            color: ${theme.surfaceContentSecondary};
+            ${textStyle('body2')};
+          `}
+        >
+          <IconTime size="small" />{' '}
+          {dateHasLoaded ? (
+            dateFormat(new Date(endBlockTimeStamp))
+          ) : (
+            <div
+              css={`
+                height: 25px;
+                width: 150px;
+                background: #f9fafc;
+                border-radius: 6px;
+              `}
+            />
+          )}
+        </div>
+      )}
     </React.Fragment>
   )
 }
