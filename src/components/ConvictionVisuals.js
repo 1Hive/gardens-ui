@@ -82,7 +82,10 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
       />
       <div>
         <span>
-          {Math.round(stakedConviction * 100)}%{' '}
+          {stakedConviction.eq(0)
+            ? '0'
+            : stakedConviction.multipliedBy(new BigNumber('100')).toFixed(2)}
+          %{' '}
           {!signalingProposal &&
             (withThreshold ? (
               <span
@@ -91,9 +94,9 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
                 `}
               >
                 {neededConviction
-                  ? `(${Math.round(
-                      neededConviction.multipliedBy(new BigNumber('100'))
-                    )}% needed)`
+                  ? `(${neededConviction
+                      .multipliedBy(new BigNumber('100'))
+                      .toFixed(2)}% needed)`
                   : `(threshold out of range)`}
               </span>
             ) : (

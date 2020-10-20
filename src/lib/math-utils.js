@@ -201,7 +201,8 @@ export function stakesPercentages(
       // so we replace the first non-zero percentage by “Rest”.
       addRest(
         adjustedStakes.slice(0, firstZeroIndex - 1),
-        adjustedStakes[firstZeroIndex - 1].percentage
+        adjustedStakes[firstZeroIndex - 1].percentage,
+        adjustedStakes[firstZeroIndex - 1].amount
       )
 }
 

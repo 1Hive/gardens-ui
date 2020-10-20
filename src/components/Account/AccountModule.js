@@ -31,7 +31,7 @@ const SCREENS = [
   },
   {
     id: 'connected',
-    height: 37 * GU,
+    height: 32.5 * GU,
   },
   {
     id: 'error',
@@ -178,7 +178,7 @@ function AccountModule({ compact }) {
         animateHeight={animate}
         heading={screen.title}
         height={screen.height}
-        width={51 * GU}
+        width={(screen.id === 'connected' ? 40 : 51) * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={opened}

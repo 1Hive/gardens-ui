@@ -10,6 +10,7 @@ function ProposalsList({
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
+  onVoteOnDecision,
   onWithdrawFromProposal,
   rankingItems,
   selectedRanking,
@@ -37,6 +38,7 @@ function ProposalsList({
                   key={index}
                   proposal={proposal}
                   onStakeToProposal={onStakeToProposal}
+                  onVoteOnDecision={onVoteOnDecision}
                   onWithdrawFromProposal={onWithdrawFromProposal}
                 />
               )

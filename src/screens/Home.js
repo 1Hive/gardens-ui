@@ -71,14 +71,18 @@ const Home = React.memo(function Home() {
                   proposals={proposals}
                   onProposalCountIncrease={filters.onProposalCountIncrease}
                   onRankingFilterChange={filters.ranking.onChange}
-                  onStakeToProposal={actions.stakeToProposal}
-                  onWithdrawFromProposal={actions.withdrawFromProposal}
+                  onStakeToProposal={actions.convictionActions.stakeToProposal}
+                  onVoteOnDecision={actions.dandelionActions.voteOnDecision}
+                  onWithdrawFromProposal={
+                    actions.convictionActions.withdrawFromProposal
+                  }
                   rankingItems={filters.ranking.items}
                   selectedRanking={filters.ranking.filter}
                 />
               </div>
             </div>
           </div>
+
           <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
         </div>
       )}
@@ -88,7 +92,7 @@ const Home = React.memo(function Home() {
         opened={proposalPanel.visible}
         onClose={proposalPanel.requestClose}
       >
-        <AddProposalPanel onSubmit={actions.newProposal} />
+        <AddProposalPanel onSubmit={actions.convictionActions.newProposal} />
       </SidePanel>
     </div>
   )

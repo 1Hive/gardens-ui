@@ -1,4 +1,4 @@
-import { convertFromString } from '../types'
+import { convertFromString, ProposalTypes } from '../types'
 import BigNumber from './bigNumber'
 
 export function transformConfigData(config) {
@@ -24,8 +24,15 @@ export function transformConfigData(config) {
   }
 }
 
-export function transformProposalData(proposal) {
+export function transformProposalData(proposal, config) {
   // TODO: transform casts
+
+  return convertFromString(proposal.type) === ProposalTypes.Decision
+    ? transformDecisionData(proposal, config)
+    : transformConvictionProposalData(proposal)
+}
+
+function transformConvictionProposalData(proposal) {
   return {
     ...proposal,
     createdAt: parseInt(proposal.createdAt, 10) * 1000,
@@ -35,6 +42,34 @@ export function transformProposalData(proposal) {
     stakesHistory: proposal.stakesHistory.map(transformStakeHistoryData),
     type: convertFromString(proposal.type),
     totalTokensStaked: new BigNumber(proposal.totalTokensStaked || 0),
+  }
+}
+
+function transformDecisionData(proposal, config) {
+  const { voting: votingConfig } = config
+
+  return {
+    ...proposal,
+    casts: proposal.casts,
+    createdAt: proposal.createdAt,
+    creator: proposal.creator,
+    endBlock:
+      parseInt(proposal.startBlock, 10) +
+      parseInt(votingConfig.durationBlocks, 10),
+    executionBlock: parseInt(proposal.executionBlock, 10),
+    id: proposal.number,
+    metadata: proposal.metadata,
+    minAcceptQuorum: new BigNumber(proposal.minAcceptQuorum),
+    nay: BigNumber(proposal.nay, 10),
+    requestedAmount: new BigNumber(proposal.requestedAmount),
+    script: proposal.script,
+    snapshotBlock: parseInt(proposal.snapshotBlock, 10),
+    startBlock: parseInt(proposal.startBlock, 10),
+    status: proposal.status,
+    supportRequiredPct: BigNumber(proposal.supportRequiredPct),
+    type: convertFromString(proposal.type),
+    votingPower: BigNumber(proposal.votingPower),
+    yea: BigNumber(proposal.yea),
   }
 }
 
@@ -81,4 +116,8 @@ function transformStakeHistoryData(stake) {
 
 export function getAppAddressByName(apps, appName) {
   return apps?.find(app => app.name === appName)?.address || ''
+}
+
+export function getAppByName(apps, appName) {
+  return apps?.find(app => app.name === appName)
 }
