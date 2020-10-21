@@ -64,7 +64,7 @@ const SupportProposal = React.memo(function SupportProposal({
   // Amount change handler
   const handleAmountChange = useCallback(
     event => {
-      const newAmount = event.target.value
+      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
         isNaN(event.target.value)
