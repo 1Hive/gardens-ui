@@ -10757,6 +10757,19 @@ is-ipfs@^1.0.3:
     multibase "~0.7.0"
     multihashes "~0.4.19"
 
+is-ipfs@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-ipfs/-/is-ipfs-2.0.0.tgz#c046622e4daf5435b671aeb9739a832107e06805"
+  integrity sha512-X4Cg/JO+h/ygBCrIQSMgicHRLo5QpB+i5tHLhFgGBksKi3zvX6ByFCshDxNBvcq4NFxF3coI2AaLqwzugNzKcw==
+  dependencies:
+    cids "^1.0.0"
+    iso-url "~0.4.7"
+    mafmt "^8.0.0"
+    multiaddr "^8.0.0"
+    multibase "^3.0.0"
+    multihashes "^3.0.1"
+    uint8arrays "^1.1.0"
+
 is-negative-zero@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/is-negative-zero/-/is-negative-zero-2.0.0.tgz#9553b121b0fac28869da9ed459e20c7543788461"
@@ -13006,6 +13019,13 @@ mafmt@^7.0.0, mafmt@^7.0.1, mafmt@^7.1.0:
   dependencies:
     multiaddr "^7.3.0"
 
+mafmt@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/mafmt/-/mafmt-8.0.0.tgz#6a9ad6aafa66d484310698baf2acff3b8ecf1d74"
+  integrity sha512-MdaeaqZxjoYYWvlhr1GQ7sbsR3+L3s8QL0VtCuja+Iax3EhqAEgluSWPJezSDLyns7Ds4DGRyoq5+eIU7UDang==
+  dependencies:
+    multiaddr "^8.0.0"
+
 magic-string@^0.22.4:
   version "0.22.5"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.22.5.tgz#8e9cf5afddf44385c1da5bc2a6a0dbd10b03657e"
@@ -13534,6 +13554,18 @@ multiaddr@^7.1.0, multiaddr@^7.2.1, multiaddr@^7.3.0, multiaddr@^7.4.3, multiadd
     class-is "^1.1.0"
     is-ip "^3.1.0"
     multibase "^0.7.0"
+    varint "^5.0.0"
+
+multiaddr@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/multiaddr/-/multiaddr-8.0.0.tgz#22658c1811fd46fc26aaa66ed8c0de712e9a50ef"
+  integrity sha512-4OOyr0u0i4lvh9MY/mvuCNmH5eqoTamcnGeXz6umFGc0eaVQUGPDQNbp52YfFY92NlZ76pO6h4K2HkXsT5X43w==
+  dependencies:
+    cids "^1.0.0"
+    class-is "^1.1.0"
+    is-ip "^3.1.0"
+    multibase "^3.0.0"
+    uint8arrays "^1.1.0"
     varint "^5.0.0"
 
 multibase@^0.7.0, multibase@~0.7.0:

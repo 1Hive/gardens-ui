@@ -4,6 +4,6 @@ import { GU } from '@1hive/1hive-ui'
 export const BREAKPOINTS = {
   min: 360,
   small: 680,
-  medium: 100 * GU,
-  large: 175 * GU,
+  medium: 150 * GU,
+  large: 185 * GU,
 }

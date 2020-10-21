@@ -34,9 +34,12 @@ function MainView({ children }) {
         <ScrollView>
           <div
             css={`
-              display: flex;
-              flex-direction: column;
-              height: 100%;
+              min-height: 100vh;
+              margin: 0;
+              display: grid;
+              grid-template-rows: 1fr ${compactMode
+                  ? `${60 * GU}px`
+                  : `${40 * GU}px`};
             `}
           >
             <div

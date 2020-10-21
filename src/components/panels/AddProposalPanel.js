@@ -6,6 +6,7 @@ import {
   GU,
   Info,
   isAddress,
+  Link,
   MEDIUM_RADIUS,
   TextInput,
   useTheme,
@@ -18,6 +19,7 @@ import { formatTokenAmount } from '../../lib/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../lib/conviction'
 
 import { ZERO_ADDR } from '../../constants'
+const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 
 const NULL_PROPOSAL_TYPE = -1
 const FUNDING_PROPOSAL = 1
@@ -144,7 +146,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
   const errors = useMemo(() => {
     const errors = []
 
-    const { amount, beneficiary, title } = formData
+    const { amount, beneficiary, link } = formData
     if (requestToken) {
       if (amount.valueBN.eq(-1)) {
         errors.push('Invalid requested amount')
@@ -153,11 +155,13 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       if (beneficiary && !isAddress(beneficiary)) {
         errors.push('Beneficiary is not a valid ethereum address')
       }
-
-      return errors
     }
 
-    return !title
+    if (link && !FORUM_POST_REGEX.test(link)) {
+      errors.push('Forum post link not provided ')
+    }
+
+    return errors
   }, [formData, requestToken])
 
   const neededThreshold = useMemo(() => {
@@ -179,7 +183,9 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     formData.proposalType === NULL_PROPOSAL_TYPE ||
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.value === '0' || !formData.beneficiary)) ||
-    !formData.title
+    !formData.title ||
+    !formData.link ||
+    errors.length > 0
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -251,13 +257,29 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
         </>
       )}
       <Field label="Link">
-        <TextInput onChange={handleLinkChange} value={formData.link} wide />
+        <TextInput
+          onChange={handleLinkChange}
+          value={formData.link}
+          wide
+          required
+        />
       </Field>
+      <Info title="Proposal creation guidelines">
+        In order to create a proposal you must first create a post on the{' '}
+        <Link href="https://forum.1hive.org/new-topic?category=proposals">
+          1Hive Forum
+        </Link>{' '}
+        under the 🌿 Proposals category and paste the link to the corresponding
+        post in the LINK field.
+      </Info>
       <Button
         wide
         mode="strong"
         type="submit"
         disabled={errors.length > 0 || submitDisabled}
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
       >
         Submit
       </Button>

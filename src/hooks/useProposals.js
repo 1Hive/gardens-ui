@@ -18,7 +18,7 @@ import {
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
-import { testSupportFilter } from '../utils/filter-utils'
+import { sortProposals, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
 import { getDecisionTransition } from '../lib/vote-utils'
 import { ProposalTypes } from '../types'
@@ -27,10 +27,10 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
   const { account } = useWallet()
-  const { config, isLoading, vaultBalance, effectiveSupply } = useAppState()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
-  const latestBlock = useLatestBlock()
   const blockTime = useBlockTime()
+  const latestBlock = useLatestBlock()
 
   const filters = useProposalFilters()
   const proposals = useFilteredProposals(filters, account)
@@ -40,12 +40,13 @@ export function useProposals() {
       return proposals
     }
 
-    return proposals.map((proposal, i) =>
+    return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
         ? processDecision(proposal, latestBlock, blockTime)
         : processProposal(
             proposal,
             latestBlock,
+            blockTime,
             effectiveSupply,
             vaultBalance,
             account,
@@ -63,7 +64,9 @@ export function useProposals() {
     vaultBalance,
   ])
 
-  return [proposalsWithData, filters, latestBlock.number !== 0]
+  const sortedProposals = sortProposals(filters, proposalsWithData)
+
+  return [sortedProposals, filters, latestBlock.number !== 0]
 }
 
 function useFilteredProposals(filters, account) {
@@ -107,6 +110,7 @@ export function useProposal(proposalId, appAddress) {
       : processProposal(
           proposal,
           latestBlock,
+          blockTime,
           effectiveSupply,
           vaultBalance,
           account,
@@ -119,30 +123,33 @@ export function useProposal(proposalId, appAddress) {
 function processProposal(
   proposal,
   latestBlock,
+  blockTime,
   effectiveSupply,
   vaultBalance,
   account,
   config
 ) {
-  const { alpha, maxRatio, totalStaked, weight } = config || {}
+  const { alpha, maxRatio, weight } = config || {}
+  const { requestedAmount, stakesHistory, totalTokensStaked } = proposal
 
-  let threshold = null
-  let neededConviction = null
+  let endDate
   let minTokensNeeded = null
+  let neededConviction = null
   let neededTokens = null
-  let remainingTimeToPass = null
+  let remainingBlocksToPass = null
+  let threshold = null
 
   const maxConviction = getMaxConviction(
     effectiveSupply || new BigNumber('0'),
     alpha
   )
   const currentConviction = getCurrentConviction(
-    proposal.stakesHistory,
+    stakesHistory,
     latestBlock.number,
     alpha
   )
   const userConviction = getCurrentConvictionByEntity(
-    proposal.stakesHistory,
+    stakesHistory,
     account,
     latestBlock.number,
     alpha
@@ -151,10 +158,10 @@ function processProposal(
   const userStakedConviction = userConviction.div(maxConviction)
 
   const stakedConviction = currentConviction.div(maxConviction)
-  const futureConviction = getMaxConviction(totalStaked, alpha)
+  const futureConviction = getMaxConviction(totalTokensStaked, alpha)
   const futureStakedConviction = futureConviction.div(maxConviction)
   const convictionTrend = getConvictionTrend(
-    proposal.stakesHistory,
+    stakesHistory,
     maxConviction,
     latestBlock.number,
     alpha,
@@ -162,9 +169,9 @@ function processProposal(
   )
 
   // Funding proposal needed values
-  if (proposal.requestedAmount.gt(0)) {
+  if (requestedAmount.gt(0)) {
     threshold = calculateThreshold(
-      proposal.requestedAmount,
+      requestedAmount,
       vaultBalance || new BigNumber('0'),
       effectiveSupply || new BigNumber('0'),
       alpha,
@@ -173,35 +180,39 @@ function processProposal(
     )
 
     neededConviction = threshold?.div(maxConviction)
-
     minTokensNeeded = getMinNeededStake(threshold, alpha)
-
-    neededTokens = minTokensNeeded.minus(totalStaked)
-
-    remainingTimeToPass = getRemainingTimeToPass(
+    neededTokens = minTokensNeeded.minus(totalTokensStaked)
+    remainingBlocksToPass = getRemainingTimeToPass(
       threshold,
       currentConviction,
-      totalStaked,
+      totalTokensStaked,
       alpha
     )
+
+    if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
+      const latestBlockTimestampMs = latestBlock.timestamp * 1000
+      const blockTimeInMs = blockTime * 1000
+      endDate = new Date(
+        latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
+      )
+    }
   }
 
   return {
     ...proposal,
+    convictionTrend,
     currentConviction,
-    userConviction,
-    userStakedConviction,
-    stakedConviction,
+    endDate,
     futureConviction,
     futureStakedConviction,
-    neededConviction,
     maxConviction,
-    threshold,
     minTokensNeeded,
+    neededConviction,
     neededTokens,
-    remainingTimeToPass,
-    convictionTrend,
-    totalStaked,
+    stakedConviction,
+    threshold,
+    userConviction,
+    userStakedConviction,
   }
 }
 

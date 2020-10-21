@@ -61,15 +61,21 @@ export default function useActions(onDone) {
 
   const withdrawFromProposal = useCallback(
     (proposalId, amount) => {
+      const params = [proposalId]
+      if (amount) {
+        params.push(amount)
+      }
+
       sendIntent(
         convictionVotingApp,
-        'withdrawFromProposal',
+        amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         [proposalId, amount],
         { ethers, from: account }
       )
 
       onDone()
     },
+
     [account, convictionVotingApp, ethers, onDone]
   )
 

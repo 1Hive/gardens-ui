@@ -7,7 +7,7 @@ import { getProfileForAccount } from '../lib/profile'
 
 const addressCache = new Map()
 
-function IdentityBadge({ entity, useBox, ...props }) {
+const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
   const [profileName, setProfileName] = useState(null)
 
   const networkType = getNetworkType()
@@ -45,6 +45,6 @@ function IdentityBadge({ entity, useBox, ...props }) {
       popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
     />
   )
-}
+})
 
 export default IdentityBadge

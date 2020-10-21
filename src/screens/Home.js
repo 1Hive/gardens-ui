@@ -21,7 +21,8 @@ const Home = React.memo(function Home() {
   return (
     <div
       css={`
-        margin-top: ${3 * GU}px;
+        margin: ${3 * GU}px;
+        margin-bottom: 0;
       `}
     >
       {isLoading ? (

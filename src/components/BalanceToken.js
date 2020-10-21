@@ -47,7 +47,7 @@ const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
   )
 }
 
-const TokenIcon = styled.img.attrs({ alt: '', width: '20', height: '20' })`
+const TokenIcon = styled.img.attrs({ alt: '', width: '24', height: '24' })`
   margin-right: ${1 * GU}px;
 `
 

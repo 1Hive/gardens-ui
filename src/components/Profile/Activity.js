@@ -1,11 +1,35 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useMemo } from 'react'
 import { Box, GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
+
+import ProposalIcon from '../ProposalIcon'
+import { useAppState } from '../../providers/AppState'
+import { useSupporterSubscription } from '../../hooks/useSubscriptions'
+
+import { convertToString } from '../../types'
+import { dateFormat } from '../../utils/date-utils'
 
 function Activity({ account }) {
   const theme = useTheme()
 
-  const myStakeHistory = []
+  const { honeypot } = useAppState()
+  const supporter = useSupporterSubscription(honeypot, account)
+
+  const dedupedStakes = useMemo(() => {
+    if (!supporter?.stakesHistory?.length) {
+      return []
+    }
+    return supporter.stakesHistory.reduce((acc, stake) => {
+      const index = acc.findIndex(
+        accStake => accStake.proposal.id === stake.proposal.id
+      )
+
+      if (index >= 0) {
+        return acc
+      }
+
+      return [...acc, stake]
+    }, [])
+  }, [supporter])
 
   return (
     <Box>
@@ -19,14 +43,12 @@ function Activity({ account }) {
           Recent activity
         </h3>
         <div>
-          {myStakeHistory.length ? (
-            myStakeHistory.map((stake, index) => (
+          {dedupedStakes.length ? (
+            dedupedStakes.map((stake, index) => (
               <div
                 key={index}
                 css={`
                   padding-top: ${3 * GU}px;
-                  display: flex;
-                  align-items: center;
 
                   & :not(:last-child) {
                     padding-bottom: ${3 * GU}px;
@@ -34,17 +56,34 @@ function Activity({ account }) {
                   }
                 `}
               >
-                You supported <ProposalIcon /> Proposal{' '}
-                <Link
-                  href={`/#/proposal/${stake.proposalId}`}
-                  external={false}
+                <div
                   css={`
-                    margin-left: ${1 * GU}px;
-                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: ${1 * GU}px;
                   `}
                 >
-                  {stake.proposalName}
-                </Link>
+                  Supported the <ProposalIcon type={stake.proposal.type} />{' '}
+                  {convertToString(stake.proposal.type)}{' '}
+                  <Link
+                    href={`/#/proposal/${stake.proposal.id}`}
+                    external={false}
+                    css={`
+                      margin-left: ${1 * GU}px;
+                      text-decoration: none;
+                    `}
+                  >
+                    {stake.proposal.name}
+                  </Link>
+                </div>
+                <div
+                  css={`
+                    color: ${theme.contentSecondary};
+                    ${textStyle('body3')};
+                  `}
+                >
+                  {dateFormat(stake.createdAt, 'custom')}
+                </div>
               </div>
             ))
           ) : (
@@ -55,13 +94,5 @@ function Activity({ account }) {
     </Box>
   )
 }
-
-const ProposalIcon = styled.div`
-  width: ${1.5 * GU}px;
-  height: ${1.5 * GU}px;
-  background: #ffdd0f;
-  transform: rotate(45deg);
-  margin: 0 ${1 * GU}px;
-`
 
 export default Activity

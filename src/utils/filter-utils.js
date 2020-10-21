@@ -35,6 +35,12 @@ export const filterArgsMapping = {
   },
 }
 
+export const FILTER_KEY_COUNT = 'count'
+export const FILTER_KEY_RANKING = 'ranking'
+export const FILTER_KEY_STATUS = 'status'
+export const FILTER_KEY_SUPPORT = 'support'
+export const FILTER_KEY_TYPE = 'type'
+
 export const STATUS_ITEMS = ['All', 'Open', 'Closed', 'Removed']
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
 export const TYPE_ITEMS = ['All', 'Suggestion', 'Proposal', 'Decision']
@@ -48,4 +54,16 @@ export function testSupportFilter(filter, proposalSupportStatus) {
     (filter === SUPPORT_FILTER_NOT_SUPPORTED &&
       proposalSupportStatus === PROPOSAL_SUPPORT_NOT_SUPPORTED)
   )
+}
+
+export function sortProposals(filters, proposals) {
+  // When sorting by top we are sorting by lastConviction which is not entirely accurate
+  // as conviction on proposals can accrue at different speeds
+  if (filters.ranking.filter === RANKING_FILTER_TOP) {
+    return proposals.sort(
+      (p1, p2) => p2.currentConviction - p1.currentConviction
+    )
+  }
+
+  return proposals
 }

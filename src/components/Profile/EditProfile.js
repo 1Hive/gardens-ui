@@ -17,7 +17,7 @@ import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
 import usePicture from '../../hooks/usePicture'
 
-const IMAGE_DIMENSION = 16 * GU
+const IMAGE_DIMENSION = 15 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
 const TAB_ITEMS = ['Profile', 'Stake management', 'Proposals supporting']
 

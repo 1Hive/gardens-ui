@@ -37,11 +37,11 @@ function transformConvictionProposalData(proposal) {
     ...proposal,
     createdAt: parseInt(proposal.createdAt, 10) * 1000,
     id: proposal.number,
-    requestedAmount: new BigNumber(proposal.requestedAmount),
+    requestedAmount: new BigNumber(proposal.requestedAmount || 0),
     stakes: proposal.stakes.map(transformStakeData),
     stakesHistory: proposal.stakesHistory.map(transformStakeHistoryData),
     type: convertFromString(proposal.type),
-    totalTokensStaked: new BigNumber(proposal.totalTokensStaked),
+    totalTokensStaked: new BigNumber(proposal.totalTokensStaked || 0),
   }
 }
 

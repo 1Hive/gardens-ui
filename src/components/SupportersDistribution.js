@@ -26,11 +26,11 @@ function displayedStakes(stakes, total, stakeToken) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map((stake, index) => ({
+  ).map(stake => ({
     item: {
       entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity,
       amount: formatTokenAmount(
-        stake.index === -1 ? 0 : stakes[stake.index].amount,
+        stake.index === -1 ? stake.amount : stakes[stake.index].amount,
         stakeToken.decimals
       ),
     },
