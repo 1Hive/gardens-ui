@@ -134,7 +134,8 @@ export interface IHoneypotConnector {
     orderBy: string, 
     orderDirection: string,
     types: number[],
-    statuses: number[]
+    statuses: number[],
+    metadata: string,
   ): Promise<Proposal[]>
   onProposals(
     first: number,
@@ -143,6 +144,7 @@ export interface IHoneypotConnector {
     orderDirection: string,
     types: number[],
     statuses: number[],
+    metadata: string,
     callback: Function
   ): SubscriptionHandler
   supporter(

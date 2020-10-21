@@ -48,9 +48,10 @@ export default class Honeypot {
       orderBy = 'createdAt',
       orderDirection = 'desc',
       types = ALL_PROPOSAL_TYPES,
-      statuses = ALL_PROPOSAL_STATUSES
+      statuses = ALL_PROPOSAL_STATUSES,
+      metadata = ""
     } = {}): Promise<Proposal[]> {
-    return this.#connector.proposals(first, skip, orderBy, orderDirection, types, statuses)
+    return this.#connector.proposals(first, skip, orderBy, orderDirection, types, statuses, metadata)
   }
 
   onProposals(
@@ -60,11 +61,12 @@ export default class Honeypot {
       orderBy = 'createdAt', 
       orderDirection = 'desc', 
       types = ALL_PROPOSAL_TYPES, 
-      statuses = ALL_PROPOSAL_STATUSES
+      statuses = ALL_PROPOSAL_STATUSES,
+      metadata = ""
     } = {},
     callback: Function
   ): SubscriptionHandler {
-    return this.#connector.onProposals(first, skip, orderBy, orderDirection, types, statuses, callback)
+    return this.#connector.onProposals(first, skip, orderBy, orderDirection, types, statuses, metadata, callback)
   }
   
   async supporter({ id = '' } = {}): Promise<Supporter> {

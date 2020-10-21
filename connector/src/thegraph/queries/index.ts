@@ -50,17 +50,17 @@ export const CONFIG = (type: string) => gql`
 `
 
 export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $orderBy: String!, $orderDirection: String!) {
-    proposals(where: { typeInt_in: $proposalTypes, statusInt_in: $statuses },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+  ${type} Proposals($first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
+    proposals(where: { typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
       number
       creator
       status
       type
       createdAt
+      metadata
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
-      name
       link
       stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
@@ -88,7 +88,6 @@ export const ALL_PROPOSALS = (type: string) => gql`
       totalTokensStaked
      
       # Decision data (votes)
-      metadata
       startBlock
       executionBlock
       snapshotBlock
@@ -120,9 +119,9 @@ export const PROPOSAL = (type: string) => gql`
       status
       type
       createdAt
+      metadata
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
-      name
       link
       stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
@@ -150,7 +149,6 @@ export const PROPOSAL = (type: string) => gql`
       totalTokensStaked
      
       # Decision data (votes)
-      metadata
       startBlock
       executionBlock
       snapshotBlock

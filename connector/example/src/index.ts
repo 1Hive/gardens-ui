@@ -19,7 +19,7 @@ function proposalId(proposal: Proposal): string {
 
 function describeProposal(proposal: Proposal): void {
   console.log(`PROPOSAL ${proposalId(proposal)} ${proposal.type}`)
-  console.log(`Name: ${proposal.name}`)
+  console.log(`Name: ${proposal.metadata}`)
   console.log(`Link: ${proposal.link}`)
   console.log(`Requested amount: ${proposal.requestedAmount}`)
   console.log(`Beneficiary: ${proposal.beneficiary}`)
@@ -62,18 +62,18 @@ async function main(): Promise<void> {
   describeConfig(config)
   console.log(`\n`)
 
-  const proposals = await honeypot.proposals({ first: 10 })
+  const proposals = await honeypot.proposals({ first: 10, metadata: 'fa' })
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
 
-
-  const proposal = await honeypot.proposal({ number: '1', appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f' })
+  const proposal = await honeypot.proposal({
+    number: '1',
+    appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
+  })
   console.log(`\n#################Unique Proposal:`)
   describeProposal(proposal)
   console.log(`\n`)
-
-
 
   // console.log(`#####Subscriptions\n\n`)
   // honeypot.onProposals({}, (err: any, proposals) => {
