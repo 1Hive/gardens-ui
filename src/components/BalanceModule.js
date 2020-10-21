@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { textStyle, useTheme } from '@1hive/1hive-ui'
+import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
@@ -41,10 +41,25 @@ function BalanceModule() {
           >
             Balance
           </div>
-          <div>
-            <span>
-              {formatTokenAmount(accountBalance, stakeToken.decimals)}
-            </span>{' '}
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <div
+              css={`
+                margin-right: ${0.5 * GU}px;
+              `}
+            >
+              {accountBalance.eq(-1) ? (
+                <LoadingRing />
+              ) : (
+                <span>
+                  {formatTokenAmount(accountBalance, stakeToken.decimals)}
+                </span>
+              )}
+            </div>
             <span
               css={`
                 color: ${theme.contentSecondary};
