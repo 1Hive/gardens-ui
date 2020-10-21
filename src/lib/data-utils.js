@@ -35,6 +35,7 @@ export function transformProposalData(proposal, config) {
 function transformConvictionProposalData(proposal) {
   return {
     ...proposal,
+    name: proposal.metadata,
     createdAt: parseInt(proposal.createdAt, 10) * 1000,
     id: proposal.number,
     requestedAmount: new BigNumber(proposal.requestedAmount || 0),
