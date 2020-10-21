@@ -22,39 +22,25 @@ function getRankingIcon(key, selected) {
 }
 
 function ProposalRankings({ items, onChange, selected }) {
-  const theme = useTheme()
-
   return (
     <div
       css={`
-        position: sticky;
-        top: 0;
+        display: flex;
+        align-items: center;
+        position: relative;
         z-index: 3;
-        padding-top: ${3 * GU}px;
-        padding-bottom: ${0.5 * GU}px;
-        background-color: ${theme.background};
       `}
     >
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          margin-bottom: ${1 * GU}px;
-          position: relative;
-          z-index: 3;
-        `}
-      >
-        {items.map((item, index) => (
-          <Item
-            key={index}
-            icon={getRankingIcon(item, selected === index)}
-            index={index}
-            label={item}
-            onSelect={onChange}
-            selected={selected === index}
-          />
-        ))}
-      </div>
+      {items.map((item, index) => (
+        <Item
+          key={index}
+          icon={getRankingIcon(item, selected === index)}
+          index={index}
+          label={item}
+          onSelect={onChange}
+          selected={selected === index}
+        />
+      ))}
     </div>
   )
 }

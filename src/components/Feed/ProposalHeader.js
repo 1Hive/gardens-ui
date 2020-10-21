@@ -1,8 +1,16 @@
 import React from 'react'
-import { GU, IconInfo, ContextMenu, ContextMenuItem } from '@1hive/1hive-ui'
+import {
+  GU,
+  IconInfo,
+  ContextMenu,
+  ContextMenuItem,
+  useLayout,
+} from '@1hive/1hive-ui'
 import ProposalCreator from './ProposalCreator'
 
 function ProposalHeader({ proposal, onSelectProposal }) {
+  const { layoutName } = useLayout()
+
   return (
     <div
       css={`
@@ -13,11 +21,13 @@ function ProposalHeader({ proposal, onSelectProposal }) {
       `}
     >
       <ProposalCreator proposal={proposal} />
-      <ContextMenu>
-        <ContextMenuItem onClick={onSelectProposal}>
-          <IconInfo /> Details
-        </ContextMenuItem>
-      </ContextMenu>
+      {layoutName !== 'small' && (
+        <ContextMenu>
+          <ContextMenuItem onClick={onSelectProposal}>
+            <IconInfo /> Details
+          </ContextMenuItem>
+        </ContextMenu>
+      )}
     </div>
   )
 }

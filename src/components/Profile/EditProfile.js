@@ -1,9 +1,11 @@
 import React, { useMemo, useRef, useState } from 'react'
 import {
   Button,
+  ButtonBase,
   EthIdenticon,
   GU,
   IconCross,
+  IconEdit,
   Split,
   shortenAddress,
   textStyle,
@@ -19,7 +21,7 @@ import usePicture from '../../hooks/usePicture'
 
 const IMAGE_DIMENSION = 15 * GU
 const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
-const TAB_ITEMS = ['Profile', 'Stake management', 'Proposals supporting']
+const TAB_ITEMS = ['Profile'] // TODO: 'Stake management', 'Proposals supporting']
 
 const EditProfile = React.forwardRef(
   (
@@ -82,6 +84,7 @@ const EditProfile = React.forwardRef(
           <div
             css={`
               position: relative;
+              margin-right: ${oneColumn ? 2 * GU : 0}px;
             `}
           >
             <label htmlFor="coverPic">
@@ -103,7 +106,11 @@ const EditProfile = React.forwardRef(
                   cursor: pointer;
                 `}
               />
-              <Button label="Change background" />
+              <Button
+                label="Change background"
+                icon={<IconEdit />}
+                display={oneColumn ? 'icon' : 'label'}
+              />
             </label>
           </div>
         </div>
@@ -127,6 +134,7 @@ const EditProfile = React.forwardRef(
                   css={`
                     display: inline-block;
                     position: relative;
+                    z-index: 1;
                   `}
                 >
                   {!profilePic.removed &&
@@ -200,63 +208,64 @@ const EditProfile = React.forwardRef(
                       </label>
                     </div>
                   )}
-                </div>
-                {selectedTab === 0 &&
-                  !profilePic.removed &&
-                  (image || (imageInput?.files && imageInput?.files[0])) && (
-                    <div
-                      onClick={onProfilePicRemoval}
-                      css={`
-                        position: absolute;
-                        bottom: ${1 * GU}px;
-                        left: ${IMAGE_DIMENSION / 2 + 1 * GU}px;
-                        color: ${theme.contentSecondary};
-                        padding: ${0.5 * GU}px;
-                        background: ${theme.surface};
-                        border-radius: 50%;
-                        display: flex;
-                        cursor: pointer;
+                  {selectedTab === 0 &&
+                    !profilePic.removed &&
+                    (image || (imageInput?.files && imageInput?.files[0])) && (
+                      <ButtonBase
+                        onClick={onProfilePicRemoval}
+                        css={`
+                          position: absolute;
+                          bottom: ${1 * GU}px;
+                          background: ${theme.surface};
+                          color: ${theme.contentSecondary};
+                          padding: ${0.5 * GU}px;
+                          border-radius: 50%;
+                          display: flex;
+                          box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 
-                        & :hover {
-                          bacgkround: ${theme.surfacePressed};
-                        }
-                      `}
-                    >
-                      <IconCross />
-                    </div>
-                  )}
+                          &:active {
+                            background: ${theme.surfacePressed};
+                          }
+                        `}
+                      >
+                        <IconCross />
+                      </ButtonBase>
+                    )}
+                </div>
               </div>
-              <div
-                css={`
-                  padding-top: ${IMAGE_DIMENSION / 2 + 3 * GU}px;
-                `}
-              >
+              {!oneColumn && (
                 <div
                   css={`
-                    margin-bottom: ${3 * GU}px;
+                    padding-top: ${IMAGE_DIMENSION / 2 + 3 * GU}px;
                   `}
                 >
                   <div
                     css={`
-                      ${textStyle('title4')}
+                      margin-bottom: ${3 * GU}px;
                     `}
                   >
-                    {name}
+                    <div
+                      css={`
+                        ${textStyle('title4')}
+                      `}
+                    >
+                      {name}
+                    </div>
+                    <div
+                      css={`
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      {shortenAddress(account)}
+                    </div>
                   </div>
-                  <div
-                    css={`
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    {shortenAddress(account)}
-                  </div>
+                  <Tabs
+                    items={TAB_ITEMS}
+                    selected={selectedTab}
+                    onChange={setSelectedTab}
+                  />
                 </div>
-                <Tabs
-                  items={TAB_ITEMS}
-                  selected={selectedTab}
-                  onChange={setSelectedTab}
-                />
-              </div>
+              )}
             </div>
           }
           invert={oneColumn ? 'vertical' : 'horizontal'}

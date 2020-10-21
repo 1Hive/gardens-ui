@@ -95,7 +95,14 @@ function ProposalCreator({ proposal }) {
                   ? profile.name
                   : shortenAddress(proposal.creator)}
               </strong>
-              created a {ProposalType}
+              <span
+                css={`
+                  margin-right: ${0.5 * GU}px;
+                `}
+              >
+                created a
+              </span>{' '}
+              {ProposalType}
             </>
           )}
         </div>

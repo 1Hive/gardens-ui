@@ -126,8 +126,14 @@ function ProposalDetail({ match }) {
       </Bar>
       <div
         css={`
-          > div > div:nth-child(2) {
-            width: ${oneColumn ? '100%' : `${40 * GU}px`};
+          > div {
+            display: ${oneColumn ? 'block' : 'flex'};
+
+            > div:nth-child(2) {
+              width: ${oneColumn ? '100%' : `${40 * GU}px`};
+              margin-left: ${!oneColumn ? 2 * GU : 0}px;
+              padding-top: ${oneColumn ? 2 * GU : 0}px;
+            }
           }
         `}
       >
@@ -167,7 +173,7 @@ function ProposalDetail({ match }) {
                         css={`
                           margin-top: ${2 * GU}px;
                           grid-column: span 2;
-                          width: ${50 * GU}px;
+                          min-width: ${40 * GU}px;
                           color: ${theme.contentSecondary};
                         `}
                       >

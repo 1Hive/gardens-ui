@@ -9,15 +9,15 @@ function ListFilter({ items, selected, onChange }) {
           key={index}
           index={index}
           item={item}
-          selected={selected}
           onSelect={onChange}
+          selected={selected}
         />
       ))}
     </div>
   )
 }
 
-function ListItem({ index, item, selected, onSelect }) {
+function ListItem({ index, item, onSelect, selected }) {
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {

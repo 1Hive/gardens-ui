@@ -1,13 +1,16 @@
 import React from 'react'
-import { Layout } from '@1hive/1hive-ui'
+import { Layout, useViewport } from '@1hive/1hive-ui'
 import { BREAKPOINTS } from '../styles/breakpoints'
 
-function CustomLayout({ children, paddingBottom }) {
+function CustomLayout({ children }) {
+  const { width: vw } = useViewport()
   return (
     <Layout
       breakpoints={BREAKPOINTS}
-      paddingBottom={paddingBottom || 0}
+      parentWidth={vw}
+      paddingBottom={0}
       css={`
+        ${vw < BREAKPOINTS.large && `width: auto;`}
         min-width: auto;
       `}
     >

@@ -51,7 +51,7 @@ function MainProfile({ profile }) {
               `}
             />
           ) : (
-            <EthIdenticon address={account} radius={100} scale={7} />
+            account && <EthIdenticon address={account} radius={100} scale={7} />
           )}
         </div>
         <div

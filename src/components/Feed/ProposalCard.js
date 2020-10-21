@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { GU, useTheme } from '@1hive/1hive-ui'
+import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
@@ -17,6 +17,8 @@ function ProposalCard({
   const theme = useTheme()
   const history = useHistory()
 
+  const { below } = useViewport()
+
   const handleSelectProposal = useCallback(() => {
     const entityPath =
       proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'
@@ -31,6 +33,15 @@ function ProposalCard({
         margin-bottom: ${2 * GU}px;
         padding: ${3 * GU}px;
         border-radius: ${2 * GU}px;
+
+        ${below('medium') &&
+          `
+          padding-left: ${2 * GU}px;
+          padding-right: ${2 * GU}px;
+          border-left: 0;
+          border-right: 0;
+          border-radius: 0;
+        `}
       `}
     >
       <ProposalHeader
