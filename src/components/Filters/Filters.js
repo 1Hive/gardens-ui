@@ -39,7 +39,6 @@ const Filters = React.memo(({ compact, ...props }) => {
         height: fit-content;
         margin-top: ${3 * GU}px;
         margin-right: ${8 * GU}px;
-
         top: ${3 * GU}px;
         position: sticky;
       `}
@@ -57,7 +56,6 @@ const Filters = React.memo(({ compact, ...props }) => {
             align-items: center;
             justify-content: space-between;
             column-gap: ${2 * GU}px;
-
             margin-bottom: ${2 * GU}px;
           `}
         >

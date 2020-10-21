@@ -3,8 +3,8 @@ import {
   BIG_RADIUS,
   Button,
   GU,
-  useTheme,
   useLayout,
+  useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
