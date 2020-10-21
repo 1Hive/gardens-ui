@@ -130,7 +130,9 @@ export function stakesPercentages(
   // convert the percentage back to a number
   const stakePercentageAsNumber = stake => ({
     ...stake,
-    percentage: (stake.percentage.toNumber() / pctPrecision) * 100,
+    percentage: parseFloat(
+      (stake.percentage.toNumber() / pctPrecision) * 100
+    ).toFixed(2),
   })
 
   // Add the “Rest” item
@@ -163,46 +165,25 @@ export function stakesPercentages(
     : stakes
   ).map(stakePercentageAsNumber)
 
-  // Round to the next integer some stake percentages until we get to 100%.
-  // Start with the percentages that are the closest to the next integer.
-  const missingPct = includedStakes.reduce(
-    (total, stake) => total - Math.floor(stake.percentage),
-    100
-  )
-  const stakesToAdjust = includedStakes
-    .map((stake, index) => [index, stake.percentage])
-    .sort((a, b) => (b[1] % 1) - (a[1] % 1))
-    .slice(0, missingPct)
-    .map(([index]) => index)
-
-  const adjustStakePercentage = (stake, index) => ({
-    ...stake,
-    percentage: (stakesToAdjust.includes(index) ? Math.ceil : Math.floor)(
-      stake.percentage
-    ),
-  })
-
-  const adjustedStakes = includedStakes.map(adjustStakePercentage)
-
   // Check if there is any 0% item in the list
-  const firstZeroIndex = adjustedStakes.findIndex(
+  const firstZeroIndex = includedStakes.findIndex(
     ({ percentage }) => percentage === 0
   )
 
   if (firstZeroIndex === -1) {
-    return adjustedStakes
+    return includedStakes
   }
 
   // Remove the 0% items and group them in a “Rest” item.
   return hasRest
     ? // A “Rest” item already exists, we can remove the 0% items.
-      adjustedStakes.slice(0, firstZeroIndex)
+      includedStakes.slice(0, firstZeroIndex)
     : // A “Rest” item needs to be added and can not be zero,
       // so we replace the first non-zero percentage by “Rest”.
       addRest(
-        adjustedStakes.slice(0, firstZeroIndex - 1),
-        adjustedStakes[firstZeroIndex - 1].percentage,
-        adjustedStakes[firstZeroIndex - 1].amount
+        includedStakes.slice(0, firstZeroIndex - 1),
+        includedStakes[firstZeroIndex - 1].percentage,
+        includedStakes[firstZeroIndex - 1].amount
       )
 }
 
