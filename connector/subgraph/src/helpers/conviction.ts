@@ -129,7 +129,7 @@ export function populateProposalDataFromEvent(
   proposal: ProposalEntity | null,
   event: ProposalAddedEvent
 ): void {
-  proposal.name = event.params.title
+  proposal.metadata = event.params.title
   proposal.link = event.params.link.toString()
   proposal.requestedAmount = event.params.amount
   proposal.creator = event.params.entity

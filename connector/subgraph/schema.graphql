@@ -37,9 +37,9 @@ type Proposal @entity {
   typeInt: Int!
   createdAt: BigInt!
   weight: BigInt!
+  metadata: String!
   
   # Proposal data
-  name: String
   link: String
   stakes: [Stake!] @derivedFrom(field: "proposal")
   stakesHistory: [StakeHistory!] @derivedFrom(field: "proposal")
@@ -49,7 +49,6 @@ type Proposal @entity {
   totalTokensStaked: BigInt
 
   # Voting data
-  metadata: String
   startBlock: BigInt
   executionBlock: BigInt
   snapshotBlock: BigInt
