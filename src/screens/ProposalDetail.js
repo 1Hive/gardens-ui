@@ -130,14 +130,8 @@ function ProposalDetail({ match }) {
       />
       <div
         css={`
-          > div {
-            display: ${oneColumn ? 'block' : 'flex'};
-
-            > div:nth-child(2) {
-              width: ${oneColumn ? '100%' : `${40 * GU}px`};
-              margin-left: ${!oneColumn ? 2 * GU : 0}px;
-              padding-top: ${oneColumn ? 2 * GU : 0}px;
-            }
+          > div > div:nth-child(2) {
+            width: ${oneColumn ? '100%' : `${40 * GU}px`};
           }
         `}
       >
