@@ -11,10 +11,11 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useWallet } from '../../providers/Wallet'
 import { useAppState } from '../../providers/AppState'
 import useExtendedVoteData from '../../hooks/useExtendedVoteData'
-import { noop, dateFormat } from '../../utils/date-utils'
+import useVoteGracePeriod from '../../hooks/useVoteGracePeriod'
+import { useWallet } from '../../providers/Wallet'
+import { noop, dateFormat, durationTime } from '../../utils/date-utils'
 import { VOTE_NAY, VOTE_YEA } from '../../constants'
 import { getConnectedAccountVote, isVoteAction } from '../../lib/vote-utils'
 
@@ -39,6 +40,8 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     canExecutePromise,
     startTimestamp,
   } = useExtendedVoteData(vote)
+
+  const gracePeriodSeconds = useVoteGracePeriod()
 
   const hasVoted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountVote)
 
@@ -115,15 +118,15 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
             <TokenReference
               snapshotBlock={snapshotBlock}
               startDate={new Date(startTimestamp)}
-              tokenSymbol={stakeToken.tokenSymbol}
+              tokenSymbol={stakeToken.symbol}
               userBalance={userBalance}
               userBalanceNow={userBalanceNow}
             />
             <Buttons onClickYes={onVoteYes} onClickNo={onVoteNo} />
             <Info mode="warning">
               Voting in favour of a decision will prevent you from transferring
-              your balance until it has been executed or x hours after the
-              voting period ends.
+              your balance until it has been executed or{' '}
+              {durationTime(gracePeriodSeconds)} after the voting period ends.
             </Info>
           </React.Fragment>
         ) : (
@@ -235,7 +238,11 @@ const TokenReference = ({
   const votingWith = Math.min(userBalance, userBalanceNow)
 
   return (
-    <Info>
+    <Info
+      css={`
+        margin-top: ${2 * GU}px;
+      `}
+    >
       Voting with{' '}
       <strong>
         {votingWith} {tokenSymbol}

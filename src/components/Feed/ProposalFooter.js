@@ -13,9 +13,11 @@ import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 import useAccountTokens from '../../hooks/useAccountTokens'
 import { useAppState } from '../../providers/AppState'
 import { useCanUserVote } from '../../hooks/useExtendedVoteData'
+import useVoteGracePeriod from '../../hooks/useVoteGracePeriod'
 import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
+import { durationTime } from '../../utils/date-utils'
 import { getVoteStatus } from '../../lib/vote-utils'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
@@ -127,10 +129,7 @@ function ProposalFooter({
 function DecisionFooter({ proposal, onVoteOnDecision }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const { layoutName } = useLayout()
   const [warningPopoverVisible, setWarningPopoverVisible] = useState(false)
-
-  const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   const status = getVoteStatus(proposal, PCT_BASE)
   const { label: statusLabel } = getStatusAttributes(status, theme)
@@ -178,30 +177,41 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           </ButtonBase>
         )}
       </div>
+      <WarningPopover
+        onClose={handleOnClosePopover}
+        visible={warningPopoverVisible}
+        ref={popoverOpener.current}
+      />
 
       <div>Status: {statusLabel}</div>
-      <Popover
-        visible={warningPopoverVisible}
-        opener={popoverOpener.current}
-        onClose={handleOnClosePopover}
-      >
-        <div
-          css={`
-            padding: ${3 * GU}px;
-            ${textStyle('body3')}
-            width:${compactMode ? 'auto' : 48 * GU}px;
-            border: 1px solid #F5A623;
-            border-radius: 16px;
-          `}
-        >
-          Voting in favour of a decision will prevent you from transferring your
-          balance until it has been executed or x hours after the voting period
-          ends.
-        </div>
-      </Popover>
     </Main>
   )
 }
+
+const WarningPopover = React.forwardRef(({ onClose, visible }, ref) => {
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'medium' || layoutName === 'small'
+
+  const gracePeriodSeconds = useVoteGracePeriod()
+
+  return (
+    <Popover visible={visible} opener={ref} onClose={onClose}>
+      <div
+        css={`
+      padding: ${3 * GU}px;
+      ${textStyle('body3')}
+      width:${compactMode ? 'auto' : 48 * GU}px;
+      border: 1px solid #F5A623;
+      border-radius: 16px;
+    `}
+      >
+        Voting in favour of a decision will prevent you from transferring your
+        balance until it has been executed or {durationTime(gracePeriodSeconds)}{' '}
+        after the voting period ends.
+      </div>
+    </Popover>
+  )
+})
 
 function VoteActions({ proposal, onVote }) {
   const handleThumbsUp = useCallback(() => {
