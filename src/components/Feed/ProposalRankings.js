@@ -40,7 +40,6 @@ function ProposalRankings({ items, onChange, selected }) {
           display: flex;
           align-items: center;
           margin-bottom: ${1 * GU}px;
-
           position: relative;
           z-index: 3;
         `}
