@@ -38,6 +38,7 @@ export function handleCastVote(event: CastVoteEvent): void {
   } else {
     proposal.nay = proposal.nay.plus(event.params.stake)
   }
+  proposal.weight = proposal.yea.minus(proposal.nay)
 
   proposal.save()
   cast.save()

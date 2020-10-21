@@ -130,6 +130,7 @@ function _onNewStake(
 
   proposal.totalTokensStaked = totalTokensStaked
   proposal.convictionLast = conviction
+  proposal.weight = conviction
 
   _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
   _updateStakeHistory(

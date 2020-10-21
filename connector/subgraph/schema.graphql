@@ -36,6 +36,7 @@ type Proposal @entity {
   type: ProposalType!
   typeInt: Int!
   createdAt: BigInt!
+  weight: BigInt!
   
   # Proposal data
   name: String
