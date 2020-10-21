@@ -51,7 +51,7 @@ function transformDecisionData(proposal, config) {
   return {
     ...proposal,
     casts: proposal.casts,
-    createdAt: proposal.createdAt,
+    createdAt: parseInt(proposal.createdAt, 10) * 1000,
     creator: proposal.creator,
     endBlock:
       parseInt(proposal.startBlock, 10) +
