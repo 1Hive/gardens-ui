@@ -199,7 +199,7 @@ export const SUPPORTER = (type: string) => gql`
           id
           number
           status
-          name
+          metadata
           type
         }
         amount 
@@ -213,7 +213,7 @@ export const SUPPORTER = (type: string) => gql`
           id
           number
           status
-          name
+          metadata
           type
         }
         totalTokensStaked
