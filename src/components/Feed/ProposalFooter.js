@@ -1,14 +1,23 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  ButtonBase,
+  GU,
+  Popover,
+  textStyle,
+  useLayout,
+  useTheme,
+} from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
 import useAccountTokens from '../../hooks/useAccountTokens'
 import { useAppState } from '../../providers/AppState'
 import { useCanUserVote } from '../../hooks/useExtendedVoteData'
+import useVoteGracePeriod from '../../hooks/useVoteGracePeriod'
 import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
+import { durationTime } from '../../utils/date-utils'
 import { getVoteStatus } from '../../lib/vote-utils'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
@@ -18,9 +27,12 @@ import {
   PROPOSAL_STATUS_CANCELLED_STRING,
   QUICK_STAKE_PCT,
   VOTE_NAY,
+  VOTE_STATUS_ONGOING,
   VOTE_YEA,
 } from '../../constants'
 import { ProposalTypes } from '../../types'
+
+import warningSvg from '../../assets/warning.svg'
 
 function ProposalCardFooter({
   proposal,
@@ -117,11 +129,21 @@ function ProposalFooter({
 function DecisionFooter({ proposal, onVoteOnDecision }) {
   const theme = useTheme()
   const { account } = useWallet()
+  const [warningPopoverVisible, setWarningPopoverVisible] = useState(false)
 
   const status = getVoteStatus(proposal, PCT_BASE)
   const { label: statusLabel } = getStatusAttributes(status, theme)
 
   const votesCount = proposal.casts.length
+  const popoverOpener = useRef()
+
+  const handleOnClosePopover = useCallback(() => {
+    setWarningPopoverVisible(false)
+  }, [setWarningPopoverVisible])
+
+  const handleOpenPopover = useCallback(() => {
+    setWarningPopoverVisible(true)
+  }, [setWarningPopoverVisible])
 
   return (
     <Main color={theme.contentSecondary}>
@@ -137,11 +159,59 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
         <div>
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
+        {status === VOTE_STATUS_ONGOING && (
+          <ButtonBase
+            ref={popoverOpener}
+            onClick={handleOpenPopover}
+            css={`
+              margin-left: ${1 * GU}px;
+            `}
+          >
+            <img
+              src={warningSvg}
+              alt=""
+              css={`
+                display: block;
+              `}
+            />
+          </ButtonBase>
+        )}
       </div>
+      <WarningPopover
+        onClose={handleOnClosePopover}
+        visible={warningPopoverVisible}
+        ref={popoverOpener.current}
+      />
+
       <div>Status: {statusLabel}</div>
     </Main>
   )
 }
+
+const WarningPopover = React.forwardRef(({ onClose, visible }, ref) => {
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'medium' || layoutName === 'small'
+
+  const gracePeriodSeconds = useVoteGracePeriod()
+
+  return (
+    <Popover visible={visible} opener={ref} onClose={onClose}>
+      <div
+        css={`
+      padding: ${3 * GU}px;
+      ${textStyle('body3')}
+      width:${compactMode ? 'auto' : 48 * GU}px;
+      border: 1px solid #F5A623;
+      border-radius: 16px;
+    `}
+      >
+        Voting in favour of a decision will prevent you from transferring your
+        balance until it has been executed or {durationTime(gracePeriodSeconds)}{' '}
+        after the voting period ends.
+      </div>
+    </Popover>
+  )
+})
 
 function VoteActions({ proposal, onVote }) {
   const handleThumbsUp = useCallback(() => {
