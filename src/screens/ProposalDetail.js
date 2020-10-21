@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   BackButton,
-  Bar,
   Box,
   Button,
   GU,
@@ -121,9 +120,14 @@ function ProposalDetail({ match }) {
         margin-top: ${3 * GU}px;
       `}
     >
-      <Bar>
-        <BackButton onClick={handleBack} />
-      </Bar>
+      <BackButton
+        onClick={handleBack}
+        css={`
+          background: ${theme.background};
+          margin-bottom: ${2 * GU}px;
+          border: 0;
+        `}
+      />
       <div
         css={`
           > div {

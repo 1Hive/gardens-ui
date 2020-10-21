@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
-  Bar,
   BackButton,
   Box,
   GU,
@@ -90,9 +89,14 @@ function DecisionDetail({ proposal, actions }) {
         margin-top: ${3 * GU}px;
       `}
     >
-      <Bar>
-        <BackButton onClick={handleBack} />
-      </Bar>
+      <BackButton
+        onClick={handleBack}
+        css={`
+          background: ${theme.background};
+          margin-bottom: ${2 * GU}px;
+          border: 0;
+        `}
+      />
       <Split
         primary={
           <Box>
