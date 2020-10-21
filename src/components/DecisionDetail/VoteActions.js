@@ -112,7 +112,6 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
       <div>
         {connectedAccount ? (
           <React.Fragment>
-            <Buttons onClickYes={onVoteYes} onClickNo={onVoteNo} />
             <TokenReference
               snapshotBlock={snapshotBlock}
               startDate={new Date(startTimestamp)}
@@ -120,6 +119,12 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
               userBalance={userBalance}
               userBalanceNow={userBalanceNow}
             />
+            <Buttons onClickYes={onVoteYes} onClickNo={onVoteNo} />
+            <Info mode="warning">
+              Voting in favour of a decision will prevent you from transferring
+              your balance until it has been executed or x hours after the
+              voting period ends.
+            </Info>
           </React.Fragment>
         ) : (
           <div

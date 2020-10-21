@@ -25,6 +25,7 @@ import {
   PROPOSAL_STATUS_CANCELLED_STRING,
   QUICK_STAKE_PCT,
   VOTE_NAY,
+  VOTE_STATUS_ONGOING,
   VOTE_YEA,
 } from '../../constants'
 import { ProposalTypes } from '../../types'
@@ -159,14 +160,23 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
         <div>
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
-        <img
-          css={`
-            margin-left: ${1 * GU}px;
-          `}
-          src={warningSvg}
-          ref={popoverOpener}
-          onClick={handleOpenPopover}
-        />
+        {status === VOTE_STATUS_ONGOING && (
+          <ButtonBase
+            ref={popoverOpener}
+            onClick={handleOpenPopover}
+            css={`
+              margin-left: ${1 * GU}px;
+            `}
+          >
+            <img
+              src={warningSvg}
+              alt=""
+              css={`
+                display: block;
+              `}
+            />
+          </ButtonBase>
+        )}
       </div>
 
       <div>Status: {statusLabel}</div>
@@ -178,12 +188,15 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
         <div
           css={`
             padding: ${3 * GU}px;
-            ${textStyle('body2')}
+            ${textStyle('body3')}
             width:${compactMode ? 'auto' : 48 * GU}px;
+            border: 1px solid #F5A623;
+            border-radius: 16px;
           `}
         >
-          Keep in mind that if you vote positive on Decisions, your entire HNY
-          balance will be locked until the end of the voting period.
+          Voting in favour of a decision will prevent you from transferring your
+          balance until it has been executed or x hours after the voting period
+          ends.
         </div>
       </Popover>
     </Main>
