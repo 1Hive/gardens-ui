@@ -389,7 +389,7 @@ function VerifiedAccount({
 }) {
   const theme = useTheme()
 
-  const verificationDisabled = validation && !validation(value)
+  const verificationDisabled = (validation && !validation(value)) || true // TODO: remove
 
   return (
     <Field label={label}>
@@ -455,6 +455,7 @@ function VerifiedAccount({
             }
             adornmentPosition="end"
             adornmentSettings={{ padding: 2 * GU }}
+            disabled // TODO: remove
           />
         )
       }
