@@ -84,6 +84,7 @@ export function getProposalEntity(
     proposal.number = proposalId
     proposal.status = STATUS_ACTIVE
     proposal.statusInt = STATUS_ACTIVE_NUM
+    proposal.weight = BigInt.fromI32(0)
   }
 
   return proposal

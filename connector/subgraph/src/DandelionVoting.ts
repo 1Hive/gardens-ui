@@ -1,3 +1,4 @@
+import { BigInt } from '@graphprotocol/graph-ts'
 import {
   StartVote as StartVoteEvent,
   CastVote as CastVoteEvent,
@@ -38,7 +39,9 @@ export function handleCastVote(event: CastVoteEvent): void {
   } else {
     proposal.nay = proposal.nay.plus(event.params.stake)
   }
-  proposal.weight = proposal.yea.minus(proposal.nay)
+
+  let totalVotes = proposal.yea.plus(proposal.nay as BigInt)
+  proposal.weight = proposal.yea.div(totalVotes)
 
   proposal.save()
   cast.save()
