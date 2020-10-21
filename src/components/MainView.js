@@ -45,7 +45,7 @@ function MainView({ children }) {
                 margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
               `}
             >
-              <Layout>{children}</Layout>
+              <Layout paddingBottom={3 * GU}>{children}</Layout>
             </div>
             <Footer />
           </div>

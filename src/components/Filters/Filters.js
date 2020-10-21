@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import CompactFilter from './CompactFilter'
 import ListFilter from './ListFilter'
+import TextFilter from './TextFilter'
 import { useWallet } from '../../providers/Wallet'
 import { STATUS_FILTER_OPEN } from '../../utils/filter-utils'
 
@@ -23,10 +24,12 @@ const Filters = React.memo(({ compact, ...props }) => {
     itemsStatus,
     itemsSupport,
     itemsType,
+    proposalNameFilter,
     proposalStatusFilter,
     proposalSupportFilter,
     proposalTypeFilter,
     onClearFilters,
+    onNameFilterChange,
     onStatusFilterChange,
     onSupportFilterChange,
     onTypeFilterChange,
@@ -97,7 +100,11 @@ const Filters = React.memo(({ compact, ...props }) => {
         />
       </div>
       {!supportFilterDisabled && (
-        <div>
+        <div
+          css={`
+            margin-bottom: ${3 * GU}px;
+          `}
+        >
           <label
             css={`
               display: block;
@@ -116,6 +123,11 @@ const Filters = React.memo(({ compact, ...props }) => {
           />
         </div>
       )}
+      <TextFilter
+        text={proposalNameFilter}
+        onChange={onNameFilterChange}
+        placeholder="Search by name"
+      />
     </div>
   )
 })

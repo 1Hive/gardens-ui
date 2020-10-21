@@ -6,6 +6,7 @@ import {
   GU,
   IconCross,
   RootPortal,
+  SearchInput,
   springs,
   textStyle,
   useTheme,
@@ -24,9 +25,11 @@ function CompactFilterBar({
   itemsStatus,
   itemsSupport,
   itemsType,
+  proposalNameFilter,
   proposalStatusFilter,
   proposalSupportFilter,
   proposalTypeFilter,
+  onNameFilterChange,
   onStatusFilterChange,
   onSupportFilterChange,
   onTypeFilterChange,
@@ -74,6 +77,14 @@ function CompactFilterBar({
             selected={proposalSupportFilter}
           />
         )}
+        <SearchInput
+          value={proposalNameFilter}
+          onChange={onNameFilterChange}
+          placeholder="Search by name"
+          css={`
+            width: ${30 * GU}px;
+          `}
+        />
       </div>
     </div>
   )
@@ -83,9 +94,11 @@ function CompactFilterSlider({
   itemsStatus,
   itemsSupport,
   itemsType,
+  proposalNameFilter,
   proposalStatusFilter,
   proposalSupportFilter,
   proposalTypeFilter,
+  onNameFilterChange,
   onStatusFilterChange,
   onSupportFilterChange,
   onTypeFilterChange,
@@ -150,6 +163,19 @@ function CompactFilterSlider({
               selected={proposalSupportFilter}
             />
           )}
+          <div
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            <SearchInput
+              value={proposalNameFilter}
+              onChange={onNameFilterChange}
+              placeholder="Search by name"
+              wide
+              css="border-radius: 0;"
+            />
+          </div>
         </div>
         <div
           css={`

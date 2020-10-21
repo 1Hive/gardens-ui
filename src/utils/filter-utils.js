@@ -16,9 +16,12 @@ export const RANKING_FILTER_TOP = 0
 export const RANKING_FILTER_NEW = 1
 
 export const filterArgsMapping = {
+  name: {
+    queryKey: 'metadata',
+  },
   ranking: {
     queryKey: 'orderBy',
-    [RANKING_FILTER_TOP]: 'convictionLast',
+    [RANKING_FILTER_TOP]: 'weight',
     [RANKING_FILTER_NEW]: 'createdAt',
   },
   status: {
@@ -36,6 +39,7 @@ export const filterArgsMapping = {
 }
 
 export const FILTER_KEY_COUNT = 'count'
+export const FILTER_KEY_NAME = 'name'
 export const FILTER_KEY_RANKING = 'ranking'
 export const FILTER_KEY_STATUS = 'status'
 export const FILTER_KEY_SUPPORT = 'support'

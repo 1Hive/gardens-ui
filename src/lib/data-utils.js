@@ -25,8 +25,6 @@ export function transformConfigData(config) {
 }
 
 export function transformProposalData(proposal, config) {
-  // TODO: transform casts
-
   return convertFromString(proposal.type) === ProposalTypes.Decision
     ? transformDecisionData(proposal, config)
     : transformConvictionProposalData(proposal)
@@ -35,6 +33,7 @@ export function transformProposalData(proposal, config) {
 function transformConvictionProposalData(proposal) {
   return {
     ...proposal,
+    name: proposal.metadata,
     createdAt: parseInt(proposal.createdAt, 10) * 1000,
     id: proposal.number,
     requestedAmount: new BigNumber(proposal.requestedAmount || 0),

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   BIG_RADIUS,
   Button,
@@ -26,12 +26,24 @@ function ProposalsList({
   rankingItems,
   selectedRanking,
 }) {
+  const [fetching, setFetching] = useState(false)
   const listRef = useRef()
 
   const theme = useTheme()
   const { below } = useViewport()
   const { layoutName } = useLayout()
   const compact = layoutName === 'small' || layoutName === 'medium'
+
+  const handleFetchMoreProposals = useCallback(() => {
+    setFetching(true)
+    onProposalCountIncrease()
+  }, [onProposalCountIncrease])
+
+  useEffect(() => {
+    if (fetching) {
+      setFetching(false)
+    }
+  }, [proposals.length]) //eslint-disable-line
 
   return (
     <div
@@ -81,7 +93,8 @@ function ProposalsList({
                 />
               )
             })}
-            {proposals.length === proposalCount && (
+            {(proposals.length === proposalCount ||
+              (proposals.length < proposalCount && fetching)) && (
               <div
                 css={`
                   width: 100%;
@@ -90,7 +103,11 @@ function ProposalsList({
                   margin-bottom: ${3 * GU}px;
                 `}
               >
-                <Button label="Load more" onClick={onProposalCountIncrease} />
+                <Button
+                  label={fetching ? 'Loading…' : 'Load more'}
+                  onClick={handleFetchMoreProposals}
+                  disabled={fetching}
+                />
               </div>
             )}
           </>

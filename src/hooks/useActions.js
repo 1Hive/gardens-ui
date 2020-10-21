@@ -69,7 +69,7 @@ export default function useActions(onDone) {
       sendIntent(
         convictionVotingApp,
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
-        [proposalId, amount],
+        params,
         { ethers, from: account }
       )
 
