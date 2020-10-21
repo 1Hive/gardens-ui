@@ -3,6 +3,7 @@ import {
   GU,
   IconCheck,
   IconCross,
+  LoadingRing,
   Tag,
   textStyle,
   Timer,
@@ -58,11 +59,11 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
   const { account } = useWallet()
 
   const {
-    userStakedConviction,
-    stakedConviction,
     futureStakedConviction,
     neededConviction,
     requestedAmount,
+    stakedConviction,
+    userStakedConviction,
   } = proposal
 
   const secondSize = stakedConviction.minus(userStakedConviction)
@@ -133,12 +134,14 @@ export function ConvictionCountdown({ proposal, shorter }) {
   } = useAppState()
 
   const theme = useTheme()
+
   const {
+    currentConviction,
+    loading,
+    neededTokens,
     status,
     threshold,
     endDate,
-    neededTokens,
-    currentConviction,
   } = proposal
 
   const view = useMemo(() => {
@@ -154,7 +157,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
     return UNABLE_TO_PASS
   }, [currentConviction, endDate, status, threshold])
 
-  return (
+  return loading ? (
+    <LoadingRing label="Loading" />
+  ) : (
     <div
       css={`
         display: grid;

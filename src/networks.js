@@ -1,5 +1,10 @@
 import { getNetworkType, isLocalOrUnknownNetwork } from './lib/web3-utils'
 import { getDefaultChain } from './local-settings'
+import env from './environment'
+
+const RINKEBY_HONEY_POT = '0x512385375f087251667963e3cb8185e49597f2be'
+const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
+const INSTANCE = env('INSTANCE')
 
 const networks = {
   mainnet: {
@@ -14,7 +19,7 @@ const networks = {
     name: 'Rinkeby',
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
-    honeypot: '0x512385375f087251667963e3cb8185e49597f2be',
+    honeypot: getRinkebyHoneyPotAddress(INSTANCE),
   },
   xdai: {
     chainId: 100,
@@ -41,4 +46,11 @@ export function getAvailableNetworks() {
     name,
     type,
   }))
+}
+
+function getRinkebyHoneyPotAddress(rinkebyInstance) {
+  if (rinkebyInstance === 'staging') {
+    return RINKEBY_STAGING_HONEY_POT
+  }
+  return RINKEBY_HONEY_POT
 }

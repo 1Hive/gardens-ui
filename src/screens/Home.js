@@ -6,6 +6,7 @@ import Filters from '../components/Filters/Filters'
 import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
+import NetworkErrorModal from '../components/NetworkErrorModal'
 import ProposalsList from '../components/Feed/ProposalsList'
 
 import useAppLogic from '../logic/app-logic'
@@ -14,6 +15,7 @@ const Home = React.memo(function Home() {
   const {
     actions,
     commonPool,
+    errors,
     filters,
     isLoading,
     proposals,
@@ -37,6 +39,7 @@ const Home = React.memo(function Home() {
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
+      <NetworkErrorModal visible={errors} />
       {isLoading ? (
         <Loader />
       ) : (

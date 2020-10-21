@@ -19,6 +19,7 @@ import { formatTokenAmount } from '../../lib/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../lib/conviction'
 
 import { ZERO_ADDR } from '../../constants'
+
 const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 
 const NULL_PROPOSAL_TYPE = -1

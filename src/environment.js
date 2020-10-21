@@ -31,6 +31,9 @@ const ENV_VARS = {
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
   },
+  INSTANCE() {
+    return process.env.REACT_APP_APP_INSTANCE || ''
+  },
 }
 
 export default function env(name) {

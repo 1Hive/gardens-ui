@@ -9,6 +9,7 @@ import {
   useProposalsSubscription,
 } from './useSubscriptions'
 import { useWallet } from '../providers/Wallet'
+
 import {
   calculateThreshold,
   getCurrentConviction,

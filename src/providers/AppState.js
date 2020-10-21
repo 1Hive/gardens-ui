@@ -14,7 +14,13 @@ const AppStateContext = React.createContext()
 function AppStateProvider({ children }) {
   const { account } = useWallet()
 
-  const { config, installedApps, loadingAppData, ...appData } = useOrgData()
+  const {
+    config,
+    errors,
+    installedApps,
+    loadingAppData,
+    ...appData
+  } = useOrgData()
 
   const { requestToken, stakeToken, totalStaked } = config?.conviction || {}
 
@@ -23,7 +29,8 @@ function AppStateProvider({ children }) {
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const appLoading = loadingAppData || balancesLoading || !effectiveSupply
+  const appLoading =
+    (!errors && loadingAppData) || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
@@ -32,6 +39,7 @@ function AppStateProvider({ children }) {
         accountBalance: balance,
         config,
         effectiveSupply,
+        errors,
         installedApps,
         isLoading: appLoading,
         requestToken,

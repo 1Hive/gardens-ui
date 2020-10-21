@@ -4,6 +4,7 @@ import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 import { useAppState } from '../providers/AppState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../lib/token-utils'
+
 import honeySvg from '../assets/honey.svg'
 
 const Metrics = React.memo(function Metrics({

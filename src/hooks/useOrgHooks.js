@@ -21,7 +21,7 @@ import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
 export function useOrgData() {
-  const appName = env('APP_NAME')
+  const appName = env('CONVICTION_APP_NAME')
 
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
@@ -77,8 +77,11 @@ export function useOrgData() {
     permissionsStatus.loading ||
     !config
 
+  const errors = orgStatus.error || appsStatus.error || permissionsStatus.error
+
   return {
     config,
+    errors,
     honeypot,
     installedApps: apps,
     organization,
