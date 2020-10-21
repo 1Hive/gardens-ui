@@ -25,8 +25,6 @@ export function transformConfigData(config) {
 }
 
 export function transformProposalData(proposal, config) {
-  // TODO: transform casts
-
   return convertFromString(proposal.type) === ProposalTypes.Decision
     ? transformDecisionData(proposal, config)
     : transformConvictionProposalData(proposal)

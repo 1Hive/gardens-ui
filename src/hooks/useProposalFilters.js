@@ -3,6 +3,7 @@ import { useWallet } from '../providers/Wallet'
 import {
   filterArgsMapping,
   FILTER_KEY_COUNT,
+  FILTER_KEY_NAME,
   FILTER_KEY_RANKING,
   FILTER_KEY_STATUS,
   FILTER_KEY_SUPPORT,
@@ -25,8 +26,11 @@ const filtersCache = new Map([])
 // Support will be filtered locally as there is not an easy way to achieve this only by querying the subgraph.
 export default function useProposalFilters() {
   const { account } = useWallet()
-  const [proposalCount, setProposalCount] = useState(
+  const [countFilter, setCountFilter] = useState(
     filtersCache.get(FILTER_KEY_COUNT) || INITIAL_PROPOSAL_COUNT
+  )
+  const [nameFilter, setNameFilter] = useState(
+    filtersCache.get(FILTER_KEY_NAME) || ''
   )
   const [rankingFilter, setRankingFilter] = useState(
     filtersCache.get(FILTER_KEY_RANKING) || RANKING_FILTER_TOP
@@ -41,14 +45,15 @@ export default function useProposalFilters() {
     filtersCache.get(FILTER_KEY_TYPE) || NULL_FILTER_STATE
   )
 
-  const handlePoposalCountIncrease = useCallback(
-    index => {
-      const newCount = proposalCount + PROPOSAL_COUNT_STEP
-      setProposalCount(newCount)
-      filtersCache.set(FILTER_KEY_COUNT, newCount)
-    },
-    [proposalCount]
-  )
+  const handleNameFilterChange = useCallback(newName => {
+    setNameFilter(newName)
+    filtersCache.set(FILTER_KEY_NAME, newName)
+  }, [])
+  const handlePoposalCountIncrease = useCallback(() => {
+    const newCount = countFilter + PROPOSAL_COUNT_STEP
+    setCountFilter(newCount)
+    filtersCache.set(FILTER_KEY_COUNT, newCount)
+  }, [countFilter])
   const handleRankingFilterChange = useCallback(index => {
     setRankingFilter(index)
     filtersCache.set(FILTER_KEY_RANKING, index)
@@ -93,8 +98,17 @@ export default function useProposalFilters() {
     () => ({
       isActive,
       onClear: handleClearFilters,
-      onProposalCountIncrease: handlePoposalCountIncrease,
-      proposalCount,
+      count: {
+        filter: countFilter,
+        onChange: handlePoposalCountIncrease,
+      },
+      name: {
+        filter: nameFilter,
+        onChange: handleNameFilterChange,
+        queryArgs: {
+          metadata: nameFilter,
+        },
+      },
       ranking: {
         items: RANKING_ITEMS,
         filter: rankingFilter,
@@ -121,13 +135,15 @@ export default function useProposalFilters() {
     }),
     [
       isActive,
+      countFilter,
       handleClearFilters,
+      handleNameFilterChange,
       handlePoposalCountIncrease,
       handleRankingFilterChange,
       handleStatusFilterChange,
       handleSupportFilterChange,
       handleTypeFilterChange,
-      proposalCount,
+      nameFilter,
       rankingFilter,
       statusFilter,
       supportFilter,
