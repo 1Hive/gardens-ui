@@ -1,6 +1,13 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  ButtonBase,
+  GU,
+  Popover,
+  textStyle,
+  useLayout,
+  useTheme,
+} from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
 import useAccountTokens from '../../hooks/useAccountTokens'
@@ -21,6 +28,8 @@ import {
   VOTE_YEA,
 } from '../../constants'
 import { ProposalTypes } from '../../types'
+
+import warningSvg from '../../assets/warning.svg'
 
 function ProposalCardFooter({
   proposal,
@@ -117,11 +126,24 @@ function ProposalFooter({
 function DecisionFooter({ proposal, onVoteOnDecision }) {
   const theme = useTheme()
   const { account } = useWallet()
+  const { layoutName } = useLayout()
+  const [warningPopoverVisible, setWarningPopoverVisible] = useState(false)
+
+  const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   const status = getVoteStatus(proposal, PCT_BASE)
   const { label: statusLabel } = getStatusAttributes(status, theme)
 
   const votesCount = proposal.casts.length
+  const popoverOpener = useRef()
+
+  const handleOnClosePopover = useCallback(() => {
+    setWarningPopoverVisible(false)
+  }, [setWarningPopoverVisible])
+
+  const handleOpenPopover = useCallback(() => {
+    setWarningPopoverVisible(true)
+  }, [setWarningPopoverVisible])
 
   return (
     <Main color={theme.contentSecondary}>
@@ -137,8 +159,33 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
         <div>
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
+        <img
+          css={`
+            margin-left: ${1 * GU}px;
+          `}
+          src={warningSvg}
+          ref={popoverOpener}
+          onClick={handleOpenPopover}
+        />
       </div>
+
       <div>Status: {statusLabel}</div>
+      <Popover
+        visible={warningPopoverVisible}
+        opener={popoverOpener.current}
+        onClose={handleOnClosePopover}
+      >
+        <div
+          css={`
+            padding: ${3 * GU}px;
+            ${textStyle('body2')}
+            width:${compactMode ? 'auto' : 48 * GU}px;
+          `}
+        >
+          Keep in mind that if you vote positive on Decisions, your entire HNY
+          balance will be locked until the end of the voting period.
+        </div>
+      </Popover>
     </Main>
   )
 }
