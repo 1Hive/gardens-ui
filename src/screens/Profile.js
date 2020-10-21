@@ -132,7 +132,13 @@ function Profile() {
                       </div>
                     )}
                     <Split
-                      primary={<Activity account={selectedAccount} />}
+                      primary={
+                        <Activity
+                          account={selectedAccount}
+                          isConnectedAccount={isConnectedAccountProfile}
+                          profileName={selectedProfile?.name}
+                        />
+                      }
                       secondary={
                         <>
                           <MainProfile profile={selectedProfile} />

@@ -8,7 +8,7 @@ import { useSupporterSubscription } from '../../hooks/useSubscriptions'
 import { convertToString } from '../../types'
 import { dateFormat } from '../../utils/date-utils'
 
-function Activity({ account }) {
+function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
 
   const { honeypot } = useAppState()
@@ -65,7 +65,8 @@ function Activity({ account }) {
                     column-gap: ${0.75 * GU}px;
                   `}
                 >
-                  Supported the <ProposalIcon type={stake.proposal.type} />{' '}
+                  {isConnectedAccount ? 'You' : profileName} Supported the{' '}
+                  <ProposalIcon type={stake.proposal.type} />{' '}
                   {convertToString(stake.proposal.type)}{' '}
                   <Link
                     href={`/#/proposal/${stake.proposal.id}`}
