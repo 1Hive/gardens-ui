@@ -18,7 +18,7 @@ export const RANKING_FILTER_NEW = 1
 export const filterArgsMapping = {
   ranking: {
     queryKey: 'orderBy',
-    [RANKING_FILTER_TOP]: 'convictionLast',
+    [RANKING_FILTER_TOP]: 'weight',
     [RANKING_FILTER_NEW]: 'createdAt',
   },
   status: {
