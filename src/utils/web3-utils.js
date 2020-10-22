@@ -14,13 +14,6 @@ export function getUseWalletProviders() {
     })
   }
 
-  if (env('PORTIS_DAPP_ID')) {
-    providers.push({
-      id: 'portis',
-      useWalletConf: { dAppId: env('PORTIS_DAPP_ID') },
-    })
-  }
-
   return providers
 }
 
