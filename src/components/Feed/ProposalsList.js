@@ -17,6 +17,7 @@ function ProposalsList({
   activeFilters,
   proposals,
   proposalCount,
+  proposalsFetchedCount,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
@@ -92,8 +93,8 @@ function ProposalsList({
                 />
               )
             })}
-            {(proposals.length === proposalCount ||
-              (proposals.length < proposalCount && fetching)) && (
+            {(proposalsFetchedCount === proposalCount ||
+              (proposalsFetchedCount < proposalCount && fetching)) && (
               <div
                 css={`
                   width: 100%;
