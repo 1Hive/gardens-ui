@@ -81,7 +81,9 @@ const MainScreen = React.memo(
               currentPage={currentProposalListPage}
               filteredProposals={filteredProposals}
               handleExecutionStatusFilterChange={handleTabChange}
-              handleProposalSupportFilterChange={handleProposalSupportFilterChange}
+              handleProposalSupportFilterChange={
+                handleProposalSupportFilterChange
+              }
               handleProposalTypeFilterChange={handleProposalTypeFilterChange}
               handleProposalPageChange={setCurrentProposalListPage}
               handleSearchTextFilterChange={handleSearchTextFilterChange}

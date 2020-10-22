@@ -1,5 +1,12 @@
-import React from 'react'
-import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
+import React, { useState } from 'react'
+import {
+  Box,
+  GU,
+  textStyle,
+  useLayout,
+  useTheme,
+  DropDown,
+} from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
@@ -15,7 +22,74 @@ const Metrics = React.memo(function Metrics({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const { requestToken, stakeToken } = useAppState()
+  const { requestToken, stakeToken, currencies } = useAppState()
+
+  const [currentCurrency, setCurrency] = useState(1)
+  const [currentLabel, setLabel] = useState(0)
+  const [currentSymbol, setSymbol] = useState('$')
+  const currencyArray = [
+    'USD',
+    'EUR',
+    'CAD',
+    'HKD',
+    'JPY',
+    'AUD',
+    'GBP',
+    'TRY',
+    'CNY',
+    'KRW',
+    'RUB',
+  ]
+  const handleCurrencyChange = currentLabel => {
+    switch (currentLabel) {
+      case 0:
+        setCurrency(currencies.USD)
+        setSymbol('$')
+        break
+      case 1:
+        setCurrency(currencies.EUR)
+        console.log(currencies.EUR)
+        setSymbol('€')
+        break
+      case 2:
+        setCurrency(currencies.CAD)
+        setSymbol('CAD $')
+        break
+      case 3:
+        setCurrency(currencies.HKD)
+        setSymbol('HK $')
+        break
+      case 4:
+        setCurrency(currencies.JPY)
+        setSymbol('¥')
+        break
+      case 5:
+        setCurrency(currencies.AUD)
+        setSymbol('AUD $')
+        break
+      case 6:
+        setCurrency(currencies.GBP)
+        setSymbol('£')
+        break
+      case 7:
+        setCurrency(currencies.TRY)
+        setSymbol('₺')
+        break
+      case 8:
+        setCurrency(currencies.CNY)
+        setSymbol('CN ¥ ')
+        break
+      case 9:
+        setCurrency(currencies.KRW)
+        setSymbol('₩')
+        break
+      case 10:
+        setCurrency(currencies.RUB)
+        setSymbol('₽')
+        break
+    }
+    setLabel(currentLabel)
+  }
 
   return (
     <Box padding={3 * GU}>
@@ -43,13 +117,30 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          <TokenPrice />
+          <div>
+            <DropDown
+              header="Type"
+              placeholder="USD"
+              selected={currentLabel}
+              onChange={handleCurrencyChange}
+              css={`
+                left: -${2 * GU}px;
+              `}
+              items={currencyArray}
+            />
+          </div>
+          <TokenPrice
+            currency={currentCurrency}
+            currentSymbol={currentSymbol}
+          />
         </div>
         <div>
           <TokenBalance
             label="Common Pool"
             value={commonPool}
             token={requestToken}
+            currency={currentCurrency}
+            currentSymbol={currentSymbol}
           />
         </div>
         <div>
@@ -57,6 +148,8 @@ const Metrics = React.memo(function Metrics({
             label="Token Supply"
             value={totalSupply}
             token={stakeToken}
+            currency={currentCurrency}
+            currentSymbol={currentSymbol}
           />
         </div>
         <div>
@@ -64,6 +157,8 @@ const Metrics = React.memo(function Metrics({
             label="Active"
             value={totalActiveTokens}
             token={stakeToken}
+            currency={currentCurrency}
+            currentSymbol={currentSymbol}
           />
         </div>
       </div>
@@ -96,11 +191,11 @@ function Metric({ label, value, color }) {
   )
 }
 
-function TokenBalance({ label, token, value }) {
+function TokenBalance({ label, token, value, currency, currentSymbol }) {
   const theme = useTheme()
 
   const price = useUniswapHnyPrice()
-  const usdValue = value * price
+  const currencyValue = value * price * currency
 
   return (
     <>
@@ -110,13 +205,14 @@ function TokenBalance({ label, token, value }) {
           color: ${theme.green};
         `}
       >
-        $ {formatTokenAmount(usdValue, token.decimals)}
+        {currentSymbol}{' '}
+        {formatTokenAmount(currencyValue * currency, token.decimals)}
       </div>
     </>
   )
 }
 
-function TokenPrice() {
+function TokenPrice({ currency, currentSymbol }) {
   const theme = useTheme()
   const price = useUniswapHnyPrice()
 
@@ -136,7 +232,8 @@ function TokenPrice() {
           color: ${theme.green};
         `}
       >
-        ${formatDecimals(price, 2)}
+        {currentSymbol}
+        {formatDecimals(price * currency, 2)}
       </span>
     </div>
   )
