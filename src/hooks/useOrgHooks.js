@@ -199,28 +199,48 @@ export function useTokenBalances(account, token, timer = 3000) {
 export function useCurrencies() {
   const RETRY_EVERY = 3000
   const CURRENCIES_URL = 'https://api.exchangeratesapi.io/latest?base=USD'
-  const [rates, setRates] = useState(0)
+  const SYMBOL_MAP = {
+    USD: '$',
+    EUR: '€',
+    CAD: 'CAD $',
+    HKD: 'HK $',
+    AUD: 'AUD $',
+    JPY: '¥',
+    GBP: '£',
+    TRY: '₺',
+    CNY: 'CN ¥',
+    KRW: '₩',
+    RUB: '₽',
+  }
+
+  const [currencies, setCurrencies] = useState([])
   useEffect(() => {
     let cancelled = false
     let retryTimer
-    async function fetchPrice() {
+    async function fetchRates() {
       try {
         const result = await (await fetch(CURRENCIES_URL)).json()
-        if (!result?.rates) {
+        if (!result?.rates || cancelled) {
           return
         }
 
-        const rates = result.rates
+        const rates = Object.keys(result.rates)
+          // To ensure the dropdown is not too big, we only
+          // map currencies that we have mapped a symbol for
+          .filter(name => !!SYMBOL_MAP[name])
+          .map(name => ({
+            name,
+            symbol: SYMBOL_MAP[name],
+            rate: result.rates[name],
+          }))
 
-        if (!cancelled) {
-          setRates(rates)
-        }
+        setCurrencies(rates)
       } catch (err) {
-        retryTimer = setTimeout(fetchPrice, RETRY_EVERY)
+        retryTimer = setTimeout(fetchRates, RETRY_EVERY)
       }
     }
 
-    fetchPrice()
+    fetchRates()
 
     return () => {
       cancelled = true
@@ -228,5 +248,5 @@ export function useCurrencies() {
     }
   }, [])
 
-  return rates
+  return currencies
 }
