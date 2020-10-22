@@ -23,7 +23,6 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const { requestToken, stakeToken, currencies } = useAppState()
-
   const [currentCurrency, setCurrency] = useState(1)
   const [currentLabel, setLabel] = useState(0)
   const [currentSymbol, setSymbol] = useState('$')
