@@ -1,5 +1,5 @@
 import BigNumber from './bigNumber'
-import { addressesEqual } from './web3-utils'
+import { addressesEqual } from '../utils/web3-utils'
 
 const oneBN = new BigNumber('1')
 /**

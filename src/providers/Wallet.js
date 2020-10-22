@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from 'use-wallet'
-import { getUseWalletConnectors } from '../lib/web3-utils'
+import { getUseWalletConnectors } from '../utils/web3-utils'
 import { getNetwork } from '../networks'
 import { getDefaultChain } from '../local-settings'
 

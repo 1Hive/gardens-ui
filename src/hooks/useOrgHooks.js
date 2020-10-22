@@ -13,8 +13,8 @@ import { useConfigSubscription } from './useSubscriptions'
 // utils
 import env from '../environment'
 import BigNumber from '../lib/bigNumber'
-import { addressesEqual } from '../lib/web3-utils'
-import { getAppAddressByName } from '../lib/data-utils'
+import { addressesEqual } from '../utils/web3-utils'
+import { getAppAddressByName } from '../utils/data-utils'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'

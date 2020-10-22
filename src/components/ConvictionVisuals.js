@@ -18,7 +18,7 @@ import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
-import { formatTokenAmount } from '../lib/token-utils'
+import { formatTokenAmount } from '../utils/token-utils'
 import { isEntitySupporting } from '../lib/conviction'
 import { PROPOSAL_STATUS_EXECUTED_STRING } from '../constants'
 

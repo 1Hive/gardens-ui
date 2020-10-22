@@ -18,7 +18,7 @@ import {
   VOTE_STATUS_PENDING_ENACTMENT,
   VOTE_STATUS_DELAYED,
 } from '../../constants'
-import { getVoteStatus } from '../../lib/vote-utils'
+import { getVoteStatus } from '../../utils/vote-utils'
 
 export const getStatusAttributes = (status, theme) => {
   if (status === VOTE_STATUS_UPCOMING) {

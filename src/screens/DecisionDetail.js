@@ -26,13 +26,13 @@ import { useDescribeVote } from '../hooks/useDescribeVote'
 import { useAppState } from '../providers/AppState'
 import { useBlockTimeStamp } from '../hooks/useBlock'
 
-import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
-import { round, safeDiv } from '../lib/math-utils'
+import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
+import { round, safeDiv } from '../utils/math-utils'
 import {
   getConnectedAccountVote,
   getQuorumProgress,
   getVoteSuccess,
-} from '../lib/vote-utils'
+} from '../utils/vote-utils'
 import { dateFormat } from '../utils/date-utils'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'

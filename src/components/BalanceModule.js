@@ -7,7 +7,7 @@ import useAccountTokens from '../hooks/useAccountTokens'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
+import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
 
 function BalanceModule() {
   const theme = useTheme()

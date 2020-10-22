@@ -1,6 +1,6 @@
 import React from 'react'
 import { GU, Timer } from '@1hive/1hive-ui'
-import { getVoteSuccess } from '../../lib/vote-utils'
+import { getVoteSuccess } from '../../utils/vote-utils'
 import { PCT_BASE } from '../../constants'
 
 function ProposalCountdown({ proposal }) {
