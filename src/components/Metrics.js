@@ -1,33 +1,28 @@
 import React from 'react'
-import { Box, GU, textStyle, Link, useLayout, useTheme } from '@1hive/1hive-ui'
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { formatTokenAmount, formatDecimals } from '../lib/token-utils'
-import honeySvg from '../assets/honey.svg'
+import { useAppState } from '../providers/AppState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
+import { formatDecimals, formatTokenAmount } from '../lib/token-utils'
+
+import honeySvg from '../assets/honey.svg'
 
 const Metrics = React.memo(function Metrics({
-  totalSupply,
   commonPool,
   onExecuteIssuance,
-  stakeToken,
-  requestToken,
   totalActiveTokens,
+  totalSupply,
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
+  const { requestToken, stakeToken } = useAppState()
 
   return (
-    <Box
-      heading="Honey"
-      css={`
-        margin-bottom: ${2 * GU}px;
-      `}
-    >
+    <Box padding={3 * GU}>
       <div
         css={`
-          display: ${compactMode ? 'block' : 'flex'};
-          align-items: flex-start;
-          justify-content: space-between;
+          display: flex;
+          justify-content: space-around;
         `}
       >
         <div
@@ -48,9 +43,8 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          {compactMode && <TokenPrice token={stakeToken} />}
+          <TokenPrice />
         </div>
-        {!compactMode && <TokenPrice token={stakeToken} />}
         <div>
           <TokenBalance
             label="Common Pool"
@@ -85,7 +79,7 @@ function Metric({ label, value, color }) {
       <p
         css={`
           color: ${theme.contentSecondary};
-          margin-bottom: ${1 * GU}px;
+          margin-bottom: ${0.5 * GU}px;
         `}
       >
         {label}
@@ -122,28 +116,28 @@ function TokenBalance({ label, token, value }) {
   )
 }
 
-function TokenPrice({ token }) {
+function TokenPrice() {
   const theme = useTheme()
   const price = useUniswapHnyPrice()
 
   return (
     <div>
-      <Metric
-        label="Honey price"
-        value={`$${formatDecimals(price, 2)}`}
-        color={theme.green}
-      />
-      <Link
-        href={`https://honeyswap.org/#/swap?inputCurrency=${token.id}`}
-        external
+      <p
         css={`
-          ${textStyle('body3')};
-          text-decoration: none;
-          display: flex;
+          ${textStyle('title2')};
+          margin-bottom: ${0.5 * GU}px;
         `}
       >
-        Trade
-      </Link>
+        HNY Price
+      </p>
+      <span
+        css={`
+          ${textStyle('title2')};
+          color: ${theme.green};
+        `}
+      >
+        ${formatDecimals(price, 2)}
+      </span>
     </div>
   )
 }

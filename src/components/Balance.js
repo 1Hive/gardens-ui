@@ -1,21 +1,25 @@
 import React from 'react'
 import BalanceToken from './BalanceToken'
-import { round } from '../lib/math-utils'
 
-function Balance(props) {
-  const { amount = 0, decimals, symbol, icon, verified, color, size } = props
-
-  const adjustedAmount = amount / Math.pow(10, decimals)
-
+function Balance({
+  amount = 0,
+  decimals,
+  symbol,
+  icon,
+  verified,
+  color,
+  size,
+}) {
   return (
     <section>
       <BalanceToken
-        amount={round(parseFloat(adjustedAmount), 5)}
+        amount={amount}
+        color={color}
+        decimals={decimals}
+        icon={icon}
+        size={size}
         symbol={symbol}
         verified={verified}
-        color={color}
-        size={size}
-        icon={icon}
       />
     </section>
   )

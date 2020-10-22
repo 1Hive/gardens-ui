@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   BackButton,
-  Bar,
   Box,
   Button,
   GU,
@@ -13,52 +13,54 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+
+// Components
 import Balance from '../components/Balance'
 import {
   ConvictionCountdown,
   ConvictionBar,
 } from '../components/ConvictionVisuals'
 import IdentityBadge from '../components/IdentityBadge'
-import ProposalActions from '../components/ProposalActions'
-import SupportProposal from '../components/panels/SupportProposal'
+import Loader from '../components/Loader'
+import ProposalActions from '../components/ProposalDetail/ProposalActions'
 import SupportersDistribution from '../components/SupportersDistribution'
+import SupportProposalPanel from '../components/panels/SupportProposalPanel'
 
-import { useAppState } from '../providers/AppState'
-import usePanelState from '../hooks/usePanelState'
+// Hooks
+import useProposalLogic from '../logic/proposal-logic'
 import { useWallet } from '../providers/Wallet'
-import { useProposalConvictionData } from '../hooks/useProposals'
 
-import signalingBadge from '../assets/signalingBadge.svg'
-
+// utils
+import BigNumber from '../lib/bigNumber'
 import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '../lib/web3-utils'
-import BigNumber from '../lib/bigNumber'
-
 import {
   PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,
   ZERO_ADDR,
 } from '../constants'
+import signalingBadge from '../assets/signalingBadge.svg'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
-function ProposalDetail({
-  proposal,
-  onBack,
-  onCancelProposal,
-  onExecuteProposal,
-  onStakeToProposal,
-  onWithdrawFromProposal,
-  requestToken,
-}) {
-  const { layoutName } = useLayout()
+function ProposalDetail({ match }) {
+  const {
+    actions: { convictionActions },
+    isLoading,
+    panelState,
+    permissions,
+    proposal,
+    requestToken,
+    vaultBalance,
+  } = useProposalLogic(match)
 
   const theme = useTheme()
-  const panelState = usePanelState()
-  const { vaultBalance, permissions } = useAppState()
+  const history = useHistory()
+  const { layoutName } = useLayout()
+  const oneColumn = layoutName === 'small' || layoutName === 'medium'
 
   const { account: connectedAccount } = useWallet()
 
@@ -69,10 +71,18 @@ function ProposalDetail({
     beneficiary,
     link,
     requestedAmount,
-    stakes,
+    stakes = [],
     totalTokensStaked,
     status,
-  } = useProposalConvictionData(proposal)
+  } = proposal || {}
+
+  const handleBack = useCallback(() => {
+    history.push('/home')
+  }, [history])
+
+  const handleCancelProposal = useCallback(() => {
+    convictionActions.cancelProposal(id)
+  }, [id, convictionActions])
 
   const hasCancelRole = useMemo(() => {
     if (!connectedAccount) {
@@ -90,12 +100,6 @@ function ProposalDetail({
     )
   }, [connectedAccount, creator, permissions])
 
-  const handleCancelProposal = useCallback(() => {
-    onCancelProposal(id)
-  }, [id, onCancelProposal])
-
-  const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
-
   const filteredStakes = useMemo(
     () =>
       stakes.filter(({ amount }) => {
@@ -104,189 +108,214 @@ function ProposalDetail({
     [stakes]
   )
 
+  if (isLoading || !proposal) {
+    return <Loader />
+  }
+
+  const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
+
   return (
-    <div>
-      <Bar>
-        <BackButton onClick={onBack} />
-      </Bar>
-      <Split
-        primary={
-          <Box>
-            <section
-              css={`
-                display: grid;
-                grid-template-rows: auto;
-                grid-row-gap: ${7 * GU}px;
-              `}
-            >
-              <h1
-                css={`
-                  ${textStyle('title2')};
-                `}
-              >
-                {name}
-              </h1>
-              <div
+    <div
+      css={`
+        margin-top: ${3 * GU}px;
+      `}
+    >
+      <BackButton
+        onClick={handleBack}
+        css={`
+          background: ${theme.background};
+          margin-bottom: ${2 * GU}px;
+          border: 0;
+        `}
+      />
+      <div
+        css={`
+          > div > div:nth-child(2) {
+            width: ${oneColumn ? '100%' : `${40 * GU}px`};
+          }
+        `}
+      >
+        <Split
+          primary={
+            <Box>
+              <section
                 css={`
                   display: grid;
-                  grid-template-columns: ${layoutName !== 'small'
-                    ? 'auto auto auto'
-                    : 'auto'};
-                  grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
+                  grid-template-rows: auto;
+                  grid-row-gap: ${7 * GU}px;
                 `}
               >
-                {requestToken && (
-                  <>
-                    <Amount
-                      requestedAmount={requestedAmount}
-                      requestToken={requestToken}
-                    />
-                    <div
-                      css={`
-                        margin-top: ${2 * GU}px;
-                        grid-column: span 2;
-                        width: ${50 * GU}px;
-                        color: ${theme.contentSecondary};
-                      `}
-                    >
-                      <span>
-                        This proposal is requesting{' '}
-                        <strong>
-                          {formatTokenAmount(
-                            requestedAmount,
-                            requestToken.decimals
-                          )}
-                        </strong>{' '}
-                        {requestToken.name} out of{' '}
-                        <strong>
-                          {formatTokenAmount(
-                            vaultBalance,
-                            requestToken.decimals
-                          )}
-                        </strong>{' '}
-                        {requestToken.name} currently in the common pool.
-                      </span>
-                    </div>
-                  </>
-                )}
-                <DataField
-                  label="Link"
-                  value={
-                    link ? (
-                      <Link href={link} external>
-                        Read more
-                      </Link>
-                    ) : (
-                      <span
+                <h1
+                  css={`
+                    ${textStyle('title2')};
+                  `}
+                >
+                  {name}
+                </h1>
+                <div
+                  css={`
+                    display: grid;
+                    grid-template-columns: ${layoutName !== 'small'
+                      ? 'auto auto auto'
+                      : 'auto'};
+                    grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
+                  `}
+                >
+                  {requestToken && (
+                    <>
+                      <Amount
+                        requestedAmount={requestedAmount}
+                        requestToken={requestToken}
+                      />
+                      <div
                         css={`
-                          ${textStyle('body2')};
+                          margin-top: ${2 * GU}px;
+                          grid-column: span 2;
+                          min-width: ${40 * GU}px;
+                          color: ${theme.contentSecondary};
                         `}
                       >
-                        No link provided
-                      </span>
-                    )
-                  }
-                />
-                {requestToken && !signalingProposal && (
+                        <span>
+                          This proposal is requesting{' '}
+                          <strong>
+                            {formatTokenAmount(
+                              requestedAmount,
+                              requestToken.decimals
+                            )}
+                          </strong>{' '}
+                          {requestToken.name} out of{' '}
+                          <strong>
+                            {formatTokenAmount(
+                              vaultBalance,
+                              requestToken.decimals
+                            )}
+                          </strong>{' '}
+                          {requestToken.name} currently in the common pool.
+                        </span>
+                      </div>
+                    </>
+                  )}
                   <DataField
-                    label="Beneficiary"
+                    label="Link"
+                    value={
+                      link ? (
+                        <Link href={link} external>
+                          Read more
+                        </Link>
+                      ) : (
+                        <span
+                          css={`
+                            ${textStyle('body2')};
+                          `}
+                        >
+                          No link provided
+                        </span>
+                      )
+                    }
+                  />
+                  {requestToken && !signalingProposal && (
+                    <DataField
+                      label="Beneficiary"
+                      value={
+                        <IdentityBadge
+                          connectedAccount={addressesEqual(
+                            beneficiary,
+                            connectedAccount
+                          )}
+                          entity={beneficiary}
+                        />
+                      }
+                    />
+                  )}
+                  <DataField
+                    label="Created By"
                     value={
                       <IdentityBadge
                         connectedAccount={addressesEqual(
-                          beneficiary,
+                          creator,
                           connectedAccount
                         )}
-                        entity={beneficiary}
+                        entity={creator}
                       />
                     }
                   />
-                )}
-                <DataField
-                  label="Created By"
-                  value={
-                    <IdentityBadge
-                      connectedAccount={addressesEqual(
-                        creator,
-                        connectedAccount
-                      )}
-                      entity={creator}
+                </div>
+                {status === PROPOSAL_STATUS_ACTIVE_STRING && (
+                  <>
+                    <DataField
+                      label="Progress"
+                      value={
+                        <ConvictionBar
+                          proposal={proposal}
+                          withThreshold={!!requestToken}
+                        />
+                      }
                     />
-                  }
-                />
-              </div>
-              {status === PROPOSAL_STATUS_ACTIVE_STRING && (
-                <>
-                  <DataField
-                    label="Progress"
-                    value={
-                      <ConvictionBar
-                        proposal={proposal}
-                        withThreshold={!!requestToken}
-                      />
-                    }
-                  />
-                  <ProposalActions
-                    proposal={proposal}
-                    onExecuteProposal={onExecuteProposal}
-                    onRequestSupportProposal={panelState.requestOpen}
-                    onStakeToProposal={onStakeToProposal}
-                    onWithdrawFromProposal={onWithdrawFromProposal}
-                  />
-                </>
-              )}
-            </section>
-          </Box>
-        }
-        secondary={
-          <div>
-            {!signalingProposal && requestToken && (
-              <Box heading="Status" padding={3 * GU}>
-                {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
-                  <Info mode="warning">
-                    This proposal was removed from consideration
-                  </Info>
-                ) : (
-                  <ConvictionCountdown proposal={proposal} />
+                    <ProposalActions
+                      proposal={proposal}
+                      onExecuteProposal={convictionActions.executeProposal}
+                      onRequestSupportProposal={panelState.requestOpen}
+                      onStakeToProposal={convictionActions.stakeToProposal}
+                      onWithdrawFromProposal={
+                        convictionActions.withdrawFromProposal
+                      }
+                    />
+                  </>
                 )}
-              </Box>
-            )}
-            {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE_STRING && (
-              <Box padding={3 * GU}>
-                <span
-                  css={`
-                    color: ${theme.contentSecondary};
-                  `}
-                >
-                  You can remove this proposal from consideration
-                </span>
-                <Button
-                  onClick={handleCancelProposal}
-                  wide
-                  css={`
-                    margin-top: ${3 * GU}px;
-                  `}
-                >
-                  Remove proposal
-                </Button>
-              </Box>
-            )}
+              </section>
+            </Box>
+          }
+          secondary={
+            <div>
+              {!signalingProposal && requestToken && (
+                <Box heading="Status" padding={3 * GU}>
+                  {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
+                    <Info mode="warning">
+                      This proposal was removed from consideration
+                    </Info>
+                  ) : (
+                    <ConvictionCountdown proposal={proposal} />
+                  )}
+                </Box>
+              )}
+              {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE_STRING && (
+                <Box padding={3 * GU}>
+                  <span
+                    css={`
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    You can remove this proposal from consideration
+                  </span>
+                  <Button
+                    onClick={handleCancelProposal}
+                    wide
+                    css={`
+                      margin-top: ${3 * GU}px;
+                    `}
+                  >
+                    Remove proposal
+                  </Button>
+                </Box>
+              )}
 
-            <SupportersDistribution
-              stakes={filteredStakes}
-              totalTokensStaked={totalTokensStaked}
-            />
-          </div>
-        }
-      />
+              <SupportersDistribution
+                stakes={filteredStakes}
+                totalTokensStaked={totalTokensStaked}
+              />
+            </div>
+          }
+        />
+      </div>
       <SidePanel
         title="Support this proposal"
         opened={panelState.visible}
         onClose={panelState.requestClose}
       >
-        <SupportProposal
+        <SupportProposalPanel
           id={id}
           onDone={panelState.requestClose}
-          onStakeToProposal={onStakeToProposal}
+          onStakeToProposal={convictionActions.stakeToProposal}
         />
       </SidePanel>
     </div>

@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "3box": "^1.22.2",
     "@1hive/1hive-ui": "^1.0.2",
-    "@1hive/connect-conviction-voting": "0.4.1",
+    "@1hive/connect-honey-pot": "^0.1.2",
     "@aragon/connect": "^0.6.0",
+    "@aragon/connect-react": "^0.8.0-alpha.5",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
+    "dayjs": "^1.8.34",
     "ethers": "5.0.8",
+    "is-ipfs": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-lottie": "^1.2.3",
     "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
     "react-spring": "^8.0.27",
     "styled-components": "^4.3.2",
     "svgo": "^1.3.2",
@@ -20,14 +26,15 @@
     "web3-utils": "^1.2.0"
   },
   "scripts": {
-    "start": "node scripts/start",
+    "start": "npm run sync-assets && react-app-rewired start",
     "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
-    "start:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn start",
+    "start:rinkeby": "cross-env REACT_APP_CONVICTION_APP_NAME=conviction-beta REACT_APP_VOTING_APP_NAME=dandelion-voting-beta REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
-    "build": "node scripts/build",
+    "build": "npm run sync-assets && react-app-rewired build",
     "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
     "build:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn build",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "sync-assets": "copy-aragon-ui-assets ./public"
   },
   "browserslist": {
     "production": [
@@ -41,6 +48,9 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "3box/**/ipfs-log": "4.6.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
@@ -49,6 +59,7 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-styled-components": "^1.10.6",
     "cross-env": "^7.0.2",
+    "customize-cra": "^1.0.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-config-standard": "^14.1.0",
@@ -63,6 +74,9 @@
     "eslint-plugin-standard": "^4.0.1",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-app-rewired": "^2.1.6",
+    "react-dev-utils": "^10.2.1",
     "rimraf": "^2.6.2"
   }
 }

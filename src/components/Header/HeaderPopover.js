@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { GU, Popover, springs, textStyle, useTheme } from '@1hive/1hive-ui'
-import { Spring, animated } from 'react-spring/renderprops'
+import { GU, Popover, springs } from '@1hive/1hive-ui'
+import { animated, Spring } from 'react-spring/renderprops'
 
 const AnimatedSection = animated.section
 
@@ -9,14 +9,11 @@ function HeaderPopover({
   animateHeight,
   children,
   height,
-  width,
-  heading,
   onClose,
   opener,
   visible,
+  width,
 }) {
-  const theme = useTheme()
-
   return (
     <Popover
       closeOnOpenerFocus
@@ -44,21 +41,6 @@ function HeaderPopover({
               overflow: hidden;
             `}
           >
-            <h1
-              css={`
-                display: flex;
-                flex-grow: 0;
-                flex-shrink: 0;
-                align-items: center;
-                height: ${4 * GU}px;
-                padding-left: ${2 * GU}px;
-                border-bottom: 1px solid ${theme.border};
-                color: ${theme.contentSecondary};
-                ${textStyle('label2')};
-              `}
-            >
-              {heading}
-            </h1>
             <div
               css={`
                 position: relative;
@@ -78,7 +60,6 @@ function HeaderPopover({
 HeaderPopover.propTypes = {
   animateHeight: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
-  heading: PropTypes.node.isRequired,
   height: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
   opener: PropTypes.any,

@@ -3,11 +3,12 @@ import {
   Box,
   Distribution,
   GU,
-  IdentityBadge,
   textStyle,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+import IdentityBadge from './IdentityBadge'
+
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
 import { formatTokenAmount } from '../lib/token-utils'
@@ -25,11 +26,11 @@ function displayedStakes(stakes, total, stakeToken) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map((stake, index) => ({
+  ).map(stake => ({
     item: {
-      entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity,
+      entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity.id,
       amount: formatTokenAmount(
-        stake.index === -1 ? 0 : stakes[stake.index].amount,
+        stake.index === -1 ? stake.amount : stakes[stake.index].amount,
         stakeToken.decimals
       ),
     },
@@ -41,52 +42,24 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   stakes,
   totalTokensStaked,
 }) {
-  const theme = useTheme()
   const { stakeToken } = useAppState()
 
+  const totalStakedString = totalTokensStaked.toString(10)
   const transformedStakes = useMemo(() => {
     if (!stakes) {
       return null
     }
-    return displayedStakes(stakes, totalTokensStaked, stakeToken)
-  }, [stakes, totalTokensStaked, stakeToken])
 
-  const colors = [theme.green, theme.red, theme.purple, theme.yellow]
+    return displayedStakes(stakes, totalTokensStaked, stakeToken)
+  }, [totalStakedString, stakeToken.id]) // eslint-disable-line
 
   return (
     <Box heading="Supported by" padding={2 * GU}>
       {stakes.length > 0 ? (
         <>
-          <Distribution
-            colors={colors}
-            items={transformedStakes}
-            renderFullLegendItem={({ color, item, index, percentage }) => {
-              return (
-                <div
-                  css={`
-                    display: flex;
-                    align-items: center;
-                    width: 100%;
-                  `}
-                >
-                  <div
-                    css={`
-                      background: ${color};
-                      width: 8px;
-                      height: 8px;
-                      margin-right: ${0.5 * GU}px;
-                      border-radius: 50%;
-                    `}
-                  />
-                  <DistributionItem
-                    amount={item.amount}
-                    entity={item.entity}
-                    percentage={percentage}
-                    stakeToken={stakeToken}
-                  />
-                </div>
-              )
-            }}
+          <MemoizedDistribution
+            stakes={transformedStakes}
+            tokenSymbol={stakeToken.symbol}
           />
           <div
             css={`
@@ -134,11 +107,58 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   )
 })
 
-const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
+const MemoizedDistribution = React.memo(function MemoizedDistribution({
+  stakes,
+  tokenSymbol,
+}) {
+  const theme = useTheme()
+
+  const colors = useMemo(
+    () => [theme.green, theme.red, theme.purple, theme.yellow],
+    [theme]
+  )
+
+  return (
+    <Distribution
+      colors={colors}
+      items={stakes}
+      renderFullLegendItem={({ color, item, index, percentage }) => {
+        return (
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              width: 100%;
+            `}
+          >
+            <div
+              css={`
+                background: ${color};
+                width: 8px;
+                height: 8px;
+                margin-right: ${0.5 * GU}px;
+                border-radius: 50%;
+              `}
+            />
+            <DistributionItem
+              amount={item.amount}
+              entity={item.entity}
+              percentage={percentage}
+              tokenSymbol={tokenSymbol}
+            />
+          </div>
+        )
+      }}
+    />
+  )
+})
+
+const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
   const theme = useTheme()
   const { account } = useWallet()
-  const isCurrentUser = addressesEqual(entity, account)
   const { layoutName } = useLayout()
+
+  const isCurrentUser = addressesEqual(entity, account)
   const compactMode = layoutName === 'medium' || layoutName === 'small'
 
   return (
@@ -180,7 +200,7 @@ const DistributionItem = ({ amount, entity, percentage, stakeToken }) => {
         >
           {amount}
           {` `}
-          {stakeToken.symbol}
+          {tokenSymbol}
         </span>
       </div>
     </div>

@@ -1,67 +1,51 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  useVaultBalance,
+  useOrgData,
   useTokenBalances,
-  useOrganzation,
-  useAppData,
+  useVaultBalance,
 } from '../hooks/useOrgHooks'
+import useEffectiveSupply from '../hooks/useEffectiveSupply'
 import { useWallet } from './Wallet'
-import { STAKE_PCT_BASE } from '../constants'
 
 const AppStateContext = React.createContext()
 
 function AppStateProvider({ children }) {
   const { account } = useWallet()
-  const [organization, errorFetchingOrg]= useOrganzation()
+
   const {
-    convictionVoting,
+    config,
+    errors,
     installedApps,
-    minThresholdStakePercentage,
-    requestToken,
-    stakeToken,
-    totalStaked,
-    errorFetchingApp,
+    loadingAppData,
     ...appData
-  } = useAppData(organization)
+  } = useOrgData()
+
+  const { requestToken, stakeToken, totalStaked } = config?.conviction || {}
 
   const vaultBalance = useVaultBalance(installedApps, requestToken)
-
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
-
-  const effectiveSupply = useMemo(() => {
-    if (!(totalSupply && totalStaked && minThresholdStakePercentage)) {
-      return
-    }
-    const percentageOfTotalSupply = totalSupply
-      .multipliedBy(minThresholdStakePercentage)
-      .div(STAKE_PCT_BASE)
-
-    if (totalStaked.lt(percentageOfTotalSupply)) {
-      return percentageOfTotalSupply
-    }
-    return totalStaked
-  }, [totalSupply, totalStaked, minThresholdStakePercentage])
+  const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const fetchingErrors = errorFetchingApp || errorFetchingOrg
-  const appLoading = fetchingErrors ? false : !convictionVoting || balancesLoading || !effectiveSupply
+  const appLoading =
+    (!errors && loadingAppData) || balancesLoading || !effectiveSupply
 
   return (
     <AppStateContext.Provider
       value={{
         ...appData,
         accountBalance: balance,
-        convictionVoting,
+        config,
         effectiveSupply,
-        fetchingErrors,
+        errors,
         installedApps,
         isLoading: appLoading,
         requestToken,
         stakeToken,
         totalStaked,
-        totalSupply: totalSupply,
+        totalSupply,
         vaultBalance,
       }}
     >

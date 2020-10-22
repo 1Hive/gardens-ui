@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
-import {
-  Button,
-  GU,
-  IconConnect,
-  springs,
-  shortenAddress,
-} from '@1hive/1hive-ui'
+import { Button, GU, IconConnect, springs } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
 
 import ScreenError from './ScreenError'
@@ -17,6 +11,8 @@ import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { useAppState } from '../../providers/AppState'
+import { useProfile } from '../../providers/Profile'
+
 import { getUseWalletProviders } from '../../lib/web3-utils'
 
 const AnimatedDiv = animated.div
@@ -24,25 +20,21 @@ const AnimatedDiv = animated.div
 const SCREENS = [
   {
     id: 'providers',
-    title: 'Ethereum providers',
     height:
-      4 * GU + // header
+      6 * GU + // header
       (12 + 1.5) * GU * Math.ceil(getUseWalletProviders().length / 2) + // buttons
       7 * GU, // footer
   },
   {
     id: 'connecting',
-    title: 'Ethereum providers',
     height: 38 * GU,
   },
   {
     id: 'connected',
-    title: 'Active wallet',
-    height: 22 * GU,
+    height: 32.5 * GU,
   },
   {
     id: 'error',
-    title: 'Ethereum providers',
     height: 50 * GU,
   },
 ]
@@ -56,12 +48,20 @@ function AccountModule({ compact }) {
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
 
+  const { openBox } = useProfile()
+
   const { account, activating } = wallet
   const { isLoading } = useAppState()
 
   const clearError = useCallback(() => setActivationError(null), [])
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
+
+  useEffect(() => {
+    if (account && openBox) {
+      setOpened(false)
+    }
+  }, [account, openBox])
 
   const handleCancelConnection = useCallback(() => {
     wallet.deactivate()
@@ -163,10 +163,7 @@ function AccountModule({ compact }) {
       `}
     >
       {screen.id === 'connected' ? (
-        <AccountButton
-          label={shortenAddress(wallet.account)}
-          onClick={toggle}
-        />
+        <AccountButton onClick={toggle} />
       ) : (
         <Button
           icon={<IconConnect />}
@@ -181,7 +178,7 @@ function AccountModule({ compact }) {
         animateHeight={animate}
         heading={screen.title}
         height={screen.height}
-        width={51 * GU}
+        width={(screen.id === 'connected' ? 41 : 51) * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={opened}
@@ -232,7 +229,12 @@ function AccountModule({ compact }) {
                     )
                   }
                   if (screen.id === 'connected') {
-                    return <ScreenConnected wallet={wallet} />
+                    return (
+                      <ScreenConnected
+                        onClosePopover={toggle}
+                        wallet={wallet}
+                      />
+                    )
                   }
                   if (screen.id === 'error') {
                     return (

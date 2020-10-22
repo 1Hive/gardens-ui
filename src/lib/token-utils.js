@@ -40,7 +40,10 @@ const KNOWN_TOKENS_FALLBACK = new Map([
   ],
 ])
 
-const LOCAL_TOKEN_ICONS = new Map([['HNY', honeyIconSvg]])
+const LOCAL_TOKEN_ICONS = new Map([
+  ['HNY', honeyIconSvg],
+  ['CVTN', honeyIconSvg], // TODO: Remove
+])
 
 export const tokenDataFallback = (tokenAddress, fieldName, networkType) => {
   // The fallback list is without checksums
@@ -130,4 +133,36 @@ export function formatTokenAmount(
 
 export function getTokenIconBySymbol(symbol) {
   return LOCAL_TOKEN_ICONS.get(symbol)
+}
+
+export async function getUserBalanceAt(
+  connectedAccount,
+  snapshotBlock,
+  tokenContract,
+  tokenDecimals
+) {
+  if (!tokenContract || !connectedAccount) {
+    return -1
+  }
+
+  const balance = await tokenContract.balanceOfAt(
+    connectedAccount,
+    snapshotBlock
+  )
+
+  return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
+}
+
+export async function getUserBalanceNow(
+  connectedAccount,
+  tokenContract,
+  tokenDecimals
+) {
+  if (!tokenContract || !connectedAccount) {
+    return -1
+  }
+
+  const balance = await tokenContract.balanceOf(connectedAccount)
+
+  return Math.floor(parseInt(balance, 10) / Math.pow(10, tokenDecimals))
 }

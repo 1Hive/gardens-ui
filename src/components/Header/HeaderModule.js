@@ -6,7 +6,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-function HeaderModule({ icon, content, onClick }) {
+function HeaderModule({ content, hasPopover = true, icon, onClick }) {
   const { above } = useViewport()
   const theme = useTheme()
 
@@ -42,12 +42,14 @@ function HeaderModule({ icon, content, onClick }) {
               >
                 {content}
               </div>
-              <IconDown
-                size="small"
-                css={`
-                  color: ${theme.surfaceIcon};
-                `}
-              />
+              {hasPopover && (
+                <IconDown
+                  size="small"
+                  css={`
+                    color: ${theme.surfaceIcon};
+                  `}
+                />
+              )}
             </React.Fragment>
           )}
         </>
