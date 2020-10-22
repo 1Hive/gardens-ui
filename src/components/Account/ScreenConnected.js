@@ -12,8 +12,8 @@ import {
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { getNetworkName } from '../../utils/web3-utils'
+import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
 
