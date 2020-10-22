@@ -330,6 +330,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           mode={neededThreshold ? 'info' : 'warning'}
           css={`
             margin-top: ${2 * GU}px;
+            margin-bottom: ${6 * GU}px;
           `}
         >
           {neededThreshold
