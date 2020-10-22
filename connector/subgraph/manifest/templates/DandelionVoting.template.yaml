@@ -20,4 +20,12 @@
         handler: handleCastVote
       - event: ExecuteVote(indexed uint256)
         handler: handleExecuteVote
+      - event: ChangeSupportRequired(uint64)
+        handler: handleChangeSupportRequired
+      - event: ChangeMinQuorum(uint64)
+        handler: handleChangeMinQuorum
+      - event: ChangeBufferBlocks(uint64)
+        handler: handleChangeBufferBlocks
+      - event: ChangeExecutionDelayBlocks(uint64)
+        handler: handleChangeExecutionDelayBlocks
     file: ./src/DandelionVoting.ts

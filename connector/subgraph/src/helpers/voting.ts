@@ -17,7 +17,7 @@ function getVotingConfigEntityId(appAddress: Address): string {
   return appAddress.toHexString()
 }
 
-function getVotingConfigEntity(appAddress: Address): VotingConfigEntity | null {
+export function getVotingConfigEntity(appAddress: Address): VotingConfigEntity | null {
   let configEntityId = getVotingConfigEntityId(appAddress)
 
   let config = VotingConfigEntity.load(configEntityId)

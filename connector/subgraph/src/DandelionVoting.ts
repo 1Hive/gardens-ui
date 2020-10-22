@@ -3,11 +3,16 @@ import {
   StartVote as StartVoteEvent,
   CastVote as CastVoteEvent,
   ExecuteVote as ExecuteVoteEvent,
+  ChangeSupportRequired as ChangeSupportRequiredEvent,
+  ChangeMinQuorum as ChangeMinQuorumEvent,
+  ChangeBufferBlocks as ChangeBufferBlocksEvent,
+  ChangeExecutionDelayBlocks as ChangeExecutionDelayBlocksEvent,
 } from '../generated/templates/DandelionVoting/DandelionVoting'
 import { 
   createSupporter,
   getCastEntity, 
   getProposalEntity, 
+  getVotingConfigEntity,
   populateCastDataFromEvent, 
   populateVotingDataFromContract,
   populateVotingDataFromEvent
@@ -56,4 +61,32 @@ export function handleExecuteVote(event: ExecuteVoteEvent): void {
   proposal.save()
 }
 
+
+export function handleChangeSupportRequired(event: ChangeSupportRequiredEvent) {
+  let votingConfig = getVotingConfigEntity(event.address)
+  votingConfig.supportRequiredPct = event.params.supportRequiredPct
+
+  votingConfig.save()
+}
+
+export function  handleChangeMinQuorum(event: ChangeMinQuorumEvent) {
+  let votingConfig = getVotingConfigEntity(event.address)
+  votingConfig.minAcceptQuorumPct = event.params.minAcceptQuorumPct
+
+  votingConfig.save()
+}
+
+export function handleChangeBufferBlocks(event: ChangeBufferBlocksEvent) {
+  let votingConfig = getVotingConfigEntity(event.address)
+  votingConfig.bufferBlocks = event.params.bufferBlocks
+
+  votingConfig.save()
+} 
+
+export function handleChangeExecutionDelayBlocks(event: ChangeExecutionDelayBlocksEvent) {
+  let votingConfig = getVotingConfigEntity(event.address)
+  votingConfig.executionDelayBlocks = event.params.executionDelayBlocks
+
+  votingConfig.save()
+}
 
