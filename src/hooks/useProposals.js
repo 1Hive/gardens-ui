@@ -19,7 +19,7 @@ import {
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
-import { testSupportFilter } from '../utils/filter-utils'
+import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../lib/proposal-utils'
 import { getDecisionTransition } from '../lib/vote-utils'
 import { ProposalTypes } from '../types'
@@ -65,7 +65,16 @@ export function useProposals() {
     vaultBalance,
   ])
 
-  return [proposalsWithData, filters, latestBlock.number !== 0]
+  // Hotfix: TODO: Move to filtered proposals hook
+  const filteredProposals = proposalsWithData.filter(proposal => {
+    if (proposal.type === ProposalTypes.Decision) {
+      return testStatusFilter(filters.status.filter, proposal)
+    }
+
+    return true
+  })
+
+  return [filteredProposals, filters, latestBlock.number !== 0]
 }
 
 function useFilteredProposals(filters, account) {
