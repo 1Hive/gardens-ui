@@ -11,7 +11,7 @@ import ProposalIcon from '../ProposalIcon'
 import { convertToString } from '../../types'
 import { getProfileForAccount } from '../../lib/profile'
 import { dateFormat } from '../../utils/date-utils'
-import { addressesEqual } from '../../lib/web3-utils'
+import { addressesEqual } from '../../utils/web3-utils'
 import { ZERO_ADDR } from '../../constants'
 
 const addressCache = new Map()

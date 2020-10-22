@@ -1,10 +1,10 @@
-import { addressesEqual } from './lib/web3-utils'
+import { addressesEqual } from './utils/web3-utils'
 import {
   ETHER_TOKEN_FAKE_ADDRESS,
   getTokenSymbol,
   getTokenName,
   tokenDataFallback,
-} from './lib/token-utils'
+} from './utils/token-utils'
 import { first } from 'rxjs/operators'
 
 import tokenDecimalsAbi from './abi/token-decimals.json'

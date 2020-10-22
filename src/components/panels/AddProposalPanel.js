@@ -14,8 +14,8 @@ import {
 import { useAppState } from '../../providers/AppState'
 
 import BigNumber from '../../lib/bigNumber'
-import { toDecimals } from '../../lib/math-utils'
-import { formatTokenAmount } from '../../lib/token-utils'
+import { toDecimals } from '../../utils/math-utils'
+import { formatTokenAmount } from '../../utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../lib/conviction'
 
 import { ZERO_ADDR } from '../../constants'

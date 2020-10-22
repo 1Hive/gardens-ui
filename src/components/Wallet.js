@@ -5,7 +5,7 @@ import useAccountTokens from '../hooks/useAccountTokens'
 import { useAppState } from '../providers/AppState'
 import { useTokenBalances } from '../hooks/useOrgHooks'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '../lib/token-utils'
+import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
 
 function Wallet({ account }) {
   const theme = useTheme()

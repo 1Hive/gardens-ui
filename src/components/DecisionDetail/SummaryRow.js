@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../../lib/token-utils'
+import { formatTokenAmount } from '../../utils/token-utils'
 
 /* eslint-disable react/prop-types */
 function SummaryRow({ color, label, pct, token, ...props }) {

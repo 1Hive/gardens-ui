@@ -1,5 +1,5 @@
 import { convertFromString, ProposalTypes } from '../types'
-import BigNumber from './bigNumber'
+import BigNumber from '../lib/bigNumber'
 
 export function transformConfigData(config) {
   const { conviction, voting } = config

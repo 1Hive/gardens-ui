@@ -32,11 +32,11 @@ import { useWallet } from '../providers/Wallet'
 
 // utils
 import BigNumber from '../lib/bigNumber'
-import { getTokenIconBySymbol, formatTokenAmount } from '../lib/token-utils'
+import { getTokenIconBySymbol, formatTokenAmount } from '../utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
-} from '../lib/web3-utils'
+} from '../utils/web3-utils'
 import {
   PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,

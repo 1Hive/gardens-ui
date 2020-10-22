@@ -20,8 +20,8 @@ import {
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import { getProposalSupportStatus } from '../lib/proposal-utils'
-import { getDecisionTransition } from '../lib/vote-utils'
+import { getProposalSupportStatus } from '../utils/proposal-utils'
+import { getDecisionTransition } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15

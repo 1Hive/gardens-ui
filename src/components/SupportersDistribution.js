@@ -11,9 +11,9 @@ import IdentityBadge from './IdentityBadge'
 
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
-import { formatTokenAmount } from '../lib/token-utils'
-import { stakesPercentages } from '../lib/math-utils'
-import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import { stakesPercentages } from '../utils/math-utils'
+import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
 
 import noSupportIllustration from '../assets/noSupportIllustration.svg'
 
