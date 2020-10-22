@@ -11,8 +11,9 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
+import { getNetworkName } from '../../utils/web3-utils'
+import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
 
@@ -21,7 +22,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const history = useHistory()
   const copy = useCopyToClipboard()
 
-  const walletNetworkName = wallet.networkName
+  const networkName = getNetworkName()
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
 
   const goToProfile = useCallback(() => {
@@ -159,7 +160,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
                 margin-left: ${0.5 * GU}px;
               `}
             >
-              {`Connected to ${walletNetworkName} Network`}
+              {`Connected to ${networkName} Network`}
             </span>
           </div>
         </div>
