@@ -39,14 +39,13 @@ const DEFAULT_FORM_DATA = {
 const AddProposalPanel = React.memo(({ onSubmit }) => {
   const theme = useTheme()
   const {
-    alpha,
-    maxRatio,
+    config,
     requestToken,
     stakeToken,
     effectiveSupply,
     vaultBalance,
-    weight,
   } = useAppState()
+  const { alpha, maxRatio, weight } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
