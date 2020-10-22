@@ -58,8 +58,7 @@ function ProposalsList({
           top: -1px;
           z-index: 3;
           position: sticky;
-          padding: ${2 * GU}px 0;
-          margin: 0 ${(below('medium') ? 1 : 0) * GU}px;
+          padding: ${2 * GU}px ${(below('medium') ? 1 : 0) * GU}px;
           background-color: ${theme.background};
 
           ${!compact && `padding-top: ${3 * GU}px;`}
