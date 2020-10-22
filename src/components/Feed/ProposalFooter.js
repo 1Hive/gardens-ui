@@ -18,7 +18,7 @@ import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
 import { durationTime } from '../../utils/date-utils'
-import { getVoteStatus } from '../../lib/vote-utils'
+import { getVoteStatus } from '../../utils/vote-utils'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
 import {

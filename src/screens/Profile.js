@@ -15,7 +15,7 @@ import { useAppState } from '../providers/AppState'
 import usePicture from '../hooks/usePicture'
 import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'
-import { addressesEqual } from '../lib/web3-utils'
+import { addressesEqual } from '../utils/web3-utils'
 
 import profileCoverDefaultSvg from '../assets/profileCoverDefault.svg'
 
@@ -124,7 +124,7 @@ function Profile() {
                           label={
                             selectedProfile?.authenticated
                               ? 'Edit profile'
-                              : 'Opening box…'
+                              : 'Loading profile…'
                           }
                           onClick={toggleEditMode}
                           disabled={!selectedProfile?.authenticated}

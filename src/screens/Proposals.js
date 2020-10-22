@@ -11,7 +11,7 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
-import { getTokenIconBySymbol } from '../lib/token-utils'
+import { getTokenIconBySymbol } from '../utils/token-utils'
 import { useHistory } from 'react-router-dom'
 
 import { ConvictionBar } from '../components/ConvictionVisuals'
@@ -24,7 +24,7 @@ import {
   PROPOSAL_STATUS_ACTIVE_STRING,
 } from '../constants'
 
-import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
+import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
 
 const ENTRIES_PER_PAGE = 5
 

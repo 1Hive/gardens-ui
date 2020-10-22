@@ -16,7 +16,8 @@ import filterToggleSvg from '../../assets/filter.svg'
 function ProposalsList({
   activeFilters,
   proposals,
-  proposalCount,
+  proposalsFetchedCount,
+  proposalCountFilter,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
@@ -58,8 +59,7 @@ function ProposalsList({
           top: -1px;
           z-index: 3;
           position: sticky;
-          padding: ${2 * GU}px 0;
-          margin: 0 ${(below('medium') ? 1 : 0) * GU}px;
+          padding: ${2 * GU}px ${(below('medium') ? 1 : 0) * GU}px;
           background-color: ${theme.background};
 
           ${!compact && `padding-top: ${3 * GU}px;`}
@@ -93,8 +93,8 @@ function ProposalsList({
                 />
               )
             })}
-            {(proposals.length === proposalCount ||
-              (proposals.length < proposalCount && fetching)) && (
+            {(proposalsFetchedCount === proposalCountFilter ||
+              (proposalsFetchedCount < proposalCountFilter && fetching)) && (
               <div
                 css={`
                   width: 100%;

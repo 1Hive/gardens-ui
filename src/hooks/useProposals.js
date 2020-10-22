@@ -20,22 +20,36 @@ import {
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import { getProposalSupportStatus } from '../lib/proposal-utils'
-import { getDecisionTransition } from '../lib/vote-utils'
+import { getProposalSupportStatus } from '../utils/proposal-utils'
+import { getDecisionTransition } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
   const { account } = useWallet()
-  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
-  const blockTime = useBlockTime()
   const latestBlock = useLatestBlock()
 
   const filters = useProposalFilters()
-  const proposals = useFilteredProposals(filters, account)
+  const [proposals, proposalsFetchedCount] = useFilteredProposals(
+    filters,
+    account,
+    latestBlock
+  )
 
+  return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
+}
+
+function useFilteredProposals(filters, account, latestBlock) {
+  const blockTime = useBlockTime()
+  const myStakes = useAccountStakes(account)
+  const proposals = useProposalsSubscription(filters)
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
+
+  // Proposals already come filtered by Type from the subgraph.
+  // We will filter locally by support filter and also for Decision proposals, we will filter by status
+  // because decisions are technically closed if the executionBlock has passed.
   const proposalsWithData = useMemo(() => {
     if (isLoading) {
       return proposals
@@ -65,35 +79,32 @@ export function useProposals() {
     vaultBalance,
   ])
 
-  // Hotfix: TODO: Move to filtered proposals hook
-  const filteredProposals = proposalsWithData.filter(proposal => {
-    if (proposal.type === ProposalTypes.Decision) {
-      return testStatusFilter(filters.status.filter, proposal)
-    }
-
-    return true
-  })
-
-  return [filteredProposals, filters, latestBlock.number !== 0]
-}
-
-function useFilteredProposals(filters, account) {
-  const myStakes = useAccountStakes(account)
-  // Proposals already come filtered by Status and Type from the subgraph.
-  // We will filter locally by support filter.
-  const proposals = useProposalsSubscription(filters)
-
-  return useMemo(
+  const filteredProposals = useMemo(
     () =>
-      proposals?.filter(proposal => {
+      proposalsWithData?.filter(proposal => {
         const proposalSupportStatus = getProposalSupportStatus(
           myStakes,
           proposal
         )
-        return testSupportFilter(filters.support.filter, proposalSupportStatus)
+
+        const supportFilterPassed = testSupportFilter(
+          filters.support.filter,
+          proposalSupportStatus
+        )
+
+        let statusFilterPassed = true
+        if (proposal.type === ProposalTypes.Decision) {
+          statusFilterPassed = testStatusFilter(filters.status.filter, proposal)
+        }
+
+        return supportFilterPassed && statusFilterPassed
       }),
-    [filters, myStakes, proposals]
+    [filters, myStakes, proposalsWithData]
   )
+
+  const proposalsFetchedCount = proposals.length
+
+  return [filteredProposals, proposalsFetchedCount]
 }
 
 export function useProposal(proposalId, appAddress) {

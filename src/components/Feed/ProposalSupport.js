@@ -8,8 +8,8 @@ import SummaryRow from '../DecisionDetail/SummaryRow'
 import { useAppState } from '../../providers/AppState'
 import { useWallet } from '../../providers/Wallet'
 import { ProposalTypes } from '../../types'
-import { safeDiv } from '../../lib/math-utils'
-import { getConnectedAccountVote } from '../../lib/vote-utils'
+import { safeDiv } from '../../utils/math-utils'
+import { getConnectedAccountVote } from '../../utils/vote-utils'
 import { VOTE_NAY, VOTE_YEA } from '../../constants'
 
 function ProposalSupport({ proposal }) {

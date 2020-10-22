@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
-import { getUseWalletProviders } from '../../lib/web3-utils'
+import { getUseWalletProviders } from '../../utils/web3-utils'
 
 const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
   provider.id,

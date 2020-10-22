@@ -13,7 +13,7 @@ import HeaderPopover from '../Header/HeaderPopover'
 import { useAppState } from '../../providers/AppState'
 import { useProfile } from '../../providers/Profile'
 
-import { getUseWalletProviders } from '../../lib/web3-utils'
+import { getUseWalletProviders } from '../../utils/web3-utils'
 
 const AnimatedDiv = animated.div
 

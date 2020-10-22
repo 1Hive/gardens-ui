@@ -1,0 +1,29 @@
+# Kernel
+- kind: ethereum/contract
+  name: Kernel
+  network: {{network}}
+  source:
+    abi: Kernel
+    address: '{{address}}'
+    startBlock: {{startBlock}}
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - Config
+      - ConvictionConfig
+      - VotingConfig
+    abis:
+      - name: ConvictionVoting
+        file: ./abis/ConvictionVoting.json
+      - name: DandelionVoting
+        file: ./abis/DandelionVoting.json
+      - name: Kernel
+        file: ./abis/Kernel.json  
+      - name: MiniMeToken
+        file: ./abis/MiniMeToken.json   
+    eventHandlers:
+      - event: NewAppProxy(address,bool,bytes32)
+        handler: handleNewAppProxy
+    file: ./src/Kernel.ts

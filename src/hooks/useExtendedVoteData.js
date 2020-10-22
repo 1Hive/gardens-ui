@@ -6,8 +6,8 @@ import { useAppState } from '../providers/AppState'
 import usePromise from './usePromise'
 import { useWallet } from '../providers/Wallet'
 
-import { getCanUserVote } from '../lib/vote-utils'
-import { getUserBalanceAt, getUserBalanceNow } from '../lib/token-utils'
+import { getCanUserVote } from '../utils/vote-utils'
+import { getUserBalanceAt, getUserBalanceNow } from '../utils/token-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import dandelionVotingAbi from '../abi/DandelionVoting.json'
 

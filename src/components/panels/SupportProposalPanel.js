@@ -14,8 +14,8 @@ import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../providers/AppState'
 import { useWallet } from '../../providers/Wallet'
 
-import { toDecimals, round, pct } from '../../lib/math-utils'
-import { formatTokenAmount } from '../../lib/token-utils'
+import { toDecimals, round, pct } from '../../utils/math-utils'
+import { formatTokenAmount } from '../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,

@@ -3,7 +3,7 @@ import { toHex } from 'web3-utils'
 
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
-import { getAppByName } from '../lib/data-utils'
+import { getAppByName } from '../utils/data-utils'
 import env from '../environment'
 
 import { VOTE_YEA } from '../constants'

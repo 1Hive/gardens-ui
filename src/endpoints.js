@@ -1,4 +1,4 @@
-import { isLocalOrUnknownNetwork } from './lib/web3-utils'
+import { isLocalOrUnknownNetwork } from './utils/web3-utils'
 
 // IPFS endpoint
 export const IPFS_ENDPOINT = {

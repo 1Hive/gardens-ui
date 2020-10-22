@@ -17,7 +17,7 @@ import useVoteGracePeriod from '../../hooks/useVoteGracePeriod'
 import { useWallet } from '../../providers/Wallet'
 import { noop, dateFormat, durationTime } from '../../utils/date-utils'
 import { VOTE_NAY, VOTE_YEA } from '../../constants'
-import { getConnectedAccountVote, isVoteAction } from '../../lib/vote-utils'
+import { getConnectedAccountVote, isVoteAction } from '../../utils/vote-utils'
 
 const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   const [ready, setReady] = useState(false)

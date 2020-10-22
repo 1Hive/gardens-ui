@@ -14,8 +14,8 @@ import {
 import { useAppState } from '../../providers/AppState'
 
 import BigNumber from '../../lib/bigNumber'
-import { toDecimals } from '../../lib/math-utils'
-import { formatTokenAmount } from '../../lib/token-utils'
+import { toDecimals } from '../../utils/math-utils'
+import { formatTokenAmount } from '../../utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../lib/conviction'
 
 import { ZERO_ADDR } from '../../constants'
@@ -39,14 +39,13 @@ const DEFAULT_FORM_DATA = {
 const AddProposalPanel = React.memo(({ onSubmit }) => {
   const theme = useTheme()
   const {
-    alpha,
-    maxRatio,
+    config,
     requestToken,
     stakeToken,
     effectiveSupply,
     vaultBalance,
-    weight,
   } = useAppState()
+  const { alpha, maxRatio, weight } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
@@ -189,7 +188,12 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     errors.length > 0
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form
+      onSubmit={handleFormSubmit}
+      css={`
+        margin-bottom: ${7 * GU}px;
+      `}
+    >
       <Field
         label="Select proposal type"
         css={`

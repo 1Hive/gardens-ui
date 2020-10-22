@@ -19,6 +19,7 @@ const Home = React.memo(function Home() {
     filters,
     isLoading,
     proposals,
+    proposalsFetchedCount,
     proposalPanel,
     totalStaked,
     totalSupply,
@@ -93,7 +94,8 @@ const Home = React.memo(function Home() {
                 <ProposalsList
                   activeFilters={filters.isActive}
                   proposals={proposals}
-                  proposalCount={filters.count.filter}
+                  proposalsFetchedCount={proposalsFetchedCount}
+                  proposalCountFilter={filters.count.filter}
                   onProposalCountIncrease={filters.count.onChange}
                   onRankingFilterChange={filters.ranking.onChange}
                   onStakeToProposal={actions.convictionActions.stakeToProposal}

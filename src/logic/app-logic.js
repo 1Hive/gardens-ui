@@ -15,7 +15,12 @@ export default function useAppLogic() {
 
   const proposalPanel = usePanelState()
   const actions = useActions(proposalPanel.requestClose)
-  const [proposals, filters, blockHasLoaded] = useProposals()
+  const [
+    proposals,
+    filters,
+    proposalsFetchedCount,
+    blockHasLoaded,
+  ] = useProposals()
 
   return {
     actions,
@@ -24,6 +29,7 @@ export default function useAppLogic() {
     filters,
     isLoading: isLoading || !blockHasLoaded,
     proposals,
+    proposalsFetchedCount,
     proposalPanel,
     totalStaked,
     totalSupply,

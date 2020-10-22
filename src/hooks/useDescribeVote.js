@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 
 import { getAppPresentation } from '../utils/app-utils'
-import { addressesEqual } from '../lib/web3-utils'
+import { addressesEqual } from '../utils/web3-utils'
 import { useMounted } from '../hooks/useMounted'
 import { useAppState } from '../providers/AppState'
 

@@ -3,7 +3,7 @@ import {
   transformConfigData,
   transformProposalData,
   transformSupporterData,
-} from '../lib/data-utils'
+} from '../utils/data-utils'
 import { useAppState } from '../providers/AppState'
 
 export function useConfigSubscription(honeypot) {

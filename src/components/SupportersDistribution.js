@@ -11,9 +11,9 @@ import IdentityBadge from './IdentityBadge'
 
 import { useWallet } from '../providers/Wallet'
 import { useAppState } from '../providers/AppState'
-import { formatTokenAmount } from '../lib/token-utils'
-import { stakesPercentages } from '../lib/math-utils'
-import { addressesEqualNoSum as addressesEqual } from '../lib/web3-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import { stakesPercentages } from '../utils/math-utils'
+import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
 
 import noSupportIllustration from '../assets/noSupportIllustration.svg'
 
@@ -118,11 +118,16 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
     [theme]
   )
 
+  const adjustedStakes = stakes.map(stake => ({
+    ...stake,
+    percentage: Math.round(stake.percentage),
+  }))
+
   return (
     <Distribution
       colors={colors}
-      items={stakes}
-      renderFullLegendItem={({ color, item, index, percentage }) => {
+      items={adjustedStakes}
+      renderFullLegendItem={({ color, item, percentage }) => {
         return (
           <div
             css={`
@@ -173,7 +178,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
         entity={entity}
         connectedAccount={isCurrentUser}
         compact
-        labelStyle={`${textStyle('body4')}`}
+        labelStyle={`${textStyle('body3')}`}
         css={`
           width: ${compactMode ? 'auto' : '110px'};
         `}
@@ -181,7 +186,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
       <div
         css={`
           display: flex;
-          ${textStyle('body4')};
+          ${textStyle('body3')};
         `}
       >
         <span

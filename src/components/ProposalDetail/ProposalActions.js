@@ -6,9 +6,9 @@ import { useAppState } from '../../providers/AppState'
 import { useWallet } from '../../providers/Wallet'
 
 import AccountNotConnected from '../AccountNotConnected'
-import { addressesEqual } from '../../lib/web3-utils'
+import { addressesEqual } from '../../utils/web3-utils'
 import BigNumber from '../../lib/bigNumber'
-import { toDecimals, fromDecimals } from '../../lib/math-utils'
+import { toDecimals, fromDecimals } from '../../utils/math-utils'
 
 const MAX_INPUT_DECIMAL_BASE = 6
 
