@@ -189,7 +189,12 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     errors.length > 0
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form
+      onSubmit={handleFormSubmit}
+      css={`
+        margin-bottom: ${7 * GU}px;
+      `}
+    >
       <Field
         label="Select proposal type"
         css={`
@@ -330,7 +335,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           mode={neededThreshold ? 'info' : 'warning'}
           css={`
             margin-top: ${2 * GU}px;
-            margin-bottom: ${6 * GU}px;
           `}
         >
           {neededThreshold
