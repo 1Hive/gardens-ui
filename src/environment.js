@@ -25,9 +25,6 @@ const ENV_VARS = {
   ORG_ADDRESS() {
     return process.env.REACT_APP_ORG_ADDRESS || getNetwork().honeypot
   },
-  PORTIS_DAPP_ID() {
-    return process.env.REACT_APP_PORTIS_DAPP_ID || ''
-  },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
   },
