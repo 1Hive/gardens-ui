@@ -16,8 +16,8 @@ import filterToggleSvg from '../../assets/filter.svg'
 function ProposalsList({
   activeFilters,
   proposals,
-  proposalCount,
   proposalsFetchedCount,
+  proposalCountFilter,
   onProposalCountIncrease,
   onRankingFilterChange,
   onStakeToProposal,
@@ -93,8 +93,8 @@ function ProposalsList({
                 />
               )
             })}
-            {(proposalsFetchedCount === proposalCount ||
-              (proposalsFetchedCount < proposalCount && fetching)) && (
+            {(proposalsFetchedCount === proposalCountFilter ||
+              (proposalsFetchedCount < proposalCountFilter && fetching)) && (
               <div
                 css={`
                   width: 100%;
