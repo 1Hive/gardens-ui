@@ -48,7 +48,6 @@ const Metrics = React.memo(function Metrics({
         break
       case 1:
         setCurrency(currencies.EUR)
-        console.log(currencies.EUR)
         setSymbol('€')
         break
       case 2:
