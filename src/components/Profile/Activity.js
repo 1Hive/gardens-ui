@@ -65,7 +65,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
                     column-gap: ${0.75 * GU}px;
                   `}
                 >
-                  {isConnectedAccount ? 'You' : profileName} Supported the{' '}
+                  {isConnectedAccount ? 'You' : profileName} supported the{' '}
                   <ProposalIcon type={stake.proposal.type} />{' '}
                   {convertToString(stake.proposal.type)}{' '}
                   <Link
