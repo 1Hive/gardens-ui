@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import {
   Box,
   GU,
@@ -23,71 +23,24 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const { requestToken, stakeToken, currencies } = useAppState()
-  const [currentCurrency, setCurrency] = useState(1)
-  const [currentLabel, setLabel] = useState(0)
-  const [currentSymbol, setSymbol] = useState('$')
-  const currencyArray = [
-    'USD',
-    'EUR',
-    'CAD',
-    'HKD',
-    'JPY',
-    'AUD',
-    'GBP',
-    'TRY',
-    'CNY',
-    'KRW',
-    'RUB',
-  ]
-  const handleCurrencyChange = currentLabel => {
-    switch (currentLabel) {
-      case 0:
-        setCurrency(currencies.USD)
-        setSymbol('$')
-        break
-      case 1:
-        setCurrency(currencies.EUR)
-        setSymbol('€')
-        break
-      case 2:
-        setCurrency(currencies.CAD)
-        setSymbol('CAD $')
-        break
-      case 3:
-        setCurrency(currencies.HKD)
-        setSymbol('HK $')
-        break
-      case 4:
-        setCurrency(currencies.JPY)
-        setSymbol('¥')
-        break
-      case 5:
-        setCurrency(currencies.AUD)
-        setSymbol('AUD $')
-        break
-      case 6:
-        setCurrency(currencies.GBP)
-        setSymbol('£')
-        break
-      case 7:
-        setCurrency(currencies.TRY)
-        setSymbol('₺')
-        break
-      case 8:
-        setCurrency(currencies.CNY)
-        setSymbol('CN ¥ ')
-        break
-      case 9:
-        setCurrency(currencies.KRW)
-        setSymbol('₩')
-        break
-      case 10:
-        setCurrency(currencies.RUB)
-        setSymbol('₽')
-        break
+  const [currencyIndex, setCurrencyIndex] = useState(0)
+  const currency = useMemo(() => {
+    if (!currencies.length) {
+      return {
+        name: 'USD',
+        symbol: '$',
+        rate: 1,
+      }
     }
-    setLabel(currentLabel)
-  }
+
+    return currencies[currencyIndex]
+  }, [currencyIndex, currencies])
+  const handleCurrencyChange = useCallback(currencyIndex => {
+    setCurrencyIndex(currencyIndex)
+  }, [])
+  const currencyNames = useMemo(() => {
+    return currencies.map(({ name }) => name)
+  }, [currencies])
 
   return (
     <Box padding={3 * GU}>
@@ -119,26 +72,22 @@ const Metrics = React.memo(function Metrics({
             <DropDown
               header="Type"
               placeholder="USD"
-              selected={currentLabel}
+              selected={currencyIndex}
               onChange={handleCurrencyChange}
               css={`
                 left: -${2 * GU}px;
               `}
-              items={currencyArray}
+              items={currencyNames}
             />
           </div>
-          <TokenPrice
-            currency={currentCurrency}
-            currentSymbol={currentSymbol}
-          />
+          <TokenPrice currency={currency} />
         </div>
         <div>
           <TokenBalance
             label="Common Pool"
             value={commonPool}
             token={requestToken}
-            currency={currentCurrency}
-            currentSymbol={currentSymbol}
+            currency={currency}
           />
         </div>
         <div>
@@ -146,8 +95,7 @@ const Metrics = React.memo(function Metrics({
             label="Token Supply"
             value={totalSupply}
             token={stakeToken}
-            currency={currentCurrency}
-            currentSymbol={currentSymbol}
+            currency={currency}
           />
         </div>
         <div>
@@ -155,8 +103,7 @@ const Metrics = React.memo(function Metrics({
             label="Active"
             value={totalActiveTokens}
             token={stakeToken}
-            currency={currentCurrency}
-            currentSymbol={currentSymbol}
+            currency={currency}
           />
         </div>
       </div>
@@ -189,11 +136,11 @@ function Metric({ label, value, color }) {
   )
 }
 
-function TokenBalance({ label, token, value, currency, currentSymbol }) {
+function TokenBalance({ label, token, value, currency }) {
   const theme = useTheme()
 
   const price = useUniswapHnyPrice()
-  const currencyValue = value * price * currency
+  const currencyValue = value * price * currency.rate
 
   return (
     <>
@@ -203,14 +150,13 @@ function TokenBalance({ label, token, value, currency, currentSymbol }) {
           color: ${theme.green};
         `}
       >
-        {currentSymbol}{' '}
-        {formatTokenAmount(currencyValue * currency, token.decimals)}
+        {currency.symbol} {formatTokenAmount(currencyValue, token.decimals)}
       </div>
     </>
   )
 }
 
-function TokenPrice({ currency, currentSymbol }) {
+function TokenPrice({ currency }) {
   const theme = useTheme()
   const price = useUniswapHnyPrice()
 
@@ -230,8 +176,8 @@ function TokenPrice({ currency, currentSymbol }) {
           color: ${theme.green};
         `}
       >
-        {currentSymbol}
-        {formatDecimals(price * currency, 2)}
+        {currency.symbol}
+        {formatDecimals(price * currency.rate, 2)}
       </span>
     </div>
   )
