@@ -15,6 +15,7 @@ export default class Proposal {
   readonly status: string
   readonly type: string
   readonly createdAt: string 
+  readonly executedAt: string
   
   // proposal data
   readonly name?: string
@@ -47,6 +48,8 @@ export default class Proposal {
     this.status = data.status
     this.type = data.type
     this.createdAt = data.createdAt
+    this.executedAt = data.executedAt
+
 
     // proposal data
     this.name = data.name

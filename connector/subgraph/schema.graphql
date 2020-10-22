@@ -38,6 +38,7 @@ type Proposal @entity {
   createdAt: BigInt!
   weight: BigInt!
   metadata: String!
+  executedAt: BigInt
   
   # Proposal data
   link: String

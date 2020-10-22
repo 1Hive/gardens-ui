@@ -88,7 +88,8 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_EXECUTED
   proposal.statusInt = STATUS_EXECUTED_NUM
-  
+  proposal.executedAt = event.block.timestamp
+
   proposal.save()
 }
 

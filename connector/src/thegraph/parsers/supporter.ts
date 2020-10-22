@@ -15,7 +15,7 @@ export function parseSupporter(
   // For votes (decisions)
   const casts = supporter.casts.map((cast: CastData) => cast)
 
-  // For proposals (discussions and proposals)
+  // For proposals (suggestions and proposals)
   const stakes = supporter.stakes.map((stake: StakeData) => stake)
   const stakesHistory = supporter.stakesHistory.map((stake: StakeHistoryData) => stake)
 

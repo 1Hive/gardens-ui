@@ -1,4 +1,4 @@
-import { ProposalData, SupporterData, StakeHistoryData, IHoneypotConnector } from '../types'
+import { IHoneypotConnector, ProposalData, StakeHistoryData, SupporterData } from '../types'
 
 export default class StakeHistory {
   #connector: IHoneypotConnector

@@ -43,7 +43,7 @@ export function parseProposal(result: QueryResult, connector: any): Proposal {
     // For votes (decisions)
     const casts = proposal.casts?.map((cast: CastData) => cast)
 
-    // For proposals (discussions and proposals)
+    // For proposals (suggestions and proposals)
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
     const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 

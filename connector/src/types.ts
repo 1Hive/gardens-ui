@@ -80,6 +80,7 @@ export interface ProposalData {
   status: string
   type: string
   createdAt: string
+  executedAt: string
 
   // proposal data
   name?: string

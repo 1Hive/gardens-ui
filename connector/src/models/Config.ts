@@ -1,4 +1,4 @@
-import { ConfigData, IHoneypotConnector, ConvictionConfigData, VotingConfigData } from '../types'
+import { ConfigData, ConvictionConfigData, IHoneypotConnector, VotingConfigData } from '../types'
 
 export default class Config {
   #connector: IHoneypotConnector

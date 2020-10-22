@@ -59,6 +59,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       type
       createdAt
       metadata
+      executedAt
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
@@ -120,6 +121,7 @@ export const PROPOSAL = (type: string) => gql`
       type
       createdAt
       metadata
+      executedAt
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
