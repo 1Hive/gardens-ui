@@ -41,8 +41,8 @@ const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
       label={profileName}
       entity={entity}
       networkType={networkType === 'xdai' ? 'private' : networkType}
-      {...props}
       popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
+      {...props}
     />
   )
 })

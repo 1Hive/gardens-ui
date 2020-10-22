@@ -124,7 +124,7 @@ function Profile() {
                           label={
                             selectedProfile?.authenticated
                               ? 'Edit profile'
-                              : 'Opening box…'
+                              : 'Loading profile…'
                           }
                           onClick={toggleEditMode}
                           disabled={!selectedProfile?.authenticated}
