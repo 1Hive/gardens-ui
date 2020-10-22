@@ -60,6 +60,14 @@ export function testSupportFilter(filter, proposalSupportStatus) {
   )
 }
 
+export function testStatusFilter(filter, proposal) {
+  return (
+    filter === NULL_FILTER_STATE ||
+    (filter === STATUS_FILTER_OPEN && proposal.data?.open) ||
+    (filter === STATUS_FILTER_CLOSED && proposal.data?.closed)
+  )
+}
+
 export function sortProposals(filters, proposals) {
   // When sorting by top we are sorting by lastConviction which is not entirely accurate
   // as conviction on proposals can accrue at different speeds
