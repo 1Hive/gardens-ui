@@ -60,13 +60,18 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
 
+  const adjustedStakes = stakes.map(stake => ({
+    ...stake,
+    percentage: Math.round(stake.percentage),
+  }))
+
   return (
     <Box heading="Supported proposals" padding={3 * GU}>
       <div>
         <Distribution
           colors={colors}
           heading="Active token distribution"
-          items={stakes}
+          items={adjustedStakes}
           renderLegendItem={({ item }) => {
             return (
               <DistributionItem
