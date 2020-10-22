@@ -118,11 +118,16 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
     [theme]
   )
 
+  const adjustedStakes = stakes.map(stake => ({
+    ...stake,
+    percentage: Math.round(stake.percentage),
+  }))
+
   return (
     <Distribution
       colors={colors}
-      items={stakes}
-      renderFullLegendItem={({ color, item, index, percentage }) => {
+      items={adjustedStakes}
+      renderFullLegendItem={({ color, item, percentage }) => {
         return (
           <div
             css={`
@@ -173,7 +178,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
         entity={entity}
         connectedAccount={isCurrentUser}
         compact
-        labelStyle={`${textStyle('body4')}`}
+        labelStyle={`${textStyle('body3')}`}
         css={`
           width: ${compactMode ? 'auto' : '110px'};
         `}
@@ -181,7 +186,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
       <div
         css={`
           display: flex;
-          ${textStyle('body4')};
+          ${textStyle('body3')};
         `}
       >
         <span
