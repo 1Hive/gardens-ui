@@ -233,7 +233,6 @@ export function useCurrencies() {
             symbol: SYMBOL_MAP[name],
             rate: result.rates[name],
           }))
-
         setCurrencies(rates)
       } catch (err) {
         retryTimer = setTimeout(fetchRates, RETRY_EVERY)
@@ -247,6 +246,13 @@ export function useCurrencies() {
       clearTimeout(retryTimer)
     }
   }, [])
+  const orderedCurrencies = orderCurrencies(currencies)
+  return orderedCurrencies
+}
 
+function orderCurrencies(currencies) {
+  const tempCurrency = currencies[0]
+  currencies[0] = currencies[8]
+  currencies[8] = tempCurrency
   return currencies
 }
