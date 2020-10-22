@@ -1,0 +1,33 @@
+- kind: ethereum/contract
+  name: ConvictionVoting
+  network: {{network}}
+  source:
+    abi: ConvictionVoting
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - ConvictionConfig
+      - Proposal
+      - Stake
+      - StakeHistory
+    abis:
+      - name: ConvictionVoting
+        file: ./abis/ConvictionVoting.json
+      - name: MiniMeToken
+        file: ./abis/MiniMeToken.json
+    eventHandlers:
+      - event: ConvictionSettingsChanged(uint256,uint256,uint256,uint256)
+        handler: handleConfigChanged
+      - event: ProposalAdded(indexed address,indexed uint256,string,bytes,uint256,address)
+        handler: handleProposalAdded
+      - event: StakeAdded(indexed address,indexed uint256,uint256,uint256,uint256,uint256)
+        handler: handleStakeAdded
+      - event: StakeWithdrawn(address,indexed uint256,uint256,uint256,uint256,uint256)
+        handler: handleStakeWithdrawn
+      - event: ProposalExecuted(indexed uint256,uint256)
+        handler: handleProposalExecuted
+      - event: ProposalCancelled(indexed uint256)
+        handler: handleProposalCancelled
+    file: ./src/ConvictionVoting.ts
