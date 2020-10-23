@@ -250,9 +250,12 @@ export function useCurrencies() {
   return orderedCurrencies
 }
 
+// Always puts USD at index 0
 function orderCurrencies(currencies) {
-  const tempCurrency = currencies[0]
-  currencies[0] = currencies[8]
-  currencies[8] = tempCurrency
-  return currencies
+  return currencies.sort(({ name }) => {
+    if (name === 'USD') {
+      return -1
+    }
+    return 0
+  })
 }
