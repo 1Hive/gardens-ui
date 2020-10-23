@@ -8,6 +8,7 @@ import {
   GU,
   IconCheck,
   Info,
+  Link,
   Modal,
   TextInput,
   textStyle,
@@ -289,6 +290,15 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
                 onRemove={handleAccountRemove}
                 onCancelRemove={handleAccountCancelRemove}
               />
+              <Info
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              >
+                In order to verify your linked identities please do so
+                temporarily from the{' '}
+                <Link href="https://3box.io/">3Box dapp</Link>.
+              </Info>
             </Section>
             <Section title="About">
               <Field label="Location">
