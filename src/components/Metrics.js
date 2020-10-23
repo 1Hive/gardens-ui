@@ -68,18 +68,6 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          <div>
-            <DropDown
-              header="Type"
-              placeholder="USD"
-              selected={currencyIndex}
-              onChange={handleCurrencyChange}
-              css={`
-                left: -${2 * GU}px;
-              `}
-              items={currencyNames}
-            />
-          </div>
           <TokenPrice currency={currency} />
         </div>
         <div>
@@ -104,6 +92,18 @@ const Metrics = React.memo(function Metrics({
             value={totalActiveTokens}
             token={stakeToken}
             currency={currency}
+          />
+        </div>
+        <div>
+          <DropDown
+            header="Type"
+            placeholder="USD"
+            selected={currencyIndex}
+            onChange={handleCurrencyChange}
+            css={`
+              top: ${3 * GU}px;
+            `}
+            items={currencyNames}
           />
         </div>
       </div>
