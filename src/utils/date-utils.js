@@ -7,6 +7,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 const KNOWN_FORMATS = {
   onlyDate: 'DD/MM/YYYY',
   iso: 'YYYY-MM-DD',
+  custom: 'DD MMMM HH:mm',
 }
 
 // dayjs plugins
@@ -22,5 +23,7 @@ function dateFormat(date, format = 'onlyDate') {
 function durationTime(seconds) {
   return dayjs.duration(seconds, 'seconds').humanize()
 }
+
+export function noop() {}
 
 export { dayjs, dateFormat, durationTime }

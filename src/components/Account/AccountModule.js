@@ -10,9 +10,10 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
+import { useAppState } from '../../providers/AppState'
 import { useProfile } from '../../providers/Profile'
 
-import { getUseWalletProviders } from '../../lib/web3-utils'
+import { getUseWalletProviders } from '../../utils/web3-utils'
 
 const AnimatedDiv = animated.div
 
@@ -30,7 +31,7 @@ const SCREENS = [
   },
   {
     id: 'connected',
-    height: 37 * GU,
+    height: 32.5 * GU,
   },
   {
     id: 'error',
@@ -50,6 +51,7 @@ function AccountModule({ compact }) {
   const { openBox } = useProfile()
 
   const { account, activating } = wallet
+  const { isLoading } = useAppState()
 
   const clearError = useCallback(() => setActivationError(null), [])
 
@@ -168,6 +170,7 @@ function AccountModule({ compact }) {
           label="Enable account"
           onClick={toggle}
           display={compact ? 'icon' : 'all'}
+          disabled={isLoading}
         />
       )}
 
@@ -175,7 +178,7 @@ function AccountModule({ compact }) {
         animateHeight={animate}
         heading={screen.title}
         height={screen.height}
-        width={51 * GU}
+        width={41 * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={opened}

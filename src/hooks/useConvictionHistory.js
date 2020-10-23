@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useLatestBlock } from './useBlock'
 import {
   getConvictionHistory,
@@ -12,19 +11,10 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 export function useConvictionHistory(proposal) {
   const { account } = useWallet()
   const latestBlock = useLatestBlock()
-  const { stakesHistory, alpha } = useAppState()
-
-  const stakes = useMemo(() => {
-    if (!stakesHistory || !proposal) {
-      return []
-    }
-    return stakesHistory.filter(
-      stake => parseInt(stake.proposalId) === parseInt(proposal.id)
-    )
-  }, [stakesHistory, proposal])
+  const { alpha } = useAppState()
 
   const convictionHistory = getConvictionHistory(
-    stakes,
+    proposal.stakesHistory,
     latestBlock.number + 25 * TIME_UNIT,
     alpha,
     TIME_UNIT
@@ -32,7 +22,7 @@ export function useConvictionHistory(proposal) {
 
   const userConvictionHistory = account
     ? getConvictionHistoryByEntity(
-        stakes,
+        proposal.stakesHistory,
         account,
         latestBlock.number + 25 * TIME_UNIT,
         alpha,

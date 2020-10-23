@@ -2,14 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { IdentityBadge as Badge } from '@1hive/1hive-ui'
 
-import { getNetworkType } from '../lib/web3-utils'
+import { getNetworkType } from '../utils/web3-utils'
 import { getProfileForAccount } from '../lib/profile'
 
 const addressCache = new Map()
 
-function IdentityBadge({ entity, useBox, ...props }) {
+const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
   const [profileName, setProfileName] = useState(null)
 
+  const networkType = getNetworkType()
   const history = useHistory()
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${entity}`)
@@ -22,9 +23,8 @@ function IdentityBadge({ entity, useBox, ...props }) {
         setProfileName(addressCache.get(entity))
         return
       }
-
       const profile = await getProfileForAccount(entity)
-      if (!cancelled) {
+      if (profile && !cancelled) {
         setProfileName(profile.name)
         addressCache.set(entity, profile.name)
       }
@@ -38,13 +38,13 @@ function IdentityBadge({ entity, useBox, ...props }) {
 
   return (
     <Badge
-      customLabel={profileName}
+      label={profileName}
       entity={entity}
-      networkType={getNetworkType()}
-      {...props}
+      networkType={networkType === 'xdai' ? 'private' : networkType}
       popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
+      {...props}
     />
   )
-}
+})
 
 export default IdentityBadge

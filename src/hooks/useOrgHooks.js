@@ -1,69 +1,47 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
-import connectConviction from '@1hive/connect-conviction-voting'
-import { connect } from '@aragon/connect'
-import { useContractReadOnly } from './useContract'
+import connectHoneypot from '@1hive/connect-honey-pot'
 import {
-  useConfigSubscription,
-  useProposalsSubscription,
-  useStakesHistorySubscription,
-} from './useSubscriptions'
-import { useWallet } from '../providers/Wallet'
+  useApp,
+  useApps,
+  useOrganization,
+  usePermissions,
+} from '@aragon/connect-react'
+import { useContractReadOnly } from './useContract'
+import { useConfigSubscription } from './useSubscriptions'
 
 // utils
 import env from '../environment'
-import { getNetwork } from '../networks'
 import BigNumber from '../lib/bigNumber'
-import { addressesEqual } from '../lib/web3-utils'
-import { getDefaultChain } from '../local-settings'
-import { getAppAddressByName } from '../lib/data-utils'
+import { addressesEqual } from '../utils/web3-utils'
+import { getAppAddressByName } from '../utils/data-utils'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
 
-const DEFAULT_APP_DATA = {
-  convictionVoting: null,
-  stakeToken: {},
-  requestToken: {},
-  proposals: [],
-  stakesHistory: [],
-  alpha: BigNumber(0),
-  maxRatio: BigNumber(0),
-  weight: BigNumber(0),
-}
+export function useOrgData() {
+  const appName = env('CONVICTION_APP_NAME')
 
-export function useOrganzation() {
-  const [organzation, setOrganization] = useState(null)
-  const { ethereum, ethers } = useWallet()
+  const [honeypot, setHoneypot] = useState(null)
+  const [organization, orgStatus] = useOrganization()
+  const [apps, appsStatus] = useApps()
+  const [convictionApp] = useApp(appName)
+  const [permissions, permissionsStatus] = usePermissions()
 
-  useEffect(() => {
-    let cancelled = false
-    const fetchOrg = async () => {
-      const orgAddress = getNetwork().honeypot
-      const organization = await connect(orgAddress, 'thegraph', {
-        ethereum: ethereum || ethers,
-        network: getDefaultChain(),
-      })
-
-      if (!cancelled) {
-        setOrganization(organization)
-      }
+  const convictionAppPermissions = useMemo(() => {
+    if (
+      !permissions ||
+      permissionsStatus.loading ||
+      permissionsStatus.error ||
+      !convictionApp
+    ) {
+      return
     }
-
-    fetchOrg()
-
-    return () => {
-      cancelled = true
-    }
-  }, [ethers, ethereum])
-
-  return organzation
-}
-
-export function useAppData(organization) {
-  const [appData, setAppData] = useState(DEFAULT_APP_DATA)
-  const appName = env('APP_NAME')
+    return permissions.filter(({ appAddress }) =>
+      addressesEqual(appAddress, convictionApp.address)
+    )
+  }, [convictionApp, permissions, permissionsStatus])
 
   useEffect(() => {
     if (!organization) {
@@ -72,44 +50,44 @@ export function useAppData(organization) {
 
     let cancelled = false
 
-    const fetchAppData = async () => {
-      const apps = await organization.apps()
-      const permissions = await organization.permissions()
+    const fetchHoneypotConnector = async () => {
+      try {
+        const honeypotConnector = await connectHoneypot(organization)
 
-      const convictionApp = apps.find(app => app.name === appName)
-
-      const convictionAppPermissions = permissions.filter(({ appAddress }) =>
-        addressesEqual(appAddress, convictionApp.address)
-      )
-
-      const convictionVoting = await connectConviction(convictionApp)
-
-      if (!cancelled) {
-        setAppData(appData => ({
-          ...appData,
-          installedApps: apps,
-          convictionVoting,
-          organization,
-          permissions: convictionAppPermissions,
-        }))
+        if (!cancelled) {
+          setHoneypot(honeypotConnector)
+        }
+      } catch (err) {
+        console.error(`Error fetching honey pot connector: ${err}`)
       }
     }
 
-    fetchAppData()
+    fetchHoneypotConnector()
 
     return () => {
       cancelled = true
     }
-  }, [appName, organization])
+  }, [organization])
 
-  const config = useConfigSubscription(appData.convictionVoting)
-  const proposals = useProposalsSubscription(appData.convictionVoting)
+  const config = useConfigSubscription(honeypot)
 
-  // Stakes done across all proposals on this app
-  // Includes old and current stakes
-  const stakesHistory = useStakesHistorySubscription(appData.convictionVoting)
+  const loadingData =
+    orgStatus.loading ||
+    appsStatus.loading ||
+    permissionsStatus.loading ||
+    !config
 
-  return { ...appData, ...config, proposals, stakesHistory }
+  const errors = orgStatus.error || appsStatus.error || permissionsStatus.error
+
+  return {
+    config,
+    errors,
+    honeypot,
+    installedApps: apps,
+    organization,
+    permissions: convictionAppPermissions,
+    loadingAppData: loadingData,
+  }
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
@@ -125,7 +103,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract || !token.id) {
+    if (!vaultContract || !token?.id) {
       return
     }
 
@@ -160,7 +138,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token.id])
+  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token])
 
   return vaultBalance
 }
@@ -171,10 +149,10 @@ export function useTokenBalances(account, token, timer = 3000) {
     totalSupply: new BigNumber(-1),
   })
 
-  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
+  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
 
   useEffect(() => {
-    if (!token.id) {
+    if (!token?.id || !tokenContract) {
       return
     }
 
@@ -213,7 +191,7 @@ export function useTokenBalances(account, token, timer = 3000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [account, balances, tokenContract, token.id])
+  }, [account, balances, tokenContract, token])
 
   return balances
 }

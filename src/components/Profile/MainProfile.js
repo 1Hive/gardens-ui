@@ -51,7 +51,7 @@ function MainProfile({ profile }) {
               `}
             />
           ) : (
-            <EthIdenticon address={account} radius={100} scale={7} />
+            account && <EthIdenticon address={account} radius={100} scale={7} />
           )}
         </div>
         <div
@@ -82,7 +82,7 @@ function MainProfile({ profile }) {
           >
             <div>
               {email && (
-                <div
+                <p
                   css={`
                     overflow: hidden;
                     white-space: nowrap;
@@ -90,19 +90,17 @@ function MainProfile({ profile }) {
                   `}
                 >
                   {email}
-                </div>
+                </p>
               )}
               {website && (
-                <div
+                <p
                   css={`
                     color: ${theme.contentSecondary};
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
+                    word-break: break-word;
                   `}
                 >
                   {website}
-                </div>
+                </p>
               )}
             </div>
             {verifiedAccounts && (
@@ -157,6 +155,7 @@ function MainProfile({ profile }) {
                 </h4>
                 <p
                   css={`
+                    word-break: break-word;
                     margin-top: ${1 * GU}px;
                     color: ${theme.contentSecondary};
                   `}

@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
-import { getUseWalletProviders } from '../../lib/web3-utils'
+import { getUseWalletProviders } from '../../utils/web3-utils'
 
 const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
   provider.id,
@@ -46,7 +46,6 @@ function ScreenProviders({ onActivate }) {
             display: grid;
             grid-gap: ${1.5 * GU}px;
             grid-auto-flow: row;
-            grid-template-columns: repeat(2, 1fr);
           `}
         >
           {PROVIDERS_INFO.map(([id, provider]) => (

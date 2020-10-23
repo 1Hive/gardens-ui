@@ -9,12 +9,11 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { BRIGHT_ID_APP_DEEPLINK } from '../../endpoints'
 import LoadingRing from '../LoadingRing'
-
+import { BRIGHT_ID_APP_DEEPLINK } from '../../endpoints'
 import { sponsorUser } from '../../services/sponsorUser'
 
-function BrightIdModal({ account, addressExist, visible }) {
+function BrightIdModal({ account, addressExist, visible, onClose }) {
   const [error, setError] = useState(null)
 
   const deepLink = `${BRIGHT_ID_APP_DEEPLINK}/${account}`
@@ -39,6 +38,7 @@ function BrightIdModal({ account, addressExist, visible }) {
           setError(`Error sponsoring account: ${error}`)
         }
       } catch (err) {
+        setError(true)
         console.error('Error when sponsoring account: ', err)
       }
     }
@@ -55,6 +55,7 @@ function BrightIdModal({ account, addressExist, visible }) {
       padding={6 * GU}
       visible={visible}
       width={Math.min(64 * GU, width - 40)}
+      onClose={onClose}
     >
       <h5
         css={`

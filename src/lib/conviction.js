@@ -1,5 +1,5 @@
 import BigNumber from './bigNumber'
-import { addressesEqual } from './web3-utils'
+import { addressesEqual } from '../utils/web3-utils'
 
 const oneBN = new BigNumber('1')
 /**
@@ -314,10 +314,26 @@ function convictionFromStakes(stakes, alpha) {
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ entity: _entity }) => addressesEqual(entity, _entity))
+    .filter(({ entity: { id } }) => addressesEqual(entity, id))
     .map(({ time, tokensStaked, conviction }) => ({
       time,
       totalTokensStaked: tokensStaked,
       conviction,
     }))
+}
+
+export function isEntitySupporting(proposal, entity) {
+  if (!entity) {
+    return false
+  }
+
+  const entityStake = proposal.stakes.find(({ entity: { id } }) =>
+    addressesEqual(entity, id)
+  )
+
+  if (!entityStake) {
+    return false
+  }
+
+  return entityStake.amount.gt(0)
 }

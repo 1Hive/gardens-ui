@@ -10,10 +10,12 @@ import {
   useSidePanelFocusOnReady,
   useTheme,
 } from '@1hive/1hive-ui'
-import { toDecimals, round, pct } from '../../lib/math-utils'
 import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
-import { formatTokenAmount } from '../../lib/token-utils'
 import { useAppState } from '../../providers/AppState'
+import { useWallet } from '../../providers/Wallet'
+
+import { toDecimals, round, pct } from '../../utils/math-utils'
+import { formatTokenAmount } from '../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
@@ -26,11 +28,11 @@ const SupportProposal = React.memo(function SupportProposal({
     valueBN: new BigNumber('0'),
   })
 
-  const { accountBalance, stakeToken } = useAppState()
+  const { account } = useWallet()
   const inputRef = useSidePanelFocusOnReady()
+  const { accountBalance, stakeToken } = useAppState()
 
-  const totalStaked = useAccountTotalStaked()
-
+  const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
@@ -62,7 +64,7 @@ const SupportProposal = React.memo(function SupportProposal({
   // Amount change handler
   const handleAmountChange = useCallback(
     event => {
-      const newAmount = event.target.value
+      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
         isNaN(event.target.value)
@@ -117,7 +119,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Calculate percentages
   const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
-  const stakedPct = 100 - nonStakedPct
+  const stakedPct = round(100 - nonStakedPct)
 
   return (
     <form onSubmit={handleSubmit}>

@@ -14,7 +14,6 @@ import {
   getProfileForAccount,
   openBoxForAccount,
 } from '../lib/profile'
-import { useBrightIdVerification } from '../hooks/useBrightIdVerification'
 
 const ProfileContext = React.createContext()
 
@@ -26,10 +25,6 @@ function ProfileProvider({ children }) {
   const [loadingBox, setLoadingBox] = useState(true)
   const [profile, setProfile] = useState(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
-
-  const { sponsorshipInfo, brightIdVerificationInfo } = useBrightIdVerification(
-    account
-  )
 
   const cancelled = useRef(false)
 
@@ -63,7 +58,7 @@ function ProfileProvider({ children }) {
         confirmationFailed: true,
       }))
 
-      console.error(err)
+      console.error(`Error opening box for account: ${err}`)
     }
   }, [account, ethereum])
 
@@ -168,8 +163,6 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
-        brightIdVerificationInfo,
-        sponsorshipInfo,
         openBox,
         updateProfile,
       }}

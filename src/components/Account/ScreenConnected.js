@@ -6,21 +6,23 @@ import {
   GU,
   IconCheck,
   IconCopy,
-  Link,
   RADIUS,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
+import { getNetworkName } from '../../utils/web3-utils'
+import { getProviderFromUseWalletId } from '../../ethereum-providers'
+
+import profileButtonSvg from '../../assets/profileButton.svg'
 
 function AccountScreenConnected({ onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
 
-  const walletNetworkName = wallet.networkName
+  const networkName = getNetworkName()
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
 
   const goToProfile = useCallback(() => {
@@ -41,31 +43,27 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
         padding: ${2 * GU}px;
       `}
     >
-      <div
+      <ButtonBase
+        onClick={goToProfile}
+        external={false}
         css={`
-          padding-bottom: ${2 * GU}px;
-          border-bottom: 1px solid ${theme.border};
+          width: 100%;
         `}
       >
-        <h4
+        <div
           css={`
-            ${textStyle('label2')};
             color: ${theme.contentSecondary};
-            margin-bottom: ${2 * GU}px;
+            padding-bottom: ${2 * GU}px;
+            border-bottom: 1px solid ${theme.border};
+            display: flex;
+            align-items: center;
+            column-gap: ${1 * GU}px;
           `}
         >
-          Account
-        </h4>
-        <Link
-          onClick={goToProfile}
-          external={false}
-          css={`
-            color: ${theme.content};
-          `}
-        >
-          My profile
-        </Link>
-      </div>
+          <img src={profileButtonSvg} alt="" width="24" height="24" />
+          <span>My profile</span>
+        </div>
+      </ButtonBase>
       <div
         css={`
           padding-top: ${2 * GU}px;
@@ -162,7 +160,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
                 margin-left: ${0.5 * GU}px;
               `}
             >
-              {`Connected to ${walletNetworkName} Network`}
+              {`Connected to ${networkName} Network`}
             </span>
           </div>
         </div>

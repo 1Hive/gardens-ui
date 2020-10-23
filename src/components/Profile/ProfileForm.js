@@ -6,8 +6,8 @@ import {
   ButtonBase,
   Field,
   GU,
-  IconCheck,
   Info,
+  Link,
   Modal,
   TextInput,
   textStyle,
@@ -15,30 +15,28 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import BrightIdStatus from './BrightIdStatus'
-import BrightIdModal from './BrightIdModal'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
 import { fetchPic } from '../../services'
 import { dateFormat } from '../../utils/date-utils'
 import { validateEmail } from '../../utils/validate-utils'
 
+import verifiedCheck from '../../assets/verifiedCheck.svg'
+
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()
   const {
     birthday,
-    brightIdVerificationInfo,
     description,
     email,
     location,
     name,
-    sponsorshipInfo,
     updateProfile,
     verifiedAccounts,
     website,
   } = profile
   const [error, setError] = useState(null)
   const [updatingProfile, setUpdatingProfile] = useState(false)
-  const [brightIdModalVisible, setBrightIdModalVisible] = useState(false)
 
   const [formData, setFormData] = useState({
     birthday,
@@ -105,10 +103,6 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const handleBirthdayChange = useCallback(date => {
     const dateFormatted = dateFormat(date, 'iso')
     setFormData(formData => ({ ...formData, birthday: dateFormatted }))
-  }, [])
-
-  const handleOnVerifyBrightId = useCallback(() => {
-    setBrightIdModalVisible(true)
   }, [])
 
   const [updatedFields, removedFields] = useMemo(() => {
@@ -298,13 +292,18 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
                 onRemove={handleAccountRemove}
                 onCancelRemove={handleAccountCancelRemove}
               />
+              <Info
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              >
+                In order to verify your linked identities please do so
+                temporarily from the{' '}
+                <Link href="https://3box.io/">3Box dapp</Link>.
+              </Info>
             </Section>
             <Section title="Bright Id">
-              <BrightIdStatus
-                brightIdVerificationInfo={brightIdVerificationInfo}
-                onVerify={handleOnVerifyBrightId}
-                sponsorshipInfo={sponsorshipInfo}
-              />
+              <BrightIdStatus />
             </Section>
             <Section title="About">
               <Field label="Location">
@@ -357,10 +356,6 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
           </div>
         </form>
       </Box>
-      <BrightIdModal
-        visible={brightIdModalVisible}
-        addressExist={brightIdVerificationInfo.addressExist}
-      />
     </>
   )
 }
@@ -409,7 +404,7 @@ function VerifiedAccount({
 }) {
   const theme = useTheme()
 
-  const verificationDisabled = validation && !validation(value)
+  const verificationDisabled = (validation && !validation(value)) || true // TODO: remove
 
   return (
     <Field label={label}>
@@ -433,12 +428,10 @@ function VerifiedAccount({
               {!removed && (
                 <>
                   <span>{value}</span>
-                  <IconCheck
+                  <img
+                    src={verifiedCheck}
                     css={`
                       margin-left: ${1 * GU}px;
-                      color: ${theme.positive};
-                      border: 2px solid ${theme.positive};
-                      border-radius: 50%;
                     `}
                   />
                 </>
@@ -475,6 +468,7 @@ function VerifiedAccount({
             }
             adornmentPosition="end"
             adornmentSettings={{ padding: 2 * GU }}
+            disabled // TODO: remove
           />
         )
       }

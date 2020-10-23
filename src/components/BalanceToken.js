@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { GU, tokenIconUrl } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../lib/token-utils'
+import { formatTokenAmount } from '../utils/token-utils'
 import { ETHER_TOKEN_VERIFIED_BY_SYMBOL } from '../lib/verified-tokens'
 import { getNetwork } from '../networks'
 
@@ -47,7 +47,7 @@ const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
   )
 }
 
-const TokenIcon = styled.img.attrs({ alt: '', width: '20', height: '20' })`
+const TokenIcon = styled.img.attrs({ alt: '', width: '24', height: '24' })`
   margin-right: ${1 * GU}px;
 `
 

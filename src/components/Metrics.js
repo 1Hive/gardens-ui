@@ -1,31 +1,28 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../lib/token-utils'
+import { useAppState } from '../providers/AppState'
+import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
+import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
+
 import honeySvg from '../assets/honey.svg'
 
 const Metrics = React.memo(function Metrics({
-  totalSupply,
   commonPool,
   onExecuteIssuance,
-  stakeToken,
-  requestToken,
   totalActiveTokens,
+  totalSupply,
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
+  const { requestToken, stakeToken } = useAppState()
 
   return (
-    <Box
-      heading="Honey"
-      css={`
-        margin-bottom: ${2 * GU}px;
-      `}
-    >
+    <Box padding={3 * GU}>
       <div
         css={`
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr;
+          display: flex;
+          justify-content: space-around;
         `}
       >
         <div
@@ -46,6 +43,7 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
+          <TokenPrice />
         </div>
         <div>
           <TokenBalance
@@ -81,7 +79,7 @@ function Metric({ label, value, color }) {
       <p
         css={`
           color: ${theme.contentSecondary};
-          margin-bottom: ${1 * GU}px;
+          margin-bottom: ${0.5 * GU}px;
         `}
       >
         {label}
@@ -99,8 +97,48 @@ function Metric({ label, value, color }) {
 }
 
 function TokenBalance({ label, token, value }) {
+  const theme = useTheme()
+
+  const price = useUniswapHnyPrice()
+  const usdValue = value * price
+
   return (
-    <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+    <>
+      <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+      <div
+        css={`
+          color: ${theme.green};
+        `}
+      >
+        $ {formatTokenAmount(usdValue, token.decimals)}
+      </div>
+    </>
+  )
+}
+
+function TokenPrice() {
+  const theme = useTheme()
+  const price = useUniswapHnyPrice()
+
+  return (
+    <div>
+      <p
+        css={`
+          ${textStyle('title2')};
+          margin-bottom: ${0.5 * GU}px;
+        `}
+      >
+        HNY Price
+      </p>
+      <span
+        css={`
+          ${textStyle('title2')};
+          color: ${theme.green};
+        `}
+      >
+        ${formatDecimals(price, 2)}
+      </span>
+    </div>
   )
 }
 

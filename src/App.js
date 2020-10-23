@@ -7,21 +7,24 @@ import Routes from './Routes'
 import { AppStateProvider } from './providers/AppState'
 import { ProfileProvider } from './providers/Profile'
 import { WalletProvider } from './providers/Wallet'
+import { ConnectProvider as Connect } from './providers/Connect'
 
 function App() {
   return (
     <WalletProvider>
-      <ProfileProvider>
-        <AppStateProvider>
-          <Main assetsUrl="/aragon-ui/" layout={false}>
-            <HashRouter>
-              <MainView>
-                <Routes />
-              </MainView>
-            </HashRouter>
-          </Main>
-        </AppStateProvider>
-      </ProfileProvider>
+      <Connect>
+        <ProfileProvider>
+          <AppStateProvider>
+            <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+              <HashRouter>
+                <MainView>
+                  <Routes />
+                </MainView>
+              </HashRouter>
+            </Main>
+          </AppStateProvider>
+        </ProfileProvider>
+      </Connect>
     </WalletProvider>
   )
 }
