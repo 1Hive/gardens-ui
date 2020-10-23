@@ -246,8 +246,7 @@ export function useCurrencies() {
       clearTimeout(retryTimer)
     }
   }, [])
-  const orderedCurrencies = orderCurrencies(currencies)
-  return orderedCurrencies
+  return orderCurrencies(currencies)
 }
 
 // Always puts USD at index 0
