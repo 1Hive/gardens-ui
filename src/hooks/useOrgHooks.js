@@ -255,6 +255,6 @@ function orderCurrencies(currencies) {
     if (name === 'USD') {
       return -1
     }
-    return 0
+    return 1
   })
 }
