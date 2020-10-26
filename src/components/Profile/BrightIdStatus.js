@@ -74,7 +74,10 @@ function BrightIdStatus({ onVerify }) {
           if (!userSponsored) {
             return (
               <div>
-                <Tag background={theme.negativeSurface} color={theme.negative}>
+                <Tag
+                  background={theme.negativeSurface.toString()}
+                  color={theme.negative.toString()}
+                >
                   Not verified
                 </Tag>
                 <ButtonBase
