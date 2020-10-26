@@ -6,7 +6,6 @@ import {
   ButtonBase,
   Field,
   GU,
-  IconCheck,
   Info,
   Link,
   Modal,
@@ -15,11 +14,14 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+import BrightIdStatus from './BrightIdStatus'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
 import { fetchPic } from '../../services'
 import { dateFormat } from '../../utils/date-utils'
 import { validateEmail } from '../../utils/validate-utils'
+
+import verifiedCheck from '../../assets/verifiedCheck.svg'
 
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()
@@ -300,6 +302,9 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
                 <Link href="https://3box.io/">3Box dapp</Link>.
               </Info>
             </Section>
+            <Section title="Bright Id">
+              <BrightIdStatus />
+            </Section>
             <Section title="About">
               <Field label="Location">
                 <TextInput
@@ -423,12 +428,10 @@ function VerifiedAccount({
               {!removed && (
                 <>
                   <span>{value}</span>
-                  <IconCheck
+                  <img
+                    src={verifiedCheck}
                     css={`
                       margin-left: ${1 * GU}px;
-                      color: ${theme.positive};
-                      border: 2px solid ${theme.positive};
-                      border-radius: 50%;
                     `}
                   />
                 </>
