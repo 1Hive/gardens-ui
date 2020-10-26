@@ -2,7 +2,6 @@
     "version": 2,
     "public": true,
     "scope": "1hive",
-    "alias": "1hive.org",
     "build": {
       "env": {
         "REACT_APP_CHAIN_ID": "100",

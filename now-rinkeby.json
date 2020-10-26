@@ -4,7 +4,7 @@
   "build": {
     "env": {
       "REACT_APP_CHAIN_ID": "4",
-      "REACT_APP_APP_NAME":"conviction-beta"
+      "REACT_APP_CONVICTION_APP_NAME":"conviction-beta"
     }
   }
 }
