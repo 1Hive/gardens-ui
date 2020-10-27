@@ -5,7 +5,6 @@ import {
   useOrgData,
   useTokenBalances,
   useVaultBalance,
-  useCurrencies,
 } from '../hooks/useOrgHooks'
 import useEffectiveSupply from '../hooks/useEffectiveSupply'
 import { useWallet } from './Wallet'
@@ -28,7 +27,6 @@ function AppStateProvider({ children }) {
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
-  const currencies = useCurrencies()
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
   const appLoading =
@@ -49,7 +47,6 @@ function AppStateProvider({ children }) {
         totalStaked,
         totalSupply,
         vaultBalance,
-        currencies,
       }}
     >
       {children}

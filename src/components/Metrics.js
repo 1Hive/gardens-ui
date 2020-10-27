@@ -1,16 +1,17 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import {
   Box,
+  DropDown,
   GU,
   textStyle,
   useLayout,
   useTheme,
-  DropDown,
 } from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
+import { useCurrencies } from '../hooks/useCurrencies'
 
 import honeySvg from '../assets/honey.svg'
 
@@ -22,7 +23,8 @@ const Metrics = React.memo(function Metrics({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const { requestToken, stakeToken, currencies } = useAppState()
+  const { requestToken, stakeToken } = useAppState()
+  const currencies = useCurrencies()
   const [currencyIndex, setCurrencyIndex] = useState(0)
   const currency = useMemo(() => {
     if (!currencies.length) {
@@ -100,10 +102,10 @@ const Metrics = React.memo(function Metrics({
             placeholder="USD"
             selected={currencyIndex}
             onChange={handleCurrencyChange}
+            items={currencyNames}
             css={`
               top: ${3 * GU}px;
             `}
-            items={currencyNames}
           />
         </div>
       </div>
@@ -138,7 +140,6 @@ function Metric({ label, value, color }) {
 
 function TokenBalance({ label, token, value, currency }) {
   const theme = useTheme()
-
   const price = useUniswapHnyPrice()
   const currencyValue = value * price * currency.rate
 
