@@ -1,0 +1,125 @@
+type Config @entity {
+  id: ID!
+  conviction: ConvictionConfig
+  voting: VotingConfig
+}
+
+type ConvictionConfig @entity {
+  id: ID!
+  decay: BigInt!
+  weight: BigInt!
+  maxRatio: BigInt!
+  pctBase: BigInt!
+  stakeToken: Token
+  totalStaked: BigInt!
+  maxStakedProposals: Int!
+  minThresholdStakePercentage: BigInt!
+  requestToken: Token
+}
+
+type VotingConfig @entity {
+  id: ID!
+  token: Token!
+  supportRequiredPct: BigInt!
+  minAcceptQuorumPct: BigInt!
+  durationBlocks: BigInt!
+  bufferBlocks: BigInt!
+  executionDelayBlocks: BigInt!
+}
+
+type Proposal @entity {
+  id: ID!
+  number: BigInt!
+  creator: Bytes!
+  status: ProposalStatus!
+  statusInt: Int!
+  type: ProposalType!
+  typeInt: Int!
+  createdAt: BigInt!
+  weight: BigInt!
+  metadata: String!
+  executedAt: BigInt
+  
+  # Proposal data
+  link: String
+  stakes: [Stake!] @derivedFrom(field: "proposal")
+  stakesHistory: [StakeHistory!] @derivedFrom(field: "proposal")
+  beneficiary: Bytes
+  convictionLast: BigInt
+  requestedAmount: BigInt
+  totalTokensStaked: BigInt
+
+  # Voting data
+  startBlock: BigInt
+  executionBlock: BigInt
+  snapshotBlock: BigInt
+  supportRequiredPct: BigInt
+  minAcceptQuorum: BigInt
+  yea: BigInt
+  nay: BigInt
+  votingPower: BigInt
+  script: Bytes
+  casts: [Cast!] @derivedFrom(field: "proposal")
+}
+
+type Cast @entity {
+  id: ID!
+  entity: Supporter!
+  supports: Boolean!
+  stake: BigInt!
+  proposal: Proposal!
+  createdAt: BigInt!
+}
+
+type Stake @entity {
+  id: ID!
+  type: StakeType!
+  entity: Supporter!
+  proposal: Proposal!
+  amount: BigInt!
+  createdAt: BigInt!
+}
+
+type StakeHistory @entity {
+  id: ID!
+  type: StakeType!
+  entity: Supporter!
+  proposal: Proposal!
+  tokensStaked: BigInt!
+  totalTokensStaked: BigInt!
+  conviction: BigInt!
+  time: BigInt!      # Block at which was created
+  createdAt: BigInt! # Timestamp at which was created
+}
+
+type Supporter @entity {
+  id: ID!
+  address: Bytes!
+  casts: [Cast!] @derivedFrom(field: "entity")
+  stakes: [Stake!] @derivedFrom(field: "entity")
+  stakesHistory: [StakeHistory!] @derivedFrom(field: "entity")
+}
+
+type Token @entity {
+  id:ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+}
+
+enum ProposalStatus {
+  Active
+  Cancelled
+  Executed
+}
+
+enum ProposalType {
+  Suggestion # Signaling proposal
+  Proposal   # Proposal requesting funds
+  Decision   # Vote
+}
+
+enum StakeType {
+  Add
+  Withdraw
+}
