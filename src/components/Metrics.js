@@ -9,9 +9,9 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
+import { useCurrencies } from '../hooks/useCurrencies'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
-import { useCurrencies } from '../hooks/useCurrencies'
 
 import honeySvg from '../assets/honey.svg'
 
