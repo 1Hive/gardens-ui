@@ -22,7 +22,7 @@ export function getVotingConfigEntity(appAddress: Address): VotingConfigEntity |
 
   let config = VotingConfigEntity.load(configEntityId)
 
-  if (!config) {
+  if (!config      ) {
     config = new VotingConfigEntity(configEntityId)
   }
 
@@ -38,8 +38,8 @@ export function loadVotingConfig(orgAddress: Address, appAddress: Address): void
     let dandelionVoting = DandelionVotingContract.bind(appAddress)
     // Load token data
     let token = dandelionVoting.token()
-    let success = loadTokenData(token)
-    if (success) {
+    let tokenId = loadTokenData(token)
+    if (tokenId) {
       votingConfig.token = token.toHexString()
     }
   

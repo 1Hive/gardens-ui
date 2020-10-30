@@ -1,5 +1,5 @@
 {
-  "name": "honey-pot",
+  "name": "disputable-honey-pot",
   "version": "0.1.0",
   "scripts": {
     "build": "./scripts/build-graph.sh",
@@ -22,9 +22,9 @@
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",
     "@graphprotocol/graph-ts": "^0.18.0",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint": "^7.9.0"
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "eslint": "^7.12.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

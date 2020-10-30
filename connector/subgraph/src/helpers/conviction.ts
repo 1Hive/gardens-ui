@@ -37,15 +37,15 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   let convictionVoting = ConvictionVotingContract.bind(appAddress)
   // Load tokens data
   let stakeToken = convictionVoting.stakeToken()
-  let success = loadTokenData(stakeToken)
-  if (success) {
+  const stakeTokenId = loadTokenData(stakeToken)
+  if (stakeTokenId) {
     convictionConfig.stakeToken = stakeToken.toHexString()
   }
 
   let requestToken = convictionVoting.requestToken()
   // App could be instantiated without a vault
-  success = loadTokenData(requestToken)
-  if (success) {
+  const requestTokenId = loadTokenData(requestToken)
+  if (requestTokenId) {
     convictionConfig.requestToken = requestToken.toHexString()
   }
 
@@ -135,4 +135,5 @@ export function populateProposalDataFromEvent(
   proposal.creator = event.params.entity
   proposal.createdAt = event.block.timestamp
   proposal.beneficiary = event.params.beneficiary
+  proposal.actionId = event.params.actionId
 }

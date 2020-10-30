@@ -60,6 +60,14 @@ type Proposal @entity {
   votingPower: BigInt
   script: Bytes
   casts: [Cast!] @derivedFrom(field: "proposal")
+
+  # Dispute data
+  actionId: BigInt!
+  disputeId: BigInt
+  challengeId: BigInt!
+  challenger: Bytes!
+  challengeEndDate: BigInt!
+  collateralRequirement: CollateralRequirement! @derivedFrom(field: "proposal")
 }
 
 type Cast @entity {
@@ -107,10 +115,22 @@ type Token @entity {
   decimals: Int!
 }
 
+type CollateralRequirement @entity {
+  id: ID!
+  proposal: Proposal!
+  token: Token!
+  actionAmount: BigInt!
+  challengeAmount: BigInt!
+  challengeDuration: BigInt!
+}
+
 enum ProposalStatus {
   Active
   Cancelled
+  Challenged
+  Disputed
   Executed
+  Rejected
 }
 
 enum ProposalType {

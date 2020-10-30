@@ -8,20 +8,19 @@ import {
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
-////// Token Entity //////
+/// /// Token Entity //////
 export function loadTokenData(address: Address): boolean {
-
-  let id = address.toHexString()
-  let token = TokenEntity.load(id)
+  const id = address.toHexString()
+  const token = TokenEntity.load(id)
 
   if (!token) {
-    let token = new TokenEntity(id)
-    let tokenContract = MiniMeTokenContract.bind(address)
+    const token = new TokenEntity(id)
+    const tokenContract = MiniMeTokenContract.bind(address)
 
     // App could be instantiated without a vault which means request token could be invalid
-    let symbol = tokenContract.try_symbol()
+    const symbol = tokenContract.try_symbol()
     if (symbol.reverted) {
-      return false
+      return null
     }
 
     token.symbol = symbol.value
@@ -30,12 +29,12 @@ export function loadTokenData(address: Address): boolean {
     token.save()
   }
 
-  return true
+  return token.id
 }
 
-////// General Config Entity //////
+/// /// General Config Entity //////
 export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
-  let id = orgAddress.toHexString()
+  const id = orgAddress.toHexString()
   let config = ConfigEntity.load(id)
 
   if (config === null) {
@@ -45,9 +44,9 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
   return config
 }
 
-////// Supporter Entity //////
+/// /// Supporter Entity //////
 export function createSupporter(address: Address): void {
-  let id = address.toHexString()
+  const id = address.toHexString()
   let supporter = SupporterEntity.load(id)
 
   if (supporter !== null) {
@@ -59,7 +58,7 @@ export function createSupporter(address: Address): void {
   supporter.save()
 }
 
-////// Proposal Entity //////
+/// /// Proposal Entity //////
 export function getProposalEntityId(
   appAddress: Address,
   proposalId: BigInt
@@ -76,7 +75,7 @@ export function getProposalEntity(
   appAddress: Address,
   proposalId: BigInt
 ): ProposalEntity | null {
-  let proposalEntityId = getProposalEntityId(appAddress, proposalId)
+  const proposalEntityId = getProposalEntityId(appAddress, proposalId)
 
   let proposal = ProposalEntity.load(proposalEntityId)
   if (!proposal) {
@@ -85,6 +84,11 @@ export function getProposalEntity(
     proposal.status = STATUS_ACTIVE
     proposal.statusInt = STATUS_ACTIVE_NUM
     proposal.weight = BigInt.fromI32(0)
+    proposal.challengeId = BigInt.fromI32(0)
+    proposal.challenger = Address.fromString(
+      '0x0000000000000000000000000000000000000000'
+    )
+    proposal.challengeEndDate = BigInt.fromI32(0)
   }
 
   return proposal
@@ -93,3 +97,4 @@ export function getProposalEntity(
 // Export local helpers
 export * from './conviction'
 export * from './voting'
+export * from './agreement'
