@@ -14,7 +14,7 @@
       - StakeHistory
     abis:
       - name: Agreement
-          file: ./abis/Agreement.json
+        file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
       - name: MiniMeToken

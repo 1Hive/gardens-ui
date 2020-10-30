@@ -8,20 +8,20 @@ import {
   ChangeBufferBlocks as ChangeBufferBlocksEvent,
   ChangeExecutionDelayBlocks as ChangeExecutionDelayBlocksEvent,
 } from '../generated/templates/DandelionVoting/DandelionVoting'
-import { 
+import {
   createSupporter,
-  getCastEntity, 
-  getProposalEntity, 
+  getCastEntity,
+  getProposalEntity,
   getVotingConfigEntity,
-  populateCastDataFromEvent, 
+  populateCastDataFromEvent,
   populateVotingDataFromContract,
-  populateVotingDataFromEvent
+  populateVotingDataFromEvent,
 } from './helpers'
 import { STATUS_EXECUTED, STATUS_EXECUTED_NUM } from './statuses'
 import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from './types'
 
 export function handleStartVote(event: StartVoteEvent): void {
-  let proposal = getProposalEntity(event.address, event.params.voteId)
+  const proposal = getProposalEntity(event.address, event.params.voteId)
 
   populateVotingDataFromEvent(proposal, event)
   populateVotingDataFromContract(proposal, event.address, proposal.number)
@@ -33,10 +33,10 @@ export function handleStartVote(event: StartVoteEvent): void {
 }
 
 export function handleCastVote(event: CastVoteEvent): void {
-  let proposal = getProposalEntity(event.address, event.params.voteId)
+  const proposal = getProposalEntity(event.address, event.params.voteId)
   createSupporter(event.params.voter)
 
-  let cast = getCastEntity(proposal, event.params.voter)
+  const cast = getCastEntity(proposal, event.params.voter)
   populateCastDataFromEvent(cast, event)
 
   if (event.params.supports == true) {
@@ -45,7 +45,7 @@ export function handleCastVote(event: CastVoteEvent): void {
     proposal.nay = proposal.nay.plus(event.params.stake)
   }
 
-  let totalVotes = proposal.yea.plus(proposal.nay as BigInt)
+  const totalVotes = proposal.yea.plus(proposal.nay as BigInt)
   proposal.weight = proposal.yea.div(totalVotes)
 
   proposal.save()
@@ -53,7 +53,7 @@ export function handleCastVote(event: CastVoteEvent): void {
 }
 
 export function handleExecuteVote(event: ExecuteVoteEvent): void {
-  let proposal = getProposalEntity(event.address, event.params.voteId)
+  const proposal = getProposalEntity(event.address, event.params.voteId)
 
   proposal.status = STATUS_EXECUTED
   proposal.statusInt = STATUS_EXECUTED_NUM
@@ -62,32 +62,34 @@ export function handleExecuteVote(event: ExecuteVoteEvent): void {
   proposal.save()
 }
 
-
-export function handleChangeSupportRequired(event: ChangeSupportRequiredEvent) {
-  let votingConfig = getVotingConfigEntity(event.address)
+export function handleChangeSupportRequired(
+  event: ChangeSupportRequiredEvent
+): void {
+  const votingConfig = getVotingConfigEntity(event.address)
   votingConfig.supportRequiredPct = event.params.supportRequiredPct
 
   votingConfig.save()
 }
 
-export function  handleChangeMinQuorum(event: ChangeMinQuorumEvent) {
-  let votingConfig = getVotingConfigEntity(event.address)
+export function handleChangeMinQuorum(event: ChangeMinQuorumEvent): void {
+  const votingConfig = getVotingConfigEntity(event.address)
   votingConfig.minAcceptQuorumPct = event.params.minAcceptQuorumPct
 
   votingConfig.save()
 }
 
-export function handleChangeBufferBlocks(event: ChangeBufferBlocksEvent) {
-  let votingConfig = getVotingConfigEntity(event.address)
+export function handleChangeBufferBlocks(event: ChangeBufferBlocksEvent): void {
+  const votingConfig = getVotingConfigEntity(event.address)
   votingConfig.bufferBlocks = event.params.bufferBlocks
-
-  votingConfig.save()
-} 
-
-export function handleChangeExecutionDelayBlocks(event: ChangeExecutionDelayBlocksEvent) {
-  let votingConfig = getVotingConfigEntity(event.address)
-  votingConfig.executionDelayBlocks = event.params.executionDelayBlocks
 
   votingConfig.save()
 }
 
+export function handleChangeExecutionDelayBlocks(
+  event: ChangeExecutionDelayBlocksEvent
+): void {
+  const votingConfig = getVotingConfigEntity(event.address)
+  votingConfig.executionDelayBlocks = event.params.executionDelayBlocks
+
+  votingConfig.save()
+}

@@ -9,7 +9,7 @@ import {
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
 /// /// Token Entity //////
-export function loadTokenData(address: Address): boolean {
+export function loadTokenData(address: Address): string | null {
   const id = address.toHexString()
   const token = TokenEntity.load(id)
 

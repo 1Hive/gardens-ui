@@ -115,7 +115,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 }
 
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  const proposal = getProposalEntity(event.address, event.params.proposalId)
   proposal.status = STATUS_CANCELLED
   proposal.statusInt = STATUS_CANCELLED_NUM
 
@@ -123,15 +123,19 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 }
 
 export function handleProposalPaused(event: ProposalPausedEvent): void {
-  _onProposalPaused(event.address, event.params.challengeId, event.params.id)
+  _onProposalPaused(
+    event.address,
+    event.params.challengeId,
+    event.params.proposalId
+  )
 }
 
 export function handleProposalResumed(event: ProposalResumedEvent): void {
-  _onProposalResumed(event.address, event.parms.id)
+  _onProposalResumed(event.address, event.params.proposalId)
 }
 
 export function handleProposalRejected(event: ProposalRejectedEvent): void {
-  _onProposalRejected(event.address, event.parms.id)
+  _onProposalRejected(event.address, event.params.proposalId)
 }
 
 function _onProposalPaused(
