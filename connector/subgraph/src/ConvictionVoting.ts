@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 import {
   ConvictionVoting as ConvictionVotingContract,
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
@@ -58,6 +58,9 @@ export function handleConfigChanged(
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
+  log.info('********* PROPOSAL ADDEDD!!!!!!!!!!!! ********** {}', [
+    event.params.id.toString(),
+  ])
   const proposal = getProposalEntity(event.address, event.params.id)
 
   populateProposalDataFromEvent(proposal, event)

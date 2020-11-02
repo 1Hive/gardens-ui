@@ -11,10 +11,13 @@
     apiVersion: 0.0.1
     language: wasm/assemblyscript
     entities:
+      - Agreement
       - Config
       - ConvictionConfig
       - VotingConfig
     abis:
+      - name: Agreement
+        file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
       - name: DandelionVoting

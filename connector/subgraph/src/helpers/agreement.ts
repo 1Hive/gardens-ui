@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, log } from '@graphprotocol/graph-ts'
 import {
   CollateralRequirement as CollateralRequirementEntity,
   Proposal as ProposalEntity,
@@ -17,9 +17,13 @@ export function populateCollateralData(
 ): void {
   const ABSTAIN_PROPOSAL_ID = BigInt.fromI32(1)
 
-  if (event.params.id !== ABSTAIN_PROPOSAL_ID) {
+  if (event.params.id != ABSTAIN_PROPOSAL_ID) {
     const convictionVotingApp = ConvictionVotingContract.bind(event.address)
     const agreementAppAddress = convictionVotingApp.getAgreement()
+    log.info(
+      '********* POPULATE agreementAppAddress !!!!!!!!!!!! ********** {}',
+      [agreementAppAddress.toString()]
+    )
     const agreementApp = AgreementContract.bind(agreementAppAddress)
     const actionData = agreementApp.getAction(proposal.actionId)
     const collateralRequirementData = agreementApp.getCollateralRequirement(
