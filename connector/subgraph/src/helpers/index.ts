@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
   Config as ConfigEntity,
@@ -28,7 +28,6 @@ export function loadTokenData(address: Address): string | null {
     token.decimals = tokenContract.decimals()
     token.save()
   }
-
   return token.id
 }
 

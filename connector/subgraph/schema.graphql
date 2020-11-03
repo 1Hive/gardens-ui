@@ -67,7 +67,7 @@ type Proposal @entity {
   challengeId: BigInt!
   challenger: Bytes!
   challengeEndDate: BigInt!
-  collateralRequirement: CollateralRequirement! @derivedFrom(field: "proposal")
+  collateralRequirement: CollateralRequirement @derivedFrom(field: "proposal")
 }
 
 type Cast @entity {
@@ -117,11 +117,11 @@ type Token @entity {
 
 type CollateralRequirement @entity {
   id: ID!
-  proposal: Proposal!
-  token: Token!
-  actionAmount: BigInt!
-  challengeAmount: BigInt!
-  challengeDuration: BigInt!
+  proposal: Proposal
+  token: Token
+  actionAmount: BigInt
+  challengeAmount: BigInt
+  challengeDuration: BigInt
 }
 
 enum ProposalStatus {

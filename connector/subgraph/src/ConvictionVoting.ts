@@ -20,8 +20,8 @@ import {
   getStakeEntity,
   getStakeHistoryEntity,
   createSupporter,
-  populateProposalDataFromEvent,
   populateCollateralData,
+  populateProposalDataFromEvent,
 } from './helpers'
 import {
   STATUS_ACTIVE,
@@ -58,9 +58,6 @@ export function handleConfigChanged(
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  log.info('********* PROPOSAL ADDEDD!!!!!!!!!!!! ********** {}', [
-    event.params.id.toString(),
-  ])
   const proposal = getProposalEntity(event.address, event.params.id)
 
   populateProposalDataFromEvent(proposal, event)

@@ -1,6 +1,6 @@
 {
   "network": "rinkeby",
-  "address": "0x8e439f8c7c7d4f16c7cf5c60548bbeb306566ce6",
-  "startBlock": "7177242",
+  "address": "0x1af5d1a6d1da7a27d2a172278049f7cea7b1e569",
+  "startBlock": "7400000",
   "orgName": "Disputable Honeypot DAO"
 }

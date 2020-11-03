@@ -15,7 +15,7 @@ const DANDELION_VOTING_APP_IDS: string[] = [
   // '0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184', // disputable-conviction-voting.open.aragonpm.eth
 ]
 const CONIVCTION_VOTING_ADDRESS: Address = Address.fromString(
-  '0x57cbe08d6c987dda2148eb9be5ba3bcf96a392fb'
+  '0xd67d46a0a3eeb147a0f6a4ce966aa0dff3bdd61a'
 )
 
 function onAppTemplateCreated(
