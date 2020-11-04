@@ -11,12 +11,12 @@ import { Agreement as AgreementContract } from '../../generated/templates/Agreem
 
 import { loadTokenData } from './'
 
+const ABSTAIN_PROPOSAL_ID = BigInt.fromI32(1)
+
 export function populateCollateralData(
   proposal: ProposalEntity | null,
   event: ProposalAddedEvent
 ): void {
-  const ABSTAIN_PROPOSAL_ID = BigInt.fromI32(1)
-
   if (event.params.id != ABSTAIN_PROPOSAL_ID) {
     const convictionVotingApp = ConvictionVotingContract.bind(event.address)
     const agreementAppAddress = convictionVotingApp.getAgreement()

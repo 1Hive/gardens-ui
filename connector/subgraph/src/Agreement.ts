@@ -3,8 +3,8 @@ import {
   Agreement as AgreementContract,
   ActionDisputed as ActionDisputedEvent,
 } from '../generated/templates/Agreement/Agreement'
-import { getProposalEntityId } from './helpers/index'
-import { STATUS_DISPUTED } from './statuses'
+import { getProposalEntity } from './helpers/index'
+import { STATUS_DISPUTED, STATUS_DISPUTED_NUM } from './statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
@@ -12,10 +12,10 @@ export function handleActionDisputed(event: ActionDisputedEvent): void {
   const agreementApp = AgreementContract.bind(event.address)
   const actionData = agreementApp.getAction(event.params.actionId)
   const challengeData = agreementApp.getChallenge(event.params.challengeId)
-  const proposalId = getProposalEntityId(actionData.value0, actionData.value1)
 
-  const proposal = ProposalEntity.load(proposalId)!
+  const proposal = getProposalEntity(actionData.value0, actionData.value1)
   proposal.status = STATUS_DISPUTED
+  proposal.statusInt = STATUS_DISPUTED_NUM
   proposal.disputeId = challengeData.value8
   proposal.save()
 }

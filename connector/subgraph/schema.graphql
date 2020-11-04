@@ -127,9 +127,9 @@ type CollateralRequirement @entity {
 enum ProposalStatus {
   Active
   Cancelled
+  Executed
   Challenged
   Disputed
-  Executed
   Rejected
 }
 
