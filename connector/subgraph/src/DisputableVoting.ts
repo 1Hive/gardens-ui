@@ -1,4 +1,4 @@
-import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { MiniMeToken as ERC20Contract } from '../generated/templates/DisputableVoting/MiniMeToken'
 import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
 import {
@@ -139,7 +139,6 @@ export function handleCastVote(event: CastVoteEvent): void {
 
 export function handlePauseVote(event: PauseVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
-
   const votingApp = VotingContract.bind(event.address)
   const agreementApp = AgreementContract.bind(votingApp.getAgreement())
   const challengeData = agreementApp.getChallenge(event.params.challengeId)
@@ -202,13 +201,17 @@ export function updateVoteState(votingAddress: Address, voteId: BigInt): void {
 
   const settingsId = getVotingConfigEntityId(votingAddress, voteId)
 
+  const value0 = voteData.value0.toI32()
+  const value1 = voteData.value1.toI32()
+  const value2 = voteData.value2.toI32()
+  log.info('Before is accepted statuses {} ', [voteId.toString()])
   proposal.isAccepted = isAccepted(
-    voteData.value0,
-    voteData.value1,
-    voteData.value2,
+    BigInt.fromI32(value0),
+    BigInt.fromI32(value1),
+    BigInt.fromI32(value2),
     settingsId,
     votingApp.PCT_BASE()
   )
-
+  log.info('After is accepted statuses {} ', [voteId.toString()])
   proposal.save()
 }

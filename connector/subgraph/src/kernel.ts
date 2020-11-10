@@ -1,9 +1,4 @@
-import {
-  Address,
-  DataSourceTemplate,
-  TypedMap,
-  log,
-} from '@graphprotocol/graph-ts'
+import { Address, DataSourceTemplate, TypedMap } from '@graphprotocol/graph-ts'
 import { NewAppProxy as NewAppProxyEvent } from '../generated/Kernel/Kernel'
 import { loadConvictionConfig } from './helpers'
 
@@ -22,10 +17,6 @@ function onAppTemplateCreated(
   if (CONIVCTION_VOTING_ADDRESS.equals(appAddress)) {
     loadConvictionConfig(orgAddress, appAddress)
   }
-
-  // if (DISPUTABLE_VOTING_ADDRESS.equals(appAddress)) {
-  //   loadVotingConfig(orgAddress, appAddress)
-  // }
 }
 
 function processApp(

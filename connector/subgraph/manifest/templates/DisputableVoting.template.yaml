@@ -9,11 +9,14 @@
     language: wasm/assemblyscript
     entities:
       - DisputableVoting
+      - ConvictionVoting
       - Agreement
       - Token
     abis:
       - name: DisputableVoting
         file: ./abis/DisputableVoting.json
+      - name: ConvictionVoting
+        file: ./abis/ConvictionVoting.json
       - name: Agreement
         file: ./abis/Agreement.json
       - name: MiniMeToken

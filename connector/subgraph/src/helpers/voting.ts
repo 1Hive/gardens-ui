@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 import { CastVote as CastVoteEvent } from '../../generated/templates/DisputableVoting/DisputableVoting'
 import {
   Cast as CastVoteEntity,
@@ -160,6 +160,7 @@ export function isAccepted(
   pctBase: BigInt
 ): boolean {
   const setting = VotingConfigEntity.load(settingId)
+  log.info('is accepted  functiom {}', [settingId.toString()])
   return (
     hasReachedValuePct(
       yeas,
