@@ -19,7 +19,7 @@ import {
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
-  createSupporter,
+  loadOrcreateSupporter,
   populateCollateralData,
   populateProposalDataFromEvent,
 } from './helpers'
@@ -227,7 +227,7 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  createSupporter(entity)
+  loadOrcreateSupporter(entity)
 
   const stake = getStakeEntity(proposal, entity)
   stake.amount = tokensStaked
@@ -246,7 +246,7 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  createSupporter(entity)
+  loadOrcreateSupporter(entity)
 
   const stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
   stakeHistory.type = type

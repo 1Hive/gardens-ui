@@ -44,17 +44,16 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
 }
 
 /// /// Supporter Entity //////
-export function createSupporter(address: Address): void {
+export function loadOrcreateSupporter(address: Address): SupporterEntity {
   const id = address.toHexString()
   let supporter = SupporterEntity.load(id)
 
-  if (supporter !== null) {
-    return
+  if (supporter === null) {
+    supporter = new SupporterEntity(id)
+    supporter.address = address
+    supporter.save()
   }
-
-  supporter = new SupporterEntity(id)
-  supporter.address = address
-  supporter.save()
+  return supporter!
 }
 
 /// /// Proposal Entity //////
@@ -88,6 +87,12 @@ export function getProposalEntity(
       '0x0000000000000000000000000000000000000000'
     )
     proposal.challengeEndDate = BigInt.fromI32(0)
+    proposal.snapshotBlock = BigInt.fromI32(0) // needed because of required value on Voting data
+    proposal.settledAt = BigInt.fromI32(0)
+    proposal.disputedAt = BigInt.fromI32(0)
+    proposal.executedAt = BigInt.fromI32(0)
+    proposal.pausedAt = BigInt.fromI32(0)
+    proposal.pauseDuration = BigInt.fromI32(0)
   }
 
   return proposal

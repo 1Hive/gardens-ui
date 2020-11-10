@@ -15,7 +15,7 @@ cat $DATA
 mustache \
   -p manifest/templates/Agreement.template.yaml \
   -p manifest/templates/ConvictionVoting.template.yaml \
-  -p manifest/templates/DandelionVoting.template.yaml \
+  -p manifest/templates/DisputableVoting.template.yaml \
   -p manifest/templates/Organization.template.yaml \
   $DATA \
   subgraph.template.yaml > subgraph.yaml

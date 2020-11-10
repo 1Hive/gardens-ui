@@ -10,3 +10,7 @@ export const STATUS_CHALLENGED = 'Challenged'
 export const STATUS_CHALLENGED_NUM = 4
 export const STATUS_REJECTED = 'Rejected'
 export const STATUS_REJECTED_NUM = 5
+export const STATUS_SETTLED = 'Settled'
+export const STATUS_SETTLED_NUM = 6
+export const STATUS_UNKNOWN = 'Unknown'
+export const STATUS_UNKNOWN_NUM = 7

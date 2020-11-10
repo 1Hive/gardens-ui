@@ -1,31 +1,37 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { CastVote as CastVoteEvent } from '../../generated/templates/DisputableVoting/DisputableVoting'
 import {
-  CastVote as CastVoteEvent,
-  DandelionVoting as DandelionVotingContract,
-  StartVote as StartVoteEvent,
-} from '../../generated/templates/DandelionVoting/DandelionVoting'
-import {
-  Cast as CastEntity,
+  Cast as CastVoteEntity,
   Proposal as ProposalEntity,
   VotingConfig as VotingConfigEntity,
 } from '../../generated/schema'
-import { loadOrCreateConfig, loadTokenData } from '.'
+import { getProposalEntityId } from '.'
 import {
   STATUS_ACTIVE,
   STATUS_ACTIVE_NUM,
+  STATUS_CANCELLED,
+  STATUS_CANCELLED_NUM,
+  STATUS_CHALLENGED,
+  STATUS_CHALLENGED_NUM,
   STATUS_EXECUTED,
   STATUS_EXECUTED_NUM,
+  STATUS_UNKNOWN,
+  STATUS_UNKNOWN_NUM,
 } from '../statuses'
 
 /// ///  Voting config entity //////
-function getVotingConfigEntityId(appAddress: Address): string {
-  return appAddress.toHexString()
+export function getVotingConfigEntityId(
+  appAddress: Address,
+  settingId: BigInt
+): string {
+  return appAddress.toHexString() + '-setting-' + settingId.toString()
 }
 
 export function getVotingConfigEntity(
-  appAddress: Address
+  appAddress: Address,
+  settingId: BigInt
 ): VotingConfigEntity | null {
-  const configEntityId = getVotingConfigEntityId(appAddress)
+  const configEntityId = getVotingConfigEntityId(appAddress, settingId)
 
   let config = VotingConfigEntity.load(configEntityId)
 
@@ -34,36 +40,6 @@ export function getVotingConfigEntity(
   }
 
   return config
-}
-
-export function loadVotingConfig(
-  orgAddress: Address,
-  appAddress: Address
-): void {
-  // General org config
-  const config = loadOrCreateConfig(orgAddress)
-
-  // Dandelion Voting config
-  const votingConfig = getVotingConfigEntity(appAddress)
-  const dandelionVoting = DandelionVotingContract.bind(appAddress)
-  // Load token data
-  const token = dandelionVoting.token()
-  const tokenId = loadTokenData(token)
-  if (tokenId) {
-    votingConfig.token = token.toHexString()
-  }
-
-  // Load conviction params
-  votingConfig.supportRequiredPct = dandelionVoting.supportRequiredPct()
-  votingConfig.minAcceptQuorumPct = dandelionVoting.minAcceptQuorumPct()
-  votingConfig.durationBlocks = dandelionVoting.durationBlocks()
-  votingConfig.bufferBlocks = dandelionVoting.bufferBlocks()
-  votingConfig.executionDelayBlocks = dandelionVoting.executionDelayBlocks()
-
-  votingConfig.save()
-
-  config.voting = votingConfig.id
-  config.save()
 }
 
 /// /// Cast Entity //////
@@ -77,17 +53,17 @@ function getCastEntityId(
 export function getCastEntity(
   proposal: ProposalEntity | null,
   voter: Address
-): CastEntity | null {
+): CastVoteEntity | null {
   const castId = getCastEntityId(proposal, voter)
 
-  const cast = new CastEntity(castId)
+  const cast = new CastVoteEntity(castId)
   cast.proposal = proposal.id
 
   return cast
 }
 
 export function populateCastDataFromEvent(
-  cast: CastEntity | null,
+  cast: CastVoteEntity | null,
   event: CastVoteEvent
 ): void {
   cast.entity = event.params.voter.toHexString()
@@ -96,33 +72,106 @@ export function populateCastDataFromEvent(
   cast.createdAt = event.block.timestamp
 }
 
-/// /// Proposal Entity //////
-export function populateVotingDataFromEvent(
-  proposal: ProposalEntity | null,
-  event: StartVoteEvent
-): void {
-  proposal.creator = event.params.creator
-  proposal.metadata = event.params.metadata
-  proposal.createdAt = event.block.timestamp
+export function castVoteStatus(state: i32): string {
+  switch (state) {
+    case 0:
+      return STATUS_ACTIVE
+    case 1:
+      return STATUS_CHALLENGED
+    case 2:
+      return STATUS_CANCELLED
+    case 3:
+      return STATUS_EXECUTED
+    default:
+      return STATUS_UNKNOWN
+  }
 }
 
-export function populateVotingDataFromContract(
-  proposal: ProposalEntity | null,
-  appAddress: Address,
-  voteNum: BigInt
-): void {
-  const dandelionVoting = DandelionVotingContract.bind(appAddress)
-  const voteData = dandelionVoting.getVote(voteNum)
+export function castVoteStatusNum(state: i32): i32 {
+  switch (state) {
+    case 0:
+      return STATUS_ACTIVE_NUM
+    case 1:
+      return STATUS_CHALLENGED_NUM
+    case 2:
+      return STATUS_CANCELLED_NUM
+    case 3:
+      return STATUS_EXECUTED_NUM
+    default:
+      return STATUS_UNKNOWN_NUM
+  }
+}
 
-  proposal.status = voteData.value1 ? STATUS_EXECUTED : STATUS_ACTIVE
-  proposal.statusInt = voteData.value1 ? STATUS_EXECUTED_NUM : STATUS_ACTIVE_NUM
-  proposal.startBlock = voteData.value2
-  proposal.executionBlock = voteData.value3
-  proposal.snapshotBlock = voteData.value4
-  proposal.supportRequiredPct = voteData.value5
-  proposal.minAcceptQuorum = voteData.value6
-  proposal.yea = voteData.value8
-  proposal.nay = voteData.value9
-  proposal.votingPower = voteData.value7
-  proposal.script = voteData.value10
+export function castVoterState(state: i32): string {
+  switch (state) {
+    case 0:
+      return 'Absent'
+    case 1:
+      return 'Yea'
+    case 2:
+      return 'Nay'
+    default:
+      return 'Unknown'
+  }
+}
+
+function buildCastVoteId(
+  voting: Address,
+  voteId: BigInt,
+  voter: Address
+): string {
+  return getProposalEntityId(voting, voteId) + '-cast-' + voter.toHexString()
+}
+
+export function loadOrCreateCastVote(
+  votingAddress: Address,
+  voteId: BigInt,
+  voterAddress: Address
+): CastVoteEntity {
+  const castVoteId = buildCastVoteId(votingAddress, voteId, voterAddress)
+  let castVote = CastVoteEntity.load(castVoteId)
+  if (castVote === null) {
+    castVote = new CastVoteEntity(castVoteId)
+    castVote.proposal = getProposalEntityId(votingAddress, voteId)
+  }
+  return castVote!
+}
+
+function hasReachedValuePct(
+  value: BigInt,
+  total: BigInt,
+  pct: BigInt,
+  pctBase: BigInt
+): boolean {
+  return (
+    total.notEqual(BigInt.fromI32(0)) &&
+    value
+      .times(pctBase)
+      .div(total)
+      .gt(pct)
+  )
+}
+
+export function isAccepted(
+  yeas: BigInt,
+  nays: BigInt,
+  totalPower: BigInt,
+  settingId: string,
+  pctBase: BigInt
+): boolean {
+  const setting = VotingConfigEntity.load(settingId)
+  return (
+    hasReachedValuePct(
+      yeas,
+      yeas.plus(nays),
+      setting.supportRequiredPct,
+      pctBase
+    ) &&
+    hasReachedValuePct(
+      yeas,
+      totalPower,
+      setting.minimumAcceptanceQuorumPct,
+      pctBase
+    )
+  )
 }
