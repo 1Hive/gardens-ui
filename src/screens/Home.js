@@ -63,7 +63,7 @@ const Home = React.memo(function Home() {
               {!compactMode && (
                 <Metrics
                   commonPool={commonPool}
-                  onExecuteIssuance={actions.executeIssuance}
+                  onExecuteIssuance={actions.convictionActions.executeIssuance}
                   totalActiveTokens={totalStaked}
                   totalSupply={totalSupply}
                 />
