@@ -20,8 +20,8 @@
         file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
-      - name: DandelionVoting
-        file: ./abis/DandelionVoting.json
+      - name: DisputableVoting
+        file: ./abis/DisputableVoting.json
       - name: Kernel
         file: ./abis/Kernel.json  
       - name: MiniMeToken
