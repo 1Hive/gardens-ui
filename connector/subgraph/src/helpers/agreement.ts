@@ -61,7 +61,7 @@ export function populateVoteCollateralData(
   const collateralTokenId = loadTokenData(collateralRequirementData.value0)
 
   if (collateralTokenId) {
-    collateralRequirement.token = collateralRequirementData.value0.toHexString()
+    collateralRequirement.token = collateralTokenId
   }
 
   collateralRequirement.challengeDuration = collateralRequirementData.value1

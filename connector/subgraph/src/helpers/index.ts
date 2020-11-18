@@ -44,7 +44,7 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
 }
 
 /// /// Supporter Entity //////
-export function loadOrcreateSupporter(address: Address): SupporterEntity {
+export function loadOrCreateSupporter(address: Address): SupporterEntity {
   const id = address.toHexString()
   let supporter = SupporterEntity.load(id)
 

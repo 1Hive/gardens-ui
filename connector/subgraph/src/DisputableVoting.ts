@@ -24,7 +24,7 @@ import {
   isAccepted,
   loadOrCreateCastVote,
   loadOrCreateConfig,
-  loadOrcreateSupporter,
+  loadOrCreateSupporter,
   populateVoteCollateralData,
 } from './helpers/index'
 
@@ -99,7 +99,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.executedAt = BigInt.fromI32(0)
   proposal.createdAt = BigInt.fromI32(0)
   proposal.isAccepted = isAccepted(
-    voteData.value0, // yeays (using this instead proposa.yeays because we have the attribute as not required on the proposal entity)
+    voteData.value0, // yeas (using this instead proposa.yeays because we have the attribute as not required on the proposal entity)
     voteData.value1, // nays
     voteData.value2, // totalPower
     settingsId,
@@ -113,7 +113,7 @@ export function handleStartVote(event: StartVoteEvent): void {
 export function handleCastVote(event: CastVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
 
-  const voter = loadOrcreateSupporter(event.params.voter)
+  const voter = loadOrCreateSupporter(event.params.voter)
 
   const votingApp = VotingContract.bind(event.address)
   const proposal = getProposalEntity(event.address, event.params.voteId)
@@ -174,7 +174,7 @@ export function handleQuietEndingExtendVote(
 export function handleChangeRepresentative(
   event: ChangeRepresentativeEvent
 ): void {
-  const voter = loadOrcreateSupporter(event.params.voter)
+  const voter = loadOrCreateSupporter(event.params.voter)
   voter.representative = event.params.representative
   voter.save()
 }
