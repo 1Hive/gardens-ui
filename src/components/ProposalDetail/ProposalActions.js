@@ -10,6 +10,12 @@ import { addressesEqual } from '../../utils/web3-utils'
 import BigNumber from '../../lib/bigNumber'
 import { toDecimals, fromDecimals } from '../../utils/math-utils'
 
+import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_EXECUTED_STRING,
+} from '../../constants'
+
 const MAX_INPUT_DECIMAL_BASE = 6
 
 function ProposalActions({
@@ -22,7 +28,7 @@ function ProposalActions({
   const { stakeToken, accountBalance } = useAppState()
   const { account: connectedAccount } = useWallet()
 
-  const { id, currentConviction, stakes, threshold } = proposal
+  const { id, currentConviction, stakes, threshold, status } = proposal
   const totalStaked = useAccountTotalStaked(connectedAccount)
 
   const myStake = useMemo(
@@ -50,6 +56,13 @@ function ProposalActions({
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
+    if (
+      didIStake &&
+      (status === PROPOSAL_STATUS_CANCELLED_STRING ||
+        status === PROPOSAL_STATUS_EXECUTED_STRING)
+    ) {
+      return 'withdraw'
+    }
     if (currentConviction.gte(threshold)) {
       return 'execute'
     }
@@ -57,7 +70,7 @@ function ProposalActions({
       return 'update'
     }
     return 'support'
-  }, [currentConviction, didIStake, threshold])
+  }, [currentConviction, didIStake, status, threshold])
 
   const handleExecute = useCallback(() => {
     onExecuteProposal(id)
@@ -84,6 +97,10 @@ function ProposalActions({
     )
   }, [amount, id, myStake.amount, onStakeToProposal, onWithdrawFromProposal])
 
+  const handleWithdrawAllFromProposal = useCallback(() => {
+    onWithdrawFromProposal(id)
+  }, [id, onWithdrawFromProposal])
+
   const buttonProps = useMemo(() => {
     if (mode === 'execute') {
       return {
@@ -102,6 +119,13 @@ function ProposalActions({
         disabled: myStake.amount.toString() === amount.toString(),
       }
     }
+    if (mode === 'withdraw') {
+      return {
+        text: 'Withdraw stake',
+        action: handleWithdrawAllFromProposal,
+        mode: 'strong',
+      }
+    }
     return {
       text: 'Support this proposal',
       action: onRequestSupportProposal,
@@ -113,6 +137,7 @@ function ProposalActions({
     amount,
     handleChangeSupport,
     handleExecute,
+    handleWithdrawAllFromProposal,
     mode,
     myStake.amount,
     onRequestSupportProposal,
@@ -152,27 +177,31 @@ function ProposalActions({
           </div>
         </Field>
       )}
-      <Button
-        wide
-        mode={buttonProps.mode}
-        onClick={buttonProps.action}
-        disabled={buttonProps.disabled}
-      >
-        {buttonProps.text}
-      </Button>
-      {mode === 'support' && buttonProps.disabled && (
-        <Info
-          mode="warning"
-          css={`
-            margin-top: ${2 * GU}px;
-          `}
+      {(status === PROPOSAL_STATUS_ACTIVE_STRING || mode === 'withdraw') && (
+        <Button
+          wide
+          mode={buttonProps.mode}
+          onClick={buttonProps.action}
+          disabled={buttonProps.disabled}
         >
-          The currently connected account does not hold any{' '}
-          <strong>{stakeToken.symbol}</strong> tokens and therefore cannot
-          participate in this proposal. Make sure your account is holding{' '}
-          <strong>{stakeToken.symbol}</strong>.
-        </Info>
+          {buttonProps.text}
+        </Button>
       )}
+      {status === PROPOSAL_STATUS_ACTIVE_STRING &&
+        mode === 'support' &&
+        buttonProps.disabled && (
+          <Info
+            mode="warning"
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            The currently connected account does not hold any{' '}
+            <strong>{stakeToken.symbol}</strong> tokens and therefore cannot
+            participate in this proposal. Make sure your account is holding{' '}
+            <strong>{stakeToken.symbol}</strong>.
+          </Info>
+        )}
     </div>
   ) : (
     <AccountNotConnected />

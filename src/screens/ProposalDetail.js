@@ -251,17 +251,17 @@ function ProposalDetail({ match }) {
                         />
                       }
                     />
-                    <ProposalActions
-                      proposal={proposal}
-                      onExecuteProposal={convictionActions.executeProposal}
-                      onRequestSupportProposal={panelState.requestOpen}
-                      onStakeToProposal={convictionActions.stakeToProposal}
-                      onWithdrawFromProposal={
-                        convictionActions.withdrawFromProposal
-                      }
-                    />
                   </>
                 )}
+                <ProposalActions
+                  proposal={proposal}
+                  onExecuteProposal={convictionActions.executeProposal}
+                  onRequestSupportProposal={panelState.requestOpen}
+                  onStakeToProposal={convictionActions.stakeToProposal}
+                  onWithdrawFromProposal={
+                    convictionActions.withdrawFromProposal
+                  }
+                />
               </section>
             </Box>
           }
