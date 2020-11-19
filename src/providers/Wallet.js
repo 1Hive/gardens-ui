@@ -40,8 +40,9 @@ function WalletAugmented({ children }) {
 
 function WalletProvider({ children }) {
   const chainId = getDefaultChain()
+  const network = getNetwork(chainId)
 
-  const connectors = getUseWalletConnectors()
+  const connectors = getUseWalletConnectors(network)
   return (
     <UseWalletProvider chainId={chainId} connectors={connectors}>
       <WalletAugmented>{children}</WalletAugmented>

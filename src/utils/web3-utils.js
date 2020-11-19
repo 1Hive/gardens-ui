@@ -8,8 +8,15 @@ export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
 }
 
-export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
+export function getUseWalletProviders(network) {
+  const providers = [
+    { id: 'injected' },
+    { id: 'frame' },
+    {
+      id: 'walletconnect',
+      useWalletConf: { rpcUrl: network?.defaultEthNode },
+    },
+  ]
 
   if (env('FORTMATIC_API_KEY')) {
     providers.push({
@@ -25,8 +32,8 @@ export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
   return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
 }
 
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
+export function getUseWalletConnectors(network) {
+  return getUseWalletProviders(network).reduce((connectors, provider) => {
     if (provider.useWalletConf) {
       connectors[provider.id] = provider.useWalletConf
     }
