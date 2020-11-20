@@ -85,6 +85,16 @@ function Header() {
                 >
                   About
                 </Link>
+                <Link
+                  href="https://forum.1hive.org/"
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Forum
+                </Link>
               </nav>
             )}
           </div>
