@@ -150,9 +150,11 @@ function Profile() {
                             myStakes={accountStakes}
                           />
                           <StakingTokens myStakes={accountStakes} />
-                          <InactiveProposalsStake
-                            myInactiveStakes={accountInactiveStakes}
-                          />
+                          {accountInactiveStakes.length > 0 && (
+                            <InactiveProposalsStake
+                              myInactiveStakes={accountInactiveStakes}
+                            />
+                          )}
                         </>
                       }
                       invert={oneColumn ? 'vertical' : 'horizontal'}
