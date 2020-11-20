@@ -28,7 +28,7 @@ function ProposalActions({
   const { stakeToken, accountBalance } = useAppState()
   const { account: connectedAccount } = useWallet()
 
-  const { id, currentConviction, stakes, threshold, status } = proposal
+  const { id, currentConviction, stakes, status, threshold } = proposal
   const totalStaked = useAccountTotalStaked(connectedAccount)
 
   const myStake = useMemo(

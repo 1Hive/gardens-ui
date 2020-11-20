@@ -24,7 +24,10 @@ import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../utils/proposal-utils'
 import { getDecisionTransition } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
-import { PROPOSAL_STATUS_ACTIVE_STRING } from '../constants'
+import {
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_EXECUTED_STRING,
+} from '../constants'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -153,7 +156,8 @@ export function useInactiveProposalsWithStake() {
   const inactiveStakes = supporter.stakes.filter(stake => {
     return (
       stake.proposal.type !== ProposalTypes.Decision &&
-      stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING &&
+      (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||
+        stake.proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) &&
       stake.amount.gt(0)
     )
   })

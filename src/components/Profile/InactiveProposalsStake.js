@@ -54,6 +54,7 @@ const ProposalItem = ({
       css={`
         display: flex;
         align-items: center;
+        margin-bottom: ${1 * GU}px;
       `}
     >
       <div
