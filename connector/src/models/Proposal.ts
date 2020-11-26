@@ -16,6 +16,7 @@ export default class Proposal {
   readonly type: string
   readonly createdAt: string 
   readonly executedAt: string
+  readonly metadata?: string
   
   // proposal data
   readonly name?: string
@@ -27,17 +28,31 @@ export default class Proposal {
   readonly totalTokensStaked?: string
 
   // Voting data
-  readonly metadata?: string
-  readonly startBlock?: string
-  readonly executionBlock?: string
+  readonly settingId?: string
+  readonly startDate?: string
+  readonly totalPower?: string
   readonly snapshotBlock?: string
-  readonly supportRequiredPct?: string
-  readonly minAcceptQuorum?: string
-  readonly yea?: string
-  readonly nay?: string
-  readonly votingPower?: string
+  readonly yeas?: string
+  readonly nays?: string
+  readonly quietEndingExtensionDuration?: string
+  readonly quietEndingSnapshotSupport?: string
   readonly script?: string
+  readonly isAccepted?: boolean
   readonly casts?: CastData[] 
+
+  // Dispute data
+  readonly actionId?: string
+  readonly challengeId?: string
+  readonly challenger?: string
+  readonly challengeEndDate?: string
+  readonly disputeId?: string
+  readonly settledAt?: string
+  readonly disputedAt?: string
+  readonly pausedAt?: string
+  readonly pauseDuration?: string
+  readonly submitterArbitratorFeeId?: string
+  readonly challengerArbitratorFeeId?: string
+  
 
   constructor(data: ProposalData, connector: IHoneypotConnector) {
     this.#connector = connector
@@ -49,10 +64,10 @@ export default class Proposal {
     this.type = data.type
     this.createdAt = data.createdAt
     this.executedAt = data.executedAt
+    this.metadata = data.metadata
 
 
     // proposal data
-    this.name = data.name
     this.link = data.link
     this.stakes = data.stakes
     this.stakesHistory = data.stakesHistory
@@ -60,17 +75,30 @@ export default class Proposal {
     this.requestedAmount = data.requestedAmount
     this.totalTokensStaked = data.totalTokensStaked
 
-    // voting data
-    this.metadata = data.metadata
-    this.startBlock = data.startBlock
-    this.executionBlock = data.executionBlock
-    this.snapshotBlock = data.snapshotBlock
-    this.supportRequiredPct = data.supportRequiredPct
-    this.minAcceptQuorum = data.minAcceptQuorum
-    this.yea = data.yea
-    this.nay = data.nay
-    this.votingPower = data.votingPower
+    //voting data
+    this.settingId = data.settingId
+    this.startDate = data.startDate
+    this.totalPower = data.totalPower
+    this.snapshotBlock = data.snapshotBlock 
+    this.yeas = data.yeas
+    this.nays = data.nays
+    this.quietEndingExtensionDuration = data.quietEndingExtensionDuration
+    this.quietEndingSnapshotSupport = data.quietEndingSnapshotSupport
     this.script = data.script
-    this.casts = data.casts
+    this.isAccepted = data.isAccepted
+    this.casts = data.casts 
+
+    //sispute data
+    this.actionId = data.actionId
+    this.challengeId = data.challengeId
+    this.challenger = data.challenger
+    this.challengeEndDate = data.challengeEndDate
+    this.disputeId = data.disputeId
+    this.settledAt = data.settledAt
+    this.disputedAt = data.disputedAt
+    this.pausedAt = data.pausedAt
+    this.pauseDuration = data.pauseDuration
+    this.submitterArbitratorFeeId = data.submitterArbitratorFeeId
+    this.challengerArbitratorFeeId = data. challengerArbitratorFeeId
   }
 }

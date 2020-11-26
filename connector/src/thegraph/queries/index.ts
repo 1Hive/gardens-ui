@@ -33,17 +33,15 @@ export const CONFIG = (type: string) => gql`
       # voting config
       voting {
         id
-        token {
-          id
-          name
-          symbol
-          decimals
-        }
+        settingId
+        voteTime
         supportRequiredPct
-        minAcceptQuorumPct
-        durationBlocks
-        bufferBlocks
-        executionDelayBlocks
+        minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
       }
     }
   }
@@ -88,24 +86,47 @@ export const ALL_PROPOSALS = (type: string) => gql`
       requestedAmount
       totalTokensStaked
      
-      # Decision data (votes)
-      startBlock
-      executionBlock
+     # Decision data (votes)
+      setting { 
+        id 
+        voteTime
+        quietEndingExtension
+      }
+      startDate
+      totalPower
       snapshotBlock
-      supportRequiredPct
-      minAcceptQuorum
-      yea
-      nay
-      votingPower
+      yeas
+      nays
+      quietEndingExtensionDuration
+      quietEndingSnapshotSupport
       script
-      casts {
+      isAccepted
+      castVotes {
         id
         entity {
           id
         }
+        caster
         supports
         stake
         createdAt
+      }
+
+      # Disputable data
+      actionId
+      challengeId
+      challenger
+      challengeEndDate
+      disputeId
+      settledAt
+      disputedAt
+      pausedAt
+      pauseDuration
+      submitterArbitratorFee {
+        id
+      }
+      challengerArbitratorFeeId {
+        id
       }
     }
   }
@@ -150,24 +171,47 @@ export const PROPOSAL = (type: string) => gql`
       requestedAmount
       totalTokensStaked
      
-      # Decision data (votes)
-      startBlock
-      executionBlock
+      Decision data (votes)
+      setting { 
+        id 
+        voteTime
+        quietEndingExtension
+      }
+      startDate
+      totalPower
       snapshotBlock
-      supportRequiredPct
-      minAcceptQuorum
-      yea
-      nay
-      votingPower
+      yeas
+      nays
+      quietEndingExtensionDuration
+      quietEndingSnapshotSupport
       script
-      casts {
+      isAccepted
+      castVotes {
         id
         entity {
           id
         }
+        caster
         supports
         stake
         createdAt
+      }
+
+      # Disputable data
+      actionId
+      challengeId
+      challenger
+      challengeEndDate
+      disputeId
+      settledAt
+      disputedAt
+      pausedAt
+      pauseDuration
+      submitterArbitratorFee {
+        id
+      }
+      challengerArbitratorFeeId {
+        id
       }
     }
   }
@@ -178,6 +222,7 @@ export const SUPPORTER = (type: string) => gql`
     supporter(id: $id) {
       id
       address
+      representative
       # vote casts
       casts {
         id
@@ -191,6 +236,7 @@ export const SUPPORTER = (type: string) => gql`
           type
         }
         createdAt
+        representative
 
       }
       # proposals stakes
@@ -222,6 +268,41 @@ export const SUPPORTER = (type: string) => gql`
         conviction
         time
         createdAt
+      }
+    }
+  }
+`
+export const GET_COLLATERAL_REQUIREMENT = (type: string) => gql`
+  ${type} CollateralRequirement($proposalId: String!) {
+    proposal(id: $proposalId) {
+      collateralRequirement {
+        id
+        actionAmount
+        challengeAmount
+        challengeDuration
+        vote {
+          id
+        }
+        token {
+          id
+          decimals
+        }
+      }
+    }
+  }
+`
+
+export const GET_ARBITRATOR_FEE = (type: string) => gql`
+  ${type} ArbitratorFee($arbitratorFeeId: String!) {
+    arbitratorFee(id: $arbitratorFeeId) {
+      id
+      amount
+      vote {
+        id
+      }
+      token {
+        id
+        decimals
       }
     }
   }

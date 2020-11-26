@@ -73,7 +73,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
   proposal.creator = event.params.creator
-  proposal.context = event.params.context.toString()
+  proposal.metadata = event.params.context.toString()
   proposal.yeas = voteData.value0
   proposal.nays = voteData.value1
   proposal.totalPower = voteData.value2

@@ -54,7 +54,6 @@ type Proposal @entity {
 
   # Voting data
   setting: VotingConfig
-  context: String
   startDate: BigInt
   totalPower: BigInt
   snapshotBlock: BigInt!
