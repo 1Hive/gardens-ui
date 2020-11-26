@@ -1,9 +1,14 @@
+import { subscription } from '@aragon/connect-core'
+
+import ArbitratorFee from './ArbitratorFee'
+import CollateralRequirement from './CollateralRequirement'
 import {
   CastData,
   IHoneypotConnector,
   StakeData,
   StakeHistoryData,
   ProposalData,
+  SubscriptionHandler
 } from '../types'
 
 export default class Proposal {
@@ -100,5 +105,41 @@ export default class Proposal {
     this.pauseDuration = data.pauseDuration
     this.submitterArbitratorFeeId = data.submitterArbitratorFeeId
     this.challengerArbitratorFeeId = data. challengerArbitratorFeeId
+  }
+
+  async collateralRequirement(): Promise<CollateralRequirement> {
+    return this.#connector.collateralRequirement(this.id)
+  }
+
+  onCollateralRequirement(
+    callback?:Function
+  ): SubscriptionHandler {
+    return subscription<CollateralRequirement>(callback, (callback) =>
+      this.#connector.onCollateralRequirement(this.id, callback)
+    )
+  }
+
+  async submitterArbitratorFee(): Promise<ArbitratorFee | null> {
+    return this.#connector.arbitratorFee(this.submitterArbitratorFeeId || '')
+  }
+
+  onSubmitterArbitratorFee(
+    callback?: Function
+  ): SubscriptionHandler {
+    return subscription<ArbitratorFee | null>(callback, (callback) =>
+      this.#connector.onArbitratorFee(this.submitterArbitratorFeeId || '', callback)
+    )
+  }
+
+  async challengerArbitratorFee(): Promise<ArbitratorFee | null> {
+    return this.#connector.arbitratorFee(this.challengerArbitratorFeeId || '')
+  }
+
+  onChallengerArbitratorFee(
+    callback?: Function
+  ): SubscriptionHandler {
+    return subscription<ArbitratorFee | null>(callback, (callback) =>
+      this.#connector.onArbitratorFee(this.challengerArbitratorFeeId || '', callback)
+    )
   }
 }
