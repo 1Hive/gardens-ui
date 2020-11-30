@@ -103,11 +103,19 @@ export const ALL_PROPOSALS = (type: string) => gql`
      
      # Decision data (votes)
       setting { 
-        id 
+        id
+        token {
+          id
+        }
+        settingId
         voteTime
-        quietEndingExtension
         supportRequiredPct
         minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
       }
       startDate
       totalPower
@@ -191,11 +199,19 @@ export const PROPOSAL = (type: string) => gql`
      
       # Decision data (votes)
       setting { 
-        id 
+        id
+        token {
+          id
+        }
+        settingId
         voteTime
-        quietEndingExtension
         supportRequiredPct
         minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
       }
       startDate
       totalPower

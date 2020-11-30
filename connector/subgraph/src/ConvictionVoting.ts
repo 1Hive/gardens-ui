@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   ContractPaused as ContractPausedEvent,
   ConvictionVoting as ConvictionVotingContract,
@@ -59,7 +59,6 @@ export function handleConfigChanged(
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  log.info('PROPOSAL ADDEDDD!!!! {} ', [event.params.id.toString()])
   const proposal = getProposalEntity(event.address, event.params.id)
 
   populateProposalDataFromEvent(proposal, event)
@@ -159,8 +158,6 @@ function _onProposalPaused(
   )
   const challengeData = agreementApp.getChallenge(challengeId)
   const proposal = getProposalEntity(appAddress, proposalId)
-  log.info('PROPOSAL ID {} ', [proposalId.toString()])
-  log.info('PROPOSAL NAME {} ', [proposal.metadata.toString()])
   proposal.challenger = challengeData.value1
   proposal.challengeId = challengeId
   proposal.challengeEndDate = challengeData.value2

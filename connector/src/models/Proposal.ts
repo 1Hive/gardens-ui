@@ -8,7 +8,8 @@ import {
   StakeData,
   StakeHistoryData,
   ProposalData,
-  SubscriptionHandler
+  SubscriptionHandler,
+  VotingConfigData
 } from '../types'
 
 export default class Proposal {
@@ -33,7 +34,7 @@ export default class Proposal {
   readonly stable?: boolean
 
   // Voting data
-  readonly settingId?: string
+  readonly setting?: VotingConfigData
   readonly startDate?: string
   readonly totalPower?: string
   readonly snapshotBlock?: string
@@ -82,7 +83,7 @@ export default class Proposal {
     this.stable = data.stable
 
     //voting data
-    this.settingId = data.settingId
+    this.setting = data.setting
     this.startDate = data.startDate
     this.totalPower = data.totalPower
     this.snapshotBlock = data.snapshotBlock 

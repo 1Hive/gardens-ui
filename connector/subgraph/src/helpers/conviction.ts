@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import {
   ConvictionConfig as ConvictionConfigEntity,
   Proposal as ProposalEntity,
@@ -143,10 +143,6 @@ export function populateProposalDataFromEvent(
   proposal: ProposalEntity | null,
   event: ProposalAddedEvent
 ): void {
-  log.info('PROPOSAL ADDED : {} , {}', [
-    event.params.id.toString(),
-    event.params.title.toString(),
-  ])
   proposal.metadata = event.params.title
   proposal.link = event.params.link.toString()
   proposal.requestedAmount = event.params.amount

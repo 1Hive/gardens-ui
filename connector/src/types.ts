@@ -103,7 +103,7 @@ export interface ProposalData {
   stable?: boolean
 
   // Voting data
-  settingId?: string
+  setting?: VotingConfigData
   startDate?: string
   totalPower: string
   snapshotBlock?: string

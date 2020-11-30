@@ -24,10 +24,11 @@ function describeProposal(proposal: Proposal): void {
   console.log(`Requested amount: ${proposal.requestedAmount}`)
   console.log(`Beneficiary: ${proposal.beneficiary}`)
   console.log(`Status: ${proposal.status}`)
-  console.log(`Voting Settings: ${proposal.settingId}`)
+  console.log(`Voting Settings: ${JSON.stringify(proposal.setting)}`)
   console.log(`Submitter Arbitrator Fee: ${proposal.submitterArbitratorFeeId}`)
   console.log(`Challenger Arbitrator Fee: ${proposal.challengerArbitratorFeeId}`)
   console.log(`Stable unit : ${proposal.stable}`)
+
   // console.log(`Stake history: `)
   // console.log(JSON.stringify(proposal.stakesHistory, null, 2))
   // console.log(`Casts: `)
