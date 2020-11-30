@@ -3,6 +3,7 @@ import { formatBn, PCT_DECIMALS } from '../helpers'
 
 export default class Setting {
   readonly id: string
+  readonly token: string
   readonly configId: string
   readonly voteTime: string
   readonly supportRequiredPct: string
@@ -15,6 +16,7 @@ export default class Setting {
 
   constructor(data: VotingConfigData) {
     this.id = data.id
+    this.token = data.token.id
     this.configId = data.configId
     this.voteTime = data.voteTime
     this.supportRequiredPct = data.supportRequiredPct

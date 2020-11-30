@@ -20,7 +20,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-rinkeby'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-rinkeby'
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-xdai'
@@ -156,7 +156,7 @@ export default class HoneypotConnectorTheGraph
 
   async collateralRequirement(proposalId: string): Promise<CollateralRequirement> {
     return this.#gql.performQueryWithParser<CollateralRequirement>(
-      queries.GET_COLLATERAL_REQUIREMENT('query'),
+      queries.COLLATERAL_REQUIREMENT('query'),
       { proposalId },
       (result: QueryResult) => parseCollateralRequirement(result, this)
     )
@@ -167,7 +167,7 @@ export default class HoneypotConnectorTheGraph
     callback: Function
   ): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser<CollateralRequirement>(
-      queries.GET_COLLATERAL_REQUIREMENT('subscription'),
+      queries.COLLATERAL_REQUIREMENT('subscription'),
       { proposalId },
       callback,
       (result: QueryResult) => parseCollateralRequirement(result, this)
@@ -176,7 +176,7 @@ export default class HoneypotConnectorTheGraph
 
   async arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null> {
     return this.#gql.performQueryWithParser<ArbitratorFee | null>(
-      queries.GET_ARBITRATOR_FEE('query'),
+      queries.ARBITRATOR_FEE('query'),
       { arbitratorFeeId },
       (result: QueryResult) => parseArbitratorFee(result, this)
     )
@@ -187,7 +187,7 @@ export default class HoneypotConnectorTheGraph
     callback: Function
   ): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser<ArbitratorFee | null>(
-      queries.GET_ARBITRATOR_FEE('subscription'),
+      queries.ARBITRATOR_FEE('subscription'),
       { arbitratorFeeId },
       callback,
       (result: QueryResult) => parseArbitratorFee(result, this)

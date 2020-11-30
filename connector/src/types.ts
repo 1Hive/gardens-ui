@@ -35,10 +35,14 @@ export interface ConvictionConfigData {
   maxStakedProposals: number
   minThresholdStakePercentage: string
   totalStaked: string
+  stableToken: TokenData
+  stableTokenOracle: string
+  contractPaused: boolean
 }
 
 export interface VotingConfigData {
   id: string
+  token: TokenData
   configId: string
   voteTime: string
   supportRequiredPct: string
@@ -73,7 +77,6 @@ export interface StakeHistoryData {
 
 export interface CastData {
   id: string
-  proposalId: string
   entity: SupporterData
   supports: boolean
   stake: string
@@ -97,6 +100,7 @@ export interface ProposalData {
   beneficiary?: string
   requestedAmount?: string
   totalTokensStaked?: string
+  stable?: boolean
 
   // Voting data
   settingId?: string

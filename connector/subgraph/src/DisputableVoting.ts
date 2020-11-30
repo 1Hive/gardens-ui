@@ -25,6 +25,7 @@ import {
   loadOrCreateCastVote,
   loadOrCreateConfig,
   loadOrCreateSupporter,
+  loadTokenData,
   populateVoteCollateralData,
 } from './helpers/index'
 
@@ -58,6 +59,11 @@ export function handleNewSetting(event: NewSettingEvent): void {
   votingConfig.quietEndingExtension = settingData.value5
   votingConfig.executionDelay = settingData.value6
   votingConfig.createdAt = event.block.timestamp
+  const token = votingApp.token()
+  const tokenId = loadTokenData(token)
+  if (tokenId) {
+    votingConfig.token = token.toHexString()
+  }
   votingConfig.save()
 
   honeyPotConfig.voting = currentSettingId

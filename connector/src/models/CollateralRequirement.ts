@@ -5,7 +5,7 @@ export default class CollateralRequirement {
   #connector: IHoneypotConnector
 
   readonly id: string
-  readonly voteId: string
+  readonly proposalId: string
   readonly tokenId: string
   readonly tokenDecimals: string
   readonly actionAmount: string
@@ -19,6 +19,7 @@ export default class CollateralRequirement {
     this.#connector = connector
 
     this.id = data.id
+    this.proposalId = data.proposalId
     this.tokenId = data.tokenId
     this.tokenDecimals = data.tokenDecimals
     this.actionAmount = data.actionAmount

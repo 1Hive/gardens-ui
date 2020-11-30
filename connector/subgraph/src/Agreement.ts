@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 import {
   ArbitratorFee as ArbitratorFeeEntity,
   Proposal as ProposalEntity,
@@ -33,6 +33,19 @@ export function handleActionDisputed(event: ActionDisputedEvent): void {
   proposal.statusInt = STATUS_DISPUTED_NUM
   proposal.disputeId = challengeData.value8
   proposal.disputedAt = event.block.timestamp
+
+  const submitterArbitratorFeeId = proposal.id + '-submitter'
+  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(
+    event.params.challengeId
+  )
+  createArbitratorFee(
+    proposal.id,
+    submitterArbitratorFeeId,
+    challengeArbitratorFeesData.value0,
+    challengeArbitratorFeesData.value1
+  )
+
+  proposal.submitterArbitratorFee = submitterArbitratorFeeId
   proposal.save()
 }
 
@@ -48,9 +61,11 @@ export function handleActionSettled(event: ActionSettledEvent): void {
 }
 
 export function handleActionChallenged(event: ActionChallengedEvent): void {
+  log.info('PROPOSAL CHALLENGED!!!!!!! ', [])
   const agreementApp = AgreementContract.bind(event.address)
   const actionData = agreementApp.getAction(event.params.actionId)
   const proposalId = getProposalEntityId(actionData.value0, actionData.value1)
+  log.info('PROPOSAL ID {}', [proposalId])
 
   const challengerArbitratorFeeId = proposalId + '-challenger'
   const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(

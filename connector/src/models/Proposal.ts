@@ -24,13 +24,13 @@ export default class Proposal {
   readonly metadata?: string
   
   // proposal data
-  readonly name?: string
   readonly link?: string
   readonly stakes?: StakeData[]
   readonly stakesHistory?: StakeHistoryData[]
   readonly beneficiary?: string
   readonly requestedAmount?: string
   readonly totalTokensStaked?: string
+  readonly stable?: boolean
 
   // Voting data
   readonly settingId?: string
@@ -79,6 +79,7 @@ export default class Proposal {
     this.beneficiary = data.beneficiary
     this.requestedAmount = data.requestedAmount
     this.totalTokensStaked = data.totalTokensStaked
+    this.stable = data.stable
 
     //voting data
     this.settingId = data.settingId
@@ -93,7 +94,7 @@ export default class Proposal {
     this.isAccepted = data.isAccepted
     this.casts = data.casts 
 
-    //sispute data
+    //dispute data
     this.actionId = data.actionId
     this.challengeId = data.challengeId
     this.challenger = data.challenger

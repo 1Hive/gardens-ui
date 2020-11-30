@@ -28,12 +28,26 @@ export const CONFIG = (type: string) => gql`
           symbol
           decimals
         }
+        stableToken {
+          id
+          name
+          symbol
+          decimals
+        }
+        stableTokenOracle
+        contractPaused
       }
 
       # voting config
       voting {
         id
         settingId
+        token {
+          id
+          name
+          symbol
+          decimals
+        }
         voteTime
         supportRequiredPct
         minimumAcceptanceQuorumPct
@@ -85,12 +99,15 @@ export const ALL_PROPOSALS = (type: string) => gql`
       beneficiary
       requestedAmount
       totalTokensStaked
+      stable
      
      # Decision data (votes)
       setting { 
         id 
         voteTime
         quietEndingExtension
+        supportRequiredPct
+        minimumAcceptanceQuorumPct
       }
       startDate
       totalPower
@@ -125,7 +142,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       submitterArbitratorFee {
         id
       }
-      challengerArbitratorFeeId {
+      challengerArbitratorFee {
         id
       }
     }
@@ -170,12 +187,15 @@ export const PROPOSAL = (type: string) => gql`
       beneficiary
       requestedAmount
       totalTokensStaked
+      stable
      
-      Decision data (votes)
+      # Decision data (votes)
       setting { 
         id 
         voteTime
         quietEndingExtension
+        supportRequiredPct
+        minimumAcceptanceQuorumPct
       }
       startDate
       totalPower
@@ -210,7 +230,7 @@ export const PROPOSAL = (type: string) => gql`
       submitterArbitratorFee {
         id
       }
-      challengerArbitratorFeeId {
+      challengerArbitratorFee {
         id
       }
     }
@@ -236,7 +256,6 @@ export const SUPPORTER = (type: string) => gql`
           type
         }
         createdAt
-        representative
 
       }
       # proposals stakes
@@ -272,7 +291,7 @@ export const SUPPORTER = (type: string) => gql`
     }
   }
 `
-export const GET_COLLATERAL_REQUIREMENT = (type: string) => gql`
+export const COLLATERAL_REQUIREMENT = (type: string) => gql`
   ${type} CollateralRequirement($proposalId: String!) {
     proposal(id: $proposalId) {
       collateralRequirement {
@@ -292,7 +311,7 @@ export const GET_COLLATERAL_REQUIREMENT = (type: string) => gql`
   }
 `
 
-export const GET_ARBITRATOR_FEE = (type: string) => gql`
+export const ARBITRATOR_FEE = (type: string) => gql`
   ${type} ArbitratorFee($arbitratorFeeId: String!) {
     arbitratorFee(id: $arbitratorFeeId) {
       id

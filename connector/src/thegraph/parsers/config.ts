@@ -6,7 +6,6 @@ export function parseConfig(
   connector: any
 ): Config | null {
   const config = result.data.config
-
   if (!config) {
     throw new Error('Unable to parse config.')
   }
