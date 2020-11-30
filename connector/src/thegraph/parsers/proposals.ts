@@ -21,9 +21,13 @@ export function parseProposals(
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
     const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
-    const settingData : VotingConfigData | null = proposal.setting || null
-  
-    const setting = new VotingConfig(settingData)
+    let setting = null
+
+    if(proposal.setting){
+      const settingData : VotingConfigData = proposal.setting
+      setting =  new VotingConfig(settingData)
+    }
+
     return {
       ...proposal,
       casts,
@@ -52,8 +56,12 @@ export function parseProposal(result: QueryResult, connector: any): Proposal {
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
     const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
-    const settingData : VotingConfigData | null = proposal.setting || null
-    const setting = new VotingConfig(settingData)
+    let setting = null
+
+    if(proposal.setting){
+      const settingData : VotingConfigData = proposal.setting
+      setting =  new VotingConfig(settingData)
+    }
 
     const data = {
       ...proposal,
