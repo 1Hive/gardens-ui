@@ -42,9 +42,14 @@ export function loadConvictionConfig(
   const convictionVoting = ConvictionVotingContract.bind(appAddress)
   // Load tokens data
   const stakeToken = convictionVoting.stakeToken()
+  const stableToken = convictionVoting.stableToken()
   const stakeTokenId = loadTokenData(stakeToken)
   if (stakeTokenId) {
     convictionConfig.stakeToken = stakeToken.toHexString()
+  }
+  const stableTokenId = loadTokenData(stableToken)
+  if (stableTokenId) {
+    convictionConfig.stableToken = stableToken.toHexString()
   }
 
   const requestToken = convictionVoting.requestToken()
@@ -64,6 +69,8 @@ export function loadConvictionConfig(
     .MAX_STAKED_PROPOSALS()
     .toI32()
   convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
+  convictionConfig.contractPaused = false
+  convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
 
   convictionConfig.save()
 
@@ -143,4 +150,5 @@ export function populateProposalDataFromEvent(
   proposal.createdAt = event.block.timestamp
   proposal.beneficiary = event.params.beneficiary
   proposal.actionId = event.params.actionId
+  proposal.stable = event.params.stable
 }

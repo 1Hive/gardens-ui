@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
+  ContractPaused as ContractPausedEvent,
   ConvictionVoting as ConvictionVotingContract,
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
   ProposalAdded as ProposalAddedEvent,
@@ -136,6 +137,14 @@ export function handleProposalResumed(event: ProposalResumedEvent): void {
 
 export function handleProposalRejected(event: ProposalRejectedEvent): void {
   _onProposalRejected(event.address, event.params.proposalId)
+}
+
+export function handleContractPaused(event: ContractPausedEvent): void {
+  const convictionConfig = getConvictionConfigEntity(event.address)
+
+  convictionConfig.contractPaused = event.params.pauseEnabled
+
+  convictionConfig.save()
 }
 
 function _onProposalPaused(

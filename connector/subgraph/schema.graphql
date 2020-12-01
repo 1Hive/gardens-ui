@@ -15,10 +15,14 @@ type ConvictionConfig @entity {
   maxStakedProposals: Int!
   minThresholdStakePercentage: BigInt!
   requestToken: Token
+  stableToken: Token
+  stableTokenOracle: Bytes
+  contractPaused: Boolean
 }
 
 type VotingConfig @entity {
   id: ID!
+  token:  Token
   settingId: BigInt!
   voteTime: BigInt!
   supportRequiredPct: BigInt!
@@ -51,10 +55,10 @@ type Proposal @entity {
   convictionLast: BigInt
   requestedAmount: BigInt
   totalTokensStaked: BigInt
+  stable: Boolean
 
   # Voting data
   setting: VotingConfig
-  context: String
   startDate: BigInt
   totalPower: BigInt
   snapshotBlock: BigInt!
@@ -145,6 +149,7 @@ enum ProposalStatus {
   Challenged
   Disputed
   Rejected
+  Settled
 }
 
 enum ProposalType {

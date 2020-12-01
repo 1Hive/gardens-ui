@@ -33,6 +33,19 @@ export function handleActionDisputed(event: ActionDisputedEvent): void {
   proposal.statusInt = STATUS_DISPUTED_NUM
   proposal.disputeId = challengeData.value8
   proposal.disputedAt = event.block.timestamp
+
+  const submitterArbitratorFeeId = proposal.id + '-submitter'
+  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(
+    event.params.challengeId
+  )
+  createArbitratorFee(
+    proposal.id,
+    submitterArbitratorFeeId,
+    challengeArbitratorFeesData.value0,
+    challengeArbitratorFeesData.value1
+  )
+
+  proposal.submitterArbitratorFee = submitterArbitratorFeeId
   proposal.save()
 }
 

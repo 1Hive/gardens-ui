@@ -28,6 +28,4 @@
         handler: handleActionSettled
       - event: ActionChallenged(indexed uint256,indexed uint256)
         handler: handleActionChallenged
-      - event: ActionClosed(indexed uint256)
-        handler: handleActionClosed
     file: ./src/Agreement.ts

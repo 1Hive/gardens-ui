@@ -3,10 +3,14 @@ import { NewAppProxy as NewAppProxyEvent } from '../generated/Kernel/Kernel'
 import { loadConvictionConfig } from './helpers'
 
 const DISPUTABLE_VOTING_ADDRESS: Address = Address.fromString(
-  '0xaf5ce96c7cf99aded2f3dac7bfc3edb09f6e655c'
+  '0x5828ad285abb5790cbdba0b9b78c644e76849ef6'
 )
 const CONIVCTION_VOTING_ADDRESS: Address = Address.fromString(
-  '0x1cc247f8de4b876ab3b8ac8579a6354ed63fb468'
+  '0x53e4c1ef9bc6d776f19fec30a3944e969d20bb17'
+)
+
+const AGREEMENT_ADDRESS: Address = Address.fromString(
+  '0x1c0cc1a1fff16cae0c8e363d95b553ed634927c8'
 )
 
 function onAppTemplateCreated(
@@ -30,6 +34,8 @@ function processApp(
     template = 'DisputableVoting'
   } else if (CONIVCTION_VOTING_ADDRESS.equals(appAddress)) {
     template = 'ConvictionVoting'
+  } else {
+    template = 'Agreement'
   }
 
   if (template) {

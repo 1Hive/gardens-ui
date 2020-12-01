@@ -25,6 +25,7 @@ import {
   loadOrCreateCastVote,
   loadOrCreateConfig,
   loadOrCreateSupporter,
+  loadTokenData,
   populateVoteCollateralData,
 } from './helpers/index'
 
@@ -58,6 +59,11 @@ export function handleNewSetting(event: NewSettingEvent): void {
   votingConfig.quietEndingExtension = settingData.value5
   votingConfig.executionDelay = settingData.value6
   votingConfig.createdAt = event.block.timestamp
+  const token = votingApp.token()
+  const tokenId = loadTokenData(token)
+  if (tokenId) {
+    votingConfig.token = token.toHexString()
+  }
   votingConfig.save()
 
   honeyPotConfig.voting = currentSettingId
@@ -73,7 +79,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
   proposal.creator = event.params.creator
-  proposal.context = event.params.context.toString()
+  proposal.metadata = event.params.context.toString()
   proposal.yeas = voteData.value0
   proposal.nays = voteData.value1
   proposal.totalPower = voteData.value2

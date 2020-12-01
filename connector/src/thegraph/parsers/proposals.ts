@@ -1,6 +1,7 @@
 import { QueryResult } from '@aragon/connect-thegraph'
 import Proposal from '../../models/Proposal'
-import { CastData, ProposalData, StakeData, StakeHistoryData } from '../../types'
+import VotingConfig from '../../models/VotingConfig'
+import { CastData, ProposalData, StakeData, StakeHistoryData, VotingConfigData } from '../../types'
 
 export function parseProposals(
   result: QueryResult,
@@ -20,11 +21,19 @@ export function parseProposals(
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
     const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
+    let setting = null
+
+    if(proposal.setting){
+      const settingData : VotingConfigData = proposal.setting
+      setting =  new VotingConfig(settingData)
+    }
+
     return {
       ...proposal,
       casts,
       stakes,
-      stakesHistory
+      stakesHistory,
+      setting
     }
   })
 
@@ -47,11 +56,19 @@ export function parseProposal(result: QueryResult, connector: any): Proposal {
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
     const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
+    let setting = null
+
+    if(proposal.setting){
+      const settingData : VotingConfigData = proposal.setting
+      setting =  new VotingConfig(settingData)
+    }
+
     const data = {
       ...proposal,
       casts,
       stakes,
-      stakesHistory
+      stakesHistory,
+      setting
     }
 
     return new Proposal(data, connector)
