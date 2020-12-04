@@ -53,6 +53,7 @@ function DecisionSummaryBar({ proposal }) {
   const yeasPct = safeDiv(parseFloat(yea), totalVotes)
   const naysPct = safeDiv(parseFloat(nay), totalVotes)
 
+  console.log('PROPOSAL!!! ', proposal)
   const connectedAccountVote = getConnectedAccountVote(
     proposal,
     connectedAccount

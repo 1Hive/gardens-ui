@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import connectHoneypot from '@1hive/connect-honey-pot'
+import connectHoneypot from '@1hive/connect-disputable-honey-pot'
 import {
   useApp,
   useApps,
@@ -25,7 +25,13 @@ export function useOrgData() {
 
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
+
+  console.log('organization ', organization)
+  console.log('organization ', orgStatus)
   const [apps, appsStatus] = useApps()
+  console.log('APPPS ', apps)
+
+  console.log('APPPS status ', appsStatus)
   const [convictionApp] = useApp(appName)
   const [permissions, permissionsStatus] = usePermissions()
 

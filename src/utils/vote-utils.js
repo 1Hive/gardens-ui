@@ -29,7 +29,7 @@ export function getAccountCastStake(vote, account) {
 }
 
 export function getConnectedAccountVote(vote, account) {
-  const userCast = vote.casts.find(cast =>
+  const userCast = vote?.casts?.find(cast =>
     addressesEqual(cast.entity.id, account)
   )
 

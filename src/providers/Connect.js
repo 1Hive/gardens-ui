@@ -7,6 +7,8 @@ import { getNetwork } from '../networks'
 function ConnectProvider({ children }) {
   const orgAddress = getNetwork().honeypot
 
+  console.log('orgAddress ', orgAddress)
+
   return (
     <Connect
       location={orgAddress}
