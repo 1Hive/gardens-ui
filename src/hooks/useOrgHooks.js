@@ -25,13 +25,8 @@ export function useOrgData() {
 
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
-
-  console.log('organization ', organization)
-  console.log('organization ', orgStatus)
   const [apps, appsStatus] = useApps()
-  console.log('APPPS ', apps)
 
-  console.log('APPPS status ', appsStatus)
   const [convictionApp] = useApp(appName)
   const [permissions, permissionsStatus] = usePermissions()
 

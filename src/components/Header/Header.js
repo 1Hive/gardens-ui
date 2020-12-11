@@ -73,9 +73,6 @@ function Header() {
                     color: ${theme.contentSecondary};
                     margin-left: ${4 * GU}px;
                   `}
-                  onClick={() => {
-                    console.log('HELLOOOOOO')
-                  }}
                 >
                   Agreement
                 </Link>

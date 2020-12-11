@@ -28,6 +28,7 @@ function describeProposal(proposal: Proposal): void {
   console.log(`Submitter Arbitrator Fee: ${proposal.submitterArbitratorFeeId}`)
   console.log(`Challenger Arbitrator Fee: ${proposal.challengerArbitratorFeeId}`)
   console.log(`Stable unit : ${proposal.stable}`)
+  console.log(`Casts : ${JSON.stringify(proposal.casts)}`)
 
   // console.log(`Stake history: `)
   // console.log(JSON.stringify(proposal.stakesHistory, null, 2))

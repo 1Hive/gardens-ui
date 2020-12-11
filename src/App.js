@@ -4,6 +4,7 @@ import { Main } from '@1hive/1hive-ui'
 import MainView from './components/MainView'
 import Routes from './Routes'
 
+import { AgreementSubscriptionProvider } from './providers/AgreementSubscription'
 import { AppStateProvider } from './providers/AppState'
 import { ProfileProvider } from './providers/Profile'
 import { WalletProvider } from './providers/Wallet'
@@ -15,13 +16,15 @@ function App() {
       <Connect>
         <ProfileProvider>
           <AppStateProvider>
-            <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-              <HashRouter>
-                <MainView>
-                  <Routes />
-                </MainView>
-              </HashRouter>
-            </Main>
+            <AgreementSubscriptionProvider>
+              <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+                <HashRouter>
+                  <MainView>
+                    <Routes />
+                  </MainView>
+                </HashRouter>
+              </Main>
+            </AgreementSubscriptionProvider>
           </AppStateProvider>
         </ProfileProvider>
       </Connect>

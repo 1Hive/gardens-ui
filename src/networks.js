@@ -20,6 +20,12 @@ const networks = {
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
+    subgraphs: {
+      agreement:
+        'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
+    },
+    celesteUrl: 'https://celeste-rinkeby.1hive.org',
+    ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
   },
   xdai: {
     chainId: 100,
@@ -53,4 +59,13 @@ function getRinkebyHoneyPotAddress(rinkebyInstance) {
     return RINKEBY_STAGING_HONEY_POT
   }
   return RINKEBY_HONEY_POT
+}
+
+const agreementSubgraph = getNetwork().subgraphs?.agreement
+
+export const connectorConfig = {
+  agreement: agreementSubgraph && [
+    'thegraph',
+    { subgraphUrl: agreementSubgraph },
+  ],
 }

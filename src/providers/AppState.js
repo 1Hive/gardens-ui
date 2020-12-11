@@ -14,8 +14,6 @@ const AppStateContext = React.createContext()
 function AppStateProvider({ children }) {
   const { account } = useWallet()
 
-  console.log('app state provider')
-
   const {
     config,
     errors,

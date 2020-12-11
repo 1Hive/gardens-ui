@@ -113,7 +113,7 @@ export interface ProposalData {
   quietEndingSnapshotSupport?: string
   script?: string
   isAccepted?: boolean
-  casts?: CastData[] 
+  castVotes?: CastData[] 
 
   //Dispute data
   actionId: string

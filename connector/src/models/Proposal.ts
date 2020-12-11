@@ -93,7 +93,7 @@ export default class Proposal {
     this.quietEndingSnapshotSupport = data.quietEndingSnapshotSupport
     this.script = data.script
     this.isAccepted = data.isAccepted
-    this.casts = data.casts 
+    this.casts = data.castVotes
 
     //dispute data
     this.actionId = data.actionId

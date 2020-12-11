@@ -15,7 +15,7 @@ export function parseProposals(
 
   const datas = proposals.map((proposal: ProposalData) => {
     // For votes (decisions)
-    const casts = proposal.casts?.map((cast: CastData) => cast)
+    const casts = proposal.castVotes?.map((cast: CastData) => cast)
 
     // For proposals (discussions and proposals)
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
