@@ -1,46 +1,46 @@
-import React /* { useCallback, useState } */ from 'react'
-// import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
+import React, { useCallback, useState } from 'react'
+import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
 
-// import AddProposalPanel from '../components/panels/AddProposalPanel'
-// import Filters from '../components/Filters/Filters'
-// import HeroBanner from '../components/Feed/HeroBanner'
-// import Loader from '../components/Loader'
-// import Metrics from '../components/Metrics'
-// import NetworkErrorModal from '../components/NetworkErrorModal'
-// import ProposalsList from '../components/Feed/ProposalsList'
+import AddProposalPanel from '../components/panels/AddProposalPanel'
+import Filters from '../components/Filters/Filters'
+import HeroBanner from '../components/Feed/HeroBanner'
+import Loader from '../components/Loader'
+import Metrics from '../components/Metrics'
+import NetworkErrorModal from '../components/NetworkErrorModal'
+import ProposalsList from '../components/Feed/ProposalsList'
 
-// import useAppLogic from '../logic/app-logic'
+import useAppLogic from '../logic/app-logic'
 
 const Home = React.memo(function Home() {
-  // const {
-  //   actions,
-  //   commonPool,
-  //   errors,
-  //   filters,
-  //   isLoading,
-  //   proposals,
-  //   proposalsFetchedCount,
-  //   proposalPanel,
-  //   totalStaked,
-  //   totalSupply,
-  // } = useAppLogic()
+  const {
+    actions,
+    commonPool,
+    errors,
+    filters,
+    isLoading,
+    proposals,
+    proposalsFetchedCount,
+    proposalPanel,
+    totalStaked,
+    totalSupply,
+  } = useAppLogic()
 
-  // const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
+  const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
 
-  // const handleFilterSliderToggle = useCallback(() => {
-  //   setFilterSidlerVisible(visible => !visible)
-  // }, [])
+  const handleFilterSliderToggle = useCallback(() => {
+    setFilterSidlerVisible(visible => !visible)
+  }, [])
 
-  // // min layout is never returned
-  // const { below } = useViewport()
-  // const { layoutName } = useLayout()
-  // const largeMode = layoutName === 'large'
-  // const compactMode = layoutName === 'small' || layoutName === 'medium'
+  // min layout is never returned
+  const { below } = useViewport()
+  const { layoutName } = useLayout()
+  const largeMode = layoutName === 'large'
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
-      {/* <NetworkErrorModal visible={errors} />
+      <NetworkErrorModal visible={errors} />
       {isLoading ? (
         <Loader />
       ) : (
@@ -138,7 +138,7 @@ const Home = React.memo(function Home() {
         onClose={proposalPanel.requestClose}
       >
         <AddProposalPanel onSubmit={actions.convictionActions.newProposal} />
-      </SidePanel> */}
+      </SidePanel>
     </div>
   )
 })
