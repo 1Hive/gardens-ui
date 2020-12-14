@@ -1,5 +1,6 @@
 import { convertFromString, ProposalTypes } from '../types'
 import BigNumber from '../lib/bigNumber'
+import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {
   const { conviction, voting } = config
@@ -25,50 +26,63 @@ export function transformConfigData(config) {
 }
 
 export function transformProposalData(proposal, config) {
-  return convertFromString(proposal.type) === ProposalTypes.Decision
-    ? transformDecisionData(proposal, config)
-    : transformConvictionProposalData(proposal)
+  const proposalData = {
+    ...proposal,
+    id: proposal.number,
+    createdAt: toMilliseconds(proposal.createdAt),
+    executedAt: toMilliseconds(proposal.executedAt),
+    type: convertFromString(proposal.type),
+
+    challengeEndDate: toMilliseconds(proposal.challengeEndDate),
+    settledAt: toMilliseconds(proposal.settledAt),
+    disputedAt: toMilliseconds(proposal.disputedAt),
+    pausedAt: toMilliseconds(proposal.pausedAt),
+    pauseDuration: toMilliseconds(proposal.pauseDuration),
+  }
+  return {
+    ...proposalData,
+    ...(convertFromString(proposal.type) === ProposalTypes.Decision
+      ? transformDecisionData(proposal)
+      : transformConvictionProposalData(proposal)),
+  }
 }
 
 function transformConvictionProposalData(proposal) {
   return {
-    ...proposal,
     name: proposal.metadata,
-    createdAt: parseInt(proposal.createdAt, 10) * 1000,
-    id: proposal.number,
     requestedAmount: new BigNumber(proposal.requestedAmount || 0),
     stakes: proposal.stakes.map(transformStakeData),
     stakesHistory: proposal.stakesHistory.map(transformStakeHistoryData),
-    type: convertFromString(proposal.type),
     totalTokensStaked: new BigNumber(proposal.totalTokensStaked || 0),
   }
 }
 
-function transformDecisionData(proposal, config) {
-  const { voting: votingConfig } = config
-
+function transformDecisionData(proposal) {
   return {
-    ...proposal,
     casts: proposal.casts,
-    createdAt: parseInt(proposal.createdAt, 10) * 1000,
     creator: proposal.creator,
-    endBlock:
-      parseInt(proposal.startBlock, 10) +
-      parseInt(votingConfig.durationBlocks, 10),
-    executionBlock: parseInt(proposal.executionBlock, 10),
-    id: proposal.number,
     metadata: proposal.metadata,
     minAcceptQuorum: new BigNumber(proposal.minAcceptQuorum),
-    nay: BigNumber(proposal.nay, 10),
-    requestedAmount: new BigNumber(proposal.requestedAmount),
+    nay: BigNumber(proposal.nays),
     script: proposal.script,
-    snapshotBlock: parseInt(proposal.snapshotBlock, 10),
-    startBlock: parseInt(proposal.startBlock, 10),
+    startDate: toMilliseconds(proposal.startDate),
     status: proposal.status,
-    supportRequiredPct: BigNumber(proposal.supportRequiredPct),
-    type: convertFromString(proposal.type),
+    supportRequiredPct: BigNumber(proposal.setting.supportRequiredPct),
     votingPower: BigNumber(proposal.votingPower),
-    yea: BigNumber(proposal.yea),
+    yea: BigNumber(proposal.yeas),
+    quietEndingExtensionDuration: toMilliseconds(
+      proposal.quietEndingExtensionDuration
+    ),
+    voteTime: toMilliseconds(proposal.setting.voteTime),
+    minimumAcceptanceQuorumPct: BigNumber(
+      proposal.setting.minimumAcceptanceQuorumPct
+    ),
+    delegatedVotingPeriod: toMilliseconds(
+      proposal.setting.delegatedVotingPeriod
+    ),
+    quietEndingPeriod: toMilliseconds(proposal.setting.quietEndingPeriod),
+    quietEndingExtension: toMilliseconds(proposal.setting.quietEndingExtension),
+    executionDelay: toMilliseconds(proposal.setting.executionDelay),
   }
 }
 
