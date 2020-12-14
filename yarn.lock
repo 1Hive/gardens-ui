@@ -125,10 +125,10 @@
     recursive-copy "^2.0.9"
     use-inside "^0.2.0"
 
-"@1hive/connect-disputable-honey-pot@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-disputable-honey-pot/-/connect-disputable-honey-pot-0.1.1.tgz#a0bac796f40566dbf3f0eb6dde8bf7e24048628e"
-  integrity sha512-D8VB3YPC5rejKDnbVoBHo4LC4Bo2wHOXkp2ILnO6cvFfOLX1dBQTQwRnvlh1M8LRxZAU76AD6rjgDDuXdPmF0w==
+"@1hive/connect-disputable-honey-pot@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-disputable-honey-pot/-/connect-disputable-honey-pot-0.1.2.tgz#02423849c09727975f9927231fecc00cd837a518"
+  integrity sha512-kq3D8BfNXVMOTDOTaSrT2bbn/9oWejmHgnO0wTxwA490Hu4lgYUUha0VpzTLdDEpK0McHb9y36CSs7OEJ0mM2Q==
   dependencies:
     "@aragon/connect-core" "0.7.0"
     "@aragon/connect-thegraph" "0.7.0"
