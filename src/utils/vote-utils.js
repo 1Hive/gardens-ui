@@ -11,9 +11,12 @@ import {
   VOTE_STATUS_PENDING_ENACTMENT,
   VOTE_STATUS_DELAYED,
   PROPOSAL_STATUS_EXECUTED_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_SETTLED_STRING,
+  PROPOSAL_STATUS_CHALLENGED_STRING,
+  PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../constants'
 
-const ONE_SECOND = 1000
 const EMPTY_SCRIPT = '0x00000001'
 
 export function isVoteAction(vote) {
@@ -39,67 +42,46 @@ export function getConnectedAccountVote(vote, account) {
   return VOTE_ABSENT
 }
 
-export function getDecisionTransition(
-  vote,
-  { number: currentBlockNumber, timestamp: currentBlockTimestamp },
-  blockTime
-) {
-  // Check if the latest block has not loaded yet (in that case assumed all closed)
-  if (!currentBlockNumber) return { closed: true }
-
-  const { startBlock, endBlock, executionBlock } = vote
-  const blockTimestampMiliseconds = currentBlockTimestamp * ONE_SECOND
-  const blockTimeMiliseconds = blockTime * ONE_SECOND
-  const state = {}
-
-  if (endBlock <= currentBlockNumber) {
-    state.closed = true
-    // If not delayed, then just return closed
-    if (currentBlockNumber < executionBlock) {
-      state.delayed = true
-    } else {
-      return state
-    }
-  } else if (currentBlockNumber < startBlock) {
-    state.upcoming = true
-  } else {
-    state.open = true
-  }
-
-  const remainingBlocks = getVoteRemainingBlocks(
-    { ...vote, ...state },
-    currentBlockNumber
+export function hasVoteEnded(vote) {
+  return (
+    vote.status === PROPOSAL_STATUS_CANCELLED_STRING ||
+    vote.status === PROPOSAL_STATUS_SETTLED_STRING ||
+    (vote.status !== PROPOSAL_STATUS_CHALLENGED_STRING &&
+      vote.status !== PROPOSAL_STATUS_DISPUTED_STRING &&
+      Date.now() >= vote.endDate)
   )
-
-  // Save the end time for the next state transition
-  state.transitionAt = new Date(
-    blockTimestampMiliseconds + remainingBlocks * blockTimeMiliseconds
-  )
-
-  return state
 }
 
-export function getVoteRemainingBlocks(voteData, currentBlockNumber) {
-  const { startBlock, endBlock, executionBlock } = voteData
+export function getVoteEndDate(vote) {
+  const baseVoteEndDate = vote.startDate + vote.setting.voteTime
+  const endDateAfterPause = baseVoteEndDate + vote.pauseDuration
+  const lastComputedEndDate =
+    endDateAfterPause + vote.quietEndingExtensionDuration
 
-  // All posible states
-  const { closed, delayed, upcoming, open, syncing } = voteData
-  let remainingBlocks
-
-  if ((closed && !delayed) || syncing) return 0
-
-  if (upcoming) {
-    // upcoming
-    remainingBlocks = startBlock - currentBlockNumber
-  } else if (open) {
-    // open
-    remainingBlocks = endBlock - currentBlockNumber
-  } // delayed
-  else {
-    remainingBlocks = executionBlock - currentBlockNumber
+  // The last computed end date is correct if we have not passed it yet or if no flip was detected in the last extension
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  if (currentTimestamp < lastComputedEndDate || !wasVoteFlipped(vote)) {
+    return lastComputedEndDate
   }
 
-  return remainingBlocks
+  // Otherwise, since the last computed end date was reached and included a flip, we need to extend the end date by one more period
+  return lastComputedEndDate + vote.quietEndingExtension
+}
+
+function wasVoteFlipped(vote) {
+  // If there was no snapshot taken, it means no one voted during the quiet ending period. Thus, it cannot have been flipped.
+  if (vote.quietEndingSnapshotSupport === 'Absent') {
+    return false
+  }
+
+  // Otherwise, we calculate if the vote was flipped by comparing its current acceptance state to its last state at the start of the extension period
+  const wasInitiallyAccepted = vote.quietEndingSnapshotSupport === 'Yea'
+  const currentExtensions =
+    vote.quietEndingExtensionDuration / vote.quietEndingExtension
+
+  const wasAcceptedBeforeLastFlip =
+    wasInitiallyAccepted === (currentExtensions % 2 === 0)
+  return wasAcceptedBeforeLastFlip !== vote.isAccepted
 }
 
 export const getQuorumProgress = ({ yea, votingPower }) => yea.div(votingPower)

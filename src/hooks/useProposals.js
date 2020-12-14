@@ -21,7 +21,7 @@ import {
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../utils/proposal-utils'
-import { getDecisionTransition } from '../utils/vote-utils'
+import { getVoteEndDate, hasVoteEnded } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
@@ -57,7 +57,7 @@ function useFilteredProposals(filters, account, latestBlock) {
 
     return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
-        ? processDecision(proposal, latestBlock, blockTime)
+        ? processDecision(proposal)
         : processProposal(
             proposal,
             latestBlock,
@@ -125,7 +125,7 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? processDecision(proposal, latestBlock, blockTime)
+      ? processDecision(proposal)
       : processProposal(
           proposal,
           latestBlock,
@@ -235,12 +235,16 @@ function processProposal(
   }
 }
 
-function processDecision(proposal, latestBlock, blockTime) {
+function processDecision(proposal) {
+  const hasEnded = hasVoteEnded(proposal)
+  const endDate = getVoteEndDate(proposal)
+
   return {
     ...proposal,
     data: {
       ...proposal.data,
-      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
+      endDate,
+      hasEnded,
     },
   }
 }

@@ -33,4 +33,8 @@ function durationToHours(duration) {
 
 export function noop() {}
 
+export function toMilliseconds(seconds) {
+  return parseInt(seconds) * 1000
+}
+
 export { dayjs, dateFormat, durationTime, toMs, durationToHours }

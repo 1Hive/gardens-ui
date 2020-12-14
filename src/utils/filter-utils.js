@@ -63,8 +63,8 @@ export function testSupportFilter(filter, proposalSupportStatus) {
 export function testStatusFilter(filter, proposal) {
   return (
     filter === NULL_FILTER_STATE ||
-    (filter === STATUS_FILTER_OPEN && proposal.data?.open) ||
-    (filter === STATUS_FILTER_CLOSED && proposal.data?.closed)
+    (filter === STATUS_FILTER_OPEN && !proposal.hasEnded) ||
+    (filter === STATUS_FILTER_CLOSED && proposal.hasEnded)
   )
 }
 
