@@ -6,7 +6,7 @@ import Supporter from './models/Supporter'
 
 
 export const ALL_PROPOSAL_TYPES = [0, 1, 2]     // [Suggestion, Proposal, Decision]
-export const ALL_PROPOSAL_STATUSES = [0, 1, 2]  // [Active, Cancelled, Executed]
+export const ALL_PROPOSAL_STATUSES = [0, 1, 2, 3, 4, 5, 6]  // [Active, Cancelled, Executed, Challenged, Disputed, Rejected, Settled]
 
 export type SubscriptionHandler = { unsubscribe: () => void }
 
