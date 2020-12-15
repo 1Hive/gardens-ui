@@ -3,18 +3,21 @@ import {
   VOTE_ABSENT,
   VOTE_NAY,
   VOTE_YEA,
-  VOTE_STATUS_ONGOING,
-  VOTE_STATUS_REJECTED,
   VOTE_STATUS_ACCEPTED,
+  VOTE_STATUS_CHALLENGED,
+  VOTE_STATUS_DISPUTED,
   VOTE_STATUS_ENACTED,
-  VOTE_STATUS_UPCOMING,
   VOTE_STATUS_PENDING_ENACTMENT,
-  VOTE_STATUS_DELAYED,
+  VOTE_STATUS_REJECTED,
+  VOTE_STATUS_SETTLED,
+  PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,
   PROPOSAL_STATUS_SETTLED_STRING,
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
+  PROPOSAL_STATUS_REJECTED_STRING,
+  VOTE_STATUS_ONGOING,
 } from '../constants'
 
 const EMPTY_SCRIPT = '0x00000001'
@@ -42,18 +45,21 @@ export function getConnectedAccountVote(vote, account) {
   return VOTE_ABSENT
 }
 
-export function hasVoteEnded(vote) {
+export function hasVoteEnded(status, endDate, challengeEndDate) {
   return (
-    vote.status === PROPOSAL_STATUS_CANCELLED_STRING ||
-    vote.status === PROPOSAL_STATUS_SETTLED_STRING ||
-    (vote.status !== PROPOSAL_STATUS_CHALLENGED_STRING &&
-      vote.status !== PROPOSAL_STATUS_DISPUTED_STRING &&
-      Date.now() >= vote.endDate)
+    status === PROPOSAL_STATUS_CANCELLED_STRING ||
+    status === PROPOSAL_STATUS_SETTLED_STRING ||
+    status === PROPOSAL_STATUS_REJECTED_STRING ||
+    (status !== PROPOSAL_STATUS_CHALLENGED_STRING &&
+      status !== PROPOSAL_STATUS_DISPUTED_STRING &&
+      Date.now() >= endDate) ||
+    (status === PROPOSAL_STATUS_CHALLENGED_STRING &&
+      Date.now() > challengeEndDate)
   )
 }
 
 export function getVoteEndDate(vote) {
-  const baseVoteEndDate = vote.startDate + vote.setting.voteTime
+  const baseVoteEndDate = vote.startDate + vote.voteTime
   const endDateAfterPause = baseVoteEndDate + vote.pauseDuration
   const lastComputedEndDate =
     endDateAfterPause + vote.quietEndingExtensionDuration
@@ -106,15 +112,32 @@ export function getVoteSuccess(vote, pctBase) {
   )
 }
 
-export function getVoteStatus(vote, pctBase) {
-  if (vote.data.upcoming) return VOTE_STATUS_UPCOMING
-  if (vote.data.open) return VOTE_STATUS_ONGOING
+export function getVoteStatus(vote, hasEnded, pctBase) {
+  if (!hasEnded) {
+    if (vote.status === PROPOSAL_STATUS_ACTIVE_STRING) {
+      return VOTE_STATUS_ONGOING
+    }
 
-  if (!getVoteSuccess(vote, pctBase)) {
-    return VOTE_STATUS_REJECTED
+    return vote.status === PROPOSAL_STATUS_DISPUTED_STRING
+      ? VOTE_STATUS_DISPUTED
+      : VOTE_STATUS_CHALLENGED
   }
 
-  if (vote.data.delayed) return VOTE_STATUS_DELAYED
+  // If it is challenged and has ended means it was settled because submitter didn't respond.
+  if (vote.status === PROPOSAL_STATUS_CHALLENGED_STRING) {
+    return VOTE_STATUS_SETTLED
+  }
+
+  if (vote.status === PROPOSAL_STATUS_SETTLED_STRING) {
+    return VOTE_STATUS_SETTLED
+  }
+
+  if (
+    vote.status === PROPOSAL_STATUS_REJECTED_STRING ||
+    !getVoteSuccess(vote, pctBase)
+  ) {
+    return VOTE_STATUS_REJECTED
+  }
 
   // Only if the vote has an action do we consider it possible for enactment
   const hasAction = isVoteAction(vote)

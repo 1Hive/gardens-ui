@@ -18,7 +18,6 @@ import { useWallet } from '../../providers/Wallet'
 
 import BigNumber from '../../lib/bigNumber'
 import { durationTime } from '../../utils/date-utils'
-import { getVoteStatus } from '../../utils/vote-utils'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
 import {
@@ -131,8 +130,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
   const { account } = useWallet()
   const [warningPopoverVisible, setWarningPopoverVisible] = useState(false)
 
-  const status = getVoteStatus(proposal, PCT_BASE)
-  const { label: statusLabel } = getStatusAttributes(status, theme)
+  const { label: statusLabel } = getStatusAttributes(proposal.status, theme)
 
   const votesCount = proposal.casts.length
   const popoverOpener = useRef()

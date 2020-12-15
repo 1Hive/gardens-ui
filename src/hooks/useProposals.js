@@ -21,8 +21,13 @@ import {
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../utils/proposal-utils'
-import { getVoteEndDate, hasVoteEnded } from '../utils/vote-utils'
+import {
+  getVoteEndDate,
+  getVoteStatus,
+  hasVoteEnded,
+} from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
+import { PCT_BASE } from '../constants'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -236,15 +241,18 @@ function processProposal(
 }
 
 function processDecision(proposal) {
-  const hasEnded = hasVoteEnded(proposal)
   const endDate = getVoteEndDate(proposal)
+  const hasEnded = hasVoteEnded(
+    proposal.status,
+    endDate,
+    proposal.challengeEndDate
+  )
+  const status = getVoteStatus(proposal, hasEnded, PCT_BASE)
 
   return {
     ...proposal,
-    data: {
-      ...proposal.data,
-      endDate,
-      hasEnded,
-    },
+    endDate,
+    hasEnded,
+    status,
   }
 }

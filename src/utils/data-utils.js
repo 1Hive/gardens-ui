@@ -25,7 +25,7 @@ export function transformConfigData(config) {
   }
 }
 
-export function transformProposalData(proposal, config) {
+export function transformProposalData(proposal) {
   const proposalData = {
     ...proposal,
     id: proposal.number,
@@ -59,14 +59,9 @@ function transformConvictionProposalData(proposal) {
 
 function transformDecisionData(proposal) {
   return {
-    casts: proposal.casts,
-    creator: proposal.creator,
-    metadata: proposal.metadata,
     minAcceptQuorum: new BigNumber(proposal.minAcceptQuorum),
     nay: BigNumber(proposal.nays),
-    script: proposal.script,
     startDate: toMilliseconds(proposal.startDate),
-    status: proposal.status,
     supportRequiredPct: BigNumber(proposal.setting.supportRequiredPct),
     votingPower: BigNumber(proposal.votingPower),
     yea: BigNumber(proposal.yeas),

@@ -26,8 +26,8 @@ export const filterArgsMapping = {
   },
   status: {
     queryKey: 'statuses',
-    [STATUS_FILTER_OPEN]: [0],
-    [STATUS_FILTER_CLOSED]: [2],
+    [STATUS_FILTER_OPEN]: [0, 3, 4], // Active, Challenged, Disputed
+    [STATUS_FILTER_CLOSED]: [0, 2, 3, 5, 6], // Active, Executed, Challenged, Rejected, Settled (Active and Challenged could actually be closed based on time)
     [STATUS_FILTER_REMOVED]: [1],
   },
   type: {
