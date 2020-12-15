@@ -15,6 +15,7 @@ export function useAgreement() {
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
 
   const [agreement, { loading: agreementLoading }] = useAgreementSubscription()
+  console.log('agreement subscription ', agreement)
   const [processedAgreement, setProcessedAgreement] = useState({})
   const [initialProcessing, setInitialProcessing] = useState(true)
 
@@ -31,6 +32,11 @@ export function useAgreement() {
       const disputableAppsWithRequirements = processDisputableApps(
         apps,
         appsWithRequirements
+      )
+
+      console.log(
+        'disputableAppsWithRequirements ',
+        disputableAppsWithRequirements
       )
 
       if (mounted()) {
@@ -74,6 +80,7 @@ function processDisputableApps(apps, disputableApps) {
       addressesEqual(address, disputableAppAddress)
     )
 
+    console.log('target App ', targetApp)
     const { iconSrc, humanName } = getAppPresentation(targetApp)
 
     return {

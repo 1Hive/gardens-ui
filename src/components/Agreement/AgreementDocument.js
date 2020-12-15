@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useMounted } from '../../hooks/useMounted'
-
 import {
   Box,
+  Checkbox,
+  Field,
   Markdown,
   textStyle,
   useTheme,
   useLayout,
   GU,
 } from '@1hive/1hive-ui'
+import ModalButton from '../ModalFlows/ModalButton'
+import { useMounted } from '../../hooks/useMounted'
+// import { useMultiModal } from '../MultiModal/MultiModalProvider'
 import { getIpfsCidFromUri, ipfsGet } from '../../utils/ipfs-utils'
 
-function AgreementDocument({ ipfsUri }) {
+function AgreementDocument({ ipfsUri, onSignAgreement, getTransactions }) {
   const mounted = useMounted()
   const { layoutName } = useLayout()
   const [markdownContent, setMarkdownContent] = useState('')
@@ -43,19 +45,91 @@ function AgreementDocument({ ipfsUri }) {
   }, [ipfsUri, mounted])
 
   return (
-    <Box padding={0}>
+    <Box
+      padding={0}
+      css={`
+        padding: ${({ compact }) => `${compact ? 2 * GU : 7 * GU}px`};
+      `}
+    >
       <Article theme={theme} compact={compactMode}>
         <Markdown content={markdownContent} />
       </Article>
+      <LineSeparator border={theme.border} />
+      <SignOverview
+        onSignAgreement={onSignAgreement}
+        getTransactions={getTransactions}
+      />
     </Box>
   )
 }
 
-const Article = styled.article`
-  overflow-y: auto;
-  max-height: ${100 * GU}px;
-  padding: ${({ compact }) => `${compact ? 2 * GU : 7 * GU}px`};
+function SignOverview({ onSignAgreement, getTransactions }) {
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [loading, setLoading] = useState(false)
+  // const { next } = useMultiModal()
 
+  const handleSign = useCallback(() => {
+    setLoading(true)
+    onSignAgreement()
+
+    // Proceed to the next screen after transactions have been received
+    // getTransactions(() => {
+    //   next()
+    // })
+  }, [onSignAgreement])
+
+  const handleAcceptTerms = useCallback(
+    checked => setAcceptedTerms(checked),
+    []
+  )
+
+  return (
+    <>
+      <h2
+        css={`
+          ${textStyle('title4')};
+          margin-bottom: ${4 * GU}px;
+        `}
+      >
+        Sign Agreement
+      </h2>
+      <label
+        css={`
+          display: flex;
+          margin-bottom: ${3 * GU}px;
+        `}
+      >
+        <div
+          css={`
+            margin-left: -${0.5 * GU}px;
+            margin-right: ${1 * GU}px;
+          `}
+        >
+          <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
+        </div>
+        By signing this Agreement, you agree to 1Hive Network DAO manifesto, by
+        laws and community code of behavior.
+      </label>
+      <Field label="Agreement action collateral">
+        <p>
+          In order perform or challenge actions bound by this Agreement, you
+          must deposit some HNY as the action collateral first. Different apps
+          might require different tokens and amounts as the action collateral.
+        </p>
+      </Field>
+      <ModalButton
+        mode="strong"
+        loading={loading}
+        onClick={handleSign}
+        disabled={!acceptedTerms}
+      >
+        Sign Agreement
+      </ModalButton>
+    </>
+  )
+}
+
+const Article = styled.article`
   h1 {
     text-align: center;
     margin-top: ${4 * GU}px;
@@ -127,9 +201,10 @@ const Article = styled.article`
     }
   }
 `
-
-AgreementDocument.propTypes = {
-  ipfsUri: PropTypes.string.isRequired,
-}
+const LineSeparator = styled.div`
+  height: 1px;
+  border-bottom: 0.5px solid ${({ border }) => border};
+  margin: ${3 * GU}px 0;
+`
 
 export default AgreementDocument
