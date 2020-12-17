@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Info, Checkbox, useLayout, GU } from '@1hive/1hive-ui'
-// import InfoField from './../../InfoField'
+import { GU, Checkbox, Field, useLayout } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
-import signGraphic from '../../../assets/smart-contract.png'
+import signGraphic from '../../../assets/smart-contract.svg'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 function SignOverview({ getTransactions }) {
@@ -55,27 +54,17 @@ function SignOverview({ getTransactions }) {
         >
           <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
         </div>
-        By signing this Agreement, you agree to Aragon Network DAO manifesto,
-        bylaws and community code of behavior.
+        By signing this Agreement, you agree to 1Hive Network DAO manifesto, by
+        laws and community code of behavior.
       </label>
-      {/* <InfoField label="Agreement action collateral"> */}
-      <p>
-        In order perform or challenge actions bound by this Agreement, you must
-        deposit some ANT as the action collateral first. Different apps might
-        require different tokens and amounts as the action collateral. You can
-        do this at any time on Stake Management.
-      </p>
-      {/* </InfoField> */}
-      <Info
-        mode="info"
-        css={`
-          margin-top: ${2 * GU}px;
-        `}
-      >
-        These votes are purely informative and will not directly result in any
-        further action being taken in the organization. These proposals can be
-        challenged if not adhered to this organization’s Agreement.
-      </Info>
+      <Field label="Agreement action collateral">
+        <p>
+          In order perform or challenge actions bound by this Agreement, you
+          must deposit some HNY as the action collateral first. Different apps
+          might require different tokens and amounts as the action collateral.
+        </p>
+      </Field>
+
       <ModalButton
         mode="strong"
         loading={loading}

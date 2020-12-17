@@ -21,8 +21,6 @@ function Agreement() {
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
 
-  console.log('Agreement!!! ', agreement)
-
   const signed = agreement.signed
 
   if (loading) {
@@ -59,8 +57,6 @@ function AgreementLayout({ agreement, signedAgreement, onSignAgreement }) {
     effectiveFrom,
     stakingAddress,
   } = agreement
-
-  console.log('disputableAppsWithRequirements ', disputableAppsWithRequirements)
 
   return (
     <LayoutColumns

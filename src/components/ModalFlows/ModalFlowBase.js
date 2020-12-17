@@ -83,7 +83,6 @@ function ModalFlowBase({
     }
 
     // Apply transaction singing at the end
-    console.log('transaction steps ', transactionSteps)
     if (transactionSteps) {
       allScreens.push({
         title: transactionTitle,
@@ -109,8 +108,6 @@ function ModalFlowBase({
     loading,
     frontLoad,
   ])
-
-  console.log('extendedScreens ', extendedScreens)
 
   return <MultiModalScreens screens={extendedScreens} />
 }

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
 import { css, keyframes } from 'styled-components'
-import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
+import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
 import Illustration from './Illustration'
 import {
   STEP_ERROR,
@@ -46,7 +46,7 @@ const pulseAnimation = css`
   `} 0.75s linear alternate infinite;
 `
 
-function StatusVisual({ status, color, number, onlySign, ...props }) {
+function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
   const theme = useTheme()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
 
@@ -55,9 +55,13 @@ function StatusVisual({ status, color, number, onlySign, ...props }) {
 
     return [
       Icon && <Icon />,
-      <StepIllustration number={number} status={status} onlySign={onlySign} />,
+      <StepIllustration
+        number={number}
+        status={status}
+        withoutFirstStep={withoutFirstStep}
+      />,
     ]
-  }, [status, number, onlySign])
+  }, [status, number, withoutFirstStep])
 
   return (
     <div
@@ -177,30 +181,28 @@ StatusVisual.propTypes = {
 }
 
 /* eslint-disable react/prop-types */
-function StepIllustration({ number, status, onlySign }) {
+function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme()
 
-  console.log('STATUS!!!!! ', status)
-
-  const processedStatus =
-    status === STEP_PROMPTING && onlySign ? STEP_WORKING : status
-
-  console.log('processed status')
-
   const renderIllustration =
-    processedStatus === STEP_WORKING ||
-    processedStatus === STEP_ERROR ||
-    processedStatus === STEP_SUCCESS
+    status === STEP_WORKING ||
+    status === STEP_ERROR ||
+    status === STEP_SUCCESS ||
+    withoutFirstStep
 
   return (
     <div
+      id="illustration div!!!!!"
       css={`
-        width: ${8.5 * GU}px;
-        height: ${8.5 * GU}px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: ${12 * GU}px;
+        height: ${12 * GU}px;
       `}
     >
       {renderIllustration ? (
-        <Illustration status={processedStatus} index={number} />
+        <Illustration status={status} index={number} />
       ) : (
         <div
           css={`

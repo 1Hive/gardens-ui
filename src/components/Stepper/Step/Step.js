@@ -31,7 +31,7 @@ function Step({
   number,
   transactionHash,
   showDivider,
-  onlySign,
+  withoutFirstStep,
   ...props
 }) {
   const theme = useTheme()
@@ -45,7 +45,7 @@ function Step({
         descColor: theme.contentSecondary,
       },
       [STEP_PROMPTING]: {
-        visualColor: theme.accent,
+        visualColor: '#FFE862',
         descColor: theme.contentSecondary,
       },
       [STEP_WORKING]: {
@@ -89,7 +89,7 @@ function Step({
           css={`
             margin-bottom: ${3 * GU}px;
           `}
-          onlySign={onlySign}
+          withoutFirstStep={withoutFirstStep}
         />
         <h2
           css={`

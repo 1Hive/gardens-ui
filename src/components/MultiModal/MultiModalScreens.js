@@ -12,11 +12,12 @@ import {
   RADIUS,
   GU,
 } from '@1hive/1hive-ui'
-import logoMarkOverlay from '../../assets/logo-mark-overlay.svg'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'
 import { useInside } from 'use-inside'
+
+import headerBackground from '../../assets/modal-background.svg'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
@@ -159,31 +160,10 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
               css={`
                 position: relative;
                 overflow: hidden;
-                padding: ${smallMode ? 5 * GU : 6.5 * GU}px ${standardPadding}px
-                  ${smallMode ? 2 * GU : 2.5 * GU}px ${standardPadding}px;
-                background: linear-gradient(
-                  10deg,
-                  ${theme.accentEnd} 0%,
-                  ${theme.accentStart} 200%
-                );
-
+                padding: ${1.5 * GU}px ${standardPadding}px
+                  ${1.5 * GU}px ${standardPadding}px;
+                background-image: url("${headerBackground}");
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
-
-                /* Soft shadow below title */
-                &::after {
-                  content '';
-
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  width: 100%;
-                  height: ${6 * GU}px;
-                  background: linear-gradient(
-                  to top,
-                  rgba(0,0,0,0.04) 0%,
-                  rgba(0,0,0,0) 70%
-                );
-                }
               `}
             >
               <h1
@@ -198,20 +178,6 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
               >
                 {title}
               </h1>
-              <img
-                alt=""
-                src={logoMarkOverlay}
-                css={`
-                  position: absolute;
-
-                  bottom: -${5 * GU}px;
-                  left: ${2 * GU}px;
-
-                  width: ${16 * GU}px;
-                  height: ${16 * GU}px;
-                  opacity: 0.3;
-                `}
-              />
             </div>
           ) : (
             title && (

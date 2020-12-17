@@ -52,7 +52,6 @@ function Stepper({ steps, onComplete, ...props }) {
     initialStepState(steps)
   )
 
-  console.log(' stepState ', stepState)
   const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout()
 
   const stepsCount = steps.length - 1
@@ -77,7 +76,7 @@ function Stepper({ steps, onComplete, ...props }) {
             status={status}
             showDivider={showDivider}
             transactionHash={hash}
-            onlySign={steps.length === 1}
+            withoutFirstStep={steps.length === 1}
           />
         </li>
       )
