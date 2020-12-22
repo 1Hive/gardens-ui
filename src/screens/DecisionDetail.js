@@ -24,15 +24,10 @@ import VoteStatus from '../components/DecisionDetail/VoteStatus'
 import { useWallet } from '../providers/Wallet'
 import { useDescribeVote } from '../hooks/useDescribeVote'
 import { useAppState } from '../providers/AppState'
-import { useBlockTimeStamp } from '../hooks/useBlock'
 
 import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
 import { round, safeDiv } from '../utils/math-utils'
-import {
-  getConnectedAccountVote,
-  getQuorumProgress,
-  getVoteSuccess,
-} from '../utils/vote-utils'
+import { getConnectedAccountVote, getQuorumProgress } from '../utils/vote-utils'
 import { dateFormat } from '../utils/date-utils'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'
@@ -335,13 +330,9 @@ function SummaryInfo({ vote }) {
 
 function Status({ vote }) {
   const theme = useTheme()
+  const { endDate, hasEnded } = vote
 
-  const { endBlock } = vote
-  const { upcoming, open, delayed, closed, transitionAt } = vote.data
-
-  const endBlockTimeStamp = useBlockTimeStamp(endBlock)
-
-  if (!closed || (delayed && getVoteSuccess(vote, PCT_BASE))) {
+  if (!hasEnded) {
     return (
       <React.Fragment>
         <div
@@ -351,18 +342,13 @@ function Status({ vote }) {
             margin-bottom: ${1 * GU}px;
           `}
         >
-          {upcoming
-            ? `Time to start `
-            : open
-            ? ` Time remaining`
-            : `Time for enactment`}
+          Time remaining
         </div>
-        <Timer end={transitionAt} maxUnits={4} />
+        <Timer end={endDate} maxUnits={4} />
       </React.Fragment>
     )
   }
 
-  const dateHasLoaded = endBlockTimeStamp
   return (
     <React.Fragment>
       <VoteStatus vote={vote} />
@@ -378,19 +364,7 @@ function Status({ vote }) {
             ${textStyle('body2')};
           `}
         >
-          <IconTime size="small" />{' '}
-          {dateHasLoaded ? (
-            dateFormat(new Date(endBlockTimeStamp))
-          ) : (
-            <div
-              css={`
-                height: 25px;
-                width: 150px;
-                background: #f9fafc;
-                border-radius: 6px;
-              `}
-            />
-          )}
+          <IconTime size="small" /> {dateFormat(new Date(endDate))}
         </div>
       )}
     </React.Fragment>

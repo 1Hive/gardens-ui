@@ -247,12 +247,12 @@ function processDecision(proposal) {
     endDate,
     proposal.challengeEndDate
   )
-  const status = getVoteStatus(proposal, hasEnded, PCT_BASE)
+  const voteStatus = getVoteStatus(proposal, hasEnded, PCT_BASE)
 
   return {
     ...proposal,
     endDate,
     hasEnded,
-    status,
+    voteStatus,
   }
 }

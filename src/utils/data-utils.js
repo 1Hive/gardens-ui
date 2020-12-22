@@ -16,11 +16,14 @@ export function transformConfigData(config) {
     },
     voting: {
       ...voting,
+      voteTime: toMilliseconds(voting.voteTime),
       supportRequiredPct: new BigNumber(voting.supportRequiredPct),
-      minAcceptQuorumPct: new BigNumber(voting.minAcceptQuorumPct),
-      durationBlocks: parseInt(voting.durationBlocks, 10),
-      bufferBlocks: parseInt(voting.bufferBlocks, 10),
-      executionDelayBlocks: parseInt(voting.executionDelayBlocks, 10),
+      minAcceptQuorumPct: new BigNumber(voting.minimumAcceptanceQuorumPct),
+      delegatedVotingPeriod: toMilliseconds(voting.delegatedVotingPeriod),
+      quietEndingPeriod: toMilliseconds(voting.quietEndingPeriod),
+      quietEndingExtension: toMilliseconds(voting.quietEndingExtension),
+      executionDelay: toMilliseconds(voting.executionDelay),
+      createdAt: toMilliseconds(voting.createdAt),
     },
   }
 }
@@ -59,19 +62,16 @@ function transformConvictionProposalData(proposal) {
 
 function transformDecisionData(proposal) {
   return {
-    minAcceptQuorum: new BigNumber(proposal.minAcceptQuorum),
     nay: BigNumber(proposal.nays),
     startDate: toMilliseconds(proposal.startDate),
     supportRequiredPct: BigNumber(proposal.setting.supportRequiredPct),
-    votingPower: BigNumber(proposal.votingPower),
+    votingPower: BigNumber(proposal.totalPower),
     yea: BigNumber(proposal.yeas),
     quietEndingExtensionDuration: toMilliseconds(
       proposal.quietEndingExtensionDuration
     ),
     voteTime: toMilliseconds(proposal.setting.voteTime),
-    minimumAcceptanceQuorumPct: BigNumber(
-      proposal.setting.minimumAcceptanceQuorumPct
-    ),
+    minAcceptQuorum: BigNumber(proposal.setting.minimumAcceptanceQuorumPct),
     delegatedVotingPeriod: toMilliseconds(
       proposal.setting.delegatedVotingPeriod
     ),

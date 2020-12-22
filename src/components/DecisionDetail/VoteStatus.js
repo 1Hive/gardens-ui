@@ -82,7 +82,7 @@ export const getStatusAttributes = (status, theme) => {
 const VoteStatus = ({ vote }) => {
   const theme = useTheme()
 
-  const { Icon, color, label } = getStatusAttributes(vote.status, theme)
+  const { Icon, color, label } = getStatusAttributes(vote.voteStatus, theme)
 
   return (
     <Main

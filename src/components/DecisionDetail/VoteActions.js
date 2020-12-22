@@ -27,8 +27,7 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
 
   const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
 
-  const { data, snapshotBlock } = vote
-  const { open, delayed } = data
+  const { hasEnded, snapshotBlock } = vote
   const {
     canUserVote,
     canExecute,
@@ -80,10 +79,10 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     return null
   }
 
-  if (!open) {
+  if (hasEnded) {
     return (
       <React.Fragment>
-        {connectedAccount && canExecute && !delayed && isVoteAction(vote) && (
+        {connectedAccount && canExecute && isVoteAction(vote) && (
           <React.Fragment>
             <Button
               mode="strong"

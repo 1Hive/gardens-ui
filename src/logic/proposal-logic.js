@@ -15,7 +15,7 @@ export default function useProposalLogic(match) {
     vaultBalance,
   } = useAppState()
   const appAddress = path.includes('vote')
-    ? config?.voting.id
+    ? config?.voting.id.slice(0, 42)
     : config?.conviction.id
 
   const panelState = usePanelState()
