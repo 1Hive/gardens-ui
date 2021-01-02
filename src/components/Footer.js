@@ -95,10 +95,7 @@ function Footer() {
               >
                 Handbook
               </Link>
-              <Link
-                href="https://1hive.gitbook.io/1hive/"
-                external
-              >
+              <Link href="https://1hive.gitbook.io/1hive/" external>
                 GitBook
               </Link>
             </div>
