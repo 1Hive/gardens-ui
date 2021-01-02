@@ -73,6 +73,9 @@ function Footer() {
               <Link href="https://twitter.com/1HiveOrg" external>
                 Twitter
               </Link>
+              <Link href="https://t.me/honeyswapdex" external>
+                Telegram
+              </Link>
               <Link href="https://forum.1hive.org/" external>
                 Forum
               </Link>
@@ -91,6 +94,9 @@ function Footer() {
                 external
               >
                 Handbook
+              </Link>
+              <Link href="https://1hive.gitbook.io/1hive/" external>
+                GitBook
               </Link>
             </div>
           </div>
