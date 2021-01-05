@@ -19,7 +19,7 @@ export function useAgreement() {
   const [initialProcessing, setInitialProcessing] = useState(true)
 
   useEffect(() => {
-    function processAgreementDetails() {
+    async function processAgreementDetails() {
       const {
         currentVersion,
         appsWithRequirements,
@@ -27,6 +27,12 @@ export function useAgreement() {
         stakingFactory,
       } = agreement
       const { content, effectiveFrom, title, versionId } = currentVersion
+
+      console.log('signer ', signer)
+
+      const signatures = signer ? await signer.signatures() : []
+      const hasSignedLast =
+        signer && (await signer.hasSigned(currentVersion.versionId))
 
       const disputableAppsWithRequirements = processDisputableApps(
         apps,
@@ -40,7 +46,8 @@ export function useAgreement() {
           disputableAppsWithRequirements: disputableAppsWithRequirements,
           effectiveFrom: toMs(effectiveFrom),
           stakingAddress: stakingFactory,
-          signed: Boolean(signer),
+          signedLatest: hasSignedLast,
+          signedPreviousVersion: signatures.length > 0,
           title: title,
           versionId: versionId,
         })

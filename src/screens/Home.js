@@ -1,29 +1,21 @@
-import React /* { useCallback, useState } */ from 'react'
-// import { GU, SidePanel, useLayout, useViewport } from '@1hive/1hive-ui'
+import React, { useCallback, useState } from 'react'
+import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 // import AddProposalPanel from '../components/panels/AddProposalPanel'
 // import Filters from '../components/Filters/Filters'
-// import HeroBanner from '../components/Feed/HeroBanner'
+import HeroBanner from '../components/Feed/HeroBanner'
 // import Loader from '../components/Loader'
 // import Metrics from '../components/Metrics'
 // import NetworkErrorModal from '../components/NetworkErrorModal'
 // import ProposalsList from '../components/Feed/ProposalsList'
 
-// import useAppLogic from '../logic/app-logic'
+import MultiModal from '../components/MultiModal/MultiModal'
+import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 
 const Home = React.memo(function Home() {
-  // const {
-  //   actions,
-  //   commonPool,
-  //   errors,
-  //   filters,
-  //   isLoading,
-  //   proposals,
-  //   proposalsFetchedCount,
-  //   proposalPanel,
-  //   totalStaked,
-  //   totalSupply,
-  // } = useAppLogic()
+  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
+    false
+  )
 
   // const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
 
@@ -32,49 +24,50 @@ const Home = React.memo(function Home() {
   // }, [])
 
   // // min layout is never returned
-  // const { below } = useViewport()
-  // const { layoutName } = useLayout()
-  // const largeMode = layoutName === 'large'
-  // const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const { below } = useViewport()
+  const { layoutName } = useLayout()
+  const largeMode = layoutName === 'large'
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
+
+  const handleOnCreateProposal = useCallback(() => {
+    setCreateProposalModalVisible(true)
+  }, [])
 
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
-      {/* <NetworkErrorModal visible={errors} />
-      {isLoading ? (
-        <Loader />
-      ) : (
+      {/* <NetworkErrorModal visible={errors} /> */}
+      <div
+        css={`
+          display: flex;
+          flex-direction: ${compactMode ? 'column-reverse' : 'row'};
+        `}
+      >
         <div
           css={`
-            display: flex;
-            flex-direction: ${compactMode ? 'column-reverse' : 'row'};
+            flex-grow: 1;
           `}
         >
           <div
             css={`
-              flex-grow: 1;
+              margin: ${(below('medium') ? 0 : 3) * GU}px;
             `}
           >
-            <div
-              css={`
-                margin: ${(below('medium') ? 0 : 3) * GU}px;
-              `}
-            >
-              {!compactMode && (
+            {/* {!compactMode && (
                 <Metrics
                   commonPool={commonPool}
                   onExecuteIssuance={actions.executeIssuance}
                   totalActiveTokens={totalStaked}
                   totalSupply={totalSupply}
                 />
-              )}
-              <div
-                css={`
-                  display: flex;
-                  flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
-                `}
-              >
-                <Filters
+              )} */}
+            <div
+              css={`
+                display: flex;
+                flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
+              `}
+            >
+              {/* <Filters
                   compact={compactMode}
                   itemsStatus={filters.status.items}
                   itemsSupport={filters.support.items}
@@ -106,39 +99,35 @@ const Home = React.memo(function Home() {
                   }
                   rankingItems={filters.ranking.items}
                   selectedRanking={filters.ranking.filter}
-                />
-                {largeMode && (
-                  <div
-                    css={`
-                      margin-left: ${3 * GU}px;
-                    `}
-                  >
-                    <HeroBanner
-                      onRequestNewProposal={proposalPanel.requestOpen}
-                    />
-                  </div>
-                )}
-              </div>
+                /> */}
+              {largeMode && (
+                <div
+                  css={`
+                    margin-left: ${3 * GU}px;
+                  `}
+                >
+                  <HeroBanner onRequestNewProposal={handleOnCreateProposal} />
+                </div>
+              )}
             </div>
           </div>
-          {!largeMode && (
-            <div
-              css={`
-                margin-right: ${(compactMode ? 0 : 3) * GU}px;
-              `}
-            >
-              <HeroBanner onRequestNewProposal={proposalPanel.requestOpen} />
-            </div>
-          )}
         </div>
-      )}
-      <SidePanel
-        title="New proposal"
-        opened={proposalPanel.visible}
-        onClose={proposalPanel.requestClose}
+        {!largeMode && (
+          <div
+            css={`
+              margin-right: ${(compactMode ? 0 : 3) * GU}px;
+            `}
+          >
+            <HeroBanner onRequestNewProposal={handleOnCreateProposal} />
+          </div>
+        )}
+      </div>
+      <MultiModal
+        visible={createProposalModalVisible}
+        onClose={() => setCreateProposalModalVisible(false)}
       >
-        <AddProposalPanel onSubmit={actions.convictionActions.newProposal} />
-      </SidePanel> */}
+        <CreateProposalScreens />
+      </MultiModal>
     </div>
   )
 })
