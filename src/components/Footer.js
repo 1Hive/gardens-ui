@@ -87,10 +87,19 @@ function Footer() {
                   margin-bottom: ${1.5 * GU}px;
                 `}
               >
-                Tools
+                Documentation
               </h5>
               <Link href="https://1hive.gitbook.io/1hive/" external>
                 Wiki
+              </Link>
+              <Link
+                href="https://1hive.gitbook.io/1hive/community/security/bug-bounty"
+                external
+              >
+                Bug Bounty
+              </Link>
+              <Link href="https://1hive.gitbook.io/1hive/guides/faq" external>
+                FAQs
               </Link>
             </div>
           </div>
