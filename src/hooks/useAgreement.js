@@ -39,6 +39,7 @@ export function useAgreement() {
         appsWithRequirements
       )
 
+      console.log('signatures!!! ', signatures)
       if (mounted()) {
         setProcessedAgreement({
           contractAddress: agreementApp.address,

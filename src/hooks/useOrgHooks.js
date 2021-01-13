@@ -27,6 +27,8 @@ export function useOrgData() {
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
+  console.log('APPSSSSSS ', apps)
+
   const [convictionApp] = useApp(appName)
   const [permissions, permissionsStatus] = usePermissions()
 

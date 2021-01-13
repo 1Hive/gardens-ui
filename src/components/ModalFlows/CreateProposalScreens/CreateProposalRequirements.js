@@ -4,15 +4,24 @@ import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
 import InfoField from '../../../components/InfoField'
 import { dateFormat } from '../../../utils/date-utils'
+import { getDisputableAppByName } from '../../../utils/app-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
 
-function CreateProposalRequirements({ agreement }) {
+function CreateProposalRequirements({ agreement, accountBalance }) {
   console.log('agreement!!  ', agreement)
+  const { disputableAppsWithRequirements } = agreement
+  const convictionAppRequirements = getDisputableAppByName(
+    disputableAppsWithRequirements,
+    'Conviction Voting'
+  )
+
+  const { token, actionAmount } = convictionAppRequirements
   return (
     <div>
-      <InfoField label={<>Agreement signature and version</>}>
+      <InfoField label="Agreement signature and version">
         You must sign the{' '}
         <Link href="#/agreement" external={false}>
           community covenant
@@ -21,6 +30,21 @@ function CreateProposalRequirements({ agreement }) {
         {dateFormat(agreement.effectiveFrom)}
       </InfoField>
       <AgreementStatus agreement={agreement} />
+      <InfoField
+        label="Action collateral"
+        css={`
+          margin-top: 38px;
+        `}
+      >
+        You must stake {formatTokenAmount(actionAmount, token.decimals)} HNY as
+        the collateral required to perform this action. Your current balance is{' '}
+        {formatTokenAmount(accountBalance, token.decimals)} {token.symbol}.
+      </InfoField>
+      <CollateralStatus
+        accountBalance={accountBalance}
+        actionAmount={actionAmount}
+        token={token}
+      />
       <ModalButton
         mode="strong"
         loading={false}
@@ -73,11 +97,52 @@ function AgreementStatus({ agreement }) {
     }
   }, [signedLatest, singedPreviousVersion, theme, goToAgreement])
 
+  return <InfoBox data={infoData} />
+}
+
+function CollateralStatus({ accountBalance, actionAmount, token }) {
+  const theme = useTheme()
+  const history = useHistory()
+
+  const goToStakeManager = useCallback(() => {
+    history.push('/agreement')
+  }, [history])
+
+  const infoData = useMemo(() => {
+    if (accountBalance.gte(actionAmount)) {
+      return {
+        backgroundColor: '#EBFBF6',
+        color: theme.positive,
+        icon: iconCheck,
+        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
+          actionAmount,
+          token.decimals
+        )} ${token.symbol} as the action collateral.`,
+      }
+    }
+
+    return {
+      backgroundColor: theme.negativeSurface,
+      color: theme.negative,
+      icon: iconError,
+      text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
+        actionAmount,
+        token.decimals
+      )} ${token.symbol} as the action collateral.`,
+      actionButton: 'Stake collateral',
+      buttonOnClick: goToStakeManager,
+    }
+  }, [accountBalance, actionAmount, token, goToStakeManager, theme])
+
+  return <InfoBox data={infoData} />
+}
+
+function InfoBox({ data }) {
   return (
     <Info
-      background={infoData.backgroundColor}
+      background={data.backgroundColor}
       borderColor="none"
-      color={infoData.color}
+      color={data.color}
       css={`
         border-radius: ${0.5 * GU}px;
         margin-top: ${1.5 * GU}px;
@@ -90,15 +155,15 @@ function AgreementStatus({ agreement }) {
           ${textStyle('body2')};
         `}
       >
-        <img src={infoData.icon} width="18" height="18" />
+        <img src={data.icon} width="18" height="18" />
         <span
           css={`
             margin-left: ${1.5 * GU}px;
           `}
         >
-          {infoData.text}
+          {data.text}
         </span>
-        {infoData.actionButton && (
+        {data.actionButton && (
           <div
             css={`
               margin-left: auto;
@@ -108,9 +173,9 @@ function AgreementStatus({ agreement }) {
               css={`
                 border-radius: ${0.5 * GU}px;
               `}
-              onClick={infoData.buttonOnClick}
+              onClick={data.buttonOnClick}
             >
-              {infoData.actionButton}
+              {data.actionButton}
             </Button>
           </div>
         )}

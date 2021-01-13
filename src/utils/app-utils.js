@@ -53,3 +53,7 @@ export function getAppPresentation(app) {
   // so we get them via a static mapping instead
   return KNOWN_SYSTEM_APPS.get(appId) || null
 }
+
+export function getDisputableAppByName(apps, appName) {
+  return apps?.find(app => app.appName === appName)
+}

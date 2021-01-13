@@ -30,11 +30,11 @@
     "web3-utils": "^1.2.0"
   },
   "scripts": {
-    "start": "npm run sync-assets && react-app-rewired start",
+    "start": "yarn run sync-assets && react-app-rewired start",
     "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
     "start:rinkeby": "cross-env REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
-    "build": "npm run sync-assets && react-app-rewired build",
+    "build": "yarn run sync-assets && react-app-rewired build",
     "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
     "build:rinkeby": "cross-env REACT_APP_APP_NAME=conviction-beta REACT_APP_CHAIN_ID=4 yarn build",
     "lint": "eslint ./src",
@@ -76,7 +76,6 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-standard": "^4.0.1",
-    "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
     "react-app-polyfill": "^1.0.6",
     "react-app-rewired": "^2.1.6",
