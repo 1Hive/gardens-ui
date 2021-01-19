@@ -28,7 +28,8 @@ export function loadTokenData(address: Address): string | null {
     token.decimals = tokenContract.decimals()
     token.save()
   }
-  return token.id
+
+  return id
 }
 
 /// /// General Config Entity //////
