@@ -151,7 +151,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           align-items: center;
         `}
       >
-        {account && proposal.data.open && (
+        {account && proposal.voteStatus === VOTE_STATUS_ONGOING && (
           <VoteActions proposal={proposal} onVote={onVoteOnDecision} />
         )}
         <div>
