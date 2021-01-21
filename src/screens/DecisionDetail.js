@@ -4,33 +4,43 @@ import {
   BackButton,
   Box,
   GU,
-  IconTime,
+  Info,
+  Link,
   LoadingRing,
   Split,
   textStyle,
-  Timer,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 
 import Description from '../components/Description'
+import DisputableActionInfo from '../components/DisputableActionInfo'
 import IdentityBadge from '../components/IdentityBadge'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
-import VoteCasted from '../components/DecisionDetail/VoteCasted'
 import VoteActions from '../components/DecisionDetail/VoteActions'
+import VoteCasted from '../components/DecisionDetail/VoteCasted'
 import VoteStatus from '../components/DecisionDetail/VoteStatus'
 
-import { useWallet } from '../providers/Wallet'
-import { useDescribeVote } from '../hooks/useDescribeVote'
 import { useAppState } from '../providers/AppState'
+import { useDescribeVote } from '../hooks/useDescribeVote'
+import { useWallet } from '../providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
+import { dateFormat } from '../utils/date-utils'
 import { round, safeDiv } from '../utils/math-utils'
 import { getConnectedAccountVote, getQuorumProgress } from '../utils/vote-utils'
-import { dateFormat } from '../utils/date-utils'
 
-import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'
+import {
+  PCT_BASE,
+  VOTE_NAY,
+  VOTE_STATUS_CHALLENGED,
+  VOTE_STATUS_DISPUTED,
+  VOTE_YEA,
+} from '../constants'
+import celesteStarIconSvg from '../assets/icon-celeste-star.svg'
+import honeyIconSvg from '../assets/honey.svg'
+import lockIconSvg from '../assets/icon-lock.svg'
 
 function DecisionDetail({ proposal, actions }) {
   const theme = useTheme()
@@ -123,7 +133,10 @@ function DecisionDetail({ proposal, actions }) {
                     grid-template-columns: ${layoutName !== 'small'
                       ? `auto auto`
                       : 'auto'};
-                    grid-gap: ${layoutName !== 'small' ? 10 * GU : 2.5 * GU}px;
+                    grid-column-gap: ${layoutName !== 'small'
+                      ? 10 * GU
+                      : 2.5 * GU}px;
+                    grid-row-gap: ${5 * GU}px;
                   `}
                 >
                   <DataField
@@ -136,6 +149,14 @@ function DecisionDetail({ proposal, actions }) {
                       )
                     }
                     loading={descriptionLoading}
+                  />
+                  <DataField
+                    label="Status"
+                    value={<VoteStatus vote={proposal} />}
+                  />
+                  <DataField
+                    label="Action collateral"
+                    value={<ActionCollateral proposal={proposal} />}
                   />
                   <DataField
                     label="Submitted by"
@@ -153,7 +174,7 @@ function DecisionDetail({ proposal, actions }) {
               </section>
               <div
                 css={`
-                  margin-top: ${2 * GU}px;
+                  margin-top: ${6 * GU}px;
                 `}
               >
                 <SummaryInfo vote={proposal} />
@@ -165,7 +186,7 @@ function DecisionDetail({ proposal, actions }) {
                   />
                 )}
               </div>
-              <VoteActions
+              <VoteInfoActions
                 onExecute={handleExecute}
                 onVoteNo={handleVoteNo}
                 onVoteYes={handleVoteYes}
@@ -175,8 +196,8 @@ function DecisionDetail({ proposal, actions }) {
           }
           secondary={
             <>
-              <Box heading="Status">
-                <Status vote={proposal} />
+              <Box heading="Disputable action">
+                <DisputableActionInfo proposal={proposal} />
               </Box>
               <Box heading="Relative support %">
                 <div
@@ -284,7 +305,7 @@ function SummaryInfo({ vote }) {
   return (
     <div>
       <DataField
-        label="Votes"
+        label="Current votes"
         value={
           <>
             <SummaryBar
@@ -328,46 +349,126 @@ function SummaryInfo({ vote }) {
   )
 }
 
-function Status({ vote }) {
-  const theme = useTheme()
-  const { endDate, hasEnded } = vote
+function ActionCollateral({ proposal }) {
+  const { collateralRequirement } = proposal
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+      `}
+    >
+      <img
+        src={honeyIconSvg}
+        alt=""
+        height="28"
+        width="28"
+        css={`
+          margin-right: ${0.5 * GU}px;
+        `}
+      />
+      <div
+        css={`
+          margin-right: ${0.5 * GU}px;
+        `}
+      >
+        {collateralRequirement.formattedActionAmount}{' '}
+        {collateralRequirement.tokenSymbol}
+      </div>
+      <img src={lockIconSvg} alt="" width="16" height="16" />
+    </div>
+  )
+}
 
-  if (!hasEnded) {
+function VoteInfoActions({ onExecute, onVoteNo, onVoteYes, vote }) {
+  if (vote.voteStatus === VOTE_STATUS_CHALLENGED) {
     return (
-      <React.Fragment>
-        <div
-          css={`
-            ${textStyle('body2')};
-            color: ${theme.surfaceContentSecondary};
-            margin-bottom: ${1 * GU}px;
-          `}
-        >
-          Time remaining
-        </div>
-        <Timer end={endDate} maxUnits={4} />
-      </React.Fragment>
+      <Info mode="warning">
+        This vote has been paused as the result of the originating action being
+        challenged. When the challenge is resolved, if allowed, the voting
+        period will resume and last the rest of its duration time. Othersiwe, it
+        will be cancelled.
+      </Info>
     )
   }
 
+  if (vote.voteStatus === VOTE_STATUS_DISPUTED) {
+    return <VoteDisputedInfo vote={vote} />
+  }
+
   return (
-    <React.Fragment>
-      <VoteStatus vote={vote} />
-      {!closed && (
+    <VoteActions
+      onExecute={onExecute}
+      onVoteNo={onVoteNo}
+      onVoteYes={onVoteYes}
+      vote={vote}
+    />
+  )
+}
+
+function VoteDisputedInfo({ vote }) {
+  const theme = useTheme()
+  return (
+    <div
+      css={`
+        margin-top: ${4 * GU}px;
+      `}
+    >
+      <Box padding={6 * GU}>
         <div
           css={`
-            margin-top: ${1 * GU}px;
-            display: inline-grid;
-            grid-template-columns: auto auto;
-            grid-gap: ${1 * GU}px;
+            display: flex;
             align-items: center;
-            color: ${theme.surfaceContentSecondary};
-            ${textStyle('body2')};
+            margin: 0 ${11 * GU}px;
           `}
         >
-          <IconTime size="small" /> {dateFormat(new Date(endDate))}
+          <img src={celesteStarIconSvg} width="52" height="52" alt="" />
+          <div
+            css={`
+              margin-left: ${3.5 * GU}px;
+            `}
+          >
+            <div
+              css={`
+                ${textStyle('body1')};
+                margin-bottom: ${2 * GU}px;
+              `}
+            >
+              You have invoked Celeste and are awaiting a response
+            </div>
+            <div>
+              <span
+                css={`
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                You invoked celeste on{' '}
+              </span>
+              {dateFormat(vote.disputedAt, 'YYYY/MM/DD HH:mm')}.{' '}
+              <span
+                css={`
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                You can follow the process in{' '}
+              </span>
+              <Link href="celeste.1hive.org">Celeste Dashboard</Link>.
+              {/* TODO: Update link when available */}
+            </div>
+          </div>
         </div>
-      )}
-    </React.Fragment>
+      </Box>
+      <Info
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      >
+        Celeste has been invoked to settle a challenge. When the challenge is
+        resolved, if allowed, the estimated time for it to pass will be resumed
+        for the remaining of its duration time. Othersiwe, this proposal will be
+        canceled.
+      </Info>
+    </div>
   )
 }
 

@@ -62,7 +62,6 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
         console.error(`Error fetching voting extended data ${err}`)
       }
     }
-    setReady(false)
     whenReady()
 
     return () => {

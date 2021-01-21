@@ -130,7 +130,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
   const { account } = useWallet()
   const [warningPopoverVisible, setWarningPopoverVisible] = useState(false)
 
-  const { label: statusLabel } = getStatusAttributes(proposal.voteStatus, theme)
+  const { label: statusLabel } = getStatusAttributes(proposal, theme)
 
   const votesCount = proposal.casts.length
   const popoverOpener = useRef()

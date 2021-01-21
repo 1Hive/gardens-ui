@@ -8,6 +8,7 @@ export function transformConfigData(config) {
     ...config,
     conviction: {
       ...conviction,
+      id: conviction.id.slice(0, 42),
       alpha: new BigNumber(conviction.decay).div(conviction.pctBase),
       maxRatio: new BigNumber(conviction.maxRatio).div(conviction.pctBase),
       weight: new BigNumber(conviction.weight).div(conviction.pctBase),
@@ -16,6 +17,7 @@ export function transformConfigData(config) {
     },
     voting: {
       ...voting,
+      id: voting.id.slice(0, 42),
       voteTime: toMilliseconds(voting.voteTime),
       supportRequiredPct: new BigNumber(voting.supportRequiredPct),
       minAcceptQuorumPct: new BigNumber(voting.minimumAcceptanceQuorumPct),
@@ -28,7 +30,7 @@ export function transformConfigData(config) {
   }
 }
 
-export function transformProposalData(proposal) {
+export async function transformProposalData(proposal) {
   const proposalData = {
     ...proposal,
     id: proposal.number,
@@ -42,8 +44,12 @@ export function transformProposalData(proposal) {
     pausedAt: toMilliseconds(proposal.pausedAt),
     pauseDuration: toMilliseconds(proposal.pauseDuration),
   }
+
+  const collateralRequirement = await proposal.collateralRequirement()
+
   return {
     ...proposalData,
+    collateralRequirement,
     ...(convertFromString(proposal.type) === ProposalTypes.Decision
       ? transformDecisionData(proposal)
       : transformConvictionProposalData(proposal)),

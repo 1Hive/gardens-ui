@@ -4,9 +4,11 @@ import {
   VOTE_NAY,
   VOTE_YEA,
   VOTE_STATUS_ACCEPTED,
+  VOTE_STATUS_CANCELLED,
   VOTE_STATUS_CHALLENGED,
   VOTE_STATUS_DISPUTED,
   VOTE_STATUS_ENACTED,
+  VOTE_STATUS_ONGOING,
   VOTE_STATUS_PENDING_ENACTMENT,
   VOTE_STATUS_REJECTED,
   VOTE_STATUS_SETTLED,
@@ -17,7 +19,6 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
   PROPOSAL_STATUS_REJECTED_STRING,
-  VOTE_STATUS_ONGOING,
 } from '../constants'
 
 const EMPTY_SCRIPT = '0x00000001'
@@ -137,6 +138,10 @@ export function getVoteStatus(vote, hasEnded, pctBase) {
     !getVoteSuccess(vote, pctBase)
   ) {
     return VOTE_STATUS_REJECTED
+  }
+
+  if (vote.status === PROPOSAL_STATUS_CANCELLED_STRING) {
+    return VOTE_STATUS_CANCELLED
   }
 
   // Only if the vote has an action do we consider it possible for enactment
