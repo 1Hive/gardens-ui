@@ -153,6 +153,17 @@ export const ALL_PROPOSALS = (type: string) => gql`
       challengerArbitratorFee {
         id
       }
+
+      collateralRequirement {
+        token {
+          id
+          symbol
+          decimals
+        }
+        actionAmount
+        challengeAmount
+        challengeDuration
+      }
     }
   }
 `
@@ -249,6 +260,16 @@ export const PROPOSAL = (type: string) => gql`
       challengerArbitratorFee {
         id
       }
+      collateralRequirement {
+        token {
+          id
+          symbol
+          decimals
+        }
+        actionAmount
+        challengeAmount
+        challengeDuration
+      }
     }
   }
 `
@@ -315,12 +336,13 @@ export const COLLATERAL_REQUIREMENT = (type: string) => gql`
         actionAmount
         challengeAmount
         challengeDuration
-        vote {
+        proposal {
           id
         }
         token {
           id
           decimals
+          symbol
         }
       }
     }
@@ -332,12 +354,13 @@ export const ARBITRATOR_FEE = (type: string) => gql`
     arbitratorFee(id: $arbitratorFeeId) {
       id
       amount
-      vote {
+      proposal {
         id
       }
       token {
         id
         decimals
+        symbol
       }
     }
   }

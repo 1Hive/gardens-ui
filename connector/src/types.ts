@@ -144,6 +144,7 @@ export interface CollateralRequirementData {
   proposalId: string
   tokenId: string
   tokenDecimals: string
+  tokenSymbol: string
   actionAmount: string
   challengeAmount: string
   challengeDuration: string
