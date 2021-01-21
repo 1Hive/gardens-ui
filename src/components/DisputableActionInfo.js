@@ -5,6 +5,7 @@ import {
   VOTE_STATUS_CHALLENGED,
   VOTE_STATUS_DISPUTED,
   VOTE_STATUS_ONGOING,
+  VOTE_STATUS_SETTLED,
 } from '../constants'
 
 function DisputableActionInfo({ proposal }) {
@@ -16,9 +17,10 @@ function DisputableActionInfo({ proposal }) {
       `}
     >
       <VotingPeriod proposal={proposal} />
-      {proposal.voteStatus === VOTE_STATUS_CHALLENGED && (
-        <SettlementPeriod proposal={proposal} />
-      )}
+      {proposal.voteStatus === VOTE_STATUS_CHALLENGED ||
+        (proposal.voteStatus === VOTE_STATUS_SETTLED && (
+          <SettlementPeriod proposal={proposal} />
+        ))}
       {proposal.voteStatus === VOTE_STATUS_DISPUTED && (
         <DataField
           label="Dispute"

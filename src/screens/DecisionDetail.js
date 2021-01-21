@@ -20,7 +20,9 @@ import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteActions from '../components/DecisionDetail/VoteActions'
 import VoteCasted from '../components/DecisionDetail/VoteCasted'
-import VoteStatus from '../components/DecisionDetail/VoteStatus'
+import VoteStatus, {
+  getStatusAttributes,
+} from '../components/DecisionDetail/VoteStatus'
 
 import { useAppState } from '../providers/AppState'
 import { useDescribeVote } from '../hooks/useDescribeVote'
@@ -36,11 +38,14 @@ import {
   VOTE_NAY,
   VOTE_STATUS_CHALLENGED,
   VOTE_STATUS_DISPUTED,
+  VOTE_STATUS_SETTLED,
   VOTE_YEA,
 } from '../constants'
 import celesteStarIconSvg from '../assets/icon-celeste-star.svg'
+import coinsIconSvg from '../assets/icon-coins.svg'
 import honeyIconSvg from '../assets/honey.svg'
 import lockIconSvg from '../assets/icon-lock.svg'
+import warningIconSvg from '../assets/icon-warning.svg'
 
 function DecisionDetail({ proposal, actions }) {
   const theme = useTheme()
@@ -62,6 +67,8 @@ function DecisionDetail({ proposal, actions }) {
     proposal,
     connectedAccount
   )
+
+  const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const youVoted =
     connectedAccountVote === VOTE_YEA || connectedAccountVote === VOTE_NAY
@@ -112,7 +119,12 @@ function DecisionDetail({ proposal, actions }) {
       >
         <Split
           primary={
-            <Box>
+            <Box
+              css={`
+                background: ${background};
+                border-color: ${borderColor};
+              `}
+            >
               <section
                 css={`
                   display: grid;
@@ -396,6 +408,10 @@ function VoteInfoActions({ onExecute, onVoteNo, onVoteYes, vote }) {
     return <VoteDisputedInfo vote={vote} />
   }
 
+  if (vote.voteStatus === VOTE_STATUS_SETTLED) {
+    return <VoteSettledInfo vote={vote} />
+  }
+
   return (
     <VoteActions
       onExecute={onExecute}
@@ -414,7 +430,12 @@ function VoteDisputedInfo({ vote }) {
         margin-top: ${4 * GU}px;
       `}
     >
-      <Box padding={6 * GU}>
+      <Box
+        padding={6 * GU}
+        css={`
+          border: 0;
+        `}
+      >
         <div
           css={`
             display: flex;
@@ -466,7 +487,123 @@ function VoteDisputedInfo({ vote }) {
         Celeste has been invoked to settle a challenge. When the challenge is
         resolved, if allowed, the estimated time for it to pass will be resumed
         for the remaining of its duration time. Othersiwe, this proposal will be
-        canceled.
+        cancelled.
+      </Info>
+    </div>
+  )
+}
+
+function VoteSettledInfo({ vote }) {
+  const theme = useTheme()
+  const { account } = useWallet()
+
+  const isSubmitter = addressesEqual(vote.creator, account)
+  const isChallenger = addressesEqual(vote.challenger, account)
+
+  return (
+    <div
+      css={`
+        margin-top: ${4 * GU}px;
+      `}
+    >
+      {isSubmitter ||
+        (isChallenger && (
+          <Box
+            padding={6 * GU}
+            css={`
+              border: 0;
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                margin: 0 ${11 * GU}px;
+              `}
+            >
+              <img
+                src={isSubmitter ? coinsIconSvg : warningIconSvg}
+                width="52"
+                height="52"
+                alt=""
+              />
+              <div
+                css={`
+                  margin-left: ${3.5 * GU}px;
+                `}
+              >
+                <div
+                  css={`
+                    ${textStyle('body1')};
+                    margin-bottom: ${2 * GU}px;
+                  `}
+                >
+                  <div
+                    css={`
+                      ${textStyle('body1')};
+                      margin-bottom: ${2 * GU}px;
+                    `}
+                  >
+                    {isSubmitter
+                      ? 'You have accepted the settlement offer'
+                      : 'You have challenged this vote'}
+                  </div>
+                </div>
+                <div>
+                  <span
+                    css={`
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    {isSubmitter
+                      ? 'You acccepted the setttlement offer on'
+                      : 'You have challenged this action on'}
+                  </span>
+                  {dateFormat(
+                    isSubmitter
+                      ? vote.settledAt > 0
+                        ? vote.settledAt
+                        : vote.challengeEndDate
+                      : vote.challengedAt,
+                    'YYYY/MM/DD HH:mm'
+                  )}{' '}
+                  <span
+                    css={`
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    and your {isSubmitter ? 'action' : 'challenge'} collateral
+                    has been slashed{' '}
+                    <span
+                      css={`
+                        color: ${theme.content};
+                      `}
+                    >
+                      -
+                      {
+                        vote.collateralRequirement[
+                          isSubmitter
+                            ? 'formattedActionAmount'
+                            : 'formattedChallengeAmount'
+                        ]
+                      }{' '}
+                      {vote.collateralRequirement.tokenSymbol}
+                    </span>
+                    . You can manage your deposit balances in{' '}
+                  </span>
+                  <Link href="#/profile" external={false}>
+                    Stake Management
+                  </Link>
+                  .
+                </div>
+              </div>
+            </div>
+          </Box>
+        ))}
+      <Info mode="warning">
+        This vote has been cancelled as the result of the originating action
+        being challenged and the settlement offer being accepted.
       </Info>
     </div>
   )

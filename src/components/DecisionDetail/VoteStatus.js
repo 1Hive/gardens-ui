@@ -38,6 +38,8 @@ export const getStatusAttributes = (vote, theme) => {
       label: 'Cancelled',
       Icon: IconCross,
       color: theme.negative,
+      background: '#FFF8F8',
+      borderColor: theme.negative,
     }
   }
   if (voteStatus === VOTE_STATUS_REJECTED) {
@@ -73,6 +75,8 @@ export const getStatusAttributes = (vote, theme) => {
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
       color: '#8253A8',
+      background: '#FCFAFF',
+      borderColor: '#8253A8',
     }
   }
   if (voteStatus === VOTE_STATUS_CHALLENGED) {
@@ -80,6 +84,8 @@ export const getStatusAttributes = (vote, theme) => {
       label: 'Challenged',
       iconSrc: challengeIconSvg,
       color: '#F5A623',
+      background: '#FFFDFA',
+      borderColor: '#F5A623',
     }
   }
   if (voteStatus === VOTE_STATUS_SETTLED) {
@@ -87,6 +93,7 @@ export const getStatusAttributes = (vote, theme) => {
       label: 'Settled',
       Icon: IconCross,
       color: theme.contentSecondary,
+      background: theme.background,
     }
   }
 }
