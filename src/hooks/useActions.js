@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
 import { useAppState } from '../providers/AppState'
@@ -20,6 +21,19 @@ export default function useActions(onDone) {
   )
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
+  const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
+
+  const signAgreement = useCallback(
+    async ({ versionId }, onDone = noop) => {
+      const intent = await agreementApp.intent('sign', [versionId], {
+        actAs: account,
+      })
+
+      // if (mounted()) {
+      onDone(intent)
+    },
+    [account, agreementApp]
+  )
 
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
@@ -130,6 +144,9 @@ export default function useActions(onDone) {
     dandelionActions: {
       executeDecision,
       voteOnDecision,
+    },
+    agreementActions: {
+      signAgreement,
     },
   }
 }

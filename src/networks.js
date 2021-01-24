@@ -2,7 +2,7 @@ import { getNetworkType, isLocalOrUnknownNetwork } from './utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
-const RINKEBY_HONEY_POT = '0x512385375f087251667963e3cb8185e49597f2be'
+const RINKEBY_HONEY_POT = '0x635714f986a625439f0f74090c01b306683c81ce'
 const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
 const INSTANCE = env('INSTANCE')
 
@@ -20,6 +20,13 @@ const networks = {
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
+    subgraphs: {
+      agreement:
+        'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
+    },
+    celesteUrl: 'https://celeste-rinkeby.1hive.org',
+    ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    legacyNetworkType: 'rinkeby',
   },
   xdai: {
     chainId: 100,
@@ -29,6 +36,7 @@ const networks = {
     defaultEthNode: 'https://xdai.poanetwork.dev/',
     honeypot: '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e',
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    legacyNetworkType: 'main',
   },
 }
 
@@ -53,4 +61,13 @@ function getRinkebyHoneyPotAddress(rinkebyInstance) {
     return RINKEBY_STAGING_HONEY_POT
   }
   return RINKEBY_HONEY_POT
+}
+
+const agreementSubgraph = getNetwork().subgraphs?.agreement
+
+export const connectorConfig = {
+  agreement: agreementSubgraph && [
+    'thegraph',
+    { subgraphUrl: agreementSubgraph },
+  ],
 }

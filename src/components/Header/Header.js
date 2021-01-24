@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import { GU, IconExternal, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
@@ -66,6 +66,17 @@ function Header() {
                   Home
                 </Link>
                 <Link
+                  href="#/agreement"
+                  external={false}
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Agreement
+                </Link>
+                <Link
                   href={HONEYSWAP_TRADE_HONEY}
                   css={`
                     text-decoration: none;
@@ -73,7 +84,20 @@ function Header() {
                     margin-left: ${4 * GU}px;
                   `}
                 >
-                  Get Honey
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    Get Honey
+                    <IconExternal
+                      css={`
+                        margin-left: ${0.5 * GU}px;
+                      `}
+                      size="small"
+                    />
+                  </div>
                 </Link>
                 <Link
                   href="https://about.1hive.org/"
@@ -83,7 +107,20 @@ function Header() {
                     margin-left: ${4 * GU}px;
                   `}
                 >
-                  About
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    About
+                    <IconExternal
+                      css={`
+                        margin-left: ${0.5 * GU}px;
+                      `}
+                      size="small"
+                    />
+                  </div>
                 </Link>
               </nav>
             )}

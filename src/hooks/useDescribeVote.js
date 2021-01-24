@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 
-import { getAppPresentation } from '../utils/app-utils'
+import { getAppPresentationByAddress } from '../utils/app-utils'
 import { addressesEqual } from '../utils/web3-utils'
 import { useMounted } from '../hooks/useMounted'
 import { useAppState } from '../providers/AppState'
@@ -69,7 +69,10 @@ function targetDataFromTransactionRequest(apps, transactionRequest) {
 
   // Populate details via our apps list if it's available
   if (apps.some(({ address }) => addressesEqual(address, targetAppAddress))) {
-    const { humanName, iconSrc } = getAppPresentation(apps, targetAppAddress)
+    const { humanName, iconSrc } = getAppPresentationByAddress(
+      apps,
+      targetAppAddress
+    )
 
     return {
       address: targetAppAddress,

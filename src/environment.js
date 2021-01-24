@@ -2,9 +2,10 @@ import { getNetwork } from './networks'
 
 // rinkeby
 const DEFAULT_CHAIN_ID = 100
-const DEFAULT_CONVICTION_APP_NAME = 'conviction-beta'
-const DEFAULT_VOTING_APP_NAME = 'dandelion-voting'
+const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
+const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 const DEFAULT_ISSUANCE_APP_NAME = 'issuance'
+const DEFAULT_AGREEMENT_APP_NAME = 'agreement-1hive'
 
 const ENV_VARS = {
   CHAIN_ID() {
@@ -30,6 +31,11 @@ const ENV_VARS = {
   },
   INSTANCE() {
     return process.env.REACT_APP_APP_INSTANCE || ''
+  },
+  AGREEMENT_APP_NAME() {
+    return (
+      process.env.REACT_APP_AGREEMENT_APP_NAME || DEFAULT_AGREEMENT_APP_NAME
+    )
   },
 }
 
