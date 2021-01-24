@@ -10,8 +10,7 @@ import { formatTokenAmount } from '../../../utils/token-utils'
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
 
-function CreateProposalRequirements({ agreement, accountBalance }) {
-  console.log('agreement!!  ', agreement)
+function CreateProposalRequirements({ agreement, availableStaked }) {
   const { disputableAppsWithRequirements } = agreement
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
@@ -37,11 +36,12 @@ function CreateProposalRequirements({ agreement, accountBalance }) {
         `}
       >
         You must stake {formatTokenAmount(actionAmount, token.decimals)} HNY as
-        the collateral required to perform this action. Your current balance is{' '}
-        {formatTokenAmount(accountBalance, token.decimals)} {token.symbol}.
+        the collateral required to perform this action. Your current staked
+        balance is {formatTokenAmount(availableStaked, token.decimals)}{' '}
+        {token.symbol}.
       </InfoField>
       <CollateralStatus
-        accountBalance={accountBalance}
+        availableStaked={availableStaked}
         actionAmount={actionAmount}
         token={token}
       />
@@ -100,7 +100,7 @@ function AgreementStatus({ agreement }) {
   return <InfoBox data={infoData} />
 }
 
-function CollateralStatus({ accountBalance, actionAmount, token }) {
+function CollateralStatus({ availableStaked, actionAmount, token }) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -109,7 +109,7 @@ function CollateralStatus({ accountBalance, actionAmount, token }) {
   }, [history])
 
   const infoData = useMemo(() => {
-    if (accountBalance.gte(actionAmount)) {
+    if (availableStaked.gte(actionAmount)) {
       return {
         backgroundColor: '#EBFBF6',
         color: theme.positive,
@@ -132,7 +132,7 @@ function CollateralStatus({ accountBalance, actionAmount, token }) {
       actionButton: 'Stake collateral',
       buttonOnClick: goToStakeManager,
     }
-  }, [accountBalance, actionAmount, token, goToStakeManager, theme])
+  }, [availableStaked, actionAmount, token, goToStakeManager, theme])
 
   return <InfoBox data={infoData} />
 }

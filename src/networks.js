@@ -2,7 +2,7 @@ import { getNetworkType, isLocalOrUnknownNetwork } from './utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
-const RINKEBY_HONEY_POT = '0x105b0ec40228b9f6c5a2a1e64f70b7965f1b6323'
+const RINKEBY_HONEY_POT = '0x635714f986a625439f0f74090c01b306683c81ce'
 const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
 const INSTANCE = env('INSTANCE')
 

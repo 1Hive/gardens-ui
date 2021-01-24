@@ -28,8 +28,6 @@ export function useAgreement() {
       } = agreement
       const { content, effectiveFrom, title, versionId } = currentVersion
 
-      console.log('signer ', signer)
-
       const signatures = signer ? await signer.signatures() : []
       const hasSignedLast =
         signer && (await signer.hasSigned(currentVersion.versionId))
@@ -39,7 +37,6 @@ export function useAgreement() {
         appsWithRequirements
       )
 
-      console.log('signatures!!! ', signatures)
       if (mounted()) {
         setProcessedAgreement({
           contractAddress: agreementApp.address,

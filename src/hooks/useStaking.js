@@ -3,29 +3,28 @@ import { useMounted } from './useMounted'
 import { useWallet } from '../providers/Wallet'
 
 import { useAppState } from '../providers/AppState'
-import { getAppByName } from '../utils/data-utils'
-import env from '../environment'
+import BigNumber from '../lib/bigNumber'
 
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
-  const { installedApps: apps } = useAppState()
-  const connectedAgreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
+  const { connectedAgreementApp } = useAppState()
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function getStakingInformation() {
       const defaultValues = {
-        available: '0',
-        challenged: '0',
-        locked: '0',
+        available: new BigNumber('0'),
+        challenged: new BigNumber('0'),
+        locked: new BigNumber('0'),
         tokenDecimals: 1,
-        total: '0',
+        total: new BigNumber('0'),
       }
       try {
         if (account) {
           const disputableApps = await connectedAgreementApp.disputableApps()
+
           const allRequirements = await Promise.all(
             disputableApps.map(app => app.collateralRequirement())
           )
@@ -34,11 +33,11 @@ export function useStaking() {
           )
 
           const staking = await connectedAgreementApp.staking(
-            allTokens[0].id,
+            allTokens[1].id,
             account
           )
           const stakingMovements = await connectedAgreementApp.stakingMovements(
-            allTokens[0].id,
+            allTokens[1].id,
             account
           )
 

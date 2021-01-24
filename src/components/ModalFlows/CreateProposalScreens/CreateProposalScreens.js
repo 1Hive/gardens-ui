@@ -3,13 +3,11 @@ import ModalFlowBase from '../ModalFlowBase'
 import CreateProposalRequirements from './CreateProposalRequirements'
 // import useActions from '../../../hooks/useActions'
 import { useAgreement } from '../../../hooks/useAgreement'
-import { useAppState } from '../../../providers/AppState'
+import { useStakingState } from '../../../providers/Staking'
 
 function CreateProposalScreens({ versionId }) {
   const [agreement, loading] = useAgreement()
-
-  // TODO- for now just using the token from conviction that is going to be the same than the agreement one, we might want to change this
-  const { accountBalance } = useAppState()
+  const { stakeManagement } = useStakingState()
 
   const screens = useMemo(
     () => [
@@ -19,12 +17,12 @@ function CreateProposalScreens({ versionId }) {
         content: (
           <CreateProposalRequirements
             agreement={agreement}
-            accountBalance={accountBalance}
+            availableStaked={stakeManagement.staking.available}
           />
         ),
       },
     ],
-    [agreement, accountBalance]
+    [agreement, stakeManagement.staking.available]
   )
   return (
     <ModalFlowBase
