@@ -69,8 +69,8 @@ export function parseProposal(result: QueryResult, connector: any): Proposal {
       stakes,
       stakesHistory,
       setting,
-      submitterArbitratorFeeId: proposal.submitterArbitratorFee.id,
-      challengerArbitratorFeeId: proposal.challengerArbitratorFee.id
+      submitterArbitratorFeeId: proposal.submitterArbitratorFee?.id,
+      challengerArbitratorFeeId: proposal.challengerArbitratorFee?.id
     }
 
     return new Proposal(data, connector)
