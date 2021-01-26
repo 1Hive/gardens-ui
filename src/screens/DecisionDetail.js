@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 import {
   BackButton,
   Box,
@@ -46,6 +47,7 @@ import coinsIconSvg from '../assets/icon-coins.svg'
 import honeyIconSvg from '../assets/honey.svg'
 import lockIconSvg from '../assets/icon-lock.svg'
 import warningIconSvg from '../assets/icon-warning.svg'
+import { formatTokenAmount } from '../utils/token-utils'
 
 function DecisionDetail({ proposal, actions }) {
   const theme = useTheme()
@@ -142,46 +144,84 @@ function DecisionDetail({ proposal, actions }) {
                 <div
                   css={`
                     display: grid;
-                    grid-template-columns: ${layoutName !== 'small'
-                      ? `auto auto`
-                      : 'auto'};
-                    grid-column-gap: ${layoutName !== 'small'
-                      ? 10 * GU
-                      : 2.5 * GU}px;
-                    grid-row-gap: ${5 * GU}px;
+                    grid-template-columns: auto;
+                    grid-gap: ${5 * GU}px;
                   `}
                 >
-                  <DataField
-                    label="Description"
-                    value={
-                      emptyScript ? (
-                        proposal.metadata
-                      ) : (
-                        <Description path={description} />
-                      )
-                    }
-                    loading={descriptionLoading}
-                  />
-                  <DataField
-                    label="Status"
-                    value={<VoteStatus vote={proposal} />}
-                  />
-                  <DataField
-                    label="Action collateral"
-                    value={<ActionCollateral proposal={proposal} />}
-                  />
-                  <DataField
-                    label="Submitted by"
-                    value={
-                      <IdentityBadge
-                        connectedAccount={addressesEqual(
-                          creator,
-                          connectedAccount
-                        )}
-                        entity={creator}
+                  <Row
+                    compactMode={oneColumn}
+                    cols={proposal.pausedAt > 0 ? 3 : 2}
+                  >
+                    <DataField
+                      label="Description"
+                      value={
+                        emptyScript ? (
+                          proposal.metadata
+                        ) : (
+                          <Description path={description} />
+                        )
+                      }
+                      loading={descriptionLoading}
+                    />
+                    {proposal.pausedAt > 0 && <div />}
+                    <DataField
+                      label="Status"
+                      value={<VoteStatus vote={proposal} />}
+                    />
+                  </Row>
+                  <Row
+                    compactMode={oneColumn}
+                    cols={proposal.pausedAt > 0 ? 3 : 2}
+                  >
+                    <DataField
+                      label="Action collateral"
+                      value={<ActionCollateral proposal={proposal} />}
+                    />
+                    {proposal.pausedAt > 0 && (
+                      <DataField
+                        label="Dispute fees"
+                        value={
+                          <div
+                            css={`
+                              display: flex;
+                              align-items: center;
+                            `}
+                          >
+                            <img
+                              src={honeyIconSvg}
+                              alt=""
+                              height="28"
+                              width="28"
+                              css={`
+                                margin-right: ${0.5 * GU}px;
+                              `}
+                            />
+                            <div>
+                              {formatTokenAmount(
+                                proposal.submitterArbitratorFee.amount.plus(
+                                  proposal.challengerArbitratorFee.amount
+                                ),
+                                proposal.submitterArbitratorFee.tokenDecimals
+                              )}{' '}
+                              {proposal.submitterArbitratorFee.tokenSymbol}
+                            </div>
+                          </div>
+                        }
                       />
-                    }
-                  />
+                    )}
+                    <DataField
+                      label="Submitted by"
+                      value={
+                        <IdentityBadge
+                          connectedAccount={addressesEqual(
+                            creator,
+                            connectedAccount
+                          )}
+                          entity={creator}
+                        />
+                      }
+                    />
+                  </Row>
                 </div>
               </section>
               <div
@@ -608,5 +648,14 @@ function VoteSettledInfo({ vote }) {
     </div>
   )
 }
+
+const Row = styled.div`
+  display: grid;
+
+  ${({ compactMode = false, cols = 2 }) => `
+    grid-gap: ${(compactMode ? 2.5 : 5) * GU}px;
+    grid-template-columns: ${compactMode ? 'auto' : `repeat(${cols}, 1fr)`};
+  `}
+`
 
 export default DecisionDetail

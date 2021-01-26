@@ -46,10 +46,24 @@ export async function transformProposalData(proposal) {
   }
 
   const collateralRequirement = await proposal.collateralRequirement()
+  const submitterArbitratorFee = await proposal.submitterArbitratorFee()
+  const challengerArbitratorFee = await proposal.challengerArbitratorFee()
 
   return {
     ...proposalData,
     collateralRequirement,
+    submitterArbitratorFee: submitterArbitratorFee
+      ? {
+          ...submitterArbitratorFee,
+          amount: new BigNumber(submitterArbitratorFee.amount),
+        }
+      : null,
+    challengerArbitratorFee: challengerArbitratorFee
+      ? {
+          ...challengerArbitratorFee,
+          amount: new BigNumber(challengerArbitratorFee.amount),
+        }
+      : null,
     ...(convertFromString(proposal.type) === ProposalTypes.Decision
       ? transformDecisionData(proposal)
       : transformConvictionProposalData(proposal)),
