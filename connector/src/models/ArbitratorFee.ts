@@ -7,6 +7,7 @@ export default class ArbitratorFee {
   readonly id: string
   readonly tokenId: string
   readonly tokenDecimals: string
+  readonly tokenSymbol: string
   readonly amount: string
 
   constructor(
@@ -18,6 +19,7 @@ export default class ArbitratorFee {
     this.id = data.id
     this.tokenId = data.tokenId
     this.tokenDecimals = data.tokenDecimals
+    this.tokenSymbol = data.tokenSymbol
     this.amount = data.amount
   }
 

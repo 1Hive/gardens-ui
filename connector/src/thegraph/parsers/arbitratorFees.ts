@@ -18,6 +18,7 @@ export function parseArbitratorFee(
       proposalId: arbitratorFee.proposal.id,
       tokenId: arbitratorFee.token.id,
       tokenDecimals: arbitratorFee.token.decimals,
+      tokenSymbol: arbitratorFee.token.symbol,
       amount: arbitratorFee.amount
     },
     connector

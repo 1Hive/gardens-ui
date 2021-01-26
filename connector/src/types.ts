@@ -155,6 +155,7 @@ export interface ArbitratorFeeData {
   proposalId: string
   tokenId: string
   tokenDecimals: string
+  tokenSymbol: string
   amount: string
 }
 
