@@ -1,5 +1,14 @@
 import React, { useMemo } from 'react'
-import { GU, LoadingRing, textStyle, Timer, useTheme } from '@1hive/1hive-ui'
+import {
+  addressesEqual,
+  GU,
+  Info,
+  LoadingRing,
+  textStyle,
+  Timer,
+  useTheme,
+} from '@1hive/1hive-ui'
+import { useWallet } from '../providers/Wallet'
 import { dateFormat } from '../utils/date-utils'
 import {
   VOTE_STATUS_CHALLENGED,
@@ -7,6 +16,36 @@ import {
   VOTE_STATUS_ONGOING,
   VOTE_STATUS_SETTLED,
 } from '../constants'
+
+function getInfoContent(proposal, account) {
+  if (proposal.voteStatus === VOTE_STATUS_ONGOING) {
+    // Proposal has not been disputed
+    if (proposal.disputedAt === 0) {
+      return 'The proposed action will be executed if nobody challenges it during the voting period and the result of the vote is casted with majority support.'
+    }
+
+    if (addressesEqual(account, proposal.creator)) {
+      return 'The proposed action cannot be challenged.'
+    } else if (addressesEqual(account, proposal.challenger)) {
+      return 'When you claim your collateral, you’ll get a refund for your settlement offer, action deposit and dispute fees.'
+    }
+  }
+
+  if (
+    proposal.voteStatus === VOTE_STATUS_CHALLENGED &&
+    addressesEqual(account, proposal.submitter)
+  ) {
+    return "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger."
+  }
+
+  if (proposal.voteStatus === VOTE_STATUS_SETTLED) {
+    if (addressesEqual(account, proposal.challenger)) {
+      return 'When you claim your collateral, you’ll get a refund for your settlement offer, action deposit and dispute fees.'
+    }
+  }
+
+  return null
+}
 
 function DisputableActionInfo({ proposal }) {
   return (
@@ -27,6 +66,7 @@ function DisputableActionInfo({ proposal }) {
           value={<div>Celeste Q#{proposal.disputeId}</div>}
         />
       )}
+      <Actions proposal={proposal} />
     </div>
   )
 }
@@ -100,6 +140,13 @@ function DataField({ label, value, loading = false }) {
       )}
     </div>
   )
+}
+
+function Actions({ proposal }) {
+  const { account } = useWallet()
+  const infoContent = getInfoContent(proposal, account)
+
+  return <div>{infoContent && <Info>{infoContent}</Info>}</div>
 }
 
 export default DisputableActionInfo
