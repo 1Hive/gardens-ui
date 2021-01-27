@@ -5,6 +5,7 @@ import DecisionLoader from './components/DecisionLoader'
 import Home from './screens/Home'
 import Profile from './screens/Profile'
 import ProposalDetail from './screens/ProposalDetail'
+import StakeManagement from './components/Stake/StakeManagement'
 
 export default function Routes() {
   return (
@@ -15,6 +16,7 @@ export default function Routes() {
       <Route exact path="/proposal/:id" component={ProposalDetail} />
       <Route exact path="/vote/:id" component={DecisionLoader} />
       <Route exact path="/agreement" component={Agreement} />
+      <Route exact path="/stake" component={StakeManagement} />
       <Redirect to="/home" />
     </Switch>
   )
