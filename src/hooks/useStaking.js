@@ -56,32 +56,20 @@ export function useStaking() {
             allRequirements.map(collateral => collateral.token())
           )
 
-          console.log('all tokens ', allTokens)
-
           const dao = await connectedAgreementApp.stakingId(
             allTokens[1].id,
             account
           )
 
-          console.log('DAO!!!!!! ', dao)
-
           const staking = await connectedAgreementApp.staking(
             allTokens[1].id,
             account
           )
-          console.log('STAKING ', staking)
 
-          let stakingMovements
-          try {
-            stakingMovements = await connectedAgreementApp.stakingMovements(
-              allTokens[1].id,
-              account
-            )
-          } catch (error) {
-            console.log('error ', error)
-          }
-
-          console.log('staking movementssss ', stakingMovements)
+          const stakingMovements = await connectedAgreementApp.stakingMovements(
+            allTokens[1].id,
+            account
+          )
 
           if (mounted()) {
             setStakeManagement({
@@ -148,8 +136,6 @@ export function useStaking() {
     await tokenContract.approve(stakeManagement.stakingInstance, stakeAmount)
     await stakingContract.stake(stakeAmount, '0x')
   }, [stakeManagement, stakingContract, tokenContract])
-
-  console.log('stakeManagement ', stakeManagement)
 
   return [
     stakeManagement,

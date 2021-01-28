@@ -2,6 +2,7 @@ export const STAKING_SCHEDULED = Symbol('STAKING_SCHEDULED')
 export const STAKING_CHALLENGED = Symbol('STAKING_CHALLENGED')
 export const STAKING_COMPLETED = Symbol('STAKING_COMPLETED')
 export const STAKING_CANCELLED = Symbol('STAKING_CANCELLED')
+export const STAKING_SETTLED = Symbol('STAKING_SETTLED')
 
 export const COLLATERAL_LOCKED = Symbol('COLLATERAL_LOCKED')
 export const COLLATERAL_CHALLENGED = Symbol('COLLATERAL_CHALLENGED')
@@ -10,6 +11,7 @@ export const COLLATERAL_SLASHED = Symbol('COLLATERAL_SLASHED')
 
 export const STAKING_STATUSES = new Map([
   ['Scheduled', STAKING_SCHEDULED],
+  ['Settled', STAKING_SETTLED],
   ['Challenged', STAKING_CHALLENGED],
   ['Completed', STAKING_COMPLETED],
   ['Cancelled', STAKING_CANCELLED],

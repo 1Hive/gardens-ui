@@ -18,6 +18,7 @@ import {
   STAKING_CHALLENGED,
   STAKING_COMPLETED,
   STAKING_CANCELLED,
+  STAKING_SETTLED,
   COLLATERAL_LOCKED,
   COLLATERAL_CHALLENGED,
   COLLATERAL_AVAILABLE,
@@ -45,6 +46,11 @@ function getActionAttributes(status, theme) {
       icon: <IconCheck size="small" />,
     },
     [STAKING_CANCELLED]: {
+      background: theme.surfaceUnder,
+      color: theme.contentSecondary,
+      icon: <IconCross size="small" />,
+    },
+    [STAKING_SETTLED]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
