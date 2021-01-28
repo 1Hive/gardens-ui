@@ -40,6 +40,9 @@ export async function transformProposalData(proposal) {
 
     challengeEndDate: toMilliseconds(proposal.challengeEndDate),
     settledAt: toMilliseconds(proposal.settledAt),
+    settlementOffer: proposal.settlementOffer
+      ? new BigNumber(proposal.settlementOffer)
+      : null,
     disputedAt: toMilliseconds(proposal.disputedAt),
     pausedAt: toMilliseconds(proposal.pausedAt),
     pauseDuration: toMilliseconds(proposal.pauseDuration),

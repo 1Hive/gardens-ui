@@ -27,6 +27,7 @@ import VoteStatus, {
 
 import { useAppState } from '../providers/AppState'
 import { useDescribeVote } from '../hooks/useDescribeVote'
+import useDisputeFees from '../hooks/useDisputeFees'
 import { useWallet } from '../providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
@@ -178,36 +179,7 @@ function DecisionDetail({ proposal, actions }) {
                       value={<ActionCollateral proposal={proposal} />}
                     />
                     {proposal.pausedAt > 0 && (
-                      <DataField
-                        label="Dispute fees"
-                        value={
-                          <div
-                            css={`
-                              display: flex;
-                              align-items: center;
-                            `}
-                          >
-                            <img
-                              src={honeyIconSvg}
-                              alt=""
-                              height="28"
-                              width="28"
-                              css={`
-                                margin-right: ${0.5 * GU}px;
-                              `}
-                            />
-                            <div>
-                              {formatTokenAmount(
-                                proposal.submitterArbitratorFee.amount.plus(
-                                  proposal.challengerArbitratorFee.amount
-                                ),
-                                proposal.submitterArbitratorFee.tokenDecimals
-                              )}{' '}
-                              {proposal.submitterArbitratorFee.tokenSymbol}
-                            </div>
-                          </div>
-                        }
-                      />
+                      <DisputeFees proposal={proposal} />
                     )}
                     <DataField
                       label="Submitted by"
@@ -227,6 +199,7 @@ function DecisionDetail({ proposal, actions }) {
               <div
                 css={`
                   margin-top: ${6 * GU}px;
+                  margin-bottom: ${4 * GU}px;
                 `}
               >
                 <SummaryInfo vote={proposal} />
@@ -432,6 +405,42 @@ function ActionCollateral({ proposal }) {
   )
 }
 
+function DisputeFees({ proposal }) {
+  const fees = useDisputeFees()
+
+  return (
+    <DataField
+      label="Dispute fees"
+      value={
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+        >
+          <img
+            src={honeyIconSvg}
+            alt=""
+            height="28"
+            width="28"
+            css={`
+              margin-right: ${0.5 * GU}px;
+            `}
+          />
+          <div>
+            {formatTokenAmount(
+              fees.amount?.mul('2'),
+              proposal.challengerArbitratorFee.tokenDecimals
+            )}{' '}
+            {proposal.challengerArbitratorFee.tokenSymbol}
+          </div>
+        </div>
+      }
+      loading={fees.loading}
+    />
+  )
+}
+
 function VoteInfoActions({ onExecute, onVoteNo, onVoteYes, vote }) {
   if (vote.voteStatus === VOTE_STATUS_CHALLENGED) {
     return (
@@ -465,11 +474,7 @@ function VoteInfoActions({ onExecute, onVoteNo, onVoteYes, vote }) {
 function VoteDisputedInfo({ vote }) {
   const theme = useTheme()
   return (
-    <div
-      css={`
-        margin-top: ${4 * GU}px;
-      `}
-    >
+    <div>
       <Box
         padding={6 * GU}
         css={`
@@ -541,11 +546,7 @@ function VoteSettledInfo({ vote }) {
   const isChallenger = addressesEqual(vote.challenger, account)
 
   return (
-    <div
-      css={`
-        margin-top: ${4 * GU}px;
-      `}
-    >
+    <div>
       {isSubmitter ||
         (isChallenger && (
           <Box
