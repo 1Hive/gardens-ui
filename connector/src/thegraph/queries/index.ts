@@ -144,6 +144,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       challengeEndDate
       disputeId
       settledAt
+      settlementOffer
       disputedAt
       pausedAt
       pauseDuration
@@ -251,6 +252,7 @@ export const PROPOSAL = (type: string) => gql`
       challengeEndDate
       disputeId
       settledAt
+      settlementOffer
       disputedAt
       pausedAt
       pauseDuration

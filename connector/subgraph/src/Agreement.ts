@@ -77,7 +77,9 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   )
 
   const proposal = ProposalEntity.load(proposalId)
+  const challengeData = agreementApp.getChallenge(event.params.challengeId)
   proposal.challengerArbitratorFee = challengerArbitratorFeeId
+  proposal.settlementOffer = challengeData.value4
   proposal.save()
 }
 

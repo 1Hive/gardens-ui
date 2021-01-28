@@ -122,6 +122,7 @@ export interface ProposalData {
   challengeEndDate: string
   disputeId: string
   settledAt: string
+  settlementOffer: string
   disputedAt: string
   pausedAt: string
   pauseDuration: string
