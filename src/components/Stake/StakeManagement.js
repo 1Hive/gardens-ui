@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import LayoutColumns from '../Layout/LayoutColumns'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
+import MultiModal from '../MultiModal/MultiModal'
 import SideBar from './SideBar'
+import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
 import stakingEmpty from './assets/staking-empty.png'
 import { useStakingState } from '../../providers/Staking'
 
 const StakeManagement = React.memo(function StakeManagement() {
+  const [stakeModalMode, setStakeModalMode] = useState(null)
   const { stakeManagement, stakeActions } = useStakingState()
 
   return (
@@ -37,6 +40,7 @@ const StakeManagement = React.memo(function StakeManagement() {
                 stakeActions={stakeActions}
                 staking={stakeManagement.staking}
                 token={stakeManagement.token}
+                onDepositOrWithdraw={setStakeModalMode}
               />
             }
             inverted
@@ -49,6 +53,12 @@ const StakeManagement = React.memo(function StakeManagement() {
           />
         )}
       </LayoutLimiter>
+      <MultiModal
+        visible={Boolean(stakeModalMode)}
+        onClose={() => setStakeModalMode(null)}
+      >
+        <StakeScreens mode={stakeModalMode} />
+      </MultiModal>
     </LayoutGutter>
   )
 })

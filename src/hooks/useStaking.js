@@ -56,11 +56,6 @@ export function useStaking() {
             allRequirements.map(collateral => collateral.token())
           )
 
-          const dao = await connectedAgreementApp.stakingId(
-            allTokens[1].id,
-            account
-          )
-
           const staking = await connectedAgreementApp.staking(
             allTokens[1].id,
             account
