@@ -125,6 +125,9 @@ export function handleCastVote(event: CastVoteEvent): void {
   const proposal = getProposalEntity(event.address, event.params.voteId)
   const miniMeToken = ERC20Contract.bind(votingApp.token())
 
+  voter.proposal = proposal.id
+  voter.save()
+
   const stake = miniMeToken.balanceOfAt(
     event.params.voter,
     proposal.snapshotBlock
