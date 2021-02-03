@@ -46,7 +46,6 @@ function StakeAndWithdraw({
 
   const handleFormSubmit = useCallback(
     async event => {
-      // do something with the data.
       event.preventDefault()
 
       depositMode
