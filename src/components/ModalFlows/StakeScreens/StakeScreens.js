@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
+import { useAppState } from '../../../providers/AppState'
 // import useActions from '../../../hooks/useActions'
 
-function StakeScreens({ mode }) {
+function StakeScreens({ mode, stakeManagement }) {
   //   const actions = useActions()
   //   const [transactions, setTransactions] = useState([])
   //   const test = 1
@@ -17,6 +18,8 @@ function StakeScreens({ mode }) {
   //     },
   //     [actions, test]
   //   )
+
+  const { accountBalance } = useAppState()
 
   const data = useMemo(() => {
     if (mode === 'deposit') {
@@ -32,11 +35,16 @@ function StakeScreens({ mode }) {
     () => [
       {
         title: data.title,
-        // graphicHeader: true,
-        content: <StakeAndWithdraw mode={mode} />,
+        content: (
+          <StakeAndWithdraw
+            mode={mode}
+            accountBalance={accountBalance}
+            stakeManagement={stakeManagement}
+          />
+        ),
       },
     ],
-    [data.title, mode]
+    [data.title, mode, accountBalance, stakeManagement]
   )
   return (
     <ModalFlowBase

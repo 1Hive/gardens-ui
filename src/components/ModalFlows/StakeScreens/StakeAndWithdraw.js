@@ -1,102 +1,109 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
   Field,
   GU,
   Info,
-  Link,
   TextInput,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
 import BigNumber from '../../../lib/bigNumber'
-// import { toDecimals } from '../utils/math-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
-// import { useAppState } from '../providers/AppState'
-
-const DEFAULT_DEPOSIT_TYPE = 1
-
-const DEFAULT_FORM_DATA = {
-  proposalType: DEFAULT_DEPOSIT_TYPE,
-  amount: {
-    value: '0',
-    valueBN: new BigNumber(0),
-  },
+const DEFAULT_AMOUNT_DATA = {
+  value: '0',
+  valueBN: new BigNumber(0),
 }
 
-function StakeAndWithdraw({ formType }) {
-  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+function StakeAndWithdraw({
+  accountBalance,
+  mode,
+  stakeManagement,
+  onDeposit,
+  onWithdraw,
+}) {
+  const [amountData, setAmountData] = useState(DEFAULT_AMOUNT_DATA)
   const theme = useTheme()
+  const { symbol, decimals } = stakeManagement.token
+  const depositMode = mode === 'deposit'
 
   const handleAmountChange = useCallback(event => {
     const amount = event.target.value
-    setFormData(formData => ({ ...formData, amount: amount }))
+    setAmountData(amountData => ({ ...amountData, amount: amount }))
   }, [])
 
-  const handleMaxClick = useCallback(event => {
-    // This is temporal, do something for getting the max ammount available.
-    const amount = event.target.value
-    setFormData(formData => ({ ...formData, amount: amount }))
-  }, [])
-
-  const handleFormSubmit = useCallback(async event => {
-    // do something with the data.
-    event.preventDefault()
-  }, [])
-
-  const renderBalance = balance => {
-    if (formType === DEFAULT_DEPOSIT_TYPE) {
-      return (
-        <div
-          css={`
-                  text-align: left;
-                  ${textStyle('body3')}
-                  color: ${theme.contentSecondary}
-                `}
-        >
-          Your account balance is ${balance} HNY
-        </div>
-      )
-    } else {
-      return (
-        <div
-          css={`
-                  text-align: left;
-                  ${textStyle('body3')}
-                  color: ${theme.contentSecondary}
-                `}
-        >
-          Your available balance is ${balance} ANT.
-        </div>
-      )
+  const handleMaxClick = useCallback(() => {
+    const amount = {
+      value: formatTokenAmount(
+        depositMode ? accountBalance : stakeManagement.staking.available,
+        decimals
+      ),
+      valueBN: depositMode ? accountBalance : stakeManagement.staking.available,
     }
-  }
+    setAmountData(amount)
+  }, [accountBalance, decimals, depositMode, stakeManagement.staking.available])
 
-  const buttonText = () => {
-    return formType === DEFAULT_DEPOSIT_TYPE ? 'Deposit' : 'Withdraw'
-  }
+  const handleFormSubmit = useCallback(
+    async event => {
+      // do something with the data.
+      event.preventDefault()
+
+      depositMode
+        ? onDeposit(amountData.valueBN)
+        : onWithdraw(amountData.valueBN)
+    },
+    [amountData.valueBN, depositMode, onDeposit, onWithdraw]
+  )
+
+  const textData = useMemo(() => {
+    if (depositMode) {
+      return {
+        descriptionText: `This amount will be placed in the staking pool and will be used to pay
+        for actions collateral and submission fees, when proposing actions
+        bound by this organization's Agreement.`,
+        balanceText: `Your account balance is ${formatTokenAmount(
+          accountBalance,
+          decimals
+        )} ${symbol}`,
+        buttonText: 'Deposit',
+      }
+    }
+    return {
+      descriptionText: `This amount will be withdrawn from your Available balance and directly credited to to your enabled account`,
+      balanceText: `Your available balance is ${formatTokenAmount(
+        stakeManagement.staking.available,
+        decimals
+      )} ${symbol}`,
+      buttonText: 'Withdraw',
+    }
+  }, [
+    accountBalance,
+    depositMode,
+    decimals,
+    symbol,
+    stakeManagement.staking.available,
+  ])
 
   return (
     <>
       <form onSubmit={handleFormSubmit}>
-        <div
+        <span
           css={`
-            margin-top: ${2 * GU}px;
             ${textStyle('body2')}
           `}
         >
-          This amount will be placed in the staking pool and will be used to pay
-          for actions collateral and submission fees, when proposing actions
-          bound by this organization's Agreement.
-        </div>
+          {textData.descriptionText}
+        </span>
         <Field
-          label="AMOUNT"
+          label="amount"
           css={`
             margin-top: ${2 * GU}px;
+            margin-bottom: ${1 * GU}px;
           `}
         >
           <TextInput
-            value={formData.amount.value}
+            value={amountData.value}
             onChange={handleAmountChange}
             required
             wide
@@ -116,29 +123,31 @@ function StakeAndWithdraw({ formType }) {
             adornmentSettings={{ padding: 1 }}
           />
         </Field>
-        {renderBalance('12')}
-        {formType !== DEFAULT_DEPOSIT_TYPE && (
+        <div
+          css={`
+            text-align: left;
+            ${textStyle('body3')};
+            color: ${theme.contentSecondary};
+          `}
+        >
+          {textData.balanceText}
+        </div>
+        {depositMode && (
           <Info
             css={`
-              margin-top: ${3.5 * GU}px;
+              margin-top: ${2 * GU}px;
             `}
           >
-            These votes are purely informative and will not directly result in
-            any further action being taken in the organization. These proposals
-            can be challenged if not adhered to{' '}
-            <Link href="https://forum.1hive.org/new-topic?category=proposals">
-              this organization’s Agreement
-            </Link>{' '}
-            .
+            You will be able to withdraw your collateral balance any time,
+            except when a portion of it is locked on a scheduled proposal
           </Info>
         )}
         <Button
-          label={buttonText()}
+          label={textData.buttonText}
           mode="strong"
           type="submit"
           css={`
-            margin-top: ${3.125 * GU}px;
-            margin-bottom: ${3.125 * GU}px;
+            margin-top: ${2 * GU}px;
             width: 100%;
           `}
         />

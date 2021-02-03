@@ -57,7 +57,7 @@ const StakeManagement = React.memo(function StakeManagement() {
         visible={Boolean(stakeModalMode)}
         onClose={() => setStakeModalMode(null)}
       >
-        <StakeScreens mode={stakeModalMode} />
+        <StakeScreens mode={stakeModalMode} stakeManagement={stakeManagement} />
       </MultiModal>
     </LayoutGutter>
   )
