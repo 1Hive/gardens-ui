@@ -8,6 +8,7 @@ import HeroBanner from '../components/Feed/HeroBanner'
 // import Metrics from '../components/Metrics'
 // import NetworkErrorModal from '../components/NetworkErrorModal'
 // import ProposalsList from '../components/Feed/ProposalsList'
+import SupportProposalScreens from '../components/ModalFlows/SupportProposal/SupportProposalScreens'
 
 import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
@@ -37,6 +38,9 @@ const Home = React.memo(function Home() {
   return (
     <div>
       {/* <NetworkErrorModal visible={errors} /> */}
+      {/* <MultiModal visible onClose={() => {}}>
+        <SupportProposalScreens />
+      </MultiModal> */}
       <div
         css={`
           display: flex;
@@ -122,11 +126,20 @@ const Home = React.memo(function Home() {
           </div>
         )}
       </div>
+      {/* <MultiModal
+        visible={createProposalModalVisible}
+        onClose={() => setCreateProposalModalVisible(false)}
+      >
+        <CreateProposalScreens />
+      </MultiModal> */}
       <MultiModal
         visible={createProposalModalVisible}
         onClose={() => setCreateProposalModalVisible(false)}
       >
         <CreateProposalScreens />
+      </MultiModal>
+      <MultiModal visible onClose={() => {}}>
+        <SupportProposalScreens />
       </MultiModal>
     </div>
   )

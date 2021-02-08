@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import ModalFlowBase from '../ModalFlowBase'
-import SignOverview from './SignOverview'
+import SupportProposal from './SupportProposal'
 import useActions from '../../../hooks/useActions'
 
 function SupportProposalScreens({ versionId }) {
@@ -21,9 +21,9 @@ function SupportProposalScreens({ versionId }) {
   const screens = useMemo(
     () => [
       {
-        title: 'Sign Agreement',
+        title: 'Support this proposal',
         graphicHeader: true,
-        content: <SignOverview getTransactions={getTransactions} />,
+        content: <SupportProposal getTransactions={getTransactions} />,
       },
     ],
     [getTransactions]
@@ -32,7 +32,7 @@ function SupportProposalScreens({ versionId }) {
     <ModalFlowBase
       frontLoad={false}
       transactions={transactions}
-      transactionTitle="Sign Agreement"
+      transactionTitle="Support this proposal"
       screens={screens}
     />
   )

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import BigNumber from '../../lib/bigNumber'
+import BigNumber from '../../../lib/bigNumber'
 import {
   Button,
   ButtonBase,
@@ -10,12 +10,12 @@ import {
   useSidePanelFocusOnReady,
   useTheme,
 } from '@1hive/1hive-ui'
-import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../providers/AppState'
-import { useWallet } from '../../providers/Wallet'
+import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
+import { useAppState } from '../../../providers/AppState'
+import { useWallet } from '../../../providers/Wallet'
 
-import { toDecimals, round, pct } from '../../utils/math-utils'
-import { formatTokenAmount } from '../../utils/token-utils'
+import { toDecimals, round, pct } from '../../../utils/math-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
