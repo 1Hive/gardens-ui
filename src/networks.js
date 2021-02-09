@@ -27,6 +27,7 @@ const networks = {
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org',
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    legacyNetworkType: 'rinkeby',
   },
   xdai: {
     chainId: 100,
@@ -36,6 +37,7 @@ const networks = {
     defaultEthNode: 'https://xdai.poanetwork.dev/',
     honeypot: '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e',
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    legacyNetworkType: 'main',
   },
 }
 

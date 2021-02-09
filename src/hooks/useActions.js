@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
 import { useAppState } from '../providers/AppState'
@@ -130,6 +131,18 @@ export default function useActions(onDone) {
   }, [])
 
   // Agreement actions
+  const signAgreement = useCallback(
+    async ({ versionId }, onDone = noop) => {
+      const intent = await agreementApp.intent('sign', [versionId], {
+        actAs: account,
+      })
+
+      // if (mounted()) {
+      onDone(intent)
+    },
+    [account, agreementApp]
+  )
+
   const challengeAction = useCallback(
     async (
       actionId,
@@ -236,6 +249,7 @@ export default function useActions(onDone) {
       challengeAction,
       settleAction,
       disputeAction,
+      signAgreement,
     },
   }
 }

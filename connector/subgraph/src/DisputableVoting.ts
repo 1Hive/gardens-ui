@@ -104,6 +104,8 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.settledAt = BigInt.fromI32(0)
   proposal.disputedAt = BigInt.fromI32(0)
   proposal.executedAt = BigInt.fromI32(0)
+  proposal.createdAt = event.block.timestamp
+
   proposal.isAccepted = isAccepted(
     voteData.value0, // yeas (using this instead proposa.yeays because we have the attribute as not required on the proposal entity)
     voteData.value1, // nays

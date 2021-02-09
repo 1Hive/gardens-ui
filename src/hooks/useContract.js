@@ -3,13 +3,12 @@ import { Contract as EthersContract, providers as Providers } from 'ethers'
 import { getNetwork } from '../networks'
 import { useWallet } from '../providers/Wallet'
 
-export function useContractReadOnly(address, abi) {
-  const ethEndpoint = getNetwork().defaultEthNode
+const ethEndpoint = getNetwork().defaultEthNode
 
-  const ethProvider = useMemo(
-    () => (ethEndpoint ? new Providers.JsonRpcProvider(ethEndpoint) : null),
-    [ethEndpoint]
-  )
+const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(ethEndpoint)
+
+export function useContractReadOnly(address, abi) {
+  const ethProvider = useMemo(() => (ethEndpoint ? DEFAULT_PROVIDER : null), [])
 
   return useMemo(() => {
     if (!address) {
@@ -34,6 +33,6 @@ export function useContract(address, abi, signer = true) {
   }, [abi, account, address, ethers, signer])
 }
 
-export function getContract(address, abi, provider) {
+export function getContract(address, abi, provider = DEFAULT_PROVIDER) {
   return new EthersContract(address, abi, provider)
 }

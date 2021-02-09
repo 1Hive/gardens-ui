@@ -7,6 +7,7 @@ import Routes from './Routes'
 import { AgreementSubscriptionProvider } from './providers/AgreementSubscription'
 import { AppStateProvider } from './providers/AppState'
 import { ProfileProvider } from './providers/Profile'
+import { StakingProvider } from './providers/Staking'
 import { WalletProvider } from './providers/Wallet'
 import { ConnectProvider as Connect } from './providers/Connect'
 
@@ -16,15 +17,17 @@ function App() {
       <Connect>
         <ProfileProvider>
           <AppStateProvider>
-            <AgreementSubscriptionProvider>
-              <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-                <HashRouter>
-                  <MainView>
-                    <Routes />
-                  </MainView>
-                </HashRouter>
-              </Main>
-            </AgreementSubscriptionProvider>
+            <StakingProvider>
+              <AgreementSubscriptionProvider>
+                <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+                  <HashRouter>
+                    <MainView>
+                      <Routes />
+                    </MainView>
+                  </HashRouter>
+                </Main>
+              </AgreementSubscriptionProvider>
+            </StakingProvider>
           </AppStateProvider>
         </ProfileProvider>
       </Connect>
