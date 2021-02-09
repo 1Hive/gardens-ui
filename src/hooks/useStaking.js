@@ -60,6 +60,7 @@ export function useStaking() {
             allTokens[1].id,
             account
           )
+          console.log('dao', dao)
 
           const staking = await connectedAgreementApp.staking(
             allTokens[1].id,
