@@ -236,7 +236,9 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  loadOrCreateSupporter(entity)
+  const supporter = loadOrCreateSupporter(entity)
+  supporter.proposal = proposal.id
+  supporter.save()
 
   const stake = getStakeEntity(proposal, entity)
   stake.amount = tokensStaked
@@ -255,8 +257,6 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  loadOrCreateSupporter(entity)
-
   const stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
   stakeHistory.type = type
   stakeHistory.tokensStaked = tokensStaked

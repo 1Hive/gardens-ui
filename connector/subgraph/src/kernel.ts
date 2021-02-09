@@ -1,16 +1,16 @@
-import { Address, DataSourceTemplate, TypedMap } from '@graphprotocol/graph-ts'
+import { Address, DataSourceTemplate } from '@graphprotocol/graph-ts'
 import { NewAppProxy as NewAppProxyEvent } from '../generated/Kernel/Kernel'
 import { loadConvictionConfig } from './helpers'
 
 const DISPUTABLE_VOTING_ADDRESS: Address = Address.fromString(
-  '0x5828ad285abb5790cbdba0b9b78c644e76849ef6'
+  '0x3926843504456ece3706339a296693fb735f5493'
 )
 const CONIVCTION_VOTING_ADDRESS: Address = Address.fromString(
-  '0x53e4c1ef9bc6d776f19fec30a3944e969d20bb17'
+  '0x6f433308e2a092f269028f4b220bbc22b5230194'
 )
 
 const AGREEMENT_ADDRESS: Address = Address.fromString(
-  '0x1c0cc1a1fff16cae0c8e363d95b553ed634927c8'
+  '0x8a9893db28fe41bcafc07c9c4da73a6a85d3732c'
 )
 
 function onAppTemplateCreated(
