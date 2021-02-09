@@ -54,7 +54,13 @@ export async function transformProposalData(proposal) {
 
   return {
     ...proposalData,
-    collateralRequirement,
+    collateralRequirement: collateralRequirement
+      ? {
+          ...collateralRequirement,
+          actionAmount: new BigNumber(collateralRequirement.actionAmount),
+          challengeAmount: new BigNumber(collateralRequirement.challengeAmount),
+        }
+      : null,
     submitterArbitratorFee: submitterArbitratorFee
       ? {
           ...submitterArbitratorFee,

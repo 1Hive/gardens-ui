@@ -100,7 +100,7 @@ const Home = React.memo(function Home() {
                   onRankingFilterChange={filters.ranking.onChange}
                   onStakeToProposal={actions.convictionActions.stakeToProposal}
                   onToggleFilterSlider={handleFilterSliderToggle}
-                  onVoteOnDecision={actions.dandelionActions.voteOnDecision}
+                  onVoteOnDecision={actions.votingActions.voteOnDecision}
                   onWithdrawFromProposal={
                     actions.convictionActions.withdrawFromProposal
                   }

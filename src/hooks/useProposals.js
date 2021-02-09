@@ -43,6 +43,11 @@ export function useProposals() {
     latestBlock
   )
 
+  useEffect(() => {
+    if (proposalsFetchedCount)
+  }
+  ])
+
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
 

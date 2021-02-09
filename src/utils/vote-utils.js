@@ -66,7 +66,7 @@ export function getVoteEndDate(vote) {
     endDateAfterPause + vote.quietEndingExtensionDuration
 
   // The last computed end date is correct if we have not passed it yet or if no flip was detected in the last extension
-  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const currentTimestamp = Date.now()
   if (currentTimestamp < lastComputedEndDate || !wasVoteFlipped(vote)) {
     return lastComputedEndDate
   }
