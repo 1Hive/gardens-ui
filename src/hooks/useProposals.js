@@ -1,9 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
 import { useAppState } from '../providers/AppState'
-import useProposalFilters from './useProposalFilters'
+import useProposalFilters, {
+  INITIAL_PROPOSAL_COUNT,
+} from './useProposalFilters'
 import {
   useProposalSubscription,
   useProposalsSubscription,
@@ -44,9 +46,14 @@ export function useProposals() {
   )
 
   useEffect(() => {
-    if (proposalsFetchedCount)
-  }
-  ])
+    if (
+      proposals.length < proposalsFetchedCount &&
+      proposalsFetchedCount === filters.count.filter &&
+      proposals.length < INITIAL_PROPOSAL_COUNT
+    ) {
+      filters.count.onChange()
+    }
+  }, [filters.count, proposals.length, proposalsFetchedCount])
 
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
