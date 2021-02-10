@@ -11,13 +11,9 @@ import StakingMovements from './StakingMovements'
 import stakingEmpty from './assets/staking-empty.png'
 import { useStakingState } from '../../providers/Staking'
 
-// import { useMounted } from '../../hooks/useMounted'
-
 const StakeManagement = React.memo(function StakeManagement() {
   const [stakeModalMode, setStakeModalMode] = useState()
-  // const [stakedAmount, setStakedAmount] = useState()
   const { stakeManagement, stakeActions } = useStakingState()
-  // const mounted = useMounted()
 
   const handleOnCloseModal = useCallback(() => {
     stakeActions.reFetchTotalBalance()

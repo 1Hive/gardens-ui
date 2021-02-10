@@ -27,6 +27,7 @@ import {
   COLLATERAL_STATUSES,
 } from './staking-management-statuses'
 import { dateFormat, toMs } from '../../utils/date-utils'
+import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
@@ -116,6 +117,11 @@ function StakingMovements({ stakingMovements, token }) {
         { label: 'Amount', align: 'end' },
       ]}
       entries={stakingMovements}
+      emptyState={{
+        default: {
+          illustration: <img src={noDataIllustration} alt="" />,
+        },
+      }}
       renderEntry={({
         amount,
         createdAt,
