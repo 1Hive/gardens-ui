@@ -28,7 +28,8 @@ export function loadTokenData(address: Address): string | null {
     token.decimals = tokenContract.decimals()
     token.save()
   }
-  return token.id
+
+  return id
 }
 
 /// /// General Config Entity //////
@@ -51,7 +52,6 @@ export function loadOrCreateSupporter(address: Address): SupporterEntity {
   if (supporter === null) {
     supporter = new SupporterEntity(id)
     supporter.address = address
-    supporter.save()
   }
   return supporter!
 }

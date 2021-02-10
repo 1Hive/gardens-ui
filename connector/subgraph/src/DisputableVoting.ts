@@ -100,10 +100,12 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.quietEndingExtensionDuration = voteData.value10
   proposal.quietEndingSnapshotSupport = castVoterState(voteData.value11)
   proposal.script = event.params.executionScript
+  proposal.createdAt = event.block.timestamp
   proposal.settledAt = BigInt.fromI32(0)
   proposal.disputedAt = BigInt.fromI32(0)
   proposal.executedAt = BigInt.fromI32(0)
   proposal.createdAt = event.block.timestamp
+
   proposal.isAccepted = isAccepted(
     voteData.value0, // yeas (using this instead proposa.yeays because we have the attribute as not required on the proposal entity)
     voteData.value1, // nays
@@ -124,6 +126,9 @@ export function handleCastVote(event: CastVoteEvent): void {
   const votingApp = VotingContract.bind(event.address)
   const proposal = getProposalEntity(event.address, event.params.voteId)
   const miniMeToken = ERC20Contract.bind(votingApp.token())
+
+  voter.proposal = proposal.id
+  voter.save()
 
   const stake = miniMeToken.balanceOfAt(
     event.params.voter,

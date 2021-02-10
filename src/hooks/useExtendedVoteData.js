@@ -9,18 +9,15 @@ import { useWallet } from '../providers/Wallet'
 import { getCanUserVote } from '../utils/vote-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '../utils/token-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
-import dandelionVotingAbi from '../abi/DandelionVoting.json'
+import votingAbi from '../abi/voting.json'
 
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()
   const { config } = useAppState()
   const { stakeToken } = config.conviction
-  const { id: dandelionVotingAddress } = config.voting
+  const { id: votingAddress } = config.voting
 
-  const dandelionVotingContract = useContractReadOnly(
-    dandelionVotingAddress,
-    dandelionVotingAbi
-  )
+  const votingContract = useContractReadOnly(votingAddress, votingAbi)
 
   const tokenContract = useContractReadOnly(stakeToken.id, minimeTokenAbi)
 
@@ -45,11 +42,11 @@ export default function useExtendedVoteData(vote) {
   const userBalance = usePromise(userBalancePromise, [], -1, 1)
 
   const canExecutePromise = useMemo(() => {
-    if (!dandelionVotingContract) {
+    if (!votingContract) {
       return
     }
-    return dandelionVotingContract.canExecute(vote.id)
-  }, [dandelionVotingContract, vote])
+    return votingContract.canExecute(vote.id)
+  }, [votingContract, vote])
 
   const canExecute = usePromise(canExecutePromise, [], false, 2)
 
@@ -80,16 +77,13 @@ export default function useExtendedVoteData(vote) {
 export function useCanUserVote(vote) {
   const { config } = useAppState()
   const { account: connectedAccount } = useWallet()
-  const { id: dandelionVotingAddress } = config?.voting || {}
+  const { id: votingAddress } = config?.voting || {}
 
-  const dandelionVotingContract = useContractReadOnly(
-    dandelionVotingAddress,
-    dandelionVotingAbi
-  )
+  const votingContract = useContractReadOnly(votingAddress, votingAbi)
 
   const canUserVotePromise = useMemo(() => {
-    return getCanUserVote(dandelionVotingContract, vote.id, connectedAccount)
-  }, [connectedAccount, dandelionVotingContract, vote])
+    return getCanUserVote(votingContract, vote.id, connectedAccount)
+  }, [connectedAccount, votingContract, vote])
 
   const canUserVote = usePromise(canUserVotePromise, [], false, 3)
 

@@ -1,9 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
 import { useAppState } from '../providers/AppState'
-import useProposalFilters from './useProposalFilters'
+import useProposalFilters, {
+  INITIAL_PROPOSAL_COUNT,
+} from './useProposalFilters'
 import {
   useProposalSubscription,
   useProposalsSubscription,
@@ -21,8 +23,13 @@ import {
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import { getProposalSupportStatus } from '../utils/proposal-utils'
-import { getDecisionTransition } from '../utils/vote-utils'
+import {
+  getVoteEndDate,
+  getVoteStatus,
+  hasVoteEnded,
+} from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
+import { PCT_BASE } from '../constants'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -37,6 +44,16 @@ export function useProposals() {
     account,
     latestBlock
   )
+
+  useEffect(() => {
+    if (
+      proposals.length < proposalsFetchedCount &&
+      proposalsFetchedCount === filters.count.filter &&
+      proposals.length < INITIAL_PROPOSAL_COUNT
+    ) {
+      filters.count.onChange()
+    }
+  }, [filters.count, proposals.length, proposalsFetchedCount])
 
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
@@ -57,7 +74,7 @@ function useFilteredProposals(filters, account, latestBlock) {
 
     return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
-        ? processDecision(proposal, latestBlock, blockTime)
+        ? processDecision(proposal)
         : processProposal(
             proposal,
             latestBlock,
@@ -125,7 +142,7 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? processDecision(proposal, latestBlock, blockTime)
+      ? processDecision(proposal)
       : processProposal(
           proposal,
           latestBlock,
@@ -235,12 +252,19 @@ function processProposal(
   }
 }
 
-function processDecision(proposal, latestBlock, blockTime) {
+function processDecision(proposal) {
+  const endDate = getVoteEndDate(proposal)
+  const hasEnded = hasVoteEnded(
+    proposal.status,
+    endDate,
+    proposal.challengeEndDate
+  )
+  const voteStatus = getVoteStatus(proposal, hasEnded, PCT_BASE)
+
   return {
     ...proposal,
-    data: {
-      ...proposal.data,
-      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
-    },
+    endDate,
+    hasEnded,
+    voteStatus,
   }
 }

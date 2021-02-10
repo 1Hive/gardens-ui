@@ -122,6 +122,7 @@ export interface ProposalData {
   challengeEndDate: string
   disputeId: string
   settledAt: string
+  settlementOffer: string
   disputedAt: string
   pausedAt: string
   pauseDuration: string
@@ -144,6 +145,7 @@ export interface CollateralRequirementData {
   proposalId: string
   tokenId: string
   tokenDecimals: string
+  tokenSymbol: string
   actionAmount: string
   challengeAmount: string
   challengeDuration: string
@@ -154,6 +156,7 @@ export interface ArbitratorFeeData {
   proposalId: string
   tokenId: string
   tokenDecimals: string
+  tokenSymbol: string
   amount: string
 }
 
