@@ -1,13 +1,15 @@
 import React from 'react'
-import { GU, formatTokenAmount, textStyle, useTheme } from '@1hive/1hive-ui'
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { useUniswapHnyPrice } from '../../hooks/useUniswapHNYPrice'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
+import { formatTokenAmount } from '../../utils/token-utils'
 import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 
-function Sidebar({ stakeActions, staking, token }) {
-  const { available, challenged, locked, total } = staking
-  const tokenRate = 5 // useConvertRate([token.symbol])
+function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
+  const { available, locked, total } = staking
+  const tokenRate = useUniswapHnyPrice()
 
   return (
     <div
@@ -23,6 +25,7 @@ function Sidebar({ stakeActions, staking, token }) {
         total={total}
         tokenDecimals={token.decimals}
         tokenSymbol={token.symbol}
+        onDepositOrWithdraw={onDepositOrWithdraw}
       />
       <ExpandableCard
         content={
@@ -46,18 +49,6 @@ function Sidebar({ stakeActions, staking, token }) {
           />
         }
         expansion="This is the part of your collateral balance that is backing a particular action. This Locked amount will move back to Available after the action is able to be enacted."
-      />
-      <ExpandableCard
-        content={
-          <CardContent
-            amount={formatTokenAmount(challenged * tokenRate, token.decimals)}
-            icon={coin}
-            title={`Challenged ${token.symbol}`}
-            tokenAmount={formatTokenAmount(challenged, token.decimals)}
-            secondary
-          />
-        }
-        expansion="This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action."
       />
     </div>
   )

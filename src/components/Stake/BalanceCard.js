@@ -1,18 +1,27 @@
-import React from 'react'
-import {
-  Button,
-  Card,
-  GU,
-  formatTokenAmount,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import React, { useCallback } from 'react'
+import { Button, Card, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { useUniswapHnyPrice } from '../../hooks/useUniswapHNYPrice'
+import { formatTokenAmount } from '../../utils/token-utils'
 import tokenIcon from '../../assets/honey.svg'
 
-function BalanceCard({ stakeActions, total, tokenDecimals, tokenSymbol }) {
+function BalanceCard({
+  stakeActions,
+  total,
+  tokenDecimals,
+  tokenSymbol,
+  onDepositOrWithdraw,
+}) {
   const theme = useTheme()
-  const tokenRate = 5 // useConvertRate([tokenSymbol])
+  const tokenRate = useUniswapHnyPrice()
   // TODO: Replace token icon
+
+  const handleOnDeposit = useCallback(() => {
+    onDepositOrWithdraw('deposit')
+  }, [onDepositOrWithdraw])
+
+  const handleOnWithdraw = useCallback(() => {
+    onDepositOrWithdraw('withdraw')
+  }, [onDepositOrWithdraw])
 
   return (
     <Card
@@ -37,7 +46,7 @@ function BalanceCard({ stakeActions, total, tokenDecimals, tokenSymbol }) {
           ${textStyle('title4')};
         `}
       >
-        {formatTokenAmount(total, tokenDecimals)}
+        {total ? formatTokenAmount(total, tokenDecimals) : '-'}
       </h2>
       <h1
         css={`
@@ -51,18 +60,19 @@ function BalanceCard({ stakeActions, total, tokenDecimals, tokenSymbol }) {
           color: ${theme.positive};
         `}
       >
-        $ {formatTokenAmount(total * tokenRate, tokenDecimals)}
+        ${total ? formatTokenAmount(total * tokenRate, tokenDecimals) : '-'}
       </p>
       <Button
         mode="normal"
         wide
         label="Withdraw"
+        onClick={handleOnWithdraw}
         css={`
           margin-top: ${2 * GU}px;
           margin-bottom: ${1.5 * GU}px;
         `}
       />
-      <Button mode="strong" wide label="Deposit" onClick={stakeActions.stake} />
+      <Button mode="strong" wide label="Deposit" onClick={handleOnDeposit} />
     </Card>
   )
 }
