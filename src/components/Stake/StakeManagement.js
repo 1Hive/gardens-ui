@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import LayoutColumns from '../Layout/LayoutColumns'
@@ -11,9 +11,18 @@ import StakingMovements from './StakingMovements'
 import stakingEmpty from './assets/staking-empty.png'
 import { useStakingState } from '../../providers/Staking'
 
+// import { useMounted } from '../../hooks/useMounted'
+
 const StakeManagement = React.memo(function StakeManagement() {
-  const [stakeModalMode, setStakeModalMode] = useState(null)
+  const [stakeModalMode, setStakeModalMode] = useState()
+  // const [stakedAmount, setStakedAmount] = useState()
   const { stakeManagement, stakeActions } = useStakingState()
+  // const mounted = useMounted()
+
+  const handleOnCloseModal = useCallback(() => {
+    stakeActions.reFetchTotalBalance()
+    setStakeModalMode(null)
+  }, [stakeActions])
 
   return (
     <LayoutGutter>
@@ -31,7 +40,7 @@ const StakeManagement = React.memo(function StakeManagement() {
                 <EmptyState
                   icon={stakingEmpty}
                   title="No transactions yet"
-                  paragraph="You can start by depositing some ANT into the staking pool before you can submit a proposal."
+                  paragraph="You can start by depositing some HNY into the staking pool before you can submit a proposal."
                 />
               )
             }
@@ -55,9 +64,16 @@ const StakeManagement = React.memo(function StakeManagement() {
       </LayoutLimiter>
       <MultiModal
         visible={Boolean(stakeModalMode)}
-        onClose={() => setStakeModalMode(null)}
+        onClose={handleOnCloseModal}
+        onClosed={() => setStakeModalMode(null)}
       >
-        <StakeScreens mode={stakeModalMode} stakeManagement={stakeManagement} />
+        {(stakeModalMode === 'withdraw' || stakeModalMode === 'deposit') && (
+          <StakeScreens
+            mode={stakeModalMode}
+            stakeManagement={stakeManagement}
+            stakeActions={stakeActions}
+          />
+        )}
       </MultiModal>
     </LayoutGutter>
   )

@@ -1,25 +1,50 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 import { useAppState } from '../../../providers/AppState'
-// import useActions from '../../../hooks/useActions'
+import BigNumber from '../../../lib/bigNumber'
+import { toDecimals } from '../../../utils/math-utils'
 
-function StakeScreens({ mode, stakeManagement }) {
-  //   const actions = useActions()
-  //   const [transactions, setTransactions] = useState([])
-  //   const test = 1
+const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
-  //   const getTransactions = useCallback(
-  //     async onComplete => {
-  //       await actions.agreementActions.signAgreement({ test }, intent => {
-  //         setTransactions(intent.transactions)
-  //         onComplete()
-  //       })
-  //     },
-  //     [actions, test]
-  //   )
-
+function StakeScreens({ mode, stakeManagement, stakeActions }) {
+  const [transactions, setTransactions] = useState([])
   const { accountBalance } = useAppState()
+
+  const temporatyTrx = useRef([])
+
+  const getTransactions = useCallback(
+    async (onComplete, amount) => {
+      if (mode === 'deposit') {
+        const allowance = await stakeActions.getAllowance()
+        if (allowance.lt(amount)) {
+          if (!allowance.eq(0)) {
+            await stakeActions.approveTokenAmount({ ZERO_BN }, intent => {
+              temporatyTrx.current = temporatyTrx.current.concat(intent)
+            })
+          }
+          await stakeActions.approveTokenAmount({ amount }, intent => {
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
+          })
+        }
+        await stakeActions.stake({ amount }, intent => {
+          const trxList = temporatyTrx.current.concat(intent)
+          setTransactions(trxList)
+          onComplete()
+        })
+        return
+      }
+      if (mode === 'withdraw') {
+        await stakeActions.withdraw({ amount }, intent => {
+          setTransactions(intent)
+          onComplete()
+        })
+        return
+      }
+      setTransactions([])
+    },
+    [stakeActions, mode]
+  )
 
   const data = useMemo(() => {
     if (mode === 'deposit') {
@@ -40,17 +65,18 @@ function StakeScreens({ mode, stakeManagement }) {
             mode={mode}
             accountBalance={accountBalance}
             stakeManagement={stakeManagement}
+            getTransactions={getTransactions}
           />
         ),
       },
     ],
-    [data.title, mode, accountBalance, stakeManagement]
+    [data.title, mode, accountBalance, getTransactions, stakeManagement]
   )
   return (
     <ModalFlowBase
       frontLoad={false}
-      //   transactions={transactions}
-      //   transactionTitle={data.transactionTitle}
+      transactions={transactions}
+      transactionTitle={mode === 'deposit' ? 'Deposit HNY' : 'Withdraw HNY'}
       screens={screens}
     />
   )

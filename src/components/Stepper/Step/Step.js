@@ -5,7 +5,7 @@ import {
   TransactionBadge,
   textStyle,
   useTheme,
-  RADIUS,
+  // RADIUS,
   GU,
 } from '@1hive/1hive-ui'
 import Divider from './Divider'
@@ -197,23 +197,24 @@ function Step({
                   />
                 </AnimatedSpan>
               ) : (
-                <AnimatedSpan
-                  style={transitionProps}
-                  css={`
-                    display: flex;
-                    justify-content: center;
-                    width: 100%;
-                  `}
-                >
-                  <div
-                    css={`
-                      height: ${3 * GU}px;
-                      width: ${15 * GU}px;
-                      border-radius: ${RADIUS}px;
-                      border: 1px dashed ${theme.border};
-                    `}
-                  />
-                </AnimatedSpan>
+                <></>
+                // <AnimatedSpan
+                //   style={transitionProps}
+                //   css={`
+                //     display: flex;
+                //     justify-content: center;
+                //     width: 100%;
+                //   `}
+                // >
+                //   <div
+                //     css={`
+                //       height: ${3 * GU}px;
+                //       width: ${15 * GU}px;
+                //       border-radius: ${RADIUS}px;
+                //       border: 1px dashed ${theme.border};
+                //     `}
+                //   />
+                // </AnimatedSpan>
               )}
           </Transition>
         </div>

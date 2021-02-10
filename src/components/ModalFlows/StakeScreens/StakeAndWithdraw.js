@@ -9,7 +9,9 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import BigNumber from '../../../lib/bigNumber'
+import { toDecimals } from '../../../utils/math-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 const DEFAULT_AMOUNT_DATA = {
   value: '0',
@@ -20,18 +22,39 @@ function StakeAndWithdraw({
   accountBalance,
   mode,
   stakeManagement,
-  onDeposit,
-  onWithdraw,
+  getTransactions,
 }) {
   const [amountData, setAmountData] = useState(DEFAULT_AMOUNT_DATA)
+  const [error, setError] = useState(null)
   const theme = useTheme()
+  const { next } = useMultiModal()
   const { symbol, decimals } = stakeManagement.token
   const depositMode = mode === 'deposit'
 
-  const handleAmountChange = useCallback(event => {
-    const amount = event.target.value
-    setAmountData(amountData => ({ ...amountData, amount: amount }))
-  }, [])
+  const handleAmountChange = useCallback(
+    event => {
+      const amount = event.target.value
+      const amountBN = new BigNumber(toDecimals(amount, decimals))
+      setAmountData(amountData => ({
+        ...amountData,
+        value: amount,
+        valueBN: amountBN,
+      }))
+
+      if (depositMode) {
+        if (amountBN.gt(accountBalance)) {
+          setError('Yo have insufficient funds in your connected account. ')
+          return
+        }
+        setError(null)
+        return
+      }
+      if (amountBN.gt(stakeManagement.staking.available.toString())) {
+        setError('Yo have insufficient funds in your account.')
+      }
+    },
+    [accountBalance, decimals, depositMode, stakeManagement.staking.available]
+  )
 
   const handleMaxClick = useCallback(() => {
     const amount = {
@@ -48,11 +71,11 @@ function StakeAndWithdraw({
     async event => {
       event.preventDefault()
 
-      depositMode
-        ? onDeposit(amountData.valueBN)
-        : onWithdraw(amountData.valueBN)
+      getTransactions(() => {
+        next()
+      }, amountData.valueBN)
     },
-    [amountData.valueBN, depositMode, onDeposit, onWithdraw]
+    [amountData.valueBN, getTransactions, next]
   )
 
   const textData = useMemo(() => {
@@ -129,6 +152,15 @@ function StakeAndWithdraw({
             color: ${theme.contentSecondary};
           `}
         >
+          {error && (
+            <span
+              css={`
+                color: ${theme.error};
+              `}
+            >
+              {error}
+            </span>
+          )}
           {textData.balanceText}
         </div>
         {depositMode && (
@@ -149,6 +181,7 @@ function StakeAndWithdraw({
             margin-top: ${2 * GU}px;
             width: 100%;
           `}
+          disabled={error}
         />
       </form>
     </>

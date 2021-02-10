@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
 import { useWallet } from '../providers/Wallet'
 
@@ -6,11 +7,11 @@ import { useAppState } from '../providers/AppState'
 import BigNumber from '../lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
 
+import { encodeFunctionData } from '../utils/web3-utils'
+
 import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
 import minimeTokenAbi from '../abi/minimeToken.json'
-
-import { toDecimals } from '../utils/math-utils'
 
 export function useStaking() {
   const mounted = useMounted()
@@ -18,6 +19,7 @@ export function useStaking() {
   const { connectedAgreementApp } = useAppState()
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
 
   const stakingFactoryContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingFactory,
@@ -33,6 +35,10 @@ export function useStaking() {
     stakeManagement && stakeManagement.token && stakeManagement.token.id,
     minimeTokenAbi
   )
+
+  const handleReFetchTotalBalance = useCallback(() => {
+    setReFetchTotalBalance(true)
+  }, [])
 
   useEffect(() => {
     async function getStakingInformation() {
@@ -69,7 +75,15 @@ export function useStaking() {
           if (mounted()) {
             setStakeManagement({
               token: allTokens[1],
-              staking: staking || defaultValues,
+              staking: staking
+                ? {
+                    ...staking,
+                    available: new BigNumber(staking.available),
+                    challenged: new BigNumber(staking.challenged),
+                    locked: new BigNumber(staking.locked),
+                    total: new BigNumber(staking.total),
+                  }
+                : defaultValues,
               stakingMovements: stakingMovements,
               stakingFactory: stakingFactory,
               stakingInstance: null,
@@ -120,21 +134,145 @@ export function useStaking() {
     }
   }, [stakingFactoryContract, mounted, stakeManagement])
 
-  const stake = useCallback(async () => {
-    if (!stakeManagement && stakingContract) {
+  useEffect(() => {
+    async function fetchStakingBalance() {
+      const { staked } = await stakingContract.getBalancesOf(account)
+      const stakedBN = new BigNumber(staked.toString())
+
+      if (!stakeManagement.staking.total.eq(stakedBN) || reFetchTotalBalance) {
+        if (mounted()) {
+          setStakeManagement(stakeManagement => {
+            return {
+              ...stakeManagement,
+              staking: {
+                ...stakeManagement.staking,
+                total: stakedBN,
+                available: stakedBN,
+              },
+            }
+          })
+          setReFetchTotalBalance(false)
+        }
+      }
+    }
+    if (stakingContract && stakeManagement) {
+      fetchStakingBalance()
+    }
+  }, [account, stakingContract, mounted, stakeManagement, reFetchTotalBalance])
+
+  const stake = useCallback(
+    async ({ amount }, onDone = noop) => {
+      if (!stakeManagement && stakingContract) {
+        return
+      }
+
+      const stakeData = encodeFunctionData(stakingContract, 'stake', [
+        amount.toString(10),
+        '0x',
+      ])
+
+      const intent = [
+        {
+          data: stakeData,
+          from: account,
+          to: stakeManagement.stakingInstance,
+          description: 'Stake HNY',
+        },
+      ]
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [account, mounted, stakeManagement, stakingContract]
+  )
+
+  const withdraw = useCallback(
+    async ({ amount }, onDone = noop) => {
+      if (!stakeManagement && stakingContract && amount) {
+        return
+      }
+
+      const stakeData = encodeFunctionData(stakingContract, 'unstake', [
+        amount.toString(10),
+        '0x',
+      ])
+
+      const intent = [
+        {
+          data: stakeData,
+          from: account,
+          to: stakeManagement.stakingInstance,
+          description: 'Withdraw HNY',
+        },
+      ]
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [account, mounted, stakeManagement, stakingContract]
+  )
+
+  const approveTokenAmount = useCallback(
+    async ({ amount }, onDone = noop) => {
+      if (!stakeManagement && tokenContract) {
+        return
+      }
+
+      const approveData = encodeFunctionData(tokenContract, 'approve', [
+        stakeManagement.stakingInstance,
+        amount.toString(10),
+      ])
+
+      const intent = [
+        {
+          data: approveData,
+          from: account,
+          to: stakeManagement.token.id,
+          description: 'Approve HNY',
+        },
+      ]
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [account, mounted, stakeManagement, tokenContract]
+  )
+
+  const getAllowance = useCallback(async () => {
+    if (!tokenContract) {
       return
     }
-    const stakeAmount = new BigNumber(
-      toDecimals('1', stakeManagement.token.decimals)
-    ).toString(10)
 
-    await tokenContract.approve(stakeManagement.stakingInstance, stakeAmount)
-    await stakingContract.stake(stakeAmount, '0x')
-  }, [stakeManagement, stakingContract, tokenContract])
+    const allowance = await tokenContract.allowance(
+      account,
+      stakeManagement.stakingInstance
+    )
+
+    return new BigNumber(allowance.toString())
+  }, [account, tokenContract, stakeManagement])
+
+  const getStakedAmount = useCallback(async () => {
+    if (!stakingContract) {
+      return
+    }
+
+    const { staked } = await stakingContract.getBalancesOf(account)
+    return staked
+  }, [stakingContract, account])
 
   return [
     stakeManagement,
-    { stake: stake },
+    {
+      stake: stake,
+      withdraw: withdraw,
+      approveTokenAmount: approveTokenAmount,
+      getStakedAmount: getStakedAmount,
+      reFetchTotalBalance: handleReFetchTotalBalance,
+      getAllowance: getAllowance,
+    },
     loading || !stakeManagement.stakingInstanceAddress,
   ]
 }

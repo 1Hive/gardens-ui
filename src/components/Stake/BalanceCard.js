@@ -1,13 +1,7 @@
 import React, { useCallback } from 'react'
-import {
-  Button,
-  Card,
-  GU,
-  formatTokenAmount,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Button, Card, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useUniswapHnyPrice } from '../../hooks/useUniswapHNYPrice'
+import { formatTokenAmount } from '../../utils/token-utils'
 import tokenIcon from '../../assets/honey.svg'
 
 function BalanceCard({
@@ -52,7 +46,7 @@ function BalanceCard({
           ${textStyle('title4')};
         `}
       >
-        {formatTokenAmount(total, tokenDecimals)}
+        {total ? formatTokenAmount(total, tokenDecimals) : '-'}
       </h2>
       <h1
         css={`
@@ -66,7 +60,7 @@ function BalanceCard({
           color: ${theme.positive};
         `}
       >
-        $ {formatTokenAmount(total * tokenRate, tokenDecimals)}
+        ${total ? formatTokenAmount(total * tokenRate, tokenDecimals) : '-'}
       </p>
       <Button
         mode="normal"

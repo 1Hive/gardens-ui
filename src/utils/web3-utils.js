@@ -4,6 +4,10 @@ import { getDefaultChain } from '../local-settings'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
+export function encodeFunctionData(contract, functionName, params) {
+  return contract.interface.encodeFunctionData(functionName, params)
+}
+
 export function getUseWalletProviders() {
   const providers = [{ id: 'injected' }]
 

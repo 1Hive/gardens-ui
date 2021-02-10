@@ -30,10 +30,11 @@ function ModalFlowBase({
     () =>
       transactions
         ? transactions.map((transaction, index) => {
-            const title =
-              transactions.length === 1
-                ? 'Sign transaction'
-                : `${indexNumber[index]} transaction`
+            const title = transaction.description
+              ? transaction.description
+              : transactions.length === 1
+              ? 'Sign transaction'
+              : `${indexNumber[index]} transaction`
 
             return {
               // TODO: Add titles from description
@@ -45,7 +46,12 @@ function ModalFlowBase({
                 setHash,
               }) => {
                 try {
-                  const tx = await signer.sendTransaction(transaction)
+                  const trx = {
+                    from: transaction.from,
+                    to: transaction.to,
+                    data: transaction.data,
+                  }
+                  const tx = await signer.sendTransaction(trx)
 
                   setHash(tx.hash)
 
@@ -66,7 +72,6 @@ function ModalFlowBase({
         : null,
     [transactions, signer]
   )
-
   const extendedScreens = useMemo(() => {
     const allScreens = []
 
