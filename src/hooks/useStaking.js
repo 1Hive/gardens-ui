@@ -58,6 +58,7 @@ export function useStaking() {
           const allRequirements = await Promise.all(
             disputableApps.map(app => app.collateralRequirement())
           )
+
           const allTokens = await Promise.all(
             allRequirements.map(collateral => collateral.token())
           )
