@@ -22,7 +22,10 @@ import {
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import { getProposalSupportStatus } from '../utils/proposal-utils'
+import {
+  getProposalStatusData,
+  getProposalSupportStatus,
+} from '../utils/proposal-utils'
 import {
   getVoteEndDate,
   getVoteStatus,
@@ -234,6 +237,8 @@ function processProposal(
     }
   }
 
+  const statusData = getProposalStatusData(proposal)
+
   return {
     ...proposal,
     convictionTrend,
@@ -246,6 +251,7 @@ function processProposal(
     neededConviction,
     neededTokens,
     stakedConviction,
+    statusData,
     threshold,
     userConviction,
     userStakedConviction,
