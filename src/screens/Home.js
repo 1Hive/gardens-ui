@@ -38,9 +38,6 @@ const Home = React.memo(function Home() {
   return (
     <div>
       {/* <NetworkErrorModal visible={errors} /> */}
-      {/* <MultiModal visible onClose={() => {}}>
-        <SupportProposalScreens />
-      </MultiModal> */}
       <div
         css={`
           display: flex;

@@ -7,7 +7,6 @@ import {
   GU,
   Info,
   TextInput,
-  useSidePanelFocusOnReady,
   useTheme,
 } from '@1hive/1hive-ui'
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
@@ -15,7 +14,7 @@ import { useAppState } from '../../../providers/AppState'
 import { useWallet } from '../../../providers/Wallet'
 
 import { toDecimals, round, pct } from '../../../utils/math-utils'
-import { formatTokenAmount } from '../../../utils/token-utils'
+// import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
@@ -29,7 +28,6 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const inputRef = useSidePanelFocusOnReady()
   const { accountBalance, stakeToken } = useAppState()
 
   const totalStaked = useAccountTotalStaked(account)
@@ -38,19 +36,20 @@ const SupportProposal = React.memo(function SupportProposal({
   const handleEditMode = useCallback(
     editMode => {
       setAmount(amount => {
-        const newValue = amount.valueBN.gte(0)
-          ? formatTokenAmount(
-              amount.valueBN,
-              stakeToken.decimals,
-              false,
-              false,
-              {
-                commas: !editMode,
-                replaceZeroBy: editMode ? '' : '0',
-                rounding: stakeToken.decimals,
-              }
-            )
-          : ''
+        // const newValue = amount.valueBN.gte(0)
+        //   ? formatTokenAmount(
+        //       amount.valueBN,
+        //       stakeToken.decimals,
+        //       false,
+        //       false,
+        //       {
+        //         commas: !editMode,
+        //         replaceZeroBy: editMode ? '' : '0',
+        //         rounding: stakeToken.decimals,
+        //       }
+        //     )
+        //   : ''
+        const newValue = ''
 
         return {
           ...amount,
@@ -83,13 +82,14 @@ const SupportProposal = React.memo(function SupportProposal({
   const handleMaxSelected = useCallback(() => {
     setAmount({
       valueBN: nonStakedTokens,
-      value: formatTokenAmount(
-        nonStakedTokens,
-        stakeToken.decimals,
-        false,
-        false,
-        { commas: false, rounding: stakeToken.decimals }
-      ),
+      // value: formatTokenAmount(
+      //   nonStakedTokens,
+      //   stakeToken.decimals,
+      //   false,
+      //   false,
+      //   { commas: false, rounding: stakeToken.decimals }
+      // ),
+      value: '',
     })
   }, [nonStakedTokens, stakeToken])
 
@@ -135,7 +135,6 @@ const SupportProposal = React.memo(function SupportProposal({
           onFocus={() => handleEditMode(true)}
           onBlur={() => handleEditMode(false)}
           wide
-          ref={inputRef}
           adornment={
             <ButtonBase
               css={`
@@ -174,7 +173,7 @@ const SupportProposal = React.memo(function SupportProposal({
       >
         You have{' '}
         <strong>
-          {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
+          {/* {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '} */}
           {stakeToken.symbol}
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
@@ -182,7 +181,7 @@ const SupportProposal = React.memo(function SupportProposal({
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
+              {/* {formatTokenAmount(totalStaked, stakeToken.decimals)} locked */}
               tokens
             </strong>{' '}
             ({stakedPct}% of your balance).
