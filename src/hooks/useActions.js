@@ -22,6 +22,7 @@ export default function useActions(onDone) {
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
@@ -99,7 +100,7 @@ export default function useActions(onDone) {
 
   // Issuance actions
   const executeIssuance = useCallback(() => {
-    sendIntent(issuanceApp, 'executeIssuance', [], {
+    sendIntent(issuanceApp, 'executeAdjustment', [], {
       ethers,
       from: account,
     })
@@ -234,13 +235,13 @@ export default function useActions(onDone) {
   // TODO: Memoize objects
   return {
     convictionActions: {
-      executeIssuance,
       executeProposal,
       newProposal,
       cancelProposal,
       stakeToProposal,
       withdrawFromProposal,
     },
+    issuanceActions: { executeIssuance },
     votingActions: {
       executeDecision,
       voteOnDecision,

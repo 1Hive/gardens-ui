@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
+import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
 // import useActions from '../../../hooks/useActions'
 import { useAgreement } from '../../../hooks/useAgreement'
@@ -20,6 +21,11 @@ function CreateProposalScreens({ versionId }) {
             availableStaked={stakeManagement.staking.available}
           />
         ),
+      },
+      {
+        title: 'Create post',
+        graphicHeader: true,
+        content: <AddProposal />,
       },
     ],
     [agreement, stakeManagement.staking.available]

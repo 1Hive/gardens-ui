@@ -4,7 +4,7 @@ import { getNetwork } from './networks'
 const DEFAULT_CHAIN_ID = 100
 const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
 const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
-const DEFAULT_ISSUANCE_APP_NAME = 'issuance'
+const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement-1hive'
 
 const ENV_VARS = {
