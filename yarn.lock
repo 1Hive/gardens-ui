@@ -151,14 +151,6 @@
     ethers "^5.0.7"
     radspec "^2.0.0-rc.2"
 
-"@aragon/connect-core@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.6.0.tgz#dcbf818e203c5c547dd0f93b6c4c53362688e467"
-  integrity sha512-dxb80Tfkkljw+B8ZxG01U+1pnod3a8qz22BUMsMBet//ZvN7lr6w5ftWOKJxOgDn0mzNLn5yy6X2zq6j9KaKrw==
-  dependencies:
-    ethers "^5.0.7"
-    radspec "^2.0.0-rc.1"
-
 "@aragon/connect-core@^0.8.0-alpha.5", "@aragon/connect-core@^0.8.0-alpha.6":
   version "0.8.0-alpha.7"
   resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.8.0-alpha.7.tgz#a831191b3bf41af7330ea852145a5fb85a7b5517"
@@ -166,13 +158,6 @@
   dependencies:
     ethers "^5.0.7"
     radspec "^2.0.0-rc.2"
-
-"@aragon/connect-ethereum@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect-ethereum/-/connect-ethereum-0.6.0.tgz#8c4bb80da6df65cdb1f443efb55f2fcfd8c25e2b"
-  integrity sha512-qRpZwYKCz9qm+kxiyqrUuJDMbKTZAt+t9Cgvs99NRvF2G/opr4lHX6LjdIYIuUUo8QJBD78pun41bavTUHm8Zg==
-  dependencies:
-    "@aragon/connect-core" "^0.6.0"
 
 "@aragon/connect-ethereum@^0.7.0":
   version "0.7.0"
@@ -201,19 +186,6 @@
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
 
-"@aragon/connect-thegraph@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.6.0.tgz#a93bd391668f79abe432c700a3deefd17ec8ec0b"
-  integrity sha512-fqkgjAUZNN3gXnmOFyzcIz76flB8N9qvF+dlIxCecSs7PRj6hX1YCBM+S+N7G+MHpuxZHQF3pXHdewZasitYXw==
-  dependencies:
-    "@aragon/connect-core" "^0.6.0"
-    "@urql/core" "^1.11.7"
-    graphql "^15.0.0"
-    graphql-tag "^2.10.3"
-    isomorphic-unfetch "^3.0.0"
-    isomorphic-ws "^4.0.1"
-    subscriptions-transport-ws "^0.9.16"
-
 "@aragon/connect-thegraph@^0.8.0-alpha.5":
   version "0.8.0-alpha.7"
   resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.8.0-alpha.7.tgz#1fdf2e73818ef400794a2a98c6fedca7b4b7c0cb"
@@ -226,15 +198,6 @@
     isomorphic-unfetch "^3.0.0"
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
-
-"@aragon/connect@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect/-/connect-0.6.0.tgz#e5b424a891ddb76b45debaca13f72d523162a1f9"
-  integrity sha512-TzZU8ABT7oORt76mXrEKbmvNwDDCA+ZFSr7035xDwPM35lmkBY9MQ3sAT80lr6kkFP3Wv1qHvJhLeV4HIgTSug==
-  dependencies:
-    "@aragon/connect-core" "^0.6.0"
-    "@aragon/connect-ethereum" "^0.6.0"
-    "@aragon/connect-thegraph" "^0.6.0"
 
 "@aragon/connect@^0.7.0":
   version "0.7.0"
@@ -16248,7 +16211,7 @@ rabin-wasm@^0.1.1:
     node-fetch "^2.6.0"
     readable-stream "^3.6.0"
 
-radspec@^2.0.0-rc.1, radspec@^2.0.0-rc.2:
+radspec@^2.0.0-rc.2:
   version "2.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/radspec/-/radspec-2.0.0-rc.2.tgz#0ab09853586ab34be3099dde774880a200d14047"
   integrity sha512-etB24HzGpuqngCqTLOKCmJw6YWcyaaHMZth5mzpTHB5jqkL2VWkr8O0rjzxqV0DKZmKBF07mEQuHbod9sKo8mw==
