@@ -3,15 +3,6 @@ import {
   VOTE_ABSENT,
   VOTE_NAY,
   VOTE_YEA,
-  VOTE_STATUS_ACCEPTED,
-  VOTE_STATUS_CANCELLED,
-  VOTE_STATUS_CHALLENGED,
-  VOTE_STATUS_DISPUTED,
-  VOTE_STATUS_ENACTED,
-  VOTE_STATUS_ONGOING,
-  VOTE_STATUS_PENDING_ENACTMENT,
-  VOTE_STATUS_REJECTED,
-  VOTE_STATUS_SETTLED,
   PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,
@@ -111,41 +102,41 @@ export function getVoteSuccess(vote, pctBase) {
   )
 }
 
-export function getVoteStatus(vote, hasEnded, pctBase) {
+export function getVoteStatusData(vote, hasEnded, pctBase) {
+  const statusData = {}
   if (!hasEnded) {
     if (vote.status === PROPOSAL_STATUS_ACTIVE_STRING) {
-      return VOTE_STATUS_ONGOING
+      statusData.open = true
+    } else if (vote.status === PROPOSAL_STATUS_DISPUTED_STRING) {
+      statusData.disputed = true
+    } else {
+      statusData.challenged = true
     }
-
-    return vote.status === PROPOSAL_STATUS_DISPUTED_STRING
-      ? VOTE_STATUS_DISPUTED
-      : VOTE_STATUS_CHALLENGED
+  } // If it is challenged and has ended means it was settled because submitter didn't respond.
+  else if (
+    vote.status === PROPOSAL_STATUS_CHALLENGED_STRING ||
+    vote.status === PROPOSAL_STATUS_SETTLED_STRING
+  ) {
+    statusData.settled = true
+  } else if (!getVoteSuccess(vote, pctBase)) {
+    statusData.rejected = true
+  } else if (vote.status === PROPOSAL_STATUS_CANCELLED_STRING) {
+    statusData.cancelled = true
+  } else {
+    // Only if the vote has an action do we consider it possible for enactment
+    const hasAction = isVoteAction(vote)
+    if (hasAction) {
+      if (vote.status === PROPOSAL_STATUS_EXECUTED_STRING) {
+        statusData.enacted = true
+      } else {
+        statusData.pendingEnactment = true
+      }
+    } else {
+      statusData.accepted = true
+    }
   }
 
-  // If it is challenged and has ended means it was settled because submitter didn't respond.
-  if (vote.status === PROPOSAL_STATUS_CHALLENGED_STRING) {
-    return VOTE_STATUS_SETTLED
-  }
-
-  if (vote.status === PROPOSAL_STATUS_SETTLED_STRING) {
-    return VOTE_STATUS_SETTLED
-  }
-
-  if (!getVoteSuccess(vote, pctBase)) {
-    return VOTE_STATUS_REJECTED
-  }
-
-  if (vote.status === PROPOSAL_STATUS_CANCELLED_STRING) {
-    return VOTE_STATUS_CANCELLED
-  }
-
-  // Only if the vote has an action do we consider it possible for enactment
-  const hasAction = isVoteAction(vote)
-  return hasAction
-    ? vote.status === PROPOSAL_STATUS_EXECUTED_STRING
-      ? VOTE_STATUS_ENACTED
-      : VOTE_STATUS_PENDING_ENACTMENT
-    : VOTE_STATUS_ACCEPTED
+  return statusData
 }
 
 export async function getCanUserVote(votingContract, voteId, account) {

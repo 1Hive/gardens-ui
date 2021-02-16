@@ -1,24 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { IconCheck, IconCross, GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import {
-  VOTE_STATUS_ONGOING,
-  VOTE_STATUS_REJECTED,
-  VOTE_STATUS_ACCEPTED,
-  VOTE_STATUS_ENACTED,
-  VOTE_STATUS_PENDING_ENACTMENT,
-  VOTE_STATUS_DISPUTED,
-  VOTE_STATUS_CHALLENGED,
-  VOTE_STATUS_SETTLED,
-  VOTE_STATUS_CANCELLED,
-} from '../../constants'
 
 import celesteIconSvg from '../../assets/celeste-icon.svg'
 import challengeIconSvg from '../../assets/challenge-icon.svg'
 
 export const getStatusAttributes = (vote, theme) => {
-  const { isAccepted, voteStatus } = vote
-  if (voteStatus === VOTE_STATUS_ONGOING) {
+  const { isAccepted, statusData } = vote
+  if (statusData.open) {
     if (isAccepted) {
       return {
         label: 'Will pass',
@@ -33,7 +22,7 @@ export const getStatusAttributes = (vote, theme) => {
       color: theme.negative,
     }
   }
-  if (voteStatus === VOTE_STATUS_CANCELLED) {
+  if (statusData.cancelled) {
     return {
       label: 'Cancelled',
       Icon: IconCross,
@@ -42,35 +31,35 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: theme.negative,
     }
   }
-  if (voteStatus === VOTE_STATUS_REJECTED) {
+  if (statusData.rejected) {
     return {
       label: 'Rejected',
       Icon: IconCross,
       color: theme.negative,
     }
   }
-  if (voteStatus === VOTE_STATUS_ACCEPTED) {
+  if (statusData.accepted) {
     return {
       label: 'Passed',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (voteStatus === VOTE_STATUS_PENDING_ENACTMENT) {
+  if (statusData.pendingEnactment) {
     return {
       label: 'Passed (pending)',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (voteStatus === VOTE_STATUS_ENACTED) {
+  if (statusData.enacted) {
     return {
       label: 'Passed (enacted)',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (voteStatus === VOTE_STATUS_DISPUTED) {
+  if (statusData.disputed) {
     return {
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
@@ -79,7 +68,7 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: '#8253A8',
     }
   }
-  if (voteStatus === VOTE_STATUS_CHALLENGED) {
+  if (statusData.challenged) {
     return {
       label: 'Challenged',
       iconSrc: challengeIconSvg,
@@ -88,7 +77,7 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: '#F5A623',
     }
   }
-  if (voteStatus === VOTE_STATUS_SETTLED) {
+  if (statusData.settled) {
     return {
       label: 'Settled',
       Icon: IconCross,

@@ -21,12 +21,6 @@ import { dateFormat } from '../utils/date-utils'
 import { DisputeStates, RoundStates } from '../utils/dispute-utils'
 import { formatTokenAmount } from '../utils/token-utils'
 import { ProposalTypes } from '../types'
-import {
-  VOTE_STATUS_CHALLENGED,
-  VOTE_STATUS_DISPUTED,
-  VOTE_STATUS_ONGOING,
-  VOTE_STATUS_SETTLED,
-} from '../constants'
 
 import tokenAbi from '../abi/minimeToken.json'
 
@@ -40,8 +34,11 @@ function getInfoActionContent(proposal, account, actions) {
     // Proposal has not been disputed
     if (proposal.disputedAt === 0) {
       return {
-        info:
-          'The proposed action will be executed if nobody challenges it during the voting period and the result of the vote is casted with majority support.',
+        info: `The proposed action will be executed if nobody challenges it ${
+          proposal.type === ProposalTypes.Decision
+            ? 'during the voting period and the result of the vote is casted with majority support'
+            : 'and the proposal accrues sufficient conviction'
+        }.`,
         actions: isSubmitter
           ? []
           : [
@@ -140,9 +137,9 @@ function VotingPeriod({ proposal }) {
   const theme = useTheme()
   const periodNode = useMemo(() => {
     if (
-      proposal.voteStatus === VOTE_STATUS_CHALLENGED ||
-      proposal.voteStatus === VOTE_STATUS_DISPUTED ||
-      proposal.voteStatus === VOTE_STATUS_SETTLED
+      proposal.statusData.challenged ||
+      proposal.statusData.disputed ||
+      proposal.statusData.settled
     ) {
       return (
         <span>
@@ -172,10 +169,9 @@ function VotingPeriod({ proposal }) {
     ) : (
       <Timer end={proposal.endDate} />
     )
-  }, [proposal.endDate, proposal.pausedAt, proposal.voteStatus, theme])
+  }, [proposal.endDate, proposal.pausedAt, proposal.statusData, theme])
 
-  const isResumed =
-    proposal.voteStatus === VOTE_STATUS_ONGOING && proposal.pausedAt > 0
+  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
 
   return (
     <DataField
@@ -186,10 +182,15 @@ function VotingPeriod({ proposal }) {
 }
 
 function Conviction({ proposal }) {
+  const isCancelled =
+    proposal.statusData.cancelled || proposal.statusData.settled
+
   return (
     <DataField
       label="Estimated time until pass"
-      value={<ConvictionCountdown proposal={proposal} />}
+      value={
+        isCancelled ? 'Cancelled' : <ConvictionCountdown proposal={proposal} />
+      }
     />
   )
 }
@@ -221,7 +222,7 @@ function Settlement({ proposal }) {
           )
         }
       />
-      {proposal.voteStatus === VOTE_STATUS_CHALLENGED && (
+      {proposal.statusData.challenged && (
         <DataField
           label="Settlement amount"
           value={

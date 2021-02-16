@@ -29,7 +29,7 @@ import {
 } from '../utils/proposal-utils'
 import {
   getVoteEndDate,
-  getVoteStatus,
+  getVoteStatusData,
   hasVoteEnded,
 } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
@@ -268,12 +268,12 @@ function processDecision(proposal) {
     endDate,
     proposal.challengeEndDate
   )
-  const voteStatus = getVoteStatus(proposal, hasEnded, PCT_BASE)
+  const statusData = getVoteStatusData(proposal, hasEnded, PCT_BASE)
 
   return {
     ...proposal,
     endDate,
     hasEnded,
-    voteStatus,
+    statusData,
   }
 }

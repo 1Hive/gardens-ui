@@ -11,13 +11,7 @@ import { useWallet } from '../../providers/Wallet'
 import BigNumber from '../../lib/bigNumber'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
-import {
-  PCT_BASE,
-  QUICK_STAKE_PCT,
-  VOTE_NAY,
-  VOTE_STATUS_ONGOING,
-  VOTE_YEA,
-} from '../../constants'
+import { PCT_BASE, QUICK_STAKE_PCT, VOTE_NAY, VOTE_YEA } from '../../constants'
 import { ProposalTypes } from '../../types'
 
 function ProposalCardFooter({
@@ -144,7 +138,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           align-items: center;
         `}
       >
-        {account && proposal.voteStatus === VOTE_STATUS_ONGOING && (
+        {account && proposal.statusData.open && (
           <VoteActions proposal={proposal} onVote={onVoteOnDecision} />
         )}
         <div>
