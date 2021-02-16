@@ -10,6 +10,9 @@ import env from '../environment'
 import { VOTE_YEA } from '../constants'
 
 const GAS_LIMIT = 450000
+const SETTLE_ACTION_GAS_LIMIT = 700000
+const CHALLENGE_ACTION_GAS_LIMIT = 900000
+const DISPUTE_ACTION_GAS_LIMIT = 900000
 
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
@@ -23,18 +26,7 @@ export default function useActions(onDone) {
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
 
-  const signAgreement = useCallback(
-    async ({ versionId }, onDone = noop) => {
-      const intent = await agreementApp.intent('sign', [versionId], {
-        actAs: account,
-      })
-
-      // if (mounted()) {
-      onDone(intent)
-    },
-    [account, agreementApp]
-  )
-
+  // Conviction voting actions
   const newProposal = useCallback(
     async ({ title, link, amount, beneficiary }) => {
       sendIntent(
@@ -105,6 +97,7 @@ export default function useActions(onDone) {
     [account, convictionVotingApp, ethers, onDone]
   )
 
+  // Issuance actions
   const executeIssuance = useCallback(() => {
     sendIntent(issuanceApp, 'executeIssuance', [], {
       ethers,
@@ -112,6 +105,7 @@ export default function useActions(onDone) {
     })
   }, [account, ethers, issuanceApp])
 
+  // Vote actions
   const voteOnDecision = useCallback(
     (voteId, voteType) => {
       sendIntent(dandelionVotingApp, 'vote', [voteId, voteType === VOTE_YEA], {
@@ -132,6 +126,112 @@ export default function useActions(onDone) {
     [account, dandelionVotingApp, ethers]
   )
 
+  const approveTokens = useCallback((contract, spender, value) => {
+    return contract.approve(spender, value)
+  }, [])
+
+  // Agreement actions
+  const signAgreement = useCallback(
+    async ({ versionId }, onDone = noop) => {
+      const intent = await agreementApp.intent('sign', [versionId], {
+        actAs: account,
+      })
+
+      // if (mounted()) {
+      onDone(intent)
+    },
+    [account, agreementApp]
+  )
+
+  const challengeAction = useCallback(
+    async (
+      actionId,
+      settlementOffer,
+      challengerFinishedEvidence,
+      context,
+      feeTokenContract,
+      depositAmount
+    ) => {
+      const allowance = await feeTokenContract.allowance(
+        account,
+        agreementApp.address
+      )
+      // Check if requires pre-transactions
+      if (allowance.lt(depositAmount)) {
+        // Some ERC20s don't allow setting a new allowance if the current allowance is positive
+        if (!allowance.eq('0')) {
+          await approveTokens(feeTokenContract, agreementApp.address, '0')
+        }
+
+        await approveTokens(
+          feeTokenContract,
+          agreementApp.address,
+          depositAmount
+        )
+      }
+
+      sendIntent(
+        agreementApp,
+        'challengeAction',
+        [actionId, settlementOffer, challengerFinishedEvidence, context],
+        {
+          ethers,
+          from: account,
+          gasLimit: CHALLENGE_ACTION_GAS_LIMIT,
+        }
+      )
+    },
+    [account, agreementApp, approveTokens, ethers]
+  )
+
+  const settleAction = useCallback(
+    actionId => {
+      sendIntent(agreementApp, 'settleAction', [actionId], {
+        ethers,
+        from: account,
+        gasLimit: SETTLE_ACTION_GAS_LIMIT,
+      })
+    },
+    [account, agreementApp, ethers]
+  )
+
+  const disputeAction = useCallback(
+    async (
+      actionId,
+      submitterFinishedEvidence,
+      feeTokenContract,
+      disputeFee
+    ) => {
+      const allowance = await feeTokenContract.allowance(
+        account,
+        agreementApp.address
+      )
+
+      // Check if requires pre-transactions
+      if (allowance.lt(disputeFee)) {
+        // Some ERC20s don't allow setting a new allowance if the current allowance is positive
+        if (!allowance.eq('0')) {
+          await approveTokens(feeTokenContract, agreementApp.address, '0')
+        }
+
+        await approveTokens(feeTokenContract, agreementApp.address, disputeFee)
+      }
+
+      sendIntent(
+        agreementApp,
+        'disputeAction',
+        [actionId, submitterFinishedEvidence],
+        {
+          ethers,
+          from: account,
+          gasLimit: DISPUTE_ACTION_GAS_LIMIT,
+        }
+      )
+    },
+    [account, agreementApp, approveTokens, ethers]
+  )
+
+  // TODO: Memoize objects
   return {
     convictionActions: {
       executeIssuance,
@@ -141,22 +241,30 @@ export default function useActions(onDone) {
       stakeToProposal,
       withdrawFromProposal,
     },
-    dandelionActions: {
+    votingActions: {
       executeDecision,
       voteOnDecision,
     },
     agreementActions: {
+      challengeAction,
+      settleAction,
+      disputeAction,
       signAgreement,
     },
   }
 }
 
-async function sendIntent(app, fn, params, { ethers, from }) {
+async function sendIntent(
+  app,
+  fn,
+  params,
+  { ethers, from, gasLimit = GAS_LIMIT }
+) {
   try {
     const intent = await app.intent(fn, params, { actAs: from })
     const { to, data } = intent.transactions[0] // TODO: Handle errors when no tx path is found
 
-    ethers.getSigner().sendTransaction({ data, to, gasLimit: GAS_LIMIT })
+    ethers.getSigner().sendTransaction({ data, to, gasLimit })
   } catch (err) {
     console.error('Could not create tx:', err)
   }

@@ -14,7 +14,7 @@ export function useContractReadOnly(address, abi) {
     if (!address) {
       return null
     }
-    return new EthersContract(address, abi, ethProvider)
+    return getContract(address, abi, ethProvider)
   }, [abi, address, ethProvider])
 }
 

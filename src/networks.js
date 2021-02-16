@@ -20,6 +20,7 @@ const networks = {
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
+    arbitrator: '0x5b987b7a303894afd23063b02c5ee39e1f02306e',
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',

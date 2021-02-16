@@ -8,6 +8,7 @@ export default class CollateralRequirement {
   readonly proposalId: string
   readonly tokenId: string
   readonly tokenDecimals: string
+  readonly tokenSymbol: string
   readonly actionAmount: string
   readonly challengeAmount: string
   readonly challengeDuration: string
@@ -22,6 +23,7 @@ export default class CollateralRequirement {
     this.proposalId = data.proposalId
     this.tokenId = data.tokenId
     this.tokenDecimals = data.tokenDecimals
+    this.tokenSymbol = data.tokenSymbol
     this.actionAmount = data.actionAmount
     this.challengeAmount = data.challengeAmount
     this.challengeDuration = data.challengeDuration

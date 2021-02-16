@@ -53,6 +53,7 @@ export default class Proposal {
   readonly challengeEndDate?: string
   readonly disputeId?: string
   readonly settledAt?: string
+  readonly settlementOffer?: string
   readonly disputedAt?: string
   readonly pausedAt?: string
   readonly pauseDuration?: string
@@ -102,6 +103,7 @@ export default class Proposal {
     this.challengeEndDate = data.challengeEndDate
     this.disputeId = data.disputeId
     this.settledAt = data.settledAt
+    this.settlementOffer = data.settlementOffer
     this.disputedAt = data.disputedAt
     this.pausedAt = data.pausedAt
     this.pauseDuration = data.pauseDuration
