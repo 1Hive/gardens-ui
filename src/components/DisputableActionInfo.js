@@ -13,19 +13,20 @@ import {
 import { ConvictionCountdown } from './ConvictionVisuals'
 
 import { useContract } from '../hooks/useContract'
-import useDisputeFees from '../hooks/useDisputeFees'
+import { useDisputeFees, useDisputeState } from '../hooks/useDispute'
 import { useWallet } from '../providers/Wallet'
 
-import { dateFormat } from '../utils/date-utils'
-import { formatTokenAmount } from '../utils/token-utils'
 import BigNumber from '../lib/bigNumber'
+import { dateFormat } from '../utils/date-utils'
+import { DisputeStates, RoundStates } from '../utils/dispute-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import { ProposalTypes } from '../types'
 import {
   VOTE_STATUS_CHALLENGED,
   VOTE_STATUS_DISPUTED,
   VOTE_STATUS_ONGOING,
   VOTE_STATUS_SETTLED,
 } from '../constants'
-import { ProposalTypes } from '../types'
 
 import tokenAbi from '../abi/minimeToken.json'
 
@@ -45,7 +46,11 @@ function getInfoActionContent(proposal, account, actions) {
           ? []
           : [
               {
-                label: 'Challenge decision',
+                label: `Challenge ${
+                  proposal.type === ProposalTypes.Decision
+                    ? 'decision'
+                    : 'proposal'
+                }`,
                 mode: 'strong',
                 onClick: actions.onChallengeAction,
               },
@@ -118,10 +123,7 @@ function DisputableActionInfo({
           <Settlement proposal={proposal} />
         )}
         {(proposal.statusData.disputed || proposal.disputedAt > 0) && (
-          <DataField
-            label="Dispute"
-            value={<div>Celeste Q#{proposal.disputeId}</div>}
-          />
+          <Dispute proposal={proposal} />
         )}
         <Actions
           proposal={proposal}
@@ -234,6 +236,48 @@ function Settlement({ proposal }) {
         />
       )}
     </>
+  )
+}
+
+function Dispute({ proposal }) {
+  const theme = useTheme()
+  const [disputeState, roundState] = useDisputeState(proposal.disputeId)
+
+  return (
+    <DataField
+      label="Dispute"
+      value={
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+        >
+          <span
+            css={`
+              margin-right: ${0.5 * GU}px;
+            `}
+          >
+            Celeste Q#{proposal.disputeId}
+          </span>
+          <span
+            css={`
+              color: ${theme.contentSecondary};
+            `}
+          >
+            {disputeState !== null ? (
+              `(${
+                roundState
+                  ? RoundStates[roundState]
+                  : DisputeStates[disputeState]
+              })`
+            ) : (
+              <LoadingRing />
+            )}
+          </span>
+        </div>
+      }
+    />
   )
 }
 

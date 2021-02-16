@@ -1,7 +1,7 @@
 import React from 'react'
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import useDisputeFees from '../hooks/useDisputeFees'
+import { useDisputeFees } from '../hooks/useDispute'
 
 import honeyIconSvg from '../assets/honey.svg'
 
