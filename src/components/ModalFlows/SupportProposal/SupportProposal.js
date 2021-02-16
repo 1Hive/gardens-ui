@@ -1,19 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import BigNumber from '../../../lib/bigNumber'
-import {
-  Button,
-  ButtonBase,
-  Field,
-  GU,
-  Info,
-  TextInput,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Button, GU, Info, Slider, textStyle, useTheme } from '@1hive/1hive-ui'
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
 import { useWallet } from '../../../providers/Wallet'
 
-import { toDecimals, round, pct } from '../../../utils/math-utils'
+import { round, pct } from '../../../utils/math-utils'
+
+import honeySvg from '../../../assets/honey.svg'
 // import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
@@ -22,76 +16,64 @@ const SupportProposal = React.memo(function SupportProposal({
   onStakeToProposal,
 }) {
   const theme = useTheme()
+  const [percentage, setPercentage] = useState({
+    value: 0,
+  })
   const [amount, setAmount] = useState({
     value: '0',
     valueBN: new BigNumber('0'),
   })
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance /* , stakeToken */ } = useAppState()
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
-  const handleEditMode = useCallback(
-    editMode => {
-      setAmount(amount => {
-        // const newValue = amount.valueBN.gte(0)
-        //   ? formatTokenAmount(
-        //       amount.valueBN,
-        //       stakeToken.decimals,
-        //       false,
-        //       false,
-        //       {
-        //         commas: !editMode,
-        //         replaceZeroBy: editMode ? '' : '0',
-        //         rounding: stakeToken.decimals,
-        //       }
-        //     )
-        //   : ''
-        const newValue = ''
+  // const handleEditMode = useCallback(
+  //   editMode => {
+  //     setAmount(amount => {
+  //       // const newValue = amount.valueBN.gte(0)
+  //       //   ? formatTokenAmount(
+  //       //       amount.valueBN,
+  //       //       stakeToken.decimals,
+  //       //       false,
+  //       //       false,
+  //       //       {
+  //       //         commas: !editMode,
+  //       //         replaceZeroBy: editMode ? '' : '0',
+  //       //         rounding: stakeToken.decimals,
+  //       //       }
+  //       //     )
+  //       //   : ''
+  //       const newValue = ''
 
-        return {
-          ...amount,
-          value: newValue,
-        }
-      })
-    },
-    [stakeToken]
-  )
+  //       return {
+  //         ...amount,
+  //         value: newValue,
+  //       }
+  //     })
+  //   },
+  //   [stakeToken]
+  // )
 
   // Amount change handler
   const handleAmountChange = useCallback(
     event => {
-      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
+      console.log(event)
+      setPercentage(event)
+      const newAmount = event
 
-      const newAmountBN = new BigNumber(
-        isNaN(event.target.value)
-          ? -1
-          : toDecimals(newAmount, stakeToken.decimals)
-      )
+      const newAmountBN = event
 
       setAmount({
         value: newAmount,
         valueBN: newAmountBN,
       })
     },
-    [stakeToken]
+    // [stakeToken]
+    []
   )
-
-  const handleMaxSelected = useCallback(() => {
-    setAmount({
-      valueBN: nonStakedTokens,
-      // value: formatTokenAmount(
-      //   nonStakedTokens,
-      //   stakeToken.decimals,
-      //   false,
-      //   false,
-      //   { commas: false, rounding: stakeToken.decimals }
-      // ),
-      value: '',
-    })
-  }, [nonStakedTokens, stakeToken])
 
   // Form submit handler
   const handleSubmit = useCallback(
@@ -105,67 +87,83 @@ const SupportProposal = React.memo(function SupportProposal({
     [amount, id, onDone, onStakeToProposal]
   )
 
-  const errorMessage = useMemo(() => {
-    if (amount.valueBN.eq(new BigNumber(-1))) {
-      return 'Invalid amount'
-    }
-
-    if (amount.valueBN.gt(nonStakedTokens)) {
-      return 'Insufficient balance'
-    }
-
-    return null
-  }, [amount, nonStakedTokens])
-
   // Calculate percentages
   const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
   const stakedPct = round(100 - nonStakedPct)
 
   return (
     <form onSubmit={handleSubmit}>
-      <Field
-        label="amount"
+      <h3
         css={`
-          margin-top: ${2 * GU}px;
+          ${textStyle('body3')}
         `}
       >
-        <TextInput
-          value={amount.value}
-          onChange={handleAmountChange}
-          onFocus={() => handleEditMode(true)}
-          onBlur={() => handleEditMode(false)}
-          wide
-          adornment={
-            <ButtonBase
-              css={`
-                margin-right: ${1 * GU}px;
-                color: ${theme.accent};
-              `}
-              onClick={handleMaxSelected}
-            >
-              MAX
-            </ButtonBase>
-          }
-          adornmentPosition="end"
-        />
-      </Field>
-      <Button
-        label="Support this proposal"
-        wide
-        type="submit"
-        mode="strong"
-        disabled={amount.valueBN.eq(new BigNumber(0)) || Boolean(errorMessage)}
-      />
-      {errorMessage && (
-        <Info
-          mode="warning"
+        This action will modify the amount of tokens locked with this proposal.
+        The token weight backing the proposal will increase over time from 0 up
+        to the max amount specified.
+      </h3>
+      <h5
+        css={`
+          ${textStyle('body4')}
+          color: ${theme.surfaceContentSecondary};
+          margin-top: ${GU * 3.75}px;
+        `}
+      >
+        AMOUNT OF YOUR TOKENS FOR THIS PROPOSAL
+      </h5>
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+          margin-top: ${GU * 2.5}px;
+          margin-bottom: ${GU * 2.5}px;
+        `}
+      >
+        <img
+          src={honeySvg}
+          height="30"
+          width="30"
+          alt=""
           css={`
-            margin-top: ${2 * GU}px;
+            margin-right: ${0.7 * GU}px;
+            cursor: pointer;
+          `}
+        />
+        <span
+          css={`
+            ${textStyle('body3')}
+            color: ${theme.surfaceContent};
           `}
         >
-          {errorMessage}
-        </Info>
-      )}
+          HNY
+        </span>
+        <Slider
+          css={`
+            width: 100%;
+            margin-left: ${2 * GU}px;
+          `}
+          value={percentage}
+          onUpdate={handleAmountChange}
+        />
+        <span
+          css={`
+            ${textStyle('body3')}
+            width: ${GU * 19.5}px;
+            color: ${theme.surfaceContent};
+          `}
+        >
+          50%
+          <span
+            css={`
+              ${textStyle('body4')}
+              margin-left: ${GU * 0.5}px;;
+              color: ${theme.surfaceContentSecondary};
+            `}
+          >
+            (380 HNY)
+          </span>
+        </span>
+      </div>
       <Info
         css={`
           margin-top: ${2 * GU}px;
@@ -174,10 +172,11 @@ const SupportProposal = React.memo(function SupportProposal({
         You have{' '}
         <strong>
           {/* {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '} */}
-          {stakeToken.symbol}
+          {/* {stakeToken.symbol} */}
+          '760 HNY tokens'
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
-        {totalStaked.gt(0) && (
+        {totalStaked.gt(0) === false && (
           <span>
             You are supporting other proposals with{' '}
             <strong>
@@ -188,6 +187,17 @@ const SupportProposal = React.memo(function SupportProposal({
           </span>
         )}
       </Info>
+      <Button
+        css={`
+          margin-top: ${GU * 3}px;
+        `}
+        label="Support this proposal"
+        wide
+        type="submit"
+        mode="strong"
+        // disabled={amount.valueBN.eq(new BigNumber(0)) || Boolean(errorMessage)}
+        disabled={false}
+      />
     </form>
   )
 })
