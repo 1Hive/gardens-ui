@@ -56,7 +56,7 @@ function CreateProposalScreens() {
         content: <AddProposal setProposalData={setProposalData} />,
       },
       {
-        title: 'Action fees',
+        title: 'Action Deposit',
         graphicHeader: false,
         content: (
           <ActionFees
