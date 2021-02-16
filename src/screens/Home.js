@@ -3,19 +3,16 @@ import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import Filters from '../components/Filters/Filters'
 import HeroBanner from '../components/Feed/HeroBanner'
-<<<<<<< HEAD
 import PostModal from '../components/PostModal'
 import ActionFeesModal from '../components/ActionFeesModal'
 // import Loader from '../components/Loader'
 // import Metrics from '../components/Metrics'
 // import NetworkErrorModal from '../components/NetworkErrorModal'
 // import ProposalsList from '../components/Feed/ProposalsList'
-=======
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
 import NetworkErrorModal from '../components/NetworkErrorModal'
 import ProposalsList from '../components/Feed/ProposalsList'
->>>>>>> disputable-version
 
 import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
