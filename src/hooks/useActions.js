@@ -29,17 +29,27 @@ export default function useActions(onDone) {
 
   // Conviction voting actions
   const newProposal = useCallback(
-    async ({ title, link, amount, beneficiary }) => {
-      sendIntent(
-        convictionVotingApp,
+    async (
+      { title, link, amount, stableRequestAmount, beneficiary },
+      onDone = noop
+    ) => {
+      const intent = await convictionVotingApp.intent(
         'addProposal',
-        [title, link ? toHex(link) : '0x', amount, beneficiary],
-        { ethers, from: account }
+        [
+          title,
+          link ? toHex(link) : '0x',
+          amount,
+          stableRequestAmount,
+          beneficiary,
+        ],
+        {
+          actAs: account,
+        }
       )
 
-      onDone()
+      onDone(intent)
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp]
   )
 
   const cancelProposal = useCallback(

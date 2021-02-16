@@ -14,13 +14,14 @@ import {
   RadioGroup,
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../../lib/conviction'
 
-import { ZERO_ADDR } from '../../../constants'
+// import { ZERO_ADDR } from '../../../constants'
 
 const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 
@@ -40,8 +41,9 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Signaling proposal', 'Funding proposal']
 
-const AddProposalPanel = React.memo(({ onSubmit }) => {
+const AddProposalPanel = React.memo(({ setProposalData }) => {
   const theme = useTheme()
+  const { next } = useMultiModal()
   const {
     config,
     requestToken,
@@ -54,8 +56,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
-
-  //   const [activeProposalTypeId, setActiveProposalTypeId] = useState(0)
 
   const handleAmountEditMode = useCallback(
     editMode => {
@@ -132,22 +132,27 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     setFormData(formData => ({ ...formData, link: updatedLink }))
   }, [])
 
-  const handleFormSubmit = useCallback(
-    event => {
-      event.preventDefault()
+  //   const handleFormSubmit = useCallback(
+  //     event => {
+  //       event.preventDefault()
 
-      const { amount, beneficiary, link, title } = formData
-      const convertedAmount = amount.valueBN.toString(10)
+  //       const { amount, beneficiary, link, title } = formData
+  //       const convertedAmount = amount.valueBN.toString(10)
 
-      onSubmit({
-        title,
-        link,
-        amount: convertedAmount,
-        beneficiary: beneficiary || ZERO_ADDR,
-      })
-    },
-    [formData, onSubmit]
-  )
+  //       onSubmit({
+  //         title,
+  //         link,
+  //         amount: convertedAmount,
+  //         beneficiary: beneficiary || ZERO_ADDR,
+  //       })
+  //     },
+  //     [formData, onSubmit]
+  //   )
+
+  const handleOnContinue = useCallback(() => {
+    setProposalData(formData)
+    next()
+  }, [formData, next, setProposalData])
 
   const errors = useMemo(() => {
     const errors = []
@@ -193,7 +198,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     errors.length > 0
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleOnContinue}>
       <Field
         label="Select proposal type"
         css={`
@@ -341,7 +346,7 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           margin-top: ${3 * GU}px;
         `}
       >
-        Submit
+        Continue
       </Button>
 
       {fundingMode && formData.amount.valueBN.gte(0) && (

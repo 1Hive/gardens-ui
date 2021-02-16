@@ -17,6 +17,7 @@ export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
   const { connectedAgreementApp } = useAppState()
+
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
   const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
@@ -264,9 +265,22 @@ export function useStaking() {
     return staked
   }, [stakingContract, account])
 
+  const allowManager = useCallback(async () => {
+    if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
+      return
+    }
+
+    await stakingContract.allowManager(
+      connectedAgreementApp.address,
+      stakeManagement.staking.available.toString(10),
+      '0x'
+    )
+  }, [connectedAgreementApp, stakingContract, stakeManagement])
+
   return [
     stakeManagement,
     {
+      allowManager: allowManager,
       stake: stake,
       withdraw: withdraw,
       approveTokenAmount: approveTokenAmount,
