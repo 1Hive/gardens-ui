@@ -22,7 +22,7 @@ function SupportProposalScreens({ versionId }) {
     () => [
       {
         title: 'Support this proposal',
-        graphicHeader: true,
+        graphicHeader: false,
         content: <SupportProposal getTransactions={getTransactions} />,
       },
     ],
