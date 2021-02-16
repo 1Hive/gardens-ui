@@ -3,8 +3,6 @@ import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import Filters from '../components/Filters/Filters'
 import HeroBanner from '../components/Feed/HeroBanner'
-import PostModal from '../components/PostModal'
-import ActionFeesModal from '../components/ActionFeesModal'
 // import Loader from '../components/Loader'
 // import Metrics from '../components/Metrics'
 // import NetworkErrorModal from '../components/NetworkErrorModal'
