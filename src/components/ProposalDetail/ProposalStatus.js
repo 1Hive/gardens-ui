@@ -22,13 +22,6 @@ export function getStatusAttributes(proposal, theme) {
       borderColor: theme.negative,
     }
   }
-  if (proposal.statusData.rejected) {
-    return {
-      label: 'Rejected',
-      Icon: IconCross,
-      color: theme.negative,
-    }
-  }
   if (proposal.statusData.disputed) {
     return {
       label: 'Waiting for celeste',

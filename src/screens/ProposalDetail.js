@@ -14,11 +14,15 @@ import {
 } from '@1hive/1hive-ui'
 
 // Components
+import ActionCollateral from '../components/ActionCollateral'
 import Balance from '../components/Balance'
 import {
   // ConvictionCountdown,
   ConvictionBar,
 } from '../components/ConvictionVisuals'
+import DisputableActionInfo from '../components/DisputableActionInfo'
+import DisputableInfo from '../components/DisputableInfo'
+import DisputeFees from '../components/DisputeFees'
 import IdentityBadge from '../components/IdentityBadge'
 import ProposalActions from '../components/ProposalDetail/ProposalActions'
 import ProposalIcon from '../components/ProposalIcon'
@@ -208,12 +212,6 @@ function ProposalDetail({
                     grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
                   `}
                 >
-                  {fundingProposal && (
-                    <Amount
-                      requestedAmount={requestedAmount}
-                      requestToken={requestToken}
-                    />
-                  )}
                   <DataField
                     label="Link"
                     value={
@@ -231,7 +229,19 @@ function ProposalDetail({
                         </span>
                       )
                     }
+                    css="grid-column-start: span 2;"
                   />
+                  <DataField
+                    label="Status"
+                    value={<ProposalStatus proposal={proposal} />}
+                  />
+                  {fundingProposal && (
+                    <Amount
+                      requestedAmount={requestedAmount}
+                      requestToken={requestToken}
+                    />
+                  )}
+
                   {fundingProposal && (
                     <DataField
                       label="Beneficiary"
@@ -258,50 +268,54 @@ function ProposalDetail({
                       />
                     }
                   />
-                  <DataField
-                    label="Status"
-                    value={<ProposalStatus proposal={proposal} />}
-                  />
+                  {proposal.number !== '1' && (
+                    <>
+                      <DataField
+                        label="Action collateral"
+                        value={<ActionCollateral proposal={proposal} />}
+                      />
+                      {proposal.pausedAt > 0 && (
+                        <DisputeFees proposal={proposal} />
+                      )}
+                    </>
+                  )}
                 </div>
                 {(statusData.open ||
                   statusData.challenged ||
                   statusData.disputed) && (
-                  <>
-                    <DataField
-                      label="Progress"
-                      value={
-                        <ConvictionBar
-                          proposal={proposal}
-                          withThreshold={!!requestToken}
-                        />
-                      }
-                    />
-                    <ProposalActions
-                      proposal={proposal}
-                      onExecuteProposal={actions.executeProposal}
-                      // onRequestSupportProposal={panelState.requestOpen}
-                      onStakeToProposal={actions.stakeToProposal}
-                      onWithdrawFromProposal={actions.withdrawFromProposal}
-                    />
-                  </>
+                  <DataField
+                    label="Progress"
+                    value={
+                      <ConvictionBar
+                        proposal={proposal}
+                        withThreshold={!!requestToken}
+                      />
+                    }
+                  />
+                )}
+                <DisputableInfo proposal={proposal} />
+                {(statusData.open ||
+                  statusData.challenged ||
+                  statusData.disputed) && (
+                  <ProposalActions
+                    proposal={proposal}
+                    onExecuteProposal={actions.executeProposal}
+                    // onRequestSupportProposal={panelState.requestOpen}
+                    onStakeToProposal={actions.stakeToProposal}
+                    onWithdrawFromProposal={actions.withdrawFromProposal}
+                  />
                 )}
               </section>
             </Box>
           }
           secondary={
             <div>
-              {/* TODO: */}
-              {/* {fundingProposal && (
-                <Box heading="Status" padding={3 * GU}>
-                  {statusData.cancelled ? (
-                    <Info mode="warning">
-                      This proposal was removed from consideration
-                    </Info>
-                  ) : (
-                    <ConvictionCountdown proposal={proposal} />
-                  )}
-                </Box>
-              )} */}
+              <DisputableActionInfo
+                proposal={proposal}
+                onChallengeAction={actions.challengeAction}
+                onDisputeAction={actions.disputeAction}
+                onSettleAction={actions.settleAction}
+              />
               {statusData.open && (
                 <>
                   {hasCancelRole && (
@@ -324,7 +338,7 @@ function ProposalDetail({
                       </Button>
                     </Box>
                   )}
-                  {!fundingProposal && (
+                  {!fundingProposal && proposal.number !== '1' && (
                     <Box
                       padding={3 * GU}
                       css={`
@@ -403,11 +417,11 @@ const Amount = ({
   )
 }
 
-function DataField({ label, value }) {
+function DataField({ label, value, ...props }) {
   const theme = useTheme()
 
   return (
-    <div>
+    <div {...props}>
       <h2
         css={`
           ${textStyle('label1')};

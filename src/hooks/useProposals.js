@@ -25,6 +25,7 @@ import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
 import {
   getProposalStatusData,
   getProposalSupportStatus,
+  hasProposalEnded,
 } from '../utils/proposal-utils'
 import {
   getVoteEndDate,
@@ -112,10 +113,10 @@ function useFilteredProposals(filters, account, latestBlock) {
           proposalSupportStatus
         )
 
-        let statusFilterPassed = true
-        if (proposal.type === ProposalTypes.Decision) {
-          statusFilterPassed = testStatusFilter(filters.status.filter, proposal)
-        }
+        const statusFilterPassed = testStatusFilter(
+          filters.status.filter,
+          proposal
+        )
 
         return supportFilterPassed && statusFilterPassed
       }),
@@ -237,6 +238,7 @@ function processProposal(
     }
   }
 
+  const hasEnded = hasProposalEnded(proposal.status, proposal.challengeEndDate)
   const statusData = getProposalStatusData(proposal)
 
   return {
@@ -246,6 +248,7 @@ function processProposal(
     endDate,
     futureConviction,
     futureStakedConviction,
+    hasEnded,
     maxConviction,
     minTokensNeeded,
     neededConviction,

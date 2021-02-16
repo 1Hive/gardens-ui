@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import {
   addressesEqual,
+  Box,
   Button,
   GU,
   Info,
@@ -9,9 +10,12 @@ import {
   Timer,
   useTheme,
 } from '@1hive/1hive-ui'
+import { ConvictionCountdown } from './ConvictionVisuals'
+
 import { useContract } from '../hooks/useContract'
 import useDisputeFees from '../hooks/useDisputeFees'
 import { useWallet } from '../providers/Wallet'
+
 import { dateFormat } from '../utils/date-utils'
 import { formatTokenAmount } from '../utils/token-utils'
 import BigNumber from '../lib/bigNumber'
@@ -21,6 +25,7 @@ import {
   VOTE_STATUS_ONGOING,
   VOTE_STATUS_SETTLED,
 } from '../constants'
+import { ProposalTypes } from '../types'
 
 import tokenAbi from '../abi/minimeToken.json'
 
@@ -30,7 +35,7 @@ function getInfoActionContent(proposal, account, actions) {
   const isSubmitter = addressesEqual(account, proposal.creator)
   const isChallenger = addressesEqual(account, proposal.challenger)
 
-  if (proposal.voteStatus === VOTE_STATUS_ONGOING) {
+  if (proposal.statusData.open) {
     // Proposal has not been disputed
     if (proposal.disputedAt === 0) {
       return {
@@ -51,7 +56,7 @@ function getInfoActionContent(proposal, account, actions) {
     return { info: 'The proposed action cannot be challenged.' }
   }
 
-  if (proposal.voteStatus === VOTE_STATUS_CHALLENGED && isSubmitter) {
+  if (proposal.statusData.challenged && isSubmitter) {
     return {
       info:
         "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
@@ -71,7 +76,7 @@ function getInfoActionContent(proposal, account, actions) {
   }
 
   // Means proposal is settled because submitter didn't responded
-  if (proposal.voteStatus === VOTE_STATUS_SETTLED && proposal.settledAt === 0) {
+  if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
         info:
@@ -97,31 +102,35 @@ function DisputableActionInfo({
   onSettleAction,
 }) {
   return (
-    <div
-      css={`
-        display: grid;
-        grid-gap: ${2 * GU}px;
-      `}
-    >
-      <VotingPeriod proposal={proposal} />
-      {(proposal.voteStatus === VOTE_STATUS_CHALLENGED ||
-        proposal.voteStatus === VOTE_STATUS_SETTLED) && (
-        <Settlement proposal={proposal} />
-      )}
-      {(proposal.voteStatus === VOTE_STATUS_DISPUTED ||
-        proposal.disputedAt > 0) && (
-        <DataField
-          label="Dispute"
-          value={<div>Celeste Q#{proposal.disputeId}</div>}
+    <Box heading="Disputable action">
+      <div
+        css={`
+          display: grid;
+          grid-gap: ${2 * GU}px;
+        `}
+      >
+        {proposal.type === ProposalTypes.Decision ? (
+          <VotingPeriod proposal={proposal} />
+        ) : (
+          <Conviction proposal={proposal} />
+        )}
+        {(proposal.statusData.challenged || proposal.statusData.settled) && (
+          <Settlement proposal={proposal} />
+        )}
+        {(proposal.statusData.disputed || proposal.disputedAt > 0) && (
+          <DataField
+            label="Dispute"
+            value={<div>Celeste Q#{proposal.disputeId}</div>}
+          />
+        )}
+        <Actions
+          proposal={proposal}
+          onChallengeAction={onChallengeAction}
+          onDisputeAction={onDisputeAction}
+          onSettleAction={onSettleAction}
         />
-      )}
-      <Actions
-        proposal={proposal}
-        onChallengeAction={onChallengeAction}
-        onDisputeAction={onDisputeAction}
-        onSettleAction={onSettleAction}
-      />
-    </div>
+      </div>
+    </Box>
   )
 }
 
@@ -170,6 +179,15 @@ function VotingPeriod({ proposal }) {
     <DataField
       label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
       value={periodNode}
+    />
+  )
+}
+
+function Conviction({ proposal }) {
+  return (
+    <DataField
+      label="Estimated time until pass"
+      value={<ConvictionCountdown proposal={proposal} />}
     />
   )
 }
@@ -272,7 +290,7 @@ function Actions({
     onChallengeAction(
       proposal.actionId,
       '0',
-      true.valueOf,
+      true,
       '0x',
       feeTokenContract,
       depositAmount

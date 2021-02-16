@@ -18,7 +18,6 @@ import {
   PROPOSAL_STATUS_SETTLED_STRING,
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
-  PROPOSAL_STATUS_REJECTED_STRING,
 } from '../constants'
 
 const EMPTY_SCRIPT = '0x00000001'
@@ -50,7 +49,6 @@ export function hasVoteEnded(status, endDate, challengeEndDate) {
   return (
     status === PROPOSAL_STATUS_CANCELLED_STRING ||
     status === PROPOSAL_STATUS_SETTLED_STRING ||
-    status === PROPOSAL_STATUS_REJECTED_STRING ||
     (status !== PROPOSAL_STATUS_CHALLENGED_STRING &&
       status !== PROPOSAL_STATUS_DISPUTED_STRING &&
       Date.now() >= endDate) ||
@@ -133,10 +131,7 @@ export function getVoteStatus(vote, hasEnded, pctBase) {
     return VOTE_STATUS_SETTLED
   }
 
-  if (
-    vote.status === PROPOSAL_STATUS_REJECTED_STRING ||
-    !getVoteSuccess(vote, pctBase)
-  ) {
+  if (!getVoteSuccess(vote, pctBase)) {
     return VOTE_STATUS_REJECTED
   }
 
