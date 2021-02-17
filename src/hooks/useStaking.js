@@ -20,6 +20,10 @@ export function useStaking() {
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [
+    loadingStakingDataFromContract,
+    setLoadingStakingDataFromContract,
+  ] = useState(true)
   const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
 
   const stakingFactoryContract = useContractReadOnly(
@@ -41,9 +45,22 @@ export function useStaking() {
     setReFetchTotalBalance(true)
   }, [])
 
+  console.log(
+    'connected account ',
+    account,
+    loading,
+    loadingStakingDataFromContract
+  )
+
+  useEffect(() => {
+    setLoadingStakingDataFromContract(true)
+    setLoading(true)
+  }, [account])
+
   useEffect(() => {
     async function getStakingInformation() {
       const defaultValues = {
+        allowance: new BigNumber('0'),
         available: new BigNumber('0'),
         challenged: new BigNumber('0'),
         locked: new BigNumber('0'),
@@ -75,6 +92,7 @@ export function useStaking() {
           )
 
           if (mounted()) {
+            console.log('mounted!!!!! ')
             setStakeManagement({
               token: allTokens[1],
               staking: staking
@@ -91,9 +109,11 @@ export function useStaking() {
               stakingInstance: null,
             })
 
+            console.log('seting here false ')
             setLoading(false)
           }
         } else {
+          console.log('UNmounted!!!!! ')
           setStakeManagement(null)
           setLoading(false)
         }
@@ -109,6 +129,7 @@ export function useStaking() {
     }
 
     if (connectedAgreementApp && account) {
+      console.log('calling data')
       getStakingInformation()
     }
   }, [connectedAgreementApp, mounted, account])
@@ -140,9 +161,18 @@ export function useStaking() {
     async function fetchStakingBalance() {
       const { staked } = await stakingContract.getBalancesOf(account)
       const stakedBN = new BigNumber(staked.toString())
+      const { allowance } = await stakingContract.getLock(
+        account,
+        connectedAgreementApp.address
+      )
 
-      if (!stakeManagement.staking.total.eq(stakedBN) || reFetchTotalBalance) {
-        if (mounted()) {
+      const allowanceBN = new BigNumber(allowance.toString())
+
+      if (mounted()) {
+        if (
+          !stakeManagement.staking.total.eq(stakedBN) ||
+          reFetchTotalBalance
+        ) {
           setStakeManagement(stakeManagement => {
             return {
               ...stakeManagement,
@@ -150,17 +180,37 @@ export function useStaking() {
                 ...stakeManagement.staking,
                 total: stakedBN,
                 available: stakedBN,
+                allowance: allowanceBN,
               },
             }
           })
           setReFetchTotalBalance(false)
         }
+        if (!allowanceBN.eq(stakeManagement.staking.allowance)) {
+          setStakeManagement(stakeManagement => {
+            return {
+              ...stakeManagement,
+              staking: {
+                ...stakeManagement.staking,
+                allowance: allowanceBN,
+              },
+            }
+          })
+        }
       }
+      setLoadingStakingDataFromContract(false)
     }
-    if (stakingContract && stakeManagement) {
+    if (stakingContract && stakeManagement && connectedAgreementApp) {
       fetchStakingBalance()
     }
-  }, [account, stakingContract, mounted, stakeManagement, reFetchTotalBalance])
+  }, [
+    account,
+    stakingContract,
+    mounted,
+    stakeManagement,
+    reFetchTotalBalance,
+    connectedAgreementApp,
+  ])
 
   const stake = useCallback(
     async ({ amount }, onDone = noop) => {
@@ -288,6 +338,6 @@ export function useStaking() {
       reFetchTotalBalance: handleReFetchTotalBalance,
       getAllowance: getAllowance,
     },
-    loading || !stakeManagement.stakingInstanceAddress,
+    loading || loadingStakingDataFromContract,
   ]
 }
