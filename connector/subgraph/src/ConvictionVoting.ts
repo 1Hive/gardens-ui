@@ -33,8 +33,6 @@ import {
   STATUS_CHALLENGED_NUM,
   STATUS_EXECUTED,
   STATUS_EXECUTED_NUM,
-  STATUS_REJECTED,
-  STATUS_REJECTED_NUM,
 } from './statuses'
 import {
   PROPOSAL_TYPE_PROPOSAL,
@@ -168,8 +166,8 @@ function _onProposalPaused(
 
 function _onProposalRejected(appAddress: Address, proposalId: BigInt): void {
   const proposal = getProposalEntity(appAddress, proposalId)
-  proposal.status = STATUS_REJECTED
-  proposal.statusInt = STATUS_REJECTED_NUM
+  proposal.status = STATUS_CANCELLED
+  proposal.statusInt = STATUS_CANCELLED_NUM
 
   proposal.save()
 }

@@ -11,15 +11,7 @@ import { useWallet } from '../../providers/Wallet'
 import BigNumber from '../../lib/bigNumber'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { isEntitySupporting } from '../../lib/conviction'
-import {
-  PCT_BASE,
-  PROPOSAL_STATUS_ACTIVE_STRING,
-  PROPOSAL_STATUS_CANCELLED_STRING,
-  QUICK_STAKE_PCT,
-  VOTE_NAY,
-  VOTE_STATUS_ONGOING,
-  VOTE_YEA,
-} from '../../constants'
+import { PCT_BASE, QUICK_STAKE_PCT, VOTE_NAY, VOTE_YEA } from '../../constants'
 import { ProposalTypes } from '../../types'
 
 function ProposalCardFooter({
@@ -78,16 +70,32 @@ function ProposalFooter({
 
   // TODO: Use mapping and status symbol
   const proposalStatusLabel = useMemo(() => {
-    if (proposal.status === PROPOSAL_STATUS_ACTIVE_STRING) {
+    if (proposal.statusData.open) {
       return 'Open'
     }
 
-    if (proposal.status === PROPOSAL_STATUS_CANCELLED_STRING) {
+    if (proposal.statusData.rejected) {
+      return 'Rejected'
+    }
+
+    if (proposal.statusData.cancelled) {
       return 'Removed'
     }
 
+    if (proposal.statusData.settled) {
+      return 'Settled'
+    }
+
+    if (proposal.statusData.challenged) {
+      return 'Challenged'
+    }
+
+    if (proposal.statusData.disputed) {
+      return 'Disputed'
+    }
+
     return 'Closed'
-  }, [proposal.status])
+  }, [proposal.statusData])
 
   return (
     <Main color={theme.contentSecondary}>
@@ -97,7 +105,7 @@ function ProposalFooter({
           align-items: center;
         `}
       >
-        {account && proposal.status === PROPOSAL_STATUS_ACTIVE_STRING && (
+        {account && proposal.statusData.open && (
           <QuickActions
             canThumbsUp={canSupport}
             canThumbsDown={isSupporting}
@@ -130,7 +138,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           align-items: center;
         `}
       >
-        {account && proposal.voteStatus === VOTE_STATUS_ONGOING && (
+        {account && proposal.statusData.open && (
           <VoteActions proposal={proposal} onVote={onVoteOnDecision} />
         )}
         <div>

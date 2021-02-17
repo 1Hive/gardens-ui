@@ -80,6 +80,7 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   const challengeData = agreementApp.getChallenge(event.params.challengeId)
   proposal.challengerArbitratorFee = challengerArbitratorFeeId
   proposal.settlementOffer = challengeData.value4
+  proposal.pausedAt = event.block.timestamp
   proposal.save()
 }
 

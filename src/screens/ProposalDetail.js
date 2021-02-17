@@ -5,9 +5,8 @@ import {
   Box,
   Button,
   GU,
-  Info,
+  // Info,
   Link,
-  SidePanel,
   Split,
   textStyle,
   useLayout,
@@ -15,19 +14,24 @@ import {
 } from '@1hive/1hive-ui'
 
 // Components
+import ActionCollateral from '../components/ActionCollateral'
 import Balance from '../components/Balance'
 import {
-  ConvictionCountdown,
+  // ConvictionCountdown,
   ConvictionBar,
 } from '../components/ConvictionVisuals'
+import DisputableActionInfo from '../components/DisputableActionInfo'
+import DisputableInfo from '../components/DisputableInfo'
+import DisputeFees from '../components/DisputeFees'
 import IdentityBadge from '../components/IdentityBadge'
-import Loader from '../components/Loader'
 import ProposalActions from '../components/ProposalDetail/ProposalActions'
+import ProposalIcon from '../components/ProposalIcon'
+import ProposalStatus, {
+  getStatusAttributes,
+} from '../components/ProposalDetail/ProposalStatus'
 import SupportersDistribution from '../components/SupportersDistribution'
-import SupportProposalPanel from '../components/panels/SupportProposalPanel'
 
 // Hooks
-import useProposalLogic from '../logic/proposal-logic'
 import { useWallet } from '../providers/Wallet'
 
 // utils
@@ -37,26 +41,18 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '../utils/web3-utils'
-import {
-  PROPOSAL_STATUS_ACTIVE_STRING,
-  PROPOSAL_STATUS_CANCELLED_STRING,
-  ZERO_ADDR,
-} from '../constants'
+import { convertToString, ProposalTypes } from '../types'
 import signalingBadge from '../assets/signalingBadge.svg'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
-function ProposalDetail({ match }) {
-  const {
-    actions: { convictionActions },
-    isLoading,
-    panelState,
-    permissions,
-    proposal,
-    requestToken,
-    vaultBalance,
-  } = useProposalLogic(match)
-
+function ProposalDetail({
+  proposal,
+  actions,
+  permissions,
+  requestToken,
+  vaultBalance,
+}) {
   const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
@@ -73,16 +69,18 @@ function ProposalDetail({ match }) {
     requestedAmount,
     stakes = [],
     totalTokensStaked,
-    status,
+    statusData,
   } = proposal || {}
+
+  const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {
     history.push('/home')
   }, [history])
 
   const handleCancelProposal = useCallback(() => {
-    convictionActions.cancelProposal(id)
-  }, [id, convictionActions])
+    actions.cancelProposal(id)
+  }, [id, actions])
 
   const hasCancelRole = useMemo(() => {
     if (!connectedAccount) {
@@ -108,11 +106,8 @@ function ProposalDetail({ match }) {
     [stakes]
   )
 
-  if (isLoading || !proposal) {
-    return <Loader />
-  }
-
-  const signalingProposal = addressesEqual(beneficiary, ZERO_ADDR)
+  const fundingProposal =
+    requestToken && proposal.type === ProposalTypes.Proposal
 
   return (
     <div
@@ -137,7 +132,12 @@ function ProposalDetail({ match }) {
       >
         <Split
           primary={
-            <Box>
+            <Box
+              css={`
+                background: ${background};
+                border-color: ${borderColor};
+              `}
+            >
               <section
                 css={`
                   display: grid;
@@ -145,13 +145,64 @@ function ProposalDetail({ match }) {
                   grid-row-gap: ${7 * GU}px;
                 `}
               >
-                <h1
-                  css={`
-                    ${textStyle('title2')};
-                  `}
-                >
-                  {name}
-                </h1>
+                <div>
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                      margin-bottom: ${2 * GU}px;
+                    `}
+                  >
+                    <ProposalIcon type={proposal.type} />
+                    <span
+                      css={`
+                        margin-left: ${0.5 * GU}px;
+                      `}
+                    >
+                      {convertToString(proposal.type)}
+                    </span>
+                  </div>
+                  <h1
+                    css={`
+                      ${textStyle('title2')};
+                    `}
+                  >
+                    {name}
+                  </h1>
+                  <div
+                    css={`
+                      margin-top: ${2 * GU}px;
+                      grid-column: span 2;
+                      min-width: ${40 * GU}px;
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    {fundingProposal ? (
+                      <span>
+                        This proposal is requesting{' '}
+                        <strong>
+                          {formatTokenAmount(
+                            requestedAmount,
+                            requestToken.decimals
+                          )}
+                        </strong>{' '}
+                        {requestToken.name} out of{' '}
+                        <strong>
+                          {formatTokenAmount(
+                            vaultBalance,
+                            requestToken.decimals
+                          )}
+                        </strong>{' '}
+                        {requestToken.name} currently in the common pool.
+                      </span>
+                    ) : (
+                      <span>
+                        This suggestion is for signaling purposes and is not
+                        requesting any Honey
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <div
                   css={`
                     display: grid;
@@ -161,40 +212,6 @@ function ProposalDetail({ match }) {
                     grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
                   `}
                 >
-                  {requestToken && (
-                    <>
-                      <Amount
-                        requestedAmount={requestedAmount}
-                        requestToken={requestToken}
-                      />
-                      <div
-                        css={`
-                          margin-top: ${2 * GU}px;
-                          grid-column: span 2;
-                          min-width: ${40 * GU}px;
-                          color: ${theme.contentSecondary};
-                        `}
-                      >
-                        <span>
-                          This proposal is requesting{' '}
-                          <strong>
-                            {formatTokenAmount(
-                              requestedAmount,
-                              requestToken.decimals
-                            )}
-                          </strong>{' '}
-                          {requestToken.name} out of{' '}
-                          <strong>
-                            {formatTokenAmount(
-                              vaultBalance,
-                              requestToken.decimals
-                            )}
-                          </strong>{' '}
-                          {requestToken.name} currently in the common pool.
-                        </span>
-                      </div>
-                    </>
-                  )}
                   <DataField
                     label="Link"
                     value={
@@ -212,8 +229,20 @@ function ProposalDetail({ match }) {
                         </span>
                       )
                     }
+                    css="grid-column-start: span 2;"
                   />
-                  {requestToken && !signalingProposal && (
+                  <DataField
+                    label="Status"
+                    value={<ProposalStatus proposal={proposal} />}
+                  />
+                  {fundingProposal && (
+                    <Amount
+                      requestedAmount={requestedAmount}
+                      requestToken={requestToken}
+                    />
+                  )}
+
+                  {fundingProposal && (
                     <DataField
                       label="Beneficiary"
                       value={
@@ -239,64 +268,88 @@ function ProposalDetail({ match }) {
                       />
                     }
                   />
+                  {proposal.number !== '1' && (
+                    <>
+                      <DataField
+                        label="Action collateral"
+                        value={<ActionCollateral proposal={proposal} />}
+                      />
+                      {proposal.pausedAt > 0 && (
+                        <DisputeFees proposal={proposal} />
+                      )}
+                    </>
+                  )}
                 </div>
-                {status === PROPOSAL_STATUS_ACTIVE_STRING && (
-                  <>
-                    <DataField
-                      label="Progress"
-                      value={
-                        <ConvictionBar
-                          proposal={proposal}
-                          withThreshold={!!requestToken}
-                        />
-                      }
-                    />
-                    <ProposalActions
-                      proposal={proposal}
-                      onExecuteProposal={convictionActions.executeProposal}
-                      onRequestSupportProposal={panelState.requestOpen}
-                      onStakeToProposal={convictionActions.stakeToProposal}
-                      onWithdrawFromProposal={
-                        convictionActions.withdrawFromProposal
-                      }
-                    />
-                  </>
+                {(statusData.open ||
+                  statusData.challenged ||
+                  statusData.disputed) && (
+                  <DataField
+                    label="Progress"
+                    value={
+                      <ConvictionBar
+                        proposal={proposal}
+                        withThreshold={!!requestToken}
+                      />
+                    }
+                  />
+                )}
+                <DisputableInfo proposal={proposal} />
+                {(statusData.open ||
+                  statusData.challenged ||
+                  statusData.disputed) && (
+                  <ProposalActions
+                    proposal={proposal}
+                    onExecuteProposal={actions.executeProposal}
+                    // onRequestSupportProposal={panelState.requestOpen}
+                    onStakeToProposal={actions.stakeToProposal}
+                    onWithdrawFromProposal={actions.withdrawFromProposal}
+                  />
                 )}
               </section>
             </Box>
           }
           secondary={
             <div>
-              {!signalingProposal && requestToken && (
-                <Box heading="Status" padding={3 * GU}>
-                  {status === PROPOSAL_STATUS_CANCELLED_STRING ? (
-                    <Info mode="warning">
-                      This proposal was removed from consideration
-                    </Info>
-                  ) : (
-                    <ConvictionCountdown proposal={proposal} />
+              <DisputableActionInfo
+                proposal={proposal}
+                onChallengeAction={actions.challengeAction}
+                onDisputeAction={actions.disputeAction}
+                onSettleAction={actions.settleAction}
+              />
+              {statusData.open && (
+                <>
+                  {hasCancelRole && (
+                    <Box padding={3 * GU}>
+                      <span
+                        css={`
+                          color: ${theme.contentSecondary};
+                        `}
+                      >
+                        You can remove this proposal from consideration
+                      </span>
+                      <Button
+                        onClick={handleCancelProposal}
+                        wide
+                        css={`
+                          margin-top: ${3 * GU}px;
+                        `}
+                      >
+                        Remove proposal
+                      </Button>
+                    </Box>
                   )}
-                </Box>
-              )}
-              {hasCancelRole && status === PROPOSAL_STATUS_ACTIVE_STRING && (
-                <Box padding={3 * GU}>
-                  <span
-                    css={`
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    You can remove this proposal from consideration
-                  </span>
-                  <Button
-                    onClick={handleCancelProposal}
-                    wide
-                    css={`
-                      margin-top: ${3 * GU}px;
-                    `}
-                  >
-                    Remove proposal
-                  </Button>
-                </Box>
+                  {!fundingProposal && proposal.number !== '1' && (
+                    <Box
+                      padding={3 * GU}
+                      css={`
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      This suggestion will be active until it is removed by the
+                      creator or an authorised entity.
+                    </Box>
+                  )}
+                </>
               )}
 
               <SupportersDistribution
@@ -307,7 +360,7 @@ function ProposalDetail({ match }) {
           }
         />
       </div>
-      <SidePanel
+      {/* <SidePanel
         title="Support this proposal"
         opened={panelState.visible}
         onClose={panelState.requestClose}
@@ -317,7 +370,7 @@ function ProposalDetail({ match }) {
           onDone={panelState.requestClose}
           onStakeToProposal={convictionActions.stakeToProposal}
         />
-      </SidePanel>
+      </SidePanel> */}
     </div>
   )
 }
@@ -364,11 +417,11 @@ const Amount = ({
   )
 }
 
-function DataField({ label, value }) {
+function DataField({ label, value, ...props }) {
   const theme = useTheme()
 
   return (
-    <div>
+    <div {...props}>
       <h2
         css={`
           ${textStyle('label1')};

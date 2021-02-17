@@ -22,10 +22,14 @@ import {
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import { getProposalSupportStatus } from '../utils/proposal-utils'
+import {
+  getProposalStatusData,
+  getProposalSupportStatus,
+  hasProposalEnded,
+} from '../utils/proposal-utils'
 import {
   getVoteEndDate,
-  getVoteStatus,
+  getVoteStatusData,
   hasVoteEnded,
 } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
@@ -109,10 +113,10 @@ function useFilteredProposals(filters, account, latestBlock) {
           proposalSupportStatus
         )
 
-        let statusFilterPassed = true
-        if (proposal.type === ProposalTypes.Decision) {
-          statusFilterPassed = testStatusFilter(filters.status.filter, proposal)
-        }
+        const statusFilterPassed = testStatusFilter(
+          filters.status.filter,
+          proposal
+        )
 
         return supportFilterPassed && statusFilterPassed
       }),
@@ -234,6 +238,9 @@ function processProposal(
     }
   }
 
+  const hasEnded = hasProposalEnded(proposal.status, proposal.challengeEndDate)
+  const statusData = getProposalStatusData(proposal)
+
   return {
     ...proposal,
     convictionTrend,
@@ -241,11 +248,13 @@ function processProposal(
     endDate,
     futureConviction,
     futureStakedConviction,
+    hasEnded,
     maxConviction,
     minTokensNeeded,
     neededConviction,
     neededTokens,
     stakedConviction,
+    statusData,
     threshold,
     userConviction,
     userStakedConviction,
@@ -259,12 +268,12 @@ function processDecision(proposal) {
     endDate,
     proposal.challengeEndDate
   )
-  const voteStatus = getVoteStatus(proposal, hasEnded, PCT_BASE)
+  const statusData = getVoteStatusData(proposal, hasEnded, PCT_BASE)
 
   return {
     ...proposal,
     endDate,
     hasEnded,
-    voteStatus,
+    statusData,
   }
 }

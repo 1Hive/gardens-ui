@@ -7,7 +7,6 @@ export const PROPOSAL_STATUS_CANCELLED_STRING = 'Cancelled'
 export const PROPOSAL_STATUS_EXECUTED_STRING = 'Executed'
 export const PROPOSAL_STATUS_CHALLENGED_STRING = 'Challenged'
 export const PROPOSAL_STATUS_DISPUTED_STRING = 'Disputed'
-export const PROPOSAL_STATUS_REJECTED_STRING = 'Rejected'
 export const PROPOSAL_STATUS_SETTLED_STRING = 'Settled'
 
 export const PROPOSAL_STATUS_CANCELLED = 3

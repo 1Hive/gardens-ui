@@ -1,28 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IconCheck, IconCross, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import celesteIconSvg from '../../assets/celeste-icon.svg'
 import challengeIconSvg from '../../assets/challenge-icon.svg'
 
-export const getStatusAttributes = (vote, theme) => {
-  const { isAccepted, statusData } = vote
-  if (statusData.open) {
-    if (isAccepted) {
-      return {
-        label: 'Will pass',
-        Icon: IconCheck,
-        color: theme.positive,
-      }
-    }
-
+export function getStatusAttributes(proposal, theme) {
+  if (proposal.statusData.open) {
     return {
-      label: "Won't pass",
-      Icon: IconCross,
-      color: theme.negative,
+      label: 'Open',
+      Icon: IconCheck,
+      color: theme.positive,
     }
   }
-  if (statusData.cancelled) {
+  if (proposal.statusData.cancelled) {
     return {
       label: 'Cancelled',
       Icon: IconCross,
@@ -31,35 +22,7 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: theme.negative,
     }
   }
-  if (statusData.rejected) {
-    return {
-      label: 'Rejected',
-      Icon: IconCross,
-      color: theme.negative,
-    }
-  }
-  if (statusData.accepted) {
-    return {
-      label: 'Passed',
-      Icon: IconCheck,
-      color: theme.positive,
-    }
-  }
-  if (statusData.pendingEnactment) {
-    return {
-      label: 'Passed (pending)',
-      Icon: IconCheck,
-      color: theme.positive,
-    }
-  }
-  if (statusData.enacted) {
-    return {
-      label: 'Passed (enacted)',
-      Icon: IconCheck,
-      color: theme.positive,
-    }
-  }
-  if (statusData.disputed) {
+  if (proposal.statusData.disputed) {
     return {
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
@@ -68,7 +31,7 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: '#8253A8',
     }
   }
-  if (statusData.challenged) {
+  if (proposal.statusData.challenged) {
     return {
       label: 'Challenged',
       iconSrc: challengeIconSvg,
@@ -77,7 +40,7 @@ export const getStatusAttributes = (vote, theme) => {
       borderColor: '#F5A623',
     }
   }
-  if (statusData.settled) {
+  if (proposal.statusData.settled) {
     return {
       label: 'Settled',
       Icon: IconCross,
@@ -87,10 +50,10 @@ export const getStatusAttributes = (vote, theme) => {
   }
 }
 
-const VoteStatus = ({ vote }) => {
+const ProposalStatus = ({ proposal }) => {
   const theme = useTheme()
 
-  const { Icon, iconSrc, color, label } = getStatusAttributes(vote, theme)
+  const { Icon, iconSrc, color, label } = getStatusAttributes(proposal, theme)
 
   return (
     <Main
@@ -128,4 +91,4 @@ const StatusLabel = styled.span`
   text-transform: uppercase;
 `
 
-export default VoteStatus
+export default ProposalStatus
