@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import {
   addressesEqual,
+  Box,
   Button,
   GU,
   Info,
@@ -9,18 +10,17 @@ import {
   Timer,
   useTheme,
 } from '@1hive/1hive-ui'
+import { ConvictionCountdown } from './ConvictionVisuals'
+
 import { useContract } from '../hooks/useContract'
-import useDisputeFees from '../hooks/useDisputeFees'
+import { useDisputeFees, useDisputeState } from '../hooks/useDispute'
 import { useWallet } from '../providers/Wallet'
-import { dateFormat } from '../utils/date-utils'
-import { formatTokenAmount } from '../utils/token-utils'
+
 import BigNumber from '../lib/bigNumber'
-import {
-  VOTE_STATUS_CHALLENGED,
-  VOTE_STATUS_DISPUTED,
-  VOTE_STATUS_ONGOING,
-  VOTE_STATUS_SETTLED,
-} from '../constants'
+import { dateFormat } from '../utils/date-utils'
+import { DisputeStates, RoundStates } from '../utils/dispute-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import { ProposalTypes } from '../types'
 
 import tokenAbi from '../abi/minimeToken.json'
 
@@ -30,17 +30,24 @@ function getInfoActionContent(proposal, account, actions) {
   const isSubmitter = addressesEqual(account, proposal.creator)
   const isChallenger = addressesEqual(account, proposal.challenger)
 
-  if (proposal.voteStatus === VOTE_STATUS_ONGOING) {
+  if (proposal.statusData.open) {
     // Proposal has not been disputed
     if (proposal.disputedAt === 0) {
       return {
-        info:
-          'The proposed action will be executed if nobody challenges it during the voting period and the result of the vote is casted with majority support.',
+        info: `The proposed action will be executed if nobody challenges it ${
+          proposal.type === ProposalTypes.Decision
+            ? 'during the voting period and the result of the vote is casted with majority support'
+            : 'and the proposal accrues sufficient conviction'
+        }.`,
         actions: isSubmitter
           ? []
           : [
               {
-                label: 'Challenge decision',
+                label: `Challenge ${
+                  proposal.type === ProposalTypes.Decision
+                    ? 'decision'
+                    : 'proposal'
+                }`,
                 mode: 'strong',
                 onClick: actions.onChallengeAction,
               },
@@ -51,7 +58,7 @@ function getInfoActionContent(proposal, account, actions) {
     return { info: 'The proposed action cannot be challenged.' }
   }
 
-  if (proposal.voteStatus === VOTE_STATUS_CHALLENGED && isSubmitter) {
+  if (proposal.statusData.challenged && isSubmitter) {
     return {
       info:
         "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
@@ -71,7 +78,7 @@ function getInfoActionContent(proposal, account, actions) {
   }
 
   // Means proposal is settled because submitter didn't responded
-  if (proposal.voteStatus === VOTE_STATUS_SETTLED && proposal.settledAt === 0) {
+  if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
         info:
@@ -97,31 +104,32 @@ function DisputableActionInfo({
   onSettleAction,
 }) {
   return (
-    <div
-      css={`
-        display: grid;
-        grid-gap: ${2 * GU}px;
-      `}
-    >
-      <VotingPeriod proposal={proposal} />
-      {(proposal.voteStatus === VOTE_STATUS_CHALLENGED ||
-        proposal.voteStatus === VOTE_STATUS_SETTLED) && (
-        <Settlement proposal={proposal} />
-      )}
-      {(proposal.voteStatus === VOTE_STATUS_DISPUTED ||
-        proposal.disputedAt > 0) && (
-        <DataField
-          label="Dispute"
-          value={<div>Celeste Q#{proposal.disputeId}</div>}
+    <Box heading="Disputable action">
+      <div
+        css={`
+          display: grid;
+          grid-gap: ${2 * GU}px;
+        `}
+      >
+        {proposal.type === ProposalTypes.Decision ? (
+          <VotingPeriod proposal={proposal} />
+        ) : (
+          <Conviction proposal={proposal} />
+        )}
+        {(proposal.statusData.challenged || proposal.statusData.settled) && (
+          <Settlement proposal={proposal} />
+        )}
+        {(proposal.statusData.disputed || proposal.disputedAt > 0) && (
+          <Dispute proposal={proposal} />
+        )}
+        <Actions
+          proposal={proposal}
+          onChallengeAction={onChallengeAction}
+          onDisputeAction={onDisputeAction}
+          onSettleAction={onSettleAction}
         />
-      )}
-      <Actions
-        proposal={proposal}
-        onChallengeAction={onChallengeAction}
-        onDisputeAction={onDisputeAction}
-        onSettleAction={onSettleAction}
-      />
-    </div>
+      </div>
+    </Box>
   )
 }
 
@@ -129,9 +137,9 @@ function VotingPeriod({ proposal }) {
   const theme = useTheme()
   const periodNode = useMemo(() => {
     if (
-      proposal.voteStatus === VOTE_STATUS_CHALLENGED ||
-      proposal.voteStatus === VOTE_STATUS_DISPUTED ||
-      proposal.voteStatus === VOTE_STATUS_SETTLED
+      proposal.statusData.challenged ||
+      proposal.statusData.disputed ||
+      proposal.statusData.settled
     ) {
       return (
         <span>
@@ -161,15 +169,28 @@ function VotingPeriod({ proposal }) {
     ) : (
       <Timer end={proposal.endDate} />
     )
-  }, [proposal.endDate, proposal.pausedAt, proposal.voteStatus, theme])
+  }, [proposal.endDate, proposal.pausedAt, proposal.statusData, theme])
 
-  const isResumed =
-    proposal.voteStatus === VOTE_STATUS_ONGOING && proposal.pausedAt > 0
+  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
 
   return (
     <DataField
       label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
       value={periodNode}
+    />
+  )
+}
+
+function Conviction({ proposal }) {
+  const isCancelled =
+    proposal.statusData.cancelled || proposal.statusData.settled
+
+  return (
+    <DataField
+      label="Estimated time until pass"
+      value={
+        isCancelled ? 'Cancelled' : <ConvictionCountdown proposal={proposal} />
+      }
     />
   )
 }
@@ -201,7 +222,7 @@ function Settlement({ proposal }) {
           )
         }
       />
-      {proposal.voteStatus === VOTE_STATUS_CHALLENGED && (
+      {proposal.statusData.challenged && (
         <DataField
           label="Settlement amount"
           value={
@@ -216,6 +237,48 @@ function Settlement({ proposal }) {
         />
       )}
     </>
+  )
+}
+
+function Dispute({ proposal }) {
+  const theme = useTheme()
+  const [disputeState, roundState] = useDisputeState(proposal.disputeId)
+
+  return (
+    <DataField
+      label="Dispute"
+      value={
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+        >
+          <span
+            css={`
+              margin-right: ${0.5 * GU}px;
+            `}
+          >
+            Celeste Q#{proposal.disputeId}
+          </span>
+          <span
+            css={`
+              color: ${theme.contentSecondary};
+            `}
+          >
+            {disputeState !== null ? (
+              `(${
+                roundState
+                  ? RoundStates[roundState]
+                  : DisputeStates[disputeState]
+              })`
+            ) : (
+              <LoadingRing />
+            )}
+          </span>
+        </div>
+      }
+    />
   )
 }
 
@@ -272,7 +335,7 @@ function Actions({
     onChallengeAction(
       proposal.actionId,
       '0',
-      true.valueOf,
+      true,
       '0x',
       feeTokenContract,
       depositAmount

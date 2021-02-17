@@ -1,0 +1,4 @@
+[
+  "function getDispute(uint256 _disputeId) external view returns (address subject, uint8 possibleRulings, uint8 state, uint8 finalRuling, uint256 lastRoundId, uint64 createTermId)", 
+  "function getRound(uint256 _disputeId, uint256 _roundId) external view returns (uint64 draftTerm, uint64 delayedTerms, uint64 jurorsNumber, uint64 selectedJurors, uint256 jurorFees, bool settledPenalties, uint256 collectedTokens, uint64 coherentJurors, uint8 state)"
+]
