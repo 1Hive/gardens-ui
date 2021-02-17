@@ -34,6 +34,7 @@ export function useOrgData() {
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
+
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
   const [
     connectedAgreementApp,
