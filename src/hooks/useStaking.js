@@ -13,6 +13,8 @@ import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
 import minimeTokenAbi from '../abi/minimeToken.json'
 
+const MAX_INT = new BigNumber(2).pow(256).minus(1)
+
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
@@ -44,13 +46,6 @@ export function useStaking() {
   const handleReFetchTotalBalance = useCallback(() => {
     setReFetchTotalBalance(true)
   }, [])
-
-  console.log(
-    'connected account ',
-    account,
-    loading,
-    loadingStakingDataFromContract
-  )
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)
@@ -92,7 +87,6 @@ export function useStaking() {
           )
 
           if (mounted()) {
-            console.log('mounted!!!!! ')
             setStakeManagement({
               token: allTokens[1],
               staking: staking
@@ -108,12 +102,9 @@ export function useStaking() {
               stakingFactory: stakingFactory,
               stakingInstance: null,
             })
-
-            console.log('seting here false ')
             setLoading(false)
           }
         } else {
-          console.log('UNmounted!!!!! ')
           setStakeManagement(null)
           setLoading(false)
         }
@@ -129,7 +120,6 @@ export function useStaking() {
     }
 
     if (connectedAgreementApp && account) {
-      console.log('calling data')
       getStakingInformation()
     }
   }, [connectedAgreementApp, mounted, account])
@@ -322,15 +312,27 @@ export function useStaking() {
 
     await stakingContract.allowManager(
       connectedAgreementApp.address,
-      stakeManagement.staking.available.toString(10),
+      MAX_INT.toString(10),
       '0x'
     )
   }, [connectedAgreementApp, stakingContract, stakeManagement])
+
+  const unlockAndRemoveManager = useCallback(async () => {
+    if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
+      return
+    }
+
+    await stakingContract.unlockAndRemoveManager(
+      account,
+      connectedAgreementApp.address
+    )
+  }, [account, connectedAgreementApp, stakingContract, stakeManagement])
 
   return [
     stakeManagement,
     {
       allowManager: allowManager,
+      unlockAndRemoveManager: unlockAndRemoveManager,
       stake: stake,
       withdraw: withdraw,
       approveTokenAmount: approveTokenAmount,

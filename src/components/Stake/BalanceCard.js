@@ -38,7 +38,11 @@ function BalanceCard({
   }, [onDepositOrWithdraw])
 
   const handleOnAllowLockManager = useCallback(async () => {
-    await stakeActions.allowManager()
+    if (!allowLockManager) {
+      await stakeActions.allowManager()
+    } else {
+      await stakeActions.unlockAndRemoveManager()
+    }
     setAllowLockManager(!allowLockManager)
   }, [allowLockManager, stakeActions])
 
