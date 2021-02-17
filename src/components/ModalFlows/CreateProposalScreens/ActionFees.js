@@ -145,6 +145,15 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           </div>
         </div>
       </div>
+      <div
+        css={`
+          color: ${theme.contentSecondary};
+          ${textStyle('body4')}
+          margin-left: ${!compactMode ? GU * 7 : 0}px;
+        `}
+      >
+        withdrawn from your staking manager balance.
+      </div>
       <Button
         label="Create transaction"
         mode="strong"
