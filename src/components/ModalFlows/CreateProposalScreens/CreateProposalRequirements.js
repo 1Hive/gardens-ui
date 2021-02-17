@@ -6,18 +6,30 @@ import InfoField from '../../../components/InfoField'
 import { dateFormat } from '../../../utils/date-utils'
 import { getDisputableAppByName } from '../../../utils/app-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
 
 function CreateProposalRequirements({ agreement, availableStaked }) {
-  const { disputableAppsWithRequirements } = agreement
+  const { disputableAppsWithRequirements, signedLatest } = agreement
+  const { next } = useMultiModal()
+
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
     'Conviction Voting'
   )
-
   const { token, actionAmount } = convictionAppRequirements
+  const enoughCollateral = availableStaked.gte(actionAmount)
+
+  const error = useMemo(() => {
+    return !signedLatest || !enoughCollateral
+  }, [enoughCollateral, signedLatest])
+
+  const handleOnContinue = useCallback(() => {
+    next()
+  }, [next])
+
   return (
     <div>
       <InfoField label="Agreement signature and version">
@@ -48,8 +60,8 @@ function CreateProposalRequirements({ agreement, availableStaked }) {
       <ModalButton
         mode="strong"
         loading={false}
-        onClick={() => {}}
-        disabled={false}
+        onClick={handleOnContinue}
+        disabled={error}
       >
         Continue
       </ModalButton>

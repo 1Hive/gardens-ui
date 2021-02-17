@@ -22,23 +22,34 @@ export default function useActions(onDone) {
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
 
   // Conviction voting actions
   const newProposal = useCallback(
-    async ({ title, link, amount, beneficiary }) => {
-      sendIntent(
-        convictionVotingApp,
+    async (
+      { title, link, amount, stableRequestAmount, beneficiary },
+      onDone = noop
+    ) => {
+      const intent = await convictionVotingApp.intent(
         'addProposal',
-        [title, link ? toHex(link) : '0x', amount, beneficiary],
-        { ethers, from: account }
+        [
+          title,
+          link ? toHex(link) : '0x',
+          amount,
+          stableRequestAmount,
+          beneficiary,
+        ],
+        {
+          actAs: account,
+        }
       )
 
-      onDone()
+      onDone(intent)
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp]
   )
 
   const cancelProposal = useCallback(
@@ -99,7 +110,7 @@ export default function useActions(onDone) {
 
   // Issuance actions
   const executeIssuance = useCallback(() => {
-    sendIntent(issuanceApp, 'executeIssuance', [], {
+    sendIntent(issuanceApp, 'executeAdjustment', [], {
       ethers,
       from: account,
     })
@@ -234,13 +245,13 @@ export default function useActions(onDone) {
   // TODO: Memoize objects
   return {
     convictionActions: {
-      executeIssuance,
       executeProposal,
       newProposal,
       cancelProposal,
       stakeToProposal,
       withdrawFromProposal,
     },
+    issuanceActions: { executeIssuance },
     votingActions: {
       executeDecision,
       voteOnDecision,

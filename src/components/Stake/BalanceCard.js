@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { Button, Card, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useState } from 'react'
+import { Button, Card, GU, Switch, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useUniswapHnyPrice } from '../../hooks/useUniswapHNYPrice'
 import { formatTokenAmount } from '../../utils/token-utils'
 import tokenIcon from '../../assets/honey.svg'
@@ -11,9 +11,10 @@ function BalanceCard({
   tokenSymbol,
   onDepositOrWithdraw,
 }) {
+  // getLock
+  const [allowLockManager, setAllowLockManager] = useState(false)
   const theme = useTheme()
   const tokenRate = useUniswapHnyPrice()
-  // TODO: Replace token icon
 
   const handleOnDeposit = useCallback(() => {
     onDepositOrWithdraw('deposit')
@@ -22,6 +23,11 @@ function BalanceCard({
   const handleOnWithdraw = useCallback(() => {
     onDepositOrWithdraw('withdraw')
   }, [onDepositOrWithdraw])
+
+  const handleOnAllowLockManager = useCallback(async () => {
+    await stakeActions.allowManager()
+    setAllowLockManager(!allowLockManager)
+  }, [allowLockManager, stakeActions])
 
   return (
     <Card
@@ -73,6 +79,14 @@ function BalanceCard({
         `}
       />
       <Button mode="strong" wide label="Deposit" onClick={handleOnDeposit} />
+
+      <div>
+        <Switch
+          checked={allowLockManager}
+          onChange={handleOnAllowLockManager}
+        />
+      </div>
+      <span>Allow Lock Manager</span>
     </Card>
   )
 }
