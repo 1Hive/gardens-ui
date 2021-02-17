@@ -8,7 +8,7 @@ import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
-  const { available, locked, total } = staking
+  const { available, locked, total, allowance } = staking
   const tokenRate = useUniswapHnyPrice()
 
   return (
@@ -21,6 +21,8 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
       `}
     >
       <BalanceCard
+        allowance={allowance}
+        locked={locked}
         stakeActions={stakeActions}
         total={total}
         tokenDecimals={token.decimals}

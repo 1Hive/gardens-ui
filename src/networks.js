@@ -21,6 +21,7 @@ const networks = {
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
     arbitrator: '0x5b987b7a303894afd23063b02c5ee39e1f02306e',
+    disputeManager: '0x53827b4e3d84d710e45cb1f29af578ab49dbad9d',
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
@@ -30,6 +31,7 @@ const networks = {
     legacyNetworkType: 'rinkeby',
   },
   xdai: {
+    // TODO: Add Dispute manager and arbitrator addresses, as well as agreement subgraph url
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     name: 'xDai',
