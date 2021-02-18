@@ -12,15 +12,13 @@ import {
 } from '@1hive/1hive-ui'
 import ModalButton from '../ModalFlows/ModalButton'
 import { useMounted } from '../../hooks/useMounted'
-import { useWallet } from '../../providers/Wallet'
-// import { useMultiModal } from '../MultiModal/MultiModalProvider'
 import { getIpfsCidFromUri, ipfsGet } from '../../utils/ipfs-utils'
 
-function AgreementDocument({ ipfsUri, onSignAgreement }) {
+function AgreementDocument({ ipfsUri, onSignAgreement, signedAgreement }) {
   const [loading, setLoading] = useState(false)
 
   const mounted = useMounted()
-  const { account } = useWallet()
+
   const { layoutName } = useLayout()
   const [markdownContent, setMarkdownContent] = useState('')
   const theme = useTheme()
@@ -51,11 +49,6 @@ function AgreementDocument({ ipfsUri, onSignAgreement }) {
   const handleSign = useCallback(() => {
     setLoading(true)
     onSignAgreement()
-
-    // Proceed to the next screen after transactions have been received
-    // getTransactions(() => {
-    //   next()
-    // })
   }, [onSignAgreement])
 
   return (
@@ -72,79 +65,13 @@ function AgreementDocument({ ipfsUri, onSignAgreement }) {
         mode="strong"
         loading={loading}
         onClick={handleSign}
-        disabled={!account}
+        disabled={signedAgreement}
       >
         Sign Agreement
       </ModalButton>
     </Box>
   )
 }
-
-// function SignOverview({ onSignAgreement, getTransactions }) {
-//   const [acceptedTerms, setAcceptedTerms] = useState(false)
-//   const [loading, setLoading] = useState(false)
-//   // const { next } = useMultiModal()
-
-//   const handleSign = useCallback(() => {
-//     setLoading(true)
-//     onSignAgreement()
-
-//     // Proceed to the next screen after transactions have been received
-//     // getTransactions(() => {
-//     //   next()
-//     // })
-//   }, [onSignAgreement])
-
-//   const handleAcceptTerms = useCallback(
-//     checked => setAcceptedTerms(checked),
-//     []
-//   )
-
-//   return (
-//     <>
-//       <h2
-//         css={`
-//           ${textStyle('title4')};
-//           margin-bottom: ${4 * GU}px;
-//         `}
-//       >
-//         Sign Agreement
-//       </h2>
-//       <label
-//         css={`
-//           display: flex;
-//           margin-bottom: ${3 * GU}px;
-//         `}
-//       >
-//         <div
-//           css={`
-//             margin-left: -${0.5 * GU}px;
-//             margin-right: ${1 * GU}px;
-//           `}
-//         >
-//           <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
-//         </div>
-//         By signing this Agreement, you agree to 1Hive Network DAO manifesto, by
-//         laws and community code of behavior.
-//       </label>
-//       <Field label="Agreement action collateral">
-//         <p>
-//           In order perform or challenge actions bound by this Agreement, you
-//           must deposit some HNY as the action collateral first. Different apps
-//           might require different tokens and amounts as the action collateral.
-//         </p>
-//       </Field>
-//       <ModalButton
-//         mode="strong"
-//         loading={loading}
-//         onClick={handleSign}
-//         disabled={!acceptedTerms}
-//       >
-//         Sign Agreement
-//       </ModalButton>
-//     </>
-//   )
-// }
 
 const Article = styled.article`
   h1 {

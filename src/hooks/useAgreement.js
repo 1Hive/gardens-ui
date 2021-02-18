@@ -29,9 +29,12 @@ export function useAgreement() {
       const { content, effectiveFrom, title, versionId } = currentVersion
 
       const signatures = signer ? await signer.signatures() : []
+
+      console.log('singaturessss!!! ', signatures)
       const hasSignedLast =
         signer && (await signer.hasSigned(currentVersion.versionId))
 
+      console.log('hasSignedLast ', hasSignedLast)
       const disputableAppsWithRequirements = processDisputableApps(
         apps,
         appsWithRequirements
