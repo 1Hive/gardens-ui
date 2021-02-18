@@ -21,7 +21,7 @@ function Agreement() {
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
 
-  const signed = agreement.signed
+  const signed = agreement.signedLatest
 
   if (loading) {
     return <Loader />
@@ -98,6 +98,7 @@ function AgreementLayout({ agreement, signedAgreement, onSignAgreement }) {
           <AgreementDocument
             ipfsUri={contentIpfsUri}
             onSignAgreement={onSignAgreement}
+            signedAgreement={signedAgreement}
           />
         </>
       }
