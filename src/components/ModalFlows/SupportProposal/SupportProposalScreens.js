@@ -4,7 +4,7 @@ import ModalFlowBase from '../ModalFlowBase'
 import SupportProposal from './SupportProposal'
 import useActions from '../../../hooks/useActions'
 
-function SupportProposalScreens({ versionId }) {
+function SupportProposalScreens({ versionId, id, onDone, stakeProposal }) {
   const actions = useActions()
   const [transactions, setTransactions] = useState([])
 
@@ -23,7 +23,14 @@ function SupportProposalScreens({ versionId }) {
       {
         title: 'Support this proposal',
         graphicHeader: false,
-        content: <SupportProposal getTransactions={getTransactions} />,
+        content: (
+          <SupportProposal
+            id={id}
+            getTransactions={getTransactions}
+            onDone={onDone}
+            onStakeProposal={stakeProposal}
+          />
+        ),
       },
     ],
     [getTransactions]
