@@ -7,7 +7,6 @@ import {
   GU,
   Info,
   Link,
-  SidePanel,
   Split,
   textStyle,
   useLayout,
@@ -16,15 +15,16 @@ import {
 
 // Components
 import Balance from '../components/Balance'
+import SupportProposalScreens from '../components/ModalFlows/SupportProposal/SupportProposalScreens'
 import {
   ConvictionCountdown,
   ConvictionBar,
 } from '../components/ConvictionVisuals'
 import IdentityBadge from '../components/IdentityBadge'
 import Loader from '../components/Loader'
+import MultiModal from '../components/MultiModal/MultiModal'
 import ProposalActions from '../components/ProposalDetail/ProposalActions'
 import SupportersDistribution from '../components/SupportersDistribution'
-import SupportProposalPanel from '../components/panels/SupportProposalPanel'
 
 // Hooks
 import useProposalLogic from '../logic/proposal-logic'
@@ -307,17 +307,16 @@ function ProposalDetail({ match }) {
           }
         />
       </div>
-      <SidePanel
-        title="Support this proposal"
-        opened={panelState.visible}
+      <MultiModal
+        visible={panelState.visible}
         onClose={panelState.requestClose}
       >
-        <SupportProposalPanel
+        <SupportProposalScreens
           id={id}
           onDone={panelState.requestClose}
           onStakeToProposal={convictionActions.stakeToProposal}
         />
-      </SidePanel>
+      </MultiModal>
     </div>
   )
 }
