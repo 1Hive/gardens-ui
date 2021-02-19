@@ -1,14 +1,14 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import BigNumber from '../../../lib/bigNumber'
 import { Button, GU, Info, Slider, textStyle, useTheme } from '@1hive/1hive-ui'
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
 import { useWallet } from '../../../providers/Wallet'
 
-import { round, pct } from '../../../utils/math-utils'
+import { fromDecimals, round, pct } from '../../../utils/math-utils'
 
 import honeySvg from '../../../assets/honey.svg'
-// import { formatTokenAmount } from '../../../utils/token-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
@@ -16,63 +16,21 @@ const SupportProposal = React.memo(function SupportProposal({
   onStakeToProposal,
 }) {
   const theme = useTheme()
-  const [percentage, setPercentage] = useState({
-    value: 0,
-  })
-  const [amount, setAmount] = useState({
-    value: '0',
-    valueBN: new BigNumber('0'),
-  })
 
   const { account } = useWallet()
-  const { accountBalance /* , stakeToken */ } = useAppState()
+  const { accountBalance, stakeToken } = useAppState()
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
-  // const handleEditMode = useCallback(
-  //   editMode => {
-  //     setAmount(amount => {
-  //       // const newValue = amount.valueBN.gte(0)
-  //       //   ? formatTokenAmount(
-  //       //       amount.valueBN,
-  //       //       stakeToken.decimals,
-  //       //       false,
-  //       //       false,
-  //       //       {
-  //       //         commas: !editMode,
-  //       //         replaceZeroBy: editMode ? '' : '0',
-  //       //         rounding: stakeToken.decimals,
-  //       //       }
-  //       //     )
-  //       //   : ''
-  //       const newValue = ''
+  const myStake = useMemo(() => {
+    return totalStaked > 0 ? totalStaked.div(accountBalance).toNumber() : 0
+  }, [totalStaked, accountBalance])
 
-  //       return {
-  //         ...amount,
-  //         value: newValue,
-  //       }
-  //     })
-  //   },
-  //   [stakeToken]
-  // )
-
-  // Amount change handler
-  const handleAmountChange = useCallback(
-    event => {
-      console.log(event)
-      setPercentage(event)
-      const newAmount = event
-
-      const newAmountBN = event
-
-      setAmount({
-        value: newAmount,
-        valueBN: newAmountBN,
-      })
-    },
-    // [stakeToken]
-    []
+  const [slideValue, amount, handleSliderChange] = useAmount(
+    myStake,
+    stakeToken,
+    accountBalance
   )
 
   // Form submit handler
@@ -80,7 +38,7 @@ const SupportProposal = React.memo(function SupportProposal({
     event => {
       event.preventDefault()
 
-      onStakeToProposal(id, amount.valueBN.toString(10))
+      onStakeToProposal(id, amount.toString(10))
 
       onDone()
     },
@@ -142,8 +100,8 @@ const SupportProposal = React.memo(function SupportProposal({
             width: 100%;
             margin-left: ${2 * GU}px;
           `}
-          value={percentage}
-          onUpdate={handleAmountChange}
+          value={slideValue}
+          onUpdate={handleSliderChange}
         />
         <span
           css={`
@@ -152,7 +110,7 @@ const SupportProposal = React.memo(function SupportProposal({
             color: ${theme.surfaceContent};
           `}
         >
-          50%
+          {round(slideValue * 100, 0)}%
           <span
             css={`
               ${textStyle('body4')}
@@ -160,7 +118,8 @@ const SupportProposal = React.memo(function SupportProposal({
               color: ${theme.surfaceContentSecondary};
             `}
           >
-            (380 HNY)
+            ({formatTokenAmount(amount, stakeToken.decimals)}
+            {''} HNY)
           </span>
         </span>
       </div>
@@ -171,17 +130,15 @@ const SupportProposal = React.memo(function SupportProposal({
       >
         You have{' '}
         <strong>
-          {/* {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '} */}
-          {/* {stakeToken.symbol} */}
-          '760 HNY tokens'
+          {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
+          {stakeToken.symbol}
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
         {totalStaked.gt(0) === false && (
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {/* {formatTokenAmount(totalStaked, stakeToken.decimals)} locked */}
-              tokens
+              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
             </strong>{' '}
             ({stakedPct}% of your balance).
           </span>
@@ -195,11 +152,35 @@ const SupportProposal = React.memo(function SupportProposal({
         wide
         type="submit"
         mode="strong"
-        // disabled={amount.valueBN.eq(new BigNumber(0)) || Boolean(errorMessage)}
-        disabled={false}
       />
     </form>
   )
 })
+
+const useAmount = (myStake, stakeToken, maxAvailable) => {
+  const [slideValue, setSlideValue] = useState(
+    myStake &&
+      fromDecimals(
+        myStake
+          .div(maxAvailable)
+          .div(100)
+          .toString(),
+        stakeToken.decimals
+      )
+  )
+
+  const [amount, setAmount] = useState(BigNumber(myStake))
+
+  const handleSliderChange = useCallback(
+    newProgress => {
+      console.log(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
+      setSlideValue(newProgress)
+      setAmount(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
+    },
+    [maxAvailable]
+  )
+
+  return [slideValue, amount, handleSliderChange]
+}
 
 export default SupportProposal
