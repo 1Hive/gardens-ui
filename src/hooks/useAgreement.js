@@ -29,6 +29,7 @@ export function useAgreement() {
       const { content, effectiveFrom, title, versionId } = currentVersion
 
       const signatures = signer ? await signer.signatures() : []
+
       const hasSignedLast =
         signer && (await signer.hasSigned(currentVersion.versionId))
 

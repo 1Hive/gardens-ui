@@ -117,7 +117,7 @@ function CollateralStatus({ availableStaked, actionAmount, token }) {
   const history = useHistory()
 
   const goToStakeManager = useCallback(() => {
-    history.push('/agreement')
+    history.push('/stake')
   }, [history])
 
   const infoData = useMemo(() => {
