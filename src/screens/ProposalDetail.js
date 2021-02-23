@@ -387,7 +387,11 @@ function ProposalDetail({
       >
         {modalMode === 'challenge' && (
           <ChallengeProposalScreens
-            onChallengeAction={actions.challengeAction}
+            agreementActions={{
+              challengeAction: actions.challengeAction,
+              getAllowance: actions.getAllowance,
+              approveChallengeTokenAmount: actions.approveChallengeTokenAmount,
+            }}
             proposal={proposal}
           />
         )}

@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import {
   TextInput,
   formatTokenAmount,
@@ -16,11 +15,7 @@ import { durationToHours, toMs } from '../../../utils/date-utils'
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
 
-function ChallengeRequirements({
-  handleSetTransactions,
-  onChallengeAction,
-  proposal,
-}) {
+function ChallengeRequirements({ getTransactions, proposal }) {
   const theme = useTheme()
 
   const { collateralRequirement, actionId } = proposal
@@ -47,44 +42,28 @@ function ChallengeRequirements({
     maxChallengeAmount.toString()
   )
 
-  const handleChallengeAction = useCallback(
-    async onComplete => {
-      const amountBN = new BigNumber(
-        toDecimals(settlementAmount, tokenDecimals)
-      )
-      await onChallengeAction(
-        {
-          actionId: actionId,
-          settlementOffer: amountBN.toString(10),
-          challengerFinishedEvidence: true,
-          context: '0x',
-        },
-        intent => {
-          // Pass transactions array back to parent component
-          handleSetTransactions(intent.transactions)
-          onComplete()
-        }
-      )
-    },
-    [
-      handleSetTransactions,
-      actionId,
-      onChallengeAction,
-      settlementAmount,
-      tokenDecimals,
-    ]
-  )
-
   const handleSubmit = useCallback(
     event => {
       event.preventDefault()
-
+      const amountBN = new BigNumber(
+        toDecimals(settlementAmount, tokenDecimals)
+      )
       setLoading(true)
 
       // Proceed to the next screen after transactions have been received
-      handleChallengeAction(next)
+      // handleChallengeAction(next)
+
+      getTransactions(
+        () => {
+          next()
+        },
+        actionId,
+        amountBN.toString(10),
+        true,
+        '0x'
+      )
     },
-    [handleChallengeAction, next]
+    [next, actionId, getTransactions, settlementAmount, tokenDecimals]
   )
 
   const handleArgumentChange = useCallback(({ target }) => {
@@ -145,7 +124,6 @@ function ChallengeRequirements({
       >
         <TextInput
           value={settlementAmount}
-          min="0"
           type="number"
           max={maxChallengeAmount}
           wide
@@ -194,10 +172,6 @@ function ChallengeRequirements({
       </ModalButton>
     </form>
   )
-}
-
-ChallengeRequirements.propTypes = {
-  handleSetTransactions: PropTypes.func.isRequired,
 }
 
 export default ChallengeRequirements
