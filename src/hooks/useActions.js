@@ -11,7 +11,7 @@ import { VOTE_YEA } from '../constants'
 
 const GAS_LIMIT = 450000
 const SETTLE_ACTION_GAS_LIMIT = 700000
-const CHALLENGE_ACTION_GAS_LIMIT = 900000
+// const CHALLENGE_ACTION_GAS_LIMIT = 900000
 const DISPUTE_ACTION_GAS_LIMIT = 900000
 
 export default function useActions(onDone) {
@@ -156,43 +156,42 @@ export default function useActions(onDone) {
 
   const challengeAction = useCallback(
     async (
-      actionId,
-      settlementOffer,
-      challengerFinishedEvidence,
-      context,
-      feeTokenContract,
-      depositAmount
+      { actionId, settlementOffer, challengerFinishedEvidence, context },
+      onDone = noop
+      // feeTokenContract,
+      // depositAmount
     ) => {
-      const allowance = await feeTokenContract.allowance(
-        account,
-        agreementApp.address
-      )
-      // Check if requires pre-transactions
-      if (allowance.lt(depositAmount)) {
-        // Some ERC20s don't allow setting a new allowance if the current allowance is positive
-        if (!allowance.eq('0')) {
-          await approveTokens(feeTokenContract, agreementApp.address, '0')
-        }
+      // const allowance = await feeTokenContract.allowance(
+      //   account,
+      //   agreementApp.address
+      // )
+      // // Check if requires pre-transactions
+      // if (allowance.lt(depositAmount)) {
+      //   // Some ERC20s don't allow setting a new allowance if the current allowance is positive
+      //   if (!allowance.eq('0')) {
+      //     await approveTokens(feeTokenContract, agreementApp.address, '0')
+      //   }
 
-        await approveTokens(
-          feeTokenContract,
-          agreementApp.address,
-          depositAmount
-        )
-      }
+      //   await approveTokens(
+      //     feeTokenContract,
+      //     agreementApp.address,
+      //     depositAmount
+      //   )
+      // }
 
-      sendIntent(
-        agreementApp,
+      const intent = await agreementApp.intent(
         'challengeAction',
         [actionId, settlementOffer, challengerFinishedEvidence, context],
         {
-          ethers,
-          from: account,
-          gasLimit: CHALLENGE_ACTION_GAS_LIMIT,
+          actAs: account,
         }
       )
+
+      // if (mounted()) {
+      onDone(intent)
+      // }
     },
-    [account, agreementApp, approveTokens, ethers]
+    [account, agreementApp]
   )
 
   const settleAction = useCallback(
