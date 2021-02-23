@@ -5,23 +5,35 @@ import { toHex } from 'web3-utils'
 import { useAppState } from '../providers/AppState'
 import { useWallet } from '../providers/Wallet'
 import { getAppByName } from '../utils/data-utils'
+import { useMounted } from './useMounted'
+
+import { useContract } from './useContract'
+import { useDisputeFees } from './useDispute'
+
 import env from '../environment'
 
 import { VOTE_YEA } from '../constants'
+import { encodeFunctionData } from '../utils/web3-utils'
+import BigNumber from '../lib/bigNumber'
+import tokenAbi from '../abi/minimeToken.json'
 
 const GAS_LIMIT = 450000
 const SETTLE_ACTION_GAS_LIMIT = 700000
-const CHALLENGE_ACTION_GAS_LIMIT = 900000
+// const CHALLENGE_ACTION_GAS_LIMIT = 900000
 const DISPUTE_ACTION_GAS_LIMIT = 900000
 
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
+  const mounted = useMounted()
 
   const { installedApps } = useAppState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+
+  const disputeFees = useDisputeFees()
+  const feeTokenContract = useContract(disputeFees.token, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
@@ -156,44 +168,61 @@ export default function useActions(onDone) {
 
   const challengeAction = useCallback(
     async (
-      actionId,
-      settlementOffer,
-      challengerFinishedEvidence,
-      context,
-      feeTokenContract,
-      depositAmount
+      { actionId, settlementOffer, challengerFinishedEvidence, context },
+      onDone = noop
     ) => {
-      const allowance = await feeTokenContract.allowance(
-        account,
-        agreementApp.address
-      )
-      // Check if requires pre-transactions
-      if (allowance.lt(depositAmount)) {
-        // Some ERC20s don't allow setting a new allowance if the current allowance is positive
-        if (!allowance.eq('0')) {
-          await approveTokens(feeTokenContract, agreementApp.address, '0')
-        }
-
-        await approveTokens(
-          feeTokenContract,
-          agreementApp.address,
-          depositAmount
-        )
-      }
-
-      sendIntent(
-        agreementApp,
+      const intent = await agreementApp.intent(
         'challengeAction',
         [actionId, settlementOffer, challengerFinishedEvidence, context],
         {
-          ethers,
-          from: account,
-          gasLimit: CHALLENGE_ACTION_GAS_LIMIT,
+          actAs: account,
         }
       )
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, agreementApp, approveTokens, ethers]
+    [account, agreementApp, mounted]
   )
+
+  const approveChallengeTokenAmount = useCallback(
+    ({ depositAmount }, onDone = noop) => {
+      if (!feeTokenContract || !agreementApp) {
+        return
+      }
+      const approveData = encodeFunctionData(feeTokenContract, 'approve', [
+        agreementApp.address,
+        depositAmount.toString(10),
+      ])
+      const intent = [
+        {
+          data: approveData,
+          from: account,
+          to: feeTokenContract.address,
+          description: 'Approve HNY',
+        },
+      ]
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [account, feeTokenContract, agreementApp, mounted]
+  )
+
+  const getAllowance = useCallback(async () => {
+    if (!feeTokenContract) {
+      return
+    }
+
+    const allowance = await feeTokenContract.allowance(
+      account,
+      agreementApp.address
+    )
+
+    return new BigNumber(allowance.toString())
+  }, [account, feeTokenContract, agreementApp])
 
   const settleAction = useCallback(
     actionId => {
@@ -261,6 +290,8 @@ export default function useActions(onDone) {
       settleAction,
       disputeAction,
       signAgreement,
+      approveChallengeTokenAmount,
+      getAllowance,
     },
   }
 }

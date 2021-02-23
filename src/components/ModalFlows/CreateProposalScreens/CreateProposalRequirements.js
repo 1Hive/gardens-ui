@@ -44,7 +44,7 @@ function CreateProposalRequirements({ agreement, availableStaked }) {
       <InfoField
         label="Action collateral"
         css={`
-          margin-top: 38px;
+          margin-top: ${5 * GU}px;
         `}
       >
         You must stake {formatTokenAmount(actionAmount, token.decimals)} HNY as
