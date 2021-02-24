@@ -14,6 +14,7 @@ import HelpTip from '../../HelpTip'
 import { durationToHours, toMs } from '../../../utils/date-utils'
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
+import { toHex } from 'web3-utils'
 
 function ChallengeRequirements({ getTransactions, proposal }) {
   const theme = useTheme()
@@ -60,10 +61,10 @@ function ChallengeRequirements({ getTransactions, proposal }) {
         actionId,
         amountBN.toString(10),
         true,
-        '0x'
+        toHex(argument)
       )
     },
-    [next, actionId, getTransactions, settlementAmount, tokenDecimals]
+    [argument, next, actionId, getTransactions, settlementAmount, tokenDecimals]
   )
 
   const handleArgumentChange = useCallback(({ target }) => {
