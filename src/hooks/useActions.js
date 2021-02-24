@@ -16,9 +16,10 @@ import { VOTE_YEA } from '../constants'
 import { encodeFunctionData } from '../utils/web3-utils'
 import BigNumber from '../lib/bigNumber'
 import tokenAbi from '../abi/minimeToken.json'
+import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
-const SETTLE_ACTION_GAS_LIMIT = 700000
+// const SETTLE_ACTION_GAS_LIMIT = 700000
 // const CHALLENGE_ACTION_GAS_LIMIT = 900000
 const DISPUTE_ACTION_GAS_LIMIT = 900000
 
@@ -38,6 +39,8 @@ export default function useActions(onDone) {
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
+
+  const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
   // Conviction voting actions
   const newProposal = useCallback(
@@ -225,14 +228,15 @@ export default function useActions(onDone) {
   }, [account, feeTokenContract, agreementApp])
 
   const settleAction = useCallback(
-    actionId => {
-      sendIntent(agreementApp, 'settleAction', [actionId], {
-        ethers,
-        from: account,
-        gasLimit: SETTLE_ACTION_GAS_LIMIT,
+    async ({ actionId }, onDone = noop) => {
+      const intent = await agreementApp.intent('settleAction', [actionId], {
+        actAs: account,
       })
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, agreementApp, ethers]
+    [account, agreementApp, mounted]
   )
 
   const disputeAction = useCallback(
@@ -271,6 +275,19 @@ export default function useActions(onDone) {
     [account, agreementApp, approveTokens, ethers]
   )
 
+  const getChallenge = useCallback(
+    async challengeId => {
+      if (!agreementContract) {
+        return
+      }
+
+      const challengeData = await agreementContract.getChallenge(challengeId)
+
+      return challengeData
+    },
+    [agreementContract]
+  )
+
   // TODO: Memoize objects
   return {
     convictionActions: {
@@ -292,6 +309,7 @@ export default function useActions(onDone) {
       signAgreement,
       approveChallengeTokenAmount,
       getAllowance,
+      getChallenge,
     },
   }
 }
