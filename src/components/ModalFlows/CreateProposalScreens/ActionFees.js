@@ -75,7 +75,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           flex-direction: row;
           flex-wrap: nowrap;
           width: 100%;
-          margin-top: ${!compactMode ? GU * 3 : 0}px;
+          margin-top: ${(compactMode ? 0 : 3) * GU}px;
         `}
       >
         {!compactMode && (
