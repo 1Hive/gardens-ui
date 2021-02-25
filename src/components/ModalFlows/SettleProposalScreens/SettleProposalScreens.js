@@ -1,35 +1,66 @@
-// import React, { useState, useEffect } from 'react'
-// import PropTypes from 'prop-types'
-// import ModalFlowBase from '../ModalFlowBase'
-// import { useActions } from '../../../hooks/useActions'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import ModalFlowBase from '../ModalFlowBase'
+import SettlementDetails from './SettlementDetails'
 
-// function SettleProposalScreens({ actionId }) {
-//   const { settleDispute } = useActions()
-//   const [transactions, setTransactions] = useState([])
-//   const [loading, setLoading] = useState(true)
+import useActions from '../../../hooks/useActions'
+import { hexToUtf8 } from 'web3-utils'
 
-//   useEffect(() => {
-//     async function getTransactions() {
-//       await settleDispute({ actionId }, (intent) => {
-//         setTransactions(intent.transactions)
-//         setLoading(false)
-//       })
-//     }
+function SettleProposalScreens({ proposal }) {
+  const [transactions, setTransactions] = useState([])
+  const [challengeContext, setChallengeContext] = useState()
+  const { agreementActions } = useActions()
+  const [loading, setLoading] = useState(true)
 
-//     getTransactions()
-//   }, [actionId, settleDispute])
+  useEffect(() => {
+    // we need to do this contract call here to get the challenge because in the agreement connector we don't have a challenge entity
+    // at some point for gardens we might want to have that done on the connector
+    async function getChallengeData() {
+      const challengeData = await agreementActions.getChallenge(
+        proposal.challengeId
+      )
+      setChallengeContext(hexToUtf8(challengeData.context))
+      setLoading(false)
+    }
+    getChallengeData()
+  }, [agreementActions, proposal])
 
-//   return (
-//     <ModalFlowBase
-//       loading={loading}
-//       transactions={transactions}
-//       transactionTitle="Accept settlement"
-//     />
-//   )
-// }
+  const getTransactions = useCallback(
+    async onComplete => {
+      await agreementActions.settleAction(
+        { actionId: proposal.actionId },
+        intent => {
+          setTransactions(intent)
+          onComplete()
+        }
+      )
+    },
+    [proposal, agreementActions]
+  )
 
-// SettleProposalScreens.propTypes = {
-//   actionId: PropTypes.string,
-// }
+  const screens = useMemo(
+    () => [
+      {
+        title: 'Accept settlement offer',
+        content: (
+          <SettlementDetails
+            proposal={proposal}
+            getTransactions={getTransactions}
+            challengeContext={challengeContext}
+          />
+        ),
+      },
+    ],
+    [getTransactions, proposal, challengeContext]
+  )
 
-// export default SettleProposalScreens
+  return (
+    <ModalFlowBase
+      screens={screens}
+      loading={loading}
+      transactions={transactions}
+      transactionTitle="Accept settlement"
+    />
+  )
+}
+
+export default SettleProposalScreens
