@@ -2,7 +2,7 @@ import { getNetworkType, isLocalOrUnknownNetwork } from './utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
-const RINKEBY_HONEY_POT = '0x635714f986a625439f0f74090c01b306683c81ce'
+const RINKEBY_HONEY_POT = '0x9886f4317fe42674d1a9d0cac97aa2cfa69247e1'
 const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
 const INSTANCE = env('INSTANCE')
 
@@ -20,8 +20,8 @@ const networks = {
     type: 'rinkeby',
     defaultEthNode: 'https://rinkeby.eth.aragon.network/',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
-    arbitrator: '0x5b987b7a303894afd23063b02c5ee39e1f02306e',
-    disputeManager: '0x53827b4e3d84d710e45cb1f29af578ab49dbad9d',
+    arbitrator: '0x7Ecb121a56BF92442289Dddb89b28A58640e76F5',
+    disputeManager: '0x152c00cbbfbb395d4c0fccfab386e521f4eaf3f7',
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
