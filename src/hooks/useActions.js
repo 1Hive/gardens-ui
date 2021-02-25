@@ -21,7 +21,7 @@ import agreementAbi from '../abi/agreement.json'
 const GAS_LIMIT = 450000
 // const SETTLE_ACTION_GAS_LIMIT = 700000
 // const CHALLENGE_ACTION_GAS_LIMIT = 900000
-const DISPUTE_ACTION_GAS_LIMIT = 900000
+// const DISPUTE_ACTION_GAS_LIMIT = 900000
 
 export default function useActions(onDone) {
   const { account, ethers } = useWallet()
@@ -152,9 +152,9 @@ export default function useActions(onDone) {
     [account, dandelionVotingApp, ethers]
   )
 
-  const approveTokens = useCallback((contract, spender, value) => {
-    return contract.approve(spender, value)
-  }, [])
+  // const approveTokens = useCallback((contract, spender, value) => {
+  //   return contract.approve(spender, value)
+  // }, [])
 
   // Agreement actions
   const signAgreement = useCallback(
@@ -190,7 +190,7 @@ export default function useActions(onDone) {
   )
 
   const approveChallengeTokenAmount = useCallback(
-    ({ depositAmount }, onDone = noop) => {
+    (depositAmount, onDone = noop) => {
       if (!feeTokenContract || !agreementApp) {
         return
       }
@@ -240,39 +240,20 @@ export default function useActions(onDone) {
   )
 
   const disputeAction = useCallback(
-    async (
-      actionId,
-      submitterFinishedEvidence,
-      feeTokenContract,
-      disputeFee
-    ) => {
-      const allowance = await feeTokenContract.allowance(
-        account,
-        agreementApp.address
-      )
-
-      // Check if requires pre-transactions
-      if (allowance.lt(disputeFee)) {
-        // Some ERC20s don't allow setting a new allowance if the current allowance is positive
-        if (!allowance.eq('0')) {
-          await approveTokens(feeTokenContract, agreementApp.address, '0')
-        }
-
-        await approveTokens(feeTokenContract, agreementApp.address, disputeFee)
-      }
-
-      sendIntent(
-        agreementApp,
+    async ({ actionId, submitterFinishedEvidence }, onDone = noop) => {
+      const intent = await agreementApp.intent(
         'disputeAction',
         [actionId, submitterFinishedEvidence],
         {
-          ethers,
-          from: account,
-          gasLimit: DISPUTE_ACTION_GAS_LIMIT,
+          actAs: account,
         }
       )
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, agreementApp, approveTokens, ethers]
+    [account, agreementApp, mounted]
   )
 
   const getChallenge = useCallback(
