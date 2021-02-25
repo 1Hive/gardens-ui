@@ -75,7 +75,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           flex-direction: row;
           flex-wrap: nowrap;
           width: 100%;
-          margin-top: ${!compactMode ? GU * 3 : 0}px;
+          margin-top: ${(compactMode ? 0 : 3) * GU}px;
         `}
       >
         {!compactMode && (
@@ -113,7 +113,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           css={`
             flex: 0.5;
             align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')}
+            ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
@@ -138,7 +138,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
               text-align: right;
               margin-right: ${compactMode ? GU : 0}px;
               font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')}
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             {formatedAmount} {token.symbol}
