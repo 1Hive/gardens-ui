@@ -138,7 +138,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
               text-align: right;
               margin-right: ${compactMode ? GU : 0}px;
               font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')}
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             {formatedAmount} {token.symbol}
