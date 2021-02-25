@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
-import iconFees from '../../../assets/iconFees.svg'
-import { getDisputableAppByName } from '../../../utils/app-utils'
-import { formatTokenAmount } from '../../../utils/token-utils'
 import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
+import { getDisputableAppByName } from '../../../utils/app-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
+import iconFees from '../../../assets/iconFees.svg'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const tokenRate = useUniswapHnyPrice()
@@ -40,7 +40,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
       >
         <span
           css={`
-            ${compactMode ? textStyle('body3') : textStyle('body2')}
+            ${textStyle('body2')};
           `}
         >
           A deposit is required for your action to be submitted which will be
