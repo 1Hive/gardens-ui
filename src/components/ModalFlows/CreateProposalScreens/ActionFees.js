@@ -113,7 +113,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           css={`
             flex: 0.5;
             align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')}
+            ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
