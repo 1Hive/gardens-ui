@@ -1,24 +1,27 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import BigNumber from '../../../lib/bigNumber'
 import { Button, GU, Info, Slider, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 import { useWallet } from '../../../providers/Wallet'
 
+import { formatTokenAmount } from '../../../utils/token-utils'
+
 import { fromDecimals, round, pct } from '../../../utils/math-utils'
+import BigNumber from '../../../lib/bigNumber'
 
 import honeySvg from '../../../assets/honey.svg'
-import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   id,
-  onDone,
-  onStakeToProposal,
+  getTransactions,
 }) {
   const theme = useTheme()
 
   const { account } = useWallet()
   const { accountBalance, stakeToken } = useAppState()
+  const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
@@ -38,11 +41,15 @@ const SupportProposal = React.memo(function SupportProposal({
     event => {
       event.preventDefault()
 
-      onStakeToProposal(id, amount.toString(10))
-
-      onDone()
+      getTransactions(
+        () => {
+          next()
+        },
+        id,
+        amount.toString(10)
+      )
     },
-    [amount, id, onDone, onStakeToProposal]
+    [amount, id, getTransactions, next]
   )
 
   // Calculate percentages
@@ -173,7 +180,6 @@ const useAmount = (myStake, stakeToken, maxAvailable) => {
 
   const handleSliderChange = useCallback(
     newProgress => {
-      console.log(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
       setSlideValue(newProgress)
       setAmount(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
     },
