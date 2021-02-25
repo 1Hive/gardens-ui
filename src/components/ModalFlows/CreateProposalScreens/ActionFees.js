@@ -98,7 +98,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           css={`
             flex: ${compactMode ? 1 : 2};
             align-self: center;
-            padding: 0 0 0 ${!compactMode ? 2 * GU : 0}px;
+            padding: 0 0 0 ${(compactMode ? 0 : 2) * GU}px;
           `}
         >
           <h3
@@ -120,7 +120,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             css={`
               text-align: ${compactMode ? 'left' : 'right'};
               font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')}
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             ${dollarAmount}
@@ -130,7 +130,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           css={`
             flex: 0.65;
             align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')}
+            ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
@@ -148,7 +148,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
       <div
         css={`
           color: ${theme.contentSecondary};
-          ${textStyle('body4')}
+          ${textStyle('body4')};
           margin-left: ${!compactMode ? GU * 7 : 0}px;
         `}
       >
