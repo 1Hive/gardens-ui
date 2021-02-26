@@ -44,7 +44,7 @@ function CreateProposalRequirements({ agreement, availableStaked }) {
       <InfoField
         label="Action collateral"
         css={`
-          margin-top: 38px;
+          margin-top: ${5 * GU}px;
         `}
       >
         You must stake {formatTokenAmount(actionAmount, token.decimals)} HNY as
@@ -117,7 +117,7 @@ function CollateralStatus({ availableStaked, actionAmount, token }) {
   const history = useHistory()
 
   const goToStakeManager = useCallback(() => {
-    history.push('/agreement')
+    history.push('/stake')
   }, [history])
 
   const infoData = useMemo(() => {

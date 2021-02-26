@@ -1,174 +1,188 @@
-// import React, { useState, useCallback, useMemo } from 'react'
-// import PropTypes from 'prop-types'
-// import {
-//   TextInput,
-//   formatTokenAmount,
-//   Field,
-//   TokenAmount,
-//   textStyle,
-//   useTheme,
-//   GU,
-// } from '@1hive/1hive-ui'
-// import InfoField from '../../InfoField'
-// import ModalButton from '../ModalButton'
-// import { useActions } from '../../../hooks/useActions'
-// import { useMultiModal } from '../../MultiModal/MultiModalProvider'
-// import { useSingleVote } from '../../../hooks/useSingleVote'
-// import HelpTip from '../../HelpTip'
+import React, { useCallback, useMemo } from 'react'
+import { Button, GU, Info, textStyle, useTheme } from '@1hive/1hive-ui'
+import ModalButton from '../ModalButton'
+import InfoField from '../../../components/InfoField'
+import { formatTokenAmount } from '../../../utils/token-utils'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
-// function ChallengeRequirements({ handleSetTransactions }) {
-//   const theme = useTheme()
-//   const { challengeProposal } = useActions()
-//   const [{ collateral, actionId }] = useSingleVote()
-//   const { settlementPeriodHours, token, challengeAmount } = collateral
+import BigNumber from '../../../lib/bigNumber'
+import { getDisputableAppByName } from '../../../utils/app-utils'
 
-//   const [argument, setArgument] = useState('')
-//   const [loading, setLoading] = useState(false)
-//   const { next } = useMultiModal()
+import iconError from '../../../assets/iconError.svg'
+import iconCheck from '../../../assets/iconCheck.svg'
 
-//   const maxChallengeAmount = useMemo(
-//     () => formatTokenAmount(challengeAmount, token.decimals),
-//     [challengeAmount, token.decimals]
-//   )
+function ChallengeProposalRequirements({
+  agreement,
+  accountBalance,
+  disputeFees,
+}) {
+  const { next } = useMultiModal()
+  const { disputableAppsWithRequirements } = agreement
 
-//   const [settlementAmount, setSettlementAmount] = useState(maxChallengeAmount)
+  const convictionAppRequirements = getDisputableAppByName(
+    disputableAppsWithRequirements,
+    'Conviction Voting'
+  )
+  const { challengeAmount, token } = convictionAppRequirements
 
-//   const handleChallengeAction = useCallback(
-//     async (onComplete) => {
-//       await challengeProposal(
-//         {
-//           actionId: actionId,
-//           settlementOffer: settlementAmount,
-//           finishedEvidence: true,
-//           context: '',
-//         },
-//         (intent) => {
-//           // Pass transactions array back to parent component
-//           handleSetTransactions(intent.transactions)
-//           onComplete()
-//         }
-//       )
-//     },
-//     [handleSetTransactions, actionId, challengeProposal, settlementAmount]
-//   )
+  const disputeFeesBN = new BigNumber(disputeFees.amount.toString())
 
-//   const handleSubmit = useCallback(
-//     (event) => {
-//       event.preventDefault()
+  const enoughChallengeCollateral = accountBalance.gte(challengeAmount)
 
-//       setLoading(true)
+  const error = useMemo(() => {
+    return !enoughChallengeCollateral
+  }, [enoughChallengeCollateral])
 
-//       // Proceed to the next screen after transactions have been received
-//       handleChallengeAction(next)
-//     },
-//     [handleChallengeAction, next]
-//   )
+  const handleOnContinue = useCallback(() => {
+    next()
+  }, [next])
 
-//   const handleArgumentChange = useCallback(({ target }) => {
-//     setArgument(target.value)
-//   }, [])
+  return (
+    <div>
+      <InfoField label="Action collateral">
+        You must stake {formatTokenAmount(challengeAmount, token.decimals)}{' '}
+        {token.symbol} as the collateral required to challenge this action. Your
+        wallet balance is {formatTokenAmount(accountBalance, token.decimals)}{' '}
+        {token.symbol}.
+      </InfoField>
+      <CollateralStatus
+        accountBalance={accountBalance}
+        challengeAmount={challengeAmount}
+        token={token}
+      />
+      <InfoField
+        label="Dispute fees"
+        css={`
+          margin-top: ${5 * GU}px;
+        `}
+      >
+        You must deposit {formatTokenAmount(disputeFeesBN, 18)} {token.symbol}{' '}
+        as the dispute fees. This balance will be returned to your account if
+        the submitter accepts your settlement offer or if you win the dispute
+        raised to Celeste.
+      </InfoField>
+      <FeesStatus
+        accountBalance={accountBalance}
+        feesAmount={disputeFeesBN}
+        token={token}
+      />
+      <ModalButton
+        mode="strong"
+        loading={false}
+        onClick={handleOnContinue}
+        disabled={error}
+      >
+        Continue
+      </ModalButton>
+    </div>
+  )
+}
 
-//   const handleSettlementChange = useCallback(({ target }) => {
-//     setSettlementAmount(target.value)
-//   }, [])
+function CollateralStatus({ accountBalance, challengeAmount, token }) {
+  const theme = useTheme()
 
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <InfoField
-//         label={
-//           <>
-//             Settlement Period
-//             <HelpTip type="settlement-period" />
-//           </>
-//         }
-//         css={`
-//           margin-top: ${1 * GU}px;
-//           margin-bottom: ${3.5 * GU}px;
-//         `}
-//       >
-//         <p>
-//           {settlementPeriodHours}{' '}
-//           <span
-//             css={`
-//               color: ${theme.surfaceContentSecondary};
-//             `}
-//           >
-//             Hours
-//           </span>
-//         </p>
-//       </InfoField>
+  const infoData = useMemo(() => {
+    if (accountBalance.gte(challengeAmount)) {
+      return {
+        backgroundColor: '#EBFBF6',
+        color: theme.positive,
+        icon: iconCheck,
+        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
+          challengeAmount,
+          token.decimals
+        )} ${token.symbol} as the challenge collateral.`,
+      }
+    }
 
-//       <Field
-//         label={
-//           <>
-//             Settlement Offer
-//             <HelpTip type="settlement-offer" />
-//           </>
-//         }
-//         css={`
-//           margin-bottom: ${3.5 * GU}px;
-//         `}
-//       >
-//         <TextInput
-//           value={settlementAmount}
-//           min="0"
-//           max={maxChallengeAmount}
-//           type="number"
-//           wide
-//           onChange={handleSettlementChange}
-//           adornment={
-//             <TokenAmount
-//               address={token.id}
-//               symbol={token.symbol}
-//               css={`
-//                 padding: ${0.5 * GU}px;
-//                 padding-right: ${1 * GU}px;
-//                 background-color: ${theme.surface};
-//               `}
-//             />
-//           }
-//           adornmentPosition="end"
-//           adornmentSettings={{ padding: 0.5 * GU }}
-//           required
-//         />
-//         <p
-//           css={`
-//             margin-top: ${1 * GU}px;
-//             color: ${theme.surfaceContentSecondary};
-//             ${textStyle('body3')};
-//           `}
-//         >
-//           This amount cannot be greater than the stake locked for the action
-//           submmission: {maxChallengeAmount} {token.symbol}.
-//         </p>
-//       </Field>
+    return {
+      backgroundColor: theme.negativeSurface,
+      color: theme.negative,
+      icon: iconError,
+      text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
+        challengeAmount,
+        token.decimals
+      )} ${token.symbol} as the challenge collateral.`,
+    }
+  }, [accountBalance, challengeAmount, token, theme])
 
-//       <Field
-//         label="Argument in favour of cancelling action"
-//         css={`
-//           margin-bottom: 0px;
-//         `}
-//       >
-//         <TextInput
-//           multiline
-//           value={argument}
-//           wide
-//           onChange={handleArgumentChange}
-//           required
-//           css={`
-//             min-height: ${15 * GU}px;
-//           `}
-//         />
-//       </Field>
-//       <ModalButton mode="strong" type="submit" loading={loading}>
-//         Create transaction
-//       </ModalButton>
-//     </form>
-//   )
-// }
+  return <InfoBox data={infoData} />
+}
 
-// ChallengeRequirements.propTypes = {
-//   handleSetTransactions: PropTypes.func.isRequired,
-// }
+function FeesStatus({ accountBalance, feesAmount, token }) {
+  const theme = useTheme()
 
-// export default ChallengeRequirements
+  const infoData = useMemo(() => {
+    if (accountBalance.gte(feesAmount)) {
+      return {
+        backgroundColor: '#EBFBF6',
+        color: theme.positive,
+        icon: iconCheck,
+        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
+          feesAmount,
+          token.decimals
+        )} ${token.symbol} as the dispute fees.`,
+      }
+    }
+
+    return {
+      backgroundColor: theme.negativeSurface,
+      color: theme.negative,
+      icon: iconError,
+      text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
+        feesAmount,
+        token.decimals
+      )} ${token.symbol} as the dispute fees.`,
+    }
+  }, [accountBalance, feesAmount, token, theme])
+
+  return <InfoBox data={infoData} />
+}
+
+function InfoBox({ data }) {
+  return (
+    <Info
+      background={data.backgroundColor}
+      borderColor="none"
+      color={data.color}
+      css={`
+        border-radius: ${0.5 * GU}px;
+        margin-top: ${1.5 * GU}px;
+      `}
+    >
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+          ${textStyle('body2')};
+        `}
+      >
+        <img src={data.icon} width="18" height="18" />
+        <span
+          css={`
+            margin-left: ${1.5 * GU}px;
+          `}
+        >
+          {data.text}
+        </span>
+        {data.actionButton && (
+          <div
+            css={`
+              margin-left: auto;
+            `}
+          >
+            <Button
+              css={`
+                border-radius: ${0.5 * GU}px;
+              `}
+              onClick={data.buttonOnClick}
+            >
+              {data.actionButton}
+            </Button>
+          </div>
+        )}
+      </div>
+    </Info>
+  )
+}
+
+export default ChallengeProposalRequirements

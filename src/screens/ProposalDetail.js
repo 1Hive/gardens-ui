@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   BackButton,
@@ -16,6 +16,7 @@ import {
 // Components
 import ActionCollateral from '../components/ActionCollateral'
 import Balance from '../components/Balance'
+import ChallengeProposalScreens from '../components/ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
 import {
   // ConvictionCountdown,
   ConvictionBar,
@@ -24,11 +25,13 @@ import DisputableActionInfo from '../components/DisputableActionInfo'
 import DisputableInfo from '../components/DisputableInfo'
 import DisputeFees from '../components/DisputeFees'
 import IdentityBadge from '../components/IdentityBadge'
+import MultiModal from '../components/MultiModal/MultiModal'
 import ProposalActions from '../components/ProposalDetail/ProposalActions'
 import ProposalIcon from '../components/ProposalIcon'
 import ProposalStatus, {
   getStatusAttributes,
 } from '../components/ProposalDetail/ProposalStatus'
+import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../components/SupportersDistribution'
 
 // Hooks
@@ -57,6 +60,8 @@ function ProposalDetail({
   const history = useHistory()
   const { layoutName } = useLayout()
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
+  const [modalVisible, setModalVisible] = useState(false)
+  const [modalMode, setModalMode] = useState(null)
 
   const { account: connectedAccount } = useWallet()
 
@@ -81,6 +86,11 @@ function ProposalDetail({
   const handleCancelProposal = useCallback(() => {
     actions.cancelProposal(id)
   }, [id, actions])
+
+  const handleShowModal = useCallback(mode => {
+    setModalVisible(true)
+    setModalMode(mode)
+  }, [])
 
   const hasCancelRole = useMemo(() => {
     if (!connectedAccount) {
@@ -312,9 +322,9 @@ function ProposalDetail({
             <div>
               <DisputableActionInfo
                 proposal={proposal}
-                onChallengeAction={actions.challengeAction}
+                onChallengeAction={() => handleShowModal('challenge')}
                 onDisputeAction={actions.disputeAction}
-                onSettleAction={actions.settleAction}
+                onSettleAction={() => handleShowModal('settle')}
               />
               {statusData.open && (
                 <>
@@ -371,6 +381,25 @@ function ProposalDetail({
           onStakeToProposal={convictionActions.stakeToProposal}
         />
       </SidePanel> */}
+      <MultiModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        oonClosed={() => setModalMode(null)}
+      >
+        {modalMode === 'challenge' && (
+          <ChallengeProposalScreens
+            agreementActions={{
+              challengeAction: actions.challengeAction,
+              getAllowance: actions.getAllowance,
+              approveChallengeTokenAmount: actions.approveChallengeTokenAmount,
+            }}
+            proposal={proposal}
+          />
+        )}
+        {modalMode === 'settle' && (
+          <SettleProposalScreens proposal={proposal} />
+        )}
+      </MultiModal>
     </div>
   )
 }
