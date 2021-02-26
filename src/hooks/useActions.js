@@ -152,10 +152,6 @@ export default function useActions(onDone) {
     [account, dandelionVotingApp, ethers]
   )
 
-  // const approveTokens = useCallback((contract, spender, value) => {
-  //   return contract.approve(spender, value)
-  // }, [])
-
   // Agreement actions
   const signAgreement = useCallback(
     async ({ versionId }, onDone = noop) => {

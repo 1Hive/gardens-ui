@@ -19,11 +19,11 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
         const allowance = await stakeActions.getAllowance()
         if (allowance.lt(amount)) {
           if (!allowance.eq(0)) {
-            await stakeActions.approveTokenAmount({ ZERO_BN }, intent => {
+            await stakeActions.approveTokenAmount(ZERO_BN, intent => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             })
           }
-          await stakeActions.approveTokenAmount({ amount }, intent => {
+          await stakeActions.approveTokenAmount(amount, intent => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
