@@ -1,23 +1,30 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, GU, Info, Slider, textStyle, useTheme } from '@1hive/1hive-ui'
-
+import BigNumber from '../../../lib/bigNumber'
+import {
+  Button,
+  ButtonBase,
+  Field,
+  GU,
+  Info,
+  TextInput,
+  useTheme,
+} from '@1hive/1hive-ui'
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
-import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 import { useWallet } from '../../../providers/Wallet'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
+import { toDecimals, round, pct } from '../../../utils/math-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
 
-import { fromDecimals, round, pct } from '../../../utils/math-utils'
-import BigNumber from '../../../lib/bigNumber'
-
-import honeySvg from '../../../assets/honey.svg'
-
 const SupportProposal = React.memo(function SupportProposal({
-  id,
   getTransactions,
 }) {
   const theme = useTheme()
+  const [amount, setAmount] = useState({
+    value: '0',
+    valueBN: new BigNumber('0'),
+  })
 
   const { account } = useWallet()
   const { accountBalance, stakeToken } = useAppState()
@@ -26,31 +33,87 @@ const SupportProposal = React.memo(function SupportProposal({
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
-  const myStake = useMemo(() => {
-    return totalStaked > 0 ? totalStaked.div(accountBalance).toNumber() : 0
-  }, [totalStaked, accountBalance])
+  const handleEditMode = useCallback(
+    editMode => {
+      setAmount(amount => {
+        const newValue = amount.valueBN.gte(0)
+          ? formatTokenAmount(
+              amount.valueBN,
+              stakeToken.decimals,
+              false,
+              false,
+              {
+                commas: !editMode,
+                replaceZeroBy: editMode ? '' : '0',
+                rounding: stakeToken.decimals,
+              }
+            )
+          : ''
 
-  const [slideValue, amount, handleSliderChange] = useAmount(
-    myStake,
-    stakeToken,
-    accountBalance
+        return {
+          ...amount,
+          value: newValue,
+        }
+      })
+    },
+    [stakeToken]
   )
+
+  // Amount change handler
+  const handleAmountChange = useCallback(
+    event => {
+      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
+
+      const newAmountBN = new BigNumber(
+        isNaN(event.target.value)
+          ? -1
+          : toDecimals(newAmount, stakeToken.decimals)
+      )
+
+      setAmount({
+        value: newAmount,
+        valueBN: newAmountBN,
+      })
+    },
+    [stakeToken]
+  )
+
+  const handleMaxSelected = useCallback(() => {
+    setAmount({
+      valueBN: nonStakedTokens,
+      value: formatTokenAmount(
+        nonStakedTokens,
+        stakeToken.decimals,
+        false,
+        false,
+        { commas: false, rounding: stakeToken.decimals }
+      ),
+    })
+  }, [nonStakedTokens, stakeToken])
 
   // Form submit handler
   const handleSubmit = useCallback(
     event => {
       event.preventDefault()
 
-      getTransactions(
-        () => {
-          next()
-        },
-        id,
-        amount.toString(10)
-      )
+      getTransactions(() => {
+        next()
+      }, amount.valueBN.toString(10))
     },
-    [amount, id, getTransactions, next]
+    [amount, getTransactions, next]
   )
+
+  const errorMessage = useMemo(() => {
+    if (amount.valueBN.eq(new BigNumber(-1))) {
+      return 'Invalid amount'
+    }
+
+    if (amount.valueBN.gt(nonStakedTokens)) {
+      return 'Insufficient balance'
+    }
+
+    return null
+  }, [amount, nonStakedTokens])
 
   // Calculate percentages
   const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
@@ -58,78 +121,49 @@ const SupportProposal = React.memo(function SupportProposal({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3
+      <Field
+        label="amount"
         css={`
-          ${textStyle('body3')}
+          margin-top: ${2 * GU}px;
         `}
       >
-        This action will modify the amount of tokens locked with this proposal.
-        The token weight backing the proposal will increase over time from 0 up
-        to the max amount specified.
-      </h3>
-      <h5
-        css={`
-          ${textStyle('body4')}
-          color: ${theme.surfaceContentSecondary};
-          margin-top: ${GU * 3.75}px;
-        `}
-      >
-        AMOUNT OF YOUR TOKENS FOR THIS PROPOSAL
-      </h5>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          margin-top: ${GU * 2.5}px;
-          margin-bottom: ${GU * 2.5}px;
-        `}
-      >
-        <img
-          src={honeySvg}
-          height="30"
-          width="30"
-          alt=""
-          css={`
-            margin-right: ${0.7 * GU}px;
-            cursor: pointer;
-          `}
+        <TextInput
+          value={amount.value}
+          onChange={handleAmountChange}
+          onFocus={() => handleEditMode(true)}
+          onBlur={() => handleEditMode(false)}
+          wide
+          adornment={
+            <ButtonBase
+              css={`
+                margin-right: ${1 * GU}px;
+                color: ${theme.accent};
+              `}
+              onClick={handleMaxSelected}
+            >
+              MAX
+            </ButtonBase>
+          }
+          adornmentPosition="end"
         />
-        <span
+      </Field>
+      <Button
+        label="Support this proposal"
+        wide
+        type="submit"
+        mode="strong"
+        disabled={amount.valueBN.eq(new BigNumber(0)) || Boolean(errorMessage)}
+      />
+      {errorMessage && (
+        <Info
+          mode="warning"
           css={`
-            ${textStyle('body3')}
-            color: ${theme.surfaceContent};
+            margin-top: ${2 * GU}px;
           `}
         >
-          HNY
-        </span>
-        <Slider
-          css={`
-            width: 100%;
-            margin-left: ${2 * GU}px;
-          `}
-          value={slideValue}
-          onUpdate={handleSliderChange}
-        />
-        <span
-          css={`
-            ${textStyle('body3')}
-            width: ${GU * 19.5}px;
-            color: ${theme.surfaceContent};
-          `}
-        >
-          {round(slideValue * 100, 0)}%
-          <span
-            css={`
-              ${textStyle('body4')}
-              margin-left: ${GU * 0.5}px;;
-              color: ${theme.surfaceContentSecondary};
-            `}
-          >
-            ({formatTokenAmount(amount, stakeToken.decimals)}
-            {''} HNY)
-          </span>
-        </span>
-      </div>
+          {errorMessage}
+        </Info>
+      )}
       <Info
         css={`
           margin-top: ${2 * GU}px;
@@ -141,52 +175,19 @@ const SupportProposal = React.memo(function SupportProposal({
           {stakeToken.symbol}
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
-        {totalStaked.gt(0) === false && (
+        {totalStaked.gt(0) && (
           <span>
             You are supporting other proposals with{' '}
             <strong>
               {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
+              tokens
             </strong>{' '}
             ({stakedPct}% of your balance).
           </span>
         )}
       </Info>
-      <Button
-        css={`
-          margin-top: ${GU * 3}px;
-        `}
-        label="Support this proposal"
-        wide
-        type="submit"
-        mode="strong"
-      />
     </form>
   )
 })
-
-const useAmount = (myStake, stakeToken, maxAvailable) => {
-  const [slideValue, setSlideValue] = useState(
-    myStake &&
-      fromDecimals(
-        myStake
-          .div(maxAvailable)
-          .div(100)
-          .toString(),
-        stakeToken.decimals
-      )
-  )
-
-  const [amount, setAmount] = useState(BigNumber(myStake))
-
-  const handleSliderChange = useCallback(
-    newProgress => {
-      setSlideValue(newProgress)
-      setAmount(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
-    },
-    [maxAvailable]
-  )
-
-  return [slideValue, amount, handleSliderChange]
-}
 
 export default SupportProposal

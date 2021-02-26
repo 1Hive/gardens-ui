@@ -314,7 +314,7 @@ function ProposalDetail({
                   <ProposalActions
                     proposal={proposal}
                     onExecuteProposal={actions.executeProposal}
-                    onRequestSupportProposal={() => setMiltiModalVisible(true)}
+                    onRequestSupportProposal={() => handleShowModal('support')}
                     onStakeToProposal={actions.stakeToProposal}
                     onWithdrawFromProposal={actions.withdrawFromProposal}
                   />
@@ -402,6 +402,9 @@ function ProposalDetail({
           <SettleProposalScreens proposal={proposal} />
         )}
         {modalMode === 'raise' && <RaiseDisputeScreens proposal={proposal} />}
+        {modalMode === 'support' && (
+          <SupportProposalScreens proposal={proposal} mode={modalMode} />
+        )}
       </MultiModal>
     </div>
   )
