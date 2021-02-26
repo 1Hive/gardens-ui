@@ -21,13 +21,19 @@ function BalanceCard({
   tokenSymbol,
   onDepositOrWithdraw,
 }) {
-  const [allowLockManager, setAllowLockManager] = useState(allowance.gt(0))
+  const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
   const theme = useTheme()
   const tokenRate = useUniswapHnyPrice()
 
   const allowManagerDisabled = useMemo(() => {
-    return locked.gt(0)
-  }, [locked])
+    if (!allowLockManager) {
+      return false
+    }
+    if (locked.gt(0)) {
+      return true
+    }
+    return false
+  }, [allowLockManager, locked])
 
   const handleOnDeposit = useCallback(() => {
     onDepositOrWithdraw('deposit')

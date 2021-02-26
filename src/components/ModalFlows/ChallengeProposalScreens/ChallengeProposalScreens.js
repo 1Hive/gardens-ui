@@ -39,14 +39,14 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
       if (allowance.lt(depositAmount)) {
         if (!allowance.eq(0)) {
           await agreementActions.approveChallengeTokenAmount(
-            { ZERO_BN },
+            ZERO_BN,
             intent => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
         await agreementActions.approveChallengeTokenAmount(
-          { depositAmount },
+          depositAmount,
           intent => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
@@ -100,7 +100,9 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
   return (
     <ModalFlowBase
       frontLoad
-      loading={!disputeFees.token || loading || disputeFees.loading}
+      loading={
+        !disputeFees.token || loading || disputeFees.loading || !depositAmount
+      }
       transactions={transactions}
       transactionTitle="Challenge proposal"
       screens={screens}

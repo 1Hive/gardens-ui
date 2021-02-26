@@ -31,6 +31,7 @@ import ProposalIcon from '../components/ProposalIcon'
 import ProposalStatus, {
   getStatusAttributes,
 } from '../components/ProposalDetail/ProposalStatus'
+import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../components/SupportersDistribution'
 
@@ -323,7 +324,7 @@ function ProposalDetail({
               <DisputableActionInfo
                 proposal={proposal}
                 onChallengeAction={() => handleShowModal('challenge')}
-                onDisputeAction={actions.disputeAction}
+                onDisputeAction={() => handleShowModal('raise')}
                 onSettleAction={() => handleShowModal('settle')}
               />
               {statusData.open && (
@@ -399,6 +400,7 @@ function ProposalDetail({
         {modalMode === 'settle' && (
           <SettleProposalScreens proposal={proposal} />
         )}
+        {modalMode === 'raise' && <RaiseDisputeScreens proposal={proposal} />}
       </MultiModal>
     </div>
   )

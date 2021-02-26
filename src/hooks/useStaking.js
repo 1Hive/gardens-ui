@@ -13,6 +13,8 @@ import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
 import minimeTokenAbi from '../abi/minimeToken.json'
 
+// import { formatTokenAmount } from '../utils/token-utils'
+
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 
 export function useStaking() {
@@ -149,7 +151,7 @@ export function useStaking() {
 
   useEffect(() => {
     async function fetchStakingBalance() {
-      const { staked } = await stakingContract.getBalancesOf(account)
+      const { staked, locked } = await stakingContract.getBalancesOf(account)
       const stakedBN = new BigNumber(staked.toString())
       const { allowance } = await stakingContract.getLock(
         account,
@@ -157,10 +159,12 @@ export function useStaking() {
       )
 
       const allowanceBN = new BigNumber(allowance.toString())
+      const lockedBN = new BigNumber(locked.toString())
+      const availableBN = stakedBN.minus(lockedBN)
 
       if (mounted()) {
         if (
-          !stakeManagement.staking.total.eq(stakedBN) ||
+          !stakedBN.eq(stakeManagement.staking.total) ||
           reFetchTotalBalance
         ) {
           setStakeManagement(stakeManagement => {
@@ -169,7 +173,8 @@ export function useStaking() {
               staking: {
                 ...stakeManagement.staking,
                 total: stakedBN,
-                available: stakedBN,
+                available: availableBN,
+                locked: lockedBN,
                 allowance: allowanceBN,
               },
             }
@@ -188,9 +193,15 @@ export function useStaking() {
           })
         }
       }
+
       setLoadingStakingDataFromContract(false)
     }
-    if (stakingContract && stakeManagement && connectedAgreementApp) {
+    if (
+      stakingContract &&
+      stakeManagement &&
+      connectedAgreementApp &&
+      !loading
+    ) {
       fetchStakingBalance()
     }
   }, [
@@ -200,6 +211,7 @@ export function useStaking() {
     stakeManagement,
     reFetchTotalBalance,
     connectedAgreementApp,
+    loading,
   ])
 
   const stake = useCallback(
@@ -257,7 +269,7 @@ export function useStaking() {
   )
 
   const approveTokenAmount = useCallback(
-    async ({ amount }, onDone = noop) => {
+    async (amount, onDone = noop) => {
       if (!stakeManagement && tokenContract) {
         return
       }
