@@ -23,7 +23,7 @@ const GAS_LIMIT = 450000
 // const CHALLENGE_ACTION_GAS_LIMIT = 900000
 // const DISPUTE_ACTION_GAS_LIMIT = 900000
 
-export default function useActions(onDone) {
+export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
@@ -74,9 +74,9 @@ export default function useActions(onDone) {
         from: account,
       })
 
-      onDone()
+      // onDone()
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, ethers]
   )
 
   const stakeToProposal = useCallback(
@@ -110,10 +110,10 @@ export default function useActions(onDone) {
         { ethers, from: account }
       )
 
-      onDone()
+      // onDone()
     },
 
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, ethers]
   )
 
   const executeProposal = useCallback(
@@ -123,9 +123,9 @@ export default function useActions(onDone) {
         from: account,
       })
 
-      onDone()
+      // onDone()
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, ethers]
   )
 
   // Issuance actions
