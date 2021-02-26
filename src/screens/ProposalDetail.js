@@ -34,6 +34,7 @@ import ProposalStatus, {
 import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../components/SupportersDistribution'
+import SupportProposalScreens from '../components/ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
 import { useWallet } from '../providers/Wallet'
@@ -79,6 +80,8 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  const [miltiModalVisible, setMiltiModalVisible] = useState(false)
 
   const handleBack = useCallback(() => {
     history.push('/home')
@@ -311,7 +314,7 @@ function ProposalDetail({
                   <ProposalActions
                     proposal={proposal}
                     onExecuteProposal={actions.executeProposal}
-                    // onRequestSupportProposal={panelState.requestOpen}
+                    onRequestSupportProposal={() => setMiltiModalVisible(true)}
                     onStakeToProposal={actions.stakeToProposal}
                     onWithdrawFromProposal={actions.withdrawFromProposal}
                   />
@@ -371,17 +374,15 @@ function ProposalDetail({
           }
         />
       </div>
-      {/* <SidePanel
-        title="Support this proposal"
-        opened={panelState.visible}
-        onClose={panelState.requestClose}
+      <MultiModal
+        visible={miltiModalVisible}
+        onClose={() => setMiltiModalVisible(false)}
       >
-        <SupportProposalPanel
+        <SupportProposalScreens
           id={id}
-          onDone={panelState.requestClose}
-          onStakeToProposal={convictionActions.stakeToProposal}
+          onStakeToProposal={actions.stakeToProposal}
         />
-      </SidePanel> */}
+      </MultiModal>
       <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
