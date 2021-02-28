@@ -26,7 +26,7 @@ function CreateProposalScreens() {
           title,
           link,
           amount: convertedAmount,
-          stableRequestAmount: false,
+          stableRequestAmount: amount.stable,
           beneficiary: beneficiary || ZERO_ADDR,
         },
         intent => {
