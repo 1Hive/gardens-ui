@@ -34,6 +34,7 @@ import ProposalStatus, {
 import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../components/SupportersDistribution'
+import SupportProposalScreens from '../components/ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
 import { useWallet } from '../providers/Wallet'
@@ -82,6 +83,8 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  const [miltiModalVisible, setMiltiModalVisible] = useState(false)
 
   const handleBack = useCallback(() => {
     history.push('/home')
@@ -317,7 +320,8 @@ function ProposalDetail({
                   <ProposalActions
                     proposal={proposal}
                     onExecuteProposal={actions.executeProposal}
-                    // onRequestSupportProposal={panelState.requestOpen}
+                    onRequestSupportProposal={() => handleShowModal('support')}
+                    onChangeSupport={() => handleShowModal('update')}
                     onStakeToProposal={actions.stakeToProposal}
                     onWithdrawFromProposal={actions.withdrawFromProposal}
                   />
@@ -378,6 +382,15 @@ function ProposalDetail({
         />
       </div>
       <MultiModal
+        visible={miltiModalVisible}
+        onClose={() => setMiltiModalVisible(false)}
+      >
+        <SupportProposalScreens
+          id={id}
+          onStakeToProposal={actions.stakeToProposal}
+        />
+      </MultiModal>
+      <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         oonClosed={() => setModalMode(null)}
@@ -396,6 +409,9 @@ function ProposalDetail({
           <SettleProposalScreens proposal={proposal} />
         )}
         {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+        {(modalMode === 'support' || modalMode === 'update') && (
+          <SupportProposalScreens proposal={proposal} mode={modalMode} />
+        )}
       </MultiModal>
     </div>
   )

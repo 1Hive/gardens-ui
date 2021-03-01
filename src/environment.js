@@ -1,5 +1,3 @@
-import { getNetwork } from './networks'
-
 // rinkeby
 const DEFAULT_CHAIN_ID = 100
 const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
@@ -22,9 +20,6 @@ const ENV_VARS = {
   },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
-  },
-  ORG_ADDRESS() {
-    return process.env.REACT_APP_ORG_ADDRESS || getNetwork().honeypot
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME

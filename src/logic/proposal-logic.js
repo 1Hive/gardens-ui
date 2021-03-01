@@ -1,6 +1,5 @@
 import useActions from '../hooks/useActions'
 import { useAppState } from '../providers/AppState'
-import usePanelState from '../hooks/usePanelState'
 import { useProposal } from '../hooks/useProposals'
 
 export default function useProposalLogic(match) {
@@ -19,8 +18,7 @@ export default function useProposalLogic(match) {
     ? config?.voting.id.slice(0, 42)
     : config?.conviction.id
 
-  const panelState = usePanelState()
-  const actions = useActions(panelState.requestClose)
+  const actions = useActions()
   const [proposal, blockHasLoaded, loadingProposal] = useProposal(
     proposalId,
     appAddress

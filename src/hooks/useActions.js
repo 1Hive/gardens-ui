@@ -23,7 +23,7 @@ const GAS_LIMIT = 450000
 // const CHALLENGE_ACTION_GAS_LIMIT = 900000
 // const DISPUTE_ACTION_GAS_LIMIT = 900000
 
-export default function useActions(onDone) {
+export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
@@ -74,41 +74,49 @@ export default function useActions(onDone) {
         from: account,
       })
 
-      onDone()
+      // onDone()
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, ethers]
   )
 
   const stakeToProposal = useCallback(
-    (proposalId, amount) => {
-      sendIntent(convictionVotingApp, 'stakeToProposal', [proposalId, amount], {
-        ethers,
-        from: account,
-      })
+    async ({ proposalId, amount }, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'stakeToProposal',
+        [proposalId, amount],
+        {
+          actAs: account,
+        }
+      )
 
-      onDone()
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, mounted]
   )
 
   const withdrawFromProposal = useCallback(
-    (proposalId, amount) => {
+    async ({ proposalId, amount }, onDone = noop) => {
       const params = [proposalId]
       if (amount) {
         params.push(amount)
       }
 
-      sendIntent(
-        convictionVotingApp,
+      const intent = await convictionVotingApp.intent(
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
-        { ethers, from: account }
+        {
+          actAs: account,
+        }
       )
 
-      onDone()
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
 
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, mounted]
   )
 
   const executeProposal = useCallback(
@@ -118,9 +126,9 @@ export default function useActions(onDone) {
         from: account,
       })
 
-      onDone()
+      // onDone()
     },
-    [account, convictionVotingApp, ethers, onDone]
+    [account, convictionVotingApp, ethers]
   )
 
   // Issuance actions

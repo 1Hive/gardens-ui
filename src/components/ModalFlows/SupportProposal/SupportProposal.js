@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import BigNumber from '../../lib/bigNumber'
+import BigNumber from '../../../lib/bigNumber'
 import {
   Button,
   ButtonBase,
@@ -7,20 +7,18 @@ import {
   GU,
   Info,
   TextInput,
-  useSidePanelFocusOnReady,
   useTheme,
 } from '@1hive/1hive-ui'
-import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../providers/AppState'
-import { useWallet } from '../../providers/Wallet'
+import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
+import { useAppState } from '../../../providers/AppState'
+import { useWallet } from '../../../providers/Wallet'
+import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
-import { toDecimals, round, pct } from '../../utils/math-utils'
-import { formatTokenAmount } from '../../utils/token-utils'
+import { toDecimals, round, pct } from '../../../utils/math-utils'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
-  id,
-  onDone,
-  onStakeToProposal,
+  getTransactions,
 }) {
   const theme = useTheme()
   const [amount, setAmount] = useState({
@@ -29,8 +27,8 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const inputRef = useSidePanelFocusOnReady()
   const { accountBalance, stakeToken } = useAppState()
+  const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
@@ -98,11 +96,11 @@ const SupportProposal = React.memo(function SupportProposal({
     event => {
       event.preventDefault()
 
-      onStakeToProposal(id, amount.valueBN.toString(10))
-
-      onDone()
+      getTransactions(() => {
+        next()
+      }, amount.valueBN.toString(10))
     },
-    [amount, id, onDone, onStakeToProposal]
+    [amount, getTransactions, next]
   )
 
   const errorMessage = useMemo(() => {
@@ -135,7 +133,6 @@ const SupportProposal = React.memo(function SupportProposal({
           onFocus={() => handleEditMode(true)}
           onBlur={() => handleEditMode(false)}
           wide
-          ref={inputRef}
           adornment={
             <ButtonBase
               css={`
