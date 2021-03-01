@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
+  Checkbox,
   Field,
   GU,
   Info,
   isAddress,
   Link,
+  LoadingRing,
   MEDIUM_RADIUS,
   TextInput,
   textStyle,
@@ -15,13 +17,12 @@ import {
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
+import useRequestAmount from '../../../hooks/useRequestAmount'
 
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '../../../lib/conviction'
-
-// import { ZERO_ADDR } from '../../../constants'
 
 const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 
@@ -33,6 +34,7 @@ const DEFAULT_FORM_DATA = {
   link: '',
   proposalType: SIGNALING_PROPOSAL,
   amount: {
+    stable: false,
     value: '0',
     valueBN: new BigNumber(0),
   },
@@ -42,11 +44,11 @@ const DEFAULT_FORM_DATA = {
 const PROPOSAL_TYPES = ['Signaling proposal', 'Funding proposal']
 
 const AddProposalPanel = React.memo(({ setProposalData }) => {
-  const theme = useTheme()
   const { next } = useMultiModal()
   const {
     config,
     requestToken,
+    stableToken,
     stakeToken,
     effectiveSupply,
     vaultBalance,
@@ -88,6 +90,13 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     [stakeToken]
   )
 
+  const handleIsStableChange = useCallback(checked => {
+    setFormData(formData => ({
+      ...formData,
+      amount: { ...formData.amount, stable: checked },
+    }))
+  }, [])
+
   const handleTitleChange = useCallback(event => {
     const updatedTitle = event.target.value
     setFormData(formData => ({ ...formData, title: updatedTitle }))
@@ -106,6 +115,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       setFormData(formData => ({
         ...formData,
         amount: {
+          ...formData.amount,
           value: updatedAmount,
           valueBN: newAmountBN,
         },
@@ -132,27 +142,17 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     setFormData(formData => ({ ...formData, link: updatedLink }))
   }, [])
 
-  //   const handleFormSubmit = useCallback(
-  //     event => {
-  //       event.preventDefault()
-
-  //       const { amount, beneficiary, link, title } = formData
-  //       const convertedAmount = amount.valueBN.toString(10)
-
-  //       onSubmit({
-  //         title,
-  //         link,
-  //         amount: convertedAmount,
-  //         beneficiary: beneficiary || ZERO_ADDR,
-  //       })
-  //     },
-  //     [formData, onSubmit]
-  //   )
-
   const handleOnContinue = useCallback(() => {
     setProposalData(formData)
     next()
   }, [formData, next, setProposalData])
+
+  const [requestAmount, loadingRequestAmount] = useRequestAmount(
+    formData.amount.stable,
+    formData.amount.valueBN,
+    stableToken.id,
+    requestToken.id
+  )
 
   const errors = useMemo(() => {
     const errors = []
@@ -177,7 +177,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
 
   const neededThreshold = useMemo(() => {
     const threshold = calculateThreshold(
-      formData.amount.valueBN,
+      requestAmount,
       vaultBalance,
       effectiveSupply,
       alpha,
@@ -188,11 +188,11 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     const max = getMaxConviction(effectiveSupply, alpha)
 
     return Math.round((threshold / max) * 100)
-  }, [alpha, formData.amount, maxRatio, effectiveSupply, vaultBalance, weight])
+  }, [alpha, requestAmount, maxRatio, effectiveSupply, vaultBalance, weight])
 
   const submitDisabled =
     (formData.proposalType === FUNDING_PROPOSAL &&
-      (formData.amount.value === '0' || !formData.beneficiary)) ||
+      (formData.amount.valueBN.eq(0) || !formData.beneficiary)) ||
     !formData.title ||
     !formData.link ||
     errors.length > 0
@@ -253,32 +253,17 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       </Field>
       {requestToken && fundingMode && (
         <>
-          <Field
-            label="Requested Amount"
-            onFocus={() => handleAmountEditMode(true)}
+          <RequestedAmount
+            amount={formData.amount}
+            convertedAmount={requestAmount}
+            loadingAmount={loadingRequestAmount}
+            onAmountChange={handleAmountChange}
             onBlur={() => handleAmountEditMode(false)}
-          >
-            <TextInput
-              value={formData.amount.value}
-              onChange={handleAmountChange}
-              required
-              wide
-              adornment={
-                <span
-                  css={`
-                    background: ${theme.background};
-                    border-left: 1px solid ${theme.border};
-                    border-radius: 0px ${MEDIUM_RADIUS}px ${MEDIUM_RADIUS}px 0px;
-                    padding: 7px ${1.5 * GU}px;
-                  `}
-                >
-                  {requestToken.symbol}
-                </span>
-              }
-              adornmentPosition="end"
-              adornmentSettings={{ padding: 1 }}
-            />
-          </Field>
+            onIsStableChange={handleIsStableChange}
+            onFocus={() => handleAmountEditMode(true)}
+            requestToken={requestToken}
+            stableToken={stableToken}
+          />
           <Field label="Beneficiary">
             <TextInput
               onChange={handleBeneficiaryChange}
@@ -378,5 +363,114 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     </form>
   )
 })
+
+function RequestedAmount({
+  amount,
+  convertedAmount,
+  loadingAmount,
+  onAmountChange,
+  onBlur,
+  onFocus,
+  onIsStableChange,
+  requestToken,
+  stableToken,
+}) {
+  const theme = useTheme()
+  const { stable, value } = amount
+
+  return (
+    <>
+      <Field label="Requested Amount" onFocus={onFocus} onBlur={onBlur}>
+        <TextInput
+          value={value}
+          onChange={onAmountChange}
+          required
+          wide
+          adornment={
+            <span
+              css={`
+                background: ${theme.background};
+                border-left: 1px solid ${theme.border};
+                border-radius: 0px ${MEDIUM_RADIUS}px ${MEDIUM_RADIUS}px 0px;
+                padding: 7px ${1.5 * GU}px;
+              `}
+            >
+              {stable ? stableToken.symbol : requestToken.symbol}
+            </span>
+          }
+          adornmentPosition="end"
+          adornmentSettings={{ padding: 1 }}
+        />
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: ${theme.contentSecondary};
+            margin-top: ${0.75 * GU}px;
+          `}
+        >
+          {stable ? (
+            <ConvertedAmount
+              amount={convertedAmount}
+              loading={loadingAmount}
+              requestToken={requestToken}
+            />
+          ) : (
+            <div />
+          )}
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <Checkbox checked={stable} onChange={onIsStableChange} />
+            <span>Stable amount ({stableToken.symbol})</span>
+          </div>
+        </div>
+      </Field>
+      <Info
+        css={`
+          margin-bottom: ${3 * GU}px;
+        `}
+      >
+        If you specify the proposal amount in {stableToken.symbol} it will be
+        converted to {requestToken.symbol} at time of execution
+      </Info>
+    </>
+  )
+}
+
+function ConvertedAmount({ amount, loading, requestToken }) {
+  const theme = useTheme()
+
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+        color: ${theme.content};
+        font-weight: bold;
+      `}
+    >
+      <span
+        css={`
+          margin-right: ${0.5 * GU}px;
+        `}
+      >
+        ≈
+      </span>
+      {loading ? (
+        <LoadingRing />
+      ) : (
+        <span>
+          {formatTokenAmount(amount, requestToken.decimals)}{' '}
+          {requestToken.symbol}
+        </span>
+      )}
+    </div>
+  )
+}
 
 export default AddProposalPanel

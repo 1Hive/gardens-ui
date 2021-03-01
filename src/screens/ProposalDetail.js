@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   GU,
-  // Info,
+  Help,
   Link,
   Split,
   textStyle,
@@ -56,6 +56,7 @@ function ProposalDetail({
   actions,
   permissions,
   requestToken,
+  stableToken,
   vaultBalance,
 }) {
   const theme = useTheme()
@@ -74,9 +75,11 @@ function ProposalDetail({
     beneficiary,
     link,
     requestedAmount,
+    requestedAmountConverted,
+    stable,
     stakes = [],
-    totalTokensStaked,
     statusData,
+    totalTokensStaked,
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
@@ -196,7 +199,7 @@ function ProposalDetail({
                         This proposal is requesting{' '}
                         <strong>
                           {formatTokenAmount(
-                            requestedAmount,
+                            requestedAmountConverted,
                             requestToken.decimals
                           )}
                         </strong>{' '}
@@ -212,7 +215,7 @@ function ProposalDetail({
                     ) : (
                       <span>
                         This suggestion is for signaling purposes and is not
-                        requesting any Honey
+                        requesting any {requestToken.name}
                       </span>
                     )}
                   </div>
@@ -252,7 +255,10 @@ function ProposalDetail({
                   {fundingProposal && (
                     <Amount
                       requestedAmount={requestedAmount}
+                      requestedAmountConverted={requestedAmountConverted}
                       requestToken={requestToken}
+                      stable={stable}
+                      stableToken={stableToken}
                     />
                   )}
 
@@ -328,7 +334,7 @@ function ProposalDetail({
               <DisputableActionInfo
                 proposal={proposal}
                 onChallengeAction={() => handleShowModal('challenge')}
-                onDisputeAction={() => handleShowModal('raise')}
+                onDisputeAction={() => handleShowModal('dispute')}
                 onSettleAction={() => handleShowModal('settle')}
               />
               {statusData.open && (
@@ -402,7 +408,7 @@ function ProposalDetail({
         {modalMode === 'settle' && (
           <SettleProposalScreens proposal={proposal} />
         )}
-        {modalMode === 'raise' && <RaiseDisputeScreens proposal={proposal} />}
+        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
         {(modalMode === 'support' || modalMode === 'update') && (
           <SupportProposalScreens proposal={proposal} mode={modalMode} />
         )}
@@ -412,11 +418,16 @@ function ProposalDetail({
 }
 
 const Amount = ({
-  requestedAmount = 0,
-  requestToken: { symbol, decimals, verified },
+  requestedAmount,
+  requestedAmountConverted,
+  requestToken,
+  stable,
+  stableToken,
 }) => {
+  const theme = useTheme()
   const signalingProposal = requestedAmount.eq(0)
-  const tokenIcon = getTokenIconBySymbol(symbol)
+  const primaryToken = stable ? stableToken : requestToken
+  const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
   return (
     <DataField
       label={!signalingProposal && 'Request Amount'}
@@ -440,13 +451,45 @@ const Amount = ({
             </span>
           </div>
         ) : (
-          <Balance
-            amount={requestedAmount}
-            decimals={decimals}
-            symbol={symbol}
-            verified={verified}
-            icon={tokenIcon}
-          />
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <Balance
+              amount={requestedAmount}
+              decimals={primaryToken.decimals}
+              symbol={primaryToken.symbol}
+              icon={tokenIcon}
+            />
+            {stable && (
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  color: ${theme.contentSecondary};
+                  margin-left: ${0.5 * GU}px;
+                `}
+              >
+                <span>≈</span>
+                <span
+                  css={`
+                    margin: 0px ${0.5 * GU}px;
+                  `}
+                >
+                  {formatTokenAmount(
+                    requestedAmountConverted,
+                    requestToken.decimals
+                  )}{' '}
+                  {requestToken.symbol}
+                </span>
+                <Help hint="">
+                  Converted to {requestToken.name} at time of execution
+                </Help>
+              </div>
+            )}
+          </div>
         )
       }
     />

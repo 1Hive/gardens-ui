@@ -10,8 +10,8 @@ import { useStakingState } from '../../../providers/Staking'
 import { ZERO_ADDR } from '../../../constants'
 
 function CreateProposalScreens() {
-  const [agreement, loading] = useAgreement()
-  const { stakeManagement } = useStakingState()
+  const [agreement, agreementLoading] = useAgreement()
+  const { stakeManagement, loading: stakingLoading } = useStakingState()
   const [proposalData, setProposalData] = useState()
   const [transactions, setTransactions] = useState([])
   const { convictionActions } = useActions()
@@ -20,13 +20,14 @@ function CreateProposalScreens() {
     async onComplete => {
       const { amount, beneficiary, link, title } = proposalData
       const convertedAmount = amount.valueBN.toString(10)
+      const isStable = amount.stable
 
       await convictionActions.newProposal(
         {
           title,
           link,
           amount: convertedAmount,
-          stableRequestAmount: false,
+          stableRequestAmount: isStable,
           beneficiary: beneficiary || ZERO_ADDR,
         },
         intent => {
@@ -39,39 +40,42 @@ function CreateProposalScreens() {
   )
 
   const screens = useMemo(
-    () => [
-      {
-        title: 'Submit action requirements',
-        graphicHeader: false,
-        content: (
-          <CreateProposalRequirements
-            agreement={agreement}
-            availableStaked={stakeManagement.staking.available}
-          />
-        ),
-      },
-      {
-        title: 'Create post',
-        graphicHeader: true,
-        content: <AddProposal setProposalData={setProposalData} />,
-      },
-      {
-        title: 'Action fees',
-        graphicHeader: false,
-        content: (
-          <ActionFees
-            agreement={agreement}
-            onCreateTransaction={getTransactions}
-          />
-        ),
-      },
-    ],
-    [agreement, getTransactions, stakeManagement.staking.available]
+    () =>
+      stakingLoading
+        ? []
+        : [
+            {
+              title: 'Submit action requirements',
+              graphicHeader: false,
+              content: (
+                <CreateProposalRequirements
+                  agreement={agreement}
+                  availableStaked={stakeManagement.staking.available}
+                />
+              ),
+            },
+            {
+              title: 'Create post',
+              graphicHeader: true,
+              content: <AddProposal setProposalData={setProposalData} />,
+            },
+            {
+              title: 'Action fees',
+              graphicHeader: false,
+              content: (
+                <ActionFees
+                  agreement={agreement}
+                  onCreateTransaction={getTransactions}
+                />
+              ),
+            },
+          ],
+    [agreement, getTransactions, stakingLoading, stakeManagement]
   )
   return (
     <ModalFlowBase
       frontLoad
-      loading={loading}
+      loading={agreementLoading || stakingLoading}
       transactions={transactions}
       transactionTitle="Create transaction"
       screens={screens}

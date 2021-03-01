@@ -10,14 +10,15 @@ import {
   useProposalSubscription,
   useProposalsSubscription,
 } from './useSubscriptions'
+import useRequestAmount from './useRequestAmount'
 import { useWallet } from '../providers/Wallet'
 
 import {
-  calculateThreshold,
   getCurrentConviction,
   getCurrentConvictionByEntity,
   getConvictionTrend,
   getMaxConviction,
+  calculateThreshold,
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
@@ -63,10 +64,9 @@ export function useProposals() {
 }
 
 function useFilteredProposals(filters, account, latestBlock) {
-  const blockTime = useBlockTime()
   const myStakes = useAccountStakes(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
+  const { config, effectiveSupply, isLoading } = useAppState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -82,23 +82,12 @@ function useFilteredProposals(filters, account, latestBlock) {
         : processProposal(
             proposal,
             latestBlock,
-            blockTime,
             effectiveSupply,
-            vaultBalance,
             account,
             config?.conviction
           )
     )
-  }, [
-    account,
-    blockTime,
-    config,
-    effectiveSupply,
-    isLoading,
-    latestBlock,
-    proposals,
-    vaultBalance,
-  ])
+  }, [account, config, effectiveSupply, isLoading, latestBlock, proposals])
 
   const filteredProposals = useMemo(
     () =>
@@ -135,8 +124,7 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const blockTime = useBlockTime()
-  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
+  const { config, effectiveSupply, isLoading } = useAppState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -150,9 +138,7 @@ export function useProposal(proposalId, appAddress) {
       : processProposal(
           proposal,
           latestBlock,
-          blockTime,
           effectiveSupply,
-          vaultBalance,
           account,
           config?.conviction
         )
@@ -160,24 +146,93 @@ export function useProposal(proposalId, appAddress) {
   return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
+export function useProposalWithThreshold(proposal) {
+  const {
+    config,
+    effectiveSupply,
+    requestToken,
+    stableToken,
+    vaultBalance,
+  } = useAppState()
+  const { alpha, maxRatio, weight } = config.conviction || {}
+  const { requestedAmount, totalTokensStaked, stable, type } = proposal
+
+  const [requestAmount, loadingRequestAmount] = useRequestAmount(
+    stable,
+    requestedAmount,
+    stableToken.id,
+    requestToken.id
+  )
+
+  let threshold,
+    neededConviction,
+    minTokensNeeded,
+    neededTokens,
+    remainingBlocksToPass
+
+  // Funding proposal needed values
+  if (type === ProposalTypes.Proposal) {
+    threshold = calculateThreshold(
+      requestAmount,
+      vaultBalance || new BigNumber('0'),
+      effectiveSupply || new BigNumber('0'),
+      alpha,
+      maxRatio,
+      weight
+    )
+
+    neededConviction = threshold?.div(proposal.maxConviction)
+    minTokensNeeded = getMinNeededStake(threshold, alpha)
+    neededTokens = minTokensNeeded.minus(totalTokensStaked)
+    remainingBlocksToPass = getRemainingTimeToPass(
+      threshold,
+      proposal.currentConviction,
+      totalTokensStaked,
+      alpha
+    )
+  }
+
+  return [
+    {
+      ...proposal,
+      neededConviction,
+      neededTokens,
+      minTokensNeeded,
+      remainingBlocksToPass,
+      requestedAmountConverted: requestAmount,
+      threshold,
+    },
+    loadingRequestAmount,
+  ]
+}
+
+export function useProposalEndDate(proposal) {
+  const blockTime = useBlockTime()
+  const latestBlock = useLatestBlock()
+  const { type, remainingBlocksToPass } = proposal
+
+  let endDate = 0
+  if (type === ProposalTypes.Proposal)
+    if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
+      const latestBlockTimestampMs = latestBlock.timestamp * 1000
+      const blockTimeInMs = blockTime * 1000
+      endDate = new Date(
+        latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
+      )
+    }
+
+  return endDate
+}
+
 function processProposal(
   proposal,
   latestBlock,
-  blockTime,
   effectiveSupply,
-  vaultBalance,
   account,
   config
 ) {
-  const { alpha, maxRatio, weight } = config || {}
-  const { requestedAmount, stakesHistory, totalTokensStaked } = proposal
-
-  let endDate
-  let minTokensNeeded = null
-  let neededConviction = null
-  let neededTokens = null
-  let remainingBlocksToPass = null
-  let threshold = null
+  const { alpha } = config || {}
+  const { stakesHistory, totalTokensStaked } = proposal
 
   const maxConviction = getMaxConviction(
     effectiveSupply || new BigNumber('0'),
@@ -208,36 +263,6 @@ function processProposal(
     TIME_UNIT
   )
 
-  // Funding proposal needed values
-  if (requestedAmount.gt(0)) {
-    threshold = calculateThreshold(
-      requestedAmount,
-      vaultBalance || new BigNumber('0'),
-      effectiveSupply || new BigNumber('0'),
-      alpha,
-      maxRatio,
-      weight
-    )
-
-    neededConviction = threshold?.div(maxConviction)
-    minTokensNeeded = getMinNeededStake(threshold, alpha)
-    neededTokens = minTokensNeeded.minus(totalTokensStaked)
-    remainingBlocksToPass = getRemainingTimeToPass(
-      threshold,
-      currentConviction,
-      totalTokensStaked,
-      alpha
-    )
-
-    if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
-      const latestBlockTimestampMs = latestBlock.timestamp * 1000
-      const blockTimeInMs = blockTime * 1000
-      endDate = new Date(
-        latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
-      )
-    }
-  }
-
   const hasEnded = hasProposalEnded(proposal.status, proposal.challengeEndDate)
   const statusData = getProposalStatusData(proposal)
 
@@ -245,17 +270,12 @@ function processProposal(
     ...proposal,
     convictionTrend,
     currentConviction,
-    endDate,
     futureConviction,
     futureStakedConviction,
     hasEnded,
     maxConviction,
-    minTokensNeeded,
-    neededConviction,
-    neededTokens,
     stakedConviction,
     statusData,
-    threshold,
     userConviction,
     userStakedConviction,
   }
