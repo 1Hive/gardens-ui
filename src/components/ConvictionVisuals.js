@@ -144,7 +144,6 @@ export function ConvictionCountdown({ proposal, shorter }) {
     threshold,
   } = proposal
   const endDate = useProposalEndDate(proposal)
-  console.log('endDAte', endDate)
 
   const view = useMemo(() => {
     if (status === PROPOSAL_STATUS_EXECUTED_STRING) {
