@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useAppState } from '../providers/AppState'
-import { useContract } from './useContract'
+import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
 import BigNumber from '../lib/bigNumber'
 
 import priceOracleAbi from '../abi/priceOracle.json'
 
-export default function useRequestedAmount(stable, amount, tokenIn, tokenOut) {
+export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
   const [convertedAmount, setConvertedAmount] = useState(new BigNumber(0))
   const [loading, setLoading] = useState(false)
 
@@ -15,7 +15,10 @@ export default function useRequestedAmount(stable, amount, tokenIn, tokenOut) {
   const { config } = useAppState()
   const priceOracleAddress = config.conviction.stableTokenOracle
 
-  const priceOracleContract = useContract(priceOracleAddress, priceOracleAbi)
+  const priceOracleContract = useContractReadOnly(
+    priceOracleAddress,
+    priceOracleAbi
+  )
 
   useEffect(() => {
     if (!stable || !priceOracleContract) {

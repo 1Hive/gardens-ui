@@ -17,7 +17,7 @@ import {
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
-import useRequestedAmount from '../../../hooks/useRequestedAmount'
+import useRequestAmount from '../../../hooks/useRequestAmount'
 
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
@@ -48,11 +48,12 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   const {
     config,
     requestToken,
+    stableToken,
     stakeToken,
     effectiveSupply,
     vaultBalance,
   } = useAppState()
-  const { alpha, maxRatio, stableToken, weight } = config.conviction
+  const { alpha, maxRatio, weight } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
@@ -146,7 +147,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     next()
   }, [formData, next, setProposalData])
 
-  const [convertedAmount, loadingRequestedAmount] = useRequestedAmount(
+  const [requestAmount, loadingRequestAmount] = useRequestAmount(
     formData.amount.stable,
     formData.amount.valueBN,
     stableToken.id,
@@ -176,7 +177,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
 
   const neededThreshold = useMemo(() => {
     const threshold = calculateThreshold(
-      convertedAmount,
+      requestAmount,
       vaultBalance,
       effectiveSupply,
       alpha,
@@ -187,7 +188,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     const max = getMaxConviction(effectiveSupply, alpha)
 
     return Math.round((threshold / max) * 100)
-  }, [alpha, convertedAmount, maxRatio, effectiveSupply, vaultBalance, weight])
+  }, [alpha, requestAmount, maxRatio, effectiveSupply, vaultBalance, weight])
 
   const submitDisabled =
     (formData.proposalType === FUNDING_PROPOSAL &&
@@ -254,8 +255,8 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
         <>
           <RequestedAmount
             amount={formData.amount}
-            convertedAmount={convertedAmount}
-            loadingAmount={loadingRequestedAmount}
+            convertedAmount={requestAmount}
+            loadingAmount={loadingRequestAmount}
             onAmountChange={handleAmountChange}
             onBlur={() => handleAmountEditMode(false)}
             onIsStableChange={handleIsStableChange}
