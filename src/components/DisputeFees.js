@@ -21,7 +21,7 @@ function DisputeFees({ proposal }) {
           margin-bottom: ${2 * GU}px;
         `}
       >
-        Dispute fees
+        Celeste Dispute Fee
       </h2>
 
       {fees.loading ? (

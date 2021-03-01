@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
+  Checkbox,
   Field,
   GU,
   Info,
@@ -33,6 +34,7 @@ const DEFAULT_FORM_DATA = {
   link: '',
   proposalType: SIGNALING_PROPOSAL,
   amount: {
+    stable: false,
     value: '0',
     valueBN: new BigNumber(0),
   },
@@ -51,7 +53,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     effectiveSupply,
     vaultBalance,
   } = useAppState()
-  const { alpha, maxRatio, weight } = config.conviction
+  const { alpha, maxRatio, stableToken, weight } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
@@ -87,6 +89,13 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     },
     [stakeToken]
   )
+
+  const handleIsStableChange = useCallback(checked => {
+    setFormData(formData => ({
+      ...formData,
+      amount: { ...formData.amount, stable: checked },
+    }))
+  }, [])
 
   const handleTitleChange = useCallback(event => {
     const updatedTitle = event.target.value
@@ -131,23 +140,6 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     const updatedLink = event.target.value
     setFormData(formData => ({ ...formData, link: updatedLink }))
   }, [])
-
-  //   const handleFormSubmit = useCallback(
-  //     event => {
-  //       event.preventDefault()
-
-  //       const { amount, beneficiary, link, title } = formData
-  //       const convertedAmount = amount.valueBN.toString(10)
-
-  //       onSubmit({
-  //         title,
-  //         link,
-  //         amount: convertedAmount,
-  //         beneficiary: beneficiary || ZERO_ADDR,
-  //       })
-  //     },
-  //     [formData, onSubmit]
-  //   )
 
   const handleOnContinue = useCallback(() => {
     setProposalData(formData)
@@ -272,13 +264,38 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
                     padding: 7px ${1.5 * GU}px;
                   `}
                 >
-                  {requestToken.symbol}
+                  {formData.amount.stable
+                    ? stableToken.symbol
+                    : requestToken.symbol}
                 </span>
               }
               adornmentPosition="end"
               adornmentSettings={{ padding: 1 }}
             />
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                color: ${theme.contentSecondary};
+                margin-top: ${0.75 * GU}px;
+              `}
+            >
+              <Checkbox
+                checked={formData.amount.stable}
+                onChange={handleIsStableChange}
+              />
+              <span>Stable amount ({stableToken.symbol})</span>
+            </div>
           </Field>
+          <Info
+            css={`
+              margin-bottom: ${3 * GU}px;
+            `}
+          >
+            If you specify the proposal amount in {stableToken.symbol} it will
+            be converted to {requestToken.symbol} at time of execution
+          </Info>
           <Field label="Beneficiary">
             <TextInput
               onChange={handleBeneficiaryChange}

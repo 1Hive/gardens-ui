@@ -154,7 +154,7 @@ function InfoBox({ data }) {
     <Info
       background={data.backgroundColor}
       borderColor="none"
-      color={data.color}
+      color={data.color.toString()}
       css={`
         border-radius: ${0.5 * GU}px;
         margin-top: ${1.5 * GU}px;
