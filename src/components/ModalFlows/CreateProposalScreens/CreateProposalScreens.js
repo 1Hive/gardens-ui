@@ -20,13 +20,14 @@ function CreateProposalScreens() {
     async onComplete => {
       const { amount, beneficiary, link, title } = proposalData
       const convertedAmount = amount.valueBN.toString(10)
+      const isStable = amount.stable
 
       await convictionActions.newProposal(
         {
           title,
           link,
           amount: convertedAmount,
-          stableRequestAmount: amount.stable,
+          stableRequestAmount: isStable,
           beneficiary: beneficiary || ZERO_ADDR,
         },
         intent => {
