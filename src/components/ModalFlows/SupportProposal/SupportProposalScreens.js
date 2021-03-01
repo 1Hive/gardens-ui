@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
-// import ChangeSupport from './ChangeSupport'
+import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
 
 import useActions from '../../../hooks/useActions'
@@ -13,7 +13,20 @@ function SupportProposalScreens({ proposal, mode, onStakeToProposal }) {
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
-      if (mode === 'support') {
+      await convictionActions.stakeToProposal(
+        { proposalId, amount },
+        intent => {
+          setTransactions(intent)
+          onComplete()
+        }
+      )
+    },
+    [convictionActions, proposalId]
+  )
+
+  const getChangeSupportTransactions = useCallback(
+    async (onComplete, changeMode, amount) => {
+      if (changeMode === 'stake') {
         await convictionActions.stakeToProposal(
           { proposalId, amount },
           intent => {
@@ -22,8 +35,17 @@ function SupportProposalScreens({ proposal, mode, onStakeToProposal }) {
           }
         )
       }
+      if (changeMode === 'withdraw') {
+        await convictionActions.withdrawFromProposal(
+          { proposalId, amount },
+          intent => {
+            setTransactions(intent)
+            onComplete()
+          }
+        )
+      }
     },
-    [convictionActions, mode, proposalId]
+    [convictionActions, proposalId]
   )
 
   const screens = useMemo(() => {
@@ -36,7 +58,21 @@ function SupportProposalScreens({ proposal, mode, onStakeToProposal }) {
         },
       ]
     }
-  }, [getTransactions, mode])
+    if (mode === 'update') {
+      return [
+        {
+          title: 'Change support',
+          graphicHeader: false,
+          content: (
+            <ChangeSupport
+              getTransactions={getChangeSupportTransactions}
+              proposal={proposal}
+            />
+          ),
+        },
+      ]
+    }
+  }, [getTransactions, getChangeSupportTransactions, mode, proposal])
 
   return (
     <ModalFlowBase

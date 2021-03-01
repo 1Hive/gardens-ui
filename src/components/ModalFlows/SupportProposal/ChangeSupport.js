@@ -1,5 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, GU, Info, Slider, textStyle, useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  Button,
+  ButtonBase,
+  GU,
+  Field,
+  Info,
+  TextInput,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
@@ -7,14 +16,14 @@ import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 import { useWallet } from '../../../providers/Wallet'
 
 import { formatTokenAmount } from '../../../utils/token-utils'
+import { addressesEqual } from '../../../utils/web3-utils'
 
-import { fromDecimals, round, pct } from '../../../utils/math-utils'
+import { fromDecimals, pct, round, toDecimals } from '../../../utils/math-utils'
 import BigNumber from '../../../lib/bigNumber'
 
-import honeySvg from '../../../assets/honey.svg'
-
-const ChangeSupport = React.memo(function SupportProposal({
-  id,
+// TODO - leaving this screen instead of doing the support and the change support in the same screen just in case fiore wants to change something
+const ChangeSupport = React.memo(function ChangeSupport({
+  proposal,
   getTransactions,
 }) {
   const theme = useTheme()
@@ -23,34 +32,114 @@ const ChangeSupport = React.memo(function SupportProposal({
   const { accountBalance, stakeToken } = useAppState()
   const { next } = useMultiModal()
 
+  const [amount, setAmount] = useState({
+    value: '0',
+    valueBN: new BigNumber('0'),
+  })
+
+  const { stakes } = proposal
+
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
-  const myStake = useMemo(() => {
-    return totalStaked > 0 ? totalStaked.div(accountBalance).toNumber() : 0
-  }, [totalStaked, accountBalance])
-
-  const [slideValue, amount, handleSliderChange] = useAmount(
-    myStake,
-    stakeToken,
-    accountBalance
+  const myStake = useMemo(
+    () =>
+      stakes.find(({ entity }) => addressesEqual(entity.id, account)) || {
+        amount: new BigNumber('0'),
+      },
+    [stakes, account]
   )
+
+  const maxAvailable = useMemo(
+    () => accountBalance.minus(totalStaked).plus(myStake.amount),
+    [myStake.amount, accountBalance, totalStaked]
+  )
+
+  useEffect(() => {
+    if (myStake.amount) {
+      setAmount({
+        value: fromDecimals(myStake.amount.toString(), stakeToken.decimals),
+        valueBN: myStake.amount,
+      })
+    }
+  }, [myStake.amount, stakeToken.decimals])
+
+  // Amount change handler
+  const handleAmountChange = useCallback(
+    event => {
+      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
+
+      const newAmountBN = new BigNumber(
+        isNaN(event.target.value)
+          ? -1
+          : toDecimals(newAmount, stakeToken.decimals)
+      )
+
+      setAmount({
+        value: newAmount,
+        valueBN: newAmountBN,
+      })
+    },
+    [stakeToken]
+  )
+
+  const handleMaxSelected = useCallback(() => {
+    setAmount({
+      valueBN: maxAvailable,
+      value: formatTokenAmount(
+        maxAvailable,
+        stakeToken.decimals,
+        false,
+        false,
+        { commas: false, rounding: stakeToken.decimals }
+      ),
+    })
+  }, [maxAvailable, stakeToken])
 
   // Form submit handler
   const handleSubmit = useCallback(
     event => {
       event.preventDefault()
 
+      if (amount.valueBN.lt(myStake.amount)) {
+        getTransactions(
+          () => {
+            next()
+          },
+          'withdraw',
+          myStake.amount
+            .minus(amount.valueBN)
+            .integerValue()
+            .toString(10)
+        )
+        return
+      }
+
       getTransactions(
         () => {
           next()
         },
-        id,
-        amount.toString(10)
+        'stake',
+        amount.valueBN
+          .minus(myStake.amount)
+          .integerValue()
+          .toString(10)
       )
     },
-    [amount, id, getTransactions, next]
+    [amount, getTransactions, myStake.amount, next]
   )
+
+  const errorMessage = useMemo(() => {
+    if (amount.valueBN.eq(new BigNumber(-1))) {
+      return 'Invalid amount'
+    }
+
+    if (amount.valueBN.gt(maxAvailable)) {
+      return 'Insufficient balance'
+    }
+
+    return null
+  }, [amount, maxAvailable])
 
   // Calculate percentages
   const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
@@ -67,69 +156,41 @@ const ChangeSupport = React.memo(function SupportProposal({
         The token weight backing the proposal will increase over time from 0 up
         to the max amount specified.
       </h3>
-      <h5
+      <Field
+        label="amount"
         css={`
-          ${textStyle('body4')}
-          color: ${theme.surfaceContentSecondary};
-          margin-top: ${GU * 3.75}px;
+          margin-top: ${2 * GU}px;
         `}
       >
-        AMOUNT OF YOUR TOKENS FOR THIS PROPOSAL
-      </h5>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          margin-top: ${GU * 2.5}px;
-          margin-bottom: ${GU * 2.5}px;
-        `}
-      >
-        <img
-          src={honeySvg}
-          height="30"
-          width="30"
-          alt=""
-          css={`
-            margin-right: ${0.7 * GU}px;
-            cursor: pointer;
-          `}
+        <TextInput
+          value={amount.value}
+          type="number"
+          onChange={handleAmountChange}
+          wide
+          adornment={
+            <ButtonBase
+              css={`
+                margin-right: ${1 * GU}px;
+                color: ${theme.accent};
+              `}
+              onClick={handleMaxSelected}
+            >
+              MAX
+            </ButtonBase>
+          }
+          adornmentPosition="end"
         />
-        <span
+      </Field>
+      {errorMessage && (
+        <Info
+          mode="warning"
           css={`
-            ${textStyle('body3')}
-            color: ${theme.surfaceContent};
+            margin-top: ${2 * GU}px;
           `}
         >
-          HNY
-        </span>
-        <Slider
-          css={`
-            width: 100%;
-            margin-left: ${2 * GU}px;
-          `}
-          value={slideValue}
-          onUpdate={handleSliderChange}
-        />
-        <span
-          css={`
-            ${textStyle('body3')}
-            width: ${GU * 19.5}px;
-            color: ${theme.surfaceContent};
-          `}
-        >
-          {round(slideValue * 100, 0)}%
-          <span
-            css={`
-              ${textStyle('body4')}
-              margin-left: ${GU * 0.5}px;;
-              color: ${theme.surfaceContentSecondary};
-            `}
-          >
-            ({formatTokenAmount(amount, stakeToken.decimals)}
-            {''} HNY)
-          </span>
-        </span>
-      </div>
+          {errorMessage}
+        </Info>
+      )}
       <Info
         css={`
           margin-top: ${2 * GU}px;
@@ -155,38 +216,18 @@ const ChangeSupport = React.memo(function SupportProposal({
         css={`
           margin-top: ${GU * 3}px;
         `}
-        label="Support this proposal"
+        label={
+          amount.value.toString() === '0'
+            ? 'Withdraw support'
+            : 'Change support'
+        }
         wide
         type="submit"
         mode="strong"
+        disabled={Boolean(errorMessage) || amount.valueBN.eq(myStake.amount)}
       />
     </form>
   )
 })
-
-const useAmount = (myStake, stakeToken, maxAvailable) => {
-  const [slideValue, setSlideValue] = useState(
-    myStake &&
-      fromDecimals(
-        myStake
-          .div(maxAvailable)
-          .div(100)
-          .toString(),
-        stakeToken.decimals
-      )
-  )
-
-  const [amount, setAmount] = useState(BigNumber(myStake))
-
-  const handleSliderChange = useCallback(
-    newProgress => {
-      setSlideValue(newProgress)
-      setAmount(BigNumber.sum(amount, maxAvailable.multipliedBy(newProgress)))
-    },
-    [maxAvailable]
-  )
-
-  return [slideValue, amount, handleSliderChange]
-}
 
 export default ChangeSupport

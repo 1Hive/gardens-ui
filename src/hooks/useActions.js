@@ -97,23 +97,26 @@ export default function useActions() {
   )
 
   const withdrawFromProposal = useCallback(
-    (proposalId, amount) => {
+    async ({ proposalId, amount }, onDone = noop) => {
       const params = [proposalId]
       if (amount) {
         params.push(amount)
       }
 
-      sendIntent(
-        convictionVotingApp,
+      const intent = await convictionVotingApp.intent(
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
-        { ethers, from: account }
+        {
+          actAs: account,
+        }
       )
 
-      // onDone()
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
 
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp, mounted]
   )
 
   const executeProposal = useCallback(
