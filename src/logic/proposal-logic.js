@@ -12,6 +12,7 @@ export default function useProposalLogic(match) {
     isLoading,
     permissions,
     requestToken,
+    stableToken,
     vaultBalance,
   } = useAppState()
   const appAddress = path.includes('vote')
@@ -28,10 +29,10 @@ export default function useProposalLogic(match) {
   return {
     actions,
     isLoading: isLoading || !blockHasLoaded || loadingProposal,
-    panelState,
     permissions,
     proposal,
     requestToken,
+    stableToken,
     vaultBalance,
   }
 }

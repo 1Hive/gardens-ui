@@ -59,7 +59,7 @@ function SignOverview({ getTransactions }) {
       </label>
       <Field label="Agreement action collateral">
         <p>
-          In order perform or challenge actions bound by this Agreement, you
+          In order to perform or challenge actions bound by this Agreement, you
           must deposit some HNY as the action collateral first. Different apps
           might require different tokens and amounts as the action collateral.
         </p>
