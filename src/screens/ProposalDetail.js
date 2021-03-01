@@ -17,10 +17,7 @@ import {
 import ActionCollateral from '../components/ActionCollateral'
 import Balance from '../components/Balance'
 import ChallengeProposalScreens from '../components/ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
-import {
-  // ConvictionCountdown,
-  ConvictionBar,
-} from '../components/ConvictionVisuals'
+import { ConvictionBar } from '../components/ConvictionVisuals'
 import DisputableActionInfo from '../components/DisputableActionInfo'
 import DisputableInfo from '../components/DisputableInfo'
 import DisputeFees from '../components/DisputeFees'

@@ -15,7 +15,7 @@ const NETWORK_TIMES = new Map([
 
 export function useLatestBlock(updateEvery = 1000) {
   const { ethers } = useWallet()
-  const [block, setBlock] = useState({ number: 0, timeStamp: 0 })
+  const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
   const fetchBlock = useCallback(async () => {
     const { number, timestamp } = ethers

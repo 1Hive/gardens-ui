@@ -15,6 +15,7 @@ import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
 import { useAppState } from '../providers/AppState'
+import { useProposalEndDate } from '../hooks/useProposals'
 import { useWallet } from '../providers/Wallet'
 
 import BigNumber from '../lib/bigNumber'
@@ -141,8 +142,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
     neededTokens,
     status,
     threshold,
-    endDate,
   } = proposal
+  const endDate = useProposalEndDate(proposal)
+  console.log('endDAte', endDate)
 
   const view = useMemo(() => {
     if (status === PROPOSAL_STATUS_EXECUTED_STRING) {
