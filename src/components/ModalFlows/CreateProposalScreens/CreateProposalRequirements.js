@@ -11,9 +11,10 @@ import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
 
-function CreateProposalRequirements({ agreement, availableStaked }) {
+function CreateProposalRequirements({ agreement, staking }) {
   const { disputableAppsWithRequirements, signedLatest } = agreement
   const { next } = useMultiModal()
+  const { available: availableStaked, allowance } = staking
 
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
@@ -21,10 +22,11 @@ function CreateProposalRequirements({ agreement, availableStaked }) {
   )
   const { token, actionAmount } = convictionAppRequirements
   const enoughCollateral = availableStaked.gte(actionAmount)
+  const enoughAllowance = allowance.gt(0)
 
   const error = useMemo(() => {
-    return !signedLatest || !enoughCollateral
-  }, [enoughCollateral, signedLatest])
+    return !signedLatest || !enoughCollateral || !enoughAllowance
+  }, [enoughAllowance, enoughCollateral, signedLatest])
 
   const handleOnContinue = useCallback(() => {
     next()
@@ -53,6 +55,7 @@ function CreateProposalRequirements({ agreement, availableStaked }) {
         {token.symbol}.
       </InfoField>
       <CollateralStatus
+        allowance={allowance}
         availableStaked={availableStaked}
         actionAmount={actionAmount}
         token={token}
@@ -112,7 +115,7 @@ function AgreementStatus({ agreement }) {
   return <InfoBox data={infoData} />
 }
 
-function CollateralStatus({ availableStaked, actionAmount, token }) {
+function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -121,30 +124,41 @@ function CollateralStatus({ availableStaked, actionAmount, token }) {
   }, [history])
 
   const infoData = useMemo(() => {
-    if (availableStaked.gte(actionAmount)) {
+    if (!availableStaked.gte(actionAmount)) {
       return {
-        backgroundColor: '#EBFBF6',
-        color: theme.positive,
-        icon: iconCheck,
-        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
+        backgroundColor: theme.negativeSurface,
+        color: theme.negative,
+        icon: iconError,
+        text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
           actionAmount,
           token.decimals
         )} ${token.symbol} as the action collateral.`,
+        actionButton: 'Stake collateral',
+        buttonOnClick: goToStakeManager,
+      }
+    }
+
+    if (!allowance.gt(0)) {
+      return {
+        backgroundColor: theme.negativeSurface,
+        color: theme.negative,
+        icon: iconError,
+        text: `You need to allow the Agreement as the lock manager of your staked HNY`,
+        actionButton: 'Stake management',
+        buttonOnClick: goToStakeManager,
       }
     }
 
     return {
-      backgroundColor: theme.negativeSurface,
-      color: theme.negative,
-      icon: iconError,
-      text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
+      backgroundColor: '#EBFBF6',
+      color: theme.positive,
+      icon: iconCheck,
+      text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
         actionAmount,
         token.decimals
       )} ${token.symbol} as the action collateral.`,
-      actionButton: 'Stake collateral',
-      buttonOnClick: goToStakeManager,
     }
-  }, [availableStaked, actionAmount, token, goToStakeManager, theme])
+  }, [allowance, availableStaked, actionAmount, token, goToStakeManager, theme])
 
   return <InfoBox data={infoData} />
 }
