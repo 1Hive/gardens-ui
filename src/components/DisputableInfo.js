@@ -12,6 +12,7 @@ import { formatTokenAmount } from '../utils/token-utils'
 import celesteStarIconSvg from '../assets/icon-celeste-star.svg'
 import coinsIconSvg from '../assets/icon-coins.svg'
 import { ProposalTypes } from '../types'
+import { getNetwork } from '../networks'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -69,7 +70,7 @@ function ProposalChallengedInfo({ proposal }) {
                 as the action collateral. You can manage your deposit balances
                 in{' '}
               </span>
-              <Link href="#/profile" external={false}>
+              <Link href="#/stake" external={false}>
                 Stake Management
               </Link>
               .
@@ -101,6 +102,7 @@ function ProposalChallengedInfo({ proposal }) {
 function ProposalDisputedInfo({ proposal }) {
   const theme = useTheme()
   const { account } = useWallet()
+  const celesteUrl = getNetwork().celesteUrl
 
   const isSubmitter = addressesEqual(proposal.creator, account)
   const isChallenger = addressesEqual(proposal.challenger, account)
@@ -126,8 +128,10 @@ function ProposalDisputedInfo({ proposal }) {
               >
                 You can follow the process in{' '}
               </span>
-              <Link href="celeste.1hive.org">Celeste Dashboard</Link>.
-              {/* TODO: Update link when available */}
+              <Link href={`${celesteUrl}/questions/${proposal.disputeId}`}>
+                Celeste Dashboard
+              </Link>
+              .
             </div>
           }
           iconSrc={celesteStarIconSvg}
