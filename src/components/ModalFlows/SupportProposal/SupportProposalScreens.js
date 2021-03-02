@@ -5,7 +5,7 @@ import SupportProposal from './SupportProposal'
 
 import useActions from '../../../hooks/useActions'
 
-function SupportProposalScreens({ proposal, mode, onStakeToProposal }) {
+function SupportProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
   const { convictionActions } = useActions()
 
