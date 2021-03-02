@@ -25,13 +25,14 @@ const networks = {
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
+      celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org',
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
     legacyNetworkType: 'rinkeby',
   },
   xdai: {
-    // TODO: Add Dispute manager and arbitrator addresses, as well as agreement subgraph url
+    // TODO: Add Dispute manager and arbitrator addresses, as well as agreement subgraph and celeste subgraph urls
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     name: 'xDai',

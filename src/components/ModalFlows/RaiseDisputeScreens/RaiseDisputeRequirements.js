@@ -1,17 +1,18 @@
 import React, { useCallback, useMemo } from 'react'
 import { Button, GU, Info, textStyle, useTheme } from '@1hive/1hive-ui'
-import ModalButton from '../ModalButton'
 import InfoField from '../../../components/InfoField'
-import { formatTokenAmount } from '../../../utils/token-utils'
+import ModalButton from '../ModalButton'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 import BigNumber from '../../../lib/bigNumber'
+import { formatTokenAmount } from '../../../utils/token-utils'
 
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
 
 function RaiseDisputeRequirements({
   accountBalance,
+  celesteSynced,
   disputeFees,
   getTransactions,
 }) {
@@ -35,11 +36,21 @@ function RaiseDisputeRequirements({
         outcome is to allow the action.
       </InfoField>
       <FeesStatus accountBalance={accountBalance} feesAmount={disputeFeesBN} />
+      <div
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
+      >
+        <InfoField label="Celeste status">
+          Celeste's term must be up to date in order to dispute this action.
+        </InfoField>
+        <CelesteSyncedStatus synced={celesteSynced} />
+      </div>
       <ModalButton
         mode="strong"
         loading={false}
         onClick={handleOnCreateDispute}
-        disabled={!enoughDisputeFees}
+        disabled={!enoughDisputeFees || !celesteSynced}
       >
         Create dispute
       </ModalButton>
@@ -54,7 +65,7 @@ function FeesStatus({ accountBalance, feesAmount }) {
     if (accountBalance.gte(feesAmount)) {
       return {
         backgroundColor: '#EBFBF6',
-        color: theme.positive,
+        color: theme.positive.toString(),
         icon: iconCheck,
         text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
           feesAmount,
@@ -64,8 +75,8 @@ function FeesStatus({ accountBalance, feesAmount }) {
     }
 
     return {
-      backgroundColor: theme.negativeSurface,
-      color: theme.negative,
+      backgroundColor: theme.negativeSurface.toString(),
+      color: theme.negative.toString(),
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
         feesAmount,
@@ -73,6 +84,30 @@ function FeesStatus({ accountBalance, feesAmount }) {
       )} HNY as the dispute fees.`,
     }
   }, [accountBalance, feesAmount, theme])
+
+  return <InfoBox data={infoData} />
+}
+
+function CelesteSyncedStatus({ synced }) {
+  const theme = useTheme()
+
+  const infoData = useMemo(() => {
+    if (synced) {
+      return {
+        backgroundColor: '#EBFBF6',
+        color: theme.positive.toString(),
+        icon: iconCheck,
+        text: `Celeste is Synced!`,
+      }
+    }
+
+    return {
+      backgroundColor: theme.negativeSurface.toString(),
+      color: theme.negative.toString(),
+      icon: iconError,
+      text: `Celeste is not synced, head over to the dashboard and update the term.`, // TODO: Add link
+    }
+  }, [synced, theme])
 
   return <InfoBox data={infoData} />
 }

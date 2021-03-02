@@ -2,17 +2,19 @@ import React, { useState, useCallback, useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
-import useActions from '../../../hooks/useActions'
-import { useDisputeFees } from '../../../hooks/useDispute'
-import { useAppState } from '../../../providers/AppState'
-import BigNumber from '../../../lib/bigNumber'
-import { toDecimals } from '../../../utils/math-utils'
 
-const ZERO_BN = new BigNumber(toDecimals('0', 18))
+import useActions from '../../../hooks/useActions'
+import { useAppState } from '../../../providers/AppState'
+import { useDisputeFees } from '../../../hooks/useDispute'
+import { useCelesteSynced } from '../../../hooks/useCeleste'
+import BigNumber from '../../../lib/bigNumber'
+
+const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
   const { accountBalance } = useAppState()
+  const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
   const { agreementActions } = useActions()
 
@@ -64,18 +66,19 @@ function RaiseDisputeScreens({ proposal }) {
         content: (
           <RaiseDisputeRequirements
             accountBalance={accountBalance}
+            celesteSynced={celesteSynced}
             disputeFees={disputeFees}
             getTransactions={getTransactions}
           />
         ),
       },
     ],
-    [accountBalance, disputeFees, getTransactions]
+    [accountBalance, celesteSynced, disputeFees, getTransactions]
   )
 
   return (
     <ModalFlowBase
-      loading={disputeFees.loading}
+      loading={disputeFees.loading || celesteSyncLoading}
       screens={screens}
       transactions={transactions}
       transactionTitle="Raise to Celeste"
