@@ -106,13 +106,15 @@ export default function useActions() {
         params.push(amount)
       }
 
-      const intent = await convictionVotingApp.intent(
+      let intent = await convictionVotingApp.intent(
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
         {
           actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
 
       if (mounted()) {
         onDone(intent.transactions)
