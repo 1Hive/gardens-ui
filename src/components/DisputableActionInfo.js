@@ -5,6 +5,7 @@ import {
   Button,
   GU,
   Info,
+  Link,
   LoadingRing,
   textStyle,
   Timer,
@@ -19,6 +20,7 @@ import { ProposalTypes } from '../types'
 import { dateFormat } from '../utils/date-utils'
 import { formatTokenAmount } from '../utils/token-utils'
 import { DisputeStates, RoundStates } from '../utils/dispute-utils'
+import { getNetwork } from '../networks'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -242,6 +244,7 @@ function Settlement({ proposal }) {
 
 function Dispute({ proposal }) {
   const theme = useTheme()
+  const celesteUrl = getNetwork().celesteUrl
   const [disputeState, roundState] = useDisputeState(proposal.disputeId)
 
   return (
@@ -254,13 +257,14 @@ function Dispute({ proposal }) {
             align-items: center;
           `}
         >
-          <span
+          <Link
+            href={`${celesteUrl}/questions/${proposal.disputeId}`}
             css={`
               margin-right: ${0.5 * GU}px;
             `}
           >
             Celeste Q#{proposal.disputeId}
-          </span>
+          </Link>
           <span
             css={`
               color: ${theme.contentSecondary};
