@@ -43,7 +43,6 @@ const KNOWN_TOKENS_FALLBACK = new Map([
 
 const LOCAL_TOKEN_ICONS = new Map([
   ['HNY', honeyIconSvg],
-  ['CVTN', honeyIconSvg], // TODO: Remove
   ['DAI', stableTokenSvg],
   ['XDAI', stableTokenSvg],
 ])

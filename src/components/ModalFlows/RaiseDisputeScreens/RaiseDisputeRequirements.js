@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { Button, GU, Info, textStyle, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import InfoField from '../../../components/InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
@@ -9,6 +9,7 @@ import { formatTokenAmount } from '../../../utils/token-utils'
 
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
+import { getNetwork } from '../../../networks'
 
 function RaiseDisputeRequirements({
   accountBalance,
@@ -90,6 +91,7 @@ function FeesStatus({ accountBalance, feesAmount }) {
 
 function CelesteSyncedStatus({ synced }) {
   const theme = useTheme()
+  const celesteUrl = getNetwork().celesteUrl
 
   const infoData = useMemo(() => {
     if (synced) {
@@ -105,9 +107,14 @@ function CelesteSyncedStatus({ synced }) {
       backgroundColor: theme.negativeSurface.toString(),
       color: theme.negative.toString(),
       icon: iconError,
-      text: `Celeste is not synced, head over to the dashboard and update the term.`, // TODO: Add link
+      text: (
+        <div>
+          `Celeste is not synced, head over to the{' '}
+          <Link href={celesteUrl}>dashboard</Link> and update the term.
+        </div>
+      ),
     }
-  }, [synced, theme])
+  }, [celesteUrl, synced, theme])
 
   return <InfoBox data={infoData} />
 }
