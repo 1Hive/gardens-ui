@@ -50,6 +50,7 @@ function ModalFlowBase({
                     from: transaction.from,
                     to: transaction.to,
                     data: transaction.data,
+                    gasLimit: transaction.gasLimit,
                   }
                   const tx = await signer.sendTransaction(trx)
 

@@ -316,11 +316,9 @@ function ProposalDetail({
                   statusData.disputed) && (
                   <ProposalActions
                     proposal={proposal}
+                    onChangeSupport={() => handleShowModal('update')}
                     onExecuteProposal={actions.executeProposal}
                     onRequestSupportProposal={() => handleShowModal('support')}
-                    onChangeSupport={() => handleShowModal('update')}
-                    onStakeToProposal={actions.stakeToProposal}
-                    onWithdrawFromProposal={actions.withdrawFromProposal}
                   />
                 )}
               </section>

@@ -19,6 +19,7 @@ import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
+const STAKE_GAS_LIMIT = 200000
 // const SETTLE_ACTION_GAS_LIMIT = 700000
 // const CHALLENGE_ACTION_GAS_LIMIT = 900000
 // const DISPUTE_ACTION_GAS_LIMIT = 900000
@@ -81,13 +82,15 @@ export default function useActions() {
 
   const stakeToProposal = useCallback(
     async ({ proposalId, amount }, onDone = noop) => {
-      const intent = await convictionVotingApp.intent(
+      let intent = await convictionVotingApp.intent(
         'stakeToProposal',
         [proposalId, amount],
         {
           actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
 
       if (mounted()) {
         onDone(intent.transactions)
@@ -312,5 +315,12 @@ async function sendIntent(
     ethers.getSigner().sendTransaction({ data, to, gasLimit })
   } catch (err) {
     console.error('Could not create tx:', err)
+  }
+}
+
+function imposeGasLimit(intent, gasLimit) {
+  return {
+    ...intent,
+    transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
   }
 }
