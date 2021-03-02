@@ -24,13 +24,7 @@ const StakeManagement = React.memo(function StakeManagement() {
   }, [stakeActions])
 
   if (!account) {
-    return (
-      <EmptyState
-        icon={stakingEmpty}
-        title="Enable your account"
-        paragraph="Connect to an Ethereum provider to access your staking data. You may be temporarily redirected to a new screen."
-      />
-    )
+    return <EmptyState icon={stakingEmpty} />
   }
 
   return (
