@@ -27,7 +27,7 @@ const networks = {
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
     },
-    celesteUrl: 'https://celeste-rinkeby.1hive.org',
+    celesteUrl: 'https://celeste-dashboard.vercel.app/#',
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
     legacyNetworkType: 'rinkeby',
   },
