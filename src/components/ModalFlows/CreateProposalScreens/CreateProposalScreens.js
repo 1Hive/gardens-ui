@@ -50,7 +50,7 @@ function CreateProposalScreens() {
               content: (
                 <CreateProposalRequirements
                   agreement={agreement}
-                  availableStaked={stakeManagement.staking.available}
+                  staking={stakeManagement.staking}
                 />
               ),
             },
