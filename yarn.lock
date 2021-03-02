@@ -102,10 +102,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.3.tgz#83d6935e67352a2316d6808ff691e83abc3de956"
-  integrity sha512-Esr8RcGYZAIybJq/GeUOrJ0rz6eGfGD7VLl7HCeAEiimqc3ZiYBhYzD/92bF/ndy3B8oPnewqAlhCqGPY9353w==
+"@1hive/1hive-ui@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.5.tgz#3115247a45835b88225bb4dbc7c8a08a244c7c72"
+  integrity sha512-3x5+a0jZolKDtWwByGoxxa0TBYM4PgTxcOaf8pRL4L6njFc18FZ0iqbE2RUAFU0SrZUdmNyHnRTAmOzRLaxK5g==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"

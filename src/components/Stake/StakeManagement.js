@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import LayoutColumns from '../Layout/LayoutColumns'
@@ -23,6 +23,17 @@ const StakeManagement = React.memo(function StakeManagement() {
     setStakeModalMode(null)
   }, [stakeActions])
 
+  const orderedStakingMovements = useMemo(() => {
+    if (!stakeManagement?.stakingMovements) {
+      return []
+    }
+
+    return stakeManagement.stakingMovements.sort(
+      (movement1, movement2) =>
+        movement1.disputableActionId - movement2.disputableActionId
+    )
+  }, [stakeManagement])
+
   if (!account) {
     return (
       <EmptyState
@@ -46,7 +57,7 @@ const StakeManagement = React.memo(function StakeManagement() {
               primary={
                 stakeManagement.stakingMovements ? (
                   <StakingMovements
-                    stakingMovements={stakeManagement.stakingMovements}
+                    stakingMovements={orderedStakingMovements}
                     token={stakeManagement.token}
                   />
                 ) : (
