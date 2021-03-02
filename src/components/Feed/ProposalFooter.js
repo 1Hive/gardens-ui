@@ -91,7 +91,7 @@ function ProposalFooter({
     }
 
     if (proposal.statusData.disputed) {
-      return 'Disputed'
+      return 'Waiting for celeste'
     }
 
     return 'Closed'

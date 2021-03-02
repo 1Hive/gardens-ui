@@ -20,9 +20,6 @@ import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
 const STAKE_GAS_LIMIT = 200000
-// const SETTLE_ACTION_GAS_LIMIT = 700000
-// const CHALLENGE_ACTION_GAS_LIMIT = 900000
-// const DISPUTE_ACTION_GAS_LIMIT = 900000
 
 export default function useActions() {
   const { account, ethers } = useWallet()
@@ -58,6 +55,21 @@ export default function useActions() {
           stableRequestAmount,
           beneficiary,
         ],
+        {
+          actAs: account,
+        }
+      )
+
+      onDone(intent)
+    },
+    [account, convictionVotingApp]
+  )
+
+  const newSignalingProposal = useCallback(
+    async ({ title, link }, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'addSignalingProposal',
+        [title, link ? toHex(link) : '0x'],
         {
           actAs: account,
         }
@@ -283,6 +295,7 @@ export default function useActions() {
     convictionActions: {
       executeProposal,
       newProposal,
+      newSignalingProposal,
       cancelProposal,
       stakeToProposal,
       withdrawFromProposal,
