@@ -7,7 +7,6 @@ import CreateProposalRequirements from './CreateProposalRequirements'
 import { useAgreement } from '../../../hooks/useAgreement'
 import useActions from '../../../hooks/useActions'
 import { useStakingState } from '../../../providers/Staking'
-import { ZERO_ADDR } from '../../../constants'
 
 function CreateProposalScreens() {
   const [agreement, agreementLoading] = useAgreement()
@@ -19,17 +18,28 @@ function CreateProposalScreens() {
   const getTransactions = useCallback(
     async onComplete => {
       const { amount, beneficiary, link, title } = proposalData
-      const convertedAmount = amount.valueBN.toString(10)
-      const isStable = amount.stable
 
-      await convictionActions.newProposal(
-        {
+      let params
+      if (amount.valueBN.eq(0)) {
+        params = {
+          title,
+          link,
+        }
+      } else {
+        const convertedAmount = amount.valueBN.toString(10)
+        const stableRequestAmount = amount.stable
+
+        params = {
           title,
           link,
           amount: convertedAmount,
-          stableRequestAmount: isStable,
-          beneficiary: beneficiary || ZERO_ADDR,
-        },
+          stableRequestAmount,
+          beneficiary,
+        }
+      }
+
+      await convictionActions[('newProposal', 'newSignalingProposal')](
+        params,
         intent => {
           setTransactions(intent.transactions)
           onComplete()

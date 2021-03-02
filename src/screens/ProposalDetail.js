@@ -45,6 +45,7 @@ import {
 } from '../utils/web3-utils'
 import { convertToString, ProposalTypes } from '../types'
 import signalingBadge from '../assets/signalingBadge.svg'
+import { ZERO_ADDR } from '../constants'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -326,12 +327,14 @@ function ProposalDetail({
           }
           secondary={
             <div>
-              <DisputableActionInfo
-                proposal={proposal}
-                onChallengeAction={() => handleShowModal('challenge')}
-                onDisputeAction={() => handleShowModal('dispute')}
-                onSettleAction={() => handleShowModal('settle')}
-              />
+              {proposal.creator !== ZERO_ADDR && (
+                <DisputableActionInfo
+                  proposal={proposal}
+                  onChallengeAction={() => handleShowModal('challenge')}
+                  onDisputeAction={() => handleShowModal('dispute')}
+                  onSettleAction={() => handleShowModal('settle')}
+                />
+              )}
               {statusData.open && (
                 <>
                   {hasCancelRole && (

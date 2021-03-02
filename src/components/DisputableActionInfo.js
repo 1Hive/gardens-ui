@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import {
   addressesEqual,
   Box,
@@ -12,17 +12,13 @@ import {
 } from '@1hive/1hive-ui'
 import { ConvictionCountdown } from './ConvictionVisuals'
 
-import { useContract } from '../hooks/useContract'
-import { useDisputeFees, useDisputeState } from '../hooks/useDispute'
 import { useWallet } from '../providers/Wallet'
+import { useDisputeState } from '../hooks/useDispute'
 
-import BigNumber from '../lib/bigNumber'
-import { dateFormat } from '../utils/date-utils'
-import { DisputeStates, RoundStates } from '../utils/dispute-utils'
-import { formatTokenAmount } from '../utils/token-utils'
 import { ProposalTypes } from '../types'
-
-import tokenAbi from '../abi/minimeToken.json'
+import { dateFormat } from '../utils/date-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import { DisputeStates, RoundStates } from '../utils/dispute-utils'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -182,6 +178,10 @@ function VotingPeriod({ proposal }) {
 }
 
 function Conviction({ proposal }) {
+  if (proposal.type === ProposalTypes.Suggestion) {
+    return null
+  }
+
   const isCancelled =
     proposal.statusData.cancelled || proposal.statusData.settled
 
@@ -320,52 +320,11 @@ function Actions({
   onSettleAction,
 }) {
   const { account } = useWallet()
-  const disputeFees = useDisputeFees()
-  const feeTokenContract = useContract(disputeFees.token, tokenAbi)
-
-  const handleActionChallenged = useCallback(() => {
-    if (disputeFees.loading) {
-      return
-    }
-
-    const depositAmount = proposal.collateralRequirement.challengeAmount
-      .plus(new BigNumber(disputeFees.amount.toString()))
-      .toString()
-
-    onChallengeAction(
-      proposal.actionId,
-      '0',
-      true,
-      '0x',
-      feeTokenContract,
-      depositAmount
-    ) // TODO: Set input values
-  }, [
-    disputeFees.amount,
-    disputeFees.loading,
-    feeTokenContract,
-    onChallengeAction,
-    proposal.actionId,
-    proposal.collateralRequirement,
-  ])
-
-  const handleActionSettled = useCallback(() => {
-    onSettleAction(proposal.actionId)
-  }, [onSettleAction, proposal.actionId])
-
-  const handleActionDisputed = useCallback(() => {
-    onDisputeAction(
-      proposal.actionId,
-      true,
-      feeTokenContract,
-      disputeFees.amount
-    )
-  }, [disputeFees.amount, feeTokenContract, onDisputeAction, proposal.actionId])
 
   const content = getInfoActionContent(proposal, account, {
-    onChallengeAction: handleActionChallenged,
-    onDisputeAction: handleActionDisputed,
-    onSettleAction: handleActionSettled,
+    onChallengeAction,
+    onDisputeAction,
+    onSettleAction,
   })
 
   return (
