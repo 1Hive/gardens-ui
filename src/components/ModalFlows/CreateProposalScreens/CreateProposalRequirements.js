@@ -75,7 +75,7 @@ function CreateProposalRequirements({ agreement, staking }) {
 function AgreementStatus({ agreement }) {
   const history = useHistory()
   const theme = useTheme()
-  const { signedLatest, singedPreviousVersion } = agreement
+  const { signedLatest, singedPreviousVersion, lastSignatureDate } = agreement
 
   const goToAgreement = useCallback(() => {
     history.push('/covenant')
@@ -107,10 +107,18 @@ function AgreementStatus({ agreement }) {
         backgroundColor: '#EBFBF6',
         color: theme.positive,
         icon: iconCheck,
-        text: 'You signed this organization’s Covenant on 2020/05/20.',
+        text: `You signed this organization’s Covenant on ${dateFormat(
+          lastSignatureDate
+        )}.`,
       }
     }
-  }, [signedLatest, singedPreviousVersion, theme, goToAgreement])
+  }, [
+    lastSignatureDate,
+    signedLatest,
+    singedPreviousVersion,
+    theme,
+    goToAgreement,
+  ])
 
   return <InfoBox data={infoData} />
 }

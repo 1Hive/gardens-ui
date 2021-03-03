@@ -38,6 +38,11 @@ export function useAgreement() {
         appsWithRequirements
       )
 
+      const lastSignatureDate =
+        signatures.length > 0
+          ? signatures[signatures.length - 1].createdAt * 1000
+          : null
+
       if (mounted()) {
         setProcessedAgreement({
           contractAddress: agreementApp.address,
@@ -49,6 +54,7 @@ export function useAgreement() {
           signedPreviousVersion: signatures.length > 0,
           title: title,
           versionId: versionId,
+          lastSignatureDate,
         })
 
         // We only want to trigger the loading state on first pass
