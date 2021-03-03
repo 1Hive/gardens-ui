@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, IconExternal, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
@@ -56,22 +56,11 @@ function Header() {
                 `}
               >
                 <Link
-                  href="#/home"
-                  external={false}
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                  `}
-                >
-                  Home
-                </Link>
-                <Link
                   href="#/agreement"
                   external={false}
                   css={`
                     text-decoration: none;
                     color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
                   `}
                 >
                   Agreement
@@ -91,33 +80,7 @@ function Header() {
                     `}
                   >
                     Get Honey
-                    <IconExternal
-                      css={`
-                        margin-left: ${0.5 * GU}px;
-                      `}
-                      size="small"
-                    />
                   </div>
-                </Link>
-                <Link
-                  href="https://1hive.gitbook.io/1hive/"
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
-                  `}
-                >
-                  Wiki
-                </Link>
-                <Link
-                  href="https://forum.1hive.org/"
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
-                  `}
-                >
-                  Forum
                 </Link>
               </nav>
             )}
