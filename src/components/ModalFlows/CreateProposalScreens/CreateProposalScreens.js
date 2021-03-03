@@ -19,7 +19,9 @@ function CreateProposalScreens() {
       const { amount, beneficiary, link, title } = proposalData
 
       let params
+      let fn
       if (amount.valueBN.eq(0)) {
+        fn = 'newSignalingProposal'
         params = {
           title,
           link,
@@ -28,6 +30,7 @@ function CreateProposalScreens() {
         const convertedAmount = amount.valueBN.toString(10)
         const stableRequestAmount = amount.stable
 
+        fn = 'newProposal'
         params = {
           title,
           link,
@@ -37,13 +40,10 @@ function CreateProposalScreens() {
         }
       }
 
-      await convictionActions[('newProposal', 'newSignalingProposal')](
-        params,
-        intent => {
-          setTransactions(intent)
-          onComplete()
-        }
-      )
+      await convictionActions[fn](params, intent => {
+        setTransactions(intent)
+        onComplete()
+      })
     },
     [convictionActions, proposalData]
   )
