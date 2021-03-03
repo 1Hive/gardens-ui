@@ -8,7 +8,7 @@ import MultiModal from '../MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
-import stakingEmpty from './assets/staking-empty.png'
+import stakingEmpty from './assets/no-dataview-data.svg'
 import Loader from '../Loader'
 import { useStakingState } from '../../providers/Staking'
 import { useWallet } from '../../providers/Wallet'
@@ -35,13 +35,7 @@ const StakeManagement = React.memo(function StakeManagement() {
   }, [stakeManagement])
 
   if (!account) {
-    return (
-      <EmptyState
-        icon={stakingEmpty}
-        title="Enable your account"
-        paragraph="Connect to an Ethereum provider to access your staking data. You may be temporarily redirected to a new screen."
-      />
-    )
+    return <EmptyState icon={stakingEmpty} />
   }
 
   return (
@@ -55,18 +49,10 @@ const StakeManagement = React.memo(function StakeManagement() {
 
             <LayoutColumns
               primary={
-                stakeManagement.stakingMovements ? (
-                  <StakingMovements
-                    stakingMovements={orderedStakingMovements}
-                    token={stakeManagement.token}
-                  />
-                ) : (
-                  <EmptyState
-                    icon={stakingEmpty}
-                    title="No transactions yet"
-                    paragraph="You can start by depositing some HNY into the staking pool before you can submit a proposal."
-                  />
-                )
+                <StakingMovements
+                  stakingMovements={orderedStakingMovements}
+                  token={stakeManagement.token}
+                />
               }
               secondary={
                 <SideBar
