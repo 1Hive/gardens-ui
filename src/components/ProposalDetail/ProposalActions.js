@@ -13,11 +13,12 @@ function ProposalActions({
   onChangeSupport,
   onExecuteProposal,
   onRequestSupportProposal,
+  onWithdrawFromProposal,
 }) {
   const { stakeToken, accountBalance } = useAppState()
   const { account: connectedAccount } = useWallet()
 
-  const { id, currentConviction, stakes, threshold } = proposal
+  const { id, currentConviction, hasEnded, stakes, threshold } = proposal
 
   const myStake = useMemo(
     () =>
@@ -32,6 +33,9 @@ function ProposalActions({
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
+    if (didIStake && hasEnded) {
+      return 'withdraw'
+    }
     if (currentConviction.gte(threshold)) {
       return 'execute'
     }
@@ -39,11 +43,15 @@ function ProposalActions({
       return 'update'
     }
     return 'support'
-  }, [currentConviction, didIStake, threshold])
+  }, [currentConviction, didIStake, hasEnded, threshold])
 
   const handleExecute = useCallback(() => {
     onExecuteProposal(id)
   }, [id, onExecuteProposal])
+
+  const handleWithdrawAllFromProposal = useCallback(() => {
+    onWithdrawFromProposal(id)
+  }, [id, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
     if (mode === 'execute') {
@@ -62,6 +70,13 @@ function ProposalActions({
         mode: 'normal',
       }
     }
+    if (mode === 'withdraw') {
+      return {
+        text: 'Withdraw stake',
+        action: handleWithdrawAllFromProposal,
+        mode: 'strong',
+      }
+    }
     return {
       text: 'Support this proposal',
       action: onRequestSupportProposal,
@@ -71,6 +86,7 @@ function ProposalActions({
   }, [
     accountBalance,
     handleExecute,
+    handleWithdrawAllFromProposal,
     mode,
     onChangeSupport,
     onRequestSupportProposal,

@@ -5,6 +5,7 @@ import { animated, Spring } from 'react-spring/renderprops'
 
 import Activity from '../components/Profile/Activity'
 import EditProfile from '../components/Profile/EditProfile'
+import InactiveProposalsStake from '../components/Profile/InactiveProposalsStake'
 import Loader from '../components/Loader'
 import MainProfile from '../components/Profile/MainProfile'
 import StakingTokens from '../components/Profile/StakingTokens'
@@ -13,6 +14,7 @@ import Wallet from '../components/Wallet'
 import { useAccountStakes } from '../hooks/useStakes'
 import { useAppState } from '../providers/AppState'
 import usePicture from '../hooks/usePicture'
+import { useInactiveProposalsWithStake } from '../hooks/useProposals'
 import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'
 import { addressesEqual } from '../utils/web3-utils'
@@ -35,6 +37,7 @@ function Profile() {
   const searchParams = useSearchParams()
   const selectedAccount = searchParams.get('account') || connectedAccount
   const accountStakes = useAccountStakes(selectedAccount)
+  const accountInactiveStakes = useInactiveProposalsWithStake()
 
   const selectedProfile = useSelectedProfile(selectedAccount)
   const { coverPhoto } = selectedProfile || {}
@@ -147,6 +150,11 @@ function Profile() {
                             myStakes={accountStakes}
                           />
                           <StakingTokens myStakes={accountStakes} />
+                          {accountInactiveStakes.length > 0 && (
+                            <InactiveProposalsStake
+                              myInactiveStakes={accountInactiveStakes}
+                            />
+                          )}
                         </>
                       }
                       invert={oneColumn ? 'vertical' : 'horizontal'}

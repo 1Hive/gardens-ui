@@ -312,16 +312,13 @@ function ProposalDetail({
                   />
                 )}
                 <DisputableInfo proposal={proposal} />
-                {(statusData.open ||
-                  statusData.challenged ||
-                  statusData.disputed) && (
-                  <ProposalActions
-                    proposal={proposal}
-                    onChangeSupport={() => handleShowModal('update')}
-                    onExecuteProposal={actions.executeProposal}
-                    onRequestSupportProposal={() => handleShowModal('support')}
-                  />
-                )}
+                <ProposalActions
+                  proposal={proposal}
+                  onChangeSupport={() => handleShowModal('update')}
+                  onExecuteProposal={actions.executeProposal}
+                  onRequestSupportProposal={() => handleShowModal('support')}
+                  onWithdrawFromProposal={actions.withdrawFromProposal}
+                />
               </section>
             </Box>
           }

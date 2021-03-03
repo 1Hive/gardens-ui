@@ -72,7 +72,9 @@ function Activity({ account, isConnectedAccount, profileName }) {
                     href={`/#/proposal/${stake.proposal.id}`}
                     external={false}
                     css={`
+                      text-align: left;
                       text-decoration: none;
+                      white-space: normal;
                     `}
                   >
                     {stake.proposal.name}

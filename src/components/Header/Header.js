@@ -100,27 +100,24 @@ function Header() {
                   </div>
                 </Link>
                 <Link
-                  href="https://about.1hive.org/"
+                  href="https://1hive.gitbook.io/1hive/"
                   css={`
                     text-decoration: none;
                     color: ${theme.contentSecondary};
                     margin-left: ${4 * GU}px;
                   `}
                 >
-                  <div
-                    css={`
-                      display: flex;
-                      align-items: center;
-                    `}
-                  >
-                    About
-                    <IconExternal
-                      css={`
-                        margin-left: ${0.5 * GU}px;
-                      `}
-                      size="small"
-                    />
-                  </div>
+                  Wiki
+                </Link>
+                <Link
+                  href="https://forum.1hive.org/"
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Forum
                 </Link>
               </nav>
             )}

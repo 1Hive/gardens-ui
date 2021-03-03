@@ -71,6 +71,9 @@ function Footer() {
               <Link href="https://twitter.com/1HiveOrg" external>
                 Twitter
               </Link>
+              <Link href="https://t.me/honeyswapdex" external>
+                Telegram
+              </Link>
               <Link href="https://forum.1hive.org/" external>
                 Forum
               </Link>
@@ -82,13 +85,19 @@ function Footer() {
                   margin-bottom: ${1.5 * GU}px;
                 `}
               >
-                Tools
+                Documentation
               </h5>
+              <Link href="https://1hive.gitbook.io/1hive/" external>
+                Wiki
+              </Link>
               <Link
-                href="https://www.notion.so/1Hive-Community-Handbook-f66d489df85a4011bac681963bfee796"
+                href="https://1hive.gitbook.io/1hive/community/security/bug-bounty"
                 external
               >
-                Handbook
+                Bug Bounty
+              </Link>
+              <Link href="https://1hive.gitbook.io/1hive/guides/faq" external>
+                FAQs
               </Link>
             </div>
           </div>
