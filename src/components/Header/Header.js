@@ -82,6 +82,16 @@ function Header() {
                     Get Honey
                   </div>
                 </Link>
+                <Link
+                  href="https://1hive.gitbook.io/1hive/"
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Wiki
+                </Link>
               </nav>
             )}
           </div>
