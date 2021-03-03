@@ -8,7 +8,7 @@ import MultiModal from '../MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
-import stakingEmpty from './assets/staking-empty.png'
+import stakingEmpty from './assets/no-dataview-data.svg'
 import Loader from '../Loader'
 import { useStakingState } from '../../providers/Staking'
 import { useWallet } from '../../providers/Wallet'
@@ -49,18 +49,10 @@ const StakeManagement = React.memo(function StakeManagement() {
 
             <LayoutColumns
               primary={
-                stakeManagement.stakingMovements ? (
-                  <StakingMovements
-                    stakingMovements={orderedStakingMovements}
-                    token={stakeManagement.token}
-                  />
-                ) : (
-                  <EmptyState
-                    icon={stakingEmpty}
-                    title="No transactions yet"
-                    paragraph="You can start by depositing some HNY into the staking pool before you can submit a proposal."
-                  />
-                )
+                <StakingMovements
+                  stakingMovements={orderedStakingMovements}
+                  token={stakeManagement.token}
+                />
               }
               secondary={
                 <SideBar

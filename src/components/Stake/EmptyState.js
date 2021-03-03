@@ -1,12 +1,9 @@
 import React from 'react'
-import { Card, GU, Header, textStyle, useLayout } from '@1hive/1hive-ui'
+import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
 import tokenIcon from './assets/connect-icon.svg'
 import LayoutColumns from '../Layout/LayoutColumns'
 
 export default function EmptyState({ icon }) {
-  const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
-
   return (
     <>
       <Header primary="Stake Management" />
@@ -19,23 +16,22 @@ export default function EmptyState({ icon }) {
               display: flex;
               flex-direction: column;
               align-items: center;
+              padding-bottom: ${6 * GU}px;
+              padding-top: ${6 * GU}px;
             `}
           >
             <img
               src={icon}
               alt=""
               css={`
-                width: 100%;
-                max-width: ${(compactMode ? 21 : 30) * GU}px;
+                max-width: ${22 * GU}px;
                 height: auto;
                 margin: ${4 * GU}px 0;
               `}
             />
             <span
               css={`
-                font-weight: 300;
-                ${textStyle('body1')};
-                margin-bottom: ${GU}px;
+                ${textStyle('title3')};
               `}
             >
               No data available
