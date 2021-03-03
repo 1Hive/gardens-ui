@@ -67,7 +67,7 @@ function AgreementDocument({ ipfsUri, onSignAgreement, signedAgreement }) {
         onClick={handleSign}
         disabled={signedAgreement}
       >
-        Sign Agreement
+        Sign Covenant
       </ModalButton>
     </Box>
   )

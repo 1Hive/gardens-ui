@@ -30,7 +30,7 @@ function Agreement() {
   return (
     <LayoutGutter>
       <LayoutLimiter>
-        <Header primary="Agreement" />
+        <Header primary="Covenant" />
         <AgreementLayout
           agreement={agreement}
           signedAgreement={signed}
@@ -81,7 +81,7 @@ function AgreementLayout({ agreement, signedAgreement, onSignAgreement }) {
                   `}
                   alt=""
                 />
-                <span>You have not signed the Agreement.</span>
+                <span>You have not signed the Covenant.</span>
               </div>
             </Info>
           )}

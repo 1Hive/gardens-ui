@@ -34,7 +34,7 @@ function AgreementDetails({
           margin-bottom: ${3 * GU}px;
         `}
       >
-        <InfoField label="Agreement IPFS Link">
+        <InfoField label="Covenant IPFS Link">
           <Link
             href={getIpfsUrlFromUri(ipfsUri)}
             css={`
@@ -67,7 +67,7 @@ function AgreementDetails({
         <InfoField label="Staking Pool">
           <IdentityBadge entity={stakingAddress} />
         </InfoField>
-        <InfoField label="Agreement Contract">
+        <InfoField label="Covenant Contract">
           <IdentityBadge entity={contractAddress} />
         </InfoField>
         <InfoField label="Creation Date">{dateFormat(creationDate)}</InfoField>

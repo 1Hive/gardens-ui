@@ -83,7 +83,7 @@ function StakeAndWithdraw({
       return {
         descriptionText: `This amount will be placed in the staking pool and will be used to pay
         for actions collateral and submission fees, when proposing actions
-        bound by this organization's Agreement.`,
+        bound by this organization's Covenant.`,
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals

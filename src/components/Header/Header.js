@@ -56,14 +56,14 @@ function Header() {
                 `}
               >
                 <Link
-                  href="#/agreement"
+                  href="#/covenant"
                   external={false}
                   css={`
                     text-decoration: none;
                     color: ${theme.contentSecondary};
                   `}
                 >
-                  Agreement
+                  Covenant
                 </Link>
                 <Link
                   href={HONEYSWAP_TRADE_HONEY}

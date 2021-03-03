@@ -34,7 +34,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
       <strong>Action Collateral</strong> is the amount of collateral tokens
       required to be locked every time an action is created. This amount will be
       automatically locked from the staking pool balance given that access is
-      granted to the Agreements app as the Lock Manager.
+      granted to the Covenant's app as the Lock Manager.
     </>,
   ],
   'settlement-period': [

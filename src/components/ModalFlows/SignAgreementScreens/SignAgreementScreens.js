@@ -21,7 +21,7 @@ function SignAgreementScreens({ versionId }) {
   const screens = useMemo(
     () => [
       {
-        title: 'Sign Agreement',
+        title: 'Sign Covenant',
         graphicHeader: true,
         content: <SignOverview getTransactions={getTransactions} />,
       },
@@ -32,7 +32,7 @@ function SignAgreementScreens({ versionId }) {
     <ModalFlowBase
       frontLoad={false}
       transactions={transactions}
-      transactionTitle="Sign Agreement"
+      transactionTitle="Sign Covenant"
       screens={screens}
     />
   )
