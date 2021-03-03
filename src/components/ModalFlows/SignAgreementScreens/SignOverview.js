@@ -54,12 +54,12 @@ function SignOverview({ getTransactions }) {
         >
           <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
         </div>
-        By signing this Agreement, you agree to 1Hive Network DAO manifesto, by
+        By signing this Covenant, you agree to 1Hive Network DAO manifesto, by
         laws and community code of behavior.
       </label>
-      <Field label="Agreement action collateral">
+      <Field label="Covenant action collateral">
         <p>
-          In order to perform or challenge actions bound by this Agreement, you
+          In order to perform or challenge actions bound by this Covenant, you
           must deposit some HNY as the action collateral first. Different apps
           might require different tokens and amounts as the action collateral.
         </p>
@@ -71,7 +71,7 @@ function SignOverview({ getTransactions }) {
         onClick={handleSign}
         disabled={!acceptedTerms}
       >
-        Sign Agreement
+        Sign Covenant
       </ModalButton>
     </>
   )

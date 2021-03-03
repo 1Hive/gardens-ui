@@ -134,7 +134,7 @@ function BalanceCard({
           <Help>
             {allowManagerDisabled
               ? `You cannot disallow the lock manager at this time because you have some collateral locked for scheduled proposals. Once the challenge or dispute is resolved, you’ll be able to disable the lock manager and withdraw your full balance.`
-              : `By enabling this feature you allow the Agreement as the lock manager
+              : `By enabling this feature you allow the Covenant as the lock manager
             of the HNY staking pool. Any required amount to pay for actions
             collateral and submission fees, will be directly locked when
             proposing actions.`}

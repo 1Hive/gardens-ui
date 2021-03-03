@@ -34,9 +34,9 @@ function CreateProposalRequirements({ agreement, staking }) {
 
   return (
     <div>
-      <InfoField label="Agreement signature and version">
+      <InfoField label="Covenant signature and version">
         You must sign the{' '}
-        <Link href="#/agreement" external={false}>
+        <Link href="#/covenant" external={false}>
           community covenant
         </Link>{' '}
         in order to create a post. The Covenant was last updated at{' '}
@@ -75,10 +75,10 @@ function CreateProposalRequirements({ agreement, staking }) {
 function AgreementStatus({ agreement }) {
   const history = useHistory()
   const theme = useTheme()
-  const { signedLatest, singedPreviousVersion } = agreement
+  const { signedLatest, singedPreviousVersion, lastSignatureDate } = agreement
 
   const goToAgreement = useCallback(() => {
-    history.push('/agreement')
+    history.push('/covenant')
   }, [history])
 
   const infoData = useMemo(() => {
@@ -87,8 +87,8 @@ function AgreementStatus({ agreement }) {
         backgroundColor: theme.negativeSurface,
         color: theme.negative,
         icon: iconError,
-        text: 'You have not signed the agreement.',
-        actionButton: 'Sign Agreement',
+        text: 'You have not signed the covenant.',
+        actionButton: 'Sign Covenant',
         buttonOnClick: goToAgreement,
       }
     }
@@ -97,8 +97,8 @@ function AgreementStatus({ agreement }) {
         backgroundColor: theme.negativeSurface,
         color: theme.negative,
         icon: iconError,
-        text: 'You have not signed the newest agreement.',
-        actionButton: 'Sign Agreement',
+        text: 'You have not signed the newest covenant.',
+        actionButton: 'Sign Covenant',
         buttonOnClick: goToAgreement,
       }
     }
@@ -107,10 +107,18 @@ function AgreementStatus({ agreement }) {
         backgroundColor: '#EBFBF6',
         color: theme.positive,
         icon: iconCheck,
-        text: 'You signed this organization’s Agreement on 2020/05/20.',
+        text: `You signed this organization’s Covenant on ${dateFormat(
+          lastSignatureDate
+        )}.`,
       }
     }
-  }, [signedLatest, singedPreviousVersion, theme, goToAgreement])
+  }, [
+    lastSignatureDate,
+    signedLatest,
+    singedPreviousVersion,
+    theme,
+    goToAgreement,
+  ])
 
   return <InfoBox data={infoData} />
 }
@@ -143,7 +151,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface,
         color: theme.negative,
         icon: iconError,
-        text: `You need to allow the Agreement as the lock manager of your staked HNY`,
+        text: `You need to allow the Covenant as the lock manager of your staked HNY`,
         actionButton: 'Stake management',
         buttonOnClick: goToStakeManager,
       }
