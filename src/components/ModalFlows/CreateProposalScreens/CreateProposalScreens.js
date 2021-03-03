@@ -3,7 +3,6 @@ import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
-// import useActions from '../../../hooks/useActions'
 import { useAgreement } from '../../../hooks/useAgreement'
 import useActions from '../../../hooks/useActions'
 import { useStakingState } from '../../../providers/Staking'
@@ -41,7 +40,7 @@ function CreateProposalScreens() {
       await convictionActions[('newProposal', 'newSignalingProposal')](
         params,
         intent => {
-          setTransactions(intent.transactions)
+          setTransactions(intent)
           onComplete()
         }
       )

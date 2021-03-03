@@ -59,10 +59,11 @@ export default function useActions() {
           actAs: account,
         }
       )
-
-      onDone(intent)
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, convictionVotingApp]
+    [account, convictionVotingApp, mounted]
   )
 
   const newSignalingProposal = useCallback(
@@ -75,9 +76,11 @@ export default function useActions() {
         }
       )
 
-      onDone(intent)
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
     },
-    [account, convictionVotingApp]
+    [account, convictionVotingApp, mounted]
   )
 
   const cancelProposal = useCallback(
