@@ -5,6 +5,7 @@ import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useWallet } from '../../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
+import { getNetwork } from '../../networks'
 
 import beeSvg from '../../assets/bee.svg'
 import logoSvg from '../../assets/logo.svg'
@@ -14,6 +15,7 @@ function Header() {
   const { account } = useWallet()
   const { below } = useViewport()
   const layoutSmall = below('medium')
+  const network = getNetwork()
 
   const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
 
@@ -73,14 +75,17 @@ function Header() {
                     margin-left: ${4 * GU}px;
                   `}
                 >
-                  <div
-                    css={`
-                      display: flex;
-                      align-items: center;
-                    `}
-                  >
-                    Get Honey
-                  </div>
+                  Get Honey
+                </Link>
+                <Link
+                  href={network.celesteUrl}
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Stake Honey
                 </Link>
                 <Link
                   href="https://1hive.gitbook.io/1hive/"
