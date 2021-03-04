@@ -74,7 +74,7 @@ function ChallengeRequirements({ getTransactions, proposal }) {
   const handleSettlementChange = useCallback(
     ({ target }) => {
       if (
-        Number(target.value) <= 0 ||
+        Number(target.value) < 0 ||
         Number(target.value) > Number(maxChallengeAmount)
       ) {
         setError(true)
