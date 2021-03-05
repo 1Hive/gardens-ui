@@ -19,7 +19,7 @@ import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
-const STAKE_GAS_LIMIT = 200000
+const STAKE_GAS_LIMIT = 250000
 
 export default function useActions() {
   const { account, ethers } = useWallet()
