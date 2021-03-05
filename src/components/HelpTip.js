@@ -43,17 +43,18 @@ const KNOWN_HELP_DESCRIPTIONS = {
       The <strong>Settlement Period</strong> is the interval of time that starts
       when a disputable action is challenged and lasts until it’s resolved
       between the parties (submitter and challenger), by accepting the
-      settlement offer or by raising the dispute to Aragon Court.
+      settlement offer or by raising the dispute to Celeste.
     </>,
   ],
   'settlement-offer': [
     'Settlement Offer',
     <>
       The <strong>Settlement Offer</strong> is the amount of tokens that the
-      challenger offers to the proposal submitter in an attempt to cancel the
-      action and resolve the challenge without having to raise it to Aragon
-      Court. This amount cannot be greater than the collateral locked for the
-      action but can be zero.
+      challenger would accept from the proposal submitter in order to cancel the
+      action and resolve the challenge without having to raise it to Celeste.
+      This amount, if settled, will be slashed from the submitter's collateral
+      so cannot be greater than the collateral locked for the action but can be
+      zero.
     </>,
   ],
 }
