@@ -47,7 +47,7 @@ export function useDisputeState(disputeId) {
           }
         }
       } catch (err) {
-        console.error(`Error fetching dispute state ${err} retrying`)
+        console.error(`Error fetching dispute state ${err} retrying...`)
       }
 
       if (!cancelled) {
