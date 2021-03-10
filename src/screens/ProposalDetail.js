@@ -82,8 +82,6 @@ function ProposalDetail({
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
-  const [miltiModalVisible, setMiltiModalVisible] = useState(false)
-
   const handleBack = useCallback(() => {
     history.push('/home')
   }, [history])
@@ -377,18 +375,9 @@ function ProposalDetail({
         />
       </div>
       <MultiModal
-        visible={miltiModalVisible}
-        onClose={() => setMiltiModalVisible(false)}
-      >
-        <SupportProposalScreens
-          id={id}
-          onStakeToProposal={actions.stakeToProposal}
-        />
-      </MultiModal>
-      <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        oonClosed={() => setModalMode(null)}
+        onClosed={() => setModalMode(null)}
       >
         {modalMode === 'challenge' && (
           <ChallengeProposalScreens

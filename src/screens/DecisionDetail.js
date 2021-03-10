@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import {
@@ -13,10 +13,14 @@ import {
 } from '@1hive/1hive-ui'
 
 import ActionCollateral from '../components/ActionCollateral'
+import ChallengeProposalScreens from '../components/ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
 import Description from '../components/Description'
 import DisputableActionInfo from '../components/DisputableActionInfo'
 import DisputeFees from '../components/DisputeFees'
+import MultiModal from '../components/MultiModal/MultiModal'
 import IdentityBadge from '../components/IdentityBadge'
+import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteActions from '../components/DecisionDetail/VoteActions'
@@ -37,6 +41,8 @@ import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'
 import DisputableInfo from '../components/DisputableInfo'
 
 function DecisionDetail({ proposal, actions }) {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [modalMode, setModalMode] = useState(null)
   const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
@@ -84,6 +90,11 @@ function DecisionDetail({ proposal, actions }) {
   const handleExecute = useCallback(() => {
     actions.executeDecision(proposal.number)
   }, [actions, proposal.number])
+
+  const handleShowModal = useCallback(mode => {
+    setModalVisible(true)
+    setModalMode(mode)
+  }, [])
 
   return (
     <div
@@ -212,9 +223,9 @@ function DecisionDetail({ proposal, actions }) {
             <>
               <DisputableActionInfo
                 proposal={proposal}
-                onChallengeAction={actions.challengeAction}
-                onDisputeAction={actions.disputeAction}
-                onSettleAction={actions.settleAction}
+                onChallengeAction={() => handleShowModal('challenge')}
+                onDisputeAction={() => handleShowModal('dispute')}
+                onSettleAction={() => handleShowModal('settle')}
               />
 
               <Box heading="Relative support %">
@@ -275,6 +286,26 @@ function DecisionDetail({ proposal, actions }) {
           }
         />
       </div>
+      <MultiModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onClosed={() => setModalMode(null)}
+      >
+        {modalMode === 'challenge' && (
+          <ChallengeProposalScreens
+            agreementActions={{
+              challengeAction: actions.challengeAction,
+              getAllowance: actions.getAllowance,
+              approveChallengeTokenAmount: actions.approveChallengeTokenAmount,
+            }}
+            proposal={proposal}
+          />
+        )}
+        {modalMode === 'settle' && (
+          <SettleProposalScreens proposal={proposal} />
+        )}
+        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+      </MultiModal>
     </div>
   )
 }
