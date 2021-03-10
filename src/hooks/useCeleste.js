@@ -23,13 +23,12 @@ const COURT_CONFIG_QUERY = gql`
   }
 `
 
-function useCelesteConfig() {
+function useCelesteConfigPoll() {
   const [config, setConfig] = useState(null)
   const arbitratorAddress = getNetwork().arbitrator
 
   useEffect(() => {
     let cancelled = false
-    let retryTimer
 
     if (!arbitratorAddress) {
       return
@@ -49,7 +48,11 @@ function useCelesteConfig() {
           setConfig(courtConfig)
         }
       } catch (err) {
-        retryTimer = setTimeout(fetchConfig, RETRY_EVERY)
+        console.error(`Error fetching celeste config ${err}, retrying...`)
+      }
+
+      if (!cancelled) {
+        setTimeout(fetchConfig, RETRY_EVERY)
       }
     }
 
@@ -57,7 +60,6 @@ function useCelesteConfig() {
 
     return () => {
       cancelled = true
-      clearTimeout(retryTimer)
     }
   }, [arbitratorAddress])
 
@@ -65,7 +67,7 @@ function useCelesteConfig() {
 }
 
 export function useCelesteSynced() {
-  const config = useCelesteConfig()
+  const config = useCelesteConfigPoll()
 
   return useMemo(() => {
     if (!config || config.terms.length === 0) {
