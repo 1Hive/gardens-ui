@@ -19,6 +19,8 @@ import DisputableActionInfo from '../components/DisputableActionInfo'
 import DisputeFees from '../components/DisputeFees'
 import MultiModal from '../components/MultiModal/MultiModal'
 import IdentityBadge from '../components/IdentityBadge'
+import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
 import SummaryRow from '../components/DecisionDetail/SummaryRow'
 import VoteActions from '../components/DecisionDetail/VoteActions'
@@ -26,8 +28,6 @@ import VoteCasted from '../components/DecisionDetail/VoteCasted'
 import VoteStatus, {
   getStatusAttributes,
 } from '../components/DecisionDetail/VoteStatus'
-import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
-import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 
 import { useAppState } from '../providers/AppState'
 import { useDescribeVote } from '../hooks/useDescribeVote'
@@ -289,7 +289,7 @@ function DecisionDetail({ proposal, actions }) {
       <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        oonClosed={() => setModalMode(null)}
+        onClosed={() => setModalMode(null)}
       >
         {modalMode === 'challenge' && (
           <ChallengeProposalScreens

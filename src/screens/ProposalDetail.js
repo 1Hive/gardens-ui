@@ -377,7 +377,7 @@ function ProposalDetail({
       <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        oonClosed={() => setModalMode(null)}
+        onClosed={() => setModalMode(null)}
       >
         {modalMode === 'challenge' && (
           <ChallengeProposalScreens
