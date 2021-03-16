@@ -48,6 +48,13 @@ export function getStatusAttributes(proposal, theme) {
       background: theme.background,
     }
   }
+  if (proposal.statusData.executed) {
+    return {
+      label: 'Executed',
+      Icon: IconCheck,
+      color: theme.positive,
+    }
+  }
 }
 
 const ProposalStatus = ({ proposal }) => {
