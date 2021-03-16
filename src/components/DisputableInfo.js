@@ -91,9 +91,11 @@ function ProposalChallengedInfo({ proposal }) {
           challenged. When the challenge is resolved, if allowed, the voting
           period will resume and last the rest of its duration time. Othersiwe, it
           will be cancelled.`
-          : `This proposal has been challenged but you can continue to support it to increase conviction. When the challenge is resolved, if allowed, the proposal will be resumed ${proposal.type ===
-              ProposalTypes.Proposal &&
-              `for the remainder of its duration`}. Otherwise this proposal will be cancelled.`}
+          : `This proposal has been challenged but you can continue to support it to increase conviction. When the challenge is resolved, if allowed, the proposal will be resumed ${
+              proposal.type === ProposalTypes.Proposal
+                ? `for the remainder of its duration`
+                : ''
+            }. Otherwise this proposal will be cancelled.`}
       </Info>
     </div>
   )
@@ -128,7 +130,7 @@ function ProposalDisputedInfo({ proposal }) {
               >
                 You can follow the process in{' '}
               </span>
-              <Link href={`${celesteUrl}/questions/${proposal.disputeId}`}>
+              <Link href={`${celesteUrl}/disputes/${proposal.disputeId}`}>
                 Celeste Dashboard
               </Link>
               .
@@ -153,7 +155,7 @@ function ProposalDisputedInfo({ proposal }) {
         . When the challenge is resolved, if allowed,{' '}
         {proposal.type === ProposalTypes.Suggestion
           ? 'the proposal will be resumed'
-          : 'the estimated time for the proposal to pass will be resumed for the remaining of its duration time'}
+          : 'the estimated time for the proposal to pass will be resumed for the remainder of its duration time'}
         . Othersiwe, this proposal will be cancelled.
       </Info>
     </div>

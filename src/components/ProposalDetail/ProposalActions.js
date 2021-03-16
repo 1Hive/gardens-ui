@@ -42,6 +42,9 @@ function ProposalActions({
     if (didIStake) {
       return 'update'
     }
+    if (hasEnded) {
+      return null
+    }
     return 'support'
   }, [currentConviction, didIStake, hasEnded, threshold])
 
@@ -77,12 +80,15 @@ function ProposalActions({
         mode: 'strong',
       }
     }
-    return {
-      text: 'Support this proposal',
-      action: onRequestSupportProposal,
-      mode: 'strong',
-      disabled: !accountBalance.gt(0),
+    if (mode === 'support') {
+      return {
+        text: 'Support this proposal',
+        action: onRequestSupportProposal,
+        mode: 'strong',
+        disabled: !accountBalance.gt(0),
+      }
     }
+    return null
   }, [
     accountBalance,
     handleExecute,
@@ -92,33 +98,39 @@ function ProposalActions({
     onRequestSupportProposal,
   ])
 
-  return connectedAccount ? (
-    <div>
-      <Button
-        wide
-        mode={buttonProps.mode}
-        onClick={buttonProps.action}
-        disabled={buttonProps.disabled}
-      >
-        {buttonProps.text}
-      </Button>
-      {mode === 'support' && buttonProps.disabled && (
-        <Info
-          mode="warning"
-          css={`
-            margin-top: ${2 * GU}px;
-          `}
+  if (!connectedAccount) {
+    return <AccountNotConnected />
+  }
+
+  if (mode) {
+    return (
+      <div>
+        <Button
+          wide
+          mode={buttonProps.mode}
+          onClick={buttonProps.action}
+          disabled={buttonProps.disabled}
         >
-          The currently connected account does not hold any{' '}
-          <strong>{stakeToken.symbol}</strong> tokens and therefore cannot
-          participate in this proposal. Make sure your account is holding{' '}
-          <strong>{stakeToken.symbol}</strong>.
-        </Info>
-      )}
-    </div>
-  ) : (
-    <AccountNotConnected />
-  )
+          {buttonProps.text}
+        </Button>
+        {mode === 'support' && buttonProps.disabled && (
+          <Info
+            mode="warning"
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            The currently connected account does not hold any{' '}
+            <strong>{stakeToken.symbol}</strong> tokens and therefore cannot
+            participate in this proposal. Make sure your account is holding{' '}
+            <strong>{stakeToken.symbol}</strong>.
+          </Info>
+        )}
+      </div>
+    )
+  }
+
+  return <> </>
 }
 
 export default ProposalActions
