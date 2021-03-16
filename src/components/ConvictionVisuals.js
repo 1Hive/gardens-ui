@@ -21,7 +21,6 @@ import { useWallet } from '../providers/Wallet'
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../utils/token-utils'
 import { isEntitySupporting } from '../lib/conviction'
-import { PROPOSAL_STATUS_EXECUTED_STRING } from '../constants'
 
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
@@ -140,13 +139,13 @@ export function ConvictionCountdown({ proposal, shorter }) {
     currentConviction,
     loading,
     neededTokens,
-    status,
+    statusData,
     threshold,
   } = proposal
   const endDate = useProposalEndDate(proposal)
 
   const view = useMemo(() => {
-    if (status === PROPOSAL_STATUS_EXECUTED_STRING) {
+    if (statusData.executed) {
       return EXECUTED
     }
     if (currentConviction.gte(threshold)) {
@@ -156,7 +155,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
       return MAY_PASS
     }
     return UNABLE_TO_PASS
-  }, [currentConviction, endDate, status, threshold])
+  }, [currentConviction, endDate, statusData, threshold])
 
   return loading ? (
     <LoadingRing label="Loading" />
@@ -246,7 +245,7 @@ const PositiveOutcome = ({ endDate, shorter, view }) => {
     view === MAY_PASS
       ? 'May pass'
       : view === EXECUTED
-      ? 'Executed'
+      ? 'Passed and executed'
       : 'Available for execution'
 
   return (
