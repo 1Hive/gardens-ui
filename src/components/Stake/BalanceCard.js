@@ -124,7 +124,7 @@ function BalanceCard({
             font-weight: 600;
           `}
         >
-          Allow Lock Manager
+          Allow Collateral Manager
         </span>
         <div
           css={`
@@ -133,7 +133,7 @@ function BalanceCard({
         >
           <Help>
             {allowManagerDisabled
-              ? `You cannot disallow the lock manager at this time because you have some collateral locked for scheduled proposals. Once the challenge or dispute is resolved, you’ll be able to disable the lock manager and withdraw your full balance.`
+              ? `You cannot disallow the collateral manager from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the collateral manager.`
               : `By enabling this feature you allow the Covenant as the lock manager
             of the HNY staking pool. Any required amount to pay for actions
             collateral and submission fees, will be directly locked when
