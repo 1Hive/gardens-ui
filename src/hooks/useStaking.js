@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
 import { useWallet } from '../providers/Wallet'
@@ -16,6 +16,7 @@ import minimeTokenAbi from '../abi/minimeToken.json'
 // import { formatTokenAmount } from '../utils/token-utils'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
+const STAKE_GAS_LIMIT = 500000
 
 export function useStaking() {
   const mounted = useMounted()
@@ -29,6 +30,8 @@ export function useStaking() {
     setLoadingStakingDataFromContract,
   ] = useState(true)
   const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
+
+  const stakingMovementsSubscription = useRef(null)
 
   const stakingFactoryContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingFactory,
@@ -47,6 +50,16 @@ export function useStaking() {
 
   const handleReFetchTotalBalance = useCallback(() => {
     setReFetchTotalBalance(true)
+  }, [])
+
+  const handleStakingMovementsData = useCallback((error, data = []) => {
+    if (error || !data) {
+      return
+    }
+    setStakeManagement(stakeManagement => ({
+      ...stakeManagement,
+      stakingMovements: data,
+    }))
   }, [])
 
   useEffect(() => {
@@ -83,9 +96,11 @@ export function useStaking() {
             account
           )
 
-          const stakingMovements = await connectedAgreementApp.stakingMovements(
+          stakingMovementsSubscription.current = await connectedAgreementApp.onStakingMovements(
             allTokens[1].id,
-            account
+            account,
+            {},
+            handleStakingMovementsData
           )
 
           if (mounted()) {
@@ -100,7 +115,6 @@ export function useStaking() {
                     total: new BigNumber(staking.total),
                   }
                 : defaultValues,
-              stakingMovements: stakingMovements,
               stakingFactory: stakingFactory,
               stakingInstance: null,
             })
@@ -124,7 +138,8 @@ export function useStaking() {
     if (connectedAgreementApp && account) {
       getStakingInformation()
     }
-  }, [connectedAgreementApp, mounted, account])
+    return () => stakingMovementsSubscription.current?.unsubscribe()
+  }, [connectedAgreementApp, handleStakingMovementsData, mounted, account])
 
   useEffect(() => {
     async function fetchStakingAddress() {
@@ -231,6 +246,7 @@ export function useStaking() {
           from: account,
           to: stakeManagement.stakingInstance,
           description: 'Stake HNY',
+          gasLimit: STAKE_GAS_LIMIT,
         },
       ]
 
@@ -258,6 +274,7 @@ export function useStaking() {
           from: account,
           to: stakeManagement.stakingInstance,
           description: 'Withdraw HNY',
+          gasLimit: STAKE_GAS_LIMIT,
         },
       ]
 

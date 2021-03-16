@@ -436,7 +436,7 @@ function RequestedAmount({
         `}
       >
         If you specify the proposal amount in {stableToken.symbol} it will be
-        converted to {requestToken.symbol} at time of execution
+        converted to {requestToken.symbol} at the time of execution
       </Info>
     </>
   )

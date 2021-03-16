@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
@@ -10,13 +10,18 @@ import { useStakingState } from '../../../providers/Staking'
 function CreateProposalScreens() {
   const [agreement, agreementLoading] = useAgreement()
   const { stakeManagement, loading: stakingLoading } = useStakingState()
-  const [proposalData, setProposalData] = useState()
   const [transactions, setTransactions] = useState([])
   const { convictionActions } = useActions()
 
+  const proposalData = useRef()
+
+  const handleSetProposalData = useCallback(data => {
+    proposalData.current = data
+  }, [])
+
   const getTransactions = useCallback(
     async onComplete => {
-      const { amount, beneficiary, link, title } = proposalData
+      const { amount, beneficiary, link, title } = proposalData.current
 
       let params
       let fn
@@ -66,7 +71,7 @@ function CreateProposalScreens() {
             {
               title: 'Create post',
               graphicHeader: true,
-              content: <AddProposal setProposalData={setProposalData} />,
+              content: <AddProposal setProposalData={handleSetProposalData} />,
             },
             {
               title: 'Action fees',
@@ -79,7 +84,13 @@ function CreateProposalScreens() {
               ),
             },
           ],
-    [agreement, getTransactions, stakingLoading, stakeManagement]
+    [
+      agreement,
+      getTransactions,
+      handleSetProposalData,
+      stakingLoading,
+      stakeManagement,
+    ]
   )
   return (
     <ModalFlowBase

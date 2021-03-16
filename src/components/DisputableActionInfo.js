@@ -32,11 +32,14 @@ function getInfoActionContent(proposal, account, actions) {
     // Proposal has not been disputed
     if (proposal.disputedAt === 0) {
       return {
-        info: `The proposed action will be executed if nobody challenges it ${
-          proposal.type === ProposalTypes.Decision
-            ? 'during the voting period and the result of the vote is casted with majority support'
-            : 'and the proposal accrues sufficient conviction'
-        }.`,
+        info:
+          proposal.type === ProposalTypes.Suggestion
+            ? 'The suggestion will exist until it is successfully challenged or removed.'
+            : `The proposed action will be executed if nobody challenges it ${
+                proposal.type === ProposalTypes.Decision
+                  ? 'during the voting period and the result of the vote is casted with majority support'
+                  : 'and the proposal accrues sufficient conviction'
+              }.`,
         actions: isSubmitter
           ? []
           : [
@@ -258,7 +261,7 @@ function Dispute({ proposal }) {
           `}
         >
           <Link
-            href={`${celesteUrl}/questions/${proposal.disputeId}`}
+            href={`${celesteUrl}/disputes/${proposal.disputeId}`}
             css={`
               margin-right: ${0.5 * GU}px;
             `}

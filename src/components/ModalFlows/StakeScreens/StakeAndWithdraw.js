@@ -169,8 +169,8 @@ function StakeAndWithdraw({
               margin-top: ${2 * GU}px;
             `}
           >
-            You will be able to withdraw your collateral balance any time,
-            except when a portion of it is locked on a scheduled proposal
+            You will be able to withdraw your collateral balance at any time,
+            except for any that is locked on a scheduled proposal.
           </Info>
         )}
         <Button

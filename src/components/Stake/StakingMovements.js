@@ -102,7 +102,7 @@ function StakingMovements({ stakingMovements, token }) {
 
   const handleGoToProposal = useCallback(
     disputableActionId => {
-      history.push(`/proposals/${disputableActionId}`)
+      history.push(`/proposal/${disputableActionId}`)
     },
     [history]
   )
@@ -158,10 +158,7 @@ function StakingMovements({ stakingMovements, token }) {
             />
           </div>,
           <div>
-            <Link
-              onClick={handleGoToProposal}
-              to={`/proposals/${disputableActionId}`}
-            >
+            <Link onClick={() => handleGoToProposal(disputableActionId)}>
               Proposal #{disputableActionId}
             </Link>
           </div>,

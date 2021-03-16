@@ -109,7 +109,7 @@ function CelesteSyncedStatus({ synced }) {
       icon: iconError,
       text: (
         <div>
-          `Celeste is not synced, head over to the{' '}
+          Celeste is not synced, head over to the{' '}
           <Link href={celesteUrl}>dashboard</Link> and update the term.
         </div>
       ),

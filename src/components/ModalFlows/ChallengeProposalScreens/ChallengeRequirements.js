@@ -41,9 +41,7 @@ function ChallengeProposalRequirements({
     <div>
       <InfoField label="Action collateral">
         You must stake {formatTokenAmount(challengeAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to challenge this action. Your
-        wallet balance is {formatTokenAmount(accountBalance, token.decimals)}{' '}
-        {token.symbol}.
+        {token.symbol} as the collateral required to challenge this action.
       </InfoField>
       <CollateralStatus
         accountBalance={accountBalance}
@@ -57,9 +55,7 @@ function ChallengeProposalRequirements({
         `}
       >
         You must deposit {formatTokenAmount(disputeFeesBN, 18)} {token.symbol}{' '}
-        as the dispute fees. This balance will be returned to your account if
-        the submitter accepts your settlement offer or if you win the dispute
-        raised to Celeste.
+        as the dispute fees.
       </InfoField>
       <FeesStatus
         accountBalance={accountBalance}
@@ -74,6 +70,16 @@ function ChallengeProposalRequirements({
       >
         Continue
       </ModalButton>
+      <Info
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      >
+        The action collateral and dispute fees will be returned to your account
+        if the submitter accepts your settlement offer or if you win the dispute
+        raised to Celeste. Your wallet balance is{' '}
+        {formatTokenAmount(accountBalance, token.decimals)} {token.symbol}.
+      </Info>
     </div>
   )
 }
@@ -117,7 +123,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
         backgroundColor: '#EBFBF6',
         color: theme.positive,
         icon: iconCheck,
-        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
+        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           feesAmount,
           token.decimals
         )} ${token.symbol} as the dispute fees.`,
@@ -128,7 +134,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       backgroundColor: theme.negativeSurface,
       color: theme.negative,
       icon: iconError,
-      text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
+      text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         feesAmount,
         token.decimals
       )} ${token.symbol} as the dispute fees.`,
