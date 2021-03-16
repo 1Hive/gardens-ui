@@ -145,7 +145,6 @@ const Home = React.memo(function Home() {
           <MultiModal
             visible={createProposalModalVisible}
             onClose={() => setCreateProposalModalVisible(false)}
-            onClosed={() => setCreateProposalModalVisible(false)}
           >
             <CreateProposalScreens />
           </MultiModal>

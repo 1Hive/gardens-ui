@@ -137,8 +137,8 @@ export function useStaking() {
 
     if (connectedAgreementApp && account) {
       getStakingInformation()
-      return () => stakingMovementsSubscription.current.unsubscribe()
     }
+    return () => stakingMovementsSubscription.current?.unsubscribe()
   }, [connectedAgreementApp, handleStakingMovementsData, mounted, account])
 
   useEffect(() => {

@@ -57,6 +57,9 @@ function ProposalActions({
   }, [id, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
+    if (!mode) {
+      return null
+    }
     if (mode === 'execute') {
       return {
         text: 'Execute proposal',
@@ -88,7 +91,6 @@ function ProposalActions({
         disabled: !accountBalance.gt(0),
       }
     }
-    return null
   }, [
     accountBalance,
     handleExecute,
@@ -130,7 +132,7 @@ function ProposalActions({
     )
   }
 
-  return <> </>
+  return null
 }
 
 export default ProposalActions
