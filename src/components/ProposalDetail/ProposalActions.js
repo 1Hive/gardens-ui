@@ -100,11 +100,10 @@ function ProposalActions({
     onRequestSupportProposal,
   ])
 
-  if (!connectedAccount) {
-    return <AccountNotConnected />
-  }
-
   if (mode) {
+    if (!connectedAccount) {
+      return <AccountNotConnected />
+    }
     return (
       <div>
         <Button
