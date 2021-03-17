@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {
   useOrgData,
   useTokenBalances,
-  useAgentBalance,
+  useVaultBalance,
 } from '../hooks/useOrgHooks'
 import useEffectiveSupply from '../hooks/useEffectiveSupply'
 import { useWallet } from './Wallet'
@@ -25,7 +25,7 @@ function AppStateProvider({ children }) {
   const { requestToken, stableToken, stakeToken, totalStaked } =
     config?.conviction || {}
 
-  const vaultBalance = useAgentBalance(installedApps, requestToken)
+  const vaultBalance = useVaultBalance(installedApps, requestToken)
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 

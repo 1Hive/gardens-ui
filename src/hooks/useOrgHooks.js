@@ -21,7 +21,7 @@ import { connectorConfig } from '../networks'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
-import agentAbi from '../abi/agent.json'
+import vaultAbi from '../abi/vault-balance.json'
 
 const useAgreementHook = createAppHook(
   connectAgreement,
@@ -42,6 +42,7 @@ export function useOrgData() {
   ] = useAgreementHook(agreementApp)
 
   const [convictionApp] = useApp(appName)
+
   const [permissions, permissionsStatus] = usePermissions()
 
   const convictionAppPermissions = useMemo(() => {
@@ -111,11 +112,13 @@ export function useOrgData() {
   }
 }
 
-export function useAgentBalance(installedApps, token, timeout = 1000) {
-  const agentAddress = getAppAddressByName(installedApps, 'agent')
-  const agentContract = useContractReadOnly(agentAddress, agentAbi)
+export function useVaultBalance(installedApps, token, timeout = 1000) {
+  const vaultAddress =
+    getAppAddressByName(installedApps, 'vault') ||
+    getAppAddressByName(installedApps, 'agent')
+  const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
 
-  const [agentBalance, setAgentBalance] = useState(new BigNumber(-1))
+  const [vaultBalance, setVaultBalance] = useState(new BigNumber(-1))
 
   // We are starting in 0 in order to immediately make the fetch call
   const controlledTimeout = useRef(0)
@@ -124,21 +127,21 @@ export function useAgentBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!agentContract || !token?.id) {
+    if (!vaultContract || !token?.id) {
       return
     }
 
-    const fetchAgentBalance = () => {
+    const fetchVaultBalance = () => {
       timeoutId = setTimeout(async () => {
         try {
-          const vaultContractBalance = await agentContract.balance(token.id)
+          const vaultContractBalance = await vaultContract.balance(token.id)
 
           if (!cancelled) {
             // Contract value is bn.js so we need to convert it to bignumber.js
             const newValue = new BigNumber(vaultContractBalance.toString())
 
-            if (!newValue.eq(agentBalance)) {
-              setAgentBalance(newValue)
+            if (!newValue.eq(vaultBalance)) {
+              setVaultBalance(newValue)
             }
           }
         } catch (err) {
@@ -148,20 +151,20 @@ export function useAgentBalance(installedApps, token, timeout = 1000) {
         if (!cancelled) {
           clearTimeout(timeoutId)
           controlledTimeout.current = timeout
-          fetchAgentBalance()
+          fetchVaultBalance()
         }
       }, controlledTimeout.current)
     }
 
-    fetchAgentBalance()
+    fetchVaultBalance()
 
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [agentBalance, agentContract, controlledTimeout, timeout, token])
+  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token])
 
-  return agentBalance
+  return vaultBalance
 }
 
 export function useTokenBalances(account, token, timer = 3000) {
