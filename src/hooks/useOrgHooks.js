@@ -42,6 +42,7 @@ export function useOrgData() {
   ] = useAgreementHook(agreementApp)
 
   const [convictionApp] = useApp(appName)
+
   const [permissions, permissionsStatus] = usePermissions()
 
   const convictionAppPermissions = useMemo(() => {
@@ -112,7 +113,9 @@ export function useOrgData() {
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
-  const vaultAddress = getAppAddressByName(installedApps, 'vault')
+  const vaultAddress =
+    getAppAddressByName(installedApps, 'vault') ||
+    getAppAddressByName(installedApps, 'agent')
   const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
 
   const [vaultBalance, setVaultBalance] = useState(new BigNumber(-1))
