@@ -21,7 +21,7 @@ import { connectorConfig } from '../networks'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
-import vaultAbi from '../abi/vault-balance.json'
+import agentAbi from '../abi/agent.json'
 
 const useAgreementHook = createAppHook(
   connectAgreement,
@@ -111,11 +111,11 @@ export function useOrgData() {
   }
 }
 
-export function useVaultBalance(installedApps, token, timeout = 1000) {
-  const vaultAddress = getAppAddressByName(installedApps, 'vault')
-  const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
+export function useAgentBalance(installedApps, token, timeout = 1000) {
+  const agentAddress = getAppAddressByName(installedApps, 'agent')
+  const agentContract = useContractReadOnly(agentAddress, agentAbi)
 
-  const [vaultBalance, setVaultBalance] = useState(new BigNumber(-1))
+  const [agentBalance, setAgentBalance] = useState(new BigNumber(-1))
 
   // We are starting in 0 in order to immediately make the fetch call
   const controlledTimeout = useRef(0)
@@ -124,21 +124,21 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract || !token?.id) {
+    if (!agentContract || !token?.id) {
       return
     }
 
-    const fetchVaultBalance = () => {
+    const fetchAgentBalance = () => {
       timeoutId = setTimeout(async () => {
         try {
-          const vaultContractBalance = await vaultContract.balance(token.id)
+          const vaultContractBalance = await agentContract.balance(token.id)
 
           if (!cancelled) {
             // Contract value is bn.js so we need to convert it to bignumber.js
             const newValue = new BigNumber(vaultContractBalance.toString())
 
-            if (!newValue.eq(vaultBalance)) {
-              setVaultBalance(newValue)
+            if (!newValue.eq(agentBalance)) {
+              setAgentBalance(newValue)
             }
           }
         } catch (err) {
@@ -148,20 +148,20 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
         if (!cancelled) {
           clearTimeout(timeoutId)
           controlledTimeout.current = timeout
-          fetchVaultBalance()
+          fetchAgentBalance()
         }
       }, controlledTimeout.current)
     }
 
-    fetchVaultBalance()
+    fetchAgentBalance()
 
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token])
+  }, [agentBalance, agentContract, controlledTimeout, timeout, token])
 
-  return vaultBalance
+  return agentBalance
 }
 
 export function useTokenBalances(account, token, timer = 3000) {
