@@ -257,6 +257,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             amount={formData.amount}
             convertedAmount={requestAmount}
             loadingAmount={loadingRequestAmount}
+            neededThreshold={neededThreshold}
             onAmountChange={handleAmountChange}
             onBlur={() => handleAmountEditMode(false)}
             onIsStableChange={handleIsStableChange}
@@ -283,44 +284,20 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
         />
       </Field>
       <Info title="Proposal guidelines">
+        <span>
+          {formData.proposalType === SIGNALING_PROPOSAL
+            ? `This action will create a signaling proposal which can be voted on
+            by ${stakeToken.symbol} holders but requests no funds. It is used to
+            gather community sentiment for future funding proposals or
+            particular ideas.`
+            : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
+        </span>{' '}
         In order to create a proposal you must first create a post on the{' '}
         <Link href="https://forum.1hive.org/new-topic?category=proposals">
           1Hive Forum
         </Link>{' '}
         under the 🌿 Proposals category and paste the link to the corresponding
         post in the LINK field.
-        {fundingMode ? (
-          <>
-            <span>
-              This action will create a proposal which can be voted on
-            </span>{' '}
-            <span
-              css={`
-                font-weight: 700;
-              `}
-            >
-              by staking {stakeToken.symbol}.
-            </span>{' '}
-            <span>
-              The action will be executable if the accrued total stake reaches
-              above the threshold.
-            </span>
-          </>
-        ) : (
-          <>
-            <span>
-              This action will create a proposal which can be voted on,
-            </span>{' '}
-            <span
-              css={`
-                font-weight: 700;
-              `}
-            >
-              it’s a proposal without a requested amount.
-            </span>{' '}
-            <span>The action will not be executable.</span>
-          </>
-        )}
       </Info>
       <Button
         wide
@@ -333,20 +310,6 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         Continue
       </Button>
-
-      {fundingMode && formData.amount.valueBN.gte(0) && (
-        <Info
-          mode={neededThreshold ? 'info' : 'warning'}
-          css={`
-            margin-top: ${2 * GU}px;
-          `}
-        >
-          {neededThreshold
-            ? `Required conviction for requested amount in order for the proposal to
-          pass is ~%${neededThreshold}`
-            : `Proposal might never pass with requested amount`}
-        </Info>
-      )}
 
       {errors.length > 0 && (
         <Info
@@ -368,6 +331,7 @@ function RequestedAmount({
   amount,
   convertedAmount,
   loadingAmount,
+  neededThreshold,
   onAmountChange,
   onBlur,
   onFocus,
@@ -436,7 +400,12 @@ function RequestedAmount({
         `}
       >
         If you specify the proposal amount in {stableToken.symbol} it will be
-        converted to {requestToken.symbol} at the time of execution
+        converted to {requestToken.symbol} at time of execution.{' '}
+        {neededThreshold
+          ? `The conviction
+        required in order for the proposal to pass with the requested amount is
+        ~%${neededThreshold}.`
+          : `Proposal might never pass with requested amount`}
       </Info>
     </>
   )
