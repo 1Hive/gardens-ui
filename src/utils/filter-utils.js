@@ -47,7 +47,7 @@ export const FILTER_KEY_TYPE = 'type'
 
 export const STATUS_ITEMS = ['All', 'Open', 'Closed', 'Removed']
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
-export const TYPE_ITEMS = ['All', 'Suggestion', 'Proposal', 'Decision']
+export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision']
 export const RANKING_ITEMS = ['top', 'new']
 
 export function testSupportFilter(filter, proposalSupportStatus) {
