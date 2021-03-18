@@ -28,7 +28,7 @@ export const filterArgsMapping = {
     queryKey: 'statuses',
     [STATUS_FILTER_OPEN]: [0, 3, 4], // Active, Challenged, Disputed
     [STATUS_FILTER_COMPLETED]: [0, 2], // Active, Executed (Active could actually be accepted based on time for votes that are not executable)
-    [STATUS_FILTER_REMOVED]: [0, 1, 3, 5, 6], // Cancelled, Challenged, Settled, Rejected (Active and Challenged could actually be rejected/Settled respectively based on time for votes that are not executable)
+    [STATUS_FILTER_REMOVED]: [0, 1, 3, 5, 6], // Cancelled, Challenged, Settled, Rejected (Active and Challenged could actually be rejected/Settled respectively based on time)
   },
   type: {
     queryKey: 'types',
@@ -66,7 +66,7 @@ export function testStatusFilter(filter, proposal) {
   }
   const { statusData } = proposal
 
-  // open
+  // Open
   if (
     filter === STATUS_FILTER_OPEN &&
     (statusData.open ||
