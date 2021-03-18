@@ -121,7 +121,7 @@ function AgreementDetails({
                   color: ${theme.surfaceContentSecondary};
                 `}
               >
-                You can now manage your token balances on Stake Management.
+                You can now manage your token balances on Collateral Management.
               </p>
             </div>
           </div>

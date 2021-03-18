@@ -71,7 +71,7 @@ function ProposalChallengedInfo({ proposal }) {
                 in{' '}
               </span>
               <Link href="#/stake" external={false}>
-                Stake Management
+                Collateral Management
               </Link>
               .
             </div>
@@ -148,9 +148,9 @@ function ProposalDisputedInfo({ proposal }) {
           margin-top: ${2 * GU}px;
         `}
       >
-        Celeste has been invoked to settle a challenge{' '}
+        Celeste has been invoked to settle a challenge
         {proposal.type !== ProposalTypes.Decision
-          ? 'but you can support it anyway and make the conviction grow'
+          ? ' but you can support it anyway and make the conviction grow'
           : ''}
         . When the challenge is resolved, if allowed,{' '}
         {proposal.type === ProposalTypes.Suggestion
@@ -230,7 +230,7 @@ function ProposalSettledInfo({ proposal }) {
                 . You can manage your deposit balances in{' '}
               </span>
               <Link href="#/profile" external={false}>
-                Stake Management
+                Collateral Management
               </Link>
               .
             </div>
