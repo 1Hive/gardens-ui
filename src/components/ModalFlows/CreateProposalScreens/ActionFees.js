@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react'
-import { Button, Field, GU, textStyle, theme } from '@1hive/1hive-ui'
+import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
 import iconFees from '../../../assets/iconFees.svg'
-import { getNetwork } from '../../../networks'
 import { getDisputableAppByName } from '../../../utils/app-utils'
 import { formatTokenAmount } from '../../../utils/token-utils'
 import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
-  const networkName = getNetwork().name
   const tokenRate = useUniswapHnyPrice()
   const { next } = useMultiModal()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
 
   const convictionAppRequirements = getDisputableAppByName(
     agreement.disputableAppsWithRequirements,
@@ -34,43 +34,72 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
   return (
     <div>
       <Field
-        label="Transaction fees"
         css={`
           color: ${theme.surfaceContentSecondary};
         `}
       >
         <span
           css={`
-            ${textStyle('body2')}
+            ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          Fees are required for your action to be submitted and the transaction
-          to be processed. Part of them will go to the {networkName} network and
-          the other part to 1Hive Protocol, in compensation for dispute
-          resolution services.
+          A deposit is required for your action to be submitted which will be
+          held until the action is finalised. If the action is withdrawn by you
+          or completed successfully the deposit will be unlocked, available
+          through the staking manager. If the action is disputed and cancelled
+          by Celeste the deposit will be lost.
         </span>
       </Field>
+
+      {compactMode && (
+        <div
+          css={`
+            margin-top: ${GU * 2}px;
+            weight: 100%;
+          `}
+        >
+          <img
+            css={`
+              height: ${GU * 4}px;
+              width: ${GU * 4}px;
+            `}
+            src={iconFees}
+            alt=""
+          />
+        </div>
+      )}
+
       <div
         css={`
           display: flex;
           flex-direction: row;
           flex-wrap: nowrap;
           width: 100%;
-          margin-top: ${GU * 3}px;
+          margin-top: ${!compactMode ? GU * 3 : 0}px;
         `}
       >
+        {!compactMode && (
+          <div
+            css={`
+              flex: 0.25;
+            `}
+          >
+            <img
+              css={`
+                height: ${GU * 4.5}px;
+                width: ${GU * 4.5}px;
+              `}
+              src={iconFees}
+              alt=""
+            />
+          </div>
+        )}
+
         <div
           css={`
-            flex: 0.25;
-          `}
-        >
-          <img src={iconFees} alt="" />
-        </div>
-        <div
-          css={`
-            flex: 2;
+            flex: ${compactMode ? 1 : 2};
             align-self: center;
-            padding: 0 0 0 ${2 * GU}px;
+            padding: 0 0 0 ${!compactMode ? 2 * GU : 0}px;
           `}
         >
           <h3
@@ -78,49 +107,21 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
               font-weight: 600;
             `}
           >
-            Estimated fees
+            Action Deposit
           </h3>
-          <div
-            css={`
-              text-align: left;
-              ${textStyle('body3')}
-            `}
-          >
-            {networkName} network (withdraw from wallet balance)
-          </div>
-          <div
-            css={`
-              text-align: left;
-              ${textStyle('body3')}
-            `}
-          >
-            Action fee (withdraw from your staking balance)
-          </div>
         </div>
         <div
           css={`
             flex: 0.5;
             align-self: center;
+            ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
             css={`
-              text-align: right;
+              text-align: ${compactMode ? 'left' : 'right'};
               font-weight: 600;
-            `}
-          >
-            ${dollarAmount}
-          </div>
-          <div
-            css={`
-              text-align: right;
-            `}
-          >
-            -
-          </div>
-          <div
-            css={`
-              text-align: right;
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             ${dollarAmount}
@@ -130,32 +131,14 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           css={`
             flex: 0.65;
             align-self: center;
+            ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
             css={`
-              text-align: right;
-              height: ${3 * GU}px;
-              margin-right: ${GU}px;
+              margin-right: ${compactMode ? GU : 0}px;
               font-weight: 600;
-            `}
-          >
-            {formatedAmount} {token.symbol}
-          </div>
-          <div
-            css={`
-              text-align: right;
-              height: ${3 * GU}px;
-              margin-right: ${GU}px;
-            `}
-          >
-            -
-          </div>
-          <div
-            css={`
-              text-align: right;
-              height: ${3 * GU}px;
-              margin-right: ${GU}px;
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             {formatedAmount} {token.symbol}
