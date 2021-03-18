@@ -6,7 +6,7 @@ import LayoutColumns from '../Layout/LayoutColumns'
 export default function EmptyState({ icon }) {
   return (
     <>
-      <Header primary="Stake Management" />
+      <Header primary="Collateral Management" />
       <LayoutColumns
         primary={
           <Card
