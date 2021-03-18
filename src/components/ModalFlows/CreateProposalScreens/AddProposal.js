@@ -41,7 +41,7 @@ const DEFAULT_FORM_DATA = {
   beneficiary: '',
 }
 
-const PROPOSAL_TYPES = ['Signaling proposal', 'Funding proposal']
+const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = React.memo(({ setProposalData }) => {
   const { next } = useMultiModal()
