@@ -71,7 +71,7 @@ function ProposalChallengedInfo({ proposal }) {
                 in{' '}
               </span>
               <Link href="#/stake" external={false}>
-                Collateral Management
+                Collateral Manager
               </Link>
               .
             </div>
@@ -230,7 +230,7 @@ function ProposalSettledInfo({ proposal }) {
                 . You can manage your deposit balances in{' '}
               </span>
               <Link href="#/profile" external={false}>
-                Collateral Management
+                Collateral Manager
               </Link>
               .
             </div>

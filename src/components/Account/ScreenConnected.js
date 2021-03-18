@@ -89,7 +89,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
           `}
         >
           <img src={stakeButtonSvg} alt="" width="24" height="24" />
-          <span>Collateral Management</span>
+          <span>Collateral Manager</span>
         </div>
       </ButtonBase>
       <div
