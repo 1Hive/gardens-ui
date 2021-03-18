@@ -19,6 +19,7 @@ import DisputableActionInfo from '../components/DisputableActionInfo'
 import DisputeFees from '../components/DisputeFees'
 import MultiModal from '../components/MultiModal/MultiModal'
 import IdentityBadge from '../components/IdentityBadge'
+import ProposalIcon from '../components/ProposalIcon'
 import RaiseDisputeScreens from '../components/ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../components/ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SummaryBar from '../components/DecisionDetail/SummaryBar'
@@ -38,6 +39,7 @@ import { round, safeDiv } from '../utils/math-utils'
 import { getConnectedAccountVote, getQuorumProgress } from '../utils/vote-utils'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../constants'
+import { convertToString } from '../types'
 import DisputableInfo from '../components/DisputableInfo'
 
 function DecisionDetail({ proposal, actions }) {
@@ -132,13 +134,31 @@ function DecisionDetail({ proposal, actions }) {
                   grid-row-gap: ${7 * GU}px;
                 `}
               >
-                <h1
-                  css={`
-                    ${textStyle('title2')};
-                  `}
-                >
-                  {`Vote #${number}`}
-                </h1>
+                <div>
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                      margin-bottom: ${2 * GU}px;
+                    `}
+                  >
+                    <ProposalIcon type={proposal.type} />
+                    <span
+                      css={`
+                        margin-left: ${0.5 * GU}px;
+                      `}
+                    >
+                      {convertToString(proposal.type)}
+                    </span>
+                  </div>
+                  <h1
+                    css={`
+                      ${textStyle('title2')};
+                    `}
+                  >
+                    {`Vote #${number}`}
+                  </h1>
+                </div>
                 <div
                   css={`
                     display: grid;
