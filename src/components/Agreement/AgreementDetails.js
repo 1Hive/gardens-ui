@@ -114,14 +114,14 @@ function AgreementDetails({
                   font-weight: 600;
                 `}
               >
-                You have sucessfully signed this Agreement
+                You have sucessfully signed this Covenant
               </h2>
               <p
                 css={`
                   color: ${theme.surfaceContentSecondary};
                 `}
               >
-                You can now manage your token balances on Collateral Management.
+                You can now manage your token balances on Collateral Manager.
               </p>
             </div>
           </div>
