@@ -75,6 +75,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           flex-direction: row;
           flex-wrap: nowrap;
           width: 100%;
+          height: ${GU * 5}px;
           margin-top: ${!compactMode ? GU * 3 : 0}px;
         `}
       >
@@ -82,12 +83,15 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           <div
             css={`
               flex: 0.25;
+              position: relative;
             `}
           >
             <img
               css={`
-                height: ${GU * 4.5}px;
-                width: ${GU * 4.5}px;
+                height: ${GU * 4}px;
+                width: ${GU * 4}px;
+                position: absolute;
+                bottom: 2px;
               `}
               src={iconFees}
               alt=""
@@ -98,13 +102,18 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         <div
           css={`
             flex: ${compactMode ? 1 : 2};
-            align-self: center;
-            padding: 0 0 0 ${!compactMode ? 2 * GU : 0}px;
+            padding: 0 0 0 ${!compactMode ? 1.25 * GU : 0}px;
+            align-items: baseline;
+            align-self: flex-end;
+            height: 100%;
+            position: relative;
           `}
         >
           <h3
             css={`
               font-weight: 600;
+              position: absolute;
+              bottom: 0;
             `}
           >
             Action Deposit
@@ -113,14 +122,19 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         <div
           css={`
             flex: 0.5;
-            align-self: center;
+            align-items: baseline;
+            align-self: flex-end;
+            height: 100%;
+            position: relative;
             ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
           <div
             css={`
-              text-align: ${compactMode ? 'left' : 'right'};
+              text-align: 'left';
               font-weight: 600;
+              position: absolute;
+              bottom: 0;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
@@ -130,7 +144,10 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         <div
           css={`
             flex: 0.65;
-            align-self: center;
+            align-items: baseline;
+            align-self: flex-end;
+            height: 100%;
+            position: relative;
             ${compactMode ? textStyle('body4') : textStyle('body3')};
           `}
         >
@@ -138,6 +155,8 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             css={`
               margin-right: ${compactMode ? GU : 0}px;
               font-weight: 600;
+              bottom: 0;
+              position: absolute;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
