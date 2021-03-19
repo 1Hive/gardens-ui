@@ -51,98 +51,56 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         </span>
       </Field>
 
-      {compactMode && (
-        <div
-          css={`
-            margin-top: ${GU * 2}px;
-            weight: 100%;
-          `}
-        >
-          <img
-            css={`
-              height: ${GU * 4}px;
-              width: ${GU * 4}px;
-            `}
-            src={iconFees}
-            alt=""
-          />
-        </div>
-      )}
-
       <div
         css={`
           display: flex;
           width: 100%;
           height: ${GU * 4}px;
           margin-top: ${!compactMode ? GU * 3 : 0}px;
+          align-items: center;
         `}
       >
-        {!compactMode && (
-          <div
-            css={`
-              flex: 0.25;
-            `}
-          >
-            <img
-              css={`
-                height: ${GU * 4}px;
-                width: ${GU * 4}px;
-              `}
-              src={iconFees}
-              alt=""
-            />
-          </div>
-        )}
+        <img
+          css={`
+            height: ${GU * 4}px;
+            width: ${GU * 4}px;
+          `}
+          src={iconFees}
+          alt=""
+        />
 
-        <div
+        <h3
           css={`
-            flex: ${compactMode ? 1 : 2};
-            padding: 0 0 0 ${!compactMode ? 1.25 * GU : 0}px;
-            align-self: center;
+            font-weight: 600;
+            margin-left: 3%;
           `}
         >
-          <h3
-            css={`
-              font-weight: 600;
-            `}
-          >
-            Action Deposit
-          </h3>
-        </div>
-        <div
+          Action Deposit
+        </h3>
+
+        <span
           css={`
-            flex: 0.5;
-            align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')};
+            text-align: 'left';
+            font-weight: 600;
+            position: absolute;
+            right: ${compactMode ? GU * 13.1 : GU * 19}px;
+            ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          <div
-            css={`
-              text-align: 'left';
-              font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')};
-            `}
-          >
-            ${dollarAmount}
-          </div>
-        </div>
-        <div
+          ${dollarAmount}
+        </span>
+
+        <span
           css={`
-            flex: 0.65;
-            align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')};
+            margin-right: ${compactMode ? GU : 0}px;
+            font-weight: 600;
+            position: absolute;
+            right: ${compactMode ? GU * 4 : GU * 6.25}px;
+            ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          <div
-            css={`
-              margin-right: ${compactMode ? GU : 0}px;
-              font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')};
-            `}
-          >
-            {formatedAmount} {token.symbol}
-          </div>
-        </div>
+          {formatedAmount} {token.symbol}
+        </span>
       </div>
       <Button
         label="Create transaction"
