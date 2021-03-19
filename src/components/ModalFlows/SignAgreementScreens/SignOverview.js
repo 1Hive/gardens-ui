@@ -54,7 +54,7 @@ function SignOverview({ getTransactions }) {
         >
           <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
         </div>
-        By signing this Covenant, you agree to 1Hive Network DAO manifesto, by
+        By signing this Covenant, you agree to the 1Hive Community manifesto, by
         laws and community code of behavior.
       </label>
       <Field label="Covenant action collateral">

@@ -39,7 +39,7 @@ function CreateProposalRequirements({ agreement, staking }) {
         <Link href="#/covenant" external={false}>
           community covenant
         </Link>{' '}
-        in order to create a post. The Covenant was last updated at{' '}
+        in order to create a proposal. The Covenant was last updated on{' '}
         {dateFormat(agreement.effectiveFrom)}
       </InfoField>
       <AgreementStatus agreement={agreement} />
@@ -49,10 +49,10 @@ function CreateProposalRequirements({ agreement, staking }) {
           margin-top: ${5 * GU}px;
         `}
       >
-        You must stake {formatTokenAmount(actionAmount, token.decimals)} HNY as
-        the collateral required to perform this action. Your current staked
-        balance is {formatTokenAmount(availableStaked, token.decimals)}{' '}
-        {token.symbol}.
+        You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
+        {token.symbol} as the collateral required to create a proposal. Your
+        current collateral manager balance is{' '}
+        {formatTokenAmount(availableStaked, token.decimals)} {token.symbol}.
       </InfoField>
       <CollateralStatus
         allowance={allowance}

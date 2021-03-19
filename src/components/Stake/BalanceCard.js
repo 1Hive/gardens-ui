@@ -92,16 +92,16 @@ function BalanceCard({
         ${total ? formatTokenAmount(total * tokenRate, tokenDecimals) : '-'}
       </p>
       <Button
-        mode="normal"
+        mode="strong"
         wide
-        label="Withdraw"
-        onClick={handleOnWithdraw}
+        label="Deposit"
+        onClick={handleOnDeposit}
         css={`
           margin-top: ${2 * GU}px;
           margin-bottom: ${1.5 * GU}px;
         `}
       />
-      <Button mode="strong" wide label="Deposit" onClick={handleOnDeposit} />
+      <Button mode="normal" wide label="Withdraw" onClick={handleOnWithdraw} />
 
       <div
         css={`
