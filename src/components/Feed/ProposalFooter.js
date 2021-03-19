@@ -79,7 +79,7 @@ function ProposalFooter({
     }
 
     if (proposal.statusData.cancelled) {
-      return 'Removed'
+      return 'Cancelled'
     }
 
     if (proposal.statusData.settled) {

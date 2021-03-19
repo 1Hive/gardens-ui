@@ -45,14 +45,14 @@ export const getStatusAttributes = (vote, theme) => {
       color: theme.positive,
     }
   }
-  if (statusData.pendingEnactment) {
+  if (statusData.pendingExecution) {
     return {
       label: 'Passed (pending)',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (statusData.enacted) {
+  if (statusData.executed) {
     return {
       label: 'Passed (enacted)',
       Icon: IconCheck,
