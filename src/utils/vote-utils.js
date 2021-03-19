@@ -127,9 +127,9 @@ export function getVoteStatusData(vote, hasEnded, pctBase) {
     const hasAction = isVoteAction(vote)
     if (hasAction) {
       if (vote.status === PROPOSAL_STATUS_EXECUTED_STRING) {
-        statusData.enacted = true
+        statusData.executed = true
       } else {
-        statusData.pendingEnactment = true
+        statusData.pendingExecution = true
       }
     } else {
       statusData.accepted = true

@@ -96,25 +96,27 @@ function useFilteredProposals(filters, account, latestBlock) {
 
   const filteredProposals = useMemo(
     () =>
-      proposalsWithData?.filter(proposal => {
-        const proposalSupportStatus = getProposalSupportStatus(
-          myStakes,
-          proposal
-        )
+      isLoading
+        ? proposalsWithData
+        : proposalsWithData?.filter(proposal => {
+            const proposalSupportStatus = getProposalSupportStatus(
+              myStakes,
+              proposal
+            )
 
-        const supportFilterPassed = testSupportFilter(
-          filters.support.filter,
-          proposalSupportStatus
-        )
+            const supportFilterPassed = testSupportFilter(
+              filters.support.filter,
+              proposalSupportStatus
+            )
 
-        const statusFilterPassed = testStatusFilter(
-          filters.status.filter,
-          proposal
-        )
+            const statusFilterPassed = testStatusFilter(
+              filters.status.filter,
+              proposal
+            )
 
-        return supportFilterPassed && statusFilterPassed
-      }),
-    [filters, myStakes, proposalsWithData]
+            return supportFilterPassed && statusFilterPassed
+          }),
+    [filters, isLoading, myStakes, proposalsWithData]
   )
 
   const proposalsFetchedCount = proposals.length
