@@ -8,7 +8,7 @@ import priceOracleAbi from '../abi/priceOracle.json'
 
 export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
   const [convertedAmount, setConvertedAmount] = useState(new BigNumber(0))
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const mounted = useMounted()
 
@@ -29,8 +29,6 @@ export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
     }
 
     const fetchConvertedAmount = async () => {
-      setLoading(true)
-
       try {
         const result = await priceOracleContract.consult(
           tokenIn,
