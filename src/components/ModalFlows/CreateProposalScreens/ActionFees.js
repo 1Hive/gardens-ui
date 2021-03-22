@@ -51,97 +51,52 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         </span>
       </Field>
 
-      {compactMode && (
-        <div
-          css={`
-            margin-top: ${GU * 2}px;
-            weight: 100%;
-          `}
-        >
-          <img
-            css={`
-              height: ${GU * 4}px;
-              width: ${GU * 4}px;
-            `}
-            src={iconFees}
-            alt=""
-          />
-        </div>
-      )}
-
       <div
         css={`
           display: flex;
           width: 100%;
-          height: ${GU * 4}px;
-          margin-top: ${!compactMode ? GU * 3 : 0}px;
+          height: ${4 * GU}px;
+          margin-top: ${!compactMode ? 3 * GU : 0}px;
+          align-items: center;
+          justify-content: space-between;
         `}
       >
-        {!compactMode && (
-          <div
-            css={`
-              flex: 0.25;
-            `}
-          >
-            <img
-              css={`
-                height: ${GU * 4}px;
-                width: ${GU * 4}px;
-              `}
-              src={iconFees}
-              alt=""
-            />
-          </div>
-        )}
-
         <div
           css={`
-            flex: ${compactMode ? 1 : 2};
-            padding: 0 0 0 ${!compactMode ? 1.25 * GU : 0}px;
-            align-self: center;
+            display: flex;
+            align-items: center;
           `}
         >
+          <img src={iconFees} alt="" height={4 * GU} width={4 * GU} />
           <h3
             css={`
               font-weight: 600;
+              margin-left: ${GU}px;
             `}
           >
             Action Deposit
           </h3>
         </div>
-        <div
-          css={`
-            flex: 0.5;
-            align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')};
-          `}
-        >
-          <div
+        <div>
+          <span
             css={`
-              text-align: 'left';
+              text-align: left;
               font-weight: 600;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
+              margin-right: ${(compactMode ? 1.5 : 3) * GU}px;
             `}
           >
             ${dollarAmount}
-          </div>
-        </div>
-        <div
-          css={`
-            flex: 0.65;
-            align-self: center;
-            ${compactMode ? textStyle('body4') : textStyle('body3')};
-          `}
-        >
-          <div
+          </span>
+
+          <span
             css={`
-              margin-right: ${compactMode ? GU : 0}px;
               font-weight: 600;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
             {formatedAmount} {token.symbol}
-          </div>
+          </span>
         </div>
       </div>
       <Button
