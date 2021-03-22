@@ -12,7 +12,6 @@ import {
   MEDIUM_RADIUS,
   TextInput,
   useTheme,
-  Root,
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
@@ -198,109 +197,107 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
 
   return (
     <form onSubmit={handleOnContinue}>
-      <Root.Provider>
-        <Field
-          label="Select proposal type"
-          css={`
-            margin-top: ${3 * GU}px;
-          `}
-        >
-          <DropDown
-            header="Select proposal type"
-            placeholder="Proposal type"
-            selected={formData.proposalType}
-            onChange={handleProposalTypeChange}
-            items={PROPOSAL_TYPES}
-            required
-            wide
+      <Field
+        label="Select proposal type"
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
+      >
+        <DropDown
+          header="Select proposal type"
+          placeholder="Proposal type"
+          selected={formData.proposalType}
+          onChange={handleProposalTypeChange}
+          items={PROPOSAL_TYPES}
+          required
+          wide
+        />
+      </Field>
+      <Field
+        label="Title"
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      >
+        <TextInput
+          onChange={handleTitleChange}
+          value={formData.title}
+          wide
+          required
+        />
+      </Field>
+      {requestToken && fundingMode && (
+        <>
+          <RequestedAmount
+            amount={formData.amount}
+            convertedAmount={requestAmount}
+            loadingAmount={loadingRequestAmount}
+            neededThreshold={neededThreshold}
+            onAmountChange={handleAmountChange}
+            onBlur={() => handleAmountEditMode(false)}
+            onIsStableChange={handleIsStableChange}
+            onFocus={() => handleAmountEditMode(true)}
+            requestToken={requestToken}
+            stableToken={stableToken}
           />
-        </Field>
-        <Field
-          label="Title"
+          <Field label="Beneficiary">
+            <TextInput
+              onChange={handleBeneficiaryChange}
+              value={formData.beneficiary}
+              wide
+              required
+            />
+          </Field>
+        </>
+      )}
+      <Field label="Link">
+        <TextInput
+          onChange={handleLinkChange}
+          value={formData.link}
+          wide
+          required
+        />
+      </Field>
+      <Info title="Proposal guidelines">
+        <span>
+          {formData.proposalType === SIGNALING_PROPOSAL
+            ? `This action will create a signaling proposal which can be voted on
+            by ${stakeToken.symbol} holders but requests no funds. It is used to
+            gather community sentiment for future funding proposals or
+            particular ideas.`
+            : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
+        </span>{' '}
+        In order to create a proposal you must first create a post on the{' '}
+        <Link href="https://forum.1hive.org/new-topic?category=proposals">
+          1Hive Forum
+        </Link>{' '}
+        under the 🌿 Proposals category and paste the link to the corresponding
+        post in the LINK field.
+      </Info>
+      <Button
+        wide
+        mode="strong"
+        type="submit"
+        disabled={errors.length > 0 || submitDisabled}
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
+      >
+        Continue
+      </Button>
+
+      {errors.length > 0 && (
+        <Info
+          mode="warning"
           css={`
             margin-top: ${2 * GU}px;
           `}
         >
-          <TextInput
-            onChange={handleTitleChange}
-            value={formData.title}
-            wide
-            required
-          />
-        </Field>
-        {requestToken && fundingMode && (
-          <>
-            <RequestedAmount
-              amount={formData.amount}
-              convertedAmount={requestAmount}
-              loadingAmount={loadingRequestAmount}
-              neededThreshold={neededThreshold}
-              onAmountChange={handleAmountChange}
-              onBlur={() => handleAmountEditMode(false)}
-              onIsStableChange={handleIsStableChange}
-              onFocus={() => handleAmountEditMode(true)}
-              requestToken={requestToken}
-              stableToken={stableToken}
-            />
-            <Field label="Beneficiary">
-              <TextInput
-                onChange={handleBeneficiaryChange}
-                value={formData.beneficiary}
-                wide
-                required
-              />
-            </Field>
-          </>
-        )}
-        <Field label="Link">
-          <TextInput
-            onChange={handleLinkChange}
-            value={formData.link}
-            wide
-            required
-          />
-        </Field>
-        <Info title="Proposal guidelines">
-          <span>
-            {formData.proposalType === SIGNALING_PROPOSAL
-              ? `This action will create a signaling proposal which can be voted on
-            by ${stakeToken.symbol} holders but requests no funds. It is used to
-            gather community sentiment for future funding proposals or
-            particular ideas.`
-              : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
-          </span>{' '}
-          In order to create a proposal you must first create a post on the{' '}
-          <Link href="https://forum.1hive.org/new-topic?category=proposals">
-            1Hive Forum
-          </Link>{' '}
-          under the 🌿 Proposals category and paste the link to the
-          corresponding post in the LINK field.
+          {errors.map((err, index) => (
+            <div key={index}>{err}</div>
+          ))}
         </Info>
-        <Button
-          wide
-          mode="strong"
-          type="submit"
-          disabled={errors.length > 0 || submitDisabled}
-          css={`
-            margin-top: ${3 * GU}px;
-          `}
-        >
-          Continue
-        </Button>
-
-        {errors.length > 0 && (
-          <Info
-            mode="warning"
-            css={`
-              margin-top: ${2 * GU}px;
-            `}
-          >
-            {errors.map((err, index) => (
-              <div key={index}>{err}</div>
-            ))}
-          </Info>
-        )}
-      </Root.Provider>
+      )}
     </form>
   )
 })

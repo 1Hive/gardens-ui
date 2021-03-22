@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
 import {
   ButtonIcon,
+  GU,
   IconCross,
   Modal,
+  RADIUS,
+  Root,
   textStyle,
   useLayout,
   useTheme,
   Viewport,
-  RADIUS,
-  GU,
 } from '@1hive/1hive-ui'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
@@ -200,16 +201,21 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
             )
           )}
 
-          <div
-            css={`
-              /* For better performance we avoid reflowing long text between screen changes by matching the screen width with the modal width */
-              width: ${Math.min(viewportWidth, width || DEFAULT_MODAL_WIDTH)}px;
-              padding: ${title ? 0 : standardPadding}px ${standardPadding}px
-                ${standardPadding}px ${standardPadding}px;
-            `}
-          >
-            {content}
-          </div>
+          <Root.Provider>
+            <div
+              css={`
+                /* For better performance we avoid reflowing long text between screen changes by matching the screen width with the modal width */
+                width: ${Math.min(
+                  viewportWidth,
+                  width || DEFAULT_MODAL_WIDTH
+                )}px;
+                padding: ${title ? 0 : standardPadding}px ${standardPadding}px
+                  ${standardPadding}px ${standardPadding}px;
+              `}
+            >
+              {content}
+            </div>
+          </Root.Provider>
         </>
       )
     },
