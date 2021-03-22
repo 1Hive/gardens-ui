@@ -58,49 +58,46 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           height: ${GU * 4}px;
           margin-top: ${!compactMode ? GU * 3 : 0}px;
           align-items: center;
+          justify-content: space-between;
         `}
       >
-        <img
+        <div
           css={`
-            height: ${GU * 4}px;
-            width: ${GU * 4}px;
-          `}
-          src={iconFees}
-          alt=""
-        />
-
-        <h3
-          css={`
-            font-weight: 600;
-            margin-left: 3%;
+            display: flex;
+            align-items: center;
           `}
         >
-          Action Deposit
-        </h3>
+          <img src={iconFees} alt="" height={4 * GU} width={4 * GU} />
+          <h3
+            css={`
+              font-weight: 600;
+              margin-left: ${GU}px;
+            `}
+          >
+            Action Deposit
+          </h3>
+        </div>
+        <div>
+          <span
+            css={`
+              text-align: left;
+              font-weight: 600;
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
+              margin-right: ${(compactMode ? 1.5 : 3) * GU}px;
+            `}
+          >
+            ${dollarAmount}
+          </span>
 
-        <span
-          css={`
-            text-align: 'left';
-            font-weight: 600;
-            position: absolute;
-            right: ${compactMode ? GU * 13.1 : GU * 19}px;
-            ${compactMode ? textStyle('body3') : textStyle('body2')};
-          `}
-        >
-          ${dollarAmount}
-        </span>
-
-        <span
-          css={`
-            margin-right: ${compactMode ? GU : 0}px;
-            font-weight: 600;
-            position: absolute;
-            right: ${compactMode ? GU * 4 : GU * 6.25}px;
-            ${compactMode ? textStyle('body3') : textStyle('body2')};
-          `}
-        >
-          {formatedAmount} {token.symbol}
-        </span>
+          <span
+            css={`
+              font-weight: 600;
+              ${compactMode ? textStyle('body3') : textStyle('body2')};
+            `}
+          >
+            {formatedAmount} {token.symbol}
+          </span>
+        </div>
       </div>
       <Button
         label="Create transaction"
