@@ -55,8 +55,8 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         css={`
           display: flex;
           width: 100%;
-          height: ${GU * 4}px;
-          margin-top: ${!compactMode ? GU * 3 : 0}px;
+          height: ${4 * GU}px;
+          margin-top: ${!compactMode ? 3 * GU : 0}px;
           align-items: center;
           justify-content: space-between;
         `}
