@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "3box": "^1.22.2",
-    "@1hive/1hive-ui": "^1.0.5",
+    "@1hive/1hive-ui": "^1.0.6",
     "@1hive/connect-disputable-honey-pot": "^0.1.10",
     "@aragon/connect": "^0.7.0",
     "@aragon/connect-agreement": "^0.0.0-beta.14",

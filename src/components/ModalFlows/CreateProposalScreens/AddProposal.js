@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
   Checkbox,
+  DropDown,
   Field,
   GU,
   Info,
@@ -10,10 +11,7 @@ import {
   LoadingRing,
   MEDIUM_RADIUS,
   TextInput,
-  textStyle,
   useTheme,
-  Radio,
-  RadioGroup,
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
@@ -205,38 +203,15 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           margin-top: ${3 * GU}px;
         `}
       >
-        <RadioGroup
-          onChange={handleProposalTypeChange}
+        <DropDown
+          header="Select proposal type"
+          placeholder="Proposal type"
           selected={formData.proposalType}
-          css={`
-            margin-top: ${1 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              justify-content: space-between;
-              flex-direction: column;
-            `}
-          >
-            {PROPOSAL_TYPES.map((label, i) => {
-              return (
-                <label key={i}>
-                  <div
-                    css={`
-                      display: flex;
-                      align-items: center;
-                      ${textStyle('body2')};
-                    `}
-                  >
-                    <Radio id={i} />
-                    <span>{label}</span>
-                  </div>
-                </label>
-              )
-            })}
-          </div>
-        </RadioGroup>
+          onChange={handleProposalTypeChange}
+          items={PROPOSAL_TYPES}
+          required
+          wide
+        />
       </Field>
       <Field
         label="Title"
