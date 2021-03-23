@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { GU, Header, Info } from '@1hive/1hive-ui'
 import AgreementBindingActions from './AgreementBindingActions'
 import AgreementDetails from './AgreementDetails'
@@ -23,6 +23,14 @@ function Agreement() {
 
   const signed = agreement.signedLatest
 
+  const handleShowModal = useCallback(() => {
+    setSignModalVisible(true)
+  }, [])
+
+  const handleHideModal = useCallback(() => {
+    setSignModalVisible(false)
+  }, [])
+
   if (loading) {
     return <Loader />
   }
@@ -33,21 +41,24 @@ function Agreement() {
         <Header primary="Covenant" />
         <AgreementLayout
           agreement={agreement}
+          isSigning={signModalVisible}
           signedAgreement={signed}
-          onSignAgreement={() => setSignModalVisible(true)}
+          onSignAgreement={handleShowModal}
         />
       </LayoutLimiter>
-      <MultiModal
-        visible={signModalVisible}
-        onClose={() => setSignModalVisible(false)}
-      >
+      <MultiModal visible={signModalVisible} onClose={handleHideModal}>
         <SignAgreementScreens versionId={agreement.versionId} />
       </MultiModal>
     </LayoutGutter>
   )
 }
 
-function AgreementLayout({ agreement, signedAgreement, onSignAgreement }) {
+function AgreementLayout({
+  agreement,
+  isSigning,
+  signedAgreement,
+  onSignAgreement,
+}) {
   const { account } = useWallet()
   const {
     title,
@@ -97,6 +108,7 @@ function AgreementLayout({ agreement, signedAgreement, onSignAgreement }) {
           </LayoutBox>
           <AgreementDocument
             ipfsUri={contentIpfsUri}
+            isSigning={isSigning}
             onSignAgreement={onSignAgreement}
             signedAgreement={signedAgreement}
           />
