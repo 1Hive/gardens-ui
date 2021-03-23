@@ -261,7 +261,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       <Info title="Proposal guidelines">
         <span>
           {formData.proposalType === SIGNALING_PROPOSAL
-            ? `This action will create a signaling proposal which can be voted on
+            ? `This action will create a suggestion which can be voted on
             by ${stakeToken.symbol} holders but requests no funds. It is used to
             gather community sentiment for future funding proposals or
             particular ideas.`

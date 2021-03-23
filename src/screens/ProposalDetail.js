@@ -44,7 +44,6 @@ import {
   soliditySha3,
 } from '../utils/web3-utils'
 import { convertToString, ProposalTypes } from '../types'
-import signalingBadge from '../assets/signalingBadge.svg'
 import { ZERO_ADDR } from '../constants'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
@@ -409,72 +408,51 @@ const Amount = ({
   stableToken,
 }) => {
   const theme = useTheme()
-  const signalingProposal = requestedAmount.eq(0)
   const primaryToken = stable ? stableToken : requestToken
   const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
   return (
     <DataField
-      label={!signalingProposal && 'Request Amount'}
+      label="Request Amount"
       value={
-        signalingProposal ? (
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <img src={signalingBadge} alt="" height="24" width="24" />
-            <span
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+        >
+          <Balance
+            amount={requestedAmount}
+            decimals={primaryToken.decimals}
+            symbol={primaryToken.symbol}
+            icon={tokenIcon}
+          />
+          {stable && (
+            <div
               css={`
-                margin-left: ${1 * GU}px;
-                ${textStyle('body2')};
-                font-weight: 300;
+                display: flex;
+                align-items: center;
+                color: ${theme.contentSecondary};
+                margin-left: ${0.5 * GU}px;
               `}
             >
-              Signaling proposal
-            </span>
-          </div>
-        ) : (
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <Balance
-              amount={requestedAmount}
-              decimals={primaryToken.decimals}
-              symbol={primaryToken.symbol}
-              icon={tokenIcon}
-            />
-            {stable && (
-              <div
+              <span>≈</span>
+              <span
                 css={`
-                  display: flex;
-                  align-items: center;
-                  color: ${theme.contentSecondary};
-                  margin-left: ${0.5 * GU}px;
+                  margin: 0px ${0.5 * GU}px;
                 `}
               >
-                <span>≈</span>
-                <span
-                  css={`
-                    margin: 0px ${0.5 * GU}px;
-                  `}
-                >
-                  {formatTokenAmount(
-                    requestedAmountConverted,
-                    requestToken.decimals
-                  )}{' '}
-                  {requestToken.symbol}
-                </span>
-                <Help hint="">
-                  Converted to {requestToken.name} at time of execution
-                </Help>
-              </div>
-            )}
-          </div>
-        )
+                {formatTokenAmount(
+                  requestedAmountConverted,
+                  requestToken.decimals
+                )}{' '}
+                {requestToken.symbol}
+              </span>
+              <Help hint="">
+                Converted to {requestToken.name} at time of execution
+              </Help>
+            </div>
+          )}
+        </div>
       }
     />
   )

@@ -24,8 +24,9 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'challenge-collateral': [
     'Challenge Collateral',
     <>
-      <strong>Challenge Collateral</strong> is the amount of collateral tokens
-      required to be locked every time an action is challenged.
+      <strong>Challenge Collateral</strong> is the amount of tokens locked every
+      time an action is challenged. This will be submitted at the time of
+      challenge as opposed to being locked in the collateral manager.
     </>,
   ],
   'action-collateral': [

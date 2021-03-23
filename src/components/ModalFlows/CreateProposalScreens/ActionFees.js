@@ -46,8 +46,8 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           A deposit is required for your action to be submitted which will be
           held until the action is finalised. If the action is withdrawn by you
           or completed successfully the deposit will be unlocked, available
-          through the staking manager. If the action is disputed and cancelled
-          by Celeste the deposit will be lost.
+          through the collateral manager. If the action is disputed and
+          cancelled by Celeste the deposit will be lost.
         </span>
       </Field>
 

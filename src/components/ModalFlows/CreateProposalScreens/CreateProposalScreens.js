@@ -69,7 +69,7 @@ function CreateProposalScreens() {
               ),
             },
             {
-              title: 'Create post',
+              title: 'Create proposal',
               graphicHeader: true,
               content: <AddProposal setProposalData={handleSetProposalData} />,
             },

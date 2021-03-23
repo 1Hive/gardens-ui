@@ -92,16 +92,16 @@ function BalanceCard({
         ${total ? formatTokenAmount(total * tokenRate, tokenDecimals) : '-'}
       </p>
       <Button
-        mode="normal"
+        mode="strong"
         wide
-        label="Withdraw"
-        onClick={handleOnWithdraw}
+        label="Deposit"
+        onClick={handleOnDeposit}
         css={`
           margin-top: ${2 * GU}px;
           margin-bottom: ${1.5 * GU}px;
         `}
       />
-      <Button mode="strong" wide label="Deposit" onClick={handleOnDeposit} />
+      <Button mode="normal" wide label="Withdraw" onClick={handleOnWithdraw} />
 
       <div
         css={`
@@ -124,7 +124,7 @@ function BalanceCard({
             font-weight: 600;
           `}
         >
-          Allow Collateral Manager
+          Allow 1hive Protocol
         </span>
         <div
           css={`
@@ -133,9 +133,8 @@ function BalanceCard({
         >
           <Help>
             {allowManagerDisabled
-              ? `You cannot disallow the collateral manager from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the collateral manager.`
-              : `By enabling this feature you allow the Covenant as the lock manager
-            of the HNY staking pool. Any required amount to pay for actions
+              ? `You cannot disallow the 1hive Protocol from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the 1hive Protocol.`
+              : `By enabling this feature you allow the 1hive Protocol from locking your funds from the available ${tokenSymbol} pool. Any required amount to pay for actions
             collateral and submission fees, will be directly locked when
             proposing actions.`}
           </Help>

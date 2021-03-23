@@ -56,7 +56,7 @@ function getInfoActionContent(proposal, account, actions) {
       }
     }
 
-    return { info: 'The proposed action cannot be challenged.' }
+    return { info: 'Proposals cannot be challenged more than once.' }
   }
 
   if (proposal.statusData.challenged && isSubmitter) {
