@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Box,
-  // Checkbox,
-  // Field,
   Markdown,
   textStyle,
   useTheme,
@@ -12,17 +10,22 @@ import {
 } from '@1hive/1hive-ui'
 import ModalButton from '../ModalFlows/ModalButton'
 import { useMounted } from '../../hooks/useMounted'
+import { useWallet } from '../../providers/Wallet'
 import { getIpfsCidFromUri, ipfsGet } from '../../utils/ipfs-utils'
 
-function AgreementDocument({ ipfsUri, onSignAgreement, signedAgreement }) {
-  const [loading, setLoading] = useState(false)
+function AgreementDocument({
+  ipfsUri,
+  isSigning,
+  onSignAgreement,
+  signedAgreement,
+}) {
+  const theme = useTheme()
+  const { account } = useWallet()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
+  const [markdownContent, setMarkdownContent] = useState('')
 
   const mounted = useMounted()
-
-  const { layoutName } = useLayout()
-  const [markdownContent, setMarkdownContent] = useState('')
-  const theme = useTheme()
-  const compactMode = layoutName === 'small'
 
   useEffect(() => {
     // TODO: Add loading state if data size becomes large enough to be a problem
@@ -47,7 +50,6 @@ function AgreementDocument({ ipfsUri, onSignAgreement, signedAgreement }) {
   }, [ipfsUri, mounted])
 
   const handleSign = useCallback(() => {
-    setLoading(true)
     onSignAgreement()
   }, [onSignAgreement])
 
@@ -61,14 +63,11 @@ function AgreementDocument({ ipfsUri, onSignAgreement, signedAgreement }) {
       <Article theme={theme} compact={compactMode}>
         <Markdown content={markdownContent} />
       </Article>
-      <ModalButton
-        mode="strong"
-        loading={loading}
-        onClick={handleSign}
-        disabled={signedAgreement}
-      >
-        Sign Covenant
-      </ModalButton>
+      {account && !signedAgreement && (
+        <ModalButton mode="strong" loading={isSigning} onClick={handleSign}>
+          Sign Covenant
+        </ModalButton>
+      )}
     </Box>
   )
 }
