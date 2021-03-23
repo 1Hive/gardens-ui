@@ -245,7 +245,7 @@ export function useStaking() {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: 'Stake HNY',
+          description: 'Deposit HNY',
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
