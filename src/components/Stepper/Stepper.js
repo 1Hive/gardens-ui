@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { springs, noop, useTheme, GU } from '@1hive/1hive-ui'
+import { GU, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
 import {
   STEP_ERROR,
@@ -42,7 +42,7 @@ function reduceSteps(steps, [action, stepIndex, value]) {
   return steps
 }
 
-function Stepper({ steps, onComplete, ...props }) {
+function Stepper({ steps, onComplete, onCompleteActions, ...props }) {
   const theme = useTheme()
   const mounted = useMounted()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
@@ -127,28 +127,38 @@ function Stepper({ steps, onComplete, ...props }) {
 
         // Advance to next step or fire complete callback
         if (mounted()) {
-          if (stepperStage === stepsCount) {
-            onComplete()
-          } else {
+          if (stepperStage < stepsCount) {
             setStepperStage(stepperStage + 1)
           }
         }
       },
       setHash: hash => updateHash(hash),
     })
-  }, [
-    steps,
-    stepperStage,
-    updateStepStatus,
-    updateHash,
-    stepsCount,
-    mounted,
-    onComplete,
-  ])
+  }, [steps, stepperStage, updateStepStatus, updateHash, stepsCount, mounted])
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(handleSign, [stepperStage])
   /* eslint-enable react-hooks/exhaustive-deps */
+
+  const renderNextActions = useCallback(() => {
+    const allSuccess =
+      stepperStage === stepsCount &&
+      stepState[stepperStage].status === STEP_SUCCESS
+
+    if (allSuccess && onCompleteActions) {
+      return (
+        <div
+          css={`
+            margin-top: ${3 * GU}px;
+          `}
+        >
+          {onCompleteActions()}
+        </div>
+      )
+    }
+
+    return null
+  }, [stepsCount, stepperStage, stepState, onCompleteActions])
 
   return (
     <div {...props}>
@@ -224,6 +234,7 @@ function Stepper({ steps, onComplete, ...props }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
+      {renderNextActions()}
     </div>
   )
 }
@@ -243,6 +254,7 @@ Stepper.propTypes = {
     })
   ).isRequired,
   onComplete: PropTypes.func,
+  onCompleteActions: PropTypes.func,
 }
 
 Stepper.defaultProps = {

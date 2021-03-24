@@ -22,6 +22,7 @@ function ModalFlowBase({
   screens,
   transactions,
   transactionTitle,
+  onCompleteActions,
 }) {
   const { ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
@@ -96,9 +97,10 @@ function ModalFlowBase({
         content: (
           <Stepper
             steps={transactionSteps}
+            onCompleteActions={onCompleteActions}
             css={`
               margin-top: ${3.25 * GU}px;
-              margin-bottom: ${5.5 * GU}px;
+              margin-bottom: ${(onCompleteActions ? 2 : 5.5) * GU}px;
             `}
           />
         ),
@@ -113,6 +115,7 @@ function ModalFlowBase({
     transactionTitle,
     loading,
     frontLoad,
+    onCompleteActions,
   ])
 
   return <MultiModalScreens screens={extendedScreens} />
