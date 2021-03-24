@@ -42,7 +42,7 @@ function reduceSteps(steps, [action, stepIndex, value]) {
   return steps
 }
 
-function Stepper({ steps, onComplete, onCompleteActions, ...props }) {
+function Stepper({ steps, onComplete, onCompleteActions }) {
   const theme = useTheme()
   const mounted = useMounted()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
@@ -127,25 +127,35 @@ function Stepper({ steps, onComplete, onCompleteActions, ...props }) {
 
         // Advance to next step or fire complete callback
         if (mounted()) {
-          if (stepperStage < stepsCount) {
+          if (stepperStage === stepsCount) {
+            onComplete()
+          } else {
             setStepperStage(stepperStage + 1)
           }
         }
       },
       setHash: hash => updateHash(hash),
     })
-  }, [steps, stepperStage, updateStepStatus, updateHash, stepsCount, mounted])
+  }, [
+    mounted,
+    onComplete,
+    steps,
+    stepperStage,
+    stepsCount,
+    updateStepStatus,
+    updateHash,
+  ])
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(handleSign, [stepperStage])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const renderNextActions = useCallback(() => {
-    const allSuccess =
-      stepperStage === stepsCount &&
-      stepState[stepperStage].status === STEP_SUCCESS
+  const completed =
+    stepperStage === stepsCount &&
+    stepState[stepperStage].status === STEP_SUCCESS
 
-    if (allSuccess && onCompleteActions) {
+  const renderNextActions = useCallback(() => {
+    if (completed && onCompleteActions) {
       return (
         <div
           css={`
@@ -158,10 +168,15 @@ function Stepper({ steps, onComplete, onCompleteActions, ...props }) {
     }
 
     return null
-  }, [stepsCount, stepperStage, stepState, onCompleteActions])
+  }, [completed, onCompleteActions])
 
   return (
-    <div {...props}>
+    <div
+      css={`
+        margin-top: ${3.25 * GU}px;
+        margin-bottom: ${(completed && onCompleteActions ? 0 : 5.5) * GU}px;
+      `}
+    >
       <div
         ref={outerBoundsRef}
         css={`
