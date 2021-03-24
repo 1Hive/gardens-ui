@@ -358,14 +358,13 @@ export function useStaking() {
         if (mounted()) {
           onDone(intent)
         }
-        return
+      } else {
+        await stakingContract.allowManager(
+          connectedAgreementApp.address,
+          MAX_INT.toString(10),
+          '0x'
+        )
       }
-
-      await stakingContract.allowManager(
-        connectedAgreementApp.address,
-        MAX_INT.toString(10),
-        '0x'
-      )
     },
     [account, connectedAgreementApp, mounted, stakingContract, stakeManagement]
   )

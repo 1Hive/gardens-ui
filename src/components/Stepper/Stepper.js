@@ -149,7 +149,7 @@ function Stepper({ steps, onComplete, onCompleteActions, ...props }) {
       return (
         <div
           css={`
-            margin-top: ${3 * GU}px;
+            margin-top: ${5 * GU}px;
           `}
         >
           {onCompleteActions()}
