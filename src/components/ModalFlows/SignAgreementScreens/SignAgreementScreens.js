@@ -16,6 +16,17 @@ function SignAgreementScreens({ versionId }) {
     history.push('/home/create')
   }, [history])
 
+  const renderOnCompleteActions = useCallback(() => {
+    return (
+      <Button
+        label="Create proposal"
+        mode="strong"
+        onClick={handleCreateProposal}
+        wide
+      />
+    )
+  }, [handleCreateProposal])
+
   const getTransactions = useCallback(
     async onComplete => {
       await actions.agreementActions.signAgreement({ versionId }, intent => {
@@ -36,17 +47,6 @@ function SignAgreementScreens({ versionId }) {
     ],
     [getTransactions]
   )
-
-  const renderOnCompleteActions = useCallback(() => {
-    return (
-      <Button
-        label="Create proposal"
-        mode="strong"
-        onClick={handleCreateProposal}
-        wide
-      />
-    )
-  }, [handleCreateProposal])
 
   return (
     <ModalFlowBase
