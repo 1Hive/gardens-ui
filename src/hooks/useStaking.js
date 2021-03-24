@@ -334,17 +334,41 @@ export function useStaking() {
     return staked
   }, [stakingContract, account])
 
-  const allowManager = useCallback(async () => {
-    if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
-      return
-    }
+  const allowManager = useCallback(
+    async onDone => {
+      if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
+        return
+      }
 
-    await stakingContract.allowManager(
-      connectedAgreementApp.address,
-      MAX_INT.toString(10),
-      '0x'
-    )
-  }, [connectedAgreementApp, stakingContract, stakeManagement])
+      if (onDone) {
+        const allowManagerData = encodeFunctionData(
+          stakingContract,
+          'allowManager',
+          [connectedAgreementApp.address, MAX_INT.toString(10), '0x']
+        )
+
+        const intent = [
+          {
+            data: allowManagerData,
+            from: account,
+            to: stakeManagement.stakingInstance,
+            description: 'Allow 1Hive Protocol',
+          },
+        ]
+        if (mounted()) {
+          onDone(intent)
+        }
+        return
+      }
+
+      await stakingContract.allowManager(
+        connectedAgreementApp.address,
+        MAX_INT.toString(10),
+        '0x'
+      )
+    },
+    [account, connectedAgreementApp, mounted, stakingContract, stakeManagement]
+  )
 
   const unlockAndRemoveManager = useCallback(async () => {
     if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
