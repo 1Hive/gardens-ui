@@ -18,7 +18,9 @@ function BalanceModule() {
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
-  const handleOnClick = useCallback(() => history.push('/stake'), [history])
+  const handleOnClick = useCallback(() => history.push('/collateral'), [
+    history,
+  ])
 
   const inactivePct = inactiveTokens.eq('0')
     ? '0'

@@ -70,7 +70,7 @@ function ProposalChallengedInfo({ proposal }) {
                 as the action collateral. You can manage your deposit balances
                 in{' '}
               </span>
-              <Link href="#/stake" external={false}>
+              <Link href="#/collateral" external={false}>
                 Collateral Manager
               </Link>
               .
