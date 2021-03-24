@@ -28,11 +28,10 @@ function Illustration({ status, index }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.surfaceOpened};
+            background-color: ${theme.surfaceIcon};
             height: 100%;
             width: 100%;
             border-radius: 100%;
-            color: ${theme.accentContent};
           `}
         />
       ) : (
