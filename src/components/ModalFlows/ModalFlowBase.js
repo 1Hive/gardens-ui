@@ -100,7 +100,7 @@ function ModalFlowBase({
             onCompleteActions={onCompleteActions}
             css={`
               margin-top: ${3.25 * GU}px;
-              margin-bottom: ${(onCompleteActions ? 2 : 5.5) * GU}px;
+              margin-bottom: ${(onCompleteActions ? 0 : 5.5) * GU}px;
             `}
           />
         ),
