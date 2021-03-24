@@ -11,6 +11,8 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const [transactions, setTransactions] = useState([])
   const { accountBalance } = useAppState()
 
+  const { allowance: stakingAllowance } = stakeManagement?.staking || null
+
   const temporatyTrx = useRef([])
 
   const getTransactions = useCallback(
@@ -27,13 +29,27 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
+
         await stakeActions.stake({ amount }, intent => {
-          const trxList = temporatyTrx.current.concat(intent)
-          setTransactions(trxList)
-          onComplete()
+          temporatyTrx.current = temporatyTrx.current.concat(intent)
+
+          if (stakingAllowance?.gt(0)) {
+            setTransactions(temporatyTrx.current)
+            onComplete()
+          }
         })
+
+        if (!stakingAllowance?.gt(0)) {
+          await stakeActions.allowManager(intent => {
+            const trxList = temporatyTrx.current.concat(intent)
+            setTransactions(trxList)
+            onComplete()
+          })
+        }
+
         return
       }
+
       if (mode === 'withdraw') {
         await stakeActions.withdraw({ amount }, intent => {
           setTransactions(intent)
@@ -43,7 +59,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
       }
       setTransactions([])
     },
-    [stakeActions, mode]
+    [stakingAllowance, stakeActions, mode]
   )
 
   const data = useMemo(() => {
@@ -72,6 +88,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
     ],
     [data.title, mode, accountBalance, getTransactions, stakeManagement]
   )
+
   return (
     <ModalFlowBase
       frontLoad={false}
