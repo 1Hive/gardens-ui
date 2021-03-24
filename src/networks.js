@@ -18,7 +18,8 @@ const networks = {
     ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
     name: 'Rinkeby',
     type: 'rinkeby',
-    defaultEthNode: 'https://rinkeby.eth.aragon.network/',
+    defaultEthNode:
+      'https://rinkeby.infura.io/v3/99641171cb854b84b508ebeb4b094a2f',
     honeypot: getRinkebyHoneyPotAddress(INSTANCE),
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',

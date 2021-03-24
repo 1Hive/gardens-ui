@@ -192,7 +192,6 @@ function StepIllustration({ number, status, withoutFirstStep }) {
 
   return (
     <div
-      id="illustration div!!!!!"
       css={`
         display: flex;
         justify-content: center;
