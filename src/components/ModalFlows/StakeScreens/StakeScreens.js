@@ -49,20 +49,16 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
 
         await stakeActions.stake({ amount }, intent => {
           temporatyTrx.current = temporatyTrx.current.concat(intent)
-
-          if (stakingAllowance?.gt(0)) {
-            setTransactions(temporatyTrx.current)
-            onComplete()
-          }
         })
 
         if (stakingAllowance?.eq(0)) {
           await stakeActions.allowManager(intent => {
-            const trxList = temporatyTrx.current.concat(intent)
-            setTransactions(trxList)
-            onComplete()
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
+
+        setTransactions(temporatyTrx.current)
+        onComplete()
 
         return
       }

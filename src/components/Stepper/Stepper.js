@@ -154,22 +154,6 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     stepperStage === stepsCount &&
     stepState[stepperStage].status === STEP_SUCCESS
 
-  const renderNextActions = useCallback(() => {
-    if (completed && onCompleteActions) {
-      return (
-        <div
-          css={`
-            margin-top: ${5 * GU}px;
-          `}
-        >
-          {onCompleteActions()}
-        </div>
-      )
-    }
-
-    return null
-  }, [completed, onCompleteActions])
-
   return (
     <div
       css={`
@@ -249,7 +233,15 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
-      {renderNextActions()}
+      {completed && onCompleteActions && (
+        <div
+          css={`
+            margin-top: ${5 * GU}px;
+          `}
+        >
+          {onCompleteActions()}
+        </div>
+      )}
     </div>
   )
 }
