@@ -131,7 +131,7 @@ function BalanceCard({
             margin-left: ${1 * GU}px;
           `}
         >
-          <Help>
+          <Help hint="">
             {allowManagerDisabled
               ? `You cannot disallow the 1hive Protocol from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the 1hive Protocol.`
               : `By enabling this feature you allow the 1hive Protocol from locking your funds from the available ${tokenSymbol} pool. Any required amount to pay for actions
