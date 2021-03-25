@@ -48,6 +48,10 @@ function Profile() {
     }
   }, [connectedAccount, history, selectedAccount])
 
+  useEffect(() => {
+    setEditMode(false)
+  }, [connectedAccount])
+
   const toggleEditMode = useCallback(() => {
     setEditMode(mode => !mode)
   }, [])
