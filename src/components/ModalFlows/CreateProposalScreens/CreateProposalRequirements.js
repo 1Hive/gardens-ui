@@ -50,9 +50,11 @@ function CreateProposalRequirements({ agreement, staking }) {
         `}
       >
         You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to create a proposal. Your
-        current collateral manager balance is{' '}
-        {formatTokenAmount(availableStaked, token.decimals)} {token.symbol}.
+        {token.symbol} as the collateral required to create a proposal. You can
+        manage you balance on{' '}
+        <Link href="#/stake" external={false}>
+          Collateral Manager
+        </Link>
       </InfoField>
       <CollateralStatus
         allowance={allowance}
@@ -141,7 +143,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
           actionAmount,
           token.decimals
         )} ${token.symbol} as the action collateral.`,
-        actionButton: 'Stake collateral',
+        actionButton: 'Deposit collateral',
         buttonOnClick: goToStakeManager,
       }
     }
@@ -186,21 +188,29 @@ function InfoBox({ data }) {
         css={`
           display: flex;
           align-items: center;
+          justify-content: space-between;
           ${textStyle('body2')};
         `}
       >
-        <img src={data.icon} width="18" height="18" />
-        <span
+        <div
           css={`
-            margin-left: ${1.5 * GU}px;
+            display: flex;
+            align-items: center;
           `}
         >
-          {data.text}
-        </span>
+          <img src={data.icon} width="18" height="18" />
+          <span
+            css={`
+              margin-left: ${1.5 * GU}px;
+            `}
+          >
+            {data.text}
+          </span>
+        </div>
         {data.actionButton && (
           <div
             css={`
-              margin-left: auto;
+              margin-left: ${1 * GU}px;
             `}
           >
             <Button
