@@ -9,7 +9,7 @@ function AgreementBindingActions({ apps }) {
   const items = apps.map(
     ({
       appName,
-      appAddress,
+      address,
       iconSrc,
       actionAmount,
       challengeAmount,
@@ -23,7 +23,7 @@ function AgreementBindingActions({ apps }) {
           margin-left: ${-1 * GU}px;
         `}
       >
-        <AppBadge iconSrc={iconSrc} label={appName} appAddress={appAddress} />
+        <AppBadge iconSrc={iconSrc} label={appName} appAddress={address} />
       </div>,
 
       <div

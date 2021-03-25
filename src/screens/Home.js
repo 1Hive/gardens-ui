@@ -48,7 +48,7 @@ const Home = React.memo(function Home() {
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
-      <NetworkErrorModal visible={errors} />
+      <NetworkErrorModal visible={Boolean(errors)} />
       {isLoading ? (
         <Loader />
       ) : (
