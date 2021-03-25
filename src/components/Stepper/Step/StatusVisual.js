@@ -214,7 +214,7 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             border-radius: 100%;
             color: ${theme.positiveContent};
 
-            ${textStyle('title3')}
+            ${textStyle('title3')};
             font-weight: 600;
           `}
         >
