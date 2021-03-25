@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { springs, noop, useTheme, GU } from '@1hive/1hive-ui'
+import { GU, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
 import {
   STEP_ERROR,
@@ -42,7 +42,7 @@ function reduceSteps(steps, [action, stepIndex, value]) {
   return steps
 }
 
-function Stepper({ steps, onComplete, ...props }) {
+function Stepper({ steps, onComplete, onCompleteActions }) {
   const theme = useTheme()
   const mounted = useMounted()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
@@ -137,21 +137,30 @@ function Stepper({ steps, onComplete, ...props }) {
       setHash: hash => updateHash(hash),
     })
   }, [
-    steps,
-    stepperStage,
-    updateStepStatus,
-    updateHash,
-    stepsCount,
     mounted,
     onComplete,
+    steps,
+    stepperStage,
+    stepsCount,
+    updateStepStatus,
+    updateHash,
   ])
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(handleSign, [stepperStage])
   /* eslint-enable react-hooks/exhaustive-deps */
 
+  const completed =
+    stepperStage === stepsCount &&
+    stepState[stepperStage].status === STEP_SUCCESS
+
   return (
-    <div {...props}>
+    <div
+      css={`
+        margin-top: ${3.25 * GU}px;
+        margin-bottom: ${(completed && onCompleteActions ? 0 : 5.5) * GU}px;
+      `}
+    >
       <div
         ref={outerBoundsRef}
         css={`
@@ -224,6 +233,15 @@ function Stepper({ steps, onComplete, ...props }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
+      {completed && onCompleteActions && (
+        <div
+          css={`
+            margin-top: ${5 * GU}px;
+          `}
+        >
+          {onCompleteActions()}
+        </div>
+      )}
     </div>
   )
 }
@@ -243,6 +261,7 @@ Stepper.propTypes = {
     })
   ).isRequired,
   onComplete: PropTypes.func,
+  onCompleteActions: PropTypes.func,
 }
 
 Stepper.defaultProps = {

@@ -32,7 +32,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   }, [history, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    history.push('/stake')
+    history.push('/collateral')
     onClosePopover()
   }, [history, onClosePopover])
 
