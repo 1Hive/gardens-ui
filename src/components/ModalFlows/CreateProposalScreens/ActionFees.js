@@ -43,10 +43,10 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          A deposit is required for your action to be submitted which will be
-          held until the action is finalised. If the action is withdrawn by you
-          or completed successfully the deposit will be unlocked, available
-          through the collateral manager. If the action is disputed and
+          A deposit is required for your proposal to be submitted which will be
+          held until the proposal is finalised. If the proposal is withdrawn by
+          you or completed successfully the deposit will be unlocked, available
+          through the collateral manager. If the proposal is disputed and
           cancelled by Celeste the deposit will be lost.
         </span>
       </Field>
@@ -74,7 +74,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
               margin-left: ${GU}px;
             `}
           >
-            Action Deposit
+            Proposal Deposit
           </h3>
         </div>
         <div>
