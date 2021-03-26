@@ -25,6 +25,8 @@ export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
       if (!stable) {
         setConvertedAmount(amount)
       }
+
+      setLoading(false)
       return
     }
 

@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useHistory } from 'react-router'
+import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 import { useAppState } from '../../../providers/AppState'
@@ -10,10 +12,25 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const [transactions, setTransactions] = useState([])
   const { accountBalance } = useAppState()
-
-  const { allowance: stakingAllowance } = stakeManagement?.staking || null
+  const history = useHistory()
+  const { allowance: stakingAllowance } = stakeManagement?.staking || {}
 
   const temporatyTrx = useRef([])
+
+  const handleCreateProposal = useCallback(() => {
+    history.push('/home/create')
+  }, [history])
+
+  const renderOnCompleteActions = useCallback(() => {
+    return (
+      <Button
+        label="Create proposal"
+        mode="strong"
+        onClick={handleCreateProposal}
+        wide
+      />
+    )
+  }, [handleCreateProposal])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
@@ -32,20 +49,16 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
 
         await stakeActions.stake({ amount }, intent => {
           temporatyTrx.current = temporatyTrx.current.concat(intent)
-
-          if (stakingAllowance?.gt(0)) {
-            setTransactions(temporatyTrx.current)
-            onComplete()
-          }
         })
 
-        if (!stakingAllowance?.gt(0)) {
+        if (stakingAllowance?.eq(0)) {
           await stakeActions.allowManager(intent => {
-            const trxList = temporatyTrx.current.concat(intent)
-            setTransactions(trxList)
-            onComplete()
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
+
+        setTransactions(temporatyTrx.current)
+        onComplete()
 
         return
       }
@@ -95,6 +108,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
       transactions={transactions}
       transactionTitle={mode === 'deposit' ? 'Deposit HNY' : 'Withdraw HNY'}
       screens={screens}
+      onCompleteActions={renderOnCompleteActions}
     />
   )
 }

@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import Filters from '../components/Filters/Filters'
@@ -12,11 +13,11 @@ import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 
 import useAppLogic from '../logic/app-logic'
+import { useWallet } from '../providers/Wallet'
 
 const Home = React.memo(function Home() {
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
   const {
     actions,
     commonPool,
@@ -29,11 +30,8 @@ const Home = React.memo(function Home() {
     totalSupply,
   } = useAppLogic()
 
-  const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
-
-  const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible)
-  }, [])
+  const history = useHistory()
+  const { account } = useWallet()
 
   // min layout is never returned
   const { below } = useViewport()
@@ -41,14 +39,33 @@ const Home = React.memo(function Home() {
   const largeMode = layoutName === 'large'
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
-  const handleOnCreateProposal = useCallback(() => {
-    setCreateProposalModalVisible(true)
+  const handleFilterSliderToggle = useCallback(() => {
+    setFilterSidlerVisible(visible => !visible)
   }, [])
+
+  useEffect(() => {
+    // Components that redirect to create a proposal will do so through "/home/create" url
+    if (account && history.location.pathname.includes('create')) {
+      setModalVisible(true)
+    }
+  }, [account, history])
+
+  const handleShowModal = useCallback(() => {
+    setModalVisible(true)
+  }, [])
+
+  const handleHideModal = useCallback(() => {
+    setModalVisible(false)
+
+    if (history.location.pathname.includes('create')) {
+      history.push('/home')
+    }
+  }, [history])
 
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
-      <NetworkErrorModal visible={errors} />
+      <NetworkErrorModal visible={Boolean(errors)} />
       {isLoading ? (
         <Loader />
       ) : (
@@ -124,9 +141,7 @@ const Home = React.memo(function Home() {
                         margin-left: ${3 * GU}px;
                       `}
                     >
-                      <HeroBanner
-                        onRequestNewProposal={handleOnCreateProposal}
-                      />
+                      <HeroBanner onRequestNewProposal={handleShowModal} />
                     </div>
                   )}
                 </div>
@@ -138,14 +153,11 @@ const Home = React.memo(function Home() {
                   margin-right: ${(compactMode ? 0 : 3) * GU}px;
                 `}
               >
-                <HeroBanner onRequestNewProposal={handleOnCreateProposal} />
+                <HeroBanner onRequestNewProposal={handleShowModal} />
               </div>
             )}
           </div>
-          <MultiModal
-            visible={createProposalModalVisible}
-            onClose={() => setCreateProposalModalVisible(false)}
-          >
+          <MultiModal visible={modalVisible} onClose={handleHideModal}>
             <CreateProposalScreens />
           </MultiModal>
         </div>
