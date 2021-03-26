@@ -6,6 +6,11 @@ const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement-1hive'
 
 const ENV_VARS = {
+  AGREEMENT_APP_NAME() {
+    return (
+      process.env.REACT_APP_AGREEMENT_APP_NAME || DEFAULT_AGREEMENT_APP_NAME
+    )
+  },
   CHAIN_ID() {
     const chainId = parseInt(process.env.REACT_APP_CHAIN_ID)
     return isNaN(chainId) ? DEFAULT_CHAIN_ID : chainId
@@ -15,22 +20,20 @@ const ENV_VARS = {
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
+  ETH_NODE() {
+    return process.env.REACT_APP_ETH_NODE || ''
+  },
   FORTMATIC_API_KEY() {
     return process.env.REACT_APP_FORTMATIC_API_KEY || ''
+  },
+  INSTANCE() {
+    return process.env.REACT_APP_APP_INSTANCE || ''
   },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
-  },
-  INSTANCE() {
-    return process.env.REACT_APP_APP_INSTANCE || ''
-  },
-  AGREEMENT_APP_NAME() {
-    return (
-      process.env.REACT_APP_AGREEMENT_APP_NAME || DEFAULT_AGREEMENT_APP_NAME
-    )
   },
 }
 
