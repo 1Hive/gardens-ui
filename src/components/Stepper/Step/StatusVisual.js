@@ -68,8 +68,8 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
       css={`
         display: flex;
         position: relative;
-        width: ${13.5 * GU}px;
-        height: ${13.5 * GU}px;
+        width: ${15 * GU}px;
+        height: ${15 * GU}px;
       `}
       {...props}
     >

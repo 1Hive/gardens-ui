@@ -35,7 +35,7 @@ function Illustration({ status, index }) {
           `}
         />
       ) : (
-        <img src={illustrations[status]} height={70} width={70} />
+        <img src={illustrations[status]} height={96} width={96} />
       )}
     </>
   )
