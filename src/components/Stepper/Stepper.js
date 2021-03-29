@@ -86,11 +86,12 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
 
   const renderSteps = useCallback(() => {
     return steps.map((_, index) => {
-      const showDivider = index < stepsCount
+      const showDivider =
+        index < stepsCount && stepState[index].status !== STEP_WAITING
 
       return renderStep(index, showDivider)
     })
-  }, [steps, stepsCount, renderStep])
+  }, [renderStep, steps, stepsCount, stepState])
 
   const updateStepStatus = useCallback(
     status => {

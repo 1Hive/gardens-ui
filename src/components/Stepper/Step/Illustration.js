@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTheme } from '@1hive/1hive-ui'
 import {
   STEP_ERROR,
   STEP_SUCCESS,
@@ -9,36 +10,33 @@ import {
 
 import signRequestSuccessIllustration from '../../../assets/signRequestSuccess.svg'
 import signRequestFailIllustration from '../../../assets/signRequestFail.svg'
-import signPrompIllustration from '../../../assets/honey.svg'
+import trxBeingMinedIllustration from '../../../assets/honey.svg'
 
 const illustrations = {
-  [STEP_PROMPTING]: signPrompIllustration,
-  [STEP_WORKING]: signRequestSuccessIllustration,
+  [STEP_WORKING]: trxBeingMinedIllustration,
   [STEP_SUCCESS]: signRequestSuccessIllustration,
   [STEP_ERROR]: signRequestFailIllustration,
 }
 
 function Illustration({ status, index }) {
+  const theme = useTheme()
   return (
     <>
-      {/* {status === STEP_WORKING ? (
+      {status === STEP_PROMPTING ? (
         <div
-          id="LOADER WRAPPER"
           css={`
             display: flex;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            background-color: ${theme.surfaceIcon};
+            height: 100%;
+            width: 100%;
+            border-radius: 100%;
           `}
-        >
-          <TokenLoader />
-        </div>
-      ) : ( */}
-
-      <img src={illustrations[status]} height={70} width={70} />
-
-      {/* )} */}
+        />
+      ) : (
+        <img src={illustrations[status]} height={96} width={96} />
+      )}
     </>
   )
 }

@@ -68,8 +68,8 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
       css={`
         display: flex;
         position: relative;
-        width: ${13.5 * GU}px;
-        height: ${13.5 * GU}px;
+        width: ${15 * GU}px;
+        height: ${15 * GU}px;
       `}
       {...props}
     >
@@ -192,7 +192,6 @@ function StepIllustration({ number, status, withoutFirstStep }) {
 
   return (
     <div
-      id="illustration div!!!!!"
       css={`
         display: flex;
         justify-content: center;
@@ -209,13 +208,13 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.surfaceOpened};
+            background-color: ${theme.surfaceIcon};
             height: 100%;
             width: 100%;
             border-radius: 100%;
-            color: ${theme.accentContent};
+            color: ${theme.positiveContent};
 
-            ${textStyle('title3')}
+            ${textStyle('title3')};
             font-weight: 600;
           `}
         >
