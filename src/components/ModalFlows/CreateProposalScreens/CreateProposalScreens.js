@@ -59,7 +59,7 @@ function CreateProposalScreens() {
         ? []
         : [
             {
-              title: 'Submit action requirements',
+              title: 'Submit proposal requirements',
               graphicHeader: false,
               content: (
                 <CreateProposalRequirements
@@ -74,7 +74,7 @@ function CreateProposalScreens() {
               content: <AddProposal setProposalData={handleSetProposalData} />,
             },
             {
-              title: 'Action deposit',
+              title: 'Proposal deposit',
               graphicHeader: false,
               content: (
                 <ActionFees
