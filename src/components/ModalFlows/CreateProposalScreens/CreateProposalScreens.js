@@ -1,19 +1,26 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
 import { useAgreement } from '../../../hooks/useAgreement'
+import { useWallet } from '../../../providers/Wallet'
 import useActions from '../../../hooks/useActions'
 import { useStakingState } from '../../../providers/Staking'
 
 function CreateProposalScreens() {
+  const { account } = useWallet()
   const [agreement, agreementLoading] = useAgreement()
   const { stakeManagement, loading: stakingLoading } = useStakingState()
   const [transactions, setTransactions] = useState([])
   const { convictionActions } = useActions()
 
   const proposalData = useRef()
+
+  useEffect(() => {
+    setTransactions(null)
+    proposalData.current = null
+  }, [account])
 
   const handleSetProposalData = useCallback(data => {
     proposalData.current = data
@@ -95,9 +102,9 @@ function CreateProposalScreens() {
 
   return (
     <ModalFlowBase
-      frontLoad={!stakingLoading}
+      frontLoad
       loading={agreementLoading || stakingLoading}
-      transactions={stakingLoading ? null : transactions}
+      transactions={transactions}
       transactionTitle="Create transaction"
       screens={screens}
     />
