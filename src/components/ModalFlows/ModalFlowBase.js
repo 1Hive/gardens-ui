@@ -129,7 +129,7 @@ function LoadingScreen({ loading }) {
       // Provide a minimum appearance duration to avoid visual confusion on very fast requests
       timeout = setTimeout(() => {
         next()
-      }, 1000)
+      }, 100)
     }
 
     return () => {
