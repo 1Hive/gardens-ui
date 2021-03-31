@@ -92,11 +92,12 @@ function CreateProposalScreens() {
       stakeManagement,
     ]
   )
+
   return (
     <ModalFlowBase
-      frontLoad
+      frontLoad={!stakingLoading}
       loading={agreementLoading || stakingLoading}
-      transactions={transactions}
+      transactions={stakingLoading ? null : transactions}
       transactionTitle="Create transaction"
       screens={screens}
     />

@@ -14,7 +14,7 @@ import iconCheck from '../../../assets/iconCheck.svg'
 function CreateProposalRequirements({ agreement, staking }) {
   const { disputableAppsWithRequirements, signedLatest } = agreement
   const { next } = useMultiModal()
-  const { available: availableStaked, allowance } = staking
+  const { available: availableStaked, allowance } = staking || {}
 
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,

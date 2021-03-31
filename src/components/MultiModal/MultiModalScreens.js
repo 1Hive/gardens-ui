@@ -49,6 +49,7 @@ MultiModalScreens.propTypes = {
 function MultiModalFrame({ visible, onClosed }) {
   const theme = useTheme()
   const { currentScreen, close } = useMultiModal()
+
   const {
     disableClose,
     width: currentScreenWidth,
