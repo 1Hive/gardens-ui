@@ -90,7 +90,7 @@ function ModalFlowBase({
     }
 
     // Apply transaction singing at the end
-    if (transactionSteps) {
+    if (transactionSteps?.length > 0) {
       allScreens.push({
         title: transactionTitle,
         width: modalWidthFromCount(transactions.length),
@@ -129,7 +129,7 @@ function LoadingScreen({ loading }) {
       // Provide a minimum appearance duration to avoid visual confusion on very fast requests
       timeout = setTimeout(() => {
         next()
-      }, 100)
+      }, 1000)
     }
 
     return () => {

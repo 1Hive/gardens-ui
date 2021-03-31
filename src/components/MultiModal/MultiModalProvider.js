@@ -14,9 +14,11 @@ function MultiModalProvider({ screens, onClose, children }) {
 
   const handleClose = useCallback(() => onClose(), [onClose])
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setStep(0)
-  }, [account, setStep])
+  }, [account])
+  /* -enable react-hooks/exhaustive-deps */
 
   const multiModalState = useMemo(
     () => ({
