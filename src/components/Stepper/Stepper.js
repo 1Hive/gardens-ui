@@ -148,7 +148,11 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   ])
 
   /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(handleSign, [stepperStage])
+  useEffect(() => {
+    if (steps.length > 0) {
+      handleSign()
+    }
+  }, [stepperStage])
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const completed =

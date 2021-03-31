@@ -90,7 +90,7 @@ function ModalFlowBase({
     }
 
     // Apply transaction singing at the end
-    if (transactionSteps?.length > 0) {
+    if (transactionSteps) {
       allScreens.push({
         title: transactionTitle,
         width: modalWidthFromCount(transactions.length),
