@@ -24,7 +24,7 @@ import DisputeFees from '../components/DisputeFees'
 import IdentityBadge from '../components/IdentityBadge'
 import MultiModal from '../components/MultiModal/MultiModal'
 import ProposalActions from '../components/ProposalDetail/ProposalActions'
-import ProposalIcon from '../components/ProposalIcon'
+import ProposalHeader from '../components/ProposalDetail/ProposalHeader'
 import ProposalStatus, {
   getStatusAttributes,
 } from '../components/ProposalDetail/ProposalStatus'
@@ -43,7 +43,7 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '../utils/web3-utils'
-import { convertToString, ProposalTypes } from '../types'
+import { ProposalTypes } from '../types'
 import { ZERO_ADDR } from '../constants'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
@@ -158,22 +158,7 @@ function ProposalDetail({
                 `}
               >
                 <div>
-                  <div
-                    css={`
-                      display: flex;
-                      align-items: center;
-                      margin-bottom: ${2 * GU}px;
-                    `}
-                  >
-                    <ProposalIcon type={proposal.type} />
-                    <span
-                      css={`
-                        margin-left: ${0.5 * GU}px;
-                      `}
-                    >
-                      {convertToString(proposal.type)}
-                    </span>
-                  </div>
+                  <ProposalHeader proposal={proposal} />
                   <h1
                     css={`
                       ${textStyle('title2')};
@@ -400,6 +385,33 @@ function ProposalDetail({
   )
 }
 
+function DataField({ label, value, ...props }) {
+  const theme = useTheme()
+
+  return (
+    <div {...props}>
+      <h2
+        css={`
+          ${textStyle('label1')};
+          font-weight: 200;
+          color: ${theme.surfaceContentSecondary};
+          margin-bottom: ${2 * GU}px;
+        `}
+      >
+        {label}
+      </h2>
+
+      <div
+        css={`
+          ${textStyle('body2')};
+        `}
+      >
+        {value}
+      </div>
+    </div>
+  )
+}
+
 const Amount = ({
   requestedAmount,
   requestedAmountConverted,
@@ -455,33 +467,6 @@ const Amount = ({
         </div>
       }
     />
-  )
-}
-
-function DataField({ label, value, ...props }) {
-  const theme = useTheme()
-
-  return (
-    <div {...props}>
-      <h2
-        css={`
-          ${textStyle('label1')};
-          font-weight: 200;
-          color: ${theme.surfaceContentSecondary};
-          margin-bottom: ${2 * GU}px;
-        `}
-      >
-        {label}
-      </h2>
-
-      <div
-        css={`
-          ${textStyle('body2')};
-        `}
-      >
-        {value}
-      </div>
-    </div>
   )
 }
 
