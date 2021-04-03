@@ -178,7 +178,7 @@ function AccountModule({ compact }) {
         animateHeight={animate}
         heading={screen.title}
         height={screen.height}
-        width={41 * GU}
+        width={(screen.id === 'connected' ? 41 : 51) * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={opened}

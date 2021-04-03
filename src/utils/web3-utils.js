@@ -9,7 +9,7 @@ export function encodeFunctionData(contract, functionName, params) {
 }
 
 export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }]
+  const providers = [{ id: 'injected' }, { id: 'frame' }]
 
   if (env('FORTMATIC_API_KEY')) {
     providers.push({
