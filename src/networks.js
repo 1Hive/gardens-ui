@@ -43,7 +43,7 @@ const networks = {
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
     subgraphs: {
-      agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement',
+      agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
     },
     ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
