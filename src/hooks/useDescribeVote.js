@@ -15,7 +15,7 @@ export function useDescribeVote(script, voteId) {
   const [description, setDescription] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const emptyScript = script === '0x00000001'
+  const emptyScript = script === '0x00000001' || '0x00'
 
   // Populate target app data from transaction request
   const targetApp = useMemo(

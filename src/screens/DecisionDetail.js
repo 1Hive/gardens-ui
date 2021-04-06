@@ -158,7 +158,7 @@ function DecisionDetail({ proposal, actions }) {
                       label="Description"
                       value={
                         emptyScript ? (
-                          proposal.metadata
+                          proposal.metadata || 'No description'
                         ) : (
                           <Description path={description} />
                         )
