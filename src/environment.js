@@ -3,7 +3,7 @@ const DEFAULT_CHAIN_ID = 100
 const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
 const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
-const DEFAULT_AGREEMENT_APP_NAME = 'agreement-1hive'
+const DEFAULT_AGREEMENT_APP_NAME = 'agreement'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {

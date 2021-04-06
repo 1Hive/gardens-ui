@@ -17,13 +17,13 @@ const BLOCK_TIMES = new Map([
 
 export function subgraphUrlFromChainId(chainId: number) {
   if (chainId === 1) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-mainnet'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-mainnet'
   }
   if (chainId === 4) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-rinkeby'
   }
   if (chainId === 100) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-xdai'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot'
   }
   return null
 }
