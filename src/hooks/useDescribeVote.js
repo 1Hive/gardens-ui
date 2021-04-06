@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 
-import { getAppPresentation } from '../utils/app-utils'
+import { getAppPresentationByAddress } from '../utils/app-utils'
 import { addressesEqual } from '../utils/web3-utils'
 import { useMounted } from '../hooks/useMounted'
 import { useAppState } from '../providers/AppState'
@@ -15,7 +15,7 @@ export function useDescribeVote(script, voteId) {
   const [description, setDescription] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const emptyScript = script === '0x00000001'
+  const emptyScript = script === '0x00000001' || '0x00'
 
   // Populate target app data from transaction request
   const targetApp = useMemo(
@@ -69,7 +69,10 @@ function targetDataFromTransactionRequest(apps, transactionRequest) {
 
   // Populate details via our apps list if it's available
   if (apps.some(({ address }) => addressesEqual(address, targetAppAddress))) {
-    const { humanName, iconSrc } = getAppPresentation(apps, targetAppAddress)
+    const { humanName, iconSrc } = getAppPresentationByAddress(
+      apps,
+      targetAppAddress
+    )
 
     return {
       address: targetAppAddress,

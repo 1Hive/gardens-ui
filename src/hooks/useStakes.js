@@ -1,7 +1,11 @@
 import { useMemo } from 'react'
 import { useAppState } from '../providers/AppState'
 import { useSupporterSubscription } from './useSubscriptions'
-import { PROPOSAL_STATUS_ACTIVE_STRING } from '../constants'
+import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CHALLENGED_STRING,
+  PROPOSAL_STATUS_DISPUTED_STRING,
+} from '../constants'
 
 export function useAccountStakes(account) {
   const { honeypot, stakeToken } = useAppState()
@@ -14,8 +18,10 @@ export function useAccountStakes(account) {
 
     return supporter.stakes.reduce((acc, stake) => {
       if (
-        stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING ||
-        stake.amount.eq(0)
+        stake.amount.eq(0) ||
+        (stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING &&
+          stake.proposal.status !== PROPOSAL_STATUS_CHALLENGED_STRING &&
+          stake.proposal.status !== PROPOSAL_STATUS_DISPUTED_STRING)
       ) {
         return acc
       }

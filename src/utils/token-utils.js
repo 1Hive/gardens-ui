@@ -6,6 +6,7 @@ import tokenNameAbi from '../abi/token-name.json'
 import tokenNameBytesAbi from '../abi/token-name-bytes.json'
 
 import honeyIconSvg from '../assets/honey.svg'
+import stableTokenSvg from '../assets/stable-token.svg'
 
 const ANT_MAINNET_TOKEN_ADDRESS = '0x960b236A07cf122663c4303350609A66A7B288C0'
 const DAI_MAINNET_TOKEN_ADDRESS = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
@@ -42,7 +43,9 @@ const KNOWN_TOKENS_FALLBACK = new Map([
 
 const LOCAL_TOKEN_ICONS = new Map([
   ['HNY', honeyIconSvg],
-  ['CVTN', honeyIconSvg], // TODO: Remove
+  ['HNYT', honeyIconSvg],
+  ['DAI', stableTokenSvg],
+  ['XDAI', stableTokenSvg],
 ])
 
 export const tokenDataFallback = (tokenAddress, fieldName, networkType) => {

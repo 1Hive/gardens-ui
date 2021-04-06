@@ -14,14 +14,12 @@ import {
 } from '@1hive/1hive-ui'
 
 import ProfileForm from './ProfileForm'
-import ProposalSupporting from './ProposalSupporting'
-import StakeManagment from './StakesManagment'
 import Tabs from './Tabs'
 import usePicture from '../../hooks/usePicture'
 
 const IMAGE_DIMENSION = 15 * GU
-const CONTENT = [ProfileForm, StakeManagment, ProposalSupporting]
-const TAB_ITEMS = ['Profile'] // TODO: 'Stake management', 'Proposals supporting']
+const CONTENT = [ProfileForm]
+const TAB_ITEMS = ['Profile']
 
 const EditProfile = React.forwardRef(
   (

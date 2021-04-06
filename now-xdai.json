@@ -6,7 +6,7 @@
     "build": {
       "env": {
         "REACT_APP_CHAIN_ID": "100",
-        "REACT_APP_CONVICTION_APP_NAME":"conviction-beta"
+        "REACT_APP_CONVICTION_APP_NAME":"disputable-conviction-voting"
       }
     }
   }

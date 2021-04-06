@@ -5,6 +5,7 @@ import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useWallet } from '../../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
+import { getNetwork } from '../../networks'
 
 import beeSvg from '../../assets/bee.svg'
 import logoSvg from '../../assets/logo.svg'
@@ -14,6 +15,7 @@ function Header() {
   const { account } = useWallet()
   const { below } = useViewport()
   const layoutSmall = below('medium')
+  const network = getNetwork()
 
   const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
 
@@ -21,7 +23,7 @@ function Header() {
     <header
       css={`
         position: relative;
-        z-index: 3;
+        z-index: 0;
         background: #fff;
         box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
       `}
@@ -56,14 +58,14 @@ function Header() {
                 `}
               >
                 <Link
-                  href="#/home"
+                  href="#/covenant"
                   external={false}
                   css={`
                     text-decoration: none;
                     color: ${theme.contentSecondary};
                   `}
                 >
-                  Home
+                  Covenant
                 </Link>
                 <Link
                   href={HONEYSWAP_TRADE_HONEY}
@@ -76,6 +78,16 @@ function Header() {
                   Get Honey
                 </Link>
                 <Link
+                  href={network.celesteUrl}
+                  css={`
+                    text-decoration: none;
+                    color: ${theme.contentSecondary};
+                    margin-left: ${4 * GU}px;
+                  `}
+                >
+                  Stake Honey
+                </Link>
+                <Link
                   href="https://1hive.gitbook.io/1hive/"
                   css={`
                     text-decoration: none;
@@ -84,16 +96,6 @@ function Header() {
                   `}
                 >
                   Wiki
-                </Link>
-                <Link
-                  href="https://forum.1hive.org/"
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
-                  `}
-                >
-                  Forum
                 </Link>
               </nav>
             )}

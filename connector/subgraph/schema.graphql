@@ -15,16 +15,23 @@ type ConvictionConfig @entity {
   maxStakedProposals: Int!
   minThresholdStakePercentage: BigInt!
   requestToken: Token
+  stableToken: Token
+  stableTokenOracle: Bytes
+  contractPaused: Boolean
 }
 
 type VotingConfig @entity {
   id: ID!
-  token: Token!
+  token:  Token
+  settingId: BigInt!
+  voteTime: BigInt!
   supportRequiredPct: BigInt!
-  minAcceptQuorumPct: BigInt!
-  durationBlocks: BigInt!
-  bufferBlocks: BigInt!
-  executionDelayBlocks: BigInt!
+  minimumAcceptanceQuorumPct: BigInt!
+  delegatedVotingPeriod: BigInt!
+  quietEndingPeriod: BigInt!
+  quietEndingExtension: BigInt!
+  executionDelay: BigInt!
+  createdAt: BigInt!
 }
 
 type Proposal @entity {
@@ -37,7 +44,7 @@ type Proposal @entity {
   typeInt: Int!
   createdAt: BigInt!
   weight: BigInt!
-  metadata: String!
+  metadata: String
   executedAt: BigInt
   
   # Proposal data
@@ -48,26 +55,44 @@ type Proposal @entity {
   convictionLast: BigInt
   requestedAmount: BigInt
   totalTokensStaked: BigInt
+  stable: Boolean
 
   # Voting data
-  startBlock: BigInt
-  executionBlock: BigInt
-  snapshotBlock: BigInt
-  supportRequiredPct: BigInt
-  minAcceptQuorum: BigInt
-  yea: BigInt
-  nay: BigInt
-  votingPower: BigInt
+  setting: VotingConfig
+  startDate: BigInt
+  totalPower: BigInt
+  snapshotBlock: BigInt!
+  yeas: BigInt
+  nays: BigInt
+  quietEndingExtensionDuration: BigInt
+  quietEndingSnapshotSupport: VoterState
   script: Bytes
-  casts: [Cast!] @derivedFrom(field: "proposal")
+  isAccepted: Boolean
+  castVotes: [Cast!] @derivedFrom(field: "proposal")
+
+  # Dispute data
+  actionId: BigInt!
+  disputeId: BigInt
+  challengeId: BigInt!
+  challenger: Bytes!
+  challengeEndDate: BigInt!
+  settledAt: BigInt!
+  settlementOffer: BigInt
+  disputedAt: BigInt!
+  pausedAt: BigInt!
+  pauseDuration: BigInt!
+  submitterArbitratorFee: ArbitratorFee
+  challengerArbitratorFee: ArbitratorFee
+  collateralRequirement: CollateralRequirement @derivedFrom(field: "proposal")
 }
 
 type Cast @entity {
   id: ID!
   entity: Supporter!
+  caster: Bytes!
+  proposal: Proposal!
   supports: Boolean!
   stake: BigInt!
-  proposal: Proposal!
   createdAt: BigInt!
 }
 
@@ -95,6 +120,8 @@ type StakeHistory @entity {
 type Supporter @entity {
   id: ID!
   address: Bytes!
+  proposal: Proposal!
+  representative: Bytes
   casts: [Cast!] @derivedFrom(field: "entity")
   stakes: [Stake!] @derivedFrom(field: "entity")
   stakesHistory: [StakeHistory!] @derivedFrom(field: "entity")
@@ -107,10 +134,23 @@ type Token @entity {
   decimals: Int!
 }
 
+type CollateralRequirement @entity {
+  id: ID!
+  proposal: Proposal
+  token: Token
+  actionAmount: BigInt
+  challengeAmount: BigInt
+  challengeDuration: BigInt
+}
+
 enum ProposalStatus {
   Active
   Cancelled
   Executed
+  Challenged
+  Disputed
+  Rejected
+  Settled
 }
 
 enum ProposalType {
@@ -122,4 +162,17 @@ enum ProposalType {
 enum StakeType {
   Add
   Withdraw
+}
+
+enum VoterState {
+  Absent,
+  Yea,
+  Nay
+}
+
+type ArbitratorFee @entity {
+  id: ID!
+  proposal: Proposal!
+  token: Token!
+  amount: BigInt!
 }
