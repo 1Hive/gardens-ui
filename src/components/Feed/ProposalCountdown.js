@@ -4,7 +4,6 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../../constants'
-import { useProposalEndDate } from '../../hooks/useProposals'
 
 function ProposalCountdown({ proposal }) {
   if (proposal.hasEnded) {
@@ -19,11 +18,10 @@ function ProposalCountdown({ proposal }) {
 }
 
 function CountDown({ proposal }) {
-  const endDate = useProposalEndDate(proposal)
   const end =
     proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING
       ? proposal.challengeEndDate
-      : endDate
+      : proposal.endDate
   return (
     <div
       css={`
