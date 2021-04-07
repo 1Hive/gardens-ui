@@ -32,7 +32,7 @@
   "scripts": {
     "start": "yarn run sync-assets && react-app-rewired start",
     "start:local": "cross-env REACT_APP_CHAIN_ID=1337 yarn start",
-    "start:rinkeby": "cross-env REACT_APP_CHAIN_ID=4 yarn start",
+    "start:rinkeby": "cross-env REACT_APP_AGREEMENT_APP_NAME=agreement-1hive REACT_APP_CHAIN_ID=4 yarn start",
     "start:xdai": "cross-env REACT_APP_CHAIN_ID=100 yarn start",
     "build": "yarn run sync-assets && react-app-rewired build",
     "build:xdai": "cross-env REACT_APP_CHAIN=100 && yarn build",
