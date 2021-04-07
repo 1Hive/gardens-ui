@@ -8,7 +8,7 @@ import {
   useApps,
   useOrganization,
   usePermissions,
-} from '@aragon/connect-react'
+} from '@1hive/connect-react'
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
 
