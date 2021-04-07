@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "public": true,
+    "build": {
+      "env": {
+        "REACT_APP_CHAIN_ID": "4",
+        "REACT_APP_CONVICTION_APP_NAME":"disputable-conviction-voting",
+        "REACT_APP_APP_INSTANCE": "staging"
+      }
+    }
+  }
+  
