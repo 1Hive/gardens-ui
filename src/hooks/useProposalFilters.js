@@ -17,7 +17,7 @@ import {
   TYPE_ITEMS,
 } from '../utils/filter-utils'
 
-export const INITIAL_PROPOSAL_COUNT = 10
+const INITIAL_PROPOSAL_COUNT = 10
 const PROPOSAL_COUNT_STEP = 5
 
 const filtersCache = new Map([])
@@ -50,13 +50,10 @@ export default function useProposalFilters() {
     filtersCache.set(FILTER_KEY_NAME, newName)
   }, [])
   const handlePoposalCountIncrease = useCallback(() => {
-    setCountFilter(count => {
-      const newCount = count + PROPOSAL_COUNT_STEP
-      filtersCache.set(FILTER_KEY_COUNT, newCount)
-
-      return newCount
-    })
-  }, [])
+    const newCount = countFilter + PROPOSAL_COUNT_STEP
+    setCountFilter(newCount)
+    filtersCache.set(FILTER_KEY_COUNT, newCount)
+  }, [countFilter])
   const handleRankingFilterChange = useCallback(index => {
     setRankingFilter(index)
     filtersCache.set(FILTER_KEY_RANKING, index)

@@ -24,4 +24,4 @@ export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
 export const HONEYSWAP_TRADE_HONEY =
-  'https://app.honeyswap.org/#/swap?outputCurrency=0x71850b7e9ee3f13ab46d67167341e4bdc905eef9'
+  'https://app.honeyswap.org/#/swap?inputCurrency=0x71850b7e9ee3f13ab46d67167341e4bdc905eef9'

@@ -8,15 +8,9 @@ yarn build
 
 GRAPH_NODE="https://api.thegraph.com/deploy/"
 IPFS_NODE="https://api.thegraph.com/ipfs/"
+SUBGRAPH_EXT="-${NETWORK}"
 
-# Use custom subgraph name based on target network
-if [[ "$NETWORK" != "xdai" ]]; then
-  SUBGRAPH_EXT="-${NETWORK}"
-else
-  SUBGRAPH_EXT=""
-fi
-
-echo Deploying subgraph 1hive/disputable-honey-pot${SUBGRAPH_EXT}
+echo Deploying subgraph 1hive/honey-pot${SUBGRAPH_EXT}
 
 # Deploy subgraph
-graph deploy 1hive/disputable-honey-pot${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}
+graph deploy 1hive/honey-pot${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}

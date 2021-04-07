@@ -17,6 +17,13 @@ function MainView({ children }) {
         height: 100vh;
       `}
     >
+      <div
+        css={`
+          flex-shrink: 0;
+        `}
+      >
+        <Header />
+      </div>
       <Root.Provider
         css={`
           flex-grow: 1;
@@ -24,13 +31,6 @@ function MainView({ children }) {
           position: relative;
         `}
       >
-        <div
-          css={`
-            flex-shrink: 0;
-          `}
-        >
-          <Header />
-        </div>
         <ScrollView>
           <div
             css={`

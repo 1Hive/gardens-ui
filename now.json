@@ -4,9 +4,8 @@
     "scope": "1hive",
     "build": {
       "env": {
-        "REACT_APP_CHAIN_ID": "4",
-        "REACT_APP_CONVICTION_APP_NAME":"disputable-conviction-voting",
-        "REACT_APP_AGREEMENT_APP_NAME": "agreement-1hive"
+        "REACT_APP_CHAIN_ID": "100",
+        "REACT_APP_CONVICTION_APP_NAME":"conviction-beta"
       }
     }
   }

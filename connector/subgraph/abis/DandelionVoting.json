@@ -15,48 +15,6 @@
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "proposalCounter",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "D",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "ABSTAIN_PROPOSAL_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [
       {
         "name": "_script",
@@ -91,11 +49,30 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "MAX_STAKED_PROPOSALS",
+    "name": "MODIFY_QUORUM_ROLE",
     "outputs": [
       {
         "name": "",
-        "type": "uint64"
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "latestYeaVoteId",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -150,21 +127,7 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "requestToken",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "UPDATE_SETTINGS_ROLE",
+    "name": "MODIFY_EXECUTION_DELAY_ROLE",
     "outputs": [
       {
         "name": "",
@@ -178,11 +141,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "stakeToken",
+    "name": "MODIFY_SUPPORT_ROLE",
     "outputs": [
       {
         "name": "",
-        "type": "address"
+        "type": "bytes32"
       }
     ],
     "payable": false,
@@ -192,11 +155,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "decay",
+    "name": "durationBlocks",
     "outputs": [
       {
         "name": "",
-        "type": "uint256"
+        "type": "uint64"
       }
     ],
     "payable": false,
@@ -206,11 +169,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "maxRatio",
+    "name": "MODIFY_BUFFER_BLOCKS_ROLE",
     "outputs": [
       {
         "name": "",
-        "type": "uint256"
+        "type": "bytes32"
       }
     ],
     "payable": false,
@@ -253,39 +216,25 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "totalStaked",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "CANCEL_PROPOSAL_ROLE",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
     "name": "getInitializationBlock",
     "outputs": [
       {
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "bufferBlocks",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
       }
     ],
     "payable": false,
@@ -308,53 +257,26 @@
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "name": "_sender",
-        "type": "address"
-      },
-      {
-        "name": "_role",
-        "type": "bytes32"
-      },
-      {
-        "name": "_params",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "canPerform",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "weight",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [],
     "name": "getEVMScriptRegistry",
     "outputs": [
       {
         "name": "",
         "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "CREATE_VOTES_ROLE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "payable": false,
@@ -377,6 +299,20 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "executionDelayBlocks",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -423,25 +359,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "minThresholdStakePercentage",
+    "name": "minAcceptQuorumPct",
     "outputs": [
       {
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "ONE_HUNDRED_PERCENT",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
+        "type": "uint64"
       }
     ],
     "payable": false,
@@ -465,11 +387,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "CREATE_PROPOSALS_ROLE",
+    "name": "votesLength",
     "outputs": [
       {
         "name": "",
-        "type": "bytes32"
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -479,7 +401,21 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "vault",
+    "name": "supportRequiredPct",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "token",
     "outputs": [
       {
         "name": "",
@@ -491,67 +427,39 @@
     "type": "function"
   },
   {
-    "anonymous": false,
-    "inputs": [
+    "constant": true,
+    "inputs": [],
+    "name": "PCT_BASE",
+    "outputs": [
       {
-        "indexed": false,
-        "name": "decay",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "maxRatio",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "weight",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "minThresholdStakePercentage",
-        "type": "uint256"
+        "name": "",
+        "type": "uint64"
       }
     ],
-    "name": "ConvictionSettingsChanged",
-    "type": "event"
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "anonymous": false,
     "inputs": [
       {
         "indexed": true,
-        "name": "entity",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "id",
+        "name": "voteId",
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "name": "creator",
+        "type": "address"
+      },
+      {
         "indexed": false,
-        "name": "title",
+        "name": "metadata",
         "type": "string"
-      },
-      {
-        "indexed": false,
-        "name": "link",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "beneficiary",
-        "type": "address"
       }
     ],
-    "name": "ProposalAdded",
+    "name": "StartVote",
     "type": "event"
   },
   {
@@ -559,73 +467,26 @@
     "inputs": [
       {
         "indexed": true,
-        "name": "entity",
+        "name": "voteId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "voter",
         "type": "address"
       },
       {
-        "indexed": true,
-        "name": "id",
-        "type": "uint256"
+        "indexed": false,
+        "name": "supports",
+        "type": "bool"
       },
       {
         "indexed": false,
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "tokensStaked",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "totalTokensStaked",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "conviction",
+        "name": "stake",
         "type": "uint256"
       }
     ],
-    "name": "StakeAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "entity",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "tokensStaked",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "totalTokensStaked",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "conviction",
-        "type": "uint256"
-      }
-    ],
-    "name": "StakeWithdrawn",
+    "name": "CastVote",
     "type": "event"
   },
   {
@@ -633,28 +494,59 @@
     "inputs": [
       {
         "indexed": true,
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "conviction",
+        "name": "voteId",
         "type": "uint256"
       }
     ],
-    "name": "ProposalExecuted",
+    "name": "ExecuteVote",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "name": "id",
-        "type": "uint256"
+        "indexed": false,
+        "name": "supportRequiredPct",
+        "type": "uint64"
       }
     ],
-    "name": "ProposalCancelled",
+    "name": "ChangeSupportRequired",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "minAcceptQuorumPct",
+        "type": "uint64"
+      }
+    ],
+    "name": "ChangeMinQuorum",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "bufferBlocks",
+        "type": "uint64"
+      }
+    ],
+    "name": "ChangeBufferBlocks",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "executionDelayBlocks",
+        "type": "uint64"
+      }
+    ],
+    "name": "ChangeExecutionDelayBlocks",
     "type": "event"
   },
   {
@@ -710,32 +602,28 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_stakeToken",
+        "name": "_token",
         "type": "address"
       },
       {
-        "name": "_vault",
-        "type": "address"
+        "name": "_supportRequiredPct",
+        "type": "uint64"
       },
       {
-        "name": "_requestToken",
-        "type": "address"
+        "name": "_minAcceptQuorumPct",
+        "type": "uint64"
       },
       {
-        "name": "_decay",
-        "type": "uint256"
+        "name": "_durationBlocks",
+        "type": "uint64"
       },
       {
-        "name": "_maxRatio",
-        "type": "uint256"
+        "name": "_bufferBlocks",
+        "type": "uint64"
       },
       {
-        "name": "_weight",
-        "type": "uint256"
-      },
-      {
-        "name": "_minThresholdStakePercentage",
-        "type": "uint256"
+        "name": "_executionDelayBlocks",
+        "type": "uint64"
       }
     ],
     "name": "initialize",
@@ -748,23 +636,11 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_decay",
-        "type": "uint256"
-      },
-      {
-        "name": "_maxRatio",
-        "type": "uint256"
-      },
-      {
-        "name": "_weight",
-        "type": "uint256"
-      },
-      {
-        "name": "_minThresholdStakePercentage",
-        "type": "uint256"
+        "name": "_supportRequiredPct",
+        "type": "uint64"
       }
     ],
-    "name": "setConvictionCalculationSettings",
+    "name": "changeSupportRequiredPct",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -774,23 +650,84 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_title",
-        "type": "string"
-      },
+        "name": "_minAcceptQuorumPct",
+        "type": "uint64"
+      }
+    ],
+    "name": "changeMinAcceptQuorumPct",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
       {
-        "name": "_link",
+        "name": "_bufferBlocks",
+        "type": "uint64"
+      }
+    ],
+    "name": "changeBufferBlocks",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_executionDelayBlocks",
+        "type": "uint64"
+      }
+    ],
+    "name": "changeExecutionDelayBlocks",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_executionScript",
         "type": "bytes"
       },
       {
-        "name": "_requestedAmount",
+        "name": "_metadata",
+        "type": "string"
+      },
+      {
+        "name": "_castVote",
+        "type": "bool"
+      }
+    ],
+    "name": "newVote",
+    "outputs": [
+      {
+        "name": "voteId",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_voteId",
         "type": "uint256"
       },
       {
-        "name": "_beneficiary",
-        "type": "address"
+        "name": "_supports",
+        "type": "bool"
       }
     ],
-    "name": "addProposal",
+    "name": "vote",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -800,89 +737,39 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_proposalId",
-        "type": "uint256"
-      },
-      {
-        "name": "_amount",
+        "name": "_voteId",
         "type": "uint256"
       }
     ],
-    "name": "stakeToProposal",
+    "name": "executeVote",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
+    "constant": true,
+    "inputs": [],
+    "name": "isForwarder",
+    "outputs": [
       {
-        "name": "_proposalId",
-        "type": "uint256"
+        "name": "",
+        "type": "bool"
       }
     ],
-    "name": "stakeAllToProposal",
-    "outputs": [],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
     "constant": false,
     "inputs": [
       {
-        "name": "_proposalId",
-        "type": "uint256"
-      },
-      {
-        "name": "_amount",
-        "type": "uint256"
+        "name": "_evmScript",
+        "type": "bytes"
       }
     ],
-    "name": "withdrawFromProposal",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_proposalId",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawAllFromProposal",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_proposalId",
-        "type": "uint256"
-      }
-    ],
-    "name": "executeProposal",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_proposalId",
-        "type": "uint256"
-      }
-    ],
-    "name": "cancelProposal",
+    "name": "forward",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -892,39 +779,19 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_proposalId",
-        "type": "uint256"
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "bytes"
       }
     ],
-    "name": "getProposal",
+    "name": "canForward",
     "outputs": [
       {
-        "name": "requestedAmount",
-        "type": "uint256"
-      },
-      {
-        "name": "beneficiary",
-        "type": "address"
-      },
-      {
-        "name": "stakedTokens",
-        "type": "uint256"
-      },
-      {
-        "name": "convictionLast",
-        "type": "uint256"
-      },
-      {
-        "name": "blockLast",
-        "type": "uint64"
-      },
-      {
-        "name": "proposalStatus",
-        "type": "uint8"
-      },
-      {
-        "name": "submitter",
-        "type": "address"
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -935,84 +802,23 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_proposalId",
-        "type": "uint256"
+        "name": "_sender",
+        "type": "address"
       },
       {
-        "name": "_voter",
-        "type": "address"
-      }
-    ],
-    "name": "getProposalVoterStake",
-    "outputs": [
+        "name": "_role",
+        "type": "bytes32"
+      },
       {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_voter",
-        "type": "address"
-      }
-    ],
-    "name": "getTotalVoterStake",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_voter",
-        "type": "address"
-      }
-    ],
-    "name": "getVoterStakedProposals",
-    "outputs": [
-      {
-        "name": "",
+        "name": "_params",
         "type": "uint256[]"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_timePassed",
-        "type": "uint64"
-      },
-      {
-        "name": "_lastConv",
-        "type": "uint256"
-      },
-      {
-        "name": "_oldAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "calculateConviction",
+    "name": "canPerform",
     "outputs": [
       {
         "name": "",
-        "type": "uint256"
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -1023,15 +829,151 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_requestedAmount",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "bytes32"
+      },
+      {
+        "name": "_how",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "canPerform",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
         "type": "uint256"
       }
     ],
-    "name": "calculateThreshold",
+    "name": "canExecute",
     "outputs": [
       {
-        "name": "_threshold",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
         "type": "uint256"
+      },
+      {
+        "name": "_voter",
+        "type": "address"
+      }
+    ],
+    "name": "canVote",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getVote",
+    "outputs": [
+      {
+        "name": "open",
+        "type": "bool"
+      },
+      {
+        "name": "executed",
+        "type": "bool"
+      },
+      {
+        "name": "startBlock",
+        "type": "uint64"
+      },
+      {
+        "name": "executionBlock",
+        "type": "uint64"
+      },
+      {
+        "name": "snapshotBlock",
+        "type": "uint64"
+      },
+      {
+        "name": "supportRequired",
+        "type": "uint64"
+      },
+      {
+        "name": "minAcceptQuorum",
+        "type": "uint64"
+      },
+      {
+        "name": "votingPower",
+        "type": "uint256"
+      },
+      {
+        "name": "yea",
+        "type": "uint256"
+      },
+      {
+        "name": "nay",
+        "type": "uint256"
+      },
+      {
+        "name": "script",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_voteId",
+        "type": "uint256"
+      },
+      {
+        "name": "_voter",
+        "type": "address"
+      }
+    ],
+    "name": "getVoterState",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
       }
     ],
     "payable": false,

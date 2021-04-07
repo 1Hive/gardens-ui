@@ -31,7 +31,7 @@ const SCREENS = [
   },
   {
     id: 'connected',
-    height: 40 * GU,
+    height: 32.5 * GU,
   },
   {
     id: 'error',
@@ -48,7 +48,7 @@ function AccountModule({ compact }) {
   const [activationError, setActivationError] = useState(null)
   const popoverFocusElement = useRef()
 
-  const { boxOpened } = useProfile()
+  const { openBox } = useProfile()
 
   const { account, activating } = wallet
   const { isLoading } = useAppState()
@@ -58,10 +58,10 @@ function AccountModule({ compact }) {
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   useEffect(() => {
-    if (account && boxOpened) {
+    if (account && openBox) {
       setOpened(false)
     }
-  }, [account, boxOpened])
+  }, [account, openBox])
 
   const handleCancelConnection = useCallback(() => {
     wallet.deactivate()
@@ -178,7 +178,7 @@ function AccountModule({ compact }) {
         animateHeight={animate}
         heading={screen.title}
         height={screen.height}
-        width={(screen.id === 'connected' ? 41 : 51) * GU}
+        width={41 * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
         visible={opened}

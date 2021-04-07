@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   ButtonBase,
   GU,
   Link as AragonLink,
+  SidePanel,
   textStyle,
   useLayout,
   useTheme,
@@ -10,9 +11,10 @@ import {
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import Layout from './Layout'
-import MultiModal from '../components/MultiModal/MultiModal'
-import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import logoSvg from '../assets/logo.svg'
+import usePanelState from '../hooks/usePanelState'
+import useActions from '../hooks/useActions'
+import AddProposalPanel from './panels/AddProposalPanel'
 
 import { useWallet } from '../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
@@ -111,11 +113,9 @@ function FixedFooter() {
   const theme = useTheme()
   const { account } = useWallet()
   const { layoutName } = useLayout()
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const panelState = usePanelState()
+  const actions = useActions(panelState.requestClose)
 
-  // TODO: Add the create proposal modal here
   return (
     <div>
       <div
@@ -152,7 +152,7 @@ function FixedFooter() {
               disabled={!account}
               icon={<img src={createSvg} alt="create" />}
               label="Create"
-              onClick={() => setCreateProposalModalVisible(true)}
+              onClick={panelState.requestOpen}
             />
             <FooterItem
               href={HONEYSWAP_TRADE_HONEY}
@@ -163,12 +163,13 @@ function FixedFooter() {
           </div>
         </div>
       </div>
-      <MultiModal
-        visible={createProposalModalVisible}
-        onClose={() => setCreateProposalModalVisible(false)}
+      <SidePanel
+        title="New proposal"
+        opened={panelState.visible}
+        onClose={panelState.requestClose}
       >
-        <CreateProposalScreens />
-      </MultiModal>
+        <AddProposalPanel onSubmit={actions.newProposal} />
+      </SidePanel>
     </div>
   )
 }

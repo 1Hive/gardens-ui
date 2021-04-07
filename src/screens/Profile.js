@@ -48,10 +48,6 @@ function Profile() {
     }
   }, [connectedAccount, history, selectedAccount])
 
-  useEffect(() => {
-    setEditMode(false)
-  }, [connectedAccount])
-
   const toggleEditMode = useCallback(() => {
     setEditMode(mode => !mode)
   }, [])
@@ -83,85 +79,91 @@ function Profile() {
             height={(editMode ? 15 : 50) * GU}
             image={coverSrc}
           />
-          <div
-            css={`
-              margin-top: ${(editMode ? 4 : 20) * GU}px;
-              position: relative;
-            `}
-          >
-            {editMode ? (
-              <EditProfile
-                coverPic={coverPic}
-                coverPicRemovalEnabled={
-                  !coverPic.removed &&
-                  (coverPhoto || (imageInput?.files && imageInput?.files[0]))
-                }
-                onBack={toggleEditMode}
-                onCoverPicChange={onCoverPicChange}
-                onCoverPicRemoval={onCoverPicRemoval}
-                profile={selectedProfile}
-                ref={imageInput}
-              />
-            ) : (
-              <>
-                {isConnectedAccountProfile && (
-                  <div
-                    css={`
-                      position: absolute;
-                      z-index: 1;
 
-                      ${oneColumn
-                        ? `
+          <Spring
+            config={springs.smooth}
+            from={{ marginTop: `${20 * GU}px` }}
+            to={{ marginTop: ` ${(editMode ? 4 : 20) * GU}px` }}
+            native
+          >
+            {({ marginTop }) => (
+              <animated.div style={{ marginTop, position: 'relative' }}>
+                {editMode ? (
+                  <EditProfile
+                    coverPic={coverPic}
+                    coverPicRemovalEnabled={
+                      !coverPic.removed &&
+                      (coverPhoto ||
+                        (imageInput?.files && imageInput?.files[0]))
+                    }
+                    onBack={toggleEditMode}
+                    onCoverPicChange={onCoverPicChange}
+                    onCoverPicRemoval={onCoverPicRemoval}
+                    profile={selectedProfile}
+                    ref={imageInput}
+                  />
+                ) : (
+                  <>
+                    {isConnectedAccountProfile && (
+                      <div
+                        css={`
+                          position: absolute;
+                          z-index: 1;
+
+                          ${oneColumn
+                            ? `
                             left: 0;
                             right: 0;
                             text-align: center;
                             top: 50px;
                             `
-                        : `
+                            : `
                             top: -54px;
                             right: 0;
                           `}
-                    `}
-                  >
-                    <Button
-                      label={
-                        selectedProfile?.authenticated
-                          ? 'Edit profile'
-                          : 'Loading profile…'
-                      }
-                      onClick={toggleEditMode}
-                      disabled={!selectedProfile?.authenticated}
-                    />
-                  </div>
-                )}
-                <Split
-                  primary={
-                    <Activity
-                      account={selectedAccount}
-                      isConnectedAccount={isConnectedAccountProfile}
-                      profileName={selectedProfile?.name}
-                    />
-                  }
-                  secondary={
-                    <>
-                      <MainProfile profile={selectedProfile} />
-                      <Wallet
-                        account={selectedAccount}
-                        myStakes={accountStakes}
-                      />
-                      <StakingTokens myStakes={accountStakes} />
-                      {accountInactiveStakes.length > 0 && (
-                        <InactiveProposalsStake
-                          myInactiveStakes={accountInactiveStakes}
+                        `}
+                      >
+                        <Button
+                          label={
+                            selectedProfile?.authenticated
+                              ? 'Edit profile'
+                              : 'Loading profile…'
+                          }
+                          onClick={toggleEditMode}
+                          disabled={!selectedProfile?.authenticated}
                         />
-                      )}
-                    </>
-                  }
-                  invert={oneColumn ? 'vertical' : 'horizontal'}
-                />
-              </>
+                      </div>
+                    )}
+                    <Split
+                      primary={
+                        <Activity
+                          account={selectedAccount}
+                          isConnectedAccount={isConnectedAccountProfile}
+                          profileName={selectedProfile?.name}
+                        />
+                      }
+                      secondary={
+                        <>
+                          <MainProfile profile={selectedProfile} />
+                          <Wallet
+                            account={selectedAccount}
+                            myStakes={accountStakes}
+                          />
+                          <StakingTokens myStakes={accountStakes} />
+                          {accountInactiveStakes.length > 0 && (
+                            <InactiveProposalsStake
+                              myInactiveStakes={accountInactiveStakes}
+                            />
+                          )}
+                        </>
+                      }
+                      invert={oneColumn ? 'vertical' : 'horizontal'}
+                    />
+                  </>
+                )}
+              </animated.div>
             )}
-          </div>
+          </Spring>
         </>
       )}
     </div>

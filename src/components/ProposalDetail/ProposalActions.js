@@ -1,24 +1,35 @@
-import React, { useCallback, useMemo } from 'react'
-import { Button, GU, Info } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button, Field, GU, Info, Slider, TextInput } from '@1hive/1hive-ui'
 
+import useAccountTotalStaked from '../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../providers/AppState'
 import { useWallet } from '../../providers/Wallet'
 
 import AccountNotConnected from '../AccountNotConnected'
 import { addressesEqual } from '../../utils/web3-utils'
 import BigNumber from '../../lib/bigNumber'
+import { toDecimals, fromDecimals } from '../../utils/math-utils'
+
+import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_EXECUTED_STRING,
+} from '../../constants'
+
+const MAX_INPUT_DECIMAL_BASE = 6
 
 function ProposalActions({
   proposal,
-  onChangeSupport,
   onExecuteProposal,
   onRequestSupportProposal,
+  onStakeToProposal,
   onWithdrawFromProposal,
 }) {
   const { stakeToken, accountBalance } = useAppState()
   const { account: connectedAccount } = useWallet()
 
-  const { id, currentConviction, hasEnded, stakes, threshold } = proposal
+  const { id, currentConviction, stakes, status, threshold } = proposal
+  const totalStaked = useAccountTotalStaked(connectedAccount)
 
   const myStake = useMemo(
     () =>
@@ -30,10 +41,26 @@ function ProposalActions({
     [stakes, connectedAccount]
   )
 
+  const maxAvailable = useMemo(
+    () => accountBalance.minus(totalStaked).plus(myStake.amount),
+    [myStake.amount, accountBalance, totalStaked]
+  )
+
+  const [
+    inputValue, // tokens amount formatted as a string
+    amount, // tokens amount formatted as a big number
+    handleAmountChange,
+    handleSliderChange,
+  ] = useAmount(myStake, stakeToken, maxAvailable)
+
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
-    if (didIStake && hasEnded) {
+    if (
+      didIStake &&
+      (status === PROPOSAL_STATUS_CANCELLED_STRING ||
+        status === PROPOSAL_STATUS_EXECUTED_STRING)
+    ) {
       return 'withdraw'
     }
     if (currentConviction.gte(threshold)) {
@@ -42,24 +69,39 @@ function ProposalActions({
     if (didIStake) {
       return 'update'
     }
-    if (hasEnded) {
-      return null
-    }
     return 'support'
-  }, [currentConviction, didIStake, hasEnded, threshold])
+  }, [currentConviction, didIStake, status, threshold])
 
   const handleExecute = useCallback(() => {
     onExecuteProposal(id)
   }, [id, onExecuteProposal])
+
+  const handleChangeSupport = useCallback(() => {
+    if (amount.lt(myStake.amount)) {
+      onWithdrawFromProposal(
+        id,
+        myStake.amount
+          .minus(amount)
+          .integerValue()
+          .toString(10)
+      )
+      return
+    }
+
+    onStakeToProposal(
+      id,
+      amount
+        .minus(myStake.amount)
+        .integerValue()
+        .toString(10)
+    )
+  }, [amount, id, myStake.amount, onStakeToProposal, onWithdrawFromProposal])
 
   const handleWithdrawAllFromProposal = useCallback(() => {
     onWithdrawFromProposal(id)
   }, [id, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
-    if (!mode) {
-      return null
-    }
     if (mode === 'execute') {
       return {
         text: 'Execute proposal',
@@ -71,9 +113,10 @@ function ProposalActions({
 
     if (mode === 'update') {
       return {
-        text: 'Change support',
-        action: onChangeSupport,
+        text: amount.toString() === '0' ? 'Withdraw support' : 'Change support',
+        action: handleChangeSupport,
         mode: 'normal',
+        disabled: myStake.amount.toString() === amount.toString(),
       }
     }
     if (mode === 'withdraw') {
@@ -83,29 +126,58 @@ function ProposalActions({
         mode: 'strong',
       }
     }
-    if (mode === 'support') {
-      return {
-        text: 'Support this proposal',
-        action: onRequestSupportProposal,
-        mode: 'strong',
-        disabled: !accountBalance.gt(0),
-      }
+    return {
+      text: 'Support this proposal',
+      action: onRequestSupportProposal,
+      mode: 'strong',
+      disabled: !accountBalance.gt(0),
     }
   }, [
     accountBalance,
+    amount,
+    handleChangeSupport,
     handleExecute,
     handleWithdrawAllFromProposal,
     mode,
-    onChangeSupport,
+    myStake.amount,
     onRequestSupportProposal,
   ])
 
-  if (mode) {
-    if (!connectedAccount) {
-      return <AccountNotConnected />
-    }
-    return (
-      <div>
+  return connectedAccount ? (
+    <div>
+      {mode === 'update' && (
+        <Field label="Amount of your tokens for this proposal">
+          <div
+            css={`
+              display: flex;
+              justify-content: space-between;
+            `}
+          >
+            <Slider
+              value={
+                maxAvailable.gt(0) ? amount.div(maxAvailable).toNumber() : 0
+              }
+              onUpdate={handleSliderChange}
+              css={`
+                padding-left: 0;
+                width: 100%;
+              `}
+            />
+            <TextInput
+              value={inputValue}
+              type="number"
+              onChange={handleAmountChange}
+              max={fromDecimals(maxAvailable.toString(), stakeToken.decimals)}
+              min="0"
+              step="any"
+              css={`
+                width: ${18 * GU}px;
+              `}
+            />
+          </div>
+        </Field>
+      )}
+      {(status === PROPOSAL_STATUS_ACTIVE_STRING || mode === 'withdraw') && (
         <Button
           wide
           mode={buttonProps.mode}
@@ -114,7 +186,10 @@ function ProposalActions({
         >
           {buttonProps.text}
         </Button>
-        {mode === 'support' && buttonProps.disabled && (
+      )}
+      {status === PROPOSAL_STATUS_ACTIVE_STRING &&
+        mode === 'support' &&
+        buttonProps.disabled && (
           <Info
             mode="warning"
             css={`
@@ -127,11 +202,44 @@ function ProposalActions({
             <strong>{stakeToken.symbol}</strong>.
           </Info>
         )}
-      </div>
-    )
-  }
+    </div>
+  ) : (
+    <AccountNotConnected />
+  )
+}
 
-  return null
+const useAmount = (myStake, stakeToken, maxAvailable) => {
+  const [inputValue, setInputValue] = useState(
+    myStake?.amount &&
+      fromDecimals(myStake.amount.toString(), stakeToken.decimals)
+  )
+
+  const roundSlider = useCallback(
+    bigNum =>
+      bigNum
+        .shiftedBy(-stakeToken.decimals)
+        .decimalPlaces(Math.min(MAX_INPUT_DECIMAL_BASE, stakeToken.decimals))
+        .toString(),
+    [stakeToken.decimals]
+  )
+
+  const handleAmountChange = useCallback(
+    event => setInputValue(event.target.value),
+    []
+  )
+
+  const handleSliderChange = useCallback(
+    newProgress =>
+      setInputValue(roundSlider(maxAvailable.multipliedBy(newProgress))),
+    [maxAvailable, roundSlider]
+  )
+
+  const amount = BigNumber.minimum(
+    new BigNumber(toDecimals(inputValue, stakeToken.decimals)),
+    maxAvailable
+  )
+
+  return [inputValue, amount, handleAmountChange, handleSliderChange]
 }
 
 export default ProposalActions

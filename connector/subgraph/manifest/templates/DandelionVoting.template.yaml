@@ -1,0 +1,31 @@
+- kind: ethereum/contract
+  name: DandelionVoting
+  network: {{network}}
+  source:
+    abi: DandelionVoting
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - Cast
+      - Proposal
+    abis:
+      - name: DandelionVoting
+        file: ./abis/DandelionVoting.json
+    eventHandlers:
+      - event: StartVote(indexed uint256,indexed address,string)
+        handler: handleStartVote
+      - event: CastVote(indexed uint256,indexed address,bool,uint256)
+        handler: handleCastVote
+      - event: ExecuteVote(indexed uint256)
+        handler: handleExecuteVote
+      - event: ChangeSupportRequired(uint64)
+        handler: handleChangeSupportRequired
+      - event: ChangeMinQuorum(uint64)
+        handler: handleChangeMinQuorum
+      - event: ChangeBufferBlocks(uint64)
+        handler: handleChangeBufferBlocks
+      - event: ChangeExecutionDelayBlocks(uint64)
+        handler: handleChangeExecutionDelayBlocks
+    file: ./src/DandelionVoting.ts

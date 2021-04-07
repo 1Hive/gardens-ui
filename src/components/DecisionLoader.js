@@ -5,7 +5,7 @@ import useProposalLogic from '../logic/proposal-logic'
 
 function DecisionLoader({ match }) {
   const {
-    actions: { agreementActions, votingActions },
+    actions: { dandelionActions },
     proposal,
     isLoading,
   } = useProposalLogic(match)
@@ -14,12 +14,7 @@ function DecisionLoader({ match }) {
     return <Loader />
   }
 
-  return (
-    <DecisionDetail
-      proposal={proposal}
-      actions={{ ...agreementActions, ...votingActions }}
-    />
-  )
+  return <DecisionDetail proposal={proposal} actions={dandelionActions} />
 }
 
 export default DecisionLoader

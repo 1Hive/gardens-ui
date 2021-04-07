@@ -1,1 +1,0 @@
-["function consult(address tokenIn, uint amountIn, address tokenOut) external view returns (uint amountOut)"]

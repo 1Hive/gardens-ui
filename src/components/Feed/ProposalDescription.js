@@ -37,7 +37,7 @@ function DecisionDescription({ proposal }) {
   return (
     <div>
       {emptyScript ? (
-        proposal.metadata || 'No description'
+        proposal.metadata
       ) : (
         <Description
           path={description}
