@@ -1,42 +1,30 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
 import { useAppState } from '../providers/AppState'
-import useProposalFilters, {
-  INITIAL_PROPOSAL_COUNT,
-} from './useProposalFilters'
+import useProposalFilters from './useProposalFilters'
 import {
   useProposalSubscription,
   useProposalsSubscription,
   useSupporterSubscription,
 } from './useSubscriptions'
-import useRequestAmount from './useRequestAmount'
 import { useWallet } from '../providers/Wallet'
 
 import {
+  calculateThreshold,
   getCurrentConviction,
   getCurrentConvictionByEntity,
   getConvictionTrend,
   getMaxConviction,
-  calculateThreshold,
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import {
-  getProposalStatusData,
-  getProposalSupportStatus,
-  hasProposalEnded,
-} from '../utils/proposal-utils'
-import {
-  getVoteEndDate,
-  getVoteStatusData,
-  hasVoteEnded,
-} from '../utils/vote-utils'
+import { getProposalSupportStatus } from '../utils/proposal-utils'
+import { getDecisionTransition } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
 import {
-  PCT_BASE,
   PROPOSAL_STATUS_CANCELLED_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
@@ -55,23 +43,14 @@ export function useProposals() {
     latestBlock
   )
 
-  useEffect(() => {
-    if (
-      proposals.length < proposalsFetchedCount &&
-      proposalsFetchedCount === filters.count.filter &&
-      proposals.length < INITIAL_PROPOSAL_COUNT
-    ) {
-      filters.count.onChange()
-    }
-  }, [filters.count, proposals.length, proposalsFetchedCount])
-
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
 
 function useFilteredProposals(filters, account, latestBlock) {
+  const blockTime = useBlockTime()
   const myStakes = useAccountStakes(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -83,40 +62,49 @@ function useFilteredProposals(filters, account, latestBlock) {
 
     return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
-        ? processDecision(proposal)
+        ? processDecision(proposal, latestBlock, blockTime)
         : processProposal(
             proposal,
             latestBlock,
+            blockTime,
             effectiveSupply,
+            vaultBalance,
             account,
             config?.conviction
           )
     )
-  }, [account, config, effectiveSupply, isLoading, latestBlock, proposals])
+  }, [
+    account,
+    blockTime,
+    config,
+    effectiveSupply,
+    isLoading,
+    latestBlock,
+    proposals,
+    vaultBalance,
+  ])
 
   const filteredProposals = useMemo(
     () =>
-      isLoading
-        ? proposalsWithData
-        : proposalsWithData?.filter(proposal => {
-            const proposalSupportStatus = getProposalSupportStatus(
-              myStakes,
-              proposal
-            )
+      proposalsWithData?.filter(proposal => {
+        const proposalSupportStatus = getProposalSupportStatus(
+          myStakes,
+          proposal
+        )
 
-            const supportFilterPassed = testSupportFilter(
-              filters.support.filter,
-              proposalSupportStatus
-            )
+        const supportFilterPassed = testSupportFilter(
+          filters.support.filter,
+          proposalSupportStatus
+        )
 
-            const statusFilterPassed = testStatusFilter(
-              filters.status.filter,
-              proposal
-            )
+        let statusFilterPassed = true
+        if (proposal.type === ProposalTypes.Decision) {
+          statusFilterPassed = testStatusFilter(filters.status.filter, proposal)
+        }
 
-            return supportFilterPassed && statusFilterPassed
-          }),
-    [filters, isLoading, myStakes, proposalsWithData]
+        return supportFilterPassed && statusFilterPassed
+      }),
+    [filters, myStakes, proposalsWithData]
   )
 
   const proposalsFetchedCount = proposals.length
@@ -131,7 +119,8 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const blockTime = useBlockTime()
+  const { config, effectiveSupply, isLoading, vaultBalance } = useAppState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -141,94 +130,18 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? processDecision(proposal)
+      ? processDecision(proposal, latestBlock, blockTime)
       : processProposal(
           proposal,
           latestBlock,
+          blockTime,
           effectiveSupply,
+          vaultBalance,
           account,
           config?.conviction
         )
 
   return [proposalWithData, blockHasLoaded, loadingProposal]
-}
-
-export function useProposalWithThreshold(proposal) {
-  const {
-    config,
-    effectiveSupply,
-    requestToken,
-    stableToken,
-    vaultBalance,
-  } = useAppState()
-  const { alpha, maxRatio, weight } = config.conviction || {}
-  const { requestedAmount, totalTokensStaked, stable, type } = proposal
-
-  const [requestAmount, loadingRequestAmount] = useRequestAmount(
-    stable,
-    requestedAmount,
-    stableToken.id,
-    requestToken.id
-  )
-
-  let threshold,
-    neededConviction,
-    minTokensNeeded,
-    neededTokens,
-    remainingBlocksToPass
-
-  // Funding proposal needed values
-  if (type === ProposalTypes.Proposal) {
-    threshold = calculateThreshold(
-      requestAmount,
-      vaultBalance || new BigNumber('0'),
-      effectiveSupply || new BigNumber('0'),
-      alpha,
-      maxRatio,
-      weight
-    )
-
-    neededConviction = threshold?.div(proposal.maxConviction)
-    minTokensNeeded = getMinNeededStake(threshold, alpha)
-    neededTokens = minTokensNeeded.minus(totalTokensStaked)
-    remainingBlocksToPass = getRemainingTimeToPass(
-      threshold,
-      proposal.currentConviction,
-      totalTokensStaked,
-      alpha
-    )
-  }
-
-  return [
-    {
-      ...proposal,
-      neededConviction,
-      neededTokens,
-      minTokensNeeded,
-      remainingBlocksToPass,
-      requestedAmountConverted: requestAmount,
-      threshold,
-    },
-    loadingRequestAmount,
-  ]
-}
-
-export function useProposalEndDate(proposal) {
-  const blockTime = useBlockTime()
-  const latestBlock = useLatestBlock()
-  const { type, remainingBlocksToPass } = proposal
-
-  let endDate = 0
-  if (type === ProposalTypes.Proposal)
-    if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
-      const latestBlockTimestampMs = latestBlock.timestamp * 1000
-      const blockTimeInMs = blockTime * 1000
-      endDate = new Date(
-        latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
-      )
-    }
-
-  return endDate
 }
 
 export function useInactiveProposalsWithStake() {
@@ -255,12 +168,21 @@ export function useInactiveProposalsWithStake() {
 function processProposal(
   proposal,
   latestBlock,
+  blockTime,
   effectiveSupply,
+  vaultBalance,
   account,
   config
 ) {
-  const { alpha } = config || {}
-  const { stakesHistory, totalTokensStaked } = proposal
+  const { alpha, maxRatio, weight } = config || {}
+  const { requestedAmount, stakesHistory, totalTokensStaked } = proposal
+
+  let endDate
+  let minTokensNeeded = null
+  let neededConviction = null
+  let neededTokens = null
+  let remainingBlocksToPass = null
+  let threshold = null
 
   const maxConviction = getMaxConviction(
     effectiveSupply || new BigNumber('0'),
@@ -291,37 +213,60 @@ function processProposal(
     TIME_UNIT
   )
 
-  const hasEnded = hasProposalEnded(proposal.status, proposal.challengeEndDate)
-  const statusData = getProposalStatusData(proposal)
+  // Funding proposal needed values
+  if (requestedAmount.gt(0)) {
+    threshold = calculateThreshold(
+      requestedAmount,
+      vaultBalance || new BigNumber('0'),
+      effectiveSupply || new BigNumber('0'),
+      alpha,
+      maxRatio,
+      weight
+    )
+
+    neededConviction = threshold?.div(maxConviction)
+    minTokensNeeded = getMinNeededStake(threshold, alpha)
+    neededTokens = minTokensNeeded.minus(totalTokensStaked)
+    remainingBlocksToPass = getRemainingTimeToPass(
+      threshold,
+      currentConviction,
+      totalTokensStaked,
+      alpha
+    )
+
+    if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
+      const latestBlockTimestampMs = latestBlock.timestamp * 1000
+      const blockTimeInMs = blockTime * 1000
+      endDate = new Date(
+        latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
+      )
+    }
+  }
 
   return {
     ...proposal,
     convictionTrend,
     currentConviction,
+    endDate,
     futureConviction,
     futureStakedConviction,
-    hasEnded,
     maxConviction,
+    minTokensNeeded,
+    neededConviction,
+    neededTokens,
     stakedConviction,
-    statusData,
+    threshold,
     userConviction,
     userStakedConviction,
   }
 }
 
-function processDecision(proposal) {
-  const endDate = getVoteEndDate(proposal)
-  const hasEnded = hasVoteEnded(
-    proposal.status,
-    endDate,
-    proposal.challengeEndDate
-  )
-  const statusData = getVoteStatusData(proposal, hasEnded, PCT_BASE)
-
+function processDecision(proposal, latestBlock, blockTime) {
   return {
     ...proposal,
-    endDate,
-    hasEnded,
-    statusData,
+    data: {
+      ...proposal.data,
+      ...getDecisionTransition(proposal, latestBlock, blockTime), // TODO: Merge with proposal.status
+    },
   }
 }

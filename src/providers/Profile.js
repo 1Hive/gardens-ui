@@ -28,8 +28,7 @@ function ProfileProvider({ children }) {
 
   const cancelled = useRef(false)
 
-  // Check if box is/will be opened
-  const boxOpened = useMemo(() => {
+  const openBox = useMemo(() => {
     if (!profile || profile.confirmationFailed) {
       return false
     }
@@ -40,19 +39,17 @@ function ProfileProvider({ children }) {
     )
   }, [box, loadingBox, loadingProfile, profile])
 
-  // Authenticate profile
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
-      setLoadingBox(false)
       return
     }
     setLoadingBox(true)
 
     try {
       const box = await openBoxForAccount(account, ethereum)
+      boxCache.set(account, box)
 
       if (!cancelled.current) {
-        boxCache.set(account, box)
         setBox(box)
       }
     } catch (err) {
@@ -65,7 +62,6 @@ function ProfileProvider({ children }) {
     }
   }, [account, ethereum])
 
-  // Fetch profile's public data
   const fetchAccountProfile = useCallback(async account => {
     setLoadingProfile(true)
     const publicProfile = await getProfileForAccount(account)
@@ -79,7 +75,6 @@ function ProfileProvider({ children }) {
     }
   }, [])
 
-  // Fetch profile's private data
   const fetchPrivateData = useCallback(async box => {
     const privateData = await getAccountPrivateData(box)
 
@@ -104,12 +99,18 @@ function ProfileProvider({ children }) {
 
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
-    setBox(null)
     if (!account) {
+      return setBox(null)
+    }
+
+    if (boxCache.has(account)) {
+      setBox(boxCache.get(account))
       return
     }
 
+    setBox(null)
     auth()
+    setLoadingBox(false)
   }, [account, auth])
 
   useEffect(() => {
@@ -162,7 +163,7 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
-        boxOpened,
+        openBox,
         updateProfile,
       }}
     >

@@ -22,8 +22,7 @@ function AppStateProvider({ children }) {
     ...appData
   } = useOrgData()
 
-  const { requestToken, stableToken, stakeToken, totalStaked } =
-    config?.conviction || {}
+  const { requestToken, stakeToken, totalStaked } = config?.conviction || {}
 
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
@@ -44,7 +43,6 @@ function AppStateProvider({ children }) {
         installedApps,
         isLoading: appLoading,
         requestToken,
-        stableToken,
         stakeToken,
         totalStaked,
         totalSupply,

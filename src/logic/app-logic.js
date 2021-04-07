@@ -1,5 +1,6 @@
 import useActions from '../hooks/useActions'
 import { useAppState } from '../providers/AppState'
+import usePanelState from '../hooks/usePanelState'
 import { useProposals } from '../hooks/useProposals'
 
 // Handles the main logic of the app.
@@ -12,7 +13,8 @@ export default function useAppLogic() {
     vaultBalance,
   } = useAppState()
 
-  const actions = useActions()
+  const proposalPanel = usePanelState()
+  const actions = useActions(proposalPanel.requestClose)
   const [
     proposals,
     filters,
@@ -28,6 +30,7 @@ export default function useAppLogic() {
     isLoading: isLoading || !blockHasLoaded,
     proposals,
     proposalsFetchedCount,
+    proposalPanel,
     totalStaked,
     totalSupply,
   }

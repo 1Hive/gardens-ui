@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import connectHoneypot from '@1hive/connect-disputable-honey-pot'
-import connectAgreement from '@aragon/connect-agreement'
+import connectHoneypot from '@1hive/connect-honey-pot'
 import {
-  createAppHook,
   useApp,
   useApps,
   useOrganization,
@@ -16,17 +14,11 @@ import { useConfigSubscription } from './useSubscriptions'
 import env from '../environment'
 import BigNumber from '../lib/bigNumber'
 import { addressesEqual } from '../utils/web3-utils'
-import { getAppAddressByName, getAppByName } from '../utils/data-utils'
-import { connectorConfig } from '../networks'
+import { getAppAddressByName } from '../utils/data-utils'
 
 // abis
 import minimeTokenAbi from '../abi/minimeToken.json'
 import vaultAbi from '../abi/vault-balance.json'
-
-const useAgreementHook = createAppHook(
-  connectAgreement,
-  connectorConfig.agreement
-)
 
 export function useOrgData() {
   const appName = env('CONVICTION_APP_NAME')
@@ -34,15 +26,7 @@ export function useOrgData() {
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
-
-  const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
-  const [
-    connectedAgreementApp,
-    { error: agreementError, loading: agreementAppLoading },
-  ] = useAgreementHook(agreementApp)
-
   const [convictionApp] = useApp(appName)
-
   const [permissions, permissionsStatus] = usePermissions()
 
   const convictionAppPermissions = useMemo(() => {
@@ -91,19 +75,13 @@ export function useOrgData() {
     orgStatus.loading ||
     appsStatus.loading ||
     permissionsStatus.loading ||
-    agreementAppLoading ||
     !config
 
-  const errors =
-    orgStatus.error ||
-    appsStatus.error ||
-    permissionsStatus.error ||
-    agreementError
+  const errors = orgStatus.error || appsStatus.error || permissionsStatus.error
 
   return {
     config,
     errors,
-    connectedAgreementApp,
     honeypot,
     installedApps: apps,
     organization,
@@ -113,9 +91,7 @@ export function useOrgData() {
 }
 
 export function useVaultBalance(installedApps, token, timeout = 1000) {
-  const vaultAddress =
-    getAppAddressByName(installedApps, 'vault') ||
-    getAppAddressByName(installedApps, 'agent')
+  const vaultAddress = getAppAddressByName(installedApps, 'vault')
   const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
 
   const [vaultBalance, setVaultBalance] = useState(new BigNumber(-1))

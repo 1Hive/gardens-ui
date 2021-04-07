@@ -4,7 +4,7 @@ import { CastData, IHoneypotConnector, StakeData, StakeHistoryData, SupporterDat
 
 export function parseSupporter(
   result: QueryResult,
-  connector: any
+  connector: IHoneypotConnector
 ): SupporterData | null {
   const supporter = result.data.supporter
 

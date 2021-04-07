@@ -1,9 +1,6 @@
-import ArbitratorFee from './models/ArbitratorFee'
 import Config from './models/Config'
-import CollateralRequirement from './models/CollateralRequirement'
 import Proposal from './models/Proposal'
 import Supporter from './models/Supporter'
-
 
 export const ALL_PROPOSAL_TYPES = [0, 1, 2]     // [Suggestion, Proposal, Decision]
 export const ALL_PROPOSAL_STATUSES = [0, 1, 2]  // [Active, Cancelled, Executed]
@@ -35,23 +32,16 @@ export interface ConvictionConfigData {
   maxStakedProposals: number
   minThresholdStakePercentage: string
   totalStaked: string
-  stableToken: TokenData
-  stableTokenOracle: string
-  contractPaused: boolean
 }
 
 export interface VotingConfigData {
   id: string
   token: TokenData
-  configId: string
-  voteTime: string
   supportRequiredPct: string
-  minimumAcceptanceQuorumPct: string
-  delegatedVotingPeriod: string
-  quietEndingPeriod: string
-  quietEndingExtension: string
-  executionDelay: string
-  createdAt: string
+  minAcceptQuorumPct: string
+  durationBlocks: string
+  bufferBlocks: string
+  executionDelayBlocks: string
 }
 
 export interface StakeData {
@@ -91,73 +81,36 @@ export interface ProposalData {
   type: string
   createdAt: string
   executedAt: string
-  metadata?: string
 
   // proposal data
+  name?: string
   link?: string
   stakes?: StakeData[]
   stakesHistory?: StakeHistoryData[]
   beneficiary?: string
   requestedAmount?: string
   totalTokensStaked?: string
-  stable?: boolean
 
   // Voting data
-  setting?: VotingConfigData
-  startDate?: string
-  totalPower: string
+  metadata?: string
+  startBlock?: string
+  executionBlock?: string
   snapshotBlock?: string
-  yeas?: string
-  nays?: string
-  quietEndingExtensionDuration?: string
-  quietEndingSnapshotSupport?: string
+  supportRequiredPct?: string
+  minAcceptQuorum?: string
+  yea?: string
+  nay?: string
+  votingPower?: string
   script?: string
-  isAccepted?: boolean
-  castVotes?: CastData[] 
-
-  //Dispute data
-  actionId: string
-  challengeId: string
-  challenger: string
-  challengeEndDate: string
-  disputeId: string
-  settledAt: string
-  settlementOffer: string
-  disputedAt: string
-  pausedAt: string
-  pauseDuration: string
-  submitterArbitratorFeeId: string
-  challengerArbitratorFeeId: string
-  
+  casts?: CastData[] 
 }
 
 export interface SupporterData {
   id: string
   address: string
-  representative: string
   casts: CastData[]
   stakes: StakeData[]
   stakesHistory: StakeHistoryData[]
-}
-
-export interface CollateralRequirementData {
-  id: string
-  proposalId: string
-  tokenId: string
-  tokenDecimals: string
-  tokenSymbol: string
-  actionAmount: string
-  challengeAmount: string
-  challengeDuration: string
-}
-
-export interface ArbitratorFeeData {
-  id: string
-  proposalId: string
-  tokenId: string
-  tokenDecimals: string
-  tokenSymbol: string
-  amount: string
 }
 
 export interface IHoneypotConnector {
@@ -200,16 +153,6 @@ export interface IHoneypotConnector {
   ): Promise<Supporter>
   onSupporter(
     address: string,
-    callback: Function
-  ): SubscriptionHandler
-  collateralRequirement(voteId: string): Promise<CollateralRequirement>
-  onCollateralRequirement(
-    voteId: string,
-    callback: Function
-  ): SubscriptionHandler
-  arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null>
-  onArbitratorFee(
-    arbitratorFeeId: string,
     callback: Function
   ): SubscriptionHandler
 }

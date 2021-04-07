@@ -1,77 +1,56 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
-  ContractPaused as ContractPausedEvent,
-  ConvictionVoting as ConvictionVotingContract,
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
   ProposalAdded as ProposalAddedEvent,
   ProposalCancelled as ProposalCancelledEvent,
   ProposalExecuted as ProposalExecutedEvent,
-  ProposalPaused as ProposalPausedEvent,
-  ProposalResumed as ProposalResumedEvent,
-  ProposalRejected as ProposalRejectedEvent,
   StakeAdded as StakeAddedEvent,
   StakeWithdrawn as StakeWithdrawnEvent,
 } from '../generated/templates/ConvictionVoting/ConvictionVoting'
-import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
 import { Proposal as ProposalEntity } from '../generated/schema'
 import {
   getConvictionConfigEntity,
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
-  loadOrCreateSupporter,
-  populateCollateralData,
-  populateProposalDataFromEvent,
+  createSupporter,
+  populateProposalDataFromEvent
 } from './helpers'
-import {
-  STATUS_ACTIVE,
-  STATUS_ACTIVE_NUM,
-  STATUS_CANCELLED,
-  STATUS_CANCELLED_NUM,
-  STATUS_CHALLENGED,
-  STATUS_CHALLENGED_NUM,
-  STATUS_EXECUTED,
-  STATUS_EXECUTED_NUM,
-} from './statuses'
-import {
-  PROPOSAL_TYPE_PROPOSAL,
-  PROPOSAL_TYPE_PROPOSAL_NUM,
-  PROPOSAL_TYPE_SUGGESTION,
-  PROPOSAL_TYPE_SUGGESTION_NUM,
-  STAKE_TYPE_ADD,
-  STAKE_TYPE_WITHDRAW,
+import { STATUS_CANCELLED, STATUS_CANCELLED_NUM, STATUS_EXECUTED, STATUS_EXECUTED_NUM } from './statuses'
+import { 
+  PROPOSAL_TYPE_PROPOSAL, 
+  PROPOSAL_TYPE_PROPOSAL_NUM, 
+  PROPOSAL_TYPE_SUGGESTION, 
+  PROPOSAL_TYPE_SUGGESTION_NUM, 
+  STAKE_TYPE_ADD, 
+  STAKE_TYPE_WITHDRAW 
 } from './types'
 
-export function handleConfigChanged(
-  event: ConvictionSettingsChangedEvent
-): void {
-  const convictionConfig = getConvictionConfigEntity(event.address)
+export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
+  let convictionConfig = getConvictionConfigEntity(event.address)
   convictionConfig.decay = event.params.decay
   convictionConfig.maxRatio = event.params.maxRatio
   convictionConfig.weight = event.params.weight
-  convictionConfig.minThresholdStakePercentage =
-    event.params.minThresholdStakePercentage
+  convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
   convictionConfig.save()
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
-
+  let proposal = getProposalEntity(event.address, event.params.id)
+  
   populateProposalDataFromEvent(proposal, event)
-
+  
   if (event.params.amount.gt(BigInt.fromI32(0))) {
     proposal.type = PROPOSAL_TYPE_PROPOSAL
     proposal.typeInt = PROPOSAL_TYPE_PROPOSAL_NUM
   } else {
     proposal.type = PROPOSAL_TYPE_SUGGESTION
-    proposal.typeInt = PROPOSAL_TYPE_SUGGESTION_NUM
+    proposal.typeInt = PROPOSAL_TYPE_SUGGESTION_NUM 
   }
 
   proposal.save()
-
-  populateCollateralData(proposal, event)
 }
 
 export function handleStakeAdded(event: StakeAddedEvent): void {
@@ -104,8 +83,9 @@ export function handleStakeWithdrawn(event: StakeWithdrawnEvent): void {
   )
 }
 
+
 export function handleProposalExecuted(event: ProposalExecutedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_EXECUTED
   proposal.statusInt = STATUS_EXECUTED_NUM
   proposal.executedAt = event.block.timestamp
@@ -114,68 +94,9 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 }
 
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.proposalId)
+  let proposal = getProposalEntity(event.address, event.params.id)
   proposal.status = STATUS_CANCELLED
   proposal.statusInt = STATUS_CANCELLED_NUM
-
-  proposal.save()
-}
-
-export function handleProposalPaused(event: ProposalPausedEvent): void {
-  _onProposalPaused(
-    event.address,
-    event.params.challengeId,
-    event.params.proposalId
-  )
-}
-
-export function handleProposalResumed(event: ProposalResumedEvent): void {
-  _onProposalResumed(event.address, event.params.proposalId)
-}
-
-export function handleProposalRejected(event: ProposalRejectedEvent): void {
-  _onProposalRejected(event.address, event.params.proposalId)
-}
-
-export function handleContractPaused(event: ContractPausedEvent): void {
-  const convictionConfig = getConvictionConfigEntity(event.address)
-
-  convictionConfig.contractPaused = event.params.pauseEnabled
-
-  convictionConfig.save()
-}
-
-function _onProposalPaused(
-  appAddress: Address,
-  challengeId: BigInt,
-  proposalId: BigInt
-): void {
-  const convictionVotingApp = ConvictionVotingContract.bind(appAddress)
-  const agreementApp = AgreementContract.bind(
-    convictionVotingApp.getAgreement()
-  )
-  const challengeData = agreementApp.getChallenge(challengeId)
-  const proposal = getProposalEntity(appAddress, proposalId)
-  proposal.challenger = challengeData.value1
-  proposal.challengeId = challengeId
-  proposal.challengeEndDate = challengeData.value2
-  proposal.status = STATUS_CHALLENGED
-  proposal.statusInt = STATUS_CHALLENGED_NUM
-  proposal.save()
-}
-
-function _onProposalRejected(appAddress: Address, proposalId: BigInt): void {
-  const proposal = getProposalEntity(appAddress, proposalId)
-  proposal.status = STATUS_CANCELLED
-  proposal.statusInt = STATUS_CANCELLED_NUM
-
-  proposal.save()
-}
-
-function _onProposalResumed(appAddress: Address, proposalId: BigInt): void {
-  const proposal = getProposalEntity(appAddress, proposalId)
-  proposal.status = STATUS_ACTIVE
-  proposal.statusInt = STATUS_ACTIVE_NUM
 
   proposal.save()
 }
@@ -192,16 +113,16 @@ function _onNewStake(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  const proposal = getProposalEntity(appAddress, proposalId)
+  let proposal = getProposalEntity(appAddress, proposalId)
 
-  // Hotfix: Orgs managed to stake to non existing proposals
+  // Hotfix: Orgs managed to stake to non existing proposals 
   if (!proposal.creator) {
-    return
+    return 
   }
 
   // Update totalStaked
-  const convictionConfig = getConvictionConfigEntity(appAddress)
-  if (type === STAKE_TYPE_ADD) {
+  let convictionConfig = getConvictionConfigEntity(appAddress)
+  if (type === STAKE_TYPE_ADD){
     convictionConfig.totalStaked = convictionConfig.totalStaked.plus(amount)
   } else {
     convictionConfig.totalStaked = convictionConfig.totalStaked.minus(amount)
@@ -234,11 +155,9 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  const supporter = loadOrCreateSupporter(entity)
-  supporter.proposal = proposal.id
-  supporter.save()
+  createSupporter(entity)
 
-  const stake = getStakeEntity(proposal, entity)
+  let stake = getStakeEntity(proposal, entity)
   stake.amount = tokensStaked
   stake.createdAt = timestamp
   stake.type = type
@@ -255,7 +174,9 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  const stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
+  createSupporter(entity)
+
+  let stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
   stakeHistory.type = type
   stakeHistory.tokensStaked = tokensStaked
   stakeHistory.totalTokensStaked = totalTokensStaked

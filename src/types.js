@@ -12,7 +12,7 @@ const symbolMapping = {
 
 const stringMapping = {
   [ProposalTypes.Decision]: 'Decision',
-  [ProposalTypes.Proposal]: 'Funding',
+  [ProposalTypes.Proposal]: 'Proposal',
   [ProposalTypes.Suggestion]: 'Suggestion',
 }
 

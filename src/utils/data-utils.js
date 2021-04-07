@@ -1,6 +1,5 @@
 import { convertFromString, ProposalTypes } from '../types'
 import BigNumber from '../lib/bigNumber'
-import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {
   const { conviction, voting } = config
@@ -8,7 +7,6 @@ export function transformConfigData(config) {
     ...config,
     conviction: {
       ...conviction,
-      id: conviction.id.slice(0, 42),
       alpha: new BigNumber(conviction.decay).div(conviction.pctBase),
       maxRatio: new BigNumber(conviction.maxRatio).div(conviction.pctBase),
       weight: new BigNumber(conviction.weight).div(conviction.pctBase),
@@ -17,96 +15,60 @@ export function transformConfigData(config) {
     },
     voting: {
       ...voting,
-      id: voting.id.slice(0, 42),
-      voteTime: toMilliseconds(voting.voteTime),
       supportRequiredPct: new BigNumber(voting.supportRequiredPct),
-      minAcceptQuorumPct: new BigNumber(voting.minimumAcceptanceQuorumPct),
-      delegatedVotingPeriod: toMilliseconds(voting.delegatedVotingPeriod),
-      quietEndingPeriod: toMilliseconds(voting.quietEndingPeriod),
-      quietEndingExtension: toMilliseconds(voting.quietEndingExtension),
-      executionDelay: toMilliseconds(voting.executionDelay),
-      createdAt: toMilliseconds(voting.createdAt),
+      minAcceptQuorumPct: new BigNumber(voting.minAcceptQuorumPct),
+      durationBlocks: parseInt(voting.durationBlocks, 10),
+      bufferBlocks: parseInt(voting.bufferBlocks, 10),
+      executionDelayBlocks: parseInt(voting.executionDelayBlocks, 10),
     },
   }
 }
 
-export async function transformProposalData(proposal) {
-  const proposalData = {
-    ...proposal,
-    id: proposal.number,
-    createdAt: toMilliseconds(proposal.createdAt),
-    executedAt: toMilliseconds(proposal.executedAt),
-    type: convertFromString(proposal.type),
-
-    challengeEndDate: toMilliseconds(proposal.challengeEndDate),
-    settledAt: toMilliseconds(proposal.settledAt),
-    settlementOffer: proposal.settlementOffer
-      ? new BigNumber(proposal.settlementOffer)
-      : null,
-    disputedAt: toMilliseconds(proposal.disputedAt),
-    pausedAt: toMilliseconds(proposal.pausedAt),
-    pauseDuration: toMilliseconds(proposal.pauseDuration),
-  }
-
-  const collateralRequirement = await proposal.collateralRequirement()
-  const submitterArbitratorFee = await proposal.submitterArbitratorFee()
-  const challengerArbitratorFee = await proposal.challengerArbitratorFee()
-
-  return {
-    ...proposalData,
-    collateralRequirement: collateralRequirement
-      ? {
-          ...collateralRequirement,
-          actionAmount: new BigNumber(collateralRequirement.actionAmount),
-          challengeAmount: new BigNumber(collateralRequirement.challengeAmount),
-        }
-      : null,
-    submitterArbitratorFee: submitterArbitratorFee
-      ? {
-          ...submitterArbitratorFee,
-          amount: new BigNumber(submitterArbitratorFee.amount),
-        }
-      : null,
-    challengerArbitratorFee: challengerArbitratorFee
-      ? {
-          ...challengerArbitratorFee,
-          amount: new BigNumber(challengerArbitratorFee.amount),
-        }
-      : null,
-    ...(convertFromString(proposal.type) === ProposalTypes.Decision
-      ? transformDecisionData(proposal)
-      : transformConvictionProposalData(proposal)),
-  }
+export function transformProposalData(proposal, config) {
+  return convertFromString(proposal.type) === ProposalTypes.Decision
+    ? transformDecisionData(proposal, config)
+    : transformConvictionProposalData(proposal)
 }
 
 function transformConvictionProposalData(proposal) {
   return {
+    ...proposal,
     name: proposal.metadata,
+    createdAt: parseInt(proposal.createdAt, 10) * 1000,
+    id: proposal.number,
     requestedAmount: new BigNumber(proposal.requestedAmount || 0),
     stakes: proposal.stakes.map(transformStakeData),
     stakesHistory: proposal.stakesHistory.map(transformStakeHistoryData),
+    type: convertFromString(proposal.type),
     totalTokensStaked: new BigNumber(proposal.totalTokensStaked || 0),
   }
 }
 
-function transformDecisionData(proposal) {
+function transformDecisionData(proposal, config) {
+  const { voting: votingConfig } = config
+
   return {
-    nay: BigNumber(proposal.nays),
-    startDate: toMilliseconds(proposal.startDate),
-    supportRequiredPct: BigNumber(proposal.setting.supportRequiredPct),
-    votingPower: BigNumber(proposal.totalPower),
-    yea: BigNumber(proposal.yeas),
-    quietEndingExtensionDuration: toMilliseconds(
-      proposal.quietEndingExtensionDuration
-    ),
-    voteTime: toMilliseconds(proposal.setting.voteTime),
-    minAcceptQuorum: BigNumber(proposal.setting.minimumAcceptanceQuorumPct),
-    delegatedVotingPeriod: toMilliseconds(
-      proposal.setting.delegatedVotingPeriod
-    ),
-    quietEndingPeriod: toMilliseconds(proposal.setting.quietEndingPeriod),
-    quietEndingExtension: toMilliseconds(proposal.setting.quietEndingExtension),
-    executionDelay: toMilliseconds(proposal.setting.executionDelay),
+    ...proposal,
+    casts: proposal.casts,
+    createdAt: parseInt(proposal.createdAt, 10) * 1000,
+    creator: proposal.creator,
+    endBlock:
+      parseInt(proposal.startBlock, 10) +
+      parseInt(votingConfig.durationBlocks, 10),
+    executionBlock: parseInt(proposal.executionBlock, 10),
+    id: proposal.number,
+    metadata: proposal.metadata,
+    minAcceptQuorum: new BigNumber(proposal.minAcceptQuorum),
+    nay: BigNumber(proposal.nay, 10),
+    requestedAmount: new BigNumber(proposal.requestedAmount),
+    script: proposal.script,
+    snapshotBlock: parseInt(proposal.snapshotBlock, 10),
+    startBlock: parseInt(proposal.startBlock, 10),
+    status: proposal.status,
+    supportRequiredPct: BigNumber(proposal.supportRequiredPct),
+    type: convertFromString(proposal.type),
+    votingPower: BigNumber(proposal.votingPower),
+    yea: BigNumber(proposal.yea),
   }
 }
 

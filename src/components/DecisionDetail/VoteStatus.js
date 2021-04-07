@@ -1,88 +1,73 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IconCheck, IconCross, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  IconCheck,
+  IconCross,
+  IconTime,
+  GU,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
+import {
+  PCT_BASE,
+  VOTE_STATUS_ONGOING,
+  VOTE_STATUS_REJECTED,
+  VOTE_STATUS_ACCEPTED,
+  VOTE_STATUS_ENACTED,
+  VOTE_STATUS_UPCOMING,
+  VOTE_STATUS_PENDING_ENACTMENT,
+  VOTE_STATUS_DELAYED,
+} from '../../constants'
+import { getVoteStatus } from '../../utils/vote-utils'
 
-import celesteIconSvg from '../../assets/celeste-icon.svg'
-import challengeIconSvg from '../../assets/challenge-icon.svg'
-
-export const getStatusAttributes = (vote, theme) => {
-  const { isAccepted, statusData } = vote
-  if (statusData.open) {
-    if (isAccepted) {
-      return {
-        label: 'Will pass',
-        Icon: IconCheck,
-        color: theme.positive,
-      }
-    }
-
+export const getStatusAttributes = (status, theme) => {
+  if (status === VOTE_STATUS_UPCOMING) {
     return {
-      label: "Won't pass",
-      Icon: IconCross,
-      color: theme.negative,
+      label: 'Upcoming',
+      Icon: IconTime,
+      color: null,
     }
   }
-  if (statusData.cancelled) {
+  if (status === VOTE_STATUS_ONGOING) {
     return {
-      label: 'Cancelled',
-      Icon: IconCross,
-      color: theme.negative,
-      background: '#FFF8F8',
-      borderColor: theme.negative,
+      label: 'Ongoing',
+      Icon: IconTime,
+      color: null,
     }
   }
-  if (statusData.rejected) {
+  if (status === VOTE_STATUS_DELAYED) {
+    return {
+      label: 'Delayed',
+      Icon: IconTime,
+      color: null,
+    }
+  }
+  if (status === VOTE_STATUS_REJECTED) {
     return {
       label: 'Rejected',
       Icon: IconCross,
       color: theme.negative,
     }
   }
-  if (statusData.accepted) {
+  if (status === VOTE_STATUS_ACCEPTED) {
     return {
       label: 'Passed',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (statusData.pendingExecution) {
+  if (status === VOTE_STATUS_PENDING_ENACTMENT) {
     return {
       label: 'Passed (pending)',
       Icon: IconCheck,
       color: theme.positive,
     }
   }
-  if (statusData.executed) {
+  if (status === VOTE_STATUS_ENACTED) {
     return {
       label: 'Passed (enacted)',
       Icon: IconCheck,
       color: theme.positive,
-    }
-  }
-  if (statusData.disputed) {
-    return {
-      label: 'Waiting for celeste',
-      iconSrc: celesteIconSvg,
-      color: '#8253A8',
-      background: '#FCFAFF',
-      borderColor: '#8253A8',
-    }
-  }
-  if (statusData.challenged) {
-    return {
-      label: 'Challenged',
-      iconSrc: challengeIconSvg,
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
-    }
-  }
-  if (statusData.settled) {
-    return {
-      label: 'Settled',
-      Icon: IconCross,
-      color: theme.contentSecondary,
-      background: theme.background,
     }
   }
 }
@@ -90,7 +75,8 @@ export const getStatusAttributes = (vote, theme) => {
 const VoteStatus = ({ vote }) => {
   const theme = useTheme()
 
-  const { Icon, iconSrc, color, label } = getStatusAttributes(vote, theme)
+  const status = getVoteStatus(vote, PCT_BASE)
+  const { Icon, color, label } = getStatusAttributes(status, theme)
 
   return (
     <Main
@@ -99,20 +85,7 @@ const VoteStatus = ({ vote }) => {
         color: ${color || theme.surfaceContentSecondary};
       `}
     >
-      {iconSrc ? (
-        <img
-          src={iconSrc}
-          alt=""
-          width="24"
-          height="24"
-          css={`
-            display: block;
-            margin-right: ${0.5 * GU}px;
-          `}
-        />
-      ) : (
-        Icon && <Icon />
-      )}
+      {Icon && <Icon size="small" />}
       <StatusLabel spaced={Boolean(Icon)}>{label}</StatusLabel>
     </Main>
   )
@@ -125,7 +98,6 @@ const Main = styled.span`
 
 const StatusLabel = styled.span`
   margin-left: ${({ spaced }) => (spaced ? `${0.5 * GU}px` : '0')};
-  text-transform: uppercase;
 `
 
 export default VoteStatus
