@@ -8,5 +8,6 @@ schema:
 dataSources:
 {{> Organization.template.yaml}}
 templates:
+{{> Agreement.template.yaml}}
 {{> ConvictionVoting.template.yaml}}
-{{> DandelionVoting.template.yaml}}
+{{> DisputableVoting.template.yaml}}

@@ -13,6 +13,8 @@
       - Stake
       - StakeHistory
     abis:
+      - name: Agreement
+        file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
       - name: MiniMeToken
@@ -20,7 +22,7 @@
     eventHandlers:
       - event: ConvictionSettingsChanged(uint256,uint256,uint256,uint256)
         handler: handleConfigChanged
-      - event: ProposalAdded(indexed address,indexed uint256,string,bytes,uint256,address)
+      - event: ProposalAdded(indexed address,indexed uint256,indexed uint256,string,bytes,uint256,bool,address)
         handler: handleProposalAdded
       - event: StakeAdded(indexed address,indexed uint256,uint256,uint256,uint256,uint256)
         handler: handleStakeAdded
@@ -30,4 +32,12 @@
         handler: handleProposalExecuted
       - event: ProposalCancelled(indexed uint256)
         handler: handleProposalCancelled
+      - event: ProposalPaused(indexed uint256,indexed uint256)
+        handler: handleProposalPaused
+      - event: ProposalResumed(indexed uint256)
+        handler: handleProposalResumed
+      - event: ProposalRejected(indexed uint256)
+        handler: handleProposalRejected
+      - event: ContractPaused(bool)
+        handler: handleContractPaused
     file: ./src/ConvictionVoting.ts

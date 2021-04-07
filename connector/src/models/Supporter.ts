@@ -5,6 +5,7 @@ export default class Supporter implements SupporterData {
 
   readonly id: string
   readonly address: string
+  readonly representative: string
   readonly casts: CastData[]
   readonly stakes: StakeData[]
   readonly stakesHistory: StakeHistoryData[]
@@ -14,6 +15,7 @@ export default class Supporter implements SupporterData {
     
     this.id = data.id
     this.address = data.address
+    this.representative = data.representative
     this.casts = data.casts
     this.stakes = data.stakes
     this.stakesHistory = data.stakesHistory

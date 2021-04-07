@@ -1,0 +1,31 @@
+- kind: ethereum/contract
+  name: Agreement
+  network: {{network}}
+  source:
+    abi: Agreement
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - DisputableVoting
+      - ConvictionVoting
+      - Agreement
+      - Token
+    abis:
+      - name: Agreement
+        file: ./abis/Agreement.json
+      - name: ConvictionVoting
+        file: ./abis/ConvictionVoting.json
+      - name: MiniMeToken
+        file: ./abis/MiniMeToken.json
+      - name: DisputableVoting
+        file: ./abis/DisputableVoting.json
+    eventHandlers:
+      - event: ActionDisputed(indexed uint256,indexed uint256)
+        handler: handleActionDisputed
+      - event: ActionSettled(indexed uint256,indexed uint256)
+        handler: handleActionSettled
+      - event: ActionChallenged(indexed uint256,indexed uint256)
+        handler: handleActionChallenged
+    file: ./src/Agreement.ts
