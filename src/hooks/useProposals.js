@@ -219,7 +219,7 @@ export function useProposalEndDate(proposal) {
   const { type, remainingBlocksToPass } = proposal
 
   let endDate = 0
-  if (type === ProposalTypes.Proposal)
+  if (type === ProposalTypes.Proposal) {
     if (!Number.isNaN(remainingBlocksToPass) && remainingBlocksToPass > 0) {
       const latestBlockTimestampMs = latestBlock.timestamp * 1000
       const blockTimeInMs = blockTime * 1000
@@ -227,6 +227,7 @@ export function useProposalEndDate(proposal) {
         latestBlockTimestampMs + remainingBlocksToPass * blockTimeInMs
       )
     }
+  }
 
   return endDate
 }
