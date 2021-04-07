@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
 import connectAgreement from '@aragon/connect-agreement'
-import { createAppHook } from '@aragon/connect-react'
+import { createAppHook } from '@1hive/connect-react'
 import { connectorConfig } from '../networks'
 import { useWallet } from './Wallet'
 import { useMounted } from '../hooks/useMounted'
