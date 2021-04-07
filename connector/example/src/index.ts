@@ -5,7 +5,7 @@ import connectHoneypot, {
   Supporter,
 } from '@1hive/connect-honey-pot'
 
-const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
+const ORG_ADDRESS = '0x105b0ec40228b9f6c5a2a1e64f70b7965f1b6323'
 
 function proposalId(proposal: Proposal): string {
   return (
@@ -23,6 +23,13 @@ function describeProposal(proposal: Proposal): void {
   console.log(`Link: ${proposal.link}`)
   console.log(`Requested amount: ${proposal.requestedAmount}`)
   console.log(`Beneficiary: ${proposal.beneficiary}`)
+  console.log(`Status: ${proposal.status}`)
+  console.log(`Voting Settings: ${JSON.stringify(proposal.setting)}`)
+  console.log(`Submitter Arbitrator Fee: ${proposal.submitterArbitratorFeeId}`)
+  console.log(`Challenger Arbitrator Fee: ${proposal.challengerArbitratorFeeId}`)
+  console.log(`Stable unit : ${proposal.stable}`)
+  console.log(`Casts : ${JSON.stringify(proposal.casts)}`)
+
   // console.log(`Stake history: `)
   // console.log(JSON.stringify(proposal.stakesHistory, null, 2))
   // console.log(`Casts: `)
@@ -47,7 +54,7 @@ function describeSupporter(supporter: Supporter): void {
 }
 
 async function main(): Promise<void> {
-  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 100 })
+  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
   console.log('\n##################Organization:', org, `(${org.address})`)
 
   const honeypot = await connectHoneypot(org)
@@ -62,17 +69,17 @@ async function main(): Promise<void> {
   describeConfig(config)
   console.log(`\n`)
 
-  const proposals = await honeypot.proposals({ first: 10, metadata: 'fa' })
+  const proposals = await honeypot.proposals({ first: 100 })
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
 
-  const proposal = await honeypot.proposal({
-    number: '1',
-    appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
-  })
-  console.log(`\n#################Unique Proposal:`)
-  describeProposal(proposal)
+  // const proposal = await honeypot.proposal({
+  //   number: '1',
+  //   appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
+  // })
+  // console.log(`\n#################Unique Proposal:`)
+  // describeProposal(proposal)
   console.log(`\n`)
 
   // console.log(`#####Subscriptions\n\n`)

@@ -43,7 +43,7 @@ const FilterBar = React.memo(
           placeholder="All"
           selected={proposalTypeFilter}
           onChange={handleProposalTypeFilterChange}
-          items={['All', 'Funding', 'Signaling']}
+          items={['All', 'Funding', 'Suggestion']}
           css={`
             ${compactMode && `margin-left: ${1.5 * GU}px;`}
             ${compactMode && `margin-bottom: ${1.5 * GU}px;`}

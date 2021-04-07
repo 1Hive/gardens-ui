@@ -28,22 +28,34 @@ export const CONFIG = (type: string) => gql`
           symbol
           decimals
         }
+        stableToken {
+          id
+          name
+          symbol
+          decimals
+        }
+        stableTokenOracle
+        contractPaused
       }
 
       # voting config
       voting {
         id
+        settingId
         token {
           id
           name
           symbol
           decimals
         }
+        voteTime
         supportRequiredPct
-        minAcceptQuorumPct
-        durationBlocks
-        bufferBlocks
-        executionDelayBlocks
+        minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
       }
     }
   }
@@ -87,25 +99,71 @@ export const ALL_PROPOSALS = (type: string) => gql`
       beneficiary
       requestedAmount
       totalTokensStaked
+      stable
      
-      # Decision data (votes)
-      startBlock
-      executionBlock
+     # Decision data (votes)
+      setting { 
+        id
+        token {
+          id
+        }
+        settingId
+        voteTime
+        supportRequiredPct
+        minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
+      }
+      startDate
+      totalPower
       snapshotBlock
-      supportRequiredPct
-      minAcceptQuorum
-      yea
-      nay
-      votingPower
+      yeas
+      nays
+      quietEndingExtensionDuration
+      quietEndingSnapshotSupport
       script
-      casts {
+      isAccepted
+      castVotes {
         id
         entity {
           id
         }
+        caster
         supports
         stake
         createdAt
+      }
+
+      # Disputable data
+      actionId
+      challengeId
+      challenger
+      challengeEndDate
+      disputeId
+      settledAt
+      settlementOffer
+      disputedAt
+      pausedAt
+      pauseDuration
+      submitterArbitratorFee {
+        id
+      }
+      challengerArbitratorFee {
+        id
+      }
+
+      collateralRequirement {
+        token {
+          id
+          symbol
+          decimals
+        }
+        actionAmount
+        challengeAmount
+        challengeDuration
       }
     }
   }
@@ -149,25 +207,70 @@ export const PROPOSAL = (type: string) => gql`
       beneficiary
       requestedAmount
       totalTokensStaked
+      stable
      
       # Decision data (votes)
-      startBlock
-      executionBlock
+      setting { 
+        id
+        token {
+          id
+        }
+        settingId
+        voteTime
+        supportRequiredPct
+        minimumAcceptanceQuorumPct
+        delegatedVotingPeriod
+        quietEndingPeriod
+        quietEndingExtension
+        executionDelay
+        createdAt
+      }
+      startDate
+      totalPower
       snapshotBlock
-      supportRequiredPct
-      minAcceptQuorum
-      yea
-      nay
-      votingPower
+      yeas
+      nays
+      quietEndingExtensionDuration
+      quietEndingSnapshotSupport
       script
-      casts {
+      isAccepted
+      castVotes {
         id
         entity {
           id
         }
+        caster
         supports
         stake
         createdAt
+      }
+
+      # Disputable data
+      actionId
+      challengeId
+      challenger
+      challengeEndDate
+      disputeId
+      settledAt
+      settlementOffer
+      disputedAt
+      pausedAt
+      pauseDuration
+      submitterArbitratorFee {
+        id
+      }
+      challengerArbitratorFee {
+        id
+      }
+      collateralRequirement {
+        token {
+          id
+          symbol
+          decimals
+        }
+        actionAmount
+        challengeAmount
+        challengeDuration
       }
     }
   }
@@ -178,6 +281,7 @@ export const SUPPORTER = (type: string) => gql`
     supporter(id: $id) {
       id
       address
+      representative
       # vote casts
       casts {
         id
@@ -222,6 +326,43 @@ export const SUPPORTER = (type: string) => gql`
         conviction
         time
         createdAt
+      }
+    }
+  }
+`
+export const COLLATERAL_REQUIREMENT = (type: string) => gql`
+  ${type} CollateralRequirement($proposalId: String!) {
+    proposal(id: $proposalId) {
+      collateralRequirement {
+        id
+        actionAmount
+        challengeAmount
+        challengeDuration
+        proposal {
+          id
+        }
+        token {
+          id
+          decimals
+          symbol
+        }
+      }
+    }
+  }
+`
+
+export const ARBITRATOR_FEE = (type: string) => gql`
+  ${type} ArbitratorFee($arbitratorFeeId: String!) {
+    arbitratorFee(id: $arbitratorFeeId) {
+      id
+      amount
+      proposal {
+        id
+      }
+      token {
+        id
+        decimals
+        symbol
       }
     }
   }

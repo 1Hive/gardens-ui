@@ -1,11 +1,13 @@
 import { GraphQLWrapper, QueryResult } from '@aragon/connect-thegraph'
 
 import { IHoneypotConnector, SubscriptionHandler } from '../types'
+import ArbitratorFee from '../models/ArbitratorFee'
+import CollateralRequirement from '../models/CollateralRequirement'
 import Config from '../models/Config'
 import Proposal from '../models/Proposal'
 import Supporter from '../models/Supporter'
 import * as queries from './queries'
-import { parseConfig, parseProposal, parseProposals, parseSupporter  } from './parsers'
+import { parseArbitratorFee, parseCollateralRequirement, parseConfig, parseProposal, parseProposals, parseSupporter  } from './parsers'
 
 const BLOCK_TIMES = new Map([
   [1, 13],  // mainnet
@@ -15,13 +17,13 @@ const BLOCK_TIMES = new Map([
 
 export function subgraphUrlFromChainId(chainId: number) {
   if (chainId === 1) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-mainnet'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-rinkeby'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-rinkeby'
   }
   if (chainId === 100) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-xdai'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot'
   }
   return null
 }
@@ -149,6 +151,46 @@ export default class HoneypotConnectorTheGraph
       { id },
       callback,
       (result: QueryResult) => parseSupporter(result, this)
+    )
+  }
+
+  async collateralRequirement(proposalId: string): Promise<CollateralRequirement> {
+    return this.#gql.performQueryWithParser<CollateralRequirement>(
+      queries.COLLATERAL_REQUIREMENT('query'),
+      { proposalId },
+      (result: QueryResult) => parseCollateralRequirement(result, this)
+    )
+  }
+
+  onCollateralRequirement(
+    proposalId: string,
+    callback: Function
+  ): SubscriptionHandler {
+    return this.#gql.subscribeToQueryWithParser<CollateralRequirement>(
+      queries.COLLATERAL_REQUIREMENT('subscription'),
+      { proposalId },
+      callback,
+      (result: QueryResult) => parseCollateralRequirement(result, this)
+    )
+  }
+
+  async arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null> {
+    return this.#gql.performQueryWithParser<ArbitratorFee | null>(
+      queries.ARBITRATOR_FEE('query'),
+      { arbitratorFeeId },
+      (result: QueryResult) => parseArbitratorFee(result, this)
+    )
+  }
+
+  onArbitratorFee(
+    arbitratorFeeId: string,
+    callback: Function
+  ): SubscriptionHandler {
+    return this.#gql.subscribeToQueryWithParser<ArbitratorFee | null>(
+      queries.ARBITRATOR_FEE('subscription'),
+      { arbitratorFeeId },
+      callback,
+      (result: QueryResult) => parseArbitratorFee(result, this)
     )
   }
 }

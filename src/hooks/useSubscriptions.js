@@ -48,13 +48,13 @@ export function useProposalsSubscription(filters) {
   const proposalsSubscription = useRef(null)
 
   const onProposalsHandler = useCallback(
-    (err, proposals = []) => {
+    async (err, proposals = []) => {
       if (err || !proposals) {
         return
       }
 
-      const transformedProposals = proposals.map(p =>
-        transformProposalData(p, config)
+      const transformedProposals = await Promise.all(
+        proposals.map(p => transformProposalData(p, config))
       )
       setProposals(transformedProposals)
     },
@@ -102,7 +102,7 @@ export function useProposalSubscription(proposalId, appAddress) {
   const proposalSubscription = useRef(null)
 
   const onProposalHandler = useCallback(
-    (err, proposal) => {
+    async (err, proposal) => {
       if (err || !proposal) {
         setLoading(true)
         return
@@ -115,7 +115,7 @@ export function useProposalSubscription(proposalId, appAddress) {
 
       rawProposalRef.current = rawProposal
 
-      const transformedProposal = transformProposalData(proposal, config)
+      const transformedProposal = await transformProposalData(proposal, config)
       setProposal(transformedProposal)
       setLoading(false)
     },

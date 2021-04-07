@@ -5,7 +5,7 @@ import {
 
 export const NULL_FILTER_STATE = 0
 export const STATUS_FILTER_OPEN = 1
-export const STATUS_FILTER_CLOSED = 2
+export const STATUS_FILTER_COMPLETED = 2
 export const STATUS_FILTER_REMOVED = 3
 export const SUPPORT_FILTER_SUPPORTED = 1
 export const SUPPORT_FILTER_NOT_SUPPORTED = 2
@@ -26,9 +26,9 @@ export const filterArgsMapping = {
   },
   status: {
     queryKey: 'statuses',
-    [STATUS_FILTER_OPEN]: [0],
-    [STATUS_FILTER_CLOSED]: [2],
-    [STATUS_FILTER_REMOVED]: [1],
+    [STATUS_FILTER_OPEN]: [0, 3, 4], // Active, Challenged, Disputed
+    [STATUS_FILTER_COMPLETED]: [0, 2], // Active, Executed (Active could actually be accepted based on time for votes that are not executable)
+    [STATUS_FILTER_REMOVED]: [0, 1, 3, 5, 6], // Cancelled, Challenged, Settled, Rejected (Active and Challenged could actually be rejected/Settled respectively based on time)
   },
   type: {
     queryKey: 'types',
@@ -45,9 +45,9 @@ export const FILTER_KEY_STATUS = 'status'
 export const FILTER_KEY_SUPPORT = 'support'
 export const FILTER_KEY_TYPE = 'type'
 
-export const STATUS_ITEMS = ['All', 'Open', 'Closed', 'Removed']
+export const STATUS_ITEMS = ['All', 'Open', 'Completed', 'Removed']
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
-export const TYPE_ITEMS = ['All', 'Suggestion', 'Proposal', 'Decision']
+export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision']
 export const RANKING_ITEMS = ['top', 'new']
 
 export function testSupportFilter(filter, proposalSupportStatus) {
@@ -61,11 +61,39 @@ export function testSupportFilter(filter, proposalSupportStatus) {
 }
 
 export function testStatusFilter(filter, proposal) {
-  return (
-    filter === NULL_FILTER_STATE ||
-    (filter === STATUS_FILTER_OPEN && proposal.data?.open) ||
-    (filter === STATUS_FILTER_CLOSED && proposal.data?.closed)
-  )
+  if (filter === NULL_FILTER_STATE) {
+    return true
+  }
+  const { statusData } = proposal
+
+  // Open
+  if (
+    filter === STATUS_FILTER_OPEN &&
+    (statusData.open ||
+      statusData.pendingExecution ||
+      statusData.challenged ||
+      statusData.disputed)
+  ) {
+    return true
+  }
+
+  // Completed
+  if (
+    filter === STATUS_FILTER_COMPLETED &&
+    (statusData.accepted || statusData.executed)
+  ) {
+    return true
+  }
+
+  // Removed
+  if (
+    filter === STATUS_FILTER_REMOVED &&
+    (statusData.settled || statusData.rejected || statusData.cancelled)
+  ) {
+    return true
+  }
+
+  return false
 }
 
 export function sortProposals(filters, proposals) {

@@ -16,6 +16,7 @@ import { getNetworkName } from '../../utils/web3-utils'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
+import stakeButtonSvg from '../../assets/stakeButton.svg'
 
 function AccountScreenConnected({ onClosePopover, wallet }) {
   const theme = useTheme()
@@ -27,6 +28,11 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
 
   const goToProfile = useCallback(() => {
     history.push('/profile')
+    onClosePopover()
+  }, [history, onClosePopover])
+
+  const goToStakeManagement = useCallback(() => {
+    history.push('/collateral')
     onClosePopover()
   }, [history, onClosePopover])
 
@@ -62,6 +68,28 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
         >
           <img src={profileButtonSvg} alt="" width="24" height="24" />
           <span>My profile</span>
+        </div>
+      </ButtonBase>
+      <ButtonBase
+        onClick={goToStakeManagement}
+        external={false}
+        css={`
+          width: 100%;
+        `}
+      >
+        <div
+          css={`
+            color: ${theme.contentSecondary};
+            padding-top: ${2 * GU}px;
+            padding-bottom: ${2 * GU}px;
+            border-bottom: 1px solid ${theme.border};
+            display: flex;
+            align-items: center;
+            column-gap: ${1 * GU}px;
+          `}
+        >
+          <img src={stakeButtonSvg} alt="" width="24" height="24" />
+          <span>Collateral Manager</span>
         </div>
       </ButtonBase>
       <div
