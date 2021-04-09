@@ -35,8 +35,6 @@ export function useOrgData() {
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
-  console.log('apps ', apps)
-
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
   const [
     connectedAgreementApp,

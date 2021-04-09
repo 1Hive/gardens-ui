@@ -55,8 +55,6 @@ export function useProposals() {
     latestBlock
   )
 
-  console.log('proposals! ', proposals)
-
   useEffect(() => {
     if (
       proposals.length < proposalsFetchedCount &&

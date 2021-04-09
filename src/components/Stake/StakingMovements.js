@@ -110,7 +110,6 @@ function StakingMovements({ stakingMovements, token }) {
     },
     [config, history]
   )
-  console.log('stakingMovements ', stakingMovements)
 
   return (
     <DataView
