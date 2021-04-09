@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
 import { useWallet } from '../providers/Wallet'
@@ -12,8 +12,6 @@ import { encodeFunctionData } from '../utils/web3-utils'
 import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
 import minimeTokenAbi from '../abi/minimeToken.json'
-
-// import { formatTokenAmount } from '../utils/token-utils'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
@@ -104,7 +102,8 @@ export function useStaking() {
           )
 
           if (mounted()) {
-            setStakeManagement({
+            setStakeManagement(stakeManagement => ({
+              ...stakeManagement,
               token: allTokens[1],
               staking: staking
                 ? {
@@ -117,7 +116,7 @@ export function useStaking() {
                 : defaultValues,
               stakingFactory: stakingFactory,
               stakingInstance: null,
-            })
+            }))
             setLoading(false)
           }
         } else {
@@ -380,18 +379,32 @@ export function useStaking() {
     )
   }, [account, connectedAgreementApp, stakingContract, stakeManagement])
 
-  return [
+  return useMemo(() => {
+    return [
+      stakeManagement,
+      {
+        allowManager: allowManager,
+        unlockAndRemoveManager: unlockAndRemoveManager,
+        stake: stake,
+        withdraw: withdraw,
+        approveTokenAmount: approveTokenAmount,
+        getStakedAmount: getStakedAmount,
+        reFetchTotalBalance: handleReFetchTotalBalance,
+        getAllowance: getAllowance,
+      },
+      loading || loadingStakingDataFromContract,
+    ]
+  }, [
+    allowManager,
+    unlockAndRemoveManager,
+    stake,
+    withdraw,
+    approveTokenAmount,
+    getStakedAmount,
+    handleReFetchTotalBalance,
+    getAllowance,
+    loading,
+    loadingStakingDataFromContract,
     stakeManagement,
-    {
-      allowManager: allowManager,
-      unlockAndRemoveManager: unlockAndRemoveManager,
-      stake: stake,
-      withdraw: withdraw,
-      approveTokenAmount: approveTokenAmount,
-      getStakedAmount: getStakedAmount,
-      reFetchTotalBalance: handleReFetchTotalBalance,
-      getAllowance: getAllowance,
-    },
-    loading || loadingStakingDataFromContract,
-  ]
+  ])
 }

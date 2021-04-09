@@ -13,6 +13,7 @@ import {
   useTheme,
   DataView,
 } from '@1hive/1hive-ui'
+import { useAppState } from '../../providers/AppState'
 import {
   STAKING_SCHEDULED,
   STAKING_CHALLENGED,
@@ -97,14 +98,17 @@ function getCollateralAttributes(status, theme) {
 }
 
 function StakingMovements({ stakingMovements, token }) {
+  const { config } = useAppState()
   const theme = useTheme()
   const history = useHistory()
 
   const handleGoToProposal = useCallback(
-    disputableActionId => {
-      history.push(`/proposal/${disputableActionId}`)
+    (disputableActionId, disputableAddress) => {
+      const proposalType =
+        disputableAddress === config.voting.id ? 'vote' : 'proposal'
+      history.push(`/${proposalType}/${disputableActionId}`)
     },
-    [history]
+    [config, history]
   )
 
   return (
@@ -129,6 +133,7 @@ function StakingMovements({ stakingMovements, token }) {
         collateralState,
         tokenDecimals,
         disputableActionId,
+        disputableAddress,
       }) => {
         const stakingStatus = STAKING_STATUSES.get(actionState)
         const actionAttributes = getActionAttributes(stakingStatus, theme)
@@ -158,7 +163,11 @@ function StakingMovements({ stakingMovements, token }) {
             />
           </div>,
           <div>
-            <Link onClick={() => handleGoToProposal(disputableActionId)}>
+            <Link
+              onClick={() =>
+                handleGoToProposal(disputableActionId, disputableAddress)
+              }
+            >
               Proposal #{disputableActionId}
             </Link>
           </div>,
