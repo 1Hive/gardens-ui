@@ -1,30 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
-// import { useWallet } from '../providers/Wallet'
+import { useWallet } from '../providers/Wallet'
 
 import { useAppState } from '../providers/AppState'
 import BigNumber from '../lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
-import useAppLogic from '../logic/app-logic'
 
 import { encodeFunctionData } from '../utils/web3-utils'
-import { getProposalTypeByActionId } from '../utils/proposal-utils'
 
 import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
 import minimeTokenAbi from '../abi/minimeToken.json'
-
-// import { formatTokenAmount } from '../utils/token-utils'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
 
 export function useStaking() {
   const mounted = useMounted()
-  // const { account } = useWallet()
-  const account = '0xc131afe6dbd5a71f16d8b292f0b4ae1aa200da3f'
-  const { proposals } = useAppLogic()
+  const { account } = useWallet()
   const { connectedAgreementApp } = useAppState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
@@ -56,26 +50,15 @@ export function useStaking() {
     setReFetchTotalBalance(true)
   }, [])
 
-  const handleStakingMovementsData = useCallback(
-    (error, data = []) => {
-      if (error || !data) {
-        return
-      }
-      setStakeManagement(stakeManagement => ({
-        ...stakeManagement,
-        stakingMovements: data.map(movement => {
-          return {
-            ...movement,
-            type: getProposalTypeByActionId(
-              proposals,
-              movement.disputableActionId
-            ),
-          }
-        }),
-      }))
-    },
-    [proposals]
-  )
+  const handleStakingMovementsData = useCallback((error, data = []) => {
+    if (error || !data) {
+      return
+    }
+    setStakeManagement(stakeManagement => ({
+      ...stakeManagement,
+      stakingMovements: data,
+    }))
+  }, [])
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)

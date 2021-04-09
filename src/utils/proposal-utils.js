@@ -48,9 +48,3 @@ export function getProposalStatusData(proposal) {
 
   return statusData
 }
-
-export function getProposalTypeByActionId(proposals, actionId) {
-  const proposal = proposals.find(proposal => proposal.actionId === actionId)
-
-  return proposal?.type
-}
