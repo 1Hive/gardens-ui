@@ -27,6 +27,7 @@ import {
   COLLATERAL_STATUSES,
 } from './staking-management-statuses'
 import { dateFormat, toMs } from '../../utils/date-utils'
+import { ProposalTypes } from '../../types'
 import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
@@ -101,8 +102,9 @@ function StakingMovements({ stakingMovements, token }) {
   const history = useHistory()
 
   const handleGoToProposal = useCallback(
-    disputableActionId => {
-      history.push(`/proposal/${disputableActionId}`)
+    (disputableActionId, type) => {
+      const proposalType = type === ProposalTypes.Decision ? 'vote' : 'proposal'
+      history.push(`/${proposalType}/${disputableActionId}`)
     },
     [history]
   )
@@ -129,6 +131,7 @@ function StakingMovements({ stakingMovements, token }) {
         collateralState,
         tokenDecimals,
         disputableActionId,
+        type,
       }) => {
         const stakingStatus = STAKING_STATUSES.get(actionState)
         const actionAttributes = getActionAttributes(stakingStatus, theme)
@@ -158,7 +161,7 @@ function StakingMovements({ stakingMovements, token }) {
             />
           </div>,
           <div>
-            <Link onClick={() => handleGoToProposal(disputableActionId)}>
+            <Link onClick={() => handleGoToProposal(disputableActionId, type)}>
               Proposal #{disputableActionId}
             </Link>
           </div>,

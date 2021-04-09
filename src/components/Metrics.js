@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useMemo } from 'react'
 import {
   Box,
-  DropDown,
+  // DropDown,
   GU,
   textStyle,
   useLayout,
@@ -9,7 +9,7 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
-import { useCurrencies } from '../hooks/useCurrencies'
+// import { useCurrencies } from '../hooks/useCurrencies'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
@@ -24,25 +24,32 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const { requestToken, stakeToken } = useAppState()
-  const currencies = useCurrencies()
-  const [currencyIndex, setCurrencyIndex] = useState(0)
-  const currency = useMemo(() => {
-    if (!currencies.length) {
+  // const currencies = useCurrencies()
+  // sconst [currencyIndex, setCurrencyIndex] = useState(0)
+  const currency = useMemo(
+    () => {
+      // if (!currencies.length) {
       return {
         name: 'USD',
         symbol: '$',
         rate: 1,
       }
-    }
+      // }
 
-    return currencies[currencyIndex]
-  }, [currencyIndex, currencies])
-  const handleCurrencyChange = useCallback(currencyIndex => {
-    setCurrencyIndex(currencyIndex)
-  }, [])
-  const currencyNames = useMemo(() => {
-    return currencies.map(({ name }) => name)
-  }, [currencies])
+      // return currencies[currencyIndex]
+    },
+    [
+      /* currencyIndex, currencies */
+    ]
+  )
+
+  // const handleCurrencyChange = useCallback(currencyIndex => {
+  //   setCurrencyIndex(currencyIndex)
+  // }, [])
+
+  // const currencyNames = useMemo(() => {
+  //   return currencies.map(({ name }) => name)
+  // }, [currencies])
 
   return (
     <Box padding={3 * GU}>
@@ -96,6 +103,9 @@ const Metrics = React.memo(function Metrics({
             currency={currency}
           />
         </div>
+        {/* 
+        Disabling the currency dropdown until we find another api since is not free anymore
+
         <div>
           <DropDown
             header="Type"
@@ -107,7 +117,7 @@ const Metrics = React.memo(function Metrics({
               top: ${3 * GU}px;
             `}
           />
-        </div>
+        </div> */}
       </div>
     </Box>
   )

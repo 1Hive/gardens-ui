@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
-import { useWallet } from '../providers/Wallet'
+// import { useWallet } from '../providers/Wallet'
 
 import { useAppState } from '../providers/AppState'
 import BigNumber from '../lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
+import useAppLogic from '../logic/app-logic'
 
 import { encodeFunctionData } from '../utils/web3-utils'
+import { getProposalTypeByActionId } from '../utils/proposal-utils'
 
 import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'
@@ -20,7 +22,9 @@ const STAKE_GAS_LIMIT = 500000
 
 export function useStaking() {
   const mounted = useMounted()
-  const { account } = useWallet()
+  // const { account } = useWallet()
+  const account = '0xc131afe6dbd5a71f16d8b292f0b4ae1aa200da3f'
+  const { proposals } = useAppLogic()
   const { connectedAgreementApp } = useAppState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
@@ -52,15 +56,26 @@ export function useStaking() {
     setReFetchTotalBalance(true)
   }, [])
 
-  const handleStakingMovementsData = useCallback((error, data = []) => {
-    if (error || !data) {
-      return
-    }
-    setStakeManagement(stakeManagement => ({
-      ...stakeManagement,
-      stakingMovements: data,
-    }))
-  }, [])
+  const handleStakingMovementsData = useCallback(
+    (error, data = []) => {
+      if (error || !data) {
+        return
+      }
+      setStakeManagement(stakeManagement => ({
+        ...stakeManagement,
+        stakingMovements: data.map(movement => {
+          return {
+            ...movement,
+            type: getProposalTypeByActionId(
+              proposals,
+              movement.disputableActionId
+            ),
+          }
+        }),
+      }))
+    },
+    [proposals]
+  )
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)
@@ -104,7 +119,8 @@ export function useStaking() {
           )
 
           if (mounted()) {
-            setStakeManagement({
+            setStakeManagement(stakeManagement => ({
+              ...stakeManagement,
               token: allTokens[1],
               staking: staking
                 ? {
@@ -117,7 +133,7 @@ export function useStaking() {
                 : defaultValues,
               stakingFactory: stakingFactory,
               stakingInstance: null,
-            })
+            }))
             setLoading(false)
           }
         } else {
@@ -380,18 +396,32 @@ export function useStaking() {
     )
   }, [account, connectedAgreementApp, stakingContract, stakeManagement])
 
-  return [
+  return useMemo(() => {
+    return [
+      stakeManagement,
+      {
+        allowManager: allowManager,
+        unlockAndRemoveManager: unlockAndRemoveManager,
+        stake: stake,
+        withdraw: withdraw,
+        approveTokenAmount: approveTokenAmount,
+        getStakedAmount: getStakedAmount,
+        reFetchTotalBalance: handleReFetchTotalBalance,
+        getAllowance: getAllowance,
+      },
+      loading || loadingStakingDataFromContract,
+    ]
+  }, [
+    allowManager,
+    unlockAndRemoveManager,
+    stake,
+    withdraw,
+    approveTokenAmount,
+    getStakedAmount,
+    handleReFetchTotalBalance,
+    getAllowance,
+    loading,
+    loadingStakingDataFromContract,
     stakeManagement,
-    {
-      allowManager: allowManager,
-      unlockAndRemoveManager: unlockAndRemoveManager,
-      stake: stake,
-      withdraw: withdraw,
-      approveTokenAmount: approveTokenAmount,
-      getStakedAmount: getStakedAmount,
-      reFetchTotalBalance: handleReFetchTotalBalance,
-      getAllowance: getAllowance,
-    },
-    loading || loadingStakingDataFromContract,
-  ]
+  ])
 }

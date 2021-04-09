@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import {
+  BIG_RADIUS,
   ButtonIcon,
   Card,
   GU,
@@ -133,27 +134,37 @@ function OpenedSurfaceBorder({ opened }) {
       config={springs.smooth}
     >
       {({ width }) => (
-        <AnimatedDiv
+        <div
           css={`
-            z-index: 3;
             position: absolute;
             top: 0;
             left: 0;
-            height: 100%;
-            width: 3px;
-            border-top-left-radius: ${RADIUS}px;
-            border-bottom-left-radius: ${RADIUS}px;
-            background: linear-gradient(
-              90deg,
-              #32fff5 -103.98%,
-              #01bfe3 80.13%
-            );
-            transform-origin: 0 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            border-radius: ${BIG_RADIUS}px;
           `}
-          style={{
-            transform: width.interpolate(v => `scale3d(${v}, 1, 1)`),
-          }}
-        />
+        >
+          <AnimatedDiv
+            css={`
+              z-index: 3;
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              width: 3px;
+              background: linear-gradient(
+                90deg,
+                #32fff5 -103.98%,
+                #01bfe3 80.13%
+              );
+              transform-origin: 0 0;
+            `}
+            style={{
+              transform: width.interpolate(v => `scale3d(${v}, 1, 1)`),
+            }}
+          />
+        </div>
       )}
     </Spring>
   )

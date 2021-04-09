@@ -37,7 +37,7 @@ function CreateProposalRequirements({ agreement, staking }) {
       <InfoField label="Covenant signature and version">
         You must sign the{' '}
         <Link href="#/covenant" external={false}>
-          community covenant
+          Community Covenant
         </Link>{' '}
         in order to create a proposal. The Covenant was last updated on{' '}
         {dateFormat(agreement.effectiveFrom)}
@@ -51,8 +51,8 @@ function CreateProposalRequirements({ agreement, staking }) {
       >
         You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
         {token.symbol} as the collateral required to create a proposal. You can
-        manage you balance on{' '}
-        <Link href="#/stake" external={false}>
+        manage your balance in the{' '}
+        <Link href="#/collateral" external={false}>
           Collateral Manager
         </Link>
       </InfoField>

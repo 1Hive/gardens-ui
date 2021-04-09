@@ -37,7 +37,6 @@ export function getAppPresentationByAddress(apps, appAddress) {
 
 export function getAppPresentation(app) {
   const { contentUri, manifest, appId } = app
-
   // Get human readable name and icon from manifest if available
   if (manifest && contentUri) {
     const { name, icons } = manifest
