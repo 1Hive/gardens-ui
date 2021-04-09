@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  // DropDown,
-  GU,
-  textStyle,
-  useLayout,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
