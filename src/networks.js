@@ -33,7 +33,6 @@ const networks = {
     legacyNetworkType: 'rinkeby',
   },
   xdai: {
-    // TODO: Add Dispute manager and arbitrator addresses, as well as agreement subgraph and celeste subgraph urls
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     name: 'xDai',
