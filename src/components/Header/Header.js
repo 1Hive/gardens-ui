@@ -44,7 +44,13 @@ function Header() {
               align-items: center;
             `}
           >
-            <Link href="#/home" external={false}>
+            <Link
+              href="#/home"
+              external={false}
+              css={`
+                display: flex;
+              `}
+            >
               {layoutSmall ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
             </Link>
             {!below('large') && (
