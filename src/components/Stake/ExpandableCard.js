@@ -142,7 +142,7 @@ function OpenedSurfaceBorder({ opened }) {
             right: 0;
             bottom: 0;
             overflow: hidden;
-            border-radius: ${BIG_RADIUS}px;
+            border-top-left-radius: ${BIG_RADIUS}px;
           `}
         >
           <AnimatedDiv
