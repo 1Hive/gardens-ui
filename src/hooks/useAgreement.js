@@ -76,8 +76,8 @@ function processDisputableApps(apps, disputableApps) {
   const processedDisputableApps = disputableApps.map(disputableApp => {
     const {
       address: disputableAppAddress,
-      challengeDuration,
       actionAmount,
+      challengeDuration,
       challengeAmount,
       token,
     } = disputableApp
@@ -86,16 +86,17 @@ function processDisputableApps(apps, disputableApps) {
       addressesEqual(address, disputableAppAddress)
     )
 
-    const { iconSrc, humanName } = getAppPresentation(targetApp)
+    const { iconSrc, humanName, name } = getAppPresentation(targetApp)
 
     return {
       address: disputableAppAddress,
-      appName: humanName,
-      actionAmount: actionAmount,
-      challengeAmount: challengeAmount,
+      actionAmount,
+      appName: name,
+      humanName,
+      iconSrc,
+      challengeAmount,
       settlementPeriodHours: durationToHours(toMs(challengeDuration)),
-      iconSrc: iconSrc,
-      token: token,
+      token,
     }
   })
 

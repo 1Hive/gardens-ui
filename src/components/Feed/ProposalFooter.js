@@ -57,12 +57,12 @@ function ProposalFooter({
       accountBalance.times(QUICK_STAKE_PCT).div(PCT_BASE)
     )
 
-    onStakeToProposal(proposal.id, amount.toFixed(0))
+    onStakeToProposal({ proposalId: proposal.id, amount: amount.toFixed(0) })
   }, [accountBalance, inactiveTokens, onStakeToProposal, proposal.id])
 
   const handleThumbsDown = useCallback(() => {
     // Withdraw all the staked tokens on the proposal
-    onWithdrawFromProposal(proposal.id)
+    onWithdrawFromProposal({ proposalId: proposal.id })
   }, [proposal.id, onWithdrawFromProposal])
 
   const canSupport = inactiveTokens.gt(0)
