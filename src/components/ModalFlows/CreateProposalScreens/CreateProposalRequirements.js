@@ -3,10 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
 import InfoField from '../../../components/InfoField'
-import { dateFormat } from '../../../utils/date-utils'
-import { getDisputableAppByName } from '../../../utils/app-utils'
-import { formatTokenAmount } from '../../../utils/token-utils'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
+
+import { dateFormat } from '../../../utils/date-utils'
+import env from '../../../environment'
+import { formatTokenAmount } from '../../../utils/token-utils'
+import { getDisputableAppByName } from '../../../utils/app-utils'
 
 import iconError from '../../../assets/iconError.svg'
 import iconCheck from '../../../assets/iconCheck.svg'
@@ -18,7 +20,7 @@ function CreateProposalRequirements({ agreement, staking }) {
 
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
-    'Conviction Voting'
+    env('CONVICTION_APP_NAME')
   )
   const { token, actionAmount } = convictionAppRequirements
   const enoughCollateral = availableStaked.gte(actionAmount)

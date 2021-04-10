@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react'
 import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
-import iconFees from '../../../assets/iconFees.svg'
-import { getDisputableAppByName } from '../../../utils/app-utils'
-import { formatTokenAmount } from '../../../utils/token-utils'
-import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
+import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
+
+import env from '../../../environment'
+import { formatTokenAmount } from '../../../utils/token-utils'
+import { getDisputableAppByName } from '../../../utils/app-utils'
+
+import iconFees from '../../../assets/iconFees.svg'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const tokenRate = useUniswapHnyPrice()
@@ -14,7 +17,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
 
   const convictionAppRequirements = getDisputableAppByName(
     agreement.disputableAppsWithRequirements,
-    'Conviction Voting'
+    env('CONVICTION_APP_NAME')
   )
 
   const { actionAmount, token } = convictionAppRequirements
