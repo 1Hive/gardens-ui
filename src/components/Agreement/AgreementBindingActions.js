@@ -8,13 +8,13 @@ import { formatTokenAmount } from '../../utils/token-utils'
 function AgreementBindingActions({ apps }) {
   const items = apps.map(
     ({
-      appName,
       address,
-      iconSrc,
       actionAmount,
       challengeAmount,
-      settlementPeriodHours,
+      humanName,
+      iconSrc,
       token,
+      settlementPeriodHours,
     }) => [
       <div
         css={`
@@ -23,7 +23,7 @@ function AgreementBindingActions({ apps }) {
           margin-left: ${-1 * GU}px;
         `}
       >
-        <AppBadge iconSrc={iconSrc} label={appName} appAddress={address} />
+        <AppBadge iconSrc={iconSrc} label={humanName} appAddress={address} />
       </div>,
 
       <div
