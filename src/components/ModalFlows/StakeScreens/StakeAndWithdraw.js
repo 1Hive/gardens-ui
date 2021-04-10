@@ -81,9 +81,7 @@ function StakeAndWithdraw({
   const textData = useMemo(() => {
     if (depositMode) {
       return {
-        descriptionText: `This amount will be placed in the staking pool and will be used to pay
-        for actions collateral and submission fees, when proposing actions
-        bound by this organization's Covenant.`,
+        descriptionText: `This amount will be locked in the collateral manager and will be used as collateral when creating actions bound by this organization's Covenant.`,
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals
@@ -92,7 +90,7 @@ function StakeAndWithdraw({
       }
     }
     return {
-      descriptionText: `This amount will be withdrawn from your Available balance and directly credited to to your enabled account`,
+      descriptionText: `This amount will be withdrawn from your available balance and directly credited to your enabled account.`,
       balanceText: `Your available balance is ${formatTokenAmount(
         stakeManagement.staking.available,
         decimals

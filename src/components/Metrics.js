@@ -1,15 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react'
-import {
-  Box,
-  DropDown,
-  GU,
-  textStyle,
-  useLayout,
-  useTheme,
-} from '@1hive/1hive-ui'
+import React from 'react'
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { useAppState } from '../providers/AppState'
-import { useCurrencies } from '../hooks/useCurrencies'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
@@ -24,25 +16,11 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const { requestToken, stakeToken } = useAppState()
-  const currencies = useCurrencies()
-  const [currencyIndex, setCurrencyIndex] = useState(0)
-  const currency = useMemo(() => {
-    if (!currencies.length) {
-      return {
-        name: 'USD',
-        symbol: '$',
-        rate: 1,
-      }
-    }
-
-    return currencies[currencyIndex]
-  }, [currencyIndex, currencies])
-  const handleCurrencyChange = useCallback(currencyIndex => {
-    setCurrencyIndex(currencyIndex)
-  }, [])
-  const currencyNames = useMemo(() => {
-    return currencies.map(({ name }) => name)
-  }, [currencies])
+  const currency = {
+    name: 'USD',
+    symbol: '$',
+    rate: 1,
+  }
 
   return (
     <Box padding={3 * GU}>
@@ -94,18 +72,6 @@ const Metrics = React.memo(function Metrics({
             value={totalActiveTokens}
             token={stakeToken}
             currency={currency}
-          />
-        </div>
-        <div>
-          <DropDown
-            header="Type"
-            placeholder="USD"
-            selected={currencyIndex}
-            onChange={handleCurrencyChange}
-            items={currencyNames}
-            css={`
-              top: ${3 * GU}px;
-            `}
           />
         </div>
       </div>

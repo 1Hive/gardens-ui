@@ -16,6 +16,7 @@ const SYMBOL_MAP = {
 const RETRY_EVERY = 3000
 export function useCurrencies() {
   const [currencies, setCurrencies] = useState([])
+
   useEffect(() => {
     let cancelled = false
     let retryTimer
