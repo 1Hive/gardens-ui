@@ -126,9 +126,9 @@
     use-inside "^0.2.0"
 
 "@1hive/connect-core@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.8.5.tgz#86436def2bcee6dfe5fcd1e81e7a5998ca4765a1"
-  integrity sha512-+DUZVFBCYg4t7JkHm38YPzsNQ8u7KUuTfk1uCg1KDSKNf1ycK/Ggp4QlQciMELVZHv8RD2xKg509T9xwkD100g==
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.8.6.tgz#b2fc70667409a3c2bd82395627e63d68510b6684"
+  integrity sha512-Vq4KwpdNGiuuNzwC8nExgIJpeT5fspmqo6D96X/GvaTlPWWghx7sxH9QQ9pPl9I673ftWVlZqOHA+Rafs865Tg==
   dependencies:
     ethers "^5.0.7"
     radspec "^2.0.0-rc.2"
@@ -143,9 +143,9 @@
     graphql-tag "^2.10.3"
 
 "@1hive/connect-ethereum@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.8.5.tgz#8aec6ab3a67fb375362d8b3f476bd55576b28b39"
-  integrity sha512-97Ucnf4Y0O9ZYhqA5+8BQpNBDyEGM+5mEkmvDp5qNrGEyQZhYZgCku75pl1O8AvxHzvNnlsxP+ubCTqgsZsjPA==
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.8.6.tgz#40a06d22299d537ac5602ccef19762abfaf1d2b5"
+  integrity sha512-+y7Ql7xB3dXJ7zxE85ghrH+RfmBOvqXdj7PSJphgFzQ67N/wAZKZoRY8g5GmCuh18OK1UGIL4bxP9Lxl7sgQtQ==
   dependencies:
     "@1hive/connect-core" "^0.8.5"
 
@@ -157,9 +157,9 @@
     "@1hive/connect" "^0.8.5"
 
 "@1hive/connect-thegraph@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.8.5.tgz#12346a63a9b5899a75d1ce1e104ce288fc583d2d"
-  integrity sha512-bMFHISoSo73Uw25+ttR8QTu5qnxXUBI/EB45i2jLAkk+0m1WNB8xMCZ8xO0MTIgqO770+69KVE+GnyxQV356rw==
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.8.6.tgz#2733f2e23a28f8daee56df834003b84f886fd789"
+  integrity sha512-FRdLzn0z1yoyGIj3NgaDLZvSIGk9vAbZX1pLGDC6wkM0eZ4CYAhGH+zbeqmvht0Y/ZOtqqNY0ZpWNwPIHZcy5g==
   dependencies:
     "@1hive/connect-core" "^0.8.5"
     "@urql/core" "^1.11.7"
@@ -170,9 +170,9 @@
     subscriptions-transport-ws "^0.9.16"
 
 "@1hive/connect@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.8.5.tgz#2e0621d6dd263546fc23e970a9de523cd3c9f592"
-  integrity sha512-RP1TaO4byowq94syK1V4/2t8XCkJr6ojrLlu6pkW0MgLLH5dPDNOAa4dntzw8uU9RDpNbN/cjIvUdUi9981aMA==
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.8.6.tgz#c926e0ddffe69751a4b464d51fcb4fbf7b335685"
+  integrity sha512-PNtPpz02epbV9w+BSV8Ajvoct9Zn5GuBjSWIF8NXEhM6I/Ke1UgOXcyJycP7R2Eyt7EYCNDDTJsLlE6riBa4Pg==
   dependencies:
     "@1hive/connect-core" "^0.8.5"
     "@1hive/connect-ethereum" "^0.8.5"
