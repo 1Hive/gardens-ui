@@ -4,7 +4,6 @@ import connectHoneypot from '@1hive/connect-disputable-honey-pot'
 import connectAgreement from '@aragon/connect-agreement'
 import {
   createAppHook,
-  useApp,
   useApps,
   useOrganization,
   usePermissions,
@@ -29,19 +28,16 @@ const useAgreementHook = createAppHook(
 )
 
 export function useOrgData() {
-  const appName = env('CONVICTION_APP_NAME')
-
   const [honeypot, setHoneypot] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
+  const convictionApp = getAppByName(apps, env('CONVICTION_APP_NAME'))
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
   const [
     connectedAgreementApp,
     { error: agreementError, loading: agreementAppLoading },
   ] = useAgreementHook(agreementApp)
-
-  const [convictionApp] = useApp(appName)
 
   const [permissions, permissionsStatus] = usePermissions()
 
