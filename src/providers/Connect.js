@@ -13,6 +13,7 @@ function ConnectProvider({ children }) {
       connector="thegraph"
       options={{
         network: getDefaultChain(),
+        ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
       }}
     >
       {children}
