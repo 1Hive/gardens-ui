@@ -50,12 +50,11 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'settlement-offer': [
     'Settlement Offer',
     <>
-      The <strong>Settlement Offer</strong> is the amount of tokens that the
-      challenger would accept from the proposal submitter in order to cancel the
-      action and resolve the challenge without having to raise it to Celeste.
-      This amount, if settled, will be slashed from the submitter's collateral
-      so cannot be greater than the collateral locked for the action but can be
-      zero.
+      The <strong>Settlement Offer</strong> is the amount of tokens that you
+      would accept from the proposal submitter in order to cancel the action
+      without raising it to Celeste. This amount, if settled, will be slashed
+      from the proposal submitter's collateral and sent to you so it cannot be
+      greater than the collateral locked for the action but it can be zero.
     </>,
   ],
 }
