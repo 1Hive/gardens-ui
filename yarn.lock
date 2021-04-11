@@ -149,10 +149,10 @@
   dependencies:
     "@1hive/connect-core" "^0.8.5"
 
-"@1hive/connect-react@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.8.5.tgz#dabed19cbad825ee76e004cb0d8e41c354b45ae9"
-  integrity sha512-KF5YymR8v1+aAPgse5+FM4pBIMxQQ45kSGbzRlC1vOd7whjYEyDEc9TpBFyWXO2MDoxLUWlNaETN8SHuk3v7RA==
+"@1hive/connect-react@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.8.6.tgz#aa74a98684106aff2853e3b5b8ed26553be63516"
+  integrity sha512-2xXThtkLYbDq2qfhiubYXIbnD+0Fa8aMg31HGD7GwhXiqtRTVp1Dx1SdDNcbJTqWvCYRtpYpEsJYBuEj6IPR1Q==
   dependencies:
     "@1hive/connect" "^0.8.5"
 
