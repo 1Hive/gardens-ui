@@ -48,7 +48,7 @@ function RaiseDisputeScreens({ proposal }) {
       }
 
       await agreementActions.disputeAction(
-        { actionId: proposal.actionId, finishedEvidence: true },
+        { actionId: proposal.actionId, submitterFinishedEvidence: true },
         intent => {
           const trxList = temporatyTrx.current.concat(intent)
           setTransactions(trxList)
