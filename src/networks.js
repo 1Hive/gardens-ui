@@ -29,7 +29,7 @@ const networks = {
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
-    ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    ipfsGateway: 'https://ipfs.io/ipfs',
     legacyNetworkType: 'rinkeby',
   },
   xdai: {
@@ -46,7 +46,7 @@ const networks = {
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
     },
     celesteUrl: 'https://celeste.1hive.org/#',
-    ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+    ipfsGateway: 'https://ipfs.io/ipfs',
     legacyNetworkType: 'main',
   },
 }

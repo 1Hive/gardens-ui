@@ -32,8 +32,8 @@ export function useOrgData() {
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
-  const convictionApp = getAppByName(apps, env('CONVICTION_APP_NAME'))
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
+  const convictionApp = getAppByName(apps, env('CONVICTION_APP_NAME'))
   const [
     connectedAgreementApp,
     { error: agreementError, loading: agreementAppLoading },
