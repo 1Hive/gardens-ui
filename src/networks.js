@@ -31,6 +31,7 @@ const networks = {
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     ipfsGateway: 'https://ipfs.io/ipfs',
     legacyNetworkType: 'rinkeby',
+    explorer: 'etherscan',
   },
   xdai: {
     chainId: 100,
@@ -48,6 +49,7 @@ const networks = {
     celesteUrl: 'https://celeste.1hive.org/#',
     ipfsGateway: 'https://ipfs.io/ipfs',
     legacyNetworkType: 'main',
+    explorer: 'blockscout',
   },
 }
 

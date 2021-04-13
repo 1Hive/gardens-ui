@@ -193,7 +193,8 @@ function Step({
                 >
                   <TransactionBadge
                     transaction={currentHash}
-                    networkType={network.legacyNetworkType}
+                    networkType={network.type}
+                    explorerProvider={network.explorer}
                   />
                 </AnimatedSpan>
               ) : null}
