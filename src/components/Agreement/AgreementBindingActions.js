@@ -31,7 +31,7 @@ function AgreementBindingActions({ apps }) {
           label={humanName}
           appAddress={address}
           networkType={network.type}
-          provider={network.explorer}
+          explorerProvider={network.explorer}
         />
       </div>,
 
