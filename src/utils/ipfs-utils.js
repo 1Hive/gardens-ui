@@ -1,10 +1,10 @@
 import isIPFS from 'is-ipfs'
-import { getNetwork } from '../networks'
+import { IPFS_ENDPOINT } from '../endpoints'
 
 const REQUEST_TIMEOUT = 60000
 
 export async function ipfsGet(cid) {
-  const ipfsGateway = getNetwork().ipfsGateway
+  const ipfsGateway = IPFS_ENDPOINT.read
   const endpoint = `${ipfsGateway}/${cid}`
 
   try {
@@ -28,6 +28,6 @@ export function getIpfsCidFromUri(uri) {
 }
 
 export function getIpfsUrlFromUri(uri) {
-  const ipfsGateway = getNetwork().ipfsGateway
+  const ipfsGateway = IPFS_ENDPOINT.read
   return `${ipfsGateway}/${getIpfsCidFromUri(uri)}`
 }
