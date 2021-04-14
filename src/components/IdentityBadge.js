@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { IdentityBadge as Badge } from '@1hive/1hive-ui'
 
+import { getNetwork } from '../networks'
 import { getNetworkType } from '../utils/web3-utils'
 import { getProfileForAccount } from '../lib/profile'
 
@@ -40,7 +41,8 @@ const IdentityBadge = React.memo(function IdentityBadge({ entity, ...props }) {
     <Badge
       label={profileName}
       entity={entity}
-      networkType={networkType === 'xdai' ? 'private' : networkType}
+      explorerProvider={getNetwork().explorer}
+      networkType={networkType}
       popoverAction={{ label: 'View profile', onClick: handleViewProfile }}
       {...props}
     />
