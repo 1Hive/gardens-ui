@@ -2,8 +2,8 @@ import { getNetworkType, isLocalOrUnknownNetwork } from './utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
-const RINKEBY_HONEY_POT = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
-const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
+const RINKEBY_HONEY_POT = '0x55592ABFCd45cFFe3489463f9A4deA3aA7801077'
+const RINKEBY_STAGING_HONEY_POT = '0x55592ABFCd45cFFe3489463f9A4deA3aA7801077'
 const INSTANCE = env('INSTANCE')
 const ETH_NODE = env('ETH_NODE')
 
@@ -25,8 +25,9 @@ const networks = {
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
     subgraphs: {
       agreement:
-        'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
+        'https://api.thegraph.com/subgraphs/name/1hive/gardens-agreement-staging',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging',
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     legacyNetworkType: 'rinkeby',
@@ -75,10 +76,12 @@ function getRinkebyHoneyPotAddress(rinkebyInstance) {
 }
 
 const agreementSubgraph = getNetwork().subgraphs?.agreement
+const gardensSubgraph = getNetwork().subgraphs?.gardens
 
 export const connectorConfig = {
   agreement: agreementSubgraph && [
     'thegraph',
     { subgraphUrl: agreementSubgraph },
   ],
+  gardens: gardensSubgraph && ['thegraph', { subgraphUrl: gardensSubgraph }],
 }

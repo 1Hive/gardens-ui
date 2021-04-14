@@ -20,7 +20,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot-rinkeby'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging'
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/disputable-honey-pot'
