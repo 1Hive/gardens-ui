@@ -19,6 +19,7 @@ import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
+const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
 
 export default function useActions() {
@@ -183,9 +184,11 @@ export default function useActions() {
   // Agreement actions
   const signAgreement = useCallback(
     async ({ versionId }, onDone = noop) => {
-      const intent = await agreementApp.intent('sign', [versionId], {
+      let intent = await agreementApp.intent('sign', [versionId], {
         actAs: account,
       })
+
+      intent = imposeGasLimit(intent, SIGN_GAS_LIMIT)
 
       // if (mounted()) {
       onDone(intent)
