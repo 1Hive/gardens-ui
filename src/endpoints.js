@@ -16,7 +16,7 @@ export const UTC_API_ENDPOINT = `http://worldclockapi.com/api/json/utc/now`
 export const IPFS_ENDPOINT = {
   read: isLocalOrUnknownNetwork()
     ? 'http://127.0.0.1:8080/ipfs'
-    : 'https://ipfs.eth.aragon.network/ipfs',
+    : 'https://ipfs.io/ipfs/',
   upload: 'https://ipfs.infura.io:5001/api/v0/add',
 }
 
