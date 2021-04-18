@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "3box": "^1.22.2",
+    "3id-connect": "^1.0.0-alpha.15",
     "@1hive/1hive-ui": "^1.0.2",
     "@1hive/connect-honey-pot": "^0.1.2",
     "@aragon/connect": "^0.6.0",
     "@aragon/connect-react": "^0.8.0-alpha.5",
+    "@ceramicnetwork/http-client": "^0.10.2",
+    "@ceramicstudio/idx": "^0.10.0",
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
     "dayjs": "^1.8.34",

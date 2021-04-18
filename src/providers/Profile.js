@@ -7,10 +7,12 @@ import React, {
   useState,
 } from 'react'
 import PropTypes from 'prop-types'
+import { ThreeIdConnect, EthereumAuthProvider } from '3id-connect'
 
 import { useWallet } from './Wallet'
 import {
   getAccountPrivateData,
+  getIDXProfileForAccount,
   getProfileForAccount,
   openBoxForAccount,
 } from '../lib/profile'
@@ -22,6 +24,7 @@ const boxCache = new Map([])
 function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
   const [box, setBox] = useState(null)
+  const [ceramicProvider, setCeramicProvider] = useState(null)
   const [loadingBox, setLoadingBox] = useState(true)
   const [profile, setProfile] = useState(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
@@ -29,6 +32,7 @@ function ProfileProvider({ children }) {
   const cancelled = useRef(false)
 
   const openBox = useMemo(() => {
+    console.log(account)
     if (!profile || profile.confirmationFailed) {
       return false
     }
@@ -38,6 +42,19 @@ function ProfileProvider({ children }) {
       !loadingProfile && !loadingBox && (!profile.profileExists || !boxExist)
     )
   }, [box, loadingBox, loadingProfile, profile])
+
+  const getCeramicProvider = useCallback(async () => {
+    if (!account) {
+      return
+    }
+    const threeIdConnect = new ThreeIdConnect()
+    const prv = new EthereumAuthProvider(window.ethereum, account)
+    await threeIdConnect.connect(prv)
+    const provider = await threeIdConnect.getDidProvider()
+    console.log('PROVIDER: ', provider)
+    setCeramicProvider(provider)
+    return getIDXProfileForAccount(account, provider)
+  }, [account])
 
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
@@ -110,8 +127,9 @@ function ProfileProvider({ children }) {
 
     setBox(null)
     auth()
+    getCeramicProvider()
     setLoadingBox(false)
-  }, [account, auth])
+  }, [account, auth, getCeramicProvider])
 
   useEffect(() => {
     if (box) {
@@ -163,6 +181,7 @@ function ProfileProvider({ children }) {
         account,
         auth,
         authenticated: Boolean(box),
+        ceramicProvider,
         openBox,
         updateProfile,
       }}
