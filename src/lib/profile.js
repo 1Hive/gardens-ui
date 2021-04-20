@@ -2,7 +2,7 @@ import { getProfile, getVerifiedAccounts, openBox } from '3box'
 
 // Testing IDX
 import Ceramic from '@ceramicnetwork/http-client'
-import { IDX } from '@ceramicstudio/idx'
+import { IDX, getLegacy3BoxProfileAsBasicProfile } from '@ceramicstudio/idx'
 //
 
 import { GITHUB_ENDPOINT, IPFS_ENDPOINT, TWITTER_ENDPOINT } from '../endpoints'
@@ -24,18 +24,22 @@ export async function getAccountPrivateData(box) {
   return { birthday, email: email?.email_address }
 }
 
-export async function getIDXProfileForAccount(account, provider) {
+export async function getIDXProfileForAccount(account, gateway, provider) {
   if (!account) {
     return null
   }
 
-  const ceramic = new Ceramic('https://gateway-clay.ceramic.network')
+  const ceramic = new Ceramic(gateway)
   await ceramic.setDIDProvider(provider)
   const idx = new IDX({ ceramic })
+  const basicProfile = await idx.get('basicProfile')
+  console.log('getBasicProfile >> ', basicProfile)
 
-  const test = await idx.get('basicProfile')
-  // const test = await idx.getLegacy3BoxProfileAsBasicProfile(account)
-  console.log(test)
+  const basicProfileAddr = await idx.get('basicProfile', idx.id)
+  console.log('Basic profile using DID >> ', basicProfileAddr)
+
+  const basicProfileFrom3Box = await getLegacy3BoxProfileAsBasicProfile(account)
+  console.log('3BOX Basic Profile >> ', basicProfileFrom3Box)
 }
 
 export async function getProfileForAccount(account) {

@@ -9,6 +9,7 @@ import React, {
 import PropTypes from 'prop-types'
 import { ThreeIdConnect, EthereumAuthProvider } from '3id-connect'
 
+import { getNetwork } from '../networks'
 import { useWallet } from './Wallet'
 import {
   getAccountPrivateData,
@@ -23,6 +24,7 @@ const boxCache = new Map([])
 
 function ProfileProvider({ children }) {
   const { account, ethereum } = useWallet()
+  const ceramicGateway = getNetwork().ceramicGateway
   const [box, setBox] = useState(null)
   const [ceramicProvider, setCeramicProvider] = useState(null)
   const [loadingBox, setLoadingBox] = useState(true)
@@ -44,17 +46,20 @@ function ProfileProvider({ children }) {
   }, [box, loadingBox, loadingProfile, profile])
 
   const getCeramicProvider = useCallback(async () => {
-    if (!account) {
+    if (!account || !ethereum || !ceramicGateway) {
       return
     }
-    const threeIdConnect = new ThreeIdConnect()
-    const prv = new EthereumAuthProvider(window.ethereum, account)
-    await threeIdConnect.connect(prv)
-    const provider = await threeIdConnect.getDidProvider()
-    console.log('PROVIDER: ', provider)
-    setCeramicProvider(provider)
-    return getIDXProfileForAccount(account, provider)
-  }, [account])
+    try {
+      const threeIdConnect = new ThreeIdConnect()
+      const prv = new EthereumAuthProvider(ethereum, account)
+      await threeIdConnect.connect(prv)
+      const provider = await threeIdConnect.getDidProvider()
+      setCeramicProvider(provider)
+      return getIDXProfileForAccount(account, ceramicGateway, provider)
+    } catch (error) {
+      return console.log('Ceramic provider error: ', error)
+    }
+  }, [account, ceramicGateway, ethereum])
 
   const auth = useCallback(async () => {
     if (!(account && ethereum)) {
