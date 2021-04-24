@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Agreement from './components/Agreement/Agreement'
 import DecisionLoader from './components/DecisionLoader'
+import Garden from './screens/Garden'
 import Home from './screens/Home'
 import Profile from './screens/Profile'
 import ProposalLoader from './components/ProposalLoader'
@@ -12,6 +13,7 @@ export default function Routes() {
     <Switch>
       <Redirect exact from="/" to="/home" />
       <Route path="/home" component={Home} />
+      <Route path="/garden/:id" component={Garden} />
       <Route exact path="/profile" component={Profile} />
       <Route exact path="/proposal/:id" component={ProposalLoader} />
       <Route exact path="/vote/:id" component={DecisionLoader} />
