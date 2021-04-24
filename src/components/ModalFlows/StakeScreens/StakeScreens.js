@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
-import { useAppState } from '../../../providers/AppState'
+import { useGardenState } from '../../../providers/GardenState'
 import BigNumber from '../../../lib/bigNumber'
 import { toDecimals } from '../../../utils/math-utils'
 
@@ -11,7 +11,7 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const [transactions, setTransactions] = useState([])
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const history = useHistory()
   const { allowance: stakingAllowance } = stakeManagement?.staking || {}
 
@@ -38,21 +38,21 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
         const allowance = await stakeActions.getAllowance()
         if (allowance.lt(amount)) {
           if (!allowance.eq(0)) {
-            await stakeActions.approveTokenAmount(ZERO_BN, intent => {
+            await stakeActions.approveTokenAmount(ZERO_BN, (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             })
           }
-          await stakeActions.approveTokenAmount(amount, intent => {
+          await stakeActions.approveTokenAmount(amount, (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
 
-        await stakeActions.stake({ amount }, intent => {
+        await stakeActions.stake({ amount }, (intent) => {
           temporatyTrx.current = temporatyTrx.current.concat(intent)
         })
 
         if (stakingAllowance?.eq(0)) {
-          await stakeActions.allowManager(intent => {
+          await stakeActions.allowManager((intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
@@ -64,7 +64,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
       }
 
       if (mode === 'withdraw') {
-        await stakeActions.withdraw({ amount }, intent => {
+        await stakeActions.withdraw({ amount }, (intent) => {
           setTransactions(intent)
           onComplete()
         })

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 
 import { formatTokenAmount } from '../../utils/token-utils'
 
@@ -9,17 +9,17 @@ function InactiveProposaksStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const compact = below('large')
   const history = useHistory()
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
 
   const handleSelectProposal = useCallback(
-    id => {
+    (id) => {
       history.push(`/proposal/${id}`)
     },
     [history]
   )
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>
-      {myInactiveStakes.map(stake => {
+      {myInactiveStakes.map((stake) => {
         return (
           <ProposalItem
             compact={compact}
@@ -87,7 +87,7 @@ const ProposalItem = ({
             white-space: nowrap;
 
             ${proposalId &&
-              `cursor: pointer; &:hover {
+            `cursor: pointer; &:hover {
             background: ${theme.badge.alpha(0.7)}
           }`}
           `}

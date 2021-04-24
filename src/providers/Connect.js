@@ -1,18 +1,14 @@
 import React from 'react'
 import { Connect } from '@1hive/connect-react'
-
-import { getDefaultChain } from '../local-settings'
 import { getNetwork } from '../networks'
 
-function ConnectProvider({ children }) {
-  const orgAddress = getNetwork().honeypot
-
+function ConnectProvider({ orgAddress, children }) {
   return (
     <Connect
       location={orgAddress}
       connector="thegraph"
       options={{
-        network: getDefaultChain(),
+        network: getNetwork().chainId,
         ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
       }}
     >

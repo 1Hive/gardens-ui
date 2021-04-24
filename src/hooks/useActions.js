@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useWallet } from '../providers/Wallet'
 import { getAppByName } from '../utils/data-utils'
 import { useMounted } from './useMounted'
@@ -26,7 +26,7 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps } = useAppState()
+  const { installedApps } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
@@ -85,7 +85,7 @@ export default function useActions() {
   )
 
   const cancelProposal = useCallback(
-    async proposalId => {
+    async (proposalId) => {
       sendIntent(convictionVotingApp, 'cancelProposal', [proposalId], {
         ethers,
         from: account,
@@ -141,7 +141,7 @@ export default function useActions() {
   )
 
   const executeProposal = useCallback(
-    proposalId => {
+    (proposalId) => {
       sendIntent(convictionVotingApp, 'executeProposal', [proposalId], {
         ethers,
         from: account,
@@ -172,7 +172,7 @@ export default function useActions() {
   )
 
   const executeDecision = useCallback(
-    voteId => {
+    (voteId) => {
       sendIntent(dandelionVotingApp, 'executeVote', [voteId], {
         ethers,
         from: account,
@@ -284,7 +284,7 @@ export default function useActions() {
   )
 
   const getChallenge = useCallback(
-    async challengeId => {
+    async (challengeId) => {
       if (!agreementContract) {
         return
       }
@@ -342,6 +342,6 @@ async function sendIntent(
 function imposeGasLimit(intent, gasLimit) {
   return {
     ...intent,
-    transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx) => ({ ...tx, gasLimit })),
   }
 }

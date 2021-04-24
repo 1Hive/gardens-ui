@@ -11,7 +11,7 @@ import {
 } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../../providers/AppState'
+import { useGardenState } from '../../../providers/GardenState'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 import { useWallet } from '../../../providers/Wallet'
 
@@ -29,7 +29,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const theme = useTheme()
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance, stakeToken } = useGardenState()
   const { next } = useMultiModal()
 
   const [amount, setAmount] = useState({
@@ -66,7 +66,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   // Amount change handler
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
@@ -98,7 +98,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       if (amount.valueBN.lt(myStake.amount)) {
@@ -107,10 +107,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
             next()
           },
           'withdraw',
-          myStake.amount
-            .minus(amount.valueBN)
-            .integerValue()
-            .toString(10)
+          myStake.amount.minus(amount.valueBN).integerValue().toString(10)
         )
         return
       }
@@ -120,10 +117,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
           next()
         },
         'stake',
-        amount.valueBN
-          .minus(myStake.amount)
-          .integerValue()
-          .toString(10)
+        amount.valueBN.minus(myStake.amount).integerValue().toString(10)
       )
     },
     [amount, getTransactions, myStake.amount, next]

@@ -4,14 +4,14 @@ import {
   getConvictionHistoryByEntity,
 } from '../lib/conviction'
 import { useWallet } from '../providers/Wallet'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/AppState'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useConvictionHistory(proposal) {
   const { account } = useWallet()
   const latestBlock = useLatestBlock()
-  const { alpha } = useAppState()
+  const { alpha } = useGardenState()
 
   const convictionHistory = getConvictionHistory(
     proposal.stakesHistory,

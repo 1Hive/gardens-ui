@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../../providers/AppState'
+import { useGardenState } from '../../../providers/GardenState'
 import { useWallet } from '../../../providers/Wallet'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
@@ -27,15 +27,15 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance, stakeToken } = useGardenState()
   const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
-    editMode => {
-      setAmount(amount => {
+    (editMode) => {
+      setAmount((amount) => {
         const newValue = amount.valueBN.gte(0)
           ? formatTokenAmount(
               amount.valueBN,
@@ -61,7 +61,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Amount change handler
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
@@ -93,7 +93,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

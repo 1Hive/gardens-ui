@@ -4,7 +4,7 @@ import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
 import useActions from '../../../hooks/useActions'
-import { useAppState } from '../../../providers/AppState'
+import { useGardenState } from '../../../providers/GardenState'
 import { useDisputeFees } from '../../../hooks/useDispute'
 import { useCelesteSynced } from '../../../hooks/useCeleste'
 import BigNumber from '../../../lib/bigNumber'
@@ -13,7 +13,7 @@ const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
   const { agreementActions } = useActions()
@@ -28,20 +28,20 @@ function RaiseDisputeScreens({ proposal }) {
   }, [disputeFees])
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       const allowance = await agreementActions.getAllowance()
       if (allowance.lt(disputeBN)) {
         if (!allowance.eq(0)) {
           await agreementActions.approveChallengeTokenAmount(
             ZERO_BN,
-            intent => {
+            (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
         await agreementActions.approveChallengeTokenAmount(
           disputeBN.toString(),
-          intent => {
+          (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
         )
@@ -49,7 +49,7 @@ function RaiseDisputeScreens({ proposal }) {
 
       await agreementActions.disputeAction(
         { actionId: proposal.actionId, submitterFinishedEvidence: true },
-        intent => {
+        (intent) => {
           const trxList = temporatyTrx.current.concat(intent)
           setTransactions(trxList)
           onComplete()

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useSupporterSubscription } from './useSubscriptions'
 import {
   PROPOSAL_STATUS_ACTIVE_STRING,
@@ -8,7 +8,7 @@ import {
 } from '../constants'
 
 export function useAccountStakes(account) {
-  const { honeypot, stakeToken } = useAppState()
+  const { honeypot, stakeToken } = useGardenState()
   const supporter = useSupporterSubscription(honeypot, account)
 
   return useMemo(() => {

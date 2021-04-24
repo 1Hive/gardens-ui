@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import Metrics from '../components/Metrics'
 import Proposals from './Proposals'
 import ProposalDetail from './ProposalDetail'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/AppState'
 import useFilterProposals from '../hooks/useFilterProposals'
 
 const MainScreen = React.memo(
@@ -27,7 +27,7 @@ const MainScreen = React.memo(
       stakeToken,
       totalSupply,
       vaultBalance,
-    } = useAppState()
+    } = useGardenState()
 
     const {
       filteredProposals,
@@ -46,7 +46,7 @@ const MainScreen = React.memo(
       history.push(`/`)
     }, [history])
 
-    const handleTabChange = tabIndex => {
+    const handleTabChange = (tabIndex) => {
       handleProposalExecutionFilterChange(tabIndex)
       handleProposalSupportFilterChange(-1)
     }

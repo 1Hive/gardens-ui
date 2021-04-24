@@ -5,7 +5,7 @@ import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 import { ProposalTypes } from '../../types'
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 import {
   formatTokenAmount,
   getTokenIconBySymbol,
@@ -13,7 +13,7 @@ import {
 
 function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const theme = useTheme()
-  const { requestToken, stableToken } = useAppState()
+  const { requestToken, stableToken } = useGardenState()
   const primaryToken = proposal.stable ? stableToken : requestToken
   const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
 

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeRequirements from './ChallengeRequirements'
 import ChallengeForm from './ChallengeForm'
-import { useAppState } from '../../../providers/AppState'
+import { useGardenState } from '../../../providers/GardenState'
 import { useDisputeFees } from '../../../hooks/useDispute'
 import { useAgreement } from '../../../hooks/useAgreement'
 import BigNumber from '../../../lib/bigNumber'
@@ -13,7 +13,7 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [transactions, setTransactions] = useState([])
   const [agreement, loading] = useAgreement()
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const disputeFees = useDisputeFees()
 
   const temporatyTrx = useRef([])
@@ -40,21 +40,21 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         if (!allowance.eq(0)) {
           await agreementActions.approveChallengeTokenAmount(
             ZERO_BN,
-            intent => {
+            (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
         await agreementActions.approveChallengeTokenAmount(
           depositAmount,
-          intent => {
+          (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
         )
       }
       await agreementActions.challengeAction(
         { actionId, settlementOffer, challengerFinishedEvidence, context },
-        intent => {
+        (intent) => {
           const trxList = temporatyTrx.current.concat(intent)
           setTransactions(trxList)
           onComplete()

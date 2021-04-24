@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { Button, GU, Info } from '@1hive/1hive-ui'
 
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 import { useWallet } from '../../providers/Wallet'
 
 import AccountNotConnected from '../AccountNotConnected'
@@ -15,7 +15,7 @@ function ProposalActions({
   onRequestSupportProposal,
   onWithdrawFromProposal,
 }) {
-  const { stakeToken, accountBalance } = useAppState()
+  const { stakeToken, accountBalance } = useGardenState()
   const { account: connectedAccount } = useWallet()
 
   const { id, currentConviction, hasEnded, stakes, threshold } = proposal

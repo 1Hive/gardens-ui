@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
@@ -15,7 +15,7 @@ const Metrics = React.memo(function Metrics({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const { requestToken, stakeToken } = useAppState()
+  const { requestToken, stakeToken } = useGardenState()
   const currency = {
     name: 'USD',
     symbol: '$',

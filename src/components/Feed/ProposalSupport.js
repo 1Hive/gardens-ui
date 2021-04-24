@@ -5,7 +5,7 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import SummaryBar from '../DecisionDetail/SummaryBar' // TODO: Move to root component folder
 import SummaryRow from '../DecisionDetail/SummaryRow'
 
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 import { useWallet } from '../../providers/Wallet'
 import { ProposalTypes } from '../../types'
 import { safeDiv } from '../../utils/math-utils'
@@ -14,7 +14,7 @@ import { VOTE_NAY, VOTE_YEA } from '../../constants'
 
 function ProposalSupport({ proposal }) {
   const theme = useTheme()
-  const { requestToken } = useAppState()
+  const { requestToken } = useGardenState()
 
   return (
     <div

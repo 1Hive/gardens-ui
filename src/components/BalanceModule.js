@@ -4,7 +4,7 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useWallet } from '../providers/Wallet'
 
 import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
@@ -13,7 +13,7 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance, stakeToken } = useGardenState()
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
@@ -24,10 +24,7 @@ function BalanceModule() {
 
   const inactivePct = inactiveTokens.eq('0')
     ? '0'
-    : inactiveTokens
-        .times('100')
-        .div(accountBalance)
-        .toString()
+    : inactiveTokens.times('100').div(accountBalance).toString()
 
   return (
     <HeaderModule

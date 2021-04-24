@@ -12,7 +12,7 @@ import StakingTokens from '../components/Profile/StakingTokens'
 import Wallet from '../components/Wallet'
 
 import { useAccountStakes } from '../hooks/useStakes'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import usePicture from '../hooks/usePicture'
 import { useInactiveProposalsWithStake } from '../hooks/useProposals'
 import useSelectedProfile from '../hooks/useSelectedProfile'
@@ -25,7 +25,7 @@ function Profile() {
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
-  const { isLoading } = useAppState()
+  const { isLoading } = useGardenState()
   const { account: connectedAccount } = useWallet()
   const history = useHistory()
   const { name: layout } = useLayout()
@@ -53,7 +53,7 @@ function Profile() {
   }, [connectedAccount])
 
   const toggleEditMode = useCallback(() => {
-    setEditMode(mode => !mode)
+    setEditMode((mode) => !mode)
   }, [])
 
   const coverSrc = useMemo(() => {

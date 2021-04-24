@@ -9,9 +9,9 @@ import {
 import useEffectiveSupply from '../hooks/useEffectiveSupply'
 import { useWallet } from './Wallet'
 
-const AppStateContext = React.createContext()
+const GardenStateContext = React.createContext()
 
-function AppStateProvider({ children }) {
+function GardenStateProvider({ children }) {
   const { account } = useWallet()
 
   const {
@@ -34,7 +34,7 @@ function AppStateProvider({ children }) {
     (!errors && loadingAppData) || balancesLoading || !effectiveSupply
 
   return (
-    <AppStateContext.Provider
+    <GardenStateContext.Provider
       value={{
         ...appData,
         accountBalance: balance,
@@ -52,16 +52,16 @@ function AppStateProvider({ children }) {
       }}
     >
       {children}
-    </AppStateContext.Provider>
+    </GardenStateContext.Provider>
   )
 }
 
-AppStateProvider.propTypes = {
+GardenStateProvider.propTypes = {
   children: PropTypes.node,
 }
 
-function useAppState() {
-  return useContext(AppStateContext)
+function useGardenState() {
+  return useContext(GardenStateContext)
 }
 
-export { AppStateProvider, useAppState }
+export { GardenStateProvider, useGardenState }

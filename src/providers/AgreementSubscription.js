@@ -4,7 +4,7 @@ import { createAppHook } from '@1hive/connect-react'
 import { connectorConfig } from '../networks'
 import { useWallet } from './Wallet'
 import { useMounted } from '../hooks/useMounted'
-import { useAppState } from './AppState'
+import { useGardenState } from './GardenState'
 import { getAppByName } from '../utils/data-utils'
 import env from '../environment'
 
@@ -13,24 +13,24 @@ const AgreementSubscriptionContext = React.createContext()
 
 function AgreementSubscriptionProvider({ children }) {
   const { account } = useWallet()
-  const { installedApps } = useAppState()
+  const { installedApps } = useGardenState()
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
 
   const [currentVersion, currentVersionStatus] = useAgreement(
     agreementApp,
-    app => app.onCurrentVersion()
+    (app) => app.onCurrentVersion()
   )
   const [disputableApps, disputableAppsStatus] = useAgreement(
     agreementApp,
-    app => app.onDisputableApps()
+    (app) => app.onDisputableApps()
   )
   const [stakingFactory, stakingFactoryStatus] = useAgreement(
     agreementApp,
-    app => app.stakingFactory()
+    (app) => app.stakingFactory()
   )
   const [signer, signerStatus] = useAgreement(
     agreementApp,
-    app => (account ? app.onSigner(account) : null),
+    (app) => (account ? app.onSigner(account) : null),
     [account]
   )
   const [
@@ -107,11 +107,11 @@ function useAppsWithRequirements(disputableApps) {
       try {
         // Concurrently request collateral and token requirements
         const allRequirements = await Promise.all(
-          disputableApps.map(app => app.collateralRequirement())
+          disputableApps.map((app) => app.collateralRequirement())
         )
 
         const allTokens = await Promise.all(
-          allRequirements.map(collateral => collateral.token())
+          allRequirements.map((collateral) => collateral.token())
         )
 
         // Apply requirements to the disputableApps list

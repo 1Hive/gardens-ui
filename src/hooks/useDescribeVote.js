@@ -3,14 +3,14 @@ import { useEffect, useState, useMemo } from 'react'
 import { getAppPresentationByAddress } from '../utils/app-utils'
 import { addressesEqual } from '../utils/web3-utils'
 import { useMounted } from '../hooks/useMounted'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 
 const cachedDescriptions = new Map([])
 
 export function useDescribeVote(script, voteId) {
   const mounted = useMounted()
 
-  const { organization, installedApps } = useAppState()
+  const { organization, installedApps } = useGardenState()
 
   const [description, setDescription] = useState(null)
   const [loading, setLoading] = useState(true)

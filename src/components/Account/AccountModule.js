@@ -10,7 +10,6 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import HeaderPopover from '../Header/HeaderPopover'
 
-import { useAppState } from '../../providers/AppState'
 import { useProfile } from '../../providers/Profile'
 
 import { getUseWalletProviders } from '../../utils/web3-utils'
@@ -51,11 +50,10 @@ function AccountModule({ compact }) {
   const { boxOpened } = useProfile()
 
   const { account, activating } = wallet
-  const { isLoading } = useAppState()
 
   const clearError = useCallback(() => setActivationError(null), [])
 
-  const toggle = useCallback(() => setOpened(opened => !opened), [])
+  const toggle = useCallback(() => setOpened((opened) => !opened), [])
 
   useEffect(() => {
     if (account && boxOpened) {
@@ -68,7 +66,7 @@ function AccountModule({ compact }) {
   }, [wallet])
 
   const activate = useCallback(
-    async providerId => {
+    async (providerId) => {
       try {
         await wallet.activate(providerId)
       } catch (error) {
@@ -120,7 +118,7 @@ function AccountModule({ compact }) {
       return 'providers'
     })()
 
-    const screenIndex = SCREENS.findIndex(screen => screen.id === screenId)
+    const screenIndex = SCREENS.findIndex((screen) => screen.id === screenId)
     const direction = previousScreenIndex.current > screenIndex ? -1 : 1
 
     previousScreenIndex.current = screenIndex
@@ -132,7 +130,7 @@ function AccountModule({ compact }) {
   const screenId = screen.id
 
   const handlePopoverClose = useCallback(
-    reject => {
+    (reject) => {
       if (screenId === 'connecting' || screenId === 'error') {
         // reject closing the popover
         return false
@@ -170,7 +168,6 @@ function AccountModule({ compact }) {
           label="Enable account"
           onClick={toggle}
           display={compact ? 'icon' : 'all'}
-          disabled={isLoading}
         />
       )}
 

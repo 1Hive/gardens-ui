@@ -4,7 +4,7 @@ import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
 import useAccountTokens from '../../hooks/useAccountTokens'
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 import { useCanUserVote } from '../../hooks/useExtendedVoteData'
 import { useWallet } from '../../providers/Wallet'
 
@@ -42,7 +42,7 @@ function ProposalFooter({
 }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const { inactiveTokens } = useAccountTokens(account, accountBalance)
 
   const supportersCount = useMemo(

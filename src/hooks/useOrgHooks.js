@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import connectHoneypot from '@1hive/connect-disputable-honey-pot'
+import { connectGarden } from '@1hive/connect-gardens'
 import connectAgreement from '@aragon/connect-agreement'
 import {
   createAppHook,
@@ -28,7 +28,7 @@ const useAgreementHook = createAppHook(
 )
 
 export function useOrgData() {
-  const [honeypot, setHoneypot] = useState(null)
+  const [garden, setGarden] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
@@ -62,26 +62,26 @@ export function useOrgData() {
 
     let cancelled = false
 
-    const fetchHoneypotConnector = async () => {
+    const fetchGardenConnector = async () => {
       try {
-        const honeypotConnector = await connectHoneypot(organization)
+        const gardenConnector = await connectGarden(organization)
 
         if (!cancelled) {
-          setHoneypot(honeypotConnector)
+          setGarden(gardenConnector)
         }
       } catch (err) {
         console.error(`Error fetching honey pot connector: ${err}`)
       }
     }
 
-    fetchHoneypotConnector()
+    fetchGardenConnector()
 
     return () => {
       cancelled = true
     }
   }, [organization])
 
-  const config = useConfigSubscription(honeypot)
+  const config = useConfigSubscription(garden)
 
   const loadingData =
     orgStatus.loading ||
@@ -100,7 +100,7 @@ export function useOrgData() {
     config,
     errors,
     connectedAgreementApp,
-    honeypot,
+    honeypot: garden, // TODO: Update naming
     installedApps: apps,
     organization,
     permissions: convictionAppPermissions,

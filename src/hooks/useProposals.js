@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakes } from './useStakes'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import useProposalFilters, {
   INITIAL_PROPOSAL_COUNT,
 } from './useProposalFilters'
@@ -71,7 +71,7 @@ export function useProposals() {
 function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakes(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const { config, effectiveSupply, isLoading } = useGardenState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -81,7 +81,7 @@ function useFilteredProposals(filters, account, latestBlock) {
       return proposals
     }
 
-    return proposals.map(proposal =>
+    return proposals.map((proposal) =>
       proposal.type === ProposalTypes.Decision
         ? processDecision(proposal)
         : processProposal(
@@ -98,7 +98,7 @@ function useFilteredProposals(filters, account, latestBlock) {
     () =>
       isLoading
         ? proposalsWithData
-        : proposalsWithData?.filter(proposal => {
+        : proposalsWithData?.filter((proposal) => {
             const proposalSupportStatus = getProposalSupportStatus(
               myStakes,
               proposal
@@ -131,7 +131,7 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const { config, effectiveSupply, isLoading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -160,7 +160,7 @@ export function useProposalWithThreshold(proposal) {
     requestToken,
     stableToken,
     vaultBalance,
-  } = useAppState()
+  } = useGardenState()
   const { alpha, maxRatio, weight } = config.conviction || {}
   const { requestedAmount, totalTokensStaked, stable, type } = proposal
 
@@ -234,14 +234,14 @@ export function useProposalEndDate(proposal) {
 
 export function useInactiveProposalsWithStake() {
   const { account } = useWallet()
-  const { honeypot } = useAppState()
+  const { honeypot } = useGardenState()
 
   const supporter = useSupporterSubscription(honeypot, account)
 
   if (!supporter || !supporter.stakes) {
     return []
   }
-  const inactiveStakes = supporter.stakes.filter(stake => {
+  const inactiveStakes = supporter.stakes.filter((stake) => {
     return (
       stake.proposal.type !== ProposalTypes.Decision &&
       (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||

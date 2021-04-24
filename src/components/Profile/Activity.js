@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Box, GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import ProposalIcon from '../ProposalIcon'
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '../../providers/GardenState'
 import { useSupporterSubscription } from '../../hooks/useSubscriptions'
 
 import { convertToString } from '../../types'
@@ -11,7 +11,7 @@ import { dateFormat } from '../../utils/date-utils'
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
 
-  const { honeypot } = useAppState()
+  const { honeypot } = useGardenState()
   const supporter = useSupporterSubscription(honeypot, account)
 
   const dedupedStakes = useMemo(() => {
@@ -20,7 +20,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
     }
     return supporter.stakesHistory.reduce((acc, stake) => {
       const index = acc.findIndex(
-        accStake => accStake.proposal.id === stake.proposal.id
+        (accStake) => accStake.proposal.id === stake.proposal.id
       )
 
       if (index >= 0) {

@@ -3,7 +3,7 @@ import { utils as ethersUtils } from 'ethers'
 import { addressesEqual } from '../utils/web3-utils'
 import { toMs, durationToHours } from '../utils/date-utils'
 import { getAppPresentation } from '../utils/app-utils'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useMounted } from './useMounted'
 import { useAgreementSubscription } from '../providers/AgreementSubscription'
 import { getAppByName } from '../utils/data-utils'
@@ -11,7 +11,7 @@ import env from '../environment'
 
 export function useAgreement() {
   const mounted = useMounted()
-  const { installedApps: apps } = useAppState()
+  const { installedApps: apps } = useGardenState()
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
 
   const [agreement, { loading: agreementLoading }] = useAgreementSubscription()
@@ -73,7 +73,7 @@ export function useAgreement() {
 
 function processDisputableApps(apps, disputableApps) {
   // Add presentation information and value formatting for each app
-  const processedDisputableApps = disputableApps.map(disputableApp => {
+  const processedDisputableApps = disputableApps.map((disputableApp) => {
     const {
       address: disputableAppAddress,
       actionAmount,

@@ -31,7 +31,7 @@ import VoteStatus, {
   getStatusAttributes,
 } from '../components/DecisionDetail/VoteStatus'
 
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useDescribeVote } from '../hooks/useDescribeVote'
 import { useWallet } from '../providers/Wallet'
 
@@ -50,7 +50,7 @@ function DecisionDetail({ proposal, actions }) {
   const { account: connectedAccount } = useWallet()
   const {
     config: { voting: votingConfig },
-  } = useAppState()
+  } = useGardenState()
 
   const {
     description,
@@ -92,7 +92,7 @@ function DecisionDetail({ proposal, actions }) {
     actions.executeDecision(proposal.number)
   }, [actions, proposal.number])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])
@@ -347,7 +347,7 @@ function DataField({ label, value, loading = false }) {
 
 function SummaryInfo({ vote }) {
   // const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
   const theme = useTheme()
   const { minAcceptQuorum, nay, yea } = vote
 

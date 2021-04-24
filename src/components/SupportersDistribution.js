@@ -10,7 +10,7 @@ import {
 import IdentityBadge from './IdentityBadge'
 
 import { useWallet } from '../providers/Wallet'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { formatTokenAmount } from '../utils/token-utils'
 import { stakesPercentages } from '../utils/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '../utils/web3-utils'
@@ -26,7 +26,7 @@ function displayedStakes(stakes, total, stakeToken) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map(stake => ({
+  ).map((stake) => ({
     item: {
       entity: stake.index === -1 ? 'Others' : stakes[stake.index].entity.id,
       amount: formatTokenAmount(
@@ -42,7 +42,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   stakes,
   totalTokensStaked,
 }) {
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
 
   const totalStakedString = totalTokensStaked.toString(10)
   const transformedStakes = useMemo(() => {
@@ -118,7 +118,7 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
     [theme]
   )
 
-  const adjustedStakes = stakes.map(stake => ({
+  const adjustedStakes = stakes.map((stake) => ({
     ...stake,
     percentage: Math.round(stake.percentage),
   }))

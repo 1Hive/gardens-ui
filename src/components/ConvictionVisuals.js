@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import { useProposalEndDate } from '../hooks/useProposals'
 import { useWallet } from '../providers/Wallet'
 
@@ -32,18 +32,18 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const theme = useTheme()
 
   // We want conviction and threhsold in percentages
-  const normalize = n => n / maxConviction
-  const normalizeLines = lines => {
-    return lines.map(line => line.map(normalize))
+  const normalize = (n) => n / maxConviction
+  const normalizeLines = (lines) => {
+    return lines.map((line) => line.map(normalize))
   }
 
   return (
     <LineChart
       lines={normalizeLines(lines)}
       total={lines[0] && lines[0].length}
-      label={i => i - Math.floor((lines[0].length - 1) / 2)}
+      label={(i) => i - Math.floor((lines[0].length - 1) / 2)}
       captionsHeight={20}
-      color={i => [theme.info, theme.infoSurfaceContent][i]}
+      color={(i) => [theme.info, theme.infoSurfaceContent][i]}
       threshold={
         withThreshold &&
         !Number.isNaN(threshold) &&
@@ -131,7 +131,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const {
     maxRatio,
     stakeToken: { symbol, decimals },
-  } = useAppState()
+  } = useGardenState()
 
   const theme = useTheme()
 
@@ -195,8 +195,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
                     more needed
                   </React.Fragment>
                 ) : (
-                  `Funding requests must be below ${maxRatio *
-                    100}% organization total funds`
+                  `Funding requests must be below ${
+                    maxRatio * 100
+                  }% organization total funds`
                 )}
                 ).
               </span>
