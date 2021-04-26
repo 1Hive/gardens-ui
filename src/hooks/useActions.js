@@ -19,6 +19,7 @@ import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
+const RESOLVE_GAS_LIMIT = 600000
 const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
 
@@ -259,6 +260,7 @@ export default function useActions() {
       sendIntent(agreementApp, 'resolve', [disputeId], {
         ethers,
         from: account,
+        gasLimit: RESOLVE_GAS_LIMIT,
       })
     },
     [account, agreementApp, ethers]
