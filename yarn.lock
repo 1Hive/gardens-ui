@@ -178,6 +178,11 @@
     "@1hive/connect-ethereum" "^0.8.5"
     "@1hive/connect-thegraph" "^0.8.5"
 
+"@1hive/gardens-dao-list@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@1hive/gardens-dao-list/-/gardens-dao-list-1.0.1.tgz#e8483409e3105e6aba58fb04a3f6eacf9c197f69"
+  integrity sha512-yE1x6HZQaRLDfqNWlo75lemdBIseDncDWxQ54qoCowc8UqyB7Q+YCqq3sLAKwzC2LJn379JyDTVL5uRHkMsgIg==
+
 "@aragon/connect-agreement@^0.0.0-beta.14":
   version "0.0.0-beta.14"
   resolved "https://registry.yarnpkg.com/@aragon/connect-agreement/-/connect-agreement-0.0.0-beta.14.tgz#df14ed06f16edff23f5e724d16d3a56ba49fcae1"
