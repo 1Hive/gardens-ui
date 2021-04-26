@@ -92,6 +92,10 @@ function DecisionDetail({ proposal, actions }) {
     actions.executeDecision(proposal.number)
   }, [actions, proposal.number])
 
+  const handleResolveAction = useCallback(() => {
+    actions.resolveAction(proposal.disputeId)
+  }, [actions, proposal])
+
   const handleShowModal = useCallback(mode => {
     setModalVisible(true)
     setModalMode(mode)
@@ -229,6 +233,7 @@ function DecisionDetail({ proposal, actions }) {
                 proposal={proposal}
                 onChallengeAction={() => handleShowModal('challenge')}
                 onDisputeAction={() => handleShowModal('dispute')}
+                onResolveAction={handleResolveAction}
                 onSettleAction={() => handleShowModal('settle')}
               />
 

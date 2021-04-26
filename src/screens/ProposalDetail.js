@@ -89,6 +89,10 @@ function ProposalDetail({
     actions.cancelProposal(id)
   }, [id, actions])
 
+  const handleResolveAction = useCallback(() => {
+    actions.resolveAction(proposal.disputeId)
+  }, [actions, proposal])
+
   const handleShowModal = useCallback(mode => {
     setModalVisible(true)
     setModalMode(mode)
@@ -311,6 +315,7 @@ function ProposalDetail({
                   proposal={proposal}
                   onChallengeAction={() => handleShowModal('challenge')}
                   onDisputeAction={() => handleShowModal('dispute')}
+                  onResolveAction={handleResolveAction}
                   onSettleAction={() => handleShowModal('settle')}
                 />
               )}
