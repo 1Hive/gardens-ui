@@ -254,6 +254,16 @@ export default function useActions() {
     return new BigNumber(allowance.toString())
   }, [account, feeTokenContract, agreementApp])
 
+  const resolveAction = useCallback(
+    disputeId => {
+      sendIntent(agreementApp, 'resolve', [disputeId], {
+        ethers,
+        from: account,
+      })
+    },
+    [account, agreementApp, ethers]
+  )
+
   const settleAction = useCallback(
     async ({ actionId }, onDone = noop) => {
       const intent = await agreementApp.intent('settleAction', [actionId], {
@@ -315,6 +325,7 @@ export default function useActions() {
       challengeAction,
       settleAction,
       disputeAction,
+      resolveAction,
       signAgreement,
       approveChallengeTokenAmount,
       getAllowance,
