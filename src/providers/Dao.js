@@ -21,8 +21,7 @@ export function DAOProvider({ children }) {
   const validAddress = isAddress(firstParameter)
   const dao = daoList.daos.find(d => addressesEqual(firstParameter, d.address))
 
-  // We should bypass the error if the Gardens home page is invoked, right now we don't have one but probably will be the dao explorer
-  if ((!validAddress || !dao) && firstParameter !== 'home') {
+  if (!validAddress || !dao) {
     throw new DAONotFound(firstParameter)
   }
 
