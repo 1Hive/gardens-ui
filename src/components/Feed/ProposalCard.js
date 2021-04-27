@@ -32,7 +32,9 @@ function Card({
 }) {
   const theme = useTheme()
   const history = useHistory()
-  const { address: daoAddress } = useDAO()
+  const {
+    connectedDAO: { address: daoAddress },
+  } = useDAO()
 
   const { below } = useViewport()
 

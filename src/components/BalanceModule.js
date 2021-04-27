@@ -4,7 +4,8 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
-import { useAppState } from '../providers/AppState'
+// import { useAppState } from '../providers/AppState'
+import { useDAO } from '../providers/Dao'
 import { useWallet } from '../providers/Wallet'
 
 import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
@@ -13,10 +14,14 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { accountBalance, stakeToken } = useAppState()
+  const { connectedDAO } = useDAO()
+  const { connectedAccountBalance, stakeToken } = connectedDAO || {}
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
-  const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
+  const { inactiveTokens } = useAccountTokens(
+    wallet.account,
+    connectedAccountBalance
+  )
 
   const handleOnClick = useCallback(() => history.push('/collateral'), [
     history,
@@ -26,7 +31,7 @@ function BalanceModule() {
     ? '0'
     : inactiveTokens
         .times('100')
-        .div(accountBalance)
+        .div(connectedAccountBalance)
         .toString()
 
   return (
@@ -54,11 +59,14 @@ function BalanceModule() {
                 margin-right: ${0.5 * GU}px;
               `}
             >
-              {accountBalance.eq(-1) ? (
+              {connectedAccountBalance.eq(-1) ? (
                 <LoadingRing />
               ) : (
                 <span>
-                  {formatTokenAmount(accountBalance, stakeToken.decimals)}
+                  {formatTokenAmount(
+                    connectedAccountBalance,
+                    stakeToken.decimals
+                  )}
                 </span>
               )}
             </div>

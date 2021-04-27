@@ -9,8 +9,8 @@ import StakeManagement from '../components/Stake/StakeManagement'
 import { useDAO } from '../providers/Dao'
 
 export default function Routes() {
-  const dao = useDAO()
-  const { address: daoAddress } = dao || {}
+  const { connectedDAO } = useDAO()
+  const { address: daoAddress } = connectedDAO || {}
 
   return (
     <Switch>
