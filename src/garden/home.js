@@ -8,7 +8,6 @@ import { StakingProvider } from '../providers/Staking'
 import { ConnectProvider as Connect } from '../providers/Connect'
 
 function GardenHome(match) {
-  console.log('match!!!!! ', match)
   return (
     <DAOProvider>
       <Connect>
