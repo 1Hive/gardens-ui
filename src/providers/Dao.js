@@ -31,10 +31,7 @@ export function DAOProvider({ children }) {
   )
 
   // somehow here we are going to get the dao token info and the user balance for the dao
-  const connectedAccountBalance = getConnectedAccountBalance(
-    account,
-    connectedDAO
-  )
+  const accountBalance = getConnectedAccountBalance(account, connectedDAO)
   const stakeToken = {}
 
   const DAOInfo = {
@@ -42,7 +39,7 @@ export function DAOProvider({ children }) {
     connectedDAO: connectedDAO && {
       ...connectedDAO,
       stakeToken,
-      connectedAccountBalance,
+      accountBalance,
     },
   }
 

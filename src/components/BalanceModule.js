@@ -15,13 +15,10 @@ function BalanceModule() {
   const wallet = useWallet()
   const history = useHistory()
   const { connectedDAO } = useDAO()
-  const { connectedAccountBalance, stakeToken } = connectedDAO || {}
+  const { accountBalance, stakeToken } = connectedDAO || {}
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
-  const { inactiveTokens } = useAccountTokens(
-    wallet.account,
-    connectedAccountBalance
-  )
+  const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
   const handleOnClick = useCallback(() => history.push('/collateral'), [
     history,
@@ -31,7 +28,7 @@ function BalanceModule() {
     ? '0'
     : inactiveTokens
         .times('100')
-        .div(connectedAccountBalance)
+        .div(accountBalance)
         .toString()
 
   return (
@@ -59,14 +56,11 @@ function BalanceModule() {
                 margin-right: ${0.5 * GU}px;
               `}
             >
-              {connectedAccountBalance.eq(-1) ? (
+              {accountBalance.eq(-1) ? (
                 <LoadingRing />
               ) : (
                 <span>
-                  {formatTokenAmount(
-                    connectedAccountBalance,
-                    stakeToken.decimals
-                  )}
+                  {formatTokenAmount(accountBalance, stakeToken.decimals)}
                 </span>
               )}
             </div>
