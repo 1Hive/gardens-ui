@@ -11,7 +11,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
-import { useDAO } from '../../providers/Dao'
+// import { useDAO } from '../../providers/Dao'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 import { getNetworkName } from '../../utils/web3-utils'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
@@ -23,20 +23,20 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
-  const { address: daoAddress } = useDAO()
+  // const { address: daoAddress } = useDAO()
 
   const networkName = getNetworkName()
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
 
   const goToProfile = useCallback(() => {
-    history.replace(`/${daoAddress}/profile`)
+    history.replace(`/profile`)
     onClosePopover()
-  }, [daoAddress, history, onClosePopover])
+  }, [history, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    history.replace(`/${daoAddress}/collateral`)
+    history.replace(`/collateral`)
     onClosePopover()
-  }, [daoAddress, history, onClosePopover])
+  }, [history, onClosePopover])
 
   const handleCopyAddress = useCallback(() => copy(wallet.account), [
     copy,

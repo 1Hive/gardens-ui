@@ -3,7 +3,7 @@ import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
-import { useDAO } from '../../providers/Dao'
+// import { useDAO } from '../../providers/Dao'
 import { useWallet } from '../../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
 import { getNetwork } from '../../networks'
@@ -17,7 +17,7 @@ function Header() {
   const { below } = useViewport()
   const layoutSmall = below('medium')
   const network = getNetwork()
-  const { address: daoAddress } = useDAO()
+  // const { address: daoAddress } = useDAO()
 
   const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
 
@@ -66,7 +66,7 @@ function Header() {
                 `}
               >
                 <Link
-                  href={`#/${daoAddress}/covenant`}
+                  href="#/covenant"
                   external={false}
                   css={`
                     text-decoration: none;
