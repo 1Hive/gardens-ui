@@ -1,43 +1,44 @@
 import React, { useContext } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import { useLocation } from 'react-router-dom'
 import daoList from '@1hive/gardens-dao-list'
 
 import { useWallet } from '../providers/Wallet'
+import { DAONotFound } from '../errors'
 
 const DAOContext = React.createContext()
-
-export function parsePath(pathname, search = '') {
-  const [, ...parts] = pathname.split('/')
-
-  return parts[0]
-}
 
 function getConnectedAccountBalance(account, dao) {
   return 0
 }
 
 export function DAOProvider({ children }) {
-  const location = useLocation()
+  // const location = useLocation()
   const { account } = useWallet()
 
   // get all the daos for the dashboard
 
   // note that i am calling this daoId because at some point we might want to also handle aragon id's and not just addresses
-  const firstParameter = parsePath(location.pathname)
+  const match = useRouteMatch('/garden/:daoId')
+  let connectedDao
 
-  const connectedDAO = daoList.daos.find(d =>
-    addressesEqual(firstParameter, d.address)
-  )
+  if (match) {
+    const daoAddress = match.params.daoId
+    connectedDao = daoList.daos.find(d => addressesEqual(daoAddress, d.address))
+
+    if (!connectedDao) {
+      throw new DAONotFound(match.params.daoId)
+    }
+  }
 
   // somehow here we are going to get the dao token info and the user balance for the dao
-  const accountBalance = getConnectedAccountBalance(account, connectedDAO)
+  const accountBalance = getConnectedAccountBalance(account, connectedDao)
   const stakeToken = {}
 
   const DAOInfo = {
-    gardensList: daoList.daos,
-    connectedDAO: connectedDAO && {
-      ...connectedDAO,
+    daoList: daoList.daos,
+    connectedDao: connectedDao && {
+      ...connectedDao,
       stakeToken,
       accountBalance,
     },

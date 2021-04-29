@@ -14,8 +14,8 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { connectedDAO } = useDAO()
-  const { accountBalance, stakeToken } = connectedDAO || {}
+  const { connectedDao } = useDAO()
+  const { accountBalance, stakeToken } = connectedDao || {}
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
