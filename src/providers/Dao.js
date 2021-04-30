@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
+import { getGardens } from '@1hive/connect-gardens'
 import daoList from '@1hive/gardens-dao-list'
 
 import { useWallet } from '../providers/Wallet'
@@ -13,12 +14,9 @@ function getConnectedAccountBalance(account, dao) {
 }
 
 export function DAOProvider({ children }) {
-  // const location = useLocation()
   const { account } = useWallet()
+  const daos = useDaos()
 
-  // get all the daos for the dashboard
-
-  // note that i am calling this daoId because at some point we might want to also handle aragon id's and not just addresses
   const match = useRouteMatch('/garden/:daoId')
   let connectedDao
 
@@ -36,7 +34,7 @@ export function DAOProvider({ children }) {
   const stakeToken = {}
 
   const DAOInfo = {
-    daoList: daoList.daos,
+    daos,
     connectedDao: connectedDao && {
       ...connectedDao,
       stakeToken,
@@ -49,4 +47,32 @@ export function DAOProvider({ children }) {
 
 export function useDAO() {
   return useContext(DAOContext)
+}
+
+function useDaos() {
+  const [daos, setDaos] = useState([])
+
+  useEffect(() => {
+    const fetchDaos = async () => {
+      try {
+        const result = await getGardens()
+        setDaos(result)
+      } catch (err) {
+        console.error(`Error fetching daos ${err}`)
+      }
+    }
+
+    fetchDaos()
+  }, [daos])
+
+  return useMemo(() => daos.map(addDaoMetadata), [daos])
+}
+
+function addDaoMetadata(dao) {
+  const metadata = daoList.daos.find(d => d.address === dao.address) || {}
+
+  return {
+    ...dao,
+    ...metadata,
+  }
 }
