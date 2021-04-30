@@ -3,7 +3,7 @@ import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
-import { useDAO } from '../../providers/Dao'
+import { useGardens } from '../../providers/Gardens'
 import { useWallet } from '../../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
 import { getNetwork } from '../../networks'
@@ -17,7 +17,7 @@ function Header() {
   const { below } = useViewport()
   const layoutSmall = below('medium')
   const network = getNetwork()
-  const { connectedDao } = useDAO()
+  const { connectedGarden } = useGardens()
 
   const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
 
@@ -118,7 +118,7 @@ function Header() {
           >
             <AccountModule compact={layoutSmall} />
             {/** TODO re arrange the header when the balance module is not present because of not having a connected dao  also we should hide the collateral manager option */}
-            {connectedDao && account && !layoutSmall && (
+            {connectedGarden && account && !layoutSmall && (
               <>
                 <div
                   css={`

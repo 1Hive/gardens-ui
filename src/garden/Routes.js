@@ -5,11 +5,11 @@ import DecisionLoader from '../components/DecisionLoader'
 import Home from '../screens/Home'
 import ProposalLoader from '../components/ProposalLoader'
 import StakeManagement from '../components/Stake/StakeManagement'
-import { useDAO } from '../providers/Dao'
+import { useGardens } from '../providers/Gardens'
 
 export default function Routes() {
-  const { connectedDao } = useDAO()
-  const { address: daoAddress } = connectedDao || {}
+  const { connectedGarden } = useGardens()
+  const { address: daoAddress } = connectedGarden || {}
 
   return (
     <Switch>
