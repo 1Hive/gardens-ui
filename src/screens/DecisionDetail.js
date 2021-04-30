@@ -77,7 +77,7 @@ function DecisionDetail({ proposal, actions }) {
   const quorumProgress = getQuorumProgress(proposal)
 
   const handleBack = useCallback(() => {
-    history.push('/home')
+    history.goBack()
   }, [history])
 
   const handleVoteNo = useCallback(() => {

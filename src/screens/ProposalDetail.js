@@ -82,7 +82,7 @@ function ProposalDetail({
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {
-    history.push('/home')
+    history.goBack()
   }, [history])
 
   const handleCancelProposal = useCallback(() => {
