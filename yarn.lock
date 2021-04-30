@@ -133,21 +133,21 @@
     ethers "^5.0.7"
     radspec "^2.0.0-rc.2"
 
-"@1hive/connect-disputable-honey-pot@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-disputable-honey-pot/-/connect-disputable-honey-pot-0.2.0.tgz#6e0dfc72523de8bba3c2bf29a45a09c763031461"
-  integrity sha512-W/WtVucKfdx4chnMBbdUM+Q8JC2sGYHosJs/94ndR3gPd+IckVgODeLZeTJDWh4ubhm6TSveHCii/i9cegx78A==
-  dependencies:
-    "@aragon/connect-core" "0.7.0"
-    "@aragon/connect-thegraph" "0.7.0"
-    graphql-tag "^2.10.3"
-
 "@1hive/connect-ethereum@^0.8.5":
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.8.6.tgz#40a06d22299d537ac5602ccef19762abfaf1d2b5"
   integrity sha512-+y7Ql7xB3dXJ7zxE85ghrH+RfmBOvqXdj7PSJphgFzQ67N/wAZKZoRY8g5GmCuh18OK1UGIL4bxP9Lxl7sgQtQ==
   dependencies:
     "@1hive/connect-core" "^0.8.5"
+
+"@1hive/connect-gardens@^0.2.0":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.0.1.tgz#38443417bd63b18a90434aaec442277e1fd5b290"
+  integrity sha512-9h18g+3mbZ6WsS2akHuokaIyC8Qzu/2V2Eq6uB8+2SI25C5EXnBHGJCfkgUGJ1I126FTI2Pt+XZS33y8B5ZymQ==
+  dependencies:
+    "@aragon/connect-core" "0.7.0"
+    "@aragon/connect-thegraph" "0.7.0"
+    graphql-tag "^2.10.3"
 
 "@1hive/connect-react@^0.8.6":
   version "0.8.6"
