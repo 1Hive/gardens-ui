@@ -5,7 +5,6 @@ import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
 import ProposalInfo from './ProposalInfo'
-// import { useDAO } from '../../providers/Dao'
 import { useProposalWithThreshold } from '../../hooks/useProposals'
 
 import { ProposalTypes } from '../../types'
@@ -32,9 +31,6 @@ function Card({
 }) {
   const theme = useTheme()
   const history = useHistory()
-  // const {
-  //   connectedDAO: { address: daoAddress },
-  // } = useDAO()
 
   const { below } = useViewport()
 
@@ -42,7 +38,7 @@ function Card({
     const entityPath =
       proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'
     history.push(
-      `/${history.location.pathname}/${entityPath}/${proposal.number}`
+      `${history.location.pathname}/${entityPath}/${proposal.number}`
     )
   }, [history, proposal.number, proposal.type])
 
