@@ -5,8 +5,14 @@ import { AppStateProvider } from '../providers/AppState'
 
 import { StakingProvider } from '../providers/Staking'
 import { ConnectProvider as Connect } from '../providers/Connect'
+import { useGardens } from '../providers/Gardens'
 
 function GardenHome() {
+  const { loading } = useGardens()
+  if (loading) {
+    return null
+  }
+
   return (
     <Connect>
       <AppStateProvider>

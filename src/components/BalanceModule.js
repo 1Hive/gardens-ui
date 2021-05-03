@@ -4,7 +4,6 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
-// import { useAppState } from '../providers/AppState'
 import { useGardens } from '../providers/Gardens'
 import { useWallet } from '../providers/Wallet'
 
