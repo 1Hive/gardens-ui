@@ -12,40 +12,59 @@ import { getNetwork } from '../networks'
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const { account } = useWallet()
   const [gardens, loading] = useGardensList()
 
   const match = useRouteMatch('/garden/:daoId')
 
   const connectedGarden = useMemo(() => {
-    if (!loading && match) {
+    if (match) {
       const gardenAddress = match.params.daoId
       return gardens.find(d => addressesEqual(gardenAddress, d.address))
     }
 
-    return {}
-  }, [gardens, loading, match])
+    return null
+  }, [gardens, match])
 
-  if (!connectedGarden) {
+  if (connectedGarden) {
+    return (
+      <WithConnectedGarden connectedGarden={connectedGarden} gardens={gardens}>
+        {children}
+      </WithConnectedGarden>
+    )
+  }
+
+  if (match && !loading) {
     throw new DAONotFound(match.params.daoId)
   }
 
-  // somehow here we are going to get the dao token info and the user balance for the dao
+  return (
+    <DAOContext.Provider value={{ gardens, loading }}>
+      {children}
+    </DAOContext.Provider>
+  )
+}
+
+function WithConnectedGarden({ children, connectedGarden, gardens }) {
+  const { account } = useWallet()
   const { balance, totalSupply } = useTokenBalances(
     account,
     connectedGarden.token
   )
 
-  const DAOInfo = {
-    gardens,
-    connectedGarden: {
-      ...connectedGarden,
-      balance,
-      totalSupply,
-    },
-  }
-
-  return <DAOContext.Provider value={DAOInfo}>{children}</DAOContext.Provider>
+  return (
+    <DAOContext.Provider
+      value={{
+        gardens,
+        connectedGarden: {
+          ...connectedGarden,
+          accountBalance: balance,
+          totalSupply,
+        },
+      }}
+    >
+      {children}
+    </DAOContext.Provider>
+  )
 }
 
 export function useGardens() {
