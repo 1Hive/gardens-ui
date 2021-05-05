@@ -7,7 +7,8 @@ import useAccountTokens from '../hooks/useAccountTokens'
 import { useGardens } from '../providers/Gardens'
 import { useWallet } from '../providers/Wallet'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import defaultTokenSvg from '../assets/defaultToken.svg'
 
 function BalanceModule() {
   const theme = useTheme()
@@ -16,7 +17,6 @@ function BalanceModule() {
   const {
     connectedGarden: { accountBalance, token },
   } = useGardens()
-  const tokenIcon = getTokenIconBySymbol(token.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
@@ -33,7 +33,14 @@ function BalanceModule() {
 
   return (
     <HeaderModule
-      icon={<img src={tokenIcon} height="28" width="28" alt="" />}
+      icon={
+        <img
+          src={token.logo || defaultTokenSvg}
+          height="28"
+          width="28"
+          alt=""
+        />
+      }
       content={
         <div>
           <div
