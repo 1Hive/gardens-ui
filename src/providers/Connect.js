@@ -7,6 +7,8 @@ import { getNetwork } from '../networks'
 function ConnectProvider({ children }) {
   const { connectedGarden } = useGardens()
 
+  console.log('connectedGarden ', connectedGarden)
+
   return (
     <Connect
       location={connectedGarden.address}

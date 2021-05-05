@@ -24,20 +24,14 @@ function HeroBanner({ onRequestNewProposal }) {
     <div
       css={`
         height: fit-content;
-
-        ${!compactMode &&
-          `
-          top: ${3 * GU}px;
-          position: sticky;
-          margin-top: ${3 * GU}px;
-        `}
+        ${!compactMode && `margin-top: ${3 * GU}px;`}
+        ${compactMode && `margin-top: ${2 * GU}px;`}
       `}
     >
       <div
         css={`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
-          width: ${compactMode ? '100%' : '327px'};
           height: 0;
           padding-top: ${banner.aspectRatio};
           position: relative;

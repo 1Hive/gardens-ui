@@ -2,15 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
+import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import Filters from '../components/Filters/Filters'
-import HeroBanner from '../components/Feed/HeroBanner'
+// import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
+import MultiModal from '../components/MultiModal/MultiModal'
 import NetworkErrorModal from '../components/NetworkErrorModal'
 import ProposalsList from '../components/Feed/ProposalsList'
-
-import MultiModal from '../components/MultiModal/MultiModal'
-import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
+// import WrapToken from '../components/Feed/WrapToken'
+import RightPanel from '../components/Feed/RightPanel'
 
 import useAppLogic from '../logic/app-logic'
 import { useWallet } from '../providers/Wallet'
@@ -136,25 +137,13 @@ const Home = React.memo(function Home() {
                     selectedRanking={filters.ranking.filter}
                   />
                   {largeMode && (
-                    <div
-                      css={`
-                        margin-left: ${3 * GU}px;
-                      `}
-                    >
-                      <HeroBanner onRequestNewProposal={handleShowModal} />
-                    </div>
+                    <RightPanel onRequestNewProposal={handleShowModal} />
                   )}
                 </div>
               </div>
             </div>
             {!largeMode && (
-              <div
-                css={`
-                  margin-right: ${(compactMode ? 0 : 3) * GU}px;
-                `}
-              >
-                <HeroBanner onRequestNewProposal={handleShowModal} />
-              </div>
+              <RightPanel onRequestNewProposal={handleShowModal} />
             )}
           </div>
           <MultiModal visible={modalVisible} onClose={handleHideModal}>
