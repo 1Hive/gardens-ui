@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { useAppState } from '../providers/AppState'
+import { useGardens } from '../providers/Gardens'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
-import honeySvg from '../assets/honey.svg'
+import defaultTokenSvg from '../assets/defaultToken.svg'
 
 const Metrics = React.memo(function Metrics({
   commonPool,
@@ -15,7 +15,9 @@ const Metrics = React.memo(function Metrics({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const { requestToken, stakeToken } = useAppState()
+  const {
+    connectedGarden: { token },
+  } = useGardens()
   const currency = {
     name: 'USD',
     symbol: '$',
@@ -38,7 +40,7 @@ const Metrics = React.memo(function Metrics({
           `}
         >
           <img
-            src={honeySvg}
+            src={token.logo || defaultTokenSvg}
             height="60"
             width="60"
             alt=""
@@ -48,13 +50,13 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          <TokenPrice currency={currency} />
+          <TokenPrice currency={currency} token={token} />
         </div>
         <div>
           <TokenBalance
             label="Common Pool"
             value={commonPool}
-            token={requestToken}
+            token={token}
             currency={currency}
           />
         </div>
@@ -62,7 +64,7 @@ const Metrics = React.memo(function Metrics({
           <TokenBalance
             label="Token Supply"
             value={totalSupply}
-            token={stakeToken}
+            token={token}
             currency={currency}
           />
         </div>
@@ -70,7 +72,7 @@ const Metrics = React.memo(function Metrics({
           <TokenBalance
             label="Active"
             value={totalActiveTokens}
-            token={stakeToken}
+            token={token}
             currency={currency}
           />
         </div>
@@ -123,9 +125,9 @@ function TokenBalance({ label, token, value, currency }) {
   )
 }
 
-function TokenPrice({ currency }) {
+function TokenPrice({ currency, token }) {
   const theme = useTheme()
-  const price = useUniswapHnyPrice()
+  const price = useUniswapHnyPrice() // TODO: Update to fetch token price
 
   return (
     <div>
@@ -135,7 +137,7 @@ function TokenPrice({ currency }) {
           margin-bottom: ${0.5 * GU}px;
         `}
       >
-        HNY Price
+        {token.symbol} Price
       </p>
       <span
         css={`

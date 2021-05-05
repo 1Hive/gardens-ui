@@ -18,7 +18,6 @@ export default function Routes() {
       <Route exact path="*/vote/:id" component={DecisionLoader} />
       <Route exact path="*/covenant" component={Agreement} />
       <Route exact path="*/collateral" component={StakeManagement} />
-      {/* <Redirect to="/home" /> */}
     </Switch>
   )
 }
