@@ -3,18 +3,18 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
 
-import Activity from '../components/Profile/Activity'
+// import Activity from '../components/Profile/Activity'
 import EditProfile from '../components/Profile/EditProfile'
-import InactiveProposalsStake from '../components/Profile/InactiveProposalsStake'
-import Loader from '../components/Loader'
-import MainProfile from '../components/Profile/MainProfile'
-import StakingTokens from '../components/Profile/StakingTokens'
-import Wallet from '../components/Wallet'
+// import InactiveProposalsStake from '../components/Profile/InactiveProposalsStake'
+// import Loader from '../components/Loader'
+// import MainProfile from '../components/Profile/MainProfile'
+// import StakingTokens from '../components/Profile/StakingTokens'
+// import Wallet from '../components/Wallet'
 
-import { useAccountStakes } from '../hooks/useStakes'
-import { useAppState } from '../providers/AppState'
+// import { useAccountStakes } from '../hooks/useStakes'
+// import { useAppState } from '../providers/AppState'
 import usePicture from '../hooks/usePicture'
-import { useInactiveProposalsWithStake } from '../hooks/useProposals'
+// import { useInactiveProposalsWithStake } from '../hooks/useProposals'
 import useSelectedProfile from '../hooks/useSelectedProfile'
 import { useWallet } from '../providers/Wallet'
 import { addressesEqual } from '../utils/web3-utils'
@@ -25,7 +25,8 @@ function Profile() {
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
-  const { isLoading } = useAppState()
+  // TODO- figure out to replace for another loading state from the dao provider
+  // const { isLoading } = useAppState()
   const { account: connectedAccount } = useWallet()
   const history = useHistory()
   const { name: layout } = useLayout()
@@ -36,8 +37,8 @@ function Profile() {
   // Selected account
   const searchParams = useSearchParams()
   const selectedAccount = searchParams.get('account') || connectedAccount
-  const accountStakes = useAccountStakes(selectedAccount)
-  const accountInactiveStakes = useInactiveProposalsWithStake()
+  // const s = useAccountStakes(selectedAccount)
+  // const accountInactiveStakes = useInactiveProposalsWithStake()
 
   const selectedProfile = useSelectedProfile(selectedAccount)
   const { coverPhoto } = selectedProfile || {}
@@ -75,94 +76,97 @@ function Profile() {
 
   return (
     <div>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Loader />
-      ) : (
-        <>
-          <AnimatedBackground
-            height={(editMode ? 15 : 50) * GU}
-            image={coverSrc}
-          />
-          <div
-            css={`
-              margin-top: ${(editMode ? 4 : 20) * GU}px;
-              position: relative;
-            `}
-          >
-            {editMode ? (
-              <EditProfile
-                coverPic={coverPic}
-                coverPicRemovalEnabled={
-                  !coverPic.removed &&
-                  (coverPhoto || (imageInput?.files && imageInput?.files[0]))
-                }
-                onBack={toggleEditMode}
-                onCoverPicChange={onCoverPicChange}
-                onCoverPicRemoval={onCoverPicRemoval}
-                profile={selectedProfile}
-                ref={imageInput}
-              />
-            ) : (
-              <>
-                {isConnectedAccountProfile && (
-                  <div
-                    css={`
-                      position: absolute;
-                      z-index: 1;
+      ) : ( */}
+      <>
+        <AnimatedBackground
+          height={(editMode ? 15 : 50) * GU}
+          image={coverSrc}
+        />
+        <div
+          css={`
+            margin-top: ${(editMode ? 4 : 20) * GU}px;
+            position: relative;
+          `}
+        >
+          {editMode ? (
+            <EditProfile
+              coverPic={coverPic}
+              coverPicRemovalEnabled={
+                !coverPic.removed &&
+                (coverPhoto || (imageInput?.files && imageInput?.files[0]))
+              }
+              onBack={toggleEditMode}
+              onCoverPicChange={onCoverPicChange}
+              onCoverPicRemoval={onCoverPicRemoval}
+              profile={selectedProfile}
+              ref={imageInput}
+            />
+          ) : (
+            <>
+              {isConnectedAccountProfile && (
+                <div
+                  css={`
+                    position: absolute;
+                    z-index: 1;
 
-                      ${oneColumn
-                        ? `
+                    ${oneColumn
+                      ? `
                             left: 0;
                             right: 0;
                             text-align: center;
                             top: 50px;
                             `
-                        : `
+                      : `
                             top: -54px;
                             right: 0;
                           `}
-                    `}
-                  >
-                    <Button
-                      label={
-                        selectedProfile?.authenticated
-                          ? 'Edit profile'
-                          : 'Loading profile…'
-                      }
-                      onClick={toggleEditMode}
-                      disabled={!selectedProfile?.authenticated}
-                    />
-                  </div>
-                )}
-                <Split
-                  primary={
-                    <Activity
-                      account={selectedAccount}
-                      isConnectedAccount={isConnectedAccountProfile}
-                      profileName={selectedProfile?.name}
-                    />
-                  }
-                  secondary={
-                    <>
-                      <MainProfile profile={selectedProfile} />
-                      <Wallet
-                        account={selectedAccount}
-                        myStakes={accountStakes}
-                      />
-                      <StakingTokens myStakes={accountStakes} />
-                      {accountInactiveStakes.length > 0 && (
-                        <InactiveProposalsStake
-                          myInactiveStakes={accountInactiveStakes}
-                        />
-                      )}
-                    </>
-                  }
-                  invert={oneColumn ? 'vertical' : 'horizontal'}
-                />
-              </>
-            )}
-          </div>
-        </>
+                  `}
+                >
+                  <Button
+                    label={
+                      selectedProfile?.authenticated
+                        ? 'Edit profile'
+                        : 'Loading profile…'
+                    }
+                    onClick={toggleEditMode}
+                    disabled={!selectedProfile?.authenticated}
+                  />
+                </div>
+              )}
+              <Split
+                primary={
+                  // <Activity
+                  //   account={selectedAccount}
+                  //   isConnectedAccount={isConnectedAccountProfile}
+                  //   profileName={selectedProfile?.name}
+                  // />
+                  <></>
+                }
+                secondary={
+                  // <>
+                  //   <MainProfile profile={selectedProfile} />
+                  //   <Wallet
+                  //     account={selectedAccount}
+                  //     myStakes={accountStakes}
+                  //   />
+                  //   <StakingTokens myStakes={accountStakes} />
+                  //   {accountInactiveStakes.length > 0 && (
+                  //     <InactiveProposalsStake
+                  //       myInactiveStakes={accountInactiveStakes}
+                  //     />
+                  //   )}
+                  // </>
+
+                  <> </>
+                }
+                invert={oneColumn ? 'vertical' : 'horizontal'}
+              />
+            </>
+          )}
+        </div>
+      </>
       )}
     </div>
   )

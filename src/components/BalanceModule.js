@@ -4,7 +4,8 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
-import { useAppState } from '../providers/AppState'
+// import { useAppState } from '../providers/AppState'
+import { useDAO } from '../providers/Dao'
 import { useWallet } from '../providers/Wallet'
 
 import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
@@ -13,7 +14,8 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { accountBalance, stakeToken } = useAppState()
+  const { connectedDao } = useDAO()
+  const { accountBalance, stakeToken } = connectedDao || {}
   const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)

@@ -3,35 +3,28 @@ import { HashRouter } from 'react-router-dom'
 import { Main } from '@1hive/1hive-ui'
 import MainView from './components/MainView'
 import Routes from './Routes'
-
-import { AgreementSubscriptionProvider } from './providers/AgreementSubscription'
-import { AppStateProvider } from './providers/AppState'
-import { ProfileProvider } from './providers/Profile'
-import { StakingProvider } from './providers/Staking'
+import GlobalErrorHandler from './GlobalErrorHandler'
+import { DAOProvider } from './providers/Dao'
 import { WalletProvider } from './providers/Wallet'
-import { ConnectProvider as Connect } from './providers/Connect'
+import { ProfileProvider } from './providers/Profile'
 
 function App() {
   return (
-    <WalletProvider>
-      <Connect>
-        <ProfileProvider>
-          <AppStateProvider>
-            <StakingProvider>
-              <AgreementSubscriptionProvider>
-                <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-                  <HashRouter>
-                    <MainView>
-                      <Routes />
-                    </MainView>
-                  </HashRouter>
-                </Main>
-              </AgreementSubscriptionProvider>
-            </StakingProvider>
-          </AppStateProvider>
-        </ProfileProvider>
-      </Connect>
-    </WalletProvider>
+    <GlobalErrorHandler>
+      <HashRouter>
+        <WalletProvider>
+          <ProfileProvider>
+            <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+              <DAOProvider>
+                <MainView>
+                  <Routes />
+                </MainView>
+              </DAOProvider>
+            </Main>
+          </ProfileProvider>
+        </WalletProvider>
+      </HashRouter>
+    </GlobalErrorHandler>
   )
 }
 

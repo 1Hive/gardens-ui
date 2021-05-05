@@ -27,12 +27,12 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
 
   const goToProfile = useCallback(() => {
-    history.push('/profile')
+    history.push(`/profile`)
     onClosePopover()
   }, [history, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    history.push('/collateral')
+    history.push(`/collateral`)
     onClosePopover()
   }, [history, onClosePopover])
 
