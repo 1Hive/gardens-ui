@@ -24,6 +24,7 @@ import {
   getRemainingTimeToPass,
 } from '../lib/conviction'
 import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
+import { safeDivBN } from '../utils/math-utils'
 import {
   getProposalStatusData,
   getProposalSupportStatus,
@@ -279,11 +280,11 @@ function processProposal(
     alpha
   )
 
-  const userStakedConviction = userConviction.div(maxConviction)
+  const userStakedConviction = safeDivBN(userConviction, maxConviction)
 
-  const stakedConviction = currentConviction.div(maxConviction)
+  const stakedConviction = safeDivBN(currentConviction, maxConviction)
   const futureConviction = getMaxConviction(totalTokensStaked, alpha)
-  const futureStakedConviction = futureConviction.div(maxConviction)
+  const futureStakedConviction = safeDivBN(futureConviction, maxConviction)
   const convictionTrend = getConvictionTrend(
     stakesHistory,
     maxConviction,
