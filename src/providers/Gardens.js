@@ -4,6 +4,8 @@ import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
 import daoList from '@1hive/gardens-dao-list'
 import { DAONotFound } from '../errors'
+import { AppStateProvider } from '../providers/AppState'
+import { ConnectProvider as Connect } from '../providers/Connect'
 
 import { useTokenBalances } from '../hooks/useOrgHooks'
 import { useWallet } from './Wallet'
@@ -62,7 +64,9 @@ function WithConnectedGarden({ children, connectedGarden, gardens }) {
         },
       }}
     >
-      {children}
+      <Connect>
+        <AppStateProvider>{children}</AppStateProvider>
+      </Connect>
     </DAOContext.Provider>
   )
 }
@@ -94,11 +98,16 @@ function useGardensList() {
 
 function mergeGardenMetadata(garden) {
   const metadata =
-    daoList.daos.find(dao => dao.address === garden.address) || {}
+    daoList.daos.find(dao => addressesEqual(dao.address, garden.id)) || {}
 
+  const token = {
+    ...garden.token,
+    ...metadata.token,
+  }
   return {
     ...garden,
     ...metadata,
+    token,
     address: garden.id,
   }
 }

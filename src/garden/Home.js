@@ -1,10 +1,8 @@
 import React from 'react'
 import Routes from './Routes'
 import { AgreementSubscriptionProvider } from '../providers/AgreementSubscription'
-import { AppStateProvider } from '../providers/AppState'
 
 import { StakingProvider } from '../providers/Staking'
-import { ConnectProvider as Connect } from '../providers/Connect'
 import { useGardens } from '../providers/Gardens'
 
 function GardenHome() {
@@ -14,15 +12,11 @@ function GardenHome() {
   }
 
   return (
-    <Connect>
-      <AppStateProvider>
-        <StakingProvider>
-          <AgreementSubscriptionProvider>
-            <Routes />
-          </AgreementSubscriptionProvider>
-        </StakingProvider>
-      </AppStateProvider>
-    </Connect>
+    <StakingProvider>
+      <AgreementSubscriptionProvider>
+        <Routes />
+      </AgreementSubscriptionProvider>
+    </StakingProvider>
   )
 }
 
