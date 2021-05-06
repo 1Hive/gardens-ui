@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import GardensDashboard from './GardensDashboard'
-import GardenHome from './garden/home'
+import GardensDashboard from './components/GardensDashboard'
+import GardenHome from './garden/Home'
 import Profile from './screens/Profile'
 
 export default function Routes() {

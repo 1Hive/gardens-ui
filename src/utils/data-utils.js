@@ -158,5 +158,6 @@ export function getAppAddressByName(apps, appName) {
 }
 
 export function getAppByName(apps, appName) {
-  return apps?.find(app => app.name === appName)
+  const regex = new RegExp(`^${appName}.*$`)
+  return apps?.find(app => app.name.match(regex))
 }

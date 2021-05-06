@@ -4,8 +4,7 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
-// import { useAppState } from '../providers/AppState'
-import { useDAO } from '../providers/Dao'
+import { useGardens } from '../providers/Gardens'
 import { useWallet } from '../providers/Wallet'
 
 import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
@@ -14,9 +13,10 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { connectedDao } = useDAO()
-  const { accountBalance, stakeToken } = connectedDao || {}
-  const tokenIcon = getTokenIconBySymbol(stakeToken.symbol)
+  const {
+    connectedGarden: { accountBalance, token },
+  } = useGardens()
+  const tokenIcon = getTokenIconBySymbol(token.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
@@ -59,9 +59,7 @@ function BalanceModule() {
               {accountBalance.eq(-1) ? (
                 <LoadingRing />
               ) : (
-                <span>
-                  {formatTokenAmount(accountBalance, stakeToken.decimals)}
-                </span>
+                <span>{formatTokenAmount(accountBalance, token.decimals)}</span>
               )}
             </div>
             <span
