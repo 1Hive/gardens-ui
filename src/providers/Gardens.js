@@ -7,8 +7,6 @@ import { DAONotFound } from '../errors'
 import { AppStateProvider } from '../providers/AppState'
 import { ConnectProvider as Connect } from '../providers/Connect'
 
-import { useTokenBalances } from '../hooks/useOrgHooks'
-import { useWallet } from './Wallet'
 import { getNetwork } from '../networks'
 
 const DAOContext = React.createContext()
@@ -27,46 +25,19 @@ export function GardensProvider({ children }) {
     return null
   }, [gardens, match])
 
-  if (connectedGarden) {
-    return (
-      <WithConnectedGarden connectedGarden={connectedGarden} gardens={gardens}>
-        {children}
-      </WithConnectedGarden>
-    )
-  }
-
-  if (match && !loading) {
+  if (match && !connectedGarden && !loading) {
     throw new DAONotFound(match.params.daoId)
   }
 
   return (
-    <DAOContext.Provider value={{ gardens, loading }}>
-      {children}
-    </DAOContext.Provider>
-  )
-}
-
-function WithConnectedGarden({ children, connectedGarden, gardens }) {
-  const { account } = useWallet()
-  const { balance, totalSupply } = useTokenBalances(
-    account,
-    connectedGarden.token
-  )
-
-  return (
-    <DAOContext.Provider
-      value={{
-        gardens,
-        connectedGarden: {
-          ...connectedGarden,
-          accountBalance: balance,
-          totalSupply,
-        },
-      }}
-    >
-      <Connect>
-        <AppStateProvider>{children}</AppStateProvider>
-      </Connect>
+    <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
+      {connectedGarden ? (
+        <Connect>
+          <AppStateProvider>{children}</AppStateProvider>
+        </Connect>
+      ) : (
+        children
+      )}
     </DAOContext.Provider>
   )
 }

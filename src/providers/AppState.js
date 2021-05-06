@@ -1,9 +1,13 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
-import { useOrgData, useVaultBalance } from '../hooks/useOrgHooks'
+import { useWallet } from '../providers/Wallet'
+import {
+  useOrgData,
+  useTokenBalances,
+  useVaultBalance,
+} from '../hooks/useOrgHooks'
 import useEffectiveSupply from '../hooks/useEffectiveSupply'
-import { useGardens } from './Gardens'
 
 const AppStateContext = React.createContext()
 
@@ -15,13 +19,12 @@ function AppStateProvider({ children }) {
     loadingAppData,
     ...appData
   } = useOrgData()
-  const {
-    connectedGarden: { accountBalance, totalSupply },
-  } = useGardens() // TODO: Move to useOrgData
+  const { account } = useWallet()
 
   const { requestToken, stableToken, stakeToken, totalStaked } =
     config?.conviction || {}
 
+  const { balance, totalSupply } = useTokenBalances(account, stakeToken) // TODO: Update stake and requestToken to use connectedGarden.token
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
@@ -33,7 +36,7 @@ function AppStateProvider({ children }) {
     <AppStateContext.Provider
       value={{
         ...appData,
-        accountBalance,
+        accountBalance: balance,
         config,
         effectiveSupply,
         errors,
