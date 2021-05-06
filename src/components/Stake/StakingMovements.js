@@ -27,6 +27,7 @@ import {
   STAKING_STATUSES,
   COLLATERAL_STATUSES,
 } from './staking-management-statuses'
+import { buildGardenPath } from '../../utils/routing-utils'
 import { dateFormat, toMs } from '../../utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
 
@@ -106,7 +107,12 @@ function StakingMovements({ stakingMovements, token }) {
     (disputableActionId, disputableAddress) => {
       const proposalType =
         disputableAddress === config.voting.id ? 'vote' : 'proposal'
-      history.push(`/${proposalType}/${disputableActionId}`)
+
+      const path = buildGardenPath(
+        history.location,
+        `${proposalType}/${disputableActionId}`
+      )
+      history.push(path)
     },
     [config, history]
   )

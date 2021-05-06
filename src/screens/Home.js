@@ -14,6 +14,7 @@ import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreen
 
 import useAppLogic from '../logic/app-logic'
 import { useWallet } from '../providers/Wallet'
+import { buildGardenPath } from '../utils/routing-utils'
 
 const Home = React.memo(function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
@@ -44,7 +45,7 @@ const Home = React.memo(function Home() {
   }, [])
 
   useEffect(() => {
-    // Components that redirect to create a proposal will do so through "/home/create" url
+    // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
     if (account && history.location.pathname.includes('create')) {
       setModalVisible(true)
     }
@@ -58,7 +59,7 @@ const Home = React.memo(function Home() {
     setModalVisible(false)
 
     if (history.location.pathname.includes('create')) {
-      history.push('/home')
+      history.push(buildGardenPath(history.location, ''))
     }
   }, [history])
 
