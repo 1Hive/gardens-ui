@@ -7,6 +7,7 @@ import ProposalHeader from './ProposalHeader'
 import ProposalInfo from './ProposalInfo'
 import { useProposalWithThreshold } from '../../hooks/useProposals'
 
+import { buildGardenPath } from '../../utils/routing-utils'
 import { ProposalTypes } from '../../types'
 
 function ProposalCard({ proposal, ...props }) {
@@ -37,9 +38,12 @@ function Card({
   const handleSelectProposal = useCallback(() => {
     const entityPath =
       proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'
-    history.push(
-      `${history.location.pathname}/${entityPath}/${proposal.number}`
+
+    const path = buildGardenPath(
+      history.location,
+      `${entityPath}/${proposal.number}`
     )
+    history.push(path)
   }, [history, proposal.number, proposal.type])
 
   return (

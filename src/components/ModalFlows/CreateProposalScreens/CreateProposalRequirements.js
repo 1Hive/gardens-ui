@@ -5,6 +5,7 @@ import ModalButton from '../ModalButton'
 import InfoField from '../../../components/InfoField'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
+import { buildGardenPath } from '../../../utils/routing-utils'
 import { dateFormat } from '../../../utils/date-utils'
 import env from '../../../environment'
 import { formatTokenAmount } from '../../../utils/token-utils'
@@ -82,7 +83,8 @@ function AgreementStatus({ agreement }) {
   const { signedLatest, singedPreviousVersion, lastSignatureDate } = agreement
 
   const goToAgreement = useCallback(() => {
-    history.push('/covenant')
+    const path = buildGardenPath(history.location, 'covenant')
+    history.push(path)
   }, [history])
 
   const infoData = useMemo(() => {
@@ -132,7 +134,8 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const history = useHistory()
 
   const goToStakeManager = useCallback(() => {
-    history.push('/collateral')
+    const path = buildGardenPath(history.location, 'collateral')
+    history.push(path)
   }, [history])
 
   const infoData = useMemo(() => {

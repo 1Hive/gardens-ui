@@ -51,7 +51,6 @@ function AccountModule({ compact }) {
   const { boxOpened } = useProfile()
 
   const { account, activating } = wallet
-  // const { isLoading } = useAppState()
 
   const clearError = useCallback(() => setActivationError(null), [])
 

@@ -4,7 +4,9 @@ import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 import { useAppState } from '../../../providers/AppState'
+
 import BigNumber from '../../../lib/bigNumber'
+import { buildGardenPath } from '../../../utils/routing-utils'
 import { toDecimals } from '../../../utils/math-utils'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
@@ -18,7 +20,8 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const temporatyTrx = useRef([])
 
   const handleCreateProposal = useCallback(() => {
-    history.push('/home/create')
+    const path = buildGardenPath(history.location, 'create')
+    history.push(path)
   }, [history])
 
   const renderOnCompleteActions = useCallback(() => {

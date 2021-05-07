@@ -5,6 +5,7 @@ import tokenSymbolBytesAbi from '../abi/token-symbol-bytes.json'
 import tokenNameAbi from '../abi/token-name.json'
 import tokenNameBytesAbi from '../abi/token-name-bytes.json'
 
+import defaultTokenSvg from '../assets/defaultToken.svg'
 import honeyIconSvg from '../assets/honey.svg'
 import stableTokenSvg from '../assets/stable-token.svg'
 
@@ -135,7 +136,7 @@ export function formatTokenAmount(
 }
 
 export function getTokenIconBySymbol(symbol) {
-  return LOCAL_TOKEN_ICONS.get(symbol)
+  return LOCAL_TOKEN_ICONS.get(symbol) || defaultTokenSvg
 }
 
 export async function getUserBalanceAt(

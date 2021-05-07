@@ -12,6 +12,9 @@ import {
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
+import { useGardens } from '../../providers/Gardens'
+
+import { buildGardenPath } from '../../utils/routing-utils'
 import { getNetworkName } from '../../utils/web3-utils'
 import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
@@ -22,6 +25,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
+  const { connectedGarden } = useGardens()
 
   const networkName = getNetworkName()
   const providerInfo = getProviderFromUseWalletId(wallet.activated)
@@ -32,7 +36,8 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   }, [history, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    history.push(`/collateral`)
+    const path = buildGardenPath(history.location, 'collateral')
+    history.push(path)
     onClosePopover()
   }, [history, onClosePopover])
 
@@ -70,28 +75,30 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
           <span>My profile</span>
         </div>
       </ButtonBase>
-      <ButtonBase
-        onClick={goToStakeManagement}
-        external={false}
-        css={`
-          width: 100%;
-        `}
-      >
-        <div
+      {connectedGarden && (
+        <ButtonBase
+          onClick={goToStakeManagement}
+          external={false}
           css={`
-            color: ${theme.contentSecondary};
-            padding-top: ${2 * GU}px;
-            padding-bottom: ${2 * GU}px;
-            border-bottom: 1px solid ${theme.border};
-            display: flex;
-            align-items: center;
-            column-gap: ${1 * GU}px;
+            width: 100%;
           `}
         >
-          <img src={stakeButtonSvg} alt="" width="24" height="24" />
-          <span>Collateral Manager</span>
-        </div>
-      </ButtonBase>
+          <div
+            css={`
+              color: ${theme.contentSecondary};
+              padding-top: ${2 * GU}px;
+              padding-bottom: ${2 * GU}px;
+              border-bottom: 1px solid ${theme.border};
+              display: flex;
+              align-items: center;
+              column-gap: ${1 * GU}px;
+            `}
+          >
+            <img src={stakeButtonSvg} alt="" width="24" height="24" />
+            <span>Collateral Manager</span>
+          </div>
+        </ButtonBase>
+      )}
       <div
         css={`
           padding-top: ${2 * GU}px;
