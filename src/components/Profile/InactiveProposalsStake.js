@@ -12,8 +12,8 @@ function InactiveProposaksStake({ myInactiveStakes }) {
   const { stakeToken } = useAppState()
 
   const handleSelectProposal = useCallback(
-    id => {
-      history.push(`/proposal/${id}`)
+    (organization, proposalId) => {
+      history.push(`garden/${organization}/proposal/${proposalId}`)
     },
     [history]
   )
@@ -22,12 +22,13 @@ function InactiveProposaksStake({ myInactiveStakes }) {
       {myInactiveStakes.map(stake => {
         return (
           <ProposalItem
+            amount={stake.amount}
             compact={compact}
+            organization={stake.proposal.organization}
             proposalId={stake.proposal.id}
             proposalName={stake.proposal.metadata}
             selectProposal={handleSelectProposal}
             stakeToken={stakeToken}
-            amount={stake.amount}
           />
         )
       })}
@@ -38,6 +39,7 @@ function InactiveProposaksStake({ myInactiveStakes }) {
 const ProposalItem = ({
   amount,
   compact,
+  organization,
   proposalId,
   proposalName,
   selectProposal,
@@ -46,8 +48,8 @@ const ProposalItem = ({
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
-    selectProposal(proposalId)
-  }, [proposalId, selectProposal])
+    selectProposal(organization, proposalId)
+  }, [organization, proposalId, selectProposal])
 
   return (
     <div

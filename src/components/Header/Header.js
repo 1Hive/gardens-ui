@@ -117,7 +117,7 @@ function GardenNavItems({ garden }) {
   return (
     <>
       <Link
-        href="#/covenant"
+        href="/covenant"
         external={false}
         css={`
           text-decoration: none;

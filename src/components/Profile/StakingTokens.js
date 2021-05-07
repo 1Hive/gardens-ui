@@ -16,6 +16,7 @@ function displayedStakes(stakes, total) {
     }
   ).map((stake, index) => ({
     item: {
+      organization: stake.index === -1 ? null: stakes[stake.index].proposal.organization,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
       proposalName:
         stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
@@ -76,6 +77,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
             return (
               <DistributionItem
                 compact={compact}
+                organization-=
                 proposalName={item.proposalName}
                 proposalId={item.proposalId}
                 selectProposal={handleSelectProposal}
