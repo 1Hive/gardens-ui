@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { useAppState } from '../../providers/AppState'
+import { useGardens } from '../../providers/Gardens'
 
 // import wrappedIcon from '../../assets/wrappedIcon.svg'
 // import unwrappedIcon from '../../assets/unwrappedIcon.svg'
 
 function WrapToken() {
   const { layoutName } = useLayout()
-  const organization = useAppState()
-  console.log('APP STATE ', organization)
+  const { connectedGarden } = useGardens()
+  console.log('connected garden ', connectedGarden)
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   console.log('compact ', compactMode)

@@ -26,6 +26,7 @@ function AppStateProvider({ children }) {
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
+
   const appLoading =
     (!errors && loadingAppData) || balancesLoading || !effectiveSupply
 
