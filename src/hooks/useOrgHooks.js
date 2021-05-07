@@ -184,6 +184,7 @@ export function useTokenBalances(account, token, timer = 3000) {
         let contractNewBalance = new BigNumber(-1)
         if (account) {
           contractNewBalance = await tokenContract.balanceOf(account)
+          console.log('contractNewBalance ', contractNewBalance)
         }
 
         const contractTotalSupply = await tokenContract.totalSupply()

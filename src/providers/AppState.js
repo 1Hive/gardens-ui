@@ -7,6 +7,7 @@ import {
   useTokenBalances,
   useVaultBalance,
 } from '../hooks/useOrgHooks'
+import { useGardens } from '../providers/Gardens'
 import useEffectiveSupply from '../hooks/useEffectiveSupply'
 
 const AppStateContext = React.createContext()
@@ -20,11 +21,19 @@ function AppStateProvider({ children }) {
     ...appData
   } = useOrgData()
   const { account } = useWallet()
-
+  const {
+    connectedGarden: { wrappableToken },
+  } = useGardens()
   const { requestToken, stableToken, stakeToken, totalStaked } =
     config?.conviction || {}
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken) // TODO: Update stake and requestToken to use connectedGarden.token
+  const { balance: wrappableTokenBalance } = useTokenBalances(
+    account,
+    wrappableToken
+  )
+
+  console.log('app state ', wrappableTokenBalance)
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
@@ -49,6 +58,8 @@ function AppStateProvider({ children }) {
         totalStaked,
         totalSupply,
         vaultBalance,
+        wrappableAccountBalance: wrappableTokenBalance,
+        wrappableToken, // TODO- do a reorder here, use an object for every token with the account balance for that tokens
       }}
     >
       {children}
