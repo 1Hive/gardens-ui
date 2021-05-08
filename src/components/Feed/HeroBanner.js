@@ -1,5 +1,12 @@
 import React from 'react'
-import { Button, GU, IconPlus, textStyle, useLayout } from '@1hive/1hive-ui'
+import {
+  BIG_RADIUS,
+  Button,
+  GU,
+  IconPlus,
+  textStyle,
+  useLayout,
+} from '@1hive/1hive-ui'
 import { useWallet } from '../../providers/Wallet'
 
 import desktopBanner from '../../assets/banner.png'
@@ -18,23 +25,25 @@ function HeroBanner({ onRequestNewProposal }) {
   const { layoutName } = useLayout()
 
   const banner = BANNERS[layoutName]
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const mobileMode = layoutName === 'small'
+  const tabletMode = layoutName === 'medium'
+  const compactMode = mobileMode || tabletMode
 
   return (
     <div
       css={`
         height: fit-content;
-        ${!compactMode && `margin-top: ${3 * GU}px;`}
-        ${compactMode && `margin-top: ${2 * GU}px;`}
+        ${mobileMode && `margin-top: ${2 * GU}px;`}
       `}
     >
       <div
         css={`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
-          height: 0;
+          ${tabletMode && `min-height: ${27 * GU}px;`}
           padding-top: ${banner.aspectRatio};
           position: relative;
+          ${tabletMode && `border-radius: ${BIG_RADIUS}px`};
         `}
       >
         <div

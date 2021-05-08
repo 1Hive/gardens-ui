@@ -4,33 +4,63 @@ import { GU, useLayout } from '@1hive/1hive-ui'
 import WrapToken from './WrapToken'
 import HeroBanner from './HeroBanner'
 
+import { useWallet } from '../../providers/Wallet'
+
 function RightPanel() {
+  const { account } = useWallet()
   const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const mobileMode = layoutName === 'small'
+  const tabletMode = layoutName === 'medium'
+  const largeMode = layoutName === 'large' || layoutName === 'max'
+
+  if (tabletMode) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          padding: ${3 * GU}px;
+        `}
+      >
+        {account && (
+          <div
+            css={`
+              width: 50%;
+            `}
+          >
+            <WrapToken />
+          </div>
+        )}
+        <div
+          css={`
+            width: ${account ? '50%' : '100%'};
+            margin-left: ${2 * GU}px;
+          `}
+        >
+          <HeroBanner />
+        </div>
+      </div>
+    )
+  }
   return (
     <div
       css={`
-        width: ${compactMode ? '100%' : '327px'};
-        ${!compactMode &&
+        width: ${mobileMode ? '100%' : '327px'};
+        ${largeMode &&
           `
             top: ${3 * GU}px;
             position: sticky;
             margin-top: ${3 * GU}px;
             margin-left: ${3 * GU}px;
         `}
-        ${compactMode && `margin-top: ${2 * GU}px;`}
+        ${mobileMode && `margin-top: ${2 * GU}px;`}
       `}
     >
-      <WrapToken />
+      {account && <WrapToken />}
       <HeroBanner />
     </div>
   )
 }
-
-// const LineSeparator = styled.div`
-//   height: 1px;
-//   border-bottom: 0.5px solid ${({ border }) => border};
-//   margin: ${3 * GU}px 0;
-// `
 
 export default RightPanel

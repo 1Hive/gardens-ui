@@ -32,8 +32,6 @@ function AppStateProvider({ children }) {
     account,
     wrappableToken
   )
-
-  console.log('app state ', wrappableTokenBalance)
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 

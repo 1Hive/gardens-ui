@@ -4,12 +4,12 @@ import {
   Box,
   Button,
   GU,
+  Help,
   useLayout,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useGardens } from '../../providers/Gardens'
 import { useAppState } from '../../providers/AppState'
 
 import { formatTokenAmount } from '../../utils/token-utils'
@@ -19,8 +19,6 @@ import unwrappedIcon from '../../assets/unwrappedIcon.svg'
 
 function WrapToken() {
   const { layoutName } = useLayout()
-  const { connectedGarden } = useGardens()
-  console.log('connected garden ', connectedGarden)
   const {
     accountBalance: gardenTokenBalance,
     stakeToken,
@@ -30,36 +28,33 @@ function WrapToken() {
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
-  console.log('compact ', compactMode)
-  console.log(
-    'formatedDDDDDDDDDDD ',
-    wrappableAccountBalance,
-    formatTokenAmount(wrappableAccountBalance, wrappableToken.decimals)
-  )
+  const tabletMode = layoutName === 'medium'
 
   return (
-    <Box padding={3 * GU}>
+    <Box
+      css={`
+        ${tabletMode && `height: 100%;`}
+        ${!compactMode && `margin-bottom: ${3 * GU}px;`}
+      `}
+    >
       <div
         css={`
           display: flex;
           flex-direction: row;
-          height: ${27 * GU}px;
+          justify-content: center;
         `}
       >
         <Token
           mode="wrap"
-          balance={formatTokenAmount(
-            wrappableAccountBalance,
-            wrappableToken.decimals
-          )}
-          symbol={wrappableToken.symbol}
+          balance={wrappableAccountBalance}
+          token={wrappableToken}
           onClick={() => {}}
         />
         <LineSeparator border={theme.border} />
         <Token
           mode="unwrap"
-          balance={formatTokenAmount(gardenTokenBalance, stakeToken.decimals)}
-          symbol={stakeToken.symbol}
+          balance={gardenTokenBalance}
+          token={stakeToken}
           onClick={() => {}}
         />
       </div>
@@ -67,18 +62,20 @@ function WrapToken() {
   )
 }
 
-function Token({ mode, balance, symbol, onClick }) {
-  const icon = mode === 'wrap' ? unwrappedIcon : wrappedIcon
-  const button =
-    mode === 'wrap'
-      ? { mode: 'strong', label: 'Wrap' }
-      : { mode: 'normal', label: 'Unwrap' }
+function Token({ mode, balance, token, onClick }) {
+  const wrapMode = mode === 'wrap'
+  const icon = wrapMode ? unwrappedIcon : wrappedIcon
+  const button = wrapMode
+    ? { mode: 'strong', label: 'Wrap' }
+    : { mode: 'normal', label: 'Unwrap' }
 
   return (
     <div
       css={`
         display: flex;
         flex-direction: column;
+        align-items: center;
+        width: 100%;
         ${textStyle('body2')};
       `}
     >
@@ -86,12 +83,42 @@ function Token({ mode, balance, symbol, onClick }) {
       <span
         css={`
           font-weight: 400;
+          margin-top: ${1 * GU}px;
+          margin-button: ${1 * GU}px;
         `}
       >
-        {balance}
+        {formatTokenAmount(balance, token.decimals)}
       </span>
-      <span>{symbol}</span>
-      <Button mode={button.mode} wide label={button.label} onClick={onClick} />
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <span
+          css={`
+            margin-right: ${1 * GU}px;
+          `}
+        >
+          {token.symbol}
+        </span>
+        {!wrapMode && (
+          <Help>
+            This amount can be used to vote on proposals. It can be unwrapped at
+            any time.
+          </Help>
+        )}
+      </div>
+      <Button
+        mode={button.mode}
+        wide
+        label={button.label}
+        onClick={onClick}
+        disabled={balance.lte(0)}
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      />
     </div>
   )
 }
