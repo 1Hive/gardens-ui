@@ -17,7 +17,7 @@ import { formatTokenAmount } from '../../utils/token-utils'
 import wrappedIcon from '../../assets/wrappedIcon.svg'
 import unwrappedIcon from '../../assets/unwrappedIcon.svg'
 
-function WrapToken() {
+function WrapToken({ onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
   const {
     accountBalance: gardenTokenBalance,
@@ -48,14 +48,14 @@ function WrapToken() {
           mode="wrap"
           balance={wrappableAccountBalance}
           token={wrappableToken}
-          onClick={() => {}}
+          onClick={onWrapToken}
         />
         <LineSeparator border={theme.border} />
         <Token
           mode="unwrap"
           balance={gardenTokenBalance}
           token={stakeToken}
-          onClick={() => {}}
+          onClick={onUnwrapToken}
         />
       </div>
     </Box>

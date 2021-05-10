@@ -6,7 +6,7 @@ import HeroBanner from './HeroBanner'
 
 import { useWallet } from '../../providers/Wallet'
 
-function RightPanel() {
+function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const mobileMode = layoutName === 'small'
@@ -38,7 +38,7 @@ function RightPanel() {
             margin-left: ${2 * GU}px;
           `}
         >
-          <HeroBanner />
+          <HeroBanner onRequestNewProposal={onRequestNewProposal} />
         </div>
       </div>
     )
@@ -57,8 +57,10 @@ function RightPanel() {
         ${mobileMode && `margin-top: ${2 * GU}px;`}
       `}
     >
-      {account && <WrapToken />}
-      <HeroBanner />
+      {account && (
+        <WrapToken onUnwrapToken={onUnwrapToken} onWrapToken={onWrapToken} />
+      )}
+      <HeroBanner onRequestNewProposal={onRequestNewProposal} />
     </div>
   )
 }

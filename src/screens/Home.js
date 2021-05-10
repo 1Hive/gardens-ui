@@ -10,8 +10,8 @@ import Metrics from '../components/Metrics'
 import MultiModal from '../components/MultiModal/MultiModal'
 import NetworkErrorModal from '../components/NetworkErrorModal'
 import ProposalsList from '../components/Feed/ProposalsList'
-// import WrapToken from '../components/Feed/WrapToken'
 import RightPanel from '../components/Feed/RightPanel'
+import WrapTokenScreens from '../components/ModalFlows/WrapTokenScreens/WrapTokenScreens'
 
 import useAppLogic from '../logic/app-logic'
 import { useWallet } from '../providers/Wallet'
@@ -20,6 +20,7 @@ import { buildGardenPath } from '../utils/routing-utils'
 const Home = React.memo(function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
+  const [modalMode, setModalMode] = useState(null)
   const {
     actions,
     commonPool,
@@ -52,8 +53,9 @@ const Home = React.memo(function Home() {
     }
   }, [account, history])
 
-  const handleShowModal = useCallback(() => {
+  const handleShowModal = useCallback(mode => {
     setModalVisible(true)
+    setModalMode(mode)
   }, [])
 
   const handleHideModal = useCallback(() => {
@@ -63,6 +65,18 @@ const Home = React.memo(function Home() {
       history.push(buildGardenPath(history.location, ''))
     }
   }, [history])
+
+  const handleRequestNewProposal = useCallback(() => {
+    handleShowModal('createProposal')
+  }, [handleShowModal])
+
+  const handleWrapToken = useCallback(() => {
+    handleShowModal('wrap')
+  }, [handleShowModal])
+
+  const handleUnwrapToken = useCallback(() => {
+    handleShowModal('unwrap')
+  }, [handleShowModal])
 
   // TODO: Refactor components positioning with a grid layout
   return (
@@ -138,17 +152,31 @@ const Home = React.memo(function Home() {
                     selectedRanking={filters.ranking.filter}
                   />
                   {largeMode && (
-                    <RightPanel onRequestNewProposal={handleShowModal} />
+                    <RightPanel
+                      onRequestNewProposal={handleRequestNewProposal}
+                      onWrapToken={handleWrapToken}
+                      onUnwrapToken={handleUnwrapToken}
+                    />
                   )}
                 </div>
               </div>
             </div>
             {!largeMode && (
-              <RightPanel onRequestNewProposal={handleShowModal} />
+              <RightPanel
+                onRequestNewProposal={handleRequestNewProposal}
+                onWrapToken={handleWrapToken}
+                onUnwrapToken={handleUnwrapToken}
+              />
             )}
           </div>
-          <MultiModal visible={modalVisible} onClose={handleHideModal}>
-            <CreateProposalScreens />
+          <MultiModal
+            visible={modalVisible}
+            onClose={handleHideModal}
+            onClosed={() => setModalMode(null)}
+          >
+            {modalMode === 'createProposal' && <CreateProposalScreens />}
+            {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
+            {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
           </MultiModal>
         </div>
       )}
