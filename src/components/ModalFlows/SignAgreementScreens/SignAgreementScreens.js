@@ -6,6 +6,8 @@ import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'
 import useActions from '../../../hooks/useActions'
 
+import { buildGardenPath } from '../../../utils/routing-utils'
+
 function SignAgreementScreens({ versionId }) {
   const actions = useActions()
   const [transactions, setTransactions] = useState([])
@@ -13,7 +15,8 @@ function SignAgreementScreens({ versionId }) {
   const history = useHistory()
 
   const handleCreateProposal = useCallback(() => {
-    history.push('/home/create')
+    const path = buildGardenPath(history.location, 'create')
+    history.push(path)
   }, [history])
 
   const renderOnCompleteActions = useCallback(() => {

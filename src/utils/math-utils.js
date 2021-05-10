@@ -199,3 +199,7 @@ export function pct(a, b) {
 export function safeDiv(num, denom) {
   return denom ? num / denom : 0
 }
+
+export function safeDivBN(num, denom) {
+  return denom.gt(0) ? num.div(denom) : new BigNumber(0)
+}

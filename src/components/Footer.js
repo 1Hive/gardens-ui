@@ -20,11 +20,17 @@ import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
 import createSvg from '../assets/create.svg'
 import getHoneySvg from '../assets/getHoney.svg'
 import homeSvg from '../assets/home.svg'
+import { useGardens } from '../providers/Gardens'
 
 function Footer() {
   const theme = useTheme()
   const { below } = useViewport()
   const compactMode = below('large')
+
+  const { connectedGarden } = useGardens()
+  if (!connectedGarden) {
+    return null
+  }
 
   return (
     <footer

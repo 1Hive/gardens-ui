@@ -65,45 +65,16 @@ function Header() {
                   margin-left: ${6.5 * GU}px;
                 `}
               >
-                <Link
-                  href="#/covenant"
-                  external={false}
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                  `}
-                >
-                  Covenant
-                </Link>
-                <Link
-                  href={HONEYSWAP_TRADE_HONEY}
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
-                  `}
-                >
-                  Get Honey
-                </Link>
+                {connectedGarden && <GardenNavItems garden={connectedGarden} />}
                 <Link
                   href={network.celesteUrl}
                   css={`
                     text-decoration: none;
                     color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
+                    margin-left: ${(connectedGarden ? 4 : 0) * GU}px;
                   `}
                 >
                   Stake Honey
-                </Link>
-                <Link
-                  href="https://1hive.gitbook.io/1hive/"
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${4 * GU}px;
-                  `}
-                >
-                  Wiki
                 </Link>
               </nav>
             )}
@@ -113,7 +84,10 @@ function Header() {
             css={`
               display: flex;
               align-items: center;
-              ${account && !layoutSmall && `min-width: ${42.5 * GU}px`};
+              ${account &&
+                connectedGarden &&
+                !layoutSmall &&
+                `min-width: ${42.5 * GU}px`};
             `}
           >
             <AccountModule compact={layoutSmall} />
@@ -134,6 +108,45 @@ function Header() {
         </div>
       </Layout>
     </header>
+  )
+}
+
+function GardenNavItems({ garden }) {
+  const theme = useTheme()
+
+  return (
+    <>
+      <Link
+        href="#/covenant"
+        external={false}
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+        `}
+      >
+        Covenant
+      </Link>
+      <Link
+        href={HONEYSWAP_TRADE_HONEY}
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Get {garden.token.name}
+      </Link>
+      <Link
+        href="https://1hive.gitbook.io/1hive/"
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Wiki
+      </Link>
+    </>
   )
 }
 

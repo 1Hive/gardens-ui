@@ -4,25 +4,29 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '../hooks/useAccountTokens'
+import { useAppState } from '../providers/AppState'
 import { useGardens } from '../providers/Gardens'
 import { useWallet } from '../providers/Wallet'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
+import defaultTokenSvg from '../assets/defaultToken.svg'
+import { formatTokenAmount } from '../utils/token-utils'
+import { buildGardenPath } from '../utils/routing-utils'
 
 function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
+  const { accountBalance } = useAppState()
   const {
-    connectedGarden: { accountBalance, token },
+    connectedGarden: { token },
   } = useGardens()
-  const tokenIcon = getTokenIconBySymbol(token.symbol)
 
   const { inactiveTokens } = useAccountTokens(wallet.account, accountBalance)
 
-  const handleOnClick = useCallback(() => history.push('/collateral'), [
-    history,
-  ])
+  const handleOnClick = useCallback(() => {
+    const path = buildGardenPath(history.location, 'collateral')
+    history.push(path)
+  }, [history])
 
   const inactivePct = inactiveTokens.eq('0')
     ? '0'
@@ -33,7 +37,14 @@ function BalanceModule() {
 
   return (
     <HeaderModule
-      icon={<img src={tokenIcon} height="28" width="28" alt="" />}
+      icon={
+        <img
+          src={token.logo || defaultTokenSvg}
+          height="28"
+          width="28"
+          alt=""
+        />
+      }
       content={
         <div>
           <div
