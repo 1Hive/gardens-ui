@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
-import { useAccountStakes } from './useStakes'
+import { useAccountStakesByGarden } from './useStakes'
 import { useAppState } from '../providers/AppState'
 import useProposalFilters, {
   INITIAL_PROPOSAL_COUNT,
@@ -9,7 +9,6 @@ import useProposalFilters, {
 import {
   useProposalSubscription,
   useProposalsSubscription,
-  useSupporterSubscription,
 } from './useSubscriptions'
 import useRequestAmount from './useRequestAmount'
 import { useWallet } from '../providers/Wallet'
@@ -36,11 +35,7 @@ import {
   hasVoteEnded,
 } from '../utils/vote-utils'
 import { ProposalTypes } from '../types'
-import {
-  PCT_BASE,
-  PROPOSAL_STATUS_CANCELLED_STRING,
-  PROPOSAL_STATUS_EXECUTED_STRING,
-} from '../constants'
+import { PCT_BASE } from '../constants'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -70,7 +65,7 @@ export function useProposals() {
 }
 
 function useFilteredProposals(filters, account, latestBlock) {
-  const myStakes = useAccountStakes(account)
+  const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
   const { config, effectiveSupply, isLoading } = useAppState()
 
@@ -231,27 +226,6 @@ export function useProposalEndDate(proposal) {
   }
 
   return endDate
-}
-
-export function useInactiveProposalsWithStake() {
-  const { account } = useWallet()
-  const { honeypot } = useAppState()
-
-  const supporter = useSupporterSubscription(honeypot, account)
-
-  if (!supporter || !supporter.stakes) {
-    return []
-  }
-  const inactiveStakes = supporter.stakes.filter(stake => {
-    return (
-      stake.proposal.type !== ProposalTypes.Decision &&
-      (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||
-        stake.proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) &&
-      stake.amount.gt(0)
-    )
-  })
-
-  return inactiveStakes
 }
 
 function processProposal(

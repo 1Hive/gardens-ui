@@ -119,6 +119,22 @@ export function transformSupporterData(supporter) {
   }
 }
 
+function transformCastData(cast) {
+  return {
+    ...cast,
+    stake: new BigNumber(cast.stake),
+    createdAt: parseInt(cast.createdAt, 10) * 1000,
+    proposal: cast.proposal
+      ? {
+          ...cast.proposal,
+          name: cast.proposal.metadata,
+          id: cast.proposal.number,
+          type: convertFromString(cast.proposal.type),
+        }
+      : null,
+  }
+}
+
 function transformStakeData(stake) {
   return {
     ...stake,
@@ -150,6 +166,18 @@ function transformStakeHistoryData(stake) {
           type: convertFromString(stake.proposal.type),
         }
       : null,
+  }
+}
+
+export function transformUserData(user) {
+  return {
+    ...user,
+    supports: user.supports.map(support => ({
+      ...support,
+      casts: support.casts.map(transformCastData),
+      stakes: support.stakes.map(transformStakeData),
+      stakesHistory: support.stakesHistory.map(transformStakeHistoryData),
+    })),
   }
 }
 
