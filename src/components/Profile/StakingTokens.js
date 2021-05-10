@@ -16,7 +16,8 @@ function displayedStakes(stakes, total) {
     }
   ).map((stake, index) => ({
     item: {
-      organization: stake.index === -1 ? null: stakes[stake.index].proposal.organization,
+      organization:
+        stake.index === -1 ? null : stakes[stake.index].organization,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
       proposalName:
         stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
@@ -32,8 +33,8 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
   const history = useHistory()
   const handleSelectProposal = useCallback(
-    id => {
-      history.push(`/proposal/${id}`)
+    (organization, proposalId) => {
+      history.push(`/garden/${organization}/proposal/${proposalId}`)
     },
     [history]
   )
@@ -77,7 +78,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
             return (
               <DistributionItem
                 compact={compact}
-                organization-=
+                organization={item.organization}
                 proposalName={item.proposalName}
                 proposalId={item.proposalId}
                 selectProposal={handleSelectProposal}
@@ -92,6 +93,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
 const DistributionItem = ({
   compact,
+  organization,
   proposalId,
   proposalName,
   selectProposal,
@@ -99,8 +101,8 @@ const DistributionItem = ({
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
-    selectProposal(proposalId)
-  }, [proposalId, selectProposal])
+    selectProposal(organization, proposalId)
+  }, [organization, proposalId, selectProposal])
 
   return (
     <div

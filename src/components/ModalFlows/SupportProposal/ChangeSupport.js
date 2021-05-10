@@ -44,7 +44,9 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   const myStake = useMemo(
     () =>
-      stakes.find(({ entity }) => addressesEqual(entity.address, account)) || {
+      stakes.find(({ supporter }) =>
+        addressesEqual(supporter.user.address, account)
+      ) || {
         amount: new BigNumber('0'),
       },
     [stakes, account]
