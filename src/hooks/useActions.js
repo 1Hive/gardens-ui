@@ -37,7 +37,13 @@ export default function useActions() {
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
+
+  console.log('issuance app ', issuanceApp)
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
+  const hookedTokenManagerApp = getAppByName(
+    installedApps,
+    env('HOOKED_TOKEN_MANAGER_APP_NAME')
+  )
 
   const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
@@ -296,29 +302,45 @@ export default function useActions() {
     [agreementContract]
   )
 
+  const wrap = useCallback(
+    async ({ amount }, onDone = noop) => {
+      const intent = await hookedTokenManagerApp.intent('wrap', [amount], {
+        actAs: account,
+      })
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
+    },
+    [account, hookedTokenManagerApp, mounted]
+  )
+
   // TODO: Memoize objects
   return {
+    agreementActions: {
+      approveChallengeTokenAmount,
+      challengeAction,
+      disputeAction,
+      getAllowance,
+      getChallenge,
+      settleAction,
+      signAgreement,
+    },
     convictionActions: {
       executeProposal,
+      cancelProposal,
       newProposal,
       newSignalingProposal,
-      cancelProposal,
       stakeToProposal,
       withdrawFromProposal,
+    },
+    hookedTokenManagerActions: {
+      wrap,
     },
     issuanceActions: { executeIssuance },
     votingActions: {
       executeDecision,
       voteOnDecision,
-    },
-    agreementActions: {
-      challengeAction,
-      settleAction,
-      disputeAction,
-      signAgreement,
-      approveChallengeTokenAmount,
-      getAllowance,
-      getChallenge,
     },
   }
 }

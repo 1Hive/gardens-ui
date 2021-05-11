@@ -20,6 +20,8 @@ function AppStateProvider({ children }) {
     loadingAppData,
     ...appData
   } = useOrgData()
+
+  console.log('installed apps ', installedApps)
   const { account } = useWallet()
   const {
     connectedGarden: { wrappableToken },

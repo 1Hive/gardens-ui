@@ -4,7 +4,7 @@ import WrapUnwrap from './WrapUnwrap'
 
 import { useAppState } from '../../../providers/AppState'
 
-// import useActions from '../../../hooks/useActions'
+import useActions from '../../../hooks/useActions'
 
 function WrapTokenScreens({ mode }) {
   const [transactions, setTransactions] = useState([])
@@ -14,11 +14,17 @@ function WrapTokenScreens({ mode }) {
     wrappableAccountBalance,
     wrappableToken,
   } = useAppState()
-  //   const { convictionActions } = useActions()
+  const { hookedTokenManagerActions } = useActions()
 
-  const getTransactions = useCallback(async (onComplete, amount) => {
-    setTransactions()
-  }, [])
+  const getTransactions = useCallback(
+    async (onComplete, amount) => {
+      await hookedTokenManagerActions.wrap({ amount }, intent => {
+        setTransactions(intent)
+        onComplete()
+      })
+    },
+    [hookedTokenManagerActions]
+  )
 
   const title =
     mode === 'wrap'
@@ -56,9 +62,7 @@ function WrapTokenScreens({ mode }) {
     <ModalFlowBase
       frontLoad={false}
       transactions={transactions}
-      transactionTitle={
-        mode === 'support' ? 'Support this proposal' : 'Change support'
-      }
+      transactionTitle={mode === 'wrap' ? 'Wrap token' : 'Unwrap token'}
       screens={screens}
     />
   )

@@ -1,9 +1,11 @@
 // rinkeby
 const DEFAULT_CHAIN_ID = 100
-const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
-const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
-const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
+
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement'
+const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
+const DEFAULT_HOOKED_TOKEN_MANAGER = 'wrappable-hooked-token-manager'
+const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
+const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -34,6 +36,12 @@ const ENV_VARS = {
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
+  },
+  HOOKED_TOKEN_MANAGER_APP_NAME() {
+    return (
+      process.env.REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME ||
+      DEFAULT_HOOKED_TOKEN_MANAGER
+    )
   },
 }
 

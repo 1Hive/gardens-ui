@@ -10,9 +10,8 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import useAccountTotalStaked from '../../../hooks/useAccountTotalStaked'
 import { useAppState } from '../../../providers/AppState'
-import { useWallet } from '../../../providers/Wallet'
+// import { useWallet } from '../../../providers/Wallet'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 import { toDecimals } from '../../../utils/math-utils'
@@ -25,12 +24,27 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
     valueBN: new BigNumber('0'),
   })
 
-  const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const {
+    accountBalance: gardenTokenBalance,
+    stakeToken,
+    wrappableAccountBalance,
+    wrappableToken,
+  } = useAppState()
   const { next } = useMultiModal()
 
-  const totalStaked = useAccountTotalStaked(account)
-  const nonStakedTokens = accountBalance.minus(totalStaked)
+  const wrapMode = mode === 'wrap'
+
+  const formTokenValues = useMemo(() => {
+    return wrapMode
+      ? { token: wrappableToken, accountBalance: wrappableAccountBalance }
+      : { token: stakeToken, accountBalance: gardenTokenBalance }
+  }, [
+    wrapMode,
+    gardenTokenBalance,
+    stakeToken,
+    wrappableAccountBalance,
+    wrappableToken,
+  ])
 
   const handleEditMode = useCallback(
     editMode => {
@@ -38,13 +52,13 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         const newValue = amount.valueBN.gte(0)
           ? formatTokenAmount(
               amount.valueBN,
-              stakeToken.decimals,
+              formTokenValues.token.decimals,
               false,
               false,
               {
                 commas: !editMode,
                 replaceZeroBy: editMode ? '' : '0',
-                rounding: stakeToken.decimals,
+                rounding: formTokenValues.token.decimals,
               }
             )
           : ''
@@ -55,7 +69,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         }
       })
     },
-    [stakeToken]
+    [formTokenValues.token]
   )
 
   // Amount change handler
@@ -66,7 +80,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
       const newAmountBN = new BigNumber(
         isNaN(event.target.value)
           ? -1
-          : toDecimals(newAmount, stakeToken.decimals)
+          : toDecimals(newAmount, formTokenValues.token.decimals)
       )
 
       setAmount({
@@ -74,21 +88,21 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         valueBN: newAmountBN,
       })
     },
-    [stakeToken]
+    [formTokenValues.token]
   )
 
   const handleMaxSelected = useCallback(() => {
     setAmount({
-      valueBN: nonStakedTokens,
+      valueBN: formTokenValues.accountBalance,
       value: formatTokenAmount(
-        nonStakedTokens,
-        stakeToken.decimals,
+        formTokenValues.accountBalance,
+        formTokenValues.token.decimals,
         false,
         false,
-        { commas: false, rounding: stakeToken.decimals }
+        { commas: false, rounding: formTokenValues.token.decimals }
       ),
     })
-  }, [nonStakedTokens, stakeToken])
+  }, [formTokenValues])
 
   // Form submit handler
   const handleSubmit = useCallback(
@@ -107,12 +121,12 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
       return 'Invalid amount'
     }
 
-    if (amount.valueBN.gt(nonStakedTokens)) {
+    if (amount.valueBN.gt(formTokenValues.accountBalance)) {
       return 'Insufficient balance'
     }
 
     return null
-  }, [amount, nonStakedTokens])
+  }, [amount, formTokenValues])
 
   return (
     <form onSubmit={handleSubmit}>
@@ -121,7 +135,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
           ${textStyle('body2')};
         `}
       >
-        {mode === 'wrap'
+        {wrapMode
           ? 'The amount you wrap will be available to stake and vote on proposals'
           : 'If you unwrap your tokens you will lose your voting power. Any stake on suggestions or funding proposals will be removed when unwrapping.'}
       </span>
@@ -150,22 +164,58 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
           }
           adornmentPosition="end"
         />
+        <span
+          css={`
+            ${textStyle('body3')};
+            color: ${theme.contentSecondary};
+          `}
+        >
+          {'Your account balance has '}
+          <span
+            css={`
+              font-weight: 600;
+            `}
+          >
+            {formatTokenAmount(
+              wrappableAccountBalance,
+              wrappableToken.decimals
+            )}
+            {wrappableToken.symbol}
+          </span>
+          {' and '}
+          <span
+            css={`
+              font-weight: 600;
+            `}
+          >
+            {formatTokenAmount(gardenTokenBalance, stakeToken.decimals)}
+            {stakeToken.symbol}
+          </span>
+        </span>
       </Field>
+
+      {wrapMode && (
+        <Info
+          css={`
+            margin-top: ${2 * GU}px;
+          `}
+        >
+          You can unwrap your tokens at any time but you will lose your voting
+          power. Any stake on suggestions or funding proposals will be removed
+          when unwrapping.
+        </Info>
+      )}
+
       <Button
-        label="Support this proposal"
+        label={wrapMode ? 'Wrap' : 'Unwrap'}
         wide
         type="submit"
         mode="strong"
         disabled={amount.valueBN.eq(new BigNumber(0)) || Boolean(errorMessage)}
-      />
-      <span
         css={`
-          ${textStyle('body3')};
-          color: ${theme.contentSecondary};
+          margin-top: ${2 * GU}px;
         `}
-      >
-        Your account balance has
-      </span>
+      />
       {errorMessage && (
         <Info
           mode="warning"
