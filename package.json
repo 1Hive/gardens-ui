@@ -5,7 +5,7 @@
   "dependencies": {
     "3box": "^1.22.2",
     "@1hive/1hive-ui": "^1.0.10",
-    "@1hive/connect-gardens": "0.0.3",
+    "@1hive/connect-gardens": "0.0.5",
     "@1hive/connect-react": "^0.8.6",
     "@1hive/gardens-dao-list": "^1.0.2",
     "@aragon/connect-agreement": "^0.0.0-beta.14",

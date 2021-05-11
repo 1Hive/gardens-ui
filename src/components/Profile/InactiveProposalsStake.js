@@ -5,15 +5,15 @@ import { useAppState } from '../../providers/AppState'
 
 import { formatTokenAmount } from '../../utils/token-utils'
 
-function InactiveProposaksStake({ myInactiveStakes }) {
+function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const compact = below('large')
   const history = useHistory()
   const { stakeToken } = useAppState()
 
   const handleSelectProposal = useCallback(
-    id => {
-      history.push(`/proposal/${id}`)
+    (gardenId, proposalId) => {
+      history.push(`garden/${gardenId}/proposal/${proposalId}`)
     },
     [history]
   )
@@ -22,12 +22,13 @@ function InactiveProposaksStake({ myInactiveStakes }) {
       {myInactiveStakes.map(stake => {
         return (
           <ProposalItem
+            amount={stake.amount}
             compact={compact}
+            gardenId={stake.proposal.organization.id}
             proposalId={stake.proposal.id}
             proposalName={stake.proposal.metadata}
             selectProposal={handleSelectProposal}
             stakeToken={stakeToken}
-            amount={stake.amount}
           />
         )
       })}
@@ -38,6 +39,7 @@ function InactiveProposaksStake({ myInactiveStakes }) {
 const ProposalItem = ({
   amount,
   compact,
+  gardenId,
   proposalId,
   proposalName,
   selectProposal,
@@ -46,8 +48,8 @@ const ProposalItem = ({
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
-    selectProposal(proposalId)
-  }, [proposalId, selectProposal])
+    selectProposal(gardenId, proposalId)
+  }, [gardenId, proposalId, selectProposal])
 
   return (
     <div
@@ -107,4 +109,4 @@ const ProposalItem = ({
   )
 }
 
-export default InactiveProposaksStake
+export default InactiveProposalsStake
