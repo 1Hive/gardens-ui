@@ -8,7 +8,6 @@ import {
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
 import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
 import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
 
@@ -35,19 +34,18 @@ export function useAccountStakes(account) {
         return [
           ...acc,
           {
-            organization: stake.proposal.organization.id,
+            amount: stake.amount,
+            gardenId: stake.proposal.organization.id,
             proposalId: stake.proposal.id,
             proposalName: stake.proposal.name,
-            amount: stake.amount,
           },
         ]
       }, [])
   }, [user])
 }
 
-export function useAccountStakesByGarden() {
+export function useAccountStakesByGarden(account) {
   const { honeypot } = useAppState()
-  const { account } = useWallet()
 
   const supporter = useSupporterSubscription(honeypot, account)
 
@@ -69,9 +67,9 @@ export function useAccountStakesByGarden() {
       return [
         ...acc,
         {
+          amount: stake.amount,
           proposalId: stake.proposal.id,
           proposalName: stake.proposal.name,
-          amount: stake.amount,
         },
       ]
     }, [])

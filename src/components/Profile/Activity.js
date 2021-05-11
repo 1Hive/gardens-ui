@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import {
   Box,
   GU,
+  isAddress,
   Link,
   shortenAddress,
   textStyle,
@@ -14,7 +15,6 @@ import useUser from '../../hooks/useUser'
 import { convertToString } from '../../types'
 import { dateFormat } from '../../utils/date-utils'
 import { getGardenLabel } from '../../utils/garden-utils'
-import { isAddress } from 'web3-utils'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
