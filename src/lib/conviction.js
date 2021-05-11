@@ -315,7 +315,9 @@ function convictionFromStakes(stakes, alpha) {
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ entity: { address } }) => addressesEqual(entity, address))
+    .filter(({ supporter: { user: { address } } }) =>
+      addressesEqual(entity, address)
+    )
     .map(({ time, tokensStaked, conviction }) => ({
       time,
       totalTokensStaked: tokensStaked,
@@ -328,8 +330,12 @@ export function isEntitySupporting(proposal, entity) {
     return false
   }
 
-  const entityStake = proposal.stakes.find(({ entity: { address } }) =>
-    addressesEqual(entity, address)
+  const entityStake = proposal.stakes.find(
+    ({
+      supporter: {
+        user: { address },
+      },
+    }) => addressesEqual(entity, address)
   )
 
   if (!entityStake) {
