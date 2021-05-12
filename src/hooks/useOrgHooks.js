@@ -163,13 +163,14 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
   return vaultBalance
 }
 
-export function useTokenBalances(account, token, timer = 3000) {
+export function useTokenBalances(account, token, timeout = 3000) {
   const [balances, setBalances] = useState({
     balance: new BigNumber(-1),
     totalSupply: new BigNumber(-1),
   })
 
   const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
+  const controlledTimeout = useRef(0)
 
   useEffect(() => {
     if (!token?.id || !tokenContract) {
@@ -179,39 +180,46 @@ export function useTokenBalances(account, token, timer = 3000) {
     let cancelled = false
     let timeoutId
 
-    const fetchAccountStakeBalance = async () => {
-      try {
-        let contractNewBalance = new BigNumber(-1)
-        if (account) {
-          contractNewBalance = await tokenContract.balanceOf(account)
-        }
-
-        const contractTotalSupply = await tokenContract.totalSupply()
-
-        if (!cancelled) {
-          // Contract value is bn.js so we need to convert it to bignumber.js
-          const newBalance = new BigNumber(contractNewBalance.toString())
-          const newTotalSupply = new BigNumber(contractTotalSupply.toString())
-
-          if (
-            !newTotalSupply.eq(balances.totalSupply) ||
-            !newBalance.eq(balances.balance)
-          ) {
-            setBalances({ balance: newBalance, totalSupply: newTotalSupply })
+    const pollAccountBalance = async () => {
+      timeoutId = setTimeout(async () => {
+        try {
+          let contractNewBalance = new BigNumber(-1)
+          if (account) {
+            contractNewBalance = await tokenContract.balanceOf(account)
           }
+
+          const contractTotalSupply = await tokenContract.totalSupply()
+
+          if (!cancelled) {
+            // Contract value is bn.js so we need to convert it to bignumber.js
+            const newBalance = new BigNumber(contractNewBalance.toString())
+            const newTotalSupply = new BigNumber(contractTotalSupply.toString())
+
+            if (
+              !newTotalSupply.eq(balances.totalSupply) ||
+              !newBalance.eq(balances.balance)
+            ) {
+              setBalances({ balance: newBalance, totalSupply: newTotalSupply })
+            }
+          }
+        } catch (err) {
+          console.error(`Error fetching balance: ${err} retrying...`)
         }
-      } catch (err) {
-        console.error(`Error fetching balance: ${err} retrying...`)
-      }
+        if (!cancelled) {
+          clearTimeout(timeoutId)
+          controlledTimeout.current = timeout
+          pollAccountBalance()
+        }
+      }, controlledTimeout.current)
     }
 
-    fetchAccountStakeBalance()
+    pollAccountBalance()
 
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [account, balances, tokenContract, token])
+  }, [account, balances, timeout, tokenContract, token])
 
   return balances
 }

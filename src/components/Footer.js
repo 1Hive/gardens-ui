@@ -28,7 +28,6 @@ function Footer() {
   const compactMode = below('large')
 
   const { connectedGarden } = useGardens()
-  console.log('connectedGarden  ', connectedGarden)
   if (!connectedGarden) {
     return null
   }

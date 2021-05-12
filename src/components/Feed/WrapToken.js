@@ -26,8 +26,6 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
     wrappableToken,
   } = useAppState()
 
-  console.log('wrappableToken ', wrappableToken)
-
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tabletMode = layoutName === 'medium'

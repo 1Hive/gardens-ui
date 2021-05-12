@@ -329,7 +329,6 @@ export default function useActions() {
   )
 
   // Hoked token manager actions
-
   const approveWrappableTokenAmount = useCallback(
     (amount, onDone = noop) => {
       if (!wrappableTokenContract || !hookedTokenManagerApp) {
@@ -368,8 +367,22 @@ export default function useActions() {
 
   const wrap = useCallback(
     async ({ amount }, onDone = noop) => {
-      console.log('amount ', amount)
       let intent = await hookedTokenManagerApp.intent('wrap', [amount], {
+        actAs: account,
+      })
+
+      intent = imposeGasLimit(intent, 1000000)
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
+    },
+    [account, hookedTokenManagerApp, mounted]
+  )
+
+  const unwrap = useCallback(
+    async ({ amount }, onDone = noop) => {
+      let intent = await hookedTokenManagerApp.intent('unwrap', [amount], {
         actAs: account,
       })
 
@@ -405,6 +418,7 @@ export default function useActions() {
       approveWrappableTokenAmount,
       getAllowance: getHookedTokenManagerAllowance,
       wrap,
+      unwrap,
     },
     issuanceActions: { executeIssuance },
     votingActions: {

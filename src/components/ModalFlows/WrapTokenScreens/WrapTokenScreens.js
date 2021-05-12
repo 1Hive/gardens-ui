@@ -24,30 +24,38 @@ function WrapTokenScreens({ mode }) {
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
-      const allowance = await hookedTokenManagerActions.getAllowance()
-      if (allowance.lt(amount)) {
-        if (!allowance.eq(0)) {
+      if (mode === 'wrap') {
+        const allowance = await hookedTokenManagerActions.getAllowance()
+        if (allowance.lt(amount)) {
+          if (!allowance.eq(0)) {
+            await hookedTokenManagerActions.approveWrappableTokenAmount(
+              ZERO_BN,
+              intent => {
+                temporatyTrx.current = temporatyTrx.current.concat(intent)
+              }
+            )
+          }
           await hookedTokenManagerActions.approveWrappableTokenAmount(
-            ZERO_BN,
+            amount,
             intent => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
-        await hookedTokenManagerActions.approveWrappableTokenAmount(
-          amount,
-          intent => {
-            temporatyTrx.current = temporatyTrx.current.concat(intent)
-          }
-        )
+        await hookedTokenManagerActions.wrap({ amount }, intent => {
+          temporatyTrx.current = temporatyTrx.current.concat(intent)
+        })
+        setTransactions(temporatyTrx.current)
+        onComplete()
       }
-      await hookedTokenManagerActions.wrap({ amount }, intent => {
-        temporatyTrx.current = temporatyTrx.current.concat(intent)
-      })
-      setTransactions(temporatyTrx.current)
-      onComplete()
+      if (mode === 'unwrap') {
+        await hookedTokenManagerActions.unwrap({ amount }, intent => {
+          setTransactions(intent)
+          onComplete()
+        })
+      }
     },
-    [hookedTokenManagerActions]
+    [hookedTokenManagerActions, mode]
   )
 
   const title =
