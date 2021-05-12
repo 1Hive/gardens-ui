@@ -26,7 +26,7 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps } = useAppState()
+  const { installedApps, wrappableToken } = useAppState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
@@ -34,6 +34,7 @@ export default function useActions() {
 
   const disputeFees = useDisputeFees()
   const feeTokenContract = useContract(disputeFees.token, tokenAbi)
+  const wrappableTokenContract = useContract(wrappableToken.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
@@ -222,43 +223,68 @@ export default function useActions() {
     [account, agreementApp, mounted]
   )
 
-  const approveChallengeTokenAmount = useCallback(
-    (depositAmount, onDone = noop) => {
-      if (!feeTokenContract || !agreementApp) {
+  const approveTokenAmount = useCallback(
+    (amount, tokenContract, appAddress, trxDescription) => {
+      if (!tokenContract || !appAddress) {
         return
       }
-      const approveData = encodeFunctionData(feeTokenContract, 'approve', [
-        agreementApp.address,
-        depositAmount.toString(10),
+      const approveData = encodeFunctionData(tokenContract, 'approve', [
+        appAddress,
+        amount.toString(10),
       ])
       const intent = [
         {
           data: approveData,
           from: account,
-          to: feeTokenContract.address,
-          description: 'Approve HNY',
+          to: tokenContract.address,
+          description: trxDescription,
         },
       ]
+
+      return intent
+    },
+    [account]
+  )
+
+  const approveChallengeTokenAmount = useCallback(
+    (depositAmount, onDone = noop) => {
+      if (!feeTokenContract || !agreementApp) {
+        return
+      }
+
+      const intent = approveTokenAmount(
+        depositAmount,
+        feeTokenContract,
+        agreementApp.address,
+        'Approve HNY'
+      )
 
       if (mounted()) {
         onDone(intent)
       }
     },
-    [account, feeTokenContract, agreementApp, mounted]
+    [approveTokenAmount, feeTokenContract, agreementApp, mounted]
   )
 
-  const getAllowance = useCallback(async () => {
-    if (!feeTokenContract) {
+  const getAllowance = useCallback(
+    async (tokenContract, appAddress) => {
+      if (!tokenContract) {
+        return
+      }
+
+      const allowance = await tokenContract.allowance(account, appAddress)
+
+      return new BigNumber(allowance.toString())
+    },
+    [account]
+  )
+
+  const getAgreementAllowance = useCallback(async () => {
+    if (!agreementApp || !feeTokenContract) {
       return
     }
-
-    const allowance = await feeTokenContract.allowance(
-      account,
-      agreementApp.address
-    )
-
-    return new BigNumber(allowance.toString())
-  }, [account, feeTokenContract, agreementApp])
+    return await getAllowance(feeTokenContract, agreementApp.address)
+  }, [agreementApp, feeTokenContract, getAllowance])
 
   const settleAction = useCallback(
     async ({ actionId }, onDone = noop) => {
@@ -302,11 +328,52 @@ export default function useActions() {
     [agreementContract]
   )
 
+  // Hoked token manager actions
+
+  const approveWrappableTokenAmount = useCallback(
+    (amount, onDone = noop) => {
+      if (!wrappableTokenContract || !hookedTokenManagerApp) {
+        return
+      }
+
+      const intent = approveTokenAmount(
+        amount,
+        wrappableTokenContract,
+        hookedTokenManagerApp.address,
+        `Approve ${wrappableToken.symbol}`
+      )
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [
+      approveTokenAmount,
+      hookedTokenManagerApp,
+      mounted,
+      wrappableToken,
+      wrappableTokenContract,
+    ]
+  )
+
+  const getHookedTokenManagerAllowance = useCallback(async () => {
+    if (!hookedTokenManagerApp || !wrappableTokenContract) {
+      return
+    }
+    return await getAllowance(
+      wrappableTokenContract,
+      hookedTokenManagerApp.address
+    )
+  }, [hookedTokenManagerApp, getAllowance, wrappableTokenContract])
+
   const wrap = useCallback(
     async ({ amount }, onDone = noop) => {
-      const intent = await hookedTokenManagerApp.intent('wrap', [amount], {
+      console.log('amount ', amount)
+      let intent = await hookedTokenManagerApp.intent('wrap', [amount], {
         actAs: account,
       })
+
+      intent = imposeGasLimit(intent, 1000000)
 
       if (mounted()) {
         onDone(intent.transactions)
@@ -321,7 +388,7 @@ export default function useActions() {
       approveChallengeTokenAmount,
       challengeAction,
       disputeAction,
-      getAllowance,
+      getAllowance: getAgreementAllowance,
       getChallenge,
       settleAction,
       signAgreement,
@@ -335,6 +402,8 @@ export default function useActions() {
       withdrawFromProposal,
     },
     hookedTokenManagerActions: {
+      approveWrappableTokenAmount,
+      getAllowance: getHookedTokenManagerAllowance,
       wrap,
     },
     issuanceActions: { executeIssuance },

@@ -24,12 +24,11 @@ function AppStateProvider({ children }) {
   console.log('installed apps ', installedApps)
   const { account } = useWallet()
   const {
-    connectedGarden: { wrappableToken },
+    connectedGarden: { wrappableToken, token },
   } = useGardens()
-  const { requestToken, stableToken, stakeToken, totalStaked } =
-    config?.conviction || {}
+  const { requestToken, stableToken, totalStaked } = config?.conviction || {}
 
-  const { balance, totalSupply } = useTokenBalances(account, stakeToken) // TODO: Update stake and requestToken to use connectedGarden.token
+  const { balance, totalSupply } = useTokenBalances(account, token) // TODO: Update stake and requestToken to use connectedGarden.token
   const { balance: wrappableTokenBalance } = useTokenBalances(
     account,
     wrappableToken
@@ -54,7 +53,7 @@ function AppStateProvider({ children }) {
         isLoading: appLoading,
         requestToken,
         stableToken,
-        stakeToken,
+        stakeToken: token, // TODO - maybe rename everywhere stake token by token or gardenToken
         totalStaked,
         totalSupply,
         vaultBalance,

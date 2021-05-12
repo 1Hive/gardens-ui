@@ -1,10 +1,14 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import WrapUnwrap from './WrapUnwrap'
 
 import { useAppState } from '../../../providers/AppState'
-
 import useActions from '../../../hooks/useActions'
+
+import BigNumber from '../../../lib/bigNumber'
+import { toDecimals } from '../../../utils/math-utils'
+
+const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function WrapTokenScreens({ mode }) {
   const [transactions, setTransactions] = useState([])
@@ -16,12 +20,32 @@ function WrapTokenScreens({ mode }) {
   } = useAppState()
   const { hookedTokenManagerActions } = useActions()
 
+  const temporatyTrx = useRef([])
+
   const getTransactions = useCallback(
     async (onComplete, amount) => {
+      const allowance = await hookedTokenManagerActions.getAllowance()
+      if (allowance.lt(amount)) {
+        if (!allowance.eq(0)) {
+          await hookedTokenManagerActions.approveWrappableTokenAmount(
+            ZERO_BN,
+            intent => {
+              temporatyTrx.current = temporatyTrx.current.concat(intent)
+            }
+          )
+        }
+        await hookedTokenManagerActions.approveWrappableTokenAmount(
+          amount,
+          intent => {
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
+          }
+        )
+      }
       await hookedTokenManagerActions.wrap({ amount }, intent => {
-        setTransactions(intent)
-        onComplete()
+        temporatyTrx.current = temporatyTrx.current.concat(intent)
       })
+      setTransactions(temporatyTrx.current)
+      onComplete()
     },
     [hookedTokenManagerActions]
   )
