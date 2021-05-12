@@ -28,7 +28,7 @@ function AppStateProvider({ children }) {
   } = useGardens()
   const { requestToken, stableToken, totalStaked } = config?.conviction || {}
 
-  const { balance, totalSupply } = useTokenBalances(account, token) // TODO: Update stake and requestToken to use connectedGarden.token
+  const { balance, totalSupply } = useTokenBalances(account, token)
   const { balance: wrappableTokenBalance } = useTokenBalances(
     account,
     wrappableToken
