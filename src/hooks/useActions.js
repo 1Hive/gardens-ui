@@ -38,8 +38,6 @@ export default function useActions() {
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
-
-  console.log('issuance app ', issuanceApp)
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
   const hookedTokenManagerApp = getAppByName(
     installedApps,

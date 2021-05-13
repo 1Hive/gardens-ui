@@ -5,6 +5,7 @@ import {
   Button,
   GU,
   Help,
+  LoadingRing,
   useLayout,
   textStyle,
   useTheme,
@@ -28,7 +29,6 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
-  // const tabletMode = layoutName === 'medium'
 
   return (
     <Box
@@ -36,27 +36,41 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
         ${!compactMode && `margin-bottom: ${3 * GU}px;`}
       `}
     >
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        `}
-      >
-        <Token
-          mode="wrap"
-          balance={wrappableAccountBalance}
-          token={wrappableToken}
-          onClick={onWrapToken}
-        />
-        <LineSeparator border={theme.border} />
-        <Token
-          mode="unwrap"
-          balance={gardenTokenBalance}
-          token={stakeToken}
-          onClick={onUnwrapToken}
-        />
-      </div>
+      {gardenTokenBalance.eq(-1) || wrappableAccountBalance.eq(-1) ? (
+        <div
+          css={`
+            width: 100%;
+            height: ${21 * GU}px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          <LoadingRing />
+        </div>
+      ) : (
+        <div
+          css={`
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+          `}
+        >
+          <Token
+            mode="wrap"
+            balance={wrappableAccountBalance}
+            token={wrappableToken}
+            onClick={onWrapToken}
+          />
+          <LineSeparator border={theme.border} />
+          <Token
+            mode="unwrap"
+            balance={gardenTokenBalance}
+            token={stakeToken}
+            onClick={onUnwrapToken}
+          />
+        </div>
+      )}
     </Box>
   )
 }

@@ -12,11 +12,12 @@ import { useWallet } from '../../providers/Wallet'
 import desktopBanner from '../../assets/banner.png'
 import mobileBanner from '../../assets/banner-mobile.png'
 import tabletBanner from '../../assets/banner-tablet.png'
+import tabletBannerFull from '../../assets/banner-tablet-full.png'
 
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
   medium: { image: tabletBanner, aspectRatio: '36%' },
-  // medium_full:{ image: },
+  medium_full: { image: tabletBannerFull, aspectRatio: '36%' },
   large: { image: desktopBanner, aspectRatio: '159%' },
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
@@ -25,20 +26,20 @@ function HeroBanner({ onRequestNewProposal }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
 
-  const banner = BANNERS[layoutName]
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const compactMode = mobileMode || tabletMode
+  const banner =
+    !account && tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
 
   return (
     <div
       css={`
         height: fit-content;
-        ${mobileMode && `margin-top: ${2 * GU}px;`}
+        ${mobileMode && account && `margin-top: ${2 * GU}px;`}
       `}
     >
       <div
-        id="THE DIVVVVVV"
         css={`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
@@ -48,7 +49,7 @@ function HeroBanner({ onRequestNewProposal }) {
           ${tabletMode &&
             `
           min-height: ${27 * GU}px;
-          ${compactMode && !account && `border-radius: ${BIG_RADIUS}px;`}      
+          ${!compactMode && `border-radius: ${BIG_RADIUS}px;`}      
           `}
         `}
       >

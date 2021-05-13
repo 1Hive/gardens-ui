@@ -9,7 +9,7 @@ import { useWallet } from '../../providers/Wallet'
 function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
-  console.log('layout ', layoutName)
+
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const largeMode = layoutName === 'large' || layoutName === 'max'
@@ -39,7 +39,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
         <div
           css={`
             width: ${account ? '50%' : '100%'};
-            margin-left: ${2 * GU}px;
+            ${account && `margin-left: ${2 * GU}px;`}
           `}
         >
           <HeroBanner onRequestNewProposal={onRequestNewProposal} />
