@@ -28,12 +28,11 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
-  const tabletMode = layoutName === 'medium'
+  // const tabletMode = layoutName === 'medium'
 
   return (
     <Box
       css={`
-        ${tabletMode && `height: 100%;`}
         ${!compactMode && `margin-bottom: ${3 * GU}px;`}
       `}
     >
@@ -82,9 +81,8 @@ function Token({ mode, balance, token, onClick }) {
       <img src={icon} height="48" width="48" />
       <span
         css={`
-          font-weight: 400;
-          margin-top: ${1 * GU}px;
-          margin-button: ${1 * GU}px;
+          font-weight: 600;
+          margin: ${1 * GU}px 0;
         `}
       >
         {formatTokenAmount(balance, token.decimals)}
@@ -116,7 +114,7 @@ function Token({ mode, balance, token, onClick }) {
         onClick={onClick}
         disabled={balance.lte(0)}
         css={`
-          margin-top: ${2 * GU}px;
+          margin-top: ${3 * GU}px;
         `}
       />
     </div>

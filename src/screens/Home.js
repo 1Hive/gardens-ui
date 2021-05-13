@@ -4,7 +4,6 @@ import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import Filters from '../components/Filters/Filters'
-// import HeroBanner from '../components/Feed/HeroBanner'
 import Loader from '../components/Loader'
 import Metrics from '../components/Metrics'
 import MultiModal from '../components/MultiModal/MultiModal'
@@ -152,11 +151,17 @@ const Home = React.memo(function Home() {
                     selectedRanking={filters.ranking.filter}
                   />
                   {largeMode && (
-                    <RightPanel
-                      onRequestNewProposal={handleRequestNewProposal}
-                      onWrapToken={handleWrapToken}
-                      onUnwrapToken={handleUnwrapToken}
-                    />
+                    <div
+                      css={`
+                        margin-left: ${3 * GU}px;
+                      `}
+                    >
+                      <RightPanel
+                        onRequestNewProposal={handleRequestNewProposal}
+                        onWrapToken={handleWrapToken}
+                        onUnwrapToken={handleUnwrapToken}
+                      />
+                    </div>
                   )}
                 </div>
               </div>

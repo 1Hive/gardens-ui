@@ -279,11 +279,11 @@ export default function useActions() {
     [account]
   )
 
-  const getAgreementAllowance = useCallback(async () => {
+  const getAgreementAllowance = useCallback(() => {
     if (!agreementApp || !feeTokenContract) {
       return
     }
-    return await getAllowance(feeTokenContract, agreementApp.address)
+    return getAllowance(feeTokenContract, agreementApp.address)
   }, [agreementApp, feeTokenContract, getAllowance])
 
   const settleAction = useCallback(
@@ -355,14 +355,11 @@ export default function useActions() {
     ]
   )
 
-  const getHookedTokenManagerAllowance = useCallback(async () => {
+  const getHookedTokenManagerAllowance = useCallback(() => {
     if (!hookedTokenManagerApp || !wrappableTokenContract) {
       return
     }
-    return await getAllowance(
-      wrappableTokenContract,
-      hookedTokenManagerApp.address
-    )
+    return getAllowance(wrappableTokenContract, hookedTokenManagerApp.address)
   }, [hookedTokenManagerApp, getAllowance, wrappableTokenContract])
 
   const wrap = useCallback(

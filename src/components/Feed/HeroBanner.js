@@ -16,6 +16,7 @@ import tabletBanner from '../../assets/banner-tablet.png'
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
   medium: { image: tabletBanner, aspectRatio: '36%' },
+  // medium_full:{ image: },
   large: { image: desktopBanner, aspectRatio: '159%' },
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
@@ -37,13 +38,18 @@ function HeroBanner({ onRequestNewProposal }) {
       `}
     >
       <div
+        id="THE DIVVVVVV"
         css={`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
-          ${tabletMode && `min-height: ${27 * GU}px;`}
+
           padding-top: ${banner.aspectRatio};
           position: relative;
-          ${tabletMode && `border-radius: ${BIG_RADIUS}px`};
+          ${tabletMode &&
+            `
+          min-height: ${27 * GU}px;
+          ${compactMode && !account && `border-radius: ${BIG_RADIUS}px;`}      
+          `}
         `}
       >
         <div

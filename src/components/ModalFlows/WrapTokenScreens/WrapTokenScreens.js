@@ -6,9 +6,8 @@ import { useAppState } from '../../../providers/AppState'
 import useActions from '../../../hooks/useActions'
 
 import BigNumber from '../../../lib/bigNumber'
-import { toDecimals } from '../../../utils/math-utils'
 
-const ZERO_BN = new BigNumber(toDecimals('0', 18))
+const ZERO_BN = new BigNumber(0)
 
 function WrapTokenScreens({ mode }) {
   const [transactions, setTransactions] = useState([])

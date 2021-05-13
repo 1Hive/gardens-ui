@@ -9,6 +9,7 @@ import { useWallet } from '../../providers/Wallet'
 function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  console.log('layout ', layoutName)
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const largeMode = layoutName === 'large' || layoutName === 'max'
@@ -20,7 +21,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
           width: 100%;
           display: flex;
           flex-direction: row;
-          padding: ${3 * GU}px;
+          ${account && `padding: ${3 * GU}px ${3 * GU}px 0px;`}
         `}
       >
         {account && (
@@ -29,7 +30,10 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
               width: 50%;
             `}
           >
-            <WrapToken />
+            <WrapToken
+              onUnwrapToken={onUnwrapToken}
+              onWrapToken={onWrapToken}
+            />
           </div>
         )}
         <div
@@ -52,9 +56,8 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
             top: ${3 * GU}px;
             position: sticky;
             margin-top: ${3 * GU}px;
-            margin-left: ${3 * GU}px;
         `}
-        ${mobileMode && `margin-top: ${2 * GU}px;`}
+        ${mobileMode && account && `margin-top: ${2 * GU}px;`}
       `}
     >
       {account && (
