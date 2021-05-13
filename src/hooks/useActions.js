@@ -122,22 +122,19 @@ export default function useActions() {
         params.push(amount)
       }
 
-      let intent = await convictionVotingApp.intent(
+      sendIntent(
+        convictionVotingApp,
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
         {
-          actAs: account,
+          ethers,
+          from: account,
+          gasLimit: STAKE_GAS_LIMIT,
         }
       )
-
-      intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
-
-      if (mounted()) {
-        onDone(intent.transactions)
-      }
     },
 
-    [account, convictionVotingApp, mounted]
+    [account, convictionVotingApp, ethers]
   )
 
   const executeProposal = useCallback(

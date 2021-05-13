@@ -53,7 +53,7 @@ function ProposalActions({
   }, [id, onExecuteProposal])
 
   const handleWithdrawAllFromProposal = useCallback(() => {
-    onWithdrawFromProposal(id)
+    onWithdrawFromProposal({ proposalId: id })
   }, [id, onWithdrawFromProposal])
 
   const buttonProps = useMemo(() => {
