@@ -33,17 +33,17 @@ function ProposalActions({
   const didIStake = myStake?.amount.gt(0)
 
   const mode = useMemo(() => {
-    if (didIStake && hasEnded) {
-      return 'withdraw'
+    if (hasEnded) {
+      if (didIStake) {
+        return 'withdraw'
+      }
+      return null
     }
     if (currentConviction.gte(threshold)) {
       return 'execute'
     }
     if (didIStake) {
       return 'update'
-    }
-    if (hasEnded) {
-      return null
     }
     return 'support'
   }, [currentConviction, didIStake, hasEnded, threshold])
