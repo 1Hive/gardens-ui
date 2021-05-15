@@ -148,15 +148,12 @@ function ProposalDisputedInfo({ proposal }) {
           margin-top: ${2 * GU}px;
         `}
       >
-        Celeste has been invoked to settle a challenge
+        Celeste has been invoked to settle a dispute with this proposal
         {proposal.type !== ProposalTypes.Decision
-          ? ' but you can support it anyway and make the conviction grow'
+          ? ' but you can still support it and increase its conviction'
           : ''}
-        . When the challenge is resolved, if allowed,{' '}
-        {proposal.type === ProposalTypes.Suggestion
-          ? 'the proposal will be resumed'
-          : 'the estimated time for the proposal to pass will be resumed for the remainder of its duration time'}
-        . Othersiwe, this proposal will be cancelled.
+        . When the dispute is resolved, if allowed, the proposal will continue
+        as normal othersiwe it will be cancelled.
       </Info>
     </div>
   )

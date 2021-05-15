@@ -18,7 +18,7 @@ export function useDisputeState(disputeId) {
   const timer = 5000
 
   useEffect(() => {
-    if (!disputeManagerContract) {
+    if (!disputeManagerContract || !disputeId) {
       return
     }
 

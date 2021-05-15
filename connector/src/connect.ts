@@ -1,6 +1,6 @@
 
 import { Organization } from '@aragon/connect-core'
-import HonyePot from './models/Honeypot'
+import HoneyPot from './models/Honeypot'
 import HoneyPotConnectorTheGraph, {
   pollIntervalFromChainId,
   subgraphUrlFromChainId,
@@ -28,5 +28,5 @@ export default function connectHoneypot(organization: Organization, config?: Con
     subgraphUrl,
   })
 
-  return new HonyePot(HoneyPotConnector, organization.address)
+  return new HoneyPot(HoneyPotConnector, organization.address)
 }
