@@ -21,6 +21,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const theme = useTheme()
+  // test
 
   useEffect(() => {
     if (!addressExist) {
