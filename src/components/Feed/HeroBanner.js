@@ -48,8 +48,8 @@ function HeroBanner({ onRequestNewProposal }) {
           position: relative;
           ${tabletMode &&
             `
-          min-height: ${27 * GU}px;
-          ${!compactMode && `border-radius: ${BIG_RADIUS}px;`}      
+          min-height: ${28 * GU}px;
+          ${account && `border-radius: ${BIG_RADIUS}px;`}      
           `}
         `}
       >

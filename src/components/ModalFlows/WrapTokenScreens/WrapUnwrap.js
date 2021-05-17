@@ -11,7 +11,6 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { useAppState } from '../../../providers/AppState'
-// import { useWallet } from '../../../providers/Wallet'
 import { useMultiModal } from '../../MultiModal/MultiModalProvider'
 
 import { toDecimals } from '../../../utils/math-utils'

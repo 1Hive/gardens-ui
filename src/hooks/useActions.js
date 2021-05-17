@@ -21,6 +21,7 @@ import agreementAbi from '../abi/agreement.json'
 const GAS_LIMIT = 450000
 const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
+const WRAP_GAS_LIMIT = 1000000
 
 export default function useActions() {
   const { account, ethers } = useWallet()
@@ -34,7 +35,7 @@ export default function useActions() {
 
   const disputeFees = useDisputeFees()
   const feeTokenContract = useContract(disputeFees.token, tokenAbi)
-  const wrappableTokenContract = useContract(wrappableToken.id, tokenAbi)
+  const wrappableTokenContract = useContract(wrappableToken?.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
@@ -366,7 +367,7 @@ export default function useActions() {
         actAs: account,
       })
 
-      intent = imposeGasLimit(intent, 1000000)
+      intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
 
       if (mounted()) {
         onDone(intent.transactions)
@@ -381,7 +382,7 @@ export default function useActions() {
         actAs: account,
       })
 
-      intent = imposeGasLimit(intent, 1000000)
+      intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
 
       if (mounted()) {
         onDone(intent.transactions)

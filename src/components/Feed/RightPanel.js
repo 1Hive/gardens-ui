@@ -5,14 +5,18 @@ import WrapToken from './WrapToken'
 import HeroBanner from './HeroBanner'
 
 import { useWallet } from '../../providers/Wallet'
+import { useAppState } from '../../providers/AppState'
 
 function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  const { wrappableToken } = useAppState() // Todo find a better way to identify a byot gardes rather than just using the wrappable token attr
 
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const largeMode = layoutName === 'large' || layoutName === 'max'
+
+  const showWrapComponent = account && wrappableToken
 
   if (tabletMode) {
     return (
@@ -24,7 +28,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
           ${account && `padding: ${3 * GU}px ${3 * GU}px 0px;`}
         `}
       >
-        {account && (
+        {showWrapComponent && (
           <div
             css={`
               width: 50%;
@@ -60,7 +64,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
         ${mobileMode && account && `margin-top: ${2 * GU}px;`}
       `}
     >
-      {account && (
+      {showWrapComponent && (
         <WrapToken onUnwrapToken={onUnwrapToken} onWrapToken={onWrapToken} />
       )}
       <HeroBanner onRequestNewProposal={onRequestNewProposal} />

@@ -141,7 +141,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
             }
           }
         } catch (err) {
-          console.error(`Error fetching balance: ${err} retrying...`)
+          console.error(`Error fetching vault balance: ${err} retrying...`)
         }
 
         if (!cancelled) {
@@ -170,7 +170,6 @@ export function useTokenBalances(account, token, timeout = 3000) {
   })
 
   const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
-  const controlledTimeout = useRef(0)
 
   useEffect(() => {
     if (!token?.id || !tokenContract) {
@@ -181,36 +180,32 @@ export function useTokenBalances(account, token, timeout = 3000) {
     let timeoutId
 
     const pollAccountBalance = async () => {
-      timeoutId = setTimeout(async () => {
-        try {
-          let contractNewBalance = new BigNumber(-1)
-          if (account) {
-            contractNewBalance = await tokenContract.balanceOf(account)
-          }
-
-          const contractTotalSupply = await tokenContract.totalSupply()
-
-          if (!cancelled) {
-            // Contract value is bn.js so we need to convert it to bignumber.js
-            const newBalance = new BigNumber(contractNewBalance.toString())
-            const newTotalSupply = new BigNumber(contractTotalSupply.toString())
-
-            if (
-              !newTotalSupply.eq(balances.totalSupply) ||
-              !newBalance.eq(balances.balance)
-            ) {
-              setBalances({ balance: newBalance, totalSupply: newTotalSupply })
-            }
-          }
-        } catch (err) {
-          console.error(`Error fetching balance: ${err} retrying...`)
+      try {
+        let contractNewBalance = new BigNumber(-1)
+        if (account) {
+          contractNewBalance = await tokenContract.balanceOf(account)
         }
+
+        const contractTotalSupply = await tokenContract.totalSupply()
+
         if (!cancelled) {
-          clearTimeout(timeoutId)
-          controlledTimeout.current = timeout
-          pollAccountBalance()
+          // Contract value is bn.js so we need to convert it to bignumber.js
+          const newBalance = new BigNumber(contractNewBalance.toString())
+          const newTotalSupply = new BigNumber(contractTotalSupply.toString())
+
+          if (
+            !newTotalSupply.eq(balances.totalSupply) ||
+            !newBalance.eq(balances.balance)
+          ) {
+            setBalances({ balance: newBalance, totalSupply: newTotalSupply })
+          }
         }
-      }, controlledTimeout.current)
+      } catch (err) {
+        console.error(`Error fetching balance: ${err} retrying...`)
+      }
+      if (!cancelled) {
+        timeoutId = setTimeout(pollAccountBalance, timeout)
+      }
     }
 
     pollAccountBalance()

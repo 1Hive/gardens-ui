@@ -26,6 +26,7 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
     wrappableAccountBalance,
     wrappableToken,
   } = useAppState()
+  const loading = gardenTokenBalance.eq(-1) || wrappableAccountBalance.eq(-1)
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
@@ -36,11 +37,11 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
         ${!compactMode && `margin-bottom: ${3 * GU}px;`}
       `}
     >
-      {gardenTokenBalance.eq(-1) || wrappableAccountBalance.eq(-1) ? (
+      {loading ? (
         <div
           css={`
             width: 100%;
-            height: ${21 * GU}px;
+            height: ${22 * GU}px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -107,18 +108,18 @@ function Token({ mode, balance, token, onClick }) {
           align-items: center;
         `}
       >
-        <span
-          css={`
-            margin-right: ${1 * GU}px;
-          `}
-        >
-          {token.symbol}
-        </span>
+        <span>{token.symbol}</span>
         {!wrapMode && (
-          <Help>
-            This amount can be used to vote on proposals. It can be unwrapped at
-            any time.
-          </Help>
+          <div
+            css={`
+              margin-left: ${1 * GU}px;
+            `}
+          >
+            <Help>
+              This amount can be used to vote on proposals. It can be unwrapped
+              at any time.
+            </Help>
+          </div>
         )}
       </div>
       <Button
