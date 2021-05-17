@@ -19,7 +19,13 @@ function Header() {
   const network = getNetwork()
   const { connectedGarden } = useGardens()
 
-  const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
+  const logo =
+    connectedGarden && connectedGarden.logo ? connectedGarden.logo : beeSvg
+  const logoType =
+    connectedGarden && connectedGarden.logo_type
+      ? connectedGarden.logo_type
+      : logoSvg
+  const BeeIcon = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
 
   return (
     <header
@@ -53,7 +59,11 @@ function Header() {
                 display: flex;
               `}
             >
-              {layoutSmall ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
+              {layoutSmall ? (
+                BeeIcon
+              ) : (
+                <img src={logoType} height="40" alt="" />
+              )}
             </Link>
             {!below('large') && (
               <nav
