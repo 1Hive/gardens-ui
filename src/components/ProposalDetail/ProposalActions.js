@@ -22,8 +22,8 @@ function ProposalActions({
 
   const myStake = useMemo(
     () =>
-      stakes.find(({ entity }) =>
-        addressesEqual(entity.address, connectedAccount)
+      stakes.find(({ supporter }) =>
+        addressesEqual(supporter.user.address, connectedAccount)
       ) || {
         amount: new BigNumber('0'),
       },
