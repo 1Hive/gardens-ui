@@ -138,7 +138,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
                 margin-top: ${3 * GU}px;
               `}
             >
-              Scanning this code will prevent any previously connected addresses 
+              Scanning this code will prevent any previously connected addresses
               from connecting to BrightID in the future through any 1Hive apps
             </Info>
           </>
