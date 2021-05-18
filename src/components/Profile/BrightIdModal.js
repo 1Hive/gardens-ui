@@ -139,7 +139,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
               `}
             >
               Scanning this code will prevent any previously connected addresses
-              from registering, claiming or connecting to BrightID
+              from connecting to BrightID in the future through any 1Hive apps
             </Info>
           </>
         )}
