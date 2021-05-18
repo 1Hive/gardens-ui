@@ -119,7 +119,7 @@ function HeaderPopover({
 }
 
 HeaderPopover.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   opener: PropTypes.any,
   visible: PropTypes.bool.isRequired,
