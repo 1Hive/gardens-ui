@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, GU, textStyle, useTheme, useLayout } from '@1hive/1hive-ui'
 import { useGardens } from '../../providers/Gardens'
-import beeIconSvg from '../../assets/bee.svg'
+import defaultGardenSvg from '../../assets/defaultGarden.svg'
 
 export default function EmptyResults({ title, paragraph }) {
   const theme = useTheme()
@@ -10,8 +10,7 @@ export default function EmptyResults({ title, paragraph }) {
   const compactMode = layoutName === 'small'
 
   const { connectedGarden } = useGardens()
-  const logo =
-    connectedGarden && connectedGarden.logo ? connectedGarden.logo : beeIconSvg
+  const logo = connectedGarden?.logo || defaultGardenSvg
 
   return (
     <Box>

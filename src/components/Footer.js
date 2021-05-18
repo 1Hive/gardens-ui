@@ -60,7 +60,7 @@ function Footer() {
             <div>
               <img src={logo} height="40" alt="" />
             </div>
-            {connectedGarden.links.community && (
+            {connectedGarden.links?.community && (
               <div>
                 <h5
                   css={`
@@ -79,7 +79,7 @@ function Footer() {
                 })}
               </div>
             )}
-            {connectedGarden.links.documentation && (
+            {connectedGarden.links?.documentation && (
               <div>
                 <h5
                   css={`
