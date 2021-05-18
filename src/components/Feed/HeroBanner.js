@@ -22,7 +22,7 @@ const BANNERS = {
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
 
-function HeroBanner({ onRequestNewProposal }) {
+function HeroBanner({ onRequestNewProposal, fullScreenMode }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
 
@@ -30,13 +30,12 @@ function HeroBanner({ onRequestNewProposal }) {
   const tabletMode = layoutName === 'medium'
   const compactMode = mobileMode || tabletMode
   const banner =
-    !account && tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
+    fullScreenMode && tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
 
   return (
     <div
       css={`
         height: fit-content;
-        ${mobileMode && account && `margin-top: ${2 * GU}px;`}
       `}
     >
       <div
@@ -49,7 +48,7 @@ function HeroBanner({ onRequestNewProposal }) {
           ${tabletMode &&
             `
           min-height: ${28.25 * GU}px;
-          ${account && `border-radius: ${BIG_RADIUS}px;`}      
+          ${!fullScreenMode && `border-radius: ${BIG_RADIUS}px;`}      
           `}
         `}
       >
