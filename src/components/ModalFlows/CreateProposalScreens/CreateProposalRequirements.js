@@ -90,7 +90,7 @@ function AgreementStatus({ agreement }) {
   const infoData = useMemo(() => {
     if (!signedLatest && !singedPreviousVersion) {
       return {
-        backgroundColor: theme.negativeSurface,
+        backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
         text: 'You have not signed the covenant.',
@@ -100,7 +100,7 @@ function AgreementStatus({ agreement }) {
     }
     if (singedPreviousVersion) {
       return {
-        backgroundColor: theme.negativeSurface,
+        backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
         text: 'You have not signed the newest covenant.',
@@ -141,7 +141,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const infoData = useMemo(() => {
     if (!availableStaked.gte(actionAmount)) {
       return {
-        backgroundColor: theme.negativeSurface,
+        backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
         text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
@@ -155,7 +155,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
 
     if (!allowance.gt(0)) {
       return {
-        backgroundColor: theme.negativeSurface,
+        backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
         text: `You need to allow the Covenant as the lock manager of your staked HNY`,
