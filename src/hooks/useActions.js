@@ -22,12 +22,13 @@ const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
+const WRAP_GAS_LIMIT = 1000000
 
 export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps } = useAppState()
+  const { installedApps, wrappableToken } = useAppState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
@@ -35,10 +36,15 @@ export default function useActions() {
 
   const disputeFees = useDisputeFees()
   const feeTokenContract = useContract(disputeFees.token, tokenAbi)
+  const wrappableTokenContract = useContract(wrappableToken?.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
+  const hookedTokenManagerApp = getAppByName(
+    installedApps,
+    env('HOOKED_TOKEN_MANAGER_APP_NAME')
+  )
 
   const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
@@ -214,43 +220,68 @@ export default function useActions() {
     [account, agreementApp, mounted]
   )
 
-  const approveChallengeTokenAmount = useCallback(
-    (depositAmount, onDone = noop) => {
-      if (!feeTokenContract || !agreementApp) {
+  const approveTokenAmount = useCallback(
+    (amount, tokenContract, appAddress, trxDescription) => {
+      if (!tokenContract || !appAddress) {
         return
       }
-      const approveData = encodeFunctionData(feeTokenContract, 'approve', [
-        agreementApp.address,
-        depositAmount.toString(10),
+      const approveData = encodeFunctionData(tokenContract, 'approve', [
+        appAddress,
+        amount.toString(10),
       ])
       const intent = [
         {
           data: approveData,
           from: account,
-          to: feeTokenContract.address,
-          description: 'Approve HNY',
+          to: tokenContract.address,
+          description: trxDescription,
         },
       ]
+
+      return intent
+    },
+    [account]
+  )
+
+  const approveChallengeTokenAmount = useCallback(
+    (depositAmount, onDone = noop) => {
+      if (!feeTokenContract || !agreementApp) {
+        return
+      }
+
+      const intent = approveTokenAmount(
+        depositAmount,
+        feeTokenContract,
+        agreementApp.address,
+        'Approve HNY'
+      )
 
       if (mounted()) {
         onDone(intent)
       }
     },
-    [account, feeTokenContract, agreementApp, mounted]
+    [approveTokenAmount, feeTokenContract, agreementApp, mounted]
   )
 
-  const getAllowance = useCallback(async () => {
-    if (!feeTokenContract) {
+  const getAllowance = useCallback(
+    async (tokenContract, appAddress) => {
+      if (!tokenContract) {
+        return
+      }
+
+      const allowance = await tokenContract.allowance(account, appAddress)
+
+      return new BigNumber(allowance.toString())
+    },
+    [account]
+  )
+
+  const getAgreementAllowance = useCallback(() => {
+    if (!agreementApp || !feeTokenContract) {
       return
     }
-
-    const allowance = await feeTokenContract.allowance(
-      account,
-      agreementApp.address
-    )
-
-    return new BigNumber(allowance.toString())
-  }, [account, feeTokenContract, agreementApp])
+    return getAllowance(feeTokenContract, agreementApp.address)
+  }, [agreementApp, feeTokenContract, getAllowance])
 
   const resolveAction = useCallback(
     disputeId => {
@@ -305,30 +336,100 @@ export default function useActions() {
     [agreementContract]
   )
 
+  // Hoked token manager actions
+  const approveWrappableTokenAmount = useCallback(
+    (amount, onDone = noop) => {
+      if (!wrappableTokenContract || !hookedTokenManagerApp) {
+        return
+      }
+
+      const intent = approveTokenAmount(
+        amount,
+        wrappableTokenContract,
+        hookedTokenManagerApp.address,
+        `Approve ${wrappableToken.symbol}`
+      )
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [
+      approveTokenAmount,
+      hookedTokenManagerApp,
+      mounted,
+      wrappableToken,
+      wrappableTokenContract,
+    ]
+  )
+
+  const getHookedTokenManagerAllowance = useCallback(() => {
+    if (!hookedTokenManagerApp || !wrappableTokenContract) {
+      return
+    }
+    return getAllowance(wrappableTokenContract, hookedTokenManagerApp.address)
+  }, [hookedTokenManagerApp, getAllowance, wrappableTokenContract])
+
+  const wrap = useCallback(
+    async ({ amount }, onDone = noop) => {
+      let intent = await hookedTokenManagerApp.intent('wrap', [amount], {
+        actAs: account,
+      })
+
+      intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
+    },
+    [account, hookedTokenManagerApp, mounted]
+  )
+
+  const unwrap = useCallback(
+    async ({ amount }, onDone = noop) => {
+      let intent = await hookedTokenManagerApp.intent('unwrap', [amount], {
+        actAs: account,
+      })
+
+      intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
+
+      if (mounted()) {
+        onDone(intent.transactions)
+      }
+    },
+    [account, hookedTokenManagerApp, mounted]
+  )
+
   // TODO: Memoize objects
   return {
+    agreementActions: {
+      approveChallengeTokenAmount,
+      challengeAction,
+      disputeAction,
+      getAllowance: getAgreementAllowance,
+      getChallenge,
+      resolveAction,
+      settleAction,
+      signAgreement,
+    },
     convictionActions: {
       executeProposal,
+      cancelProposal,
       newProposal,
       newSignalingProposal,
-      cancelProposal,
       stakeToProposal,
       withdrawFromProposal,
+    },
+    hookedTokenManagerActions: {
+      approveWrappableTokenAmount,
+      getAllowance: getHookedTokenManagerAllowance,
+      wrap,
+      unwrap,
     },
     issuanceActions: { executeIssuance },
     votingActions: {
       executeDecision,
       voteOnDecision,
-    },
-    agreementActions: {
-      challengeAction,
-      settleAction,
-      disputeAction,
-      resolveAction,
-      signAgreement,
-      approveChallengeTokenAmount,
-      getAllowance,
-      getChallenge,
     },
   }
 }

@@ -1,14 +1,23 @@
 import React from 'react'
-import { Button, GU, IconPlus, textStyle, useLayout } from '@1hive/1hive-ui'
+import {
+  BIG_RADIUS,
+  Button,
+  GU,
+  IconPlus,
+  textStyle,
+  useLayout,
+} from '@1hive/1hive-ui'
 import { useWallet } from '../../providers/Wallet'
 
 import desktopBanner from '../../assets/banner.png'
 import mobileBanner from '../../assets/banner-mobile.png'
 import tabletBanner from '../../assets/banner-tablet.png'
+import tabletBannerFull from '../../assets/banner-tablet-full.png'
 
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
   medium: { image: tabletBanner, aspectRatio: '36%' },
+  medium_full: { image: tabletBannerFull, aspectRatio: '36%' },
   large: { image: desktopBanner, aspectRatio: '159%' },
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
@@ -17,30 +26,31 @@ function HeroBanner({ onRequestNewProposal }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
 
-  const banner = BANNERS[layoutName]
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const mobileMode = layoutName === 'small'
+  const tabletMode = layoutName === 'medium'
+  const compactMode = mobileMode || tabletMode
+  const banner =
+    !account && tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
 
   return (
     <div
       css={`
         height: fit-content;
-
-        ${!compactMode &&
-          `
-          top: ${3 * GU}px;
-          position: sticky;
-          margin-top: ${3 * GU}px;
-        `}
+        ${mobileMode && account && `margin-top: ${2 * GU}px;`}
       `}
     >
       <div
         css={`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
-          width: ${compactMode ? '100%' : '327px'};
-          height: 0;
+
           padding-top: ${banner.aspectRatio};
           position: relative;
+          ${tabletMode &&
+            `
+          min-height: ${28.25 * GU}px;
+          ${account && `border-radius: ${BIG_RADIUS}px;`}      
+          `}
         `}
       >
         <div

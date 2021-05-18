@@ -141,7 +141,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
             }
           }
         } catch (err) {
-          console.error(`Error fetching balance: ${err} retrying...`)
+          console.error(`Error fetching vault balance: ${err} retrying...`)
         }
 
         if (!cancelled) {
@@ -163,7 +163,7 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
   return vaultBalance
 }
 
-export function useTokenBalances(account, token, timer = 3000) {
+export function useTokenBalances(account, token, timeout = 3000) {
   const [balances, setBalances] = useState({
     balance: new BigNumber(-1),
     totalSupply: new BigNumber(-1),
@@ -179,7 +179,7 @@ export function useTokenBalances(account, token, timer = 3000) {
     let cancelled = false
     let timeoutId
 
-    const fetchAccountStakeBalance = async () => {
+    const pollAccountBalance = async () => {
       try {
         let contractNewBalance = new BigNumber(-1)
         if (account) {
@@ -203,15 +203,18 @@ export function useTokenBalances(account, token, timer = 3000) {
       } catch (err) {
         console.error(`Error fetching balance: ${err} retrying...`)
       }
+      if (!cancelled) {
+        timeoutId = setTimeout(pollAccountBalance, timeout)
+      }
     }
 
-    fetchAccountStakeBalance()
+    pollAccountBalance()
 
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [account, balances, tokenContract, token])
+  }, [account, balances, timeout, tokenContract, token])
 
   return balances
 }
