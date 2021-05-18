@@ -168,7 +168,12 @@ function AccountModule({ compact }) {
             )
           }
           if (screenId === 'connected') {
-            return <ScreenConnected wallet={wallet} />
+            return (
+              <ScreenConnected
+                onClosePopover={handlePopoverClose}
+                wallet={wallet}
+              />
+            )
           }
           if (screenId === 'error') {
             return <ScreenError error={activationError} onBack={clearError} />
