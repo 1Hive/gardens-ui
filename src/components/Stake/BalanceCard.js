@@ -124,7 +124,7 @@ function BalanceCard({
             font-weight: 600;
           `}
         >
-          Allow 1Hive Protocol
+          Allow Garden
         </span>
         <div
           css={`
@@ -133,8 +133,8 @@ function BalanceCard({
         >
           <Help hint="">
             {allowManagerDisabled
-              ? `You cannot disallow the 1Hive Protocol from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the 1hive Protocol.`
-              : `By enabling this feature you allow the 1Hive Protocol to lock the available ${tokenSymbol} you have deposited when creating actions.`}
+              ? `You cannot disallow this garden from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the garden.`
+              : `By enabling this feature you allow this garden to lock the available ${tokenSymbol} you have deposited when creating actions.`}
           </Help>
         </div>
       </div>
