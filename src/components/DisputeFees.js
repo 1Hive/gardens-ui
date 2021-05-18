@@ -49,7 +49,7 @@ function DisputeFees({ proposal }) {
             />
             <div>
               {formatTokenAmount(
-                fees.amount?.mul('2'),
+                fees.amount,
                 proposal.challengerArbitratorFee.tokenDecimals
               )}{' '}
               {proposal.challengerArbitratorFee.tokenSymbol}

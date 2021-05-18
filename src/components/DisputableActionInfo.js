@@ -19,7 +19,11 @@ import { useDisputeState } from '../hooks/useDispute'
 import { ProposalTypes } from '../types'
 import { dateFormat } from '../utils/date-utils'
 import { formatTokenAmount } from '../utils/token-utils'
-import { DisputeStates, RoundStates } from '../utils/dispute-utils'
+import {
+  DisputeStates,
+  DISPUTE_STATE_RULED,
+  RoundStates,
+} from '../utils/dispute-utils'
 import { getNetwork } from '../networks'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
@@ -102,6 +106,7 @@ function DisputableActionInfo({
   proposal,
   onChallengeAction,
   onDisputeAction,
+  onResolveAction,
   onSettleAction,
 }) {
   return (
@@ -121,7 +126,7 @@ function DisputableActionInfo({
           <Settlement proposal={proposal} />
         )}
         {(proposal.statusData.disputed || proposal.disputedAt > 0) && (
-          <Dispute proposal={proposal} />
+          <Dispute onResolveAction={onResolveAction} proposal={proposal} />
         )}
         <Actions
           proposal={proposal}
@@ -245,47 +250,62 @@ function Settlement({ proposal }) {
   )
 }
 
-function Dispute({ proposal }) {
+function Dispute({ onResolveAction, proposal }) {
   const theme = useTheme()
+  const { account } = useWallet()
   const celesteUrl = getNetwork().celesteUrl
   const [disputeState, roundState] = useDisputeState(proposal.disputeId)
 
   return (
-    <DataField
-      label="Dispute"
-      value={
-        <div
+    <div>
+      <DataField
+        label="Dispute"
+        value={
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <Link
+              href={`${celesteUrl}/disputes/${proposal.disputeId}`}
+              css={`
+                margin-right: ${0.5 * GU}px;
+              `}
+            >
+              Celeste Q#{proposal.disputeId}
+            </Link>
+            <span
+              css={`
+                color: ${theme.contentSecondary};
+              `}
+            >
+              {disputeState !== null ? (
+                `(${
+                  roundState
+                    ? RoundStates[roundState]
+                    : DisputeStates[disputeState]
+                })`
+              ) : (
+                <LoadingRing />
+              )}
+            </span>
+          </div>
+        }
+      />
+      {proposal.statusData.disputed && disputeState === DISPUTE_STATE_RULED && (
+        <Button
+          label="Resolve dispute"
+          mode="strong"
+          onClick={onResolveAction}
+          wide
+          disabled={!account}
           css={`
-            display: flex;
-            align-items: center;
+            margin-top: ${2 * GU}px;
           `}
-        >
-          <Link
-            href={`${celesteUrl}/disputes/${proposal.disputeId}`}
-            css={`
-              margin-right: ${0.5 * GU}px;
-            `}
-          >
-            Celeste Q#{proposal.disputeId}
-          </Link>
-          <span
-            css={`
-              color: ${theme.contentSecondary};
-            `}
-          >
-            {disputeState !== null ? (
-              `(${
-                roundState
-                  ? RoundStates[roundState]
-                  : DisputeStates[disputeState]
-              })`
-            ) : (
-              <LoadingRing />
-            )}
-          </span>
-        </div>
-      }
-    />
+        />
+      )}
+    </div>
   )
 }
 
@@ -327,17 +347,20 @@ function Actions({
   onSettleAction,
 }) {
   const { account } = useWallet()
-
   const content = getInfoActionContent(proposal, account, {
     onChallengeAction,
     onDisputeAction,
     onSettleAction,
   })
 
+  if (!content) {
+    return null
+  }
+
   return (
     <div>
-      {content?.info && <Info>{content.info}</Info>}
-      {content?.actions &&
+      {content.info && <Info>{content.info}</Info>}
+      {content.actions &&
         content.actions.map((action, index) => (
           <Button
             key={index}

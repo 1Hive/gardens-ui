@@ -19,6 +19,7 @@ import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
+const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
 
@@ -122,22 +123,19 @@ export default function useActions() {
         params.push(amount)
       }
 
-      let intent = await convictionVotingApp.intent(
+      sendIntent(
+        convictionVotingApp,
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
         {
-          actAs: account,
+          ethers,
+          from: account,
+          gasLimit: STAKE_GAS_LIMIT,
         }
       )
-
-      intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
-
-      if (mounted()) {
-        onDone(intent.transactions)
-      }
     },
 
-    [account, convictionVotingApp, mounted]
+    [account, convictionVotingApp, ethers]
   )
 
   const executeProposal = useCallback(
@@ -254,6 +252,17 @@ export default function useActions() {
     return new BigNumber(allowance.toString())
   }, [account, feeTokenContract, agreementApp])
 
+  const resolveAction = useCallback(
+    disputeId => {
+      sendIntent(agreementApp, 'resolve', [disputeId], {
+        ethers,
+        from: account,
+        gasLimit: RESOLVE_GAS_LIMIT,
+      })
+    },
+    [account, agreementApp, ethers]
+  )
+
   const settleAction = useCallback(
     async ({ actionId }, onDone = noop) => {
       const intent = await agreementApp.intent('settleAction', [actionId], {
@@ -315,6 +324,7 @@ export default function useActions() {
       challengeAction,
       settleAction,
       disputeAction,
+      resolveAction,
       signAgreement,
       approveChallengeTokenAmount,
       getAllowance,
