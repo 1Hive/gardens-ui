@@ -22,7 +22,7 @@ function Header() {
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
-      return { logo: gardensLogo, logoType: gardensLogoType }
+      return { logo: gardensLogo, logotype: gardensLogoType }
     }
 
     return {
