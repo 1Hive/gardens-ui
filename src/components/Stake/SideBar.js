@@ -1,6 +1,6 @@
 import React from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useUniswapHnyPrice } from '../../hooks/useUniswapHNYPrice'
+import { useHoneyswapTokenPrice } from '../../hooks/useHoneyswapTokenPrice'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
 import { formatTokenAmount } from '../../utils/token-utils'
@@ -9,7 +9,7 @@ import wallet from './assets/wallet.svg'
 
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
   const { available, locked, total, allowance } = staking
-  const tokenRate = useUniswapHnyPrice()
+  const tokenPrice = useHoneyswapTokenPrice(token.id)
 
   return (
     <div
@@ -25,6 +25,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
         locked={locked}
         stakeActions={stakeActions}
         total={total}
+        tokenAddress={token.id}
         tokenDecimals={token.decimals}
         tokenSymbol={token.symbol}
         onDepositOrWithdraw={onDepositOrWithdraw}
@@ -32,7 +33,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
       <ExpandableCard
         content={
           <CardContent
-            amount={formatTokenAmount(available * tokenRate, token.decimals)}
+            amount={formatTokenAmount(available * tokenPrice, token.decimals)}
             icon={wallet}
             title={`Available ${token.symbol}`}
             tokenAmount={formatTokenAmount(available, token.decimals)}
@@ -43,11 +44,11 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
       <ExpandableCard
         content={
           <CardContent
-            amount={formatTokenAmount(locked * tokenRate, token.decimals)}
+            amount={formatTokenAmount(locked * tokenPrice, token.decimals)}
             icon={coin}
             title={`Locked ${token.symbol}`}
-            tokenAmount={formatTokenAmount(locked, token.decimals)}
             secondary
+            tokenAmount={formatTokenAmount(locked, token.decimals)}
           />
         }
         expansion="This is the part of your collateral balance that is backing a particular action. This Locked amount will move back to Available after the action is finalised if there are no successful challenges."
@@ -56,7 +57,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
   )
 }
 
-function CardContent({ icon, title, tokenAmount, amount, secondary }) {
+function CardContent({ amount, icon, title, secondary, tokenAmount }) {
   const theme = useTheme()
   return (
     <div
@@ -92,7 +93,7 @@ function CardContent({ icon, title, tokenAmount, amount, secondary }) {
           color: ${secondary ? theme.contentSecondary : theme.positive};
         `}
       >
-        $ {amount}
+        $ {amount > 0 ? amount : '-'}
       </p>
     </div>
   )
