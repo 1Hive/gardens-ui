@@ -18,9 +18,9 @@ import { useWallet } from '../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
 
 import createSvg from '../assets/create.svg'
+import defaultGardenSvg from '../assets/defaultGarden.svg'
 import getHoneySvg from '../assets/getHoney.svg'
 import homeSvg from '../assets/home.svg'
-import logoSvg from '../assets/logo.svg'
 
 function Footer() {
   const theme = useTheme()
@@ -31,7 +31,7 @@ function Footer() {
   if (!connectedGarden) {
     return null
   }
-  const logo = connectedGarden.logo ? connectedGarden.logo : logoSvg
+  const logo = connectedGarden.logo ? connectedGarden.logo : defaultGardenSvg
 
   return (
     <footer
