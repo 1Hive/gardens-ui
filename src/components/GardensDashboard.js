@@ -57,7 +57,7 @@ function GardenCard({ garden }) {
           justify-content: center;
         `}
       >
-        <img src={garden.logo || defaultGardenLogo} alt="" />
+        <img src={garden.logo || defaultGardenLogo} alt="" height="72" />
       </div>
       <div
         css={`
