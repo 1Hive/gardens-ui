@@ -5,10 +5,10 @@ import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useGardens } from '../../providers/Gardens'
 import { useWallet } from '../../providers/Wallet'
-import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
+import { getHoneyswapTradeTokenUrl } from '../../endpoints'
 import { getNetwork } from '../../networks'
 
-import defaultGardenSvg from '../../assets/defaultGarden.svg'
+import defaultGardenLogo from '../../assets/defaultGardenLogo.svg'
 import gardensLogo from '../../assets/gardensLogo.svg'
 import gardensLogoType from '../../assets/gardensLogoType.svg'
 
@@ -26,8 +26,8 @@ function Header() {
     }
 
     return {
-      logo: connectedGarden?.logo || defaultGardenSvg,
-      logotype: connectedGarden?.logo_type || defaultGardenSvg,
+      logo: connectedGarden?.logo || defaultGardenLogo,
+      logotype: connectedGarden?.logo_type || defaultGardenLogo,
     }
   }, [connectedGarden])
 
@@ -139,7 +139,7 @@ function GardenNavItems({ garden }) {
         Covenant
       </Link>
       <Link
-        href={HONEYSWAP_TRADE_HONEY}
+        href={getHoneyswapTradeTokenUrl(garden.token.id)}
         css={`
           text-decoration: none;
           color: ${theme.contentSecondary};

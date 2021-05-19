@@ -13,13 +13,13 @@ import Layout from './Layout'
 import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import { useGardens } from '../providers/Gardens'
-
 import { useWallet } from '../providers/Wallet'
-import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
+
+import { getHoneyswapTradeTokenUrl } from '../endpoints'
 
 import createSvg from '../assets/create.svg'
-import defaultGardenSvg from '../assets/defaultGarden.svg'
-import getHoneySvg from '../assets/getHoney.svg'
+import defaultGardenLogo from '../assets/defaultGardenLogo.svg'
+import getHoneySvg from '../assets/getHoney.svg' // TODO: Update
 import homeSvg from '../assets/home.svg'
 
 function Footer() {
@@ -31,7 +31,7 @@ function Footer() {
   if (!connectedGarden) {
     return null
   }
-  const logo = connectedGarden.logo ? connectedGarden.logo : defaultGardenSvg
+  const logo = connectedGarden.logo ? connectedGarden.logo : defaultGardenLogo
 
   return (
     <footer
@@ -44,7 +44,7 @@ function Footer() {
     >
       <Layout paddingBottom={0}>
         {compactMode ? (
-          <FixedFooter />
+          <FixedFooter token={connectedGarden.token} />
         ) : (
           <div
             css={`
@@ -105,7 +105,7 @@ function Footer() {
   )
 }
 
-function FixedFooter() {
+function FixedFooter({ token }) {
   const theme = useTheme()
   const { account } = useWallet()
   const { layoutName } = useLayout()
@@ -153,9 +153,9 @@ function FixedFooter() {
               onClick={() => setCreateProposalModalVisible(true)}
             />
             <FooterItem
-              href={HONEYSWAP_TRADE_HONEY}
-              icon={<img src={getHoneySvg} alt="gethoney" />}
-              label="Get Honey"
+              href={getHoneyswapTradeTokenUrl(token.id)}
+              icon={<img src={getHoneySvg} alt="" />}
+              label={`Get ${token.name}`}
               external
             />
           </div>
