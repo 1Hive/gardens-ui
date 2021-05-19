@@ -3,8 +3,8 @@ import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useGardens } from '../providers/Gardens'
 import { useHistory } from 'react-router'
 
-import defaultGardenSvg from '../assets/defaultGarden.svg'
-import defaultTokenSvg from '../assets/defaultToken.svg'
+import defaultGardenLogo from '../assets/defaultGardenLogo.svg'
+import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
 
 function GardensDashboard() {
   const { gardens } = useGardens()
@@ -57,7 +57,7 @@ function GardenCard({ garden }) {
           justify-content: center;
         `}
       >
-        <img src={garden.logo || defaultGardenSvg} alt="" />
+        <img src={garden.logo || defaultGardenLogo} alt="" />
       </div>
       <div
         css={`
@@ -88,7 +88,7 @@ function GardenCard({ garden }) {
         `}
       >
         <img
-          src={garden.token?.logo || defaultTokenSvg}
+          src={garden.token?.logo || defaultTokenLogo}
           alt=""
           height="20"
           width="20"

@@ -8,9 +8,9 @@ import { useAppState } from '../providers/AppState'
 import { useGardens } from '../providers/Gardens'
 import { useWallet } from '../providers/Wallet'
 
-import defaultTokenSvg from '../assets/defaultToken.svg'
-import { formatTokenAmount } from '../utils/token-utils'
 import { buildGardenPath } from '../utils/routing-utils'
+import { formatTokenAmount } from '../utils/token-utils'
+import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
   const theme = useTheme()
@@ -39,7 +39,7 @@ function BalanceModule() {
     <HeaderModule
       icon={
         <img
-          src={token.logo || defaultTokenSvg}
+          src={token.logo || defaultTokenLogo}
           height="28"
           width="28"
           alt=""

@@ -5,7 +5,7 @@ import { useGardens } from '../providers/Gardens'
 import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
-import defaultTokenSvg from '../assets/defaultToken.svg'
+import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
 
 const Metrics = React.memo(function Metrics({
   commonPool,
@@ -40,7 +40,7 @@ const Metrics = React.memo(function Metrics({
           `}
         >
           <img
-            src={token.logo || defaultTokenSvg}
+            src={token.logo || defaultTokenLogo}
             height="60"
             width="60"
             alt=""
