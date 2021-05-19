@@ -8,8 +8,9 @@ import { useWallet } from '../../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../../endpoints'
 import { getNetwork } from '../../networks'
 
-import beeSvg from '../../assets/bee.svg'
-import logoSvg from '../../assets/logo.svg'
+import defaultGardenSvg from '../../assets/defaultGarden.svg'
+import iconGardens from '../../assets/iconGardens.svg'
+import gardensType from '../../assets/gardensType.svg'
 
 function Header() {
   const theme = useTheme()
@@ -19,7 +20,13 @@ function Header() {
   const network = getNetwork()
   const { connectedGarden } = useGardens()
 
-  const BeeIcon = <img src={beeSvg} height={layoutSmall ? 40 : 60} alt="" />
+  const logo = !connectedGarden
+    ? iconGardens
+    : connectedGarden?.logo || defaultGardenSvg
+  const logoType = !connectedGarden
+    ? gardensType
+    : connectedGarden?.logo_type || defaultGardenSvg
+  const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
 
   return (
     <header
@@ -53,7 +60,7 @@ function Header() {
                 display: flex;
               `}
             >
-              {layoutSmall ? BeeIcon : <img src={logoSvg} height="40" alt="" />}
+              {layoutSmall ? Logo : <img src={logoType} height="40" alt="" />}
             </Link>
             {!below('large') && (
               <nav
@@ -136,16 +143,18 @@ function GardenNavItems({ garden }) {
       >
         Get {garden.token.name}
       </Link>
-      <Link
-        href="https://1hive.gitbook.io/1hive/"
-        css={`
-          text-decoration: none;
-          color: ${theme.contentSecondary};
-          margin-left: ${4 * GU}px;
-        `}
-      >
-        Wiki
-      </Link>
+      {garden?.wiki && (
+        <Link
+          href={garden.wiki}
+          css={`
+            text-decoration: none;
+            color: ${theme.contentSecondary};
+            margin-left: ${4 * GU}px;
+          `}
+        >
+          Wiki
+        </Link>
+      )}
     </>
   )
 }

@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import Layout from './Layout'
 import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import logoSvg from '../assets/logo.svg'
+import { useGardens } from '../providers/Gardens'
 
 import { useWallet } from '../providers/Wallet'
 import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
@@ -20,7 +20,7 @@ import { HONEYSWAP_TRADE_HONEY } from '../endpoints'
 import createSvg from '../assets/create.svg'
 import getHoneySvg from '../assets/getHoney.svg'
 import homeSvg from '../assets/home.svg'
-import { useGardens } from '../providers/Gardens'
+import logoSvg from '../assets/logo.svg'
 
 function Footer() {
   const theme = useTheme()
@@ -31,6 +31,7 @@ function Footer() {
   if (!connectedGarden) {
     return null
   }
+  const logo = connectedGarden.logo ? connectedGarden.logo : logoSvg
 
   return (
     <footer
@@ -57,55 +58,46 @@ function Footer() {
             `}
           >
             <div>
-              <img src={logoSvg} height="40" alt="" />
+              <img src={logo} height="40" alt="" />
             </div>
-            <div>
-              <h5
-                css={`
-                  ${textStyle('body1')};
-                  margin-bottom: ${1.5 * GU}px;
-                `}
-              >
-                Community
-              </h5>
-              <Link href="https://discord.gg/4fm7pgB" external>
-                Discord
-              </Link>
-              <Link href="https://github.com/1Hive" external>
-                Github
-              </Link>
-              <Link href="https://twitter.com/1HiveOrg" external>
-                Twitter
-              </Link>
-              <Link href="https://t.me/honeyswapdex" external>
-                Telegram
-              </Link>
-              <Link href="https://forum.1hive.org/" external>
-                Forum
-              </Link>
-            </div>
-            <div>
-              <h5
-                css={`
-                  ${textStyle('body1')};
-                  margin-bottom: ${1.5 * GU}px;
-                `}
-              >
-                Documentation
-              </h5>
-              <Link href="https://1hive.gitbook.io/1hive/" external>
-                Wiki
-              </Link>
-              <Link
-                href="https://1hive.gitbook.io/1hive/community/security/bug-bounty"
-                external
-              >
-                Bug Bounty
-              </Link>
-              <Link href="https://1hive.gitbook.io/1hive/guides/faq" external>
-                FAQs
-              </Link>
-            </div>
+            {connectedGarden.links?.community && (
+              <div>
+                <h5
+                  css={`
+                    ${textStyle('body1')};
+                    margin-bottom: ${1.5 * GU}px;
+                  `}
+                >
+                  Community
+                </h5>
+                {connectedGarden.links.community.map((link, i) => {
+                  return (
+                    <Link key={i} href={link.link} external>
+                      {link.label}
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
+            {connectedGarden.links?.documentation && (
+              <div>
+                <h5
+                  css={`
+                    ${textStyle('body1')};
+                    margin-bottom: ${1.5 * GU}px;
+                  `}
+                >
+                  Documentation
+                </h5>
+                {connectedGarden.links.documentation.map((link, i) => {
+                  return (
+                    <Link key={i} href={link.link} external>
+                      {link.label}
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
       </Layout>
