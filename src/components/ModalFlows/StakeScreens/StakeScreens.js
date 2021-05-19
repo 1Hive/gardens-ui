@@ -3,7 +3,6 @@ import { useHistory } from 'react-router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
-import { useAppState } from '../../../providers/AppState'
 
 import BigNumber from '../../../lib/bigNumber'
 import { buildGardenPath } from '../../../utils/routing-utils'
@@ -13,9 +12,9 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const [transactions, setTransactions] = useState([])
-  const { accountBalance } = useAppState()
   const history = useHistory()
   const { allowance: stakingAllowance } = stakeManagement?.staking || {}
+  const { token, accountBalance } = stakeManagement
 
   const temporatyTrx = useRef([])
 
@@ -81,12 +80,15 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const data = useMemo(() => {
     if (mode === 'deposit') {
       return {
-        title: 'Deposit HNY as collateral',
-        transactionTitle: 'Deposit HNY',
+        title: `Deposit ${token.symbol} as collateral`,
+        transactionTitle: `Deposit ${token.symbol}`,
       }
     }
-    return { title: 'Withdraw HNY', transactionTitle: 'Withdraw HNY' }
-  }, [mode])
+    return {
+      title: `Withdraw ${token.symbol}`,
+      transactionTitle: `Withdraw ${token.symbol}`,
+    }
+  }, [mode, token.symbol])
 
   const screens = useMemo(
     () => [
@@ -109,7 +111,11 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
     <ModalFlowBase
       frontLoad={false}
       transactions={transactions}
-      transactionTitle={mode === 'deposit' ? 'Deposit HNY' : 'Withdraw HNY'}
+      transactionTitle={
+        mode === 'deposit'
+          ? `Deposit ${token.symbol}`
+          : `Withdraw ${token.symbol}`
+      }
       screens={screens}
       onCompleteActions={renderOnCompleteActions}
     />

@@ -101,10 +101,13 @@ export function useStaking() {
             handleStakingMovementsData
           )
 
+          const accountBalance = await tokenContract?.balanceOf(account)
+
           if (mounted()) {
             setStakeManagement(stakeManagement => ({
               ...stakeManagement,
               token: allTokens[1],
+              accountBalance,
               staking: staking
                 ? {
                     ...staking,
@@ -138,7 +141,13 @@ export function useStaking() {
       getStakingInformation()
     }
     return () => stakingMovementsSubscription.current?.unsubscribe()
-  }, [connectedAgreementApp, handleStakingMovementsData, mounted, account])
+  }, [
+    connectedAgreementApp,
+    handleStakingMovementsData,
+    mounted,
+    account,
+    tokenContract,
+  ])
 
   useEffect(() => {
     async function fetchStakingAddress() {
@@ -244,7 +253,7 @@ export function useStaking() {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: 'Deposit HNY',
+          description: `Deposit ${stakeManagement.token.symbol}`,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -272,7 +281,7 @@ export function useStaking() {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: 'Withdraw HNY',
+          description: `Withdraw ${stakeManagement.token.symbol}`,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -300,7 +309,7 @@ export function useStaking() {
           data: approveData,
           from: account,
           to: stakeManagement.token.id,
-          description: 'Approve HNY',
+          description: `Approve ${stakeManagement.token.symbol}`,
         },
       ]
 
@@ -351,7 +360,7 @@ export function useStaking() {
             data: allowManagerData,
             from: account,
             to: stakeManagement.stakingInstance,
-            description: 'Allow 1Hive Protocol',
+            description: 'Allow Garden',
           },
         ]
         if (mounted()) {
