@@ -25,7 +25,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
           width: 100%;
           display: flex;
           flex-direction: row;
-          ${account && `padding: ${3 * GU}px ${3 * GU}px 0px;`}
+          ${showWrapComponent && `padding: ${3 * GU}px ${3 * GU}px 0px;`}
         `}
       >
         {showWrapComponent && (
@@ -42,11 +42,14 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
         )}
         <div
           css={`
-            width: ${account ? '50%' : '100%'};
-            ${account && `margin-left: ${2 * GU}px;`}
+            width: ${showWrapComponent ? '50%' : '100%'};
+            ${showWrapComponent && `margin-left: ${2 * GU}px;`}
           `}
         >
-          <HeroBanner onRequestNewProposal={onRequestNewProposal} />
+          <HeroBanner
+            onRequestNewProposal={onRequestNewProposal}
+            fullScreenMode={!showWrapComponent}
+          />
         </div>
       </div>
     )
@@ -60,14 +63,21 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
             top: ${3 * GU}px;
             position: sticky;
             margin-top: ${3 * GU}px;
+            
         `}
-        ${mobileMode && account && `margin-top: ${2 * GU}px;`}
+        ${showWrapComponent && mobileMode && `margin-top: ${2 * GU}px;`}
       `}
     >
       {showWrapComponent && (
         <WrapToken onUnwrapToken={onUnwrapToken} onWrapToken={onWrapToken} />
       )}
-      <HeroBanner onRequestNewProposal={onRequestNewProposal} />
+      <div
+        css={`
+          ${mobileMode && showWrapComponent && `margin-top: ${2 * GU}px;`}}
+        `}
+      >
+        <HeroBanner onRequestNewProposal={onRequestNewProposal} />
+      </div>
     </div>
   )
 }
