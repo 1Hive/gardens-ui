@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
@@ -10,7 +10,6 @@ import { getDisputableAppByName } from '@utils/app-utils'
 import iconFees from '@assets/iconFees.svg'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
-  const tokenRate = useUniswapHnyPrice()
   const { next } = useMultiModal()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
@@ -21,12 +20,13 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
   )
 
   const { actionAmount, token } = convictionAppRequirements
+  const tokenPrice = useHoneyswapTokenPrice(token.id)
 
-  const formatedAmount = formatTokenAmount(actionAmount, token.decimals)
-  const dollarAmount = formatTokenAmount(
-    actionAmount * tokenRate,
-    token.decimals
-  )
+  const formattedAmount = formatTokenAmount(actionAmount, token.decimals)
+  const dollarAmount =
+    tokenPrice > 0
+      ? formatTokenAmount(actionAmount * tokenPrice, token.decimals)
+      : '-'
 
   const handleOnCreateTransaction = useCallback(() => {
     onCreateTransaction(() => {
@@ -98,7 +98,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
               ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
           >
-            {formatedAmount} {token.symbol}
+            {formattedAmount} {token.symbol}
           </span>
         </div>
       </div>

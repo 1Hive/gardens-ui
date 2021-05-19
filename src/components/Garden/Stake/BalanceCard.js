@@ -8,22 +8,21 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
-import { formatTokenAmount } from '@utils/token-utils'
-import tokenIcon from '@assets/honey.svg'
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 
 function BalanceCard({
   allowance,
   locked,
   stakeActions,
   total,
+  tokenAddress,
   tokenDecimals,
   tokenSymbol,
   onDepositOrWithdraw,
 }) {
   const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
   const theme = useTheme()
-  const tokenRate = useUniswapHnyPrice()
+  const tokenPrice = useHoneyswapTokenPrice(tokenAddress)
 
   const allowManagerDisabled = useMemo(() => {
     if (!allowLockManager) {
@@ -89,7 +88,10 @@ function BalanceCard({
           color: ${theme.positive};
         `}
       >
-        ${total ? formatTokenAmount(total * tokenRate, tokenDecimals) : '-'}
+        $
+        {total && tokenPrice > 0
+          ? formatTokenAmount(total * tokenPrice, tokenDecimals)
+          : '-'}
       </p>
       <Button
         mode="strong"
