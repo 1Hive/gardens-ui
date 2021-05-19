@@ -16,13 +16,15 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const {
-    connectedGarden: { token },
+    connectedGarden: { wrappableToken, token },
   } = useGardens()
   const currency = {
     name: 'USD',
     symbol: '$',
     rate: 1,
   }
+
+  const metricsToken = wrappableToken || token
 
   return (
     <Box padding={3 * GU}>
@@ -40,7 +42,7 @@ const Metrics = React.memo(function Metrics({
           `}
         >
           <img
-            src={token.logo || defaultTokenSvg}
+            src={metricsToken.logo || defaultTokenSvg}
             height="60"
             width="60"
             alt=""
@@ -50,13 +52,13 @@ const Metrics = React.memo(function Metrics({
               cursor: pointer;
             `}
           />
-          <TokenPrice currency={currency} token={token} />
+          <TokenPrice currency={currency} token={metricsToken} />
         </div>
         <div>
           <TokenBalance
             label="Common Pool"
             value={commonPool}
-            token={token}
+            token={metricsToken}
             currency={currency}
           />
         </div>
@@ -64,7 +66,7 @@ const Metrics = React.memo(function Metrics({
           <TokenBalance
             label="Token Supply"
             value={totalSupply}
-            token={token}
+            token={metricsToken}
             currency={currency}
           />
         </div>
@@ -72,7 +74,7 @@ const Metrics = React.memo(function Metrics({
           <TokenBalance
             label="Active"
             value={totalActiveTokens}
-            token={token}
+            token={metricsToken}
             currency={currency}
           />
         </div>

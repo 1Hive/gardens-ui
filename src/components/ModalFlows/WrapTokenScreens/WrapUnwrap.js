@@ -25,7 +25,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
 
   const {
     accountBalance: gardenTokenBalance,
-    stakeToken,
+    token,
     wrappableAccountBalance,
     wrappableToken,
   } = useAppState()
@@ -36,13 +36,13 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   const formTokenValues = useMemo(() => {
     return wrapMode
       ? { token: wrappableToken, accountBalance: wrappableAccountBalance }
-      : { token: stakeToken, accountBalance: gardenTokenBalance }
+      : { token: token, accountBalance: gardenTokenBalance }
   }, [
-    wrapMode,
     gardenTokenBalance,
-    stakeToken,
+    token,
     wrappableAccountBalance,
     wrappableToken,
+    wrapMode,
   ])
 
   const handleEditMode = useCallback(
@@ -187,8 +187,8 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
               font-weight: 600;
             `}
           >
-            {formatTokenAmount(gardenTokenBalance, stakeToken.decimals)}
-            {stakeToken.symbol}
+            {formatTokenAmount(gardenTokenBalance, token.decimals)}
+            {token.symbol}
           </span>
         </span>
       </Field>

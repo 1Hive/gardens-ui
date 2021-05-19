@@ -121,6 +121,7 @@ function Header() {
 function GardenNavItems({ garden }) {
   const theme = useTheme()
 
+  const token = garden.wrappableToken || garden.token
   return (
     <>
       <Link
@@ -141,7 +142,7 @@ function GardenNavItems({ garden }) {
           margin-left: ${4 * GU}px;
         `}
       >
-        Get {garden.token.name}
+        Get {token.name}
       </Link>
       {garden?.wiki && (
         <Link
