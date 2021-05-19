@@ -15,7 +15,7 @@ function GardensDashboard() {
         padding: ${3 * GU}px;
         display: grid;
         grid-gap: ${2 * GU}px;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
       `}
     >
       {gardens.map((garden, index) => (
