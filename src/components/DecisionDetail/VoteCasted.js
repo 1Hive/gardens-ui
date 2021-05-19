@@ -8,7 +8,7 @@ import { VOTE_YEA } from '../../constants'
 function VoteCasted({ account, accountVote, vote }) {
   const { config } = useAppState()
   const accountStake = getAccountCastStake(vote, account)
-  const { stakeToken } = config?.conviction || {}
+  const { token } = config?.voting || {}
 
   const theme = useTheme()
 
@@ -81,8 +81,8 @@ function VoteCasted({ account, accountVote, vote }) {
             >
               {accountStake === 0
                 ? '…'
-                : formatTokenAmount(accountStake, stakeToken.decimals)}{' '}
-              {stakeToken.symbol}
+                : formatTokenAmount(accountStake, token.decimals)}{' '}
+              {token.symbol}
             </span>
             .
           </div>
