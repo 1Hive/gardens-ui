@@ -37,7 +37,7 @@ function Header() {
     <header
       css={`
         position: relative;
-        z-index: 0;
+        z-index: 1;
         background: #fff;
         box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
       `}
