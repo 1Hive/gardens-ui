@@ -11,12 +11,12 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useAppState } from '../../../providers/AppState'
+import { useAppState } from '@providers/AppState'
 
-import { formatTokenAmount } from '../../../utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
-import wrappedIcon from '../../../assets/wrappedIcon.svg'
-import unwrappedIcon from '../../../assets/unwrappedIcon.svg'
+import wrappedIcon from '@assets/wrappedIcon.svg'
+import unwrappedIcon from '@assets/unwrappedIcon.svg'
 
 function WrapToken({ onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()

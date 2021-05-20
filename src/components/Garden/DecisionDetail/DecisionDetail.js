@@ -18,8 +18,8 @@ import Description from '../Description'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import IdentityBadge from '../../IdentityBadge'
-import MultiModal from '../../MultiModal/MultiModal'
+import IdentityBadge from '@components/IdentityBadge'
+import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalHeader from '../ProposalDetail/ProposalHeader'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
@@ -29,18 +29,15 @@ import VoteActions from './VoteActions'
 import VoteCasted from './VoteCasted'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
 
-import { useAppState } from '../../../providers/AppState'
-import { useDescribeVote } from '../../../hooks/useDescribeVote'
-import { useWallet } from '../../../providers/Wallet'
+import { useAppState } from '@providers/AppState'
+import { useDescribeVote } from '@hooks/useDescribeVote'
+import { useWallet } from '@providers/Wallet'
 
-import { addressesEqualNoSum as addressesEqual } from '../../../utils/web3-utils'
-import { round, safeDiv } from '../../../utils/math-utils'
-import {
-  getConnectedAccountVote,
-  getQuorumProgress,
-} from '../../../utils/vote-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+import { round, safeDiv } from '@utils/math-utils'
+import { getConnectedAccountVote, getQuorumProgress } from '@utils/vote-utils'
 
-import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '../../../constants'
+import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false)

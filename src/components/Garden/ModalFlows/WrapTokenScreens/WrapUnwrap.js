@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import BigNumber from '../../../../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 import {
   Button,
   ButtonBase,
@@ -10,11 +10,11 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../../../../providers/AppState'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import { useAppState } from '@providers/AppState'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import { toDecimals } from '../../../../utils/math-utils'
-import { formatTokenAmount } from '../../../../utils/token-utils'
+import { toDecimals } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   const theme = useTheme()

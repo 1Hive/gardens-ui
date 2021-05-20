@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
-import useActions from '../../../../hooks/useActions'
-import { useAppState } from '../../../../providers/AppState'
-import { useDisputeFees } from '../../../../hooks/useDispute'
-import { useCelesteSynced } from '../../../../hooks/useCeleste'
-import BigNumber from '../../../../lib/bigNumber'
+import useActions from '@hooks/useActions'
+import { useAppState } from '@providers/AppState'
+import { useDisputeFees } from '@hooks/useDispute'
+import { useCelesteSynced } from '@hooks/useCeleste'
+import BigNumber from '@lib/bigNumber'
 
 const ZERO_BN = new BigNumber('0')
 

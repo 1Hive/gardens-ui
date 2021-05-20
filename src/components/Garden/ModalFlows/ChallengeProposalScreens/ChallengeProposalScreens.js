@@ -2,11 +2,11 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeRequirements from './ChallengeRequirements'
 import ChallengeForm from './ChallengeForm'
-import { useAppState } from '../../../../providers/AppState'
-import { useDisputeFees } from '../../../../hooks/useDispute'
-import { useAgreement } from '../../../../hooks/useAgreement'
-import BigNumber from '../../../../lib/bigNumber'
-import { toDecimals } from '../../../../utils/math-utils'
+import { useAppState } from '@providers/AppState'
+import { useDisputeFees } from '@hooks/useDispute'
+import { useAgreement } from '@hooks/useAgreement'
+import BigNumber from '@lib/bigNumber'
+import { toDecimals } from '@utils/math-utils'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 

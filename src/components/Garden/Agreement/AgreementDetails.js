@@ -9,10 +9,10 @@ import {
   GU,
   RADIUS,
 } from '@1hive/1hive-ui'
-import { dateFormat } from '../../../utils/date-utils'
-import InfoField from '../../InfoField'
-import { getIpfsCidFromUri, getIpfsUrlFromUri } from '../../../utils/ipfs-utils'
-import { getNetwork } from '../../../networks'
+import { dateFormat } from '@utils/date-utils'
+import InfoField from '@components/InfoField'
+import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
+import { getNetwork } from '@/networks'
 
 function AgreementDetails({
   creationDate,

@@ -1,18 +1,18 @@
 import React from 'react'
 import { Box, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { useWallet } from '../../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { addressesEqualNoSum as addressesEqual } from '../../utils/web3-utils'
-import { dateFormat } from '../../utils/date-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+import { dateFormat } from '@utils/date-utils'
 
-import warningIconSvg from '../../assets/icon-warning.svg'
-import { formatTokenAmount } from '../../utils/token-utils'
+import warningIconSvg from '@assets/icon-warning.svg'
+import { formatTokenAmount } from '@utils/token-utils'
 
-import celesteStarIconSvg from '../../assets/icon-celeste-star.svg'
-import coinsIconSvg from '../../assets/icon-coins.svg'
-import { ProposalTypes } from '../../types'
-import { getNetwork } from '../../networks'
+import celesteStarIconSvg from '@assets/icon-celeste-star.svg'
+import coinsIconSvg from '@assets/icon-coins.svg'
+import { ProposalTypes } from '@/types'
+import { getNetwork } from '@/networks'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 

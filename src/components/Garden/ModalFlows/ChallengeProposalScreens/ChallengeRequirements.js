@@ -1,16 +1,16 @@
 import React, { useCallback, useMemo } from 'react'
 import { Button, GU, Info, textStyle, useTheme } from '@1hive/1hive-ui'
-import InfoField from '../../../../components/InfoField'
+import InfoField from '@components/InfoField'
 import ModalButton from '../ModalButton'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import BigNumber from '../../../../lib/bigNumber'
-import env from '../../../../environment'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { getDisputableAppByName } from '../../../../utils/app-utils'
+import BigNumber from '@lib/bigNumber'
+import env from '@/environment'
+import { formatTokenAmount } from '@utils/token-utils'
+import { getDisputableAppByName } from '@utils/app-utils'
 
-import iconError from '../../../../assets/iconError.svg'
-import iconCheck from '../../../../assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+import iconCheck from '@assets/iconCheck.svg'
 
 function ChallengeProposalRequirements({
   agreement,

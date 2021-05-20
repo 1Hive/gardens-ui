@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
-import { useUniswapHnyPrice } from '../../../../hooks/useUniswapHNYPrice'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
 
-import env from '../../../../environment'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { getDisputableAppByName } from '../../../../utils/app-utils'
+import env from '@/environment'
+import { formatTokenAmount } from '@utils/token-utils'
+import { getDisputableAppByName } from '@utils/app-utils'
 
-import iconFees from '../../../../assets/iconFees.svg'
+import iconFees from '@assets/iconFees.svg'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const tokenRate = useUniswapHnyPrice()

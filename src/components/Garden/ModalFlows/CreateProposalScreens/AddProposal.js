@@ -13,17 +13,14 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../../../../providers/AppState'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
-import useRequestAmount from '../../../../hooks/useRequestAmount'
+import { useAppState } from '@providers/AppState'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import useRequestAmount from '@hooks/useRequestAmount'
 
-import BigNumber from '../../../../lib/bigNumber'
-import { toDecimals } from '../../../../utils/math-utils'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import {
-  calculateThreshold,
-  getMaxConviction,
-} from '../../../../lib/conviction'
+import BigNumber from '@lib/bigNumber'
+import { toDecimals } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 

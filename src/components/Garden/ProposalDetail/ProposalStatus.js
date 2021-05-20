@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import celesteIconSvg from '../../../assets/celeste-icon.svg'
-import challengeIconSvg from '../../../assets/challenge-icon.svg'
+import celesteIconSvg from '@assets/celeste-icon.svg'
+import challengeIconSvg from '@assets/challenge-icon.svg'
 
 export function getStatusAttributes(proposal, theme) {
   if (proposal.statusData.open) {

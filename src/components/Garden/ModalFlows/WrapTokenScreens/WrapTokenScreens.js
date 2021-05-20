@@ -2,10 +2,10 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import WrapUnwrap from './WrapUnwrap'
 
-import { useAppState } from '../../../../providers/AppState'
-import useActions from '../../../../hooks/useActions'
+import { useAppState } from '@providers/AppState'
+import useActions from '@hooks/useActions'
 
-import BigNumber from '../../../../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 
 const ZERO_BN = new BigNumber(0)
 

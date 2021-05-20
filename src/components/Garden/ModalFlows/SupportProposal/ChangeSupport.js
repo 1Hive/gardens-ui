@@ -10,21 +10,16 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import useAccountTotalStaked from '../../../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../../../providers/AppState'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
-import { useWallet } from '../../../../providers/Wallet'
+import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
+import { useAppState } from '@providers/AppState'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { useWallet } from '@providers/Wallet'
 
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { addressesEqual } from '../../../../utils/web3-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import { addressesEqual } from '@utils/web3-utils'
 
-import {
-  fromDecimals,
-  pct,
-  round,
-  toDecimals,
-} from '../../../../utils/math-utils'
-import BigNumber from '../../../../lib/bigNumber'
+import { fromDecimals, pct, round, toDecimals } from '@utils/math-utils'
+import BigNumber from '@lib/bigNumber'
 
 // TODO - leaving this screen instead of doing the support and the change support in the same screen just in case fiore wants to change something
 const ChangeSupport = React.memo(function ChangeSupport({

@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Checkbox, Field, useLayout } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
-import signGraphic from '../../../../assets/smart-contract.svg'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import signGraphic from '@assets/smart-contract.svg'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)

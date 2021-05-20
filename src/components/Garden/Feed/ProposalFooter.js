@@ -3,21 +3,16 @@ import styled from 'styled-components'
 import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../Icons'
 
-import useAccountTokens from '../../../hooks/useAccountTokens'
-import { useAppState } from '../../../providers/AppState'
-import { useCanUserVote } from '../../../hooks/useExtendedVoteData'
-import { useWallet } from '../../../providers/Wallet'
+import useAccountTokens from '@hooks/useAccountTokens'
+import { useAppState } from '@providers/AppState'
+import { useCanUserVote } from '@hooks/useExtendedVoteData'
+import { useWallet } from '@providers/Wallet'
 
-import BigNumber from '../../../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
-import { isEntitySupporting } from '../../../lib/conviction'
-import {
-  PCT_BASE,
-  QUICK_STAKE_PCT,
-  VOTE_NAY,
-  VOTE_YEA,
-} from '../../../constants'
-import { ProposalTypes } from '../../../types'
+import { isEntitySupporting } from '@lib/conviction'
+import { PCT_BASE, QUICK_STAKE_PCT, VOTE_NAY, VOTE_YEA } from '@/constants'
+import { ProposalTypes } from '@/types'
 
 function ProposalCardFooter({
   proposal,

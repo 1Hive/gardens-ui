@@ -5,12 +5,12 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import SummaryBar from '../DecisionDetail/SummaryBar' // TODO: Move to root component folder
 import SummaryRow from '../DecisionDetail/SummaryRow'
 
-import { useAppState } from '../../../providers/AppState'
-import { useWallet } from '../../../providers/Wallet'
-import { ProposalTypes } from '../../../types'
-import { safeDiv } from '../../../utils/math-utils'
-import { getConnectedAccountVote } from '../../../utils/vote-utils'
-import { VOTE_NAY, VOTE_YEA } from '../../../constants'
+import { useAppState } from '@providers/AppState'
+import { useWallet } from '@providers/Wallet'
+import { ProposalTypes } from '@/types'
+import { safeDiv } from '@utils/math-utils'
+import { getConnectedAccountVote } from '@utils/vote-utils'
+import { VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function ProposalSupport({ proposal }) {
   const theme = useTheme()

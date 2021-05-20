@@ -1,9 +1,9 @@
 import React from 'react'
 import { GU } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../../utils/token-utils'
-import honeyIconSvg from '../../assets/honey.svg'
-import lockIconSvg from '../../assets/icon-lock.svg'
+import { formatTokenAmount } from '@utils/token-utils'
+import honeyIconSvg from '@assets/honey.svg'
+import lockIconSvg from '@assets/icon-lock.svg'
 
 function ActionCollateral({ proposal }) {
   const { collateralRequirement } = proposal

@@ -2,17 +2,17 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
-import InfoField from '../../../InfoField'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import InfoField from '@components/InfoField'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import { buildGardenPath } from '../../../../utils/routing-utils'
-import { dateFormat } from '../../../../utils/date-utils'
-import env from '../../../../environment'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { getDisputableAppByName } from '../../../../utils/app-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+import { dateFormat } from '@utils/date-utils'
+import env from '@/environment'
+import { formatTokenAmount } from '@utils/token-utils'
+import { getDisputableAppByName } from '@utils/app-utils'
 
-import iconError from '../../../../assets/iconError.svg'
-import iconCheck from '../../../../assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+import iconCheck from '@assets/iconCheck.svg'
 
 function CreateProposalRequirements({ agreement, staking }) {
   const { disputableAppsWithRequirements, signedLatest } = agreement

@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Accordion, AppBadge, Box, useTheme, GU } from '@1hive/1hive-ui'
-import HelpTip from '../../HelpTip'
-import InfoField from '../../InfoField'
-import { getNetwork } from '../../../networks'
-import { formatTokenAmount } from '../../../utils/token-utils'
+import HelpTip from '@components/HelpTip'
+import InfoField from '@components/InfoField'
+import { getNetwork } from '@/networks'
+import { formatTokenAmount } from '@utils/token-utils'
 
 function AgreementBindingActions({ apps }) {
   const network = getNetwork()

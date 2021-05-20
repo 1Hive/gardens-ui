@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { GU, IdentityBadge, textStyle, useLayout } from '@1hive/1hive-ui'
-import InfoField from '../../../InfoField'
+import InfoField from '@components/InfoField'
 import ModalButton from '../ModalButton'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import { formatTokenAmount } from '@utils/token-utils'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 function SettlementDetails({ proposal, challengeContext, getTransactions }) {
   const { id, challenger, settlementOffer } = proposal

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, GU, textStyle, useTheme, useLayout } from '@1hive/1hive-ui'
-import { useGardens } from '../../../providers/Gardens'
-import defaultGardenLogo from '../../../assets/defaultGardenLogo.svg'
+import { useGardens } from '@providers/Gardens'
+import defaultGardenLogo from '@assets/defaultGardenLogo.svg'
 
 export default function EmptyResults({ title, paragraph }) {
   const theme = useTheme()

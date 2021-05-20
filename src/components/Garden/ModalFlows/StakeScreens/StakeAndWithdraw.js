@@ -8,10 +8,10 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import BigNumber from '../../../../lib/bigNumber'
-import { toDecimals } from '../../../../utils/math-utils'
-import { formatTokenAmount } from '../../../../utils/token-utils'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import BigNumber from '@lib/bigNumber'
+import { toDecimals } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const DEFAULT_AMOUNT_DATA = {
   value: '0',

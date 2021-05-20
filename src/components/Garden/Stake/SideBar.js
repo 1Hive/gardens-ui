@@ -1,6 +1,6 @@
 import React from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
+import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
 import { formatTokenAmount } from '../../../utils/token-utils'

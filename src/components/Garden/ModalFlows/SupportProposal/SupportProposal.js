@@ -9,13 +9,13 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import useAccountTotalStaked from '../../../../hooks/useAccountTotalStaked'
-import { useAppState } from '../../../../providers/AppState'
-import { useWallet } from '../../../../providers/Wallet'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
+import { useAppState } from '@providers/AppState'
+import { useWallet } from '@providers/Wallet'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import { toDecimals, round, pct } from '../../../../utils/math-utils'
-import { formatTokenAmount } from '../../../../utils/token-utils'
+import { toDecimals, round, pct } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   getTransactions,

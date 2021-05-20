@@ -12,15 +12,15 @@ import styled from 'styled-components'
 import Layout from '../Layout'
 import MultiModal from '../MultiModal/MultiModal'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import { useGardens } from '../../providers/Gardens'
-import { useWallet } from '../../providers/Wallet'
+import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
 
-import { getHoneyswapTradeTokenUrl } from '../../endpoints'
+import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 
-import createSvg from '../../assets/create.svg'
-import defaultGardenLogo from '../../assets/defaultGardenLogo.svg'
-import getHoneySvg from '../../assets/getHoney.svg' // TODO: Update
-import homeSvg from '../../assets/home.svg'
+import createSvg from '@assets/create.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.svg'
+import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
+import homeSvg from '@assets/home.svg'
 
 function Footer() {
   const theme = useTheme()

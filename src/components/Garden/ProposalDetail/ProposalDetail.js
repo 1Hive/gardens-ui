@@ -21,8 +21,8 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import IdentityBadge from '../../IdentityBadge'
-import MultiModal from '../../MultiModal/MultiModal'
+import IdentityBadge from '@components/IdentityBadge'
+import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
@@ -32,20 +32,17 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
-import { useWallet } from '../../../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
 // utils
-import BigNumber from '../../../lib/bigNumber'
-import {
-  getTokenIconBySymbol,
-  formatTokenAmount,
-} from '../../../utils/token-utils'
+import BigNumber from '@lib/bigNumber'
+import { getTokenIconBySymbol, formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
-} from '../../../utils/web3-utils'
-import { ProposalTypes } from '../../../types'
-import { ZERO_ADDR } from '../../../constants'
+} from '@utils/web3-utils'
+import { ProposalTypes } from '@/types'
+import { ZERO_ADDR } from '@/constants'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 

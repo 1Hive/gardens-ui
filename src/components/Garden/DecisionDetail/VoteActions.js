@@ -11,15 +11,12 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../../../providers/AppState'
-import useExtendedVoteData from '../../../hooks/useExtendedVoteData'
-import { useWallet } from '../../../providers/Wallet'
-import { noop, dateFormat } from '../../../utils/date-utils'
-import { VOTE_NAY, VOTE_YEA } from '../../../constants'
-import {
-  getConnectedAccountVote,
-  isVoteAction,
-} from '../../../utils/vote-utils'
+import { useAppState } from '@providers/AppState'
+import useExtendedVoteData from '@hooks/useExtendedVoteData'
+import { useWallet } from '@providers/Wallet'
+import { noop, dateFormat } from '@utils/date-utils'
+import { VOTE_NAY, VOTE_YEA } from '@/constants'
+import { getConnectedAccountVote, isVoteAction } from '@utils/vote-utils'
 
 const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   const [ready, setReady] = useState(false)

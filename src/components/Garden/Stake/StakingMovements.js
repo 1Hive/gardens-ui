@@ -13,7 +13,7 @@ import {
   useTheme,
   DataView,
 } from '@1hive/1hive-ui'
-import { useAppState } from '../../../providers/AppState'
+import { useAppState } from '@providers/AppState'
 import {
   STAKING_SCHEDULED,
   STAKING_CHALLENGED,
@@ -27,8 +27,8 @@ import {
   STAKING_STATUSES,
   COLLATERAL_STATUSES,
 } from './staking-management-statuses'
-import { buildGardenPath } from '../../../utils/routing-utils'
-import { dateFormat, toMs } from '../../../utils/date-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+import { dateFormat, toMs } from '@utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {

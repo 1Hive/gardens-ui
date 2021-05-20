@@ -3,7 +3,7 @@ import { GU, Tag, Timer } from '@1hive/1hive-ui'
 import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
-} from '../../../constants'
+} from '@/constants'
 
 function ProposalCountdown({ proposal }) {
   if (proposal.hasEnded) {

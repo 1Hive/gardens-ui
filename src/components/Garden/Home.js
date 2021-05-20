@@ -13,8 +13,8 @@ import RightPanel from './Feed/RightPanel'
 import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
 
 import useAppLogic from '../../logic/app-logic'
-import { useWallet } from '../../providers/Wallet'
-import { buildGardenPath } from '../../utils/routing-utils'
+import { useWallet } from '@providers/Wallet'
+import { buildGardenPath } from '@utils/routing-utils'
 
 const Home = React.memo(function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)

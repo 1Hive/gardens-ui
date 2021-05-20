@@ -9,13 +9,13 @@ import {
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
 
-import { useWallet } from '../../providers/Wallet'
-import { useAppState } from '../../providers/AppState'
-import { formatTokenAmount } from '../../utils/token-utils'
-import { stakesPercentages } from '../../utils/math-utils'
-import { addressesEqualNoSum as addressesEqual } from '../../utils/web3-utils'
+import { useWallet } from '@providers/Wallet'
+import { useAppState } from '@providers/AppState'
+import { formatTokenAmount } from '@utils/token-utils'
+import { stakesPercentages } from '@utils/math-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
-import noSupportIllustration from '../../assets/noSupportIllustration.svg'
+import noSupportIllustration from '@assets/noSupportIllustration.svg'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 

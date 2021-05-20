@@ -7,13 +7,13 @@ import {
   useTheme,
   GU,
 } from '@1hive/1hive-ui'
-import InfoField from '../../../InfoField'
+import InfoField from '@components/InfoField'
 import ModalButton from '../ModalButton'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
-import HelpTip from '../../../HelpTip'
-import { durationToHours, toMs } from '../../../../utils/date-utils'
-import BigNumber from '../../../../lib/bigNumber'
-import { toDecimals } from '../../../../utils/math-utils'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import HelpTip from '@components/HelpTip'
+import { durationToHours, toMs } from '@utils/date-utils'
+import BigNumber from '@lib/bigNumber'
+import { toDecimals } from '@utils/math-utils'
 import { toHex } from 'web3-utils'
 
 function ChallengeRequirements({ getTransactions, proposal }) {

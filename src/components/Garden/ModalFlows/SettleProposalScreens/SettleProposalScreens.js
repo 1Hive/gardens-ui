@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import SettlementDetails from './SettlementDetails'
 
-import useActions from '../../../../hooks/useActions'
+import useActions from '@hooks/useActions'
 import { hexToUtf8 } from 'web3-utils'
 
 function SettleProposalScreens({ proposal }) {

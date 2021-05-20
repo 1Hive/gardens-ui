@@ -8,10 +8,10 @@ import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import LayoutBox from '../Layout/LayoutBox'
 import LayoutColumns from '../Layout/LayoutColumns'
-import MultiModal from '../../MultiModal/MultiModal'
+import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
-import { useAgreement } from '../../../hooks/useAgreement'
-import { useWallet } from '../../../providers/Wallet'
+import { useAgreement } from '@hooks/useAgreement'
+import { useWallet } from '@providers/Wallet'
 
 import Loader from '../../Loader'
 

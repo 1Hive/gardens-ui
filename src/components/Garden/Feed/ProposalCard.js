@@ -5,10 +5,10 @@ import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
 import ProposalInfo from './ProposalInfo'
-import { useProposalWithThreshold } from '../../../hooks/useProposals'
+import { useProposalWithThreshold } from '@hooks/useProposals'
 
-import { buildGardenPath } from '../../../utils/routing-utils'
-import { ProposalTypes } from '../../../types'
+import { buildGardenPath } from '@utils/routing-utils'
+import { ProposalTypes } from '@/types'
 
 function ProposalCard({ proposal, ...props }) {
   return proposal.type === ProposalTypes.Decision ? (

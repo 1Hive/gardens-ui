@@ -14,13 +14,13 @@ import styled from 'styled-components'
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
-import { useAppState } from '../../providers/AppState'
-import { useProposalEndDate } from '../../hooks/useProposals'
-import { useWallet } from '../../providers/Wallet'
+import { useAppState } from '@providers/AppState'
+import { useProposalEndDate } from '@hooks/useProposals'
+import { useWallet } from '@providers/Wallet'
 
-import BigNumber from '../../lib/bigNumber'
-import { formatTokenAmount } from '../../utils/token-utils'
-import { isEntitySupporting } from '../../lib/conviction'
+import BigNumber from '@lib/bigNumber'
+import { formatTokenAmount } from '@utils/token-utils'
+import { isEntitySupporting } from '@lib/conviction'
 
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1

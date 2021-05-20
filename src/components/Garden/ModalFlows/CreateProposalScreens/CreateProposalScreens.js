@@ -3,10 +3,10 @@ import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
-import { useAgreement } from '../../../../hooks/useAgreement'
-import { useWallet } from '../../../../providers/Wallet'
-import useActions from '../../../../hooks/useActions'
-import { useStakingState } from '../../../../providers/Staking'
+import { useAgreement } from '@hooks/useAgreement'
+import { useWallet } from '@providers/Wallet'
+import useActions from '@hooks/useActions'
+import { useStakingState } from '@providers/Staking'
 
 function CreateProposalScreens() {
   const [loading, setLoading] = useState(true)

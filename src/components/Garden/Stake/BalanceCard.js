@@ -8,9 +8,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useUniswapHnyPrice } from '../../../hooks/useUniswapHNYPrice'
-import { formatTokenAmount } from '../../../utils/token-utils'
-import tokenIcon from '../../../assets/honey.svg'
+import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
+import { formatTokenAmount } from '@utils/token-utils'
+import tokenIcon from '@assets/honey.svg'
 
 function BalanceCard({
   allowance,

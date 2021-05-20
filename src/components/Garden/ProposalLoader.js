@@ -2,8 +2,8 @@ import React from 'react'
 import ProposalDetail from './ProposalDetail/ProposalDetail'
 import Loader from '../Loader'
 import useProposalLogic from '../../logic/proposal-logic'
-import { useProposalWithThreshold } from '../../hooks/useProposals'
-import { ProposalTypes } from '../../types'
+import { useProposalWithThreshold } from '@hooks/useProposals'
+import { ProposalTypes } from '@/types'
 
 function ProposalLoader({ match }) {
   const {

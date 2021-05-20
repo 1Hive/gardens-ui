@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
-import InfoField from '../../../../components/InfoField'
+import InfoField from '@components/InfoField'
 import ModalButton from '../ModalButton'
-import { useMultiModal } from '../../../MultiModal/MultiModalProvider'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import BigNumber from '../../../../lib/bigNumber'
-import { formatTokenAmount } from '../../../../utils/token-utils'
+import BigNumber from '@lib/bigNumber'
+import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '../../../../assets/iconError.svg'
-import iconCheck from '../../../../assets/iconCheck.svg'
-import { getNetwork } from '../../../../networks'
+import iconError from '@assets/iconError.svg'
+import iconCheck from '@assets/iconCheck.svg'
+import { getNetwork } from '@/networks'
 
 function RaiseDisputeRequirements({
   accountBalance,

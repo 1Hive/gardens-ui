@@ -11,7 +11,7 @@ import EmptyResults from './EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
 
-import filterToggleSvg from '../../../assets/filter.svg'
+import filterToggleSvg from '@assets/filter.svg'
 
 function ProposalsList({
   activeFilters,

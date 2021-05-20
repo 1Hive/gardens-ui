@@ -4,14 +4,14 @@ import EmptyState from './EmptyState'
 import LayoutColumns from '../Layout/LayoutColumns'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
-import Loader from '../../Loader'
-import MultiModal from '../../MultiModal/MultiModal'
+import Loader from '@components/Loader'
+import MultiModal from '@components/MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
 import stakingEmpty from './assets/no-dataview-data.svg'
-import { useStakingState } from '../../../providers/Staking'
-import { useWallet } from '../../../providers/Wallet'
+import { useStakingState } from '@providers/Staking'
+import { useWallet } from '@providers/Wallet'
 
 const StakeManagement = React.memo(function StakeManagement() {
   const { account } = useWallet()

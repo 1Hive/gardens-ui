@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import iconTopSvg from '../../../assets/rankings/ranking-top.svg'
-import iconTopSelectedSvg from '../../../assets/rankings/ranking-top-selected.svg'
-import iconNewSvg from '../../../assets/rankings/ranking-new.svg'
-import iconNewSelectedSvg from '../../../assets/rankings/ranking-new-selected.svg'
+import iconTopSvg from '@assets/rankings/ranking-top.svg'
+import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
+import iconNewSvg from '@assets/rankings/ranking-new.svg'
+import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
 
 const iconsMapping = {
   top: {

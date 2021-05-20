@@ -4,12 +4,9 @@ import Balance from '../../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
-import { ProposalTypes } from '../../../types'
-import { useAppState } from '../../../providers/AppState'
-import {
-  formatTokenAmount,
-  getTokenIconBySymbol,
-} from '../../../utils/token-utils'
+import { ProposalTypes } from '@/types'
+import { useAppState } from '@providers/AppState'
+import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const theme = useTheme()

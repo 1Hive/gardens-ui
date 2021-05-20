@@ -2,11 +2,11 @@ import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 import { useTheme, GU } from '@1hive/1hive-ui'
-import LoadingRing from '../../LoadingRing'
-import MultiModalScreens from '../../MultiModal/MultiModalScreens'
-import Stepper from '../../Stepper/Stepper'
-import { useWallet } from '../../../providers/Wallet'
-import { useMultiModal } from '../../MultiModal/MultiModalProvider'
+import LoadingRing from '@components/LoadingRing'
+import MultiModalScreens from '@components/MultiModal/MultiModalScreens'
+import Stepper from '@components/Stepper/Stepper'
+import { useWallet } from '@providers/Wallet'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const indexNumber = {
   0: 'First',

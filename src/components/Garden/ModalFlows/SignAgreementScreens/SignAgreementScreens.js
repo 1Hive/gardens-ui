@@ -4,9 +4,9 @@ import { useHistory } from 'react-router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'
-import useActions from '../../../../hooks/useActions'
+import useActions from '@hooks/useActions'
 
-import { buildGardenPath } from '../../../../utils/routing-utils'
+import { buildGardenPath } from '@utils/routing-utils'
 
 function SignAgreementScreens({ versionId }) {
   const actions = useActions()

@@ -13,18 +13,18 @@ import {
 } from '@1hive/1hive-ui'
 import { ConvictionCountdown } from './ConvictionVisuals'
 
-import { useWallet } from '../../providers/Wallet'
-import { useDisputeState } from '../../hooks/useDispute'
+import { useWallet } from '@providers/Wallet'
+import { useDisputeState } from '@hooks/useDispute'
 
-import { ProposalTypes } from '../../types'
-import { dateFormat } from '../../utils/date-utils'
-import { formatTokenAmount } from '../../utils/token-utils'
+import { ProposalTypes } from '@/types'
+import { dateFormat } from '@utils/date-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 import {
   DisputeStates,
   DISPUTE_STATE_RULED,
   RoundStates,
-} from '../../utils/dispute-utils'
-import { getNetwork } from '../../networks'
+} from '@utils/dispute-utils'
+import { getNetwork } from '@/networks'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 

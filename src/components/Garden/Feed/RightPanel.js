@@ -4,8 +4,8 @@ import { GU, useLayout } from '@1hive/1hive-ui'
 import WrapToken from './WrapToken'
 import HeroBanner from './HeroBanner'
 
-import { useWallet } from '../../../providers/Wallet'
-import { useAppState } from '../../../providers/AppState'
+import { useWallet } from '@providers/Wallet'
+import { useAppState } from '@providers/AppState'
 
 function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()

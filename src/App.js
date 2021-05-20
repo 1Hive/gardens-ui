@@ -1,7 +1,7 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import { Main } from '@1hive/1hive-ui'
-import MainView from './components/MainView'
+import MainView from '@components/MainView'
 import Routes from './Routes'
 import GlobalErrorHandler from './GlobalErrorHandler'
 import { GardensProvider } from './providers/Gardens'
