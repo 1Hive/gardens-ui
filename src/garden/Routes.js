@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Agreement from '../components/Agreement/Agreement'
-import DecisionLoader from '../components/DecisionLoader'
-import Home from '../screens/Home'
-import ProposalLoader from '../components/ProposalLoader'
-import StakeManagement from '../components/Stake/StakeManagement'
+import Agreement from '../components/Garden/Agreement/Agreement'
+import DecisionLoader from '../components/Garden/DecisionLoader'
+import Home from '../components/Garden/Home'
+import ProposalLoader from '../components/Garden/ProposalLoader'
+import StakeManagement from '../components/Garden/Stake/StakeManagement'
 
 export default function Routes() {
   return (
