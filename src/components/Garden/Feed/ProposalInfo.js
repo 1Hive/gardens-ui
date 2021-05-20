@@ -1,6 +1,6 @@
 import React from 'react'
 import { GU, Help, LoadingRing, useTheme } from '@1hive/1hive-ui'
-import Balance from '../../Balance'
+import Balance from '../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'

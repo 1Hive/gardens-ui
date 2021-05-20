@@ -1,5 +1,5 @@
 import React from 'react'
-import BalanceToken from './BalanceToken'
+import BalanceToken from '../BalanceToken'
 
 function Balance({
   amount = 0,

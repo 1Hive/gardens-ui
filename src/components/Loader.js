@@ -1,7 +1,7 @@
 import React from 'react'
 import Lottie from 'react-lottie'
 import styled from 'styled-components'
-import beeAnimation from '../assets/lotties/bee-animation.json'
+import beeAnimation from '@assets/lotties/bee-animation.json'
 
 const Wrapper = styled.div`
   pointer-events: none;

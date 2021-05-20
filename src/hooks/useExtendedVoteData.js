@@ -2,12 +2,12 @@ import { useMemo } from 'react'
 
 import { useBlockTimeStamp } from './useBlock'
 import { useContractReadOnly } from './useContract'
-import { useAppState } from '../providers/AppState'
+import { useAppState } from '@providers/AppState'
 import usePromise from './usePromise'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { getCanUserVote } from '../utils/vote-utils'
-import { getUserBalanceAt, getUserBalanceNow } from '../utils/token-utils'
+import { getCanUserVote } from '@utils/vote-utils'
+import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
 import minimeTokenAbi from '../abi/minimeToken.json'
 import votingAbi from '../abi/voting.json'
 

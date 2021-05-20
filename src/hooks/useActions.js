@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
-import { getAppByName } from '../utils/data-utils'
+import { useAppState } from '@providers/AppState'
+import { useWallet } from '@providers/Wallet'
+import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
 
 import { useContract } from './useContract'
@@ -13,8 +13,8 @@ import { useDisputeFees } from './useDispute'
 import env from '../environment'
 
 import { VOTE_YEA } from '../constants'
-import { encodeFunctionData } from '../utils/web3-utils'
-import BigNumber from '../lib/bigNumber'
+import { encodeFunctionData } from '@utils/web3-utils'
+import BigNumber from '@lib/bigNumber'
 import tokenAbi from '../abi/minimeToken.json'
 import agreementAbi from '../abi/agreement.json'
 

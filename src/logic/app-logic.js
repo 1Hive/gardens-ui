@@ -1,6 +1,6 @@
-import useActions from '../hooks/useActions'
-import { useAppState } from '../providers/AppState'
-import { useProposals } from '../hooks/useProposals'
+import useActions from '@hooks/useActions'
+import { useAppState } from '@providers/AppState'
+import { useProposals } from '@hooks/useProposals'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {

@@ -1,6 +1,6 @@
-import useActions from '../hooks/useActions'
-import { useAppState } from '../providers/AppState'
-import { useProposal } from '../hooks/useProposals'
+import useActions from '@hooks/useActions'
+import { useAppState } from '@providers/AppState'
+import { useProposal } from '@hooks/useProposals'
 
 export default function useProposalLogic(match) {
   const { params, path } = match

@@ -12,7 +12,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import arrowDownSvg from '../../assets/arrowDown.svg'
+import arrowDownSvg from '@assets/arrowDown.svg'
 
 function CompactFilter({ ...props }) {
   const { below } = useViewport()

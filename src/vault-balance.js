@@ -4,7 +4,7 @@ import {
   getTokenSymbol,
   getTokenName,
   tokenDataFallback,
-} from './utils/token-utils'
+} from '@utils/token-utils'
 import { first } from 'rxjs/operators'
 
 import tokenDecimalsAbi from './abi/token-decimals.json'

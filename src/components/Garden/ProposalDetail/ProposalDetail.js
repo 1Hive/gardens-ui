@@ -15,7 +15,7 @@ import {
 
 // Components
 import ActionCollateral from '../ActionCollateral'
-import Balance from '../../Balance'
+import Balance from '../Balance'
 import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
 import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'

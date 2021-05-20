@@ -10,7 +10,7 @@ import {
   RADIUS,
 } from '@1hive/1hive-ui'
 import { dateFormat } from '@utils/date-utils'
-import InfoField from '@components/InfoField'
+import InfoField from '../InfoField'
 import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
 import { getNetwork } from '@/networks'
 

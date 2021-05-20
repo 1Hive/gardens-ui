@@ -3,22 +3,22 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
 
-import Activity from '../components/Profile/Activity'
-import EditProfile from '../components/Profile/EditProfile'
-import InactiveProposalsStake from '../components/Profile/InactiveProposalsStake'
-import MainProfile from '../components/Profile/MainProfile'
-import StakingTokens from '../components/Profile/StakingTokens'
+import Activity from './Activity'
+import EditProfile from './EditProfile'
+import InactiveProposalsStake from './InactiveProposalsStake'
+import MainProfile from './MainProfile'
+import StakingTokens from './StakingTokens'
 
 import {
   useAccountStakes,
   useInactiveProposalsWithStake,
-} from '../hooks/useStakes'
-import usePicture from '../hooks/usePicture'
-import useSelectedProfile from '../hooks/useSelectedProfile'
-import { useWallet } from '../providers/Wallet'
-import { addressesEqual } from '../utils/web3-utils'
+} from '@hooks/useStakes'
+import usePicture from '@hooks/usePicture'
+import useSelectedProfile from '@hooks/useSelectedProfile'
+import { useWallet } from '@providers/Wallet'
+import { addressesEqual } from '@utils/web3-utils'
 
-import profileCoverDefaultSvg from '../assets/profileCoverDefault.svg'
+import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)

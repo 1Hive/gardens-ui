@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useAppState } from '../providers/AppState'
+import { useAppState } from '@providers/AppState'
 import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 
 import priceOracleAbi from '../abi/priceOracle.json'
 

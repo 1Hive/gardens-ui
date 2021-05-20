@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Accordion, AppBadge, Box, useTheme, GU } from '@1hive/1hive-ui'
 import HelpTip from '@components/HelpTip'
-import InfoField from '@components/InfoField'
+import InfoField from '../InfoField'
 import { getNetwork } from '@/networks'
 import { formatTokenAmount } from '@utils/token-utils'
 

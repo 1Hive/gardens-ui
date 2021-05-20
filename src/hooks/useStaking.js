@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { useAppState } from '../providers/AppState'
-import BigNumber from '../lib/bigNumber'
+import { useAppState } from '@providers/AppState'
+import BigNumber from '@lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
 
-import { encodeFunctionData } from '../utils/web3-utils'
+import { encodeFunctionData } from '@utils/web3-utils'
 
 import stakingFactoryAbi from '../abi/StakingFactory.json'
 import stakingAbi from '../abi/Staking.json'

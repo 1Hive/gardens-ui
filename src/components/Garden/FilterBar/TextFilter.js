@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { GU, Popover, SearchInput, useLayout } from '@1hive/1hive-ui'
 
 const TextFilter = React.memo(

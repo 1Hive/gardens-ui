@@ -3,7 +3,7 @@ import { getNetwork } from '../networks'
 import arbitratorAbi from '../abi/arbitrator.json'
 import disputeManagerAbi from '../abi/DisputeManager.json'
 import { useContractReadOnly } from './useContract'
-import { DISPUTE_STATE_ADJUDICATING } from '../utils/dispute-utils'
+import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
 
 export function useDisputeState(disputeId) {
   const [disputeState, setDisputeState] = useState(null)

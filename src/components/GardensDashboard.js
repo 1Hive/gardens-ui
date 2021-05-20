@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react'
 import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useGardens } from '../providers/Gardens'
+import { useGardens } from '@providers/Gardens'
 import { useHistory } from 'react-router'
 
-import defaultGardenLogo from '../assets/defaultGardenLogo.svg'
-import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.svg'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function GardensDashboard() {
+  // TODO :  add loading component
   const { gardens } = useGardens()
 
   return (

@@ -13,9 +13,9 @@ import { useConfigSubscription } from './useSubscriptions'
 
 // utils
 import env from '../environment'
-import BigNumber from '../lib/bigNumber'
-import { addressesEqual } from '../utils/web3-utils'
-import { getAppAddressByName, getAppByName } from '../utils/data-utils'
+import BigNumber from '@lib/bigNumber'
+import { addressesEqual } from '@utils/web3-utils'
+import { getAppAddressByName, getAppByName } from '@utils/data-utils'
 import { connectorConfig } from '../networks'
 
 // abis

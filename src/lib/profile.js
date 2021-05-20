@@ -1,8 +1,8 @@
 import { getProfile, getVerifiedAccounts, openBox } from '3box'
 
 import { GITHUB_ENDPOINT, IPFS_ENDPOINT, TWITTER_ENDPOINT } from '../endpoints'
-import githubSvg from '../assets/github.svg'
-import twitterSvg from '../assets/twitter.svg'
+import githubSvg from '@assets/github.svg'
+import twitterSvg from '@assets/twitter.svg'
 
 const VERIFIED_ACCOUNTS = {
   github: { endpoint: GITHUB_ENDPOINT, icon: githubSvg },

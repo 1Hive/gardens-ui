@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { GU } from '@1hive/1hive-ui'
 
-import { formatTokenAmount } from '../utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 const splitAmount = (amount, decimals) => {
   const [integer, fractional] = formatTokenAmount(amount, decimals).split('.')

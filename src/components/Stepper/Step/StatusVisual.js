@@ -11,8 +11,8 @@ import {
   STEP_WAITING,
   STEP_WORKING,
 } from '../stepper-statuses'
-import { springs } from '../../../style/springs'
-import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
+import { springs } from '@/style/springs'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const STATUS_ICONS = {
   [STEP_ERROR]: IconCross,

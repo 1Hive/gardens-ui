@@ -1,6 +1,6 @@
 import BigNumber from './bigNumber'
-import { addressesEqual } from '../utils/web3-utils'
-import { safeDivBN } from '../utils/math-utils'
+import { addressesEqual } from '@utils/web3-utils'
+import { safeDivBN } from '@utils/math-utils'
 
 const oneBN = new BigNumber('1')
 /**

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import useInterval from './useInterval'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '../networks'
 
 const NETWORK_TIMES = new Map([

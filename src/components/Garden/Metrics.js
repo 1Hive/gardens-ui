@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { useGardens } from '../providers/Gardens'
-import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
-import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
+import { useGardens } from '@providers/Gardens'
+import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
+import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
-import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 const Metrics = React.memo(function Metrics({
   commonPool,

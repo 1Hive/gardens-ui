@@ -4,7 +4,7 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { useAppState } from '../providers/AppState'
+import { useAppState } from '@providers/AppState'
 
 export function useConfigSubscription(honeypot) {
   const [config, setConfig] = useState(null)

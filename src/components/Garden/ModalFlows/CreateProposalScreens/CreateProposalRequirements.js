@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
-import InfoField from '@components/InfoField'
+import InfoField from '../../InfoField'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import { buildGardenPath } from '@utils/routing-utils'

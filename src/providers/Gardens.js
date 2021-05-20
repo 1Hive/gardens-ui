@@ -4,8 +4,8 @@ import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
 import daoList from '@1hive/gardens-dao-list'
 import { DAONotFound } from '../errors'
-import { AppStateProvider } from '../providers/AppState'
-import { ConnectProvider as Connect } from '../providers/Connect'
+import { AppStateProvider } from './AppState'
+import { ConnectProvider as Connect } from './Connect'
 
 import { getNetwork } from '../networks'
 
