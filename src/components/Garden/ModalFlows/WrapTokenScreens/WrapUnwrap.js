@@ -10,7 +10,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import { toDecimals } from '@utils/math-utils'
@@ -28,7 +28,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
     stakeToken,
     wrappableAccountBalance,
     wrappableToken,
-  } = useAppState()
+  } = useGardenState()
   const { next } = useMultiModal()
 
   const wrapMode = mode === 'wrap'

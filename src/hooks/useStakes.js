@@ -7,7 +7,7 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
 
@@ -45,7 +45,7 @@ export function useAccountStakes(account) {
 }
 
 export function useAccountStakesByGarden(account) {
-  const { honeypot } = useAppState()
+  const { honeypot } = useGardenState()
 
   const supporter = useSupporterSubscription(honeypot, account)
 

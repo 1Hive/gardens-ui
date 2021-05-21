@@ -13,7 +13,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useRequestAmount from '@hooks/useRequestAmount'
 
@@ -50,7 +50,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     stakeToken,
     effectiveSupply,
     vaultBalance,
-  } = useAppState()
+  } = useGardenState()
   const { alpha, maxRatio, weight } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)

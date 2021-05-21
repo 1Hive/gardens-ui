@@ -3,23 +3,23 @@ import PropTypes from 'prop-types'
 
 import { useWallet } from '@providers/Wallet'
 import {
-  useOrgData,
+  useGardenData,
   useTokenBalances,
   useVaultBalance,
-} from '@hooks/useOrgHooks'
+} from '@hooks/useGardenHooks'
 import { useGardens } from '@providers/Gardens'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
 
-const AppStateContext = React.createContext()
+const GardenStateContext = React.createContext()
 
-function AppStateProvider({ children }) {
+function GardenStateProvider({ children }) {
   const {
     config,
     errors,
     installedApps,
     loadingAppData,
     ...appData
-  } = useOrgData()
+  } = useGardenData()
 
   const { account } = useWallet()
   const {
@@ -38,11 +38,11 @@ function AppStateProvider({ children }) {
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
 
-  const appLoading =
+  const gardenLoading =
     (!errors && loadingAppData) || balancesLoading || !effectiveSupply
 
   return (
-    <AppStateContext.Provider
+    <GardenStateContext.Provider
       value={{
         ...appData,
         accountBalance: balance,
@@ -50,7 +50,7 @@ function AppStateProvider({ children }) {
         effectiveSupply,
         errors,
         installedApps,
-        isLoading: appLoading,
+        isLoading: gardenLoading,
         requestToken,
         stableToken,
         stakeToken,
@@ -62,16 +62,16 @@ function AppStateProvider({ children }) {
       }}
     >
       {children}
-    </AppStateContext.Provider>
+    </GardenStateContext.Provider>
   )
 }
 
-AppStateProvider.propTypes = {
+GardenStateProvider.propTypes = {
   children: PropTypes.node,
 }
 
-function useAppState() {
-  return useContext(AppStateContext)
+function useGardenState() {
+  return useContext(GardenStateContext)
 }
 
-export { AppStateProvider, useAppState }
+export { GardenStateProvider, useGardenState }

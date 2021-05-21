@@ -4,7 +4,7 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 
 export function useConfigSubscription(honeypot) {
   const [config, setConfig] = useState(null)
@@ -42,7 +42,7 @@ export function useConfigSubscription(honeypot) {
 }
 
 export function useProposalsSubscription(filters) {
-  const { honeypot, config } = useAppState()
+  const { honeypot, config } = useGardenState()
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
@@ -94,7 +94,7 @@ export function useProposalsSubscription(filters) {
 
 // TODO: Handle errors
 export function useProposalSubscription(proposalId, appAddress) {
-  const { honeypot, config } = useAppState()
+  const { honeypot, config } = useGardenState()
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 

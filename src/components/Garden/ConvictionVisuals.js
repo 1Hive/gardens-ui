@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useProposalEndDate } from '@hooks/useProposals'
 import { useWallet } from '@providers/Wallet'
 
@@ -131,7 +131,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const {
     maxRatio,
     stakeToken: { symbol, decimals },
-  } = useAppState()
+  } = useGardenState()
 
   const theme = useTheme()
 

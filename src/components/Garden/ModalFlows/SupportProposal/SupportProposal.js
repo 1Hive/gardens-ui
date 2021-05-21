@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
@@ -27,7 +27,7 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance, stakeToken } = useGardenState()
   const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)

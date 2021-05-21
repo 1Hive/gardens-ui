@@ -1,5 +1,5 @@
 import useActions from '@hooks/useActions'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useProposal } from '@hooks/useProposals'
 
 export default function useProposalLogic(match) {
@@ -13,7 +13,7 @@ export default function useProposalLogic(match) {
     requestToken,
     stableToken,
     vaultBalance,
-  } = useAppState()
+  } = useGardenState()
   const appAddress = path.includes('vote')
     ? config?.voting.id.slice(0, 42)
     : config?.conviction.id

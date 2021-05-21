@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakesByGarden } from './useStakes'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '../providers/GardenState'
 import useProposalFilters, {
   INITIAL_PROPOSAL_COUNT,
 } from './useProposalFilters'
@@ -67,7 +67,7 @@ export function useProposals() {
 function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const { config, effectiveSupply, isLoading } = useGardenState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -127,7 +127,7 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, isLoading } = useAppState()
+  const { config, effectiveSupply, isLoading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -156,7 +156,7 @@ export function useProposalWithThreshold(proposal) {
     requestToken,
     stableToken,
     vaultBalance,
-  } = useAppState()
+  } = useGardenState()
   const { alpha, maxRatio, weight } = config.conviction || {}
   const { requestedAmount, totalTokensStaked, stable, type } = proposal
 

@@ -4,7 +4,7 @@ import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
 import useActions from '@hooks/useActions'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useDisputeFees } from '@hooks/useDispute'
 import { useCelesteSynced } from '@hooks/useCeleste'
 import BigNumber from '@lib/bigNumber'
@@ -13,7 +13,7 @@ const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
   const { agreementActions } = useActions()

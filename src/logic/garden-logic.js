@@ -1,5 +1,5 @@
 import useActions from '@hooks/useActions'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useProposals } from '@hooks/useProposals'
 
 // Handles the main logic of the app.
@@ -10,7 +10,7 @@ export default function useAppLogic() {
     totalStaked,
     totalSupply,
     vaultBalance,
-  } = useAppState()
+  } = useGardenState()
 
   const actions = useActions()
   const [

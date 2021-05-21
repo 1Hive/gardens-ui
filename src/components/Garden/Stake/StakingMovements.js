@@ -13,7 +13,7 @@ import {
   useTheme,
   DataView,
 } from '@1hive/1hive-ui'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import {
   STAKING_SCHEDULED,
   STAKING_CHALLENGED,
@@ -99,7 +99,7 @@ function getCollateralAttributes(status, theme) {
 }
 
 function StakingMovements({ stakingMovements, token }) {
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
 

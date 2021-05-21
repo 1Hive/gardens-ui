@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import WrapUnwrap from './WrapUnwrap'
 
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import useActions from '@hooks/useActions'
 
 import BigNumber from '@lib/bigNumber'
@@ -16,7 +16,7 @@ function WrapTokenScreens({ mode }) {
     stakeToken,
     wrappableAccountBalance,
     wrappableToken,
-  } = useAppState()
+  } = useGardenState()
   const { hookedTokenManagerActions } = useActions()
 
   const temporatyTrx = useRef([])
