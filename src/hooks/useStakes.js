@@ -45,9 +45,9 @@ export function useAccountStakes(account) {
 }
 
 export function useAccountStakesByGarden(account) {
-  const { honeypot } = useGardenState()
+  const { garden } = useGardenState()
 
-  const supporter = useSupporterSubscription(honeypot, account)
+  const supporter = useSupporterSubscription(garden, account)
 
   return useMemo(() => {
     if (!supporter) {

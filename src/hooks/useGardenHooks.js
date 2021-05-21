@@ -100,7 +100,7 @@ export function useGardenData() {
     config,
     errors,
     connectedAgreementApp,
-    honeypot: garden, // TODO: Update honeypot for garden everywhere
+    garden,
     installedApps: apps,
     organization,
     permissions: convictionAppPermissions,
