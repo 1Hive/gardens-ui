@@ -43,9 +43,10 @@ const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = React.memo(({ setProposalData }) => {
   const { next } = useMultiModal()
-  const { config, effectiveSupply, vaultBalance } = useGardenState()
+  const { config, vaultBalance } = useGardenState()
   const {
     alpha,
+    effectiveSupply,
     maxRatio,
     requestToken,
     stableToken,

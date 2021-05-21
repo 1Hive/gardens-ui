@@ -67,7 +67,7 @@ export function useProposals() {
 function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, loading } = useGardenState()
+  const { config, loading } = useGardenState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -80,15 +80,9 @@ function useFilteredProposals(filters, account, latestBlock) {
     return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
         ? processDecision(proposal)
-        : processProposal(
-            proposal,
-            latestBlock,
-            effectiveSupply,
-            account,
-            config?.conviction
-          )
+        : processProposal(proposal, latestBlock, account, config.conviction)
     )
-  }, [account, config, effectiveSupply, latestBlock, loading, proposals])
+  }, [account, config, latestBlock, loading, proposals])
 
   const filteredProposals = useMemo(
     () =>
@@ -127,7 +121,7 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, loading } = useGardenState()
+  const { config, loading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -138,21 +132,16 @@ export function useProposal(proposalId, appAddress) {
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
       ? processDecision(proposal)
-      : processProposal(
-          proposal,
-          latestBlock,
-          effectiveSupply,
-          account,
-          config?.conviction
-        )
+      : processProposal(proposal, latestBlock, account, config.conviction)
 
   return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
 export function useProposalWithThreshold(proposal) {
-  const { config, effectiveSupply, vaultBalance } = useGardenState()
+  const { config, vaultBalance } = useGardenState()
   const {
     alpha,
+    effectiveSupply,
     maxRatio,
     requestToken,
     stableToken,
@@ -228,14 +217,8 @@ export function useProposalEndDate(proposal) {
   return endDate
 }
 
-function processProposal(
-  proposal,
-  latestBlock,
-  effectiveSupply,
-  account,
-  config
-) {
-  const { alpha } = config || {}
+function processProposal(proposal, latestBlock, account, config) {
+  const { alpha, effectiveSupply } = config
   const { stakesHistory, totalTokensStaked } = proposal
 
   const maxConviction = getMaxConviction(

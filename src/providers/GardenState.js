@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { useWallet } from '@providers/Wallet'
@@ -32,22 +32,29 @@ function GardenStateProvider({ children }) {
     wrappableToken
   )
   const vaultBalance = useVaultBalance(installedApps, requestToken)
-  const effectiveSupply = useEffectiveSupply(totalSupply, config) // TODO: move to compoentns that use them
-
+  const effectiveSupply = useEffectiveSupply(totalSupply, config)
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
-  const gardenLoading =
-    (!errors && loadingGardenData) || balancesLoading || !effectiveSupply
+
+  const [newConfig, loading] = useMemo(() => {
+    if ((!errors && loadingGardenData) || balancesLoading || !effectiveSupply) {
+      return [null, true]
+    }
+
+    return [
+      { ...config, conviction: { ...config.conviction, effectiveSupply } },
+      false,
+    ]
+  }, [balancesLoading, config, effectiveSupply, errors, loadingGardenData])
 
   return (
     <GardenStateContext.Provider
       value={{
         ...appData,
         accountBalance: balance,
-        config,
-        effectiveSupply,
+        config: newConfig,
         errors,
         installedApps,
-        loading: gardenLoading,
+        loading,
         token,
         totalSupply,
         vaultBalance,
