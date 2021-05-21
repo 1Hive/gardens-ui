@@ -5,9 +5,9 @@ import { useProposals } from '@hooks/useProposals'
 // Handles the main logic of the app.
 export default function useAppLogic() {
   const {
+    config,
     errors,
     loading,
-    totalStaked,
     totalSupply,
     vaultBalance,
   } = useGardenState()
@@ -23,12 +23,12 @@ export default function useAppLogic() {
   return {
     actions,
     commonPool: vaultBalance,
+    config,
     errors,
     filters,
     loading: loading || !blockHasLoaded,
     proposals,
     proposalsFetchedCount,
-    totalStaked,
     totalSupply,
   }
 }

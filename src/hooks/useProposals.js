@@ -88,7 +88,7 @@ function useFilteredProposals(filters, account, latestBlock) {
             config?.conviction
           )
     )
-  }, [account, config, effectiveSupply, latestBlock, proposals])
+  }, [account, config, effectiveSupply, latestBlock, loading, proposals])
 
   const filteredProposals = useMemo(
     () =>
