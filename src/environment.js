@@ -7,6 +7,8 @@ const DEFAULT_HOOKED_TOKEN_MANAGER = 'wrappable-hooked-token-manager'
 const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
+const DEFAULT_INTERCOM_APP_ID = 'kfcuew2l'
+
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
     return (
@@ -42,6 +44,9 @@ const ENV_VARS = {
       process.env.REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME ||
       DEFAULT_HOOKED_TOKEN_MANAGER
     )
+  },
+  INTERCOM_APP_ID() {
+    return process.env.REACT_APP_INTERCOM_APP_ID || DEFAULT_INTERCOM_APP_ID
   },
 }
 
