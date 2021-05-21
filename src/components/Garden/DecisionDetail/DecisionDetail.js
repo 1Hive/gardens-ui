@@ -350,7 +350,7 @@ function DataField({ label, value, loading = false }) {
 
 function SummaryInfo({ vote }) {
   const { config } = useGardenState()
-  const { stakeToken } = config.conviction
+  const { token } = config.voting
   const theme = useTheme()
   const { minAcceptQuorum, nay, yea } = vote
 
@@ -383,8 +383,8 @@ function SummaryInfo({ vote }) {
                 pct={Math.floor(yeasPct * 100)}
                 token={{
                   amount: yea,
-                  symbol: stakeToken.symbol,
-                  decimals: stakeToken.decimals,
+                  symbol: token.symbol,
+                  decimals: token.decimals,
                 }}
               />
               <SummaryRow
@@ -393,8 +393,8 @@ function SummaryInfo({ vote }) {
                 pct={Math.floor(naysPct * 100)}
                 token={{
                   amount: nay,
-                  symbol: stakeToken.symbol,
-                  decimals: stakeToken.decimals,
+                  symbol: token.symbol,
+                  decimals: token.decimals,
                 }}
               />
             </div>
