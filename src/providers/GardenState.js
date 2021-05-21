@@ -17,7 +17,7 @@ function GardenStateProvider({ children }) {
     config,
     errors,
     installedApps,
-    loadingAppData,
+    loading: loadingGardenData,
     ...appData
   } = useGardenData()
 
@@ -38,7 +38,7 @@ function GardenStateProvider({ children }) {
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
 
   const gardenLoading =
-    (!errors && loadingAppData) || balancesLoading || !effectiveSupply
+    (!errors && loadingGardenData) || balancesLoading || !effectiveSupply
 
   return (
     <GardenStateContext.Provider
@@ -49,7 +49,7 @@ function GardenStateProvider({ children }) {
         effectiveSupply,
         errors,
         installedApps,
-        isLoading: gardenLoading,
+        loading: gardenLoading,
         token,
         totalStaked,
         totalSupply,

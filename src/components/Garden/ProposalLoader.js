@@ -8,7 +8,7 @@ import { ProposalTypes } from '@/types'
 function ProposalLoader({ match }) {
   const {
     actions: { agreementActions, convictionActions },
-    isLoading,
+    loading,
     permissions,
     proposal,
     requestToken,
@@ -16,7 +16,7 @@ function ProposalLoader({ match }) {
     vaultBalance,
   } = useProposalLogic(match)
 
-  if (!proposal || isLoading) {
+  if (!proposal || loading) {
     return <Loader />
   }
 

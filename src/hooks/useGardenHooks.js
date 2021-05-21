@@ -83,7 +83,7 @@ export function useGardenData() {
 
   const config = useConfigSubscription(garden)
 
-  const loadingData =
+  const loading =
     orgStatus.loading ||
     appsStatus.loading ||
     permissionsStatus.loading ||
@@ -98,13 +98,13 @@ export function useGardenData() {
 
   return {
     config,
-    errors,
     connectedAgreementApp,
+    errors,
     garden,
     installedApps: apps,
+    loading,
     organization,
     permissions: convictionAppPermissions,
-    loadingAppData: loadingData,
   }
 }
 

@@ -25,7 +25,7 @@ const Home = React.memo(function Home() {
     commonPool,
     errors,
     filters,
-    isLoading,
+    loading,
     proposals,
     proposalsFetchedCount,
     totalStaked,
@@ -81,7 +81,7 @@ const Home = React.memo(function Home() {
   return (
     <div>
       <NetworkErrorModal visible={Boolean(errors)} />
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div>

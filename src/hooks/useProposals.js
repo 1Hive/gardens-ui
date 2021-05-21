@@ -67,13 +67,13 @@ export function useProposals() {
 function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading } = useGardenState()
+  const { config, effectiveSupply, loading } = useGardenState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
   // because decisions are technically closed if the executionBlock has passed.
   const proposalsWithData = useMemo(() => {
-    if (isLoading) {
+    if (loading) {
       return proposals
     }
 
@@ -88,11 +88,11 @@ function useFilteredProposals(filters, account, latestBlock) {
             config?.conviction
           )
     )
-  }, [account, config, effectiveSupply, isLoading, latestBlock, proposals])
+  }, [account, config, effectiveSupply, latestBlock, proposals])
 
   const filteredProposals = useMemo(
     () =>
-      isLoading
+      loading
         ? proposalsWithData
         : proposalsWithData?.filter(proposal => {
             const proposalSupportStatus = getProposalSupportStatus(
@@ -112,7 +112,7 @@ function useFilteredProposals(filters, account, latestBlock) {
 
             return supportFilterPassed && statusFilterPassed
           }),
-    [filters, isLoading, myStakes, proposalsWithData]
+    [filters, loading, myStakes, proposalsWithData]
   )
 
   const proposalsFetchedCount = proposals.length
@@ -127,11 +127,11 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, isLoading } = useGardenState()
+  const { config, effectiveSupply, loading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
-  if (isLoading || !proposal) {
+  if (loading || !proposal) {
     return [null, blockHasLoaded]
   }
 

@@ -6,7 +6,7 @@ import { useProposals } from '@hooks/useProposals'
 export default function useAppLogic() {
   const {
     errors,
-    isLoading,
+    loading,
     totalStaked,
     totalSupply,
     vaultBalance,
@@ -25,7 +25,7 @@ export default function useAppLogic() {
     commonPool: vaultBalance,
     errors,
     filters,
-    isLoading: isLoading || !blockHasLoaded,
+    loading: loading || !blockHasLoaded,
     proposals,
     proposalsFetchedCount,
     totalStaked,
