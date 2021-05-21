@@ -27,7 +27,8 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useGardenState()
+  const { accountBalance, config } = useGardenState()
+  const { stakeToken } = config.conviction
   const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)

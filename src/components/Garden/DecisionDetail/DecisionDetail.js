@@ -349,8 +349,8 @@ function DataField({ label, value, loading = false }) {
 }
 
 function SummaryInfo({ vote }) {
-  // const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useGardenState()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
   const theme = useTheme()
   const { minAcceptQuorum, nay, yea } = vote
 

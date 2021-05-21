@@ -13,7 +13,7 @@ function WrapTokenScreens({ mode }) {
   const [transactions, setTransactions] = useState([])
   const {
     accountBalance: gardenTokenBalance,
-    stakeToken,
+    token,
     wrappableAccountBalance,
     wrappableToken,
   } = useGardenState()
@@ -59,8 +59,8 @@ function WrapTokenScreens({ mode }) {
 
   const title =
     mode === 'wrap'
-      ? `Wrap ${wrappableToken.symbol} to receive ${stakeToken.symbol}`
-      : `Unwrap ${stakeToken.symbol} to receive ${wrappableToken.symbol}`
+      ? `Wrap ${wrappableToken.symbol} to receive ${token.symbol}`
+      : `Unwrap ${token.symbol} to receive ${wrappableToken.symbol}`
 
   const screens = useMemo(() => {
     return [
@@ -69,7 +69,7 @@ function WrapTokenScreens({ mode }) {
         graphicHeader: false,
         content: (
           <WrapUnwrap
-            gardenToken={stakeToken}
+            gardenToken={token}
             gardenTokenBalance={gardenTokenBalance}
             getTransactions={getTransactions}
             mode={mode}
@@ -83,8 +83,8 @@ function WrapTokenScreens({ mode }) {
     gardenTokenBalance,
     getTransactions,
     mode,
-    stakeToken,
     title,
+    token,
     wrappableToken,
     wrappableAccountBalance,
   ])

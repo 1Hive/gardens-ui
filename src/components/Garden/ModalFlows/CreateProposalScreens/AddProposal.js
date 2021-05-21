@@ -43,15 +43,15 @@ const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = React.memo(({ setProposalData }) => {
   const { next } = useMultiModal()
+  const { config, effectiveSupply, vaultBalance } = useGardenState()
   const {
-    config,
+    alpha,
+    maxRatio,
     requestToken,
     stableToken,
     stakeToken,
-    effectiveSupply,
-    vaultBalance,
-  } = useGardenState()
-  const { alpha, maxRatio, weight } = config.conviction
+    weight,
+  } = config.conviction
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 

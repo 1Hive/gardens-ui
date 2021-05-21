@@ -29,7 +29,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const theme = useTheme()
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useGardenState()
+  const { accountBalance, config } = useGardenState()
+  const { stakeToken } = config.conviction
   const { next } = useMultiModal()
 
   const [amount, setAmount] = useState({

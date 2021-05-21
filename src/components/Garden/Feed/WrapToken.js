@@ -22,7 +22,7 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
   const {
     accountBalance: gardenTokenBalance,
-    stakeToken,
+    token,
     wrappableAccountBalance,
     wrappableToken,
   } = useGardenState()
@@ -67,7 +67,7 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
           <Token
             mode="unwrap"
             balance={gardenTokenBalance}
-            token={stakeToken}
+            token={token}
             onClick={onUnwrapToken}
           />
         </div>

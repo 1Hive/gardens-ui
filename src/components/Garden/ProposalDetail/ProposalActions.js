@@ -15,8 +15,9 @@ function ProposalActions({
   onRequestSupportProposal,
   onWithdrawFromProposal,
 }) {
-  const { stakeToken, accountBalance } = useGardenState()
   const { account: connectedAccount } = useWallet()
+  const { accountBalance, config } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const { id, currentConviction, hasEnded, stakes, threshold } = proposal
 

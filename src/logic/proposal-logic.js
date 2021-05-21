@@ -8,12 +8,13 @@ export default function useProposalLogic(match) {
 
   const {
     config,
-    isLoading,
+    loading: gardenLoading,
     permissions,
-    requestToken,
-    stableToken,
     vaultBalance,
   } = useGardenState()
+  const { requestToken, stableToken } = config?.conviction || {}
+
+  // Get appAddress depending of current router path
   const appAddress = path.includes('vote')
     ? config?.voting.id.slice(0, 42)
     : config?.conviction.id
@@ -26,7 +27,7 @@ export default function useProposalLogic(match) {
 
   return {
     actions,
-    isLoading: isLoading || !blockHasLoaded || loadingProposal,
+    loading: gardenLoading || !blockHasLoaded || loadingProposal,
     permissions,
     proposal,
     requestToken,

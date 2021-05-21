@@ -9,7 +9,8 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const compact = below('large')
   const history = useHistory()
-  const { stakeToken } = useGardenState()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {

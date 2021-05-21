@@ -23,10 +23,9 @@ function GardenStateProvider({ children }) {
 
   const { account } = useWallet()
   const {
-    connectedGarden: { wrappableToken },
+    connectedGarden: { token, wrappableToken },
   } = useGardens()
-  const { requestToken, stableToken, stakeToken, totalStaked } =
-    config?.conviction || {}
+  const { requestToken, stakeToken, totalStaked } = config?.conviction || {}
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
   const { balance: wrappableTokenBalance } = useTokenBalances(
@@ -34,7 +33,7 @@ function GardenStateProvider({ children }) {
     wrappableToken
   )
   const vaultBalance = useVaultBalance(installedApps, requestToken)
-  const effectiveSupply = useEffectiveSupply(totalSupply, config)
+  const effectiveSupply = useEffectiveSupply(totalSupply, config) // TODO: move to compoentns that use them
 
   const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
 
@@ -51,9 +50,7 @@ function GardenStateProvider({ children }) {
         errors,
         installedApps,
         isLoading: gardenLoading,
-        requestToken,
-        stableToken,
-        stakeToken,
+        token,
         totalStaked,
         totalSupply,
         vaultBalance,

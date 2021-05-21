@@ -22,7 +22,8 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   const [ready, setReady] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useGardenState()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
 

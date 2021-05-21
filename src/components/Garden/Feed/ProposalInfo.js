@@ -10,7 +10,8 @@ import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const theme = useTheme()
-  const { requestToken, stableToken } = useGardenState()
+  const { config } = useGardenState()
+  const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
   const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
 

@@ -150,14 +150,14 @@ export function useProposal(proposalId, appAddress) {
 }
 
 export function useProposalWithThreshold(proposal) {
+  const { config, effectiveSupply, vaultBalance } = useGardenState()
   const {
-    config,
-    effectiveSupply,
+    alpha,
+    maxRatio,
     requestToken,
     stableToken,
-    vaultBalance,
-  } = useGardenState()
-  const { alpha, maxRatio, weight } = config.conviction || {}
+    weight,
+  } = config.conviction
   const { requestedAmount, totalTokensStaked, stable, type } = proposal
 
   const [requestAmount, loadingRequestAmount] = useRequestAmount(
