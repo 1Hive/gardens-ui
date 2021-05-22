@@ -10,13 +10,13 @@ import { useMounted } from './useMounted'
 import { useContract } from './useContract'
 import { useDisputeFees } from './useDispute'
 
-import env from '../environment'
+import env from '@/environment'
 
-import { VOTE_YEA } from '../constants'
+import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
-import tokenAbi from '../abi/minimeToken.json'
-import agreementAbi from '../abi/agreement.json'
+import tokenAbi from '@abis/minimeToken.json'
+import agreementAbi from '@abis/agreement.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000

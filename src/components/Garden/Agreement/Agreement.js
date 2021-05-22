@@ -13,9 +13,9 @@ import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreeme
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
 
-import Loader from '../../Loader'
+import Loader from '@components/Loader'
 
-import warningSvg from '../../../assets/warning.svg'
+import warningSvg from './assets/warning.svg'
 
 function Agreement() {
   const [agreement, loading] = useAgreement()
