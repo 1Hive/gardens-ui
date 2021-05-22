@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'

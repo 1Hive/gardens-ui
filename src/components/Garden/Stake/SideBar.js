@@ -3,8 +3,8 @@ import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-
 import { formatTokenAmount } from '@utils/token-utils'
+
 import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 
