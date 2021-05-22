@@ -13,7 +13,7 @@ const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
-  const { accountBalance } = useGardenState()
+  const { token } = useGardenState()
   const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
   const { agreementActions } = useActions()
@@ -65,7 +65,7 @@ function RaiseDisputeScreens({ proposal }) {
         title: 'Raise dispute to Celeste',
         content: (
           <RaiseDisputeRequirements
-            accountBalance={accountBalance}
+            accountBalance={token.accountBalance}
             celesteSynced={celesteSynced}
             disputeFees={disputeFees}
             getTransactions={getTransactions}
@@ -73,7 +73,7 @@ function RaiseDisputeScreens({ proposal }) {
         ),
       },
     ],
-    [accountBalance, celesteSynced, disputeFees, getTransactions]
+    [celesteSynced, disputeFees, getTransactions, token.accountBalance]
   )
 
   return (

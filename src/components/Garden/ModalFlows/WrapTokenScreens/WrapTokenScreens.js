@@ -11,12 +11,7 @@ const ZERO_BN = new BigNumber(0)
 
 function WrapTokenScreens({ mode }) {
   const [transactions, setTransactions] = useState([])
-  const {
-    accountBalance: gardenTokenBalance,
-    token,
-    wrappableAccountBalance,
-    wrappableToken,
-  } = useGardenState()
+  const { token, wrappableToken } = useGardenState()
   const { hookedTokenManagerActions } = useActions()
 
   const temporatyTrx = useRef([])
@@ -59,8 +54,8 @@ function WrapTokenScreens({ mode }) {
 
   const title =
     mode === 'wrap'
-      ? `Wrap ${wrappableToken.symbol} to receive ${token.symbol}`
-      : `Unwrap ${token.symbol} to receive ${wrappableToken.symbol}`
+      ? `Wrap ${wrappableToken.data.symbol} to receive ${token.data.symbol}`
+      : `Unwrap ${token.data.symbol} to receive ${wrappableToken.data.symbol}`
 
   const screens = useMemo(() => {
     return [
@@ -69,25 +64,17 @@ function WrapTokenScreens({ mode }) {
         graphicHeader: false,
         content: (
           <WrapUnwrap
-            gardenToken={token}
-            gardenTokenBalance={gardenTokenBalance}
+            gardenToken={token.data}
+            gardenTokenBalance={token.accountBalance}
             getTransactions={getTransactions}
             mode={mode}
-            wrappableToken={wrappableToken}
-            wrappableAccountBalance={wrappableAccountBalance}
+            wrappableToken={wrappableToken.data}
+            wrappableAccountBalance={wrappableToken.accountBalance}
           />
         ),
       },
     ]
-  }, [
-    gardenTokenBalance,
-    getTransactions,
-    mode,
-    title,
-    token,
-    wrappableToken,
-    wrappableAccountBalance,
-  ])
+  }, [getTransactions, mode, title, token, wrappableToken])
 
   return (
     <ModalFlowBase

@@ -23,27 +23,19 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
     valueBN: new BigNumber('0'),
   })
 
-  const {
-    accountBalance: gardenTokenBalance,
-    token,
-    wrappableAccountBalance,
-    wrappableToken,
-  } = useGardenState()
+  const { token, wrappableToken } = useGardenState()
   const { next } = useMultiModal()
 
   const wrapMode = mode === 'wrap'
 
   const formTokenValues = useMemo(() => {
     return wrapMode
-      ? { token: wrappableToken, accountBalance: wrappableAccountBalance }
-      : { token: token, accountBalance: gardenTokenBalance }
-  }, [
-    wrapMode,
-    gardenTokenBalance,
-    token,
-    wrappableAccountBalance,
-    wrappableToken,
-  ])
+      ? {
+          token: wrappableToken.data,
+          accountBalance: wrappableToken.accountBalance,
+        }
+      : { token: token.data, accountBalance: token.wrappableBalance }
+  }, [token, wrappableToken, wrapMode])
 
   const handleEditMode = useCallback(
     editMode => {
@@ -176,8 +168,8 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
             `}
           >
             {formatTokenAmount(
-              wrappableAccountBalance,
-              wrappableToken.decimals
+              wrappableToken.accountBalance,
+              wrappableToken.data.decimals
             )}
             {wrappableToken.symbol}
           </span>
@@ -187,7 +179,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
               font-weight: 600;
             `}
           >
-            {formatTokenAmount(gardenTokenBalance, token.decimals)}
+            {formatTokenAmount(token.accountBalance, token.data.decimals)}
             {token.symbol}
           </span>
         </span>

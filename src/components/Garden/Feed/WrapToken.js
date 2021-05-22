@@ -20,13 +20,9 @@ import unwrappedIcon from '@assets/unwrappedIcon.svg'
 
 function WrapToken({ onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
-  const {
-    accountBalance: gardenTokenBalance,
-    token,
-    wrappableAccountBalance,
-    wrappableToken,
-  } = useGardenState()
-  const loading = gardenTokenBalance.eq(-1) || wrappableAccountBalance.eq(-1)
+  const { token, wrappableToken } = useGardenState()
+  const loading =
+    token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
@@ -37,46 +33,34 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
         ${!compactMode && `margin-bottom: ${3 * GU}px;`}
       `}
     >
-      {loading ? (
-        <div
-          css={`
-            width: 100%;
-            height: ${22 * GU}px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          `}
-        >
-          <LoadingRing />
-        </div>
-      ) : (
-        <div
-          css={`
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-          `}
-        >
-          <Token
-            mode="wrap"
-            balance={wrappableAccountBalance}
-            token={wrappableToken}
-            onClick={onWrapToken}
-          />
-          <LineSeparator border={theme.border} />
-          <Token
-            mode="unwrap"
-            balance={gardenTokenBalance}
-            token={token}
-            onClick={onUnwrapToken}
-          />
-        </div>
-      )}
+      <div
+        css={`
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+        `}
+      >
+        <Token
+          balance={wrappableToken.accountBalance}
+          loading={loading}
+          mode="wrap"
+          onClick={onWrapToken}
+          token={wrappableToken.data}
+        />
+        <LineSeparator border={theme.border} />
+        <Token
+          balance={token.accountBalance}
+          loading={loading}
+          mode="unwrap"
+          onClick={onUnwrapToken}
+          token={token.data}
+        />
+      </div>
     </Box>
   )
 }
 
-function Token({ mode, balance, token, onClick }) {
+function Token({ balance, loading, mode, onClick, token }) {
   const wrapMode = mode === 'wrap'
   const icon = wrapMode ? unwrappedIcon : wrappedIcon
   const button = wrapMode
@@ -94,14 +78,29 @@ function Token({ mode, balance, token, onClick }) {
       `}
     >
       <img src={icon} height="48" width="48" />
-      <span
-        css={`
-          font-weight: 600;
-          margin: ${1 * GU}px 0;
-        `}
-      >
-        {formatTokenAmount(balance, token.decimals)}
-      </span>
+      {loading ? (
+        <div
+          css={`
+            width: 100%;
+            margin: ${1 * GU}px 0;
+            height: ${3 * GU}px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          <LoadingRing />
+        </div>
+      ) : (
+        <span
+          css={`
+            font-weight: 600;
+            margin: ${1 * GU}px 0;
+          `}
+        >
+          {formatTokenAmount(balance, token.decimals)}
+        </span>
+      )}
       <div
         css={`
           display: flex;

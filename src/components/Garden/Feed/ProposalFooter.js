@@ -42,8 +42,8 @@ function ProposalFooter({
 }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const { accountBalance } = useGardenState()
-  const { inactiveTokens } = useAccountTokens(account, accountBalance)
+  const { token } = useGardenState()
+  const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   const supportersCount = useMemo(
     () => proposal.stakes.filter(({ amount }) => amount.gt(0)).length,
@@ -54,11 +54,11 @@ function ProposalFooter({
     // Staking the minimum between account's inactive tokens and 5% of account's balance
     const amount = BigNumber.min(
       inactiveTokens,
-      accountBalance.times(QUICK_STAKE_PCT).div(PCT_BASE)
+      token.accountBalance.times(QUICK_STAKE_PCT).div(PCT_BASE)
     )
 
     onStakeToProposal({ proposalId: proposal.id, amount: amount.toFixed(0) })
-  }, [accountBalance, inactiveTokens, onStakeToProposal, proposal.id])
+  }, [token.accountBalance, inactiveTokens, onStakeToProposal, proposal.id])
 
   const handleThumbsDown = useCallback(() => {
     // Withdraw all the staked tokens on the proposal

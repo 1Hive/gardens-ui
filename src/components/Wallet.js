@@ -8,8 +8,8 @@ import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function Wallet({ account }) {
   const theme = useTheme()
-  const { accountBalance, token } = useGardenState()
-  const { inactiveTokens } = useAccountTokens(account, accountBalance)
+  const { token } = useGardenState()
+  const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   return (
     <Box padding={0}>
@@ -20,19 +20,19 @@ function Wallet({ account }) {
       >
         <div>
           <Balance
-            amount={accountBalance}
-            decimals={token.decimals}
+            amount={token.accountBalance}
+            decimals={token.data.decimals}
             label="Balance"
-            loading={accountBalance.lt(0)}
-            symbol={token.symbol}
+            loading={token.accountBalance.lt(0)}
+            symbol={token.data.symbol}
           />
           <LineSeparator border={theme.border} />
           <Balance
             amount={inactiveTokens}
-            decimals={token.decimals}
+            decimals={token.data.decimals}
             inactive
             label="Idle"
-            symbol={token.symbol}
+            symbol={token.data.symbol}
           />
         </div>
       </div>
