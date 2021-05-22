@@ -21,19 +21,14 @@ function GardenStateProvider({ children }) {
     ...appData
   } = useGardenData()
 
-  const { account } = useWallet()
-  const { connectedGarden } = useGardens()
-  const { token, wrappableToken } = connectedGarden
-  const { requestToken, stakeToken } = config?.conviction || {}
+  const [tokens, tokensLoading] = useTokens()
 
-  const { balance, totalSupply } = useTokenBalances(account, stakeToken)
-  const { balance: wrappableTokenBalance } = useTokenBalances(
-    account,
-    wrappableToken
+  const vaultBalance = useVaultBalance(
+    installedApps,
+    (tokens.wrappableToken || tokens.token).data
   )
-  const vaultBalance = useVaultBalance(installedApps, requestToken)
-  const effectiveSupply = useEffectiveSupply(totalSupply, config)
-  const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
+  const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
+  const balancesLoading = vaultBalance.eq(-1) || tokensLoading
 
   const [newConfig, loading] = useMemo(() => {
     if ((!errors && loadingGardenData) || balancesLoading || !effectiveSupply) {
@@ -50,16 +45,11 @@ function GardenStateProvider({ children }) {
     <GardenStateContext.Provider
       value={{
         ...appData,
-        accountBalance: balance,
         config: newConfig,
         errors,
         installedApps,
         loading,
-        token,
-        totalSupply,
-        vaultBalance,
-        wrappableAccountBalance: wrappableTokenBalance,
-        wrappableToken, // TODO- do a reorder here, use an object for every token with the account balance for that tokens
+        ...tokens,
       }}
     >
       {children}
@@ -76,3 +66,41 @@ function useGardenState() {
 }
 
 export { GardenStateProvider, useGardenState }
+
+function useTokens() {
+  const { account } = useWallet()
+  const { connectedGarden } = useGardens()
+  const { token, wrappableToken } = connectedGarden
+
+  const {
+    balance: gardenTokenAccountBalance,
+    totalSupply: gardenTokenTotalSuuply,
+  } = useTokenBalances(account, token)
+  const {
+    balance: wrappableTokenAccountBalance,
+    totalSupply: wrappableTokenTotalSupply,
+  } = useTokenBalances(account, wrappableToken)
+
+  const loading =
+    gardenTokenTotalSuuply.eq(-1) &&
+    wrappableToken &&
+    wrappableTokenTotalSupply.eq(-1)
+
+  return [
+    {
+      token: {
+        accountBalance: gardenTokenAccountBalance,
+        data: token,
+        totalSupply: gardenTokenTotalSuuply,
+      },
+      wrappableToken: wrappableToken
+        ? {
+            accountBalance: wrappableTokenAccountBalance,
+            data: wrappableToken,
+            totalSupply: wrappableTokenTotalSupply,
+          }
+        : null,
+    },
+    loading,
+  ]
+}
