@@ -27,6 +27,7 @@ const Home = React.memo(function Home() {
     errors,
     filters,
     loading,
+    metricsToken,
     proposals,
     proposalsFetchedCount,
     totalSupply,
@@ -105,6 +106,7 @@ const Home = React.memo(function Home() {
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
+                    token={metricsToken}
                     totalActiveTokens={config.conviction.totalStaked}
                     totalSupply={totalSupply}
                   />

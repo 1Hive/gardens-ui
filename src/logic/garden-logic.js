@@ -8,8 +8,10 @@ export default function useAppLogic() {
     config,
     errors,
     loading,
+    token,
     totalSupply,
     vaultBalance,
+    wrappableToken,
   } = useGardenState()
 
   const actions = useActions()
@@ -27,6 +29,7 @@ export default function useAppLogic() {
     errors,
     filters,
     loading: loading || !blockHasLoaded,
+    metricsToken: (wrappableToken || token).data,
     proposals,
     proposalsFetchedCount,
     totalSupply,
