@@ -58,16 +58,6 @@ function GardenStateProvider({ children }) {
   )
 }
 
-GardenStateProvider.propTypes = {
-  children: PropTypes.node,
-}
-
-function useGardenState() {
-  return useContext(GardenStateContext)
-}
-
-export { GardenStateProvider, useGardenState }
-
 function useTokens() {
   const { account } = useWallet()
   const { connectedGarden } = useGardens()
@@ -105,3 +95,13 @@ function useTokens() {
     loading,
   ]
 }
+
+GardenStateProvider.propTypes = {
+  children: PropTypes.node,
+}
+
+function useGardenState() {
+  return useContext(GardenStateContext)
+}
+
+export { GardenStateProvider, useGardenState }
