@@ -13,7 +13,7 @@ import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreeme
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
 
-import Loader from '@component/Loader'
+import Loader from '@components/Loader'
 
 import warningSvg from './assets/warning.svg'
 
