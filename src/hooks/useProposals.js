@@ -138,7 +138,7 @@ export function useProposal(proposalId, appAddress) {
 }
 
 export function useProposalWithThreshold(proposal) {
-  const { config, vaultBalance } = useGardenState()
+  const { commonPool, config } = useGardenState()
   const {
     alpha,
     effectiveSupply,
@@ -166,7 +166,7 @@ export function useProposalWithThreshold(proposal) {
   if (type === ProposalTypes.Proposal) {
     threshold = calculateThreshold(
       requestAmount,
-      vaultBalance || new BigNumber('0'),
+      commonPool || new BigNumber('0'),
       effectiveSupply || new BigNumber('0'),
       alpha,
       maxRatio,

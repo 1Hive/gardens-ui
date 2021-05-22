@@ -30,7 +30,6 @@ const Home = React.memo(function Home() {
     metricsToken,
     proposals,
     proposalsFetchedCount,
-    totalSupply,
   } = useGardenLogic()
 
   const history = useHistory()
@@ -106,9 +105,9 @@ const Home = React.memo(function Home() {
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
-                    token={metricsToken}
+                    token={metricsToken.data}
                     totalActiveTokens={config.conviction.totalStaked}
-                    totalSupply={totalSupply}
+                    totalSupply={metricsToken.totalSupply}
                   />
                 )}
                 <div

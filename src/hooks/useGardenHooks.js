@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { connectGarden } from '@1hive/connect-gardens'
 import connectAgreement from '@aragon/connect-agreement'
@@ -108,16 +108,13 @@ export function useGardenData() {
   }
 }
 
-export function useVaultBalance(installedApps, token, timeout = 1000) {
+export function useCommonPool(installedApps, token, timeout = 3000) {
   const vaultAddress =
     getAppAddressByName(installedApps, 'vault') ||
     getAppAddressByName(installedApps, 'agent')
   const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
 
-  const [vaultBalance, setVaultBalance] = useState(new BigNumber(-1))
-
-  // We are starting in 0 in order to immediately make the fetch call
-  const controlledTimeout = useRef(0)
+  const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   useEffect(() => {
     let cancelled = false
@@ -127,40 +124,36 @@ export function useVaultBalance(installedApps, token, timeout = 1000) {
       return
     }
 
-    const fetchVaultBalance = () => {
-      timeoutId = setTimeout(async () => {
-        try {
-          const vaultContractBalance = await vaultContract.balance(token.id)
-
-          if (!cancelled) {
-            // Contract value is bn.js so we need to convert it to bignumber.js
-            const newValue = new BigNumber(vaultContractBalance.toString())
-
-            if (!newValue.eq(vaultBalance)) {
-              setVaultBalance(newValue)
-            }
-          }
-        } catch (err) {
-          console.error(`Error fetching vault balance: ${err} retrying...`)
-        }
+    const pollCommonPool = async () => {
+      try {
+        const commonPoolResult = await vaultContract.balance(token.id)
 
         if (!cancelled) {
-          clearTimeout(timeoutId)
-          controlledTimeout.current = timeout
-          fetchVaultBalance()
+          // Contract value is bn.js so we need to convert it to bignumber.js
+          const newValue = new BigNumber(commonPoolResult.toString())
+
+          if (!newValue.eq(commonPool)) {
+            setCommonPool(newValue)
+          }
         }
-      }, controlledTimeout.current)
+      } catch (err) {
+        console.error(`Error fetching vault balance: ${err} retrying...`)
+      }
+
+      if (!cancelled) {
+        timeoutId = setTimeout(pollCommonPool, timeout)
+      }
     }
 
-    fetchVaultBalance()
+    pollCommonPool()
 
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [vaultBalance, vaultContract, controlledTimeout, timeout, token])
+  }, [commonPool, timeout, token, vaultContract])
 
-  return vaultBalance
+  return commonPool
 }
 
 export function useTokenBalances(account, token, timeout = 3000) {

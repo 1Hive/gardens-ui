@@ -7,10 +7,10 @@ export default function useProposalLogic(match) {
   const { id: proposalId } = params
 
   const {
+    commonPool,
     config,
     loading: gardenLoading,
     permissions,
-    vaultBalance,
   } = useGardenState()
   const { requestToken, stableToken } = config?.conviction || {}
 
@@ -27,11 +27,11 @@ export default function useProposalLogic(match) {
 
   return {
     actions,
+    commonPool,
     loading: gardenLoading || !blockHasLoaded || loadingProposal,
     permissions,
     proposal,
     requestToken,
     stableToken,
-    vaultBalance,
   }
 }

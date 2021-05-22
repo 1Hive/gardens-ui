@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import { useWallet } from '@providers/Wallet'
 import {
+  useCommonPool,
   useGardenData,
   useTokenBalances,
-  useVaultBalance,
 } from '@hooks/useGardenHooks'
 import { useGardens } from '@providers/Gardens'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
@@ -23,12 +23,12 @@ function GardenStateProvider({ children }) {
 
   const [tokens, tokensLoading] = useTokens()
 
-  const vaultBalance = useVaultBalance(
+  const commonPool = useCommonPool(
     installedApps,
     (tokens.wrappableToken || tokens.token).data
   )
   const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
-  const balancesLoading = vaultBalance.eq(-1) || tokensLoading
+  const balancesLoading = commonPool.eq(-1) || tokensLoading
 
   const [newConfig, loading] = useMemo(() => {
     if ((!errors && loadingGardenData) || balancesLoading || !effectiveSupply) {
@@ -45,6 +45,7 @@ function GardenStateProvider({ children }) {
     <GardenStateContext.Provider
       value={{
         ...appData,
+        commonPool,
         config: newConfig,
         errors,
         installedApps,

@@ -43,7 +43,7 @@ const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = React.memo(({ setProposalData }) => {
   const { next } = useMultiModal()
-  const { config, vaultBalance } = useGardenState()
+  const { commonPool, config } = useGardenState()
   const {
     alpha,
     effectiveSupply,
@@ -177,7 +177,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   const neededThreshold = useMemo(() => {
     const threshold = calculateThreshold(
       requestAmount,
-      vaultBalance,
+      commonPool,
       effectiveSupply,
       alpha,
       maxRatio,
@@ -187,7 +187,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     const max = getMaxConviction(effectiveSupply, alpha)
 
     return Math.round((threshold / max) * 100)
-  }, [alpha, requestAmount, maxRatio, effectiveSupply, vaultBalance, weight])
+  }, [alpha, commonPool, effectiveSupply, maxRatio, requestAmount, weight])
 
   const submitDisabled =
     (formData.proposalType === FUNDING_PROPOSAL &&
