@@ -7,7 +7,7 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
-import { useAppState } from '../providers/AppState'
+import { useAppState } from '@providers/AppState'
 import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
 

@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom'
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
-import useAccountTokens from '../hooks/useAccountTokens'
-import { useAppState } from '../providers/AppState'
-import { useGardens } from '../providers/Gardens'
-import { useWallet } from '../providers/Wallet'
+import useAccountTokens from '@hooks/useAccountTokens'
+import { useAppState } from '@providers/AppState'
+import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
 
-import { buildGardenPath } from '../utils/routing-utils'
-import { formatTokenAmount } from '../utils/token-utils'
-import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
+import { buildGardenPath } from '@utils/routing-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
   const theme = useTheme()

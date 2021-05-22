@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
-import { useAppState } from '../../providers/AppState'
+import { useAppState } from '@providers/AppState'
 
-import { formatTokenAmount } from '../../utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()

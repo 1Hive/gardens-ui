@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 import {
   useOrgData,
   useTokenBalances,
   useVaultBalance,
-} from '../hooks/useOrgHooks'
-import { useGardens } from '../providers/Gardens'
-import useEffectiveSupply from '../hooks/useEffectiveSupply'
+} from '@hooks/useOrgHooks'
+import { useGardens } from '@providers/Gardens'
+import useEffectiveSupply from '@hooks/useEffectiveSupply'
 
 const AppStateContext = React.createContext()
 

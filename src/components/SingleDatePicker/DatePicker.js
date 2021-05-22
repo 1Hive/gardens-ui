@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { eachDayOfInterval, GU } from '@1hive/1hive-ui'
 import MonthDay from './MonthDay'
 import { Selector } from './components'
-import { dayjs } from '../../utils/date-utils'
+import { dayjs } from '@utils/date-utils'
 
 function DatePicker({
   initialDate,

@@ -1,5 +1,5 @@
 import { convertFromString, ProposalTypes } from '../types'
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {

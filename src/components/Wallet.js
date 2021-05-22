@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
-import useAccountTokens from '../hooks/useAccountTokens'
-import { useAppState } from '../providers/AppState'
-import { useTokenBalances } from '../hooks/useOrgHooks'
+import useAccountTokens from '@hooks/useAccountTokens'
+import { useAppState } from '@providers/AppState'
+import { useTokenBalances } from '@hooks/useOrgHooks'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '../utils/token-utils'
+import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function Wallet({ account }) {
   const theme = useTheme()

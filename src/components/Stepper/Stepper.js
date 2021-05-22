@@ -11,8 +11,8 @@ import {
   STEP_WORKING,
 } from './stepper-statuses'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
-import { useDisableAnimation } from '../../hooks/useDisableAnimation'
-import { useMounted } from '../../hooks/useMounted'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import { useMounted } from '@hooks/useMounted'
 import useStepperLayout from './useStepperLayout'
 
 const AnimatedDiv = animated.div

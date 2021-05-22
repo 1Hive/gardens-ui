@@ -8,9 +8,9 @@ import {
 } from '../stepper-statuses'
 // import TokenLoader from '../../TokenLoader'
 
-import signRequestSuccessIllustration from '../../../assets/signRequestSuccess.svg'
-import signRequestFailIllustration from '../../../assets/signRequestFail.svg'
-import trxBeingMinedIllustration from '../../../assets/honey.svg'
+import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
+import signRequestFailIllustration from '@assets/signRequestFail.svg'
+import trxBeingMinedIllustration from '@assets/honey.svg'
 
 const illustrations = {
   [STEP_WORKING]: trxBeingMinedIllustration,

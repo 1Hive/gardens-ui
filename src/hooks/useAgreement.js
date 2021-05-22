@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { utils as ethersUtils } from 'ethers'
-import { addressesEqual } from '../utils/web3-utils'
-import { toMs, durationToHours } from '../utils/date-utils'
-import { getAppPresentation } from '../utils/app-utils'
-import { useAppState } from '../providers/AppState'
+import { addressesEqual } from '@utils/web3-utils'
+import { toMs, durationToHours } from '@utils/date-utils'
+import { getAppPresentation } from '@utils/app-utils'
+import { useAppState } from '@providers/AppState'
 import { useMounted } from './useMounted'
-import { useAgreementSubscription } from '../providers/AgreementSubscription'
-import { getAppByName } from '../utils/data-utils'
+import { useAgreementSubscription } from '@providers/AgreementSubscription'
+import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
 export function useAgreement() {

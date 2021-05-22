@@ -11,7 +11,7 @@ import {
   useProposalsSubscription,
 } from './useSubscriptions'
 import useRequestAmount from './useRequestAmount'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
 import {
   getCurrentConviction,
@@ -21,19 +21,19 @@ import {
   calculateThreshold,
   getMinNeededStake,
   getRemainingTimeToPass,
-} from '../lib/conviction'
-import { testStatusFilter, testSupportFilter } from '../utils/filter-utils'
-import { safeDivBN } from '../utils/math-utils'
+} from '@lib/conviction'
+import { testStatusFilter, testSupportFilter } from '@utils/filter-utils'
+import { safeDivBN } from '@utils/math-utils'
 import {
   getProposalStatusData,
   getProposalSupportStatus,
   hasProposalEnded,
-} from '../utils/proposal-utils'
+} from '@utils/proposal-utils'
 import {
   getVoteEndDate,
   getVoteStatusData,
   hasVoteEnded,
-} from '../utils/vote-utils'
+} from '@utils/vote-utils'
 import { ProposalTypes } from '../types'
 import { PCT_BASE } from '../constants'
 

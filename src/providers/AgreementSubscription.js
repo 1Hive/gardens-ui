@@ -3,9 +3,9 @@ import connectAgreement from '@aragon/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
 import { connectorConfig } from '../networks'
 import { useWallet } from './Wallet'
-import { useMounted } from '../hooks/useMounted'
+import { useMounted } from '@hooks/useMounted'
 import { useAppState } from './AppState'
-import { getAppByName } from '../utils/data-utils'
+import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
 const useAgreement = createAppHook(connectAgreement, connectorConfig.agreement)

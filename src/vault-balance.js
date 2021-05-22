@@ -4,15 +4,15 @@ import {
   getTokenSymbol,
   getTokenName,
   tokenDataFallback,
-} from './utils/token-utils'
+} from '@utils/token-utils'
 import { first } from 'rxjs/operators'
 
-import tokenDecimalsAbi from './abi/token-decimals.json'
-import tokenNameAbi from './abi/token-name.json'
-import tokenSymbolAbi from './abi/token-symbol.json'
-import vaultBalanceAbi from './abi/vault-balance.json'
-import vaultGetInitializationBlockAbi from './abi/vault-getinitializationblock.json'
-import vaultEventAbi from './abi/vault-events.json'
+import tokenDecimalsAbi from '@abis/token-decimals.json'
+import tokenNameAbi from '@abis/token-name.json'
+import tokenSymbolAbi from '@abis/token-symbol.json'
+import vaultBalanceAbi from '@abis/vault-balance.json'
+import vaultGetInitializationBlockAbi from '@abis/vault-getinitializationblock.json'
+import vaultEventAbi from '@abis/vault-events.json'
 
 export async function getVaultInitializationBlock(vault) {
   try {

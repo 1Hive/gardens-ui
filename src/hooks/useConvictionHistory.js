@@ -3,8 +3,8 @@ import {
   getConvictionHistory,
   getConvictionHistoryByEntity,
 } from '../lib/conviction'
-import { useWallet } from '../providers/Wallet'
-import { useAppState } from '../providers/AppState'
+import { useWallet } from '@providers/Wallet'
+import { useAppState } from '@providers/AppState'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 

@@ -1,7 +1,7 @@
 import { getIpfsUrlFromUri } from './ipfs-utils'
-import iconAcl from '../assets/icon-acl.svg'
-import iconKernel from '../assets/icon-kernel.svg'
-import iconRegistry from '../assets/icon-registry.svg'
+import iconAcl from '@assets/icon-acl.svg'
+import iconKernel from '@assets/icon-kernel.svg'
+import iconRegistry from '@assets/icon-registry.svg'
 
 // TODO: Replace with information supplied by connect when available
 // https://github.com/aragon/connect/pull/259

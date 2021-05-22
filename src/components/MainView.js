@@ -1,7 +1,7 @@
 import React from 'react'
 import { GU, Root, ScrollView, useViewport } from '@1hive/1hive-ui'
 
-import Footer from './Footer'
+import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
 

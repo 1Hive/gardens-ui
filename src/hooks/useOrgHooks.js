@@ -12,15 +12,15 @@ import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
 
 // utils
-import env from '../environment'
-import BigNumber from '../lib/bigNumber'
-import { addressesEqual } from '../utils/web3-utils'
-import { getAppAddressByName, getAppByName } from '../utils/data-utils'
-import { connectorConfig } from '../networks'
+import env from '@/environment'
+import BigNumber from '@lib/bigNumber'
+import { addressesEqual } from '@utils/web3-utils'
+import { getAppAddressByName, getAppByName } from '@utils/data-utils'
+import { connectorConfig } from '@/networks'
 
 // abis
-import minimeTokenAbi from '../abi/minimeToken.json'
-import vaultAbi from '../abi/vault-balance.json'
+import minimeTokenAbi from '@abis/minimeToken.json'
+import vaultAbi from '@abis/vault-balance.json'
 
 const useAgreementHook = createAppHook(
   connectAgreement,

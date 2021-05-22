@@ -8,6 +8,7 @@ import defaultGardenLogo from '../assets/defaultGardenLogo.svg'
 import defaultTokenLogo from '../assets/defaultTokenLogo.svg'
 
 function GardensDashboard() {
+  // TODO :  add loading component
   const { gardens } = useGardens()
 
   return (
