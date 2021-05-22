@@ -1,9 +1,9 @@
 import { toUtf8 } from './web3-utils'
 import { round } from './math-utils'
-import tokenSymbolAbi from '../abi/token-symbol.json'
-import tokenSymbolBytesAbi from '../abi/token-symbol-bytes.json'
-import tokenNameAbi from '../abi/token-name.json'
-import tokenNameBytesAbi from '../abi/token-name-bytes.json'
+import tokenSymbolAbi from '@abis/token-symbol.json'
+import tokenSymbolBytesAbi from '@abis/token-symbol-bytes.json'
+import tokenNameAbi from '@abis/token-name.json'
+import tokenNameBytesAbi from '@abis/token-name-bytes.json'
 
 import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'

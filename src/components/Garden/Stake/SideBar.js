@@ -3,7 +3,7 @@ import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
-import { formatTokenAmount } from '../../../utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 

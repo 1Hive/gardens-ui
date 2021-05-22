@@ -9,9 +9,9 @@ import { useContract, useContractReadOnly } from './useContract'
 
 import { encodeFunctionData } from '@utils/web3-utils'
 
-import stakingFactoryAbi from '../abi/StakingFactory.json'
-import stakingAbi from '../abi/Staking.json'
-import minimeTokenAbi from '../abi/minimeToken.json'
+import stakingFactoryAbi from '@abis/StakingFactory.json'
+import stakingAbi from '@abis/Staking.json'
+import minimeTokenAbi from '@abis/minimeToken.json'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000

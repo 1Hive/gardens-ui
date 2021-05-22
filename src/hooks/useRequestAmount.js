@@ -4,7 +4,7 @@ import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
 import BigNumber from '@lib/bigNumber'
 
-import priceOracleAbi from '../abi/priceOracle.json'
+import priceOracleAbi from '@abis/priceOracle.json'
 
 export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
   const [convertedAmount, setConvertedAmount] = useState(new BigNumber(0))
