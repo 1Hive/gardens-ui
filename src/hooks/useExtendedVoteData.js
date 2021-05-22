@@ -8,8 +8,8 @@ import { useWallet } from '@providers/Wallet'
 
 import { getCanUserVote } from '@utils/vote-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
-import minimeTokenAbi from '../abi/minimeToken.json'
-import votingAbi from '../abi/voting.json'
+import minimeTokenAbi from '@abis/minimeToken.json'
+import votingAbi from '@abis/voting.json'
 
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()

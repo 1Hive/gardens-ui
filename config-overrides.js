@@ -13,6 +13,7 @@ module.exports = override(
   useEslintRc(path.resolve(__dirname, '.eslintrc')),
   addWebpackAlias({
     '@': path.resolve(__dirname, './src'),
+    '@abis': path.resolve(__dirname, './src/abi'),
     '@assets': path.resolve(__dirname, './src/assets'),
     '@components': path.resolve(__dirname, './src/components'),
     '@hooks': path.resolve(__dirname, './src/hooks'),

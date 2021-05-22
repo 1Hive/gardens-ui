@@ -4,9 +4,9 @@ import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 
-import BigNumber from '../../../../lib/bigNumber'
-import { buildGardenPath } from '../../../../utils/routing-utils'
-import { toDecimals } from '../../../../utils/math-utils'
+import BigNumber from '@lib/bigNumber'
+import { buildGardenPath } from '@utils/routing-utils'
+import { toDecimals } from '@utils/math-utils'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
