@@ -7,8 +7,7 @@ import { useWallet } from '@providers/Wallet'
 import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
 
-import { useContract } from './useContract'
-import { useDisputeFees } from './useDispute'
+import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
@@ -34,8 +33,6 @@ export default function useActions() {
     env('CONVICTION_APP_NAME')
   )
 
-  const disputeFees = useDisputeFees()
-  const feeTokenContract = useContract(disputeFees.token, tokenAbi)
   const wrappableTokenContract = useContract(wrappableToken?.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
@@ -220,7 +217,7 @@ export default function useActions() {
     [account, agreementApp, mounted]
   )
 
-  const approveTokenAmount = useCallback(
+  const approve = useCallback(
     (amount, tokenContract, appAddress, trxDescription) => {
       if (!tokenContract || !appAddress) {
         return
@@ -243,24 +240,27 @@ export default function useActions() {
     [account]
   )
 
-  const approveChallengeTokenAmount = useCallback(
-    (depositAmount, onDone = noop) => {
-      if (!feeTokenContract || !agreementApp) {
+  const approveTokenAmount = useCallback(
+    async (tokenAddress, depositAmount, onDone = noop) => {
+      const tokenContract = getContract(tokenAddress, tokenAbi)
+      if (!tokenContract || !agreementApp) {
         return
       }
 
-      const intent = approveTokenAmount(
+      const tokenSymbol = await tokenContract.symbol()
+
+      const intent = approve(
         depositAmount,
-        feeTokenContract,
+        tokenContract,
         agreementApp.address,
-        'Approve HNY'
+        `Approve ${tokenSymbol}`
       )
 
       if (mounted()) {
         onDone(intent)
       }
     },
-    [approveTokenAmount, feeTokenContract, agreementApp, mounted]
+    [agreementApp, approve, mounted]
   )
 
   const getAllowance = useCallback(
@@ -276,12 +276,16 @@ export default function useActions() {
     [account]
   )
 
-  const getAgreementAllowance = useCallback(() => {
-    if (!agreementApp || !feeTokenContract) {
-      return
-    }
-    return getAllowance(feeTokenContract, agreementApp.address)
-  }, [agreementApp, feeTokenContract, getAllowance])
+  const getAgreementTokenAllowance = useCallback(
+    tokenAddress => {
+      const tokenContract = getContract(tokenAddress, tokenAbi)
+      if (!agreementApp || !tokenContract) {
+        return
+      }
+      return getAllowance(tokenContract, agreementApp.address)
+    },
+    [agreementApp, getAllowance]
+  )
 
   const resolveAction = useCallback(
     disputeId => {
@@ -343,7 +347,7 @@ export default function useActions() {
         return
       }
 
-      const intent = approveTokenAmount(
+      const intent = approve(
         amount,
         wrappableTokenContract,
         hookedTokenManagerApp.address,
@@ -355,7 +359,7 @@ export default function useActions() {
       }
     },
     [
-      approveTokenAmount,
+      approve,
       hookedTokenManagerApp,
       mounted,
       wrappableToken,
@@ -403,10 +407,10 @@ export default function useActions() {
   // TODO: Memoize objects
   return {
     agreementActions: {
-      approveChallengeTokenAmount,
+      approveTokenAmount,
       challengeAction,
       disputeAction,
-      getAllowance: getAgreementAllowance,
+      getAllowance: getAgreementTokenAllowance,
       getChallenge,
       resolveAction,
       settleAction,
