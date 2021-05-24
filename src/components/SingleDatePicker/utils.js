@@ -1,4 +1,4 @@
-import { dayjs } from '../../utils/date-utils'
+import { dayjs } from '@utils/date-utils'
 
 function handleSingleDateSelect({ date, initialDate }) {
   // clicking on initial date resets it, so it can be re-picked

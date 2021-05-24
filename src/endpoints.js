@@ -1,4 +1,4 @@
-import { isLocalOrUnknownNetwork } from './utils/web3-utils'
+import { isLocalOrUnknownNetwork } from '@utils/web3-utils'
 import { CONTEXT_ID } from './constants'
 
 export const NODE_URL = 'http:%2f%2fnode.brightid.org'
@@ -23,5 +23,5 @@ export const IPFS_ENDPOINT = {
 export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
-export const HONEYSWAP_TRADE_HONEY =
-  'https://app.honeyswap.org/#/swap?outputCurrency=0x71850b7e9ee3f13ab46d67167341e4bdc905eef9'
+export const getHoneyswapTradeTokenUrl = tokenAddress =>
+  `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`

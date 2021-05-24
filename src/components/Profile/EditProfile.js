@@ -15,7 +15,7 @@ import {
 
 import ProfileForm from './ProfileForm'
 import Tabs from './Tabs'
-import usePicture from '../../hooks/usePicture'
+import usePicture from '@hooks/usePicture'
 
 const IMAGE_DIMENSION = 15 * GU
 const CONTENT = [ProfileForm]

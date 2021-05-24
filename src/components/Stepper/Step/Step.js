@@ -9,7 +9,7 @@ import {
   GU,
 } from '@1hive/1hive-ui'
 import Divider from './Divider'
-import { getNetwork } from '../../../networks'
+import { getNetwork } from '@/networks'
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -19,8 +19,8 @@ import {
 } from '../stepper-statuses'
 import StatusVisual from './StatusVisual'
 
-import { springs } from '../../../style/springs'
-import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
+import { springs } from '@/style/springs'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const AnimatedSpan = animated.span
 

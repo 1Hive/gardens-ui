@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import { useStaking } from '../hooks/useStaking'
+import { useStaking } from '@hooks/useStaking'
 
 const StakingContext = React.createContext({
   staking: {},

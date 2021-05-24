@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
-import BigNumber from '../../lib/bigNumber'
-import { stakesPercentages } from '../../utils/math-utils'
+import BigNumber from '@lib/bigNumber'
+import { stakesPercentages } from '@utils/math-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 

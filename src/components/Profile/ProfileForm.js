@@ -17,11 +17,11 @@ import {
 import BrightIdStatus from './BrightIdStatus'
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 
-import { fetchPic } from '../../services'
-import { dateFormat } from '../../utils/date-utils'
-import { validateEmail } from '../../utils/validate-utils'
+import { fetchPic } from '@/services'
+import { dateFormat } from '@utils/date-utils'
+import { validateEmail } from '@utils/validate-utils'
 
-import verifiedCheck from '../../assets/verifiedCheck.svg'
+import verifiedCheck from '@assets/verifiedCheck.svg'
 
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout()

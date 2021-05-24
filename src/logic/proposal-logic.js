@@ -1,19 +1,20 @@
-import useActions from '../hooks/useActions'
-import { useAppState } from '../providers/AppState'
-import { useProposal } from '../hooks/useProposals'
+import useActions from '@hooks/useActions'
+import { useGardenState } from '@providers/GardenState'
+import { useProposal } from '@hooks/useProposals'
 
 export default function useProposalLogic(match) {
   const { params, path } = match
   const { id: proposalId } = params
 
   const {
+    commonPool,
     config,
-    isLoading,
+    loading: gardenLoading,
     permissions,
-    requestToken,
-    stableToken,
-    vaultBalance,
-  } = useAppState()
+  } = useGardenState()
+  const { requestToken, stableToken } = config?.conviction || {}
+
+  // Get appAddress depending of current router path
   const appAddress = path.includes('vote')
     ? config?.voting.id.slice(0, 42)
     : config?.conviction.id
@@ -26,11 +27,11 @@ export default function useProposalLogic(match) {
 
   return {
     actions,
-    isLoading: isLoading || !blockHasLoaded || loadingProposal,
+    commonPool,
+    loading: gardenLoading || !blockHasLoaded || loadingProposal,
     permissions,
     proposal,
     requestToken,
     stableToken,
-    vaultBalance,
   }
 }

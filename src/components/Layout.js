@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, useViewport } from '@1hive/1hive-ui'
-import { BREAKPOINTS } from '../styles/breakpoints'
+import { BREAKPOINTS } from '@/style/breakpoints'
 
 function CustomLayout({ children, paddingBottom = 0 }) {
   const { width: vw } = useViewport()

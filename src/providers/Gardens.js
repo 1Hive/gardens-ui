@@ -4,8 +4,8 @@ import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
 import daoList from '@1hive/gardens-dao-list'
 import { DAONotFound } from '../errors'
-import { AppStateProvider } from '../providers/AppState'
-import { ConnectProvider as Connect } from '../providers/Connect'
+import { GardenStateProvider } from './GardenState'
+import { ConnectProvider as Connect } from './Connect'
 
 import { getNetwork } from '../networks'
 
@@ -33,7 +33,7 @@ export function GardensProvider({ children }) {
     <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
       {connectedGarden ? (
         <Connect>
-          <AppStateProvider>{children}</AppStateProvider>
+          <GardenStateProvider>{children}</GardenStateProvider>
         </Connect>
       ) : (
         children

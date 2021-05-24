@@ -2,21 +2,21 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
-import { getAppByName } from '../utils/data-utils'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
 
 import { useContract } from './useContract'
 import { useDisputeFees } from './useDispute'
 
-import env from '../environment'
+import env from '@/environment'
 
-import { VOTE_YEA } from '../constants'
-import { encodeFunctionData } from '../utils/web3-utils'
-import BigNumber from '../lib/bigNumber'
-import tokenAbi from '../abi/minimeToken.json'
-import agreementAbi from '../abi/agreement.json'
+import { VOTE_YEA } from '@/constants'
+import { encodeFunctionData } from '@utils/web3-utils'
+import BigNumber from '@lib/bigNumber'
+import tokenAbi from '@abis/minimeToken.json'
+import agreementAbi from '@abis/agreement.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
@@ -28,7 +28,7 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps, wrappableToken } = useAppState()
+  const { installedApps, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')

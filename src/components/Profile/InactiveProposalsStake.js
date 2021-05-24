@@ -1,15 +1,16 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
-import { useAppState } from '../../providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 
-import { formatTokenAmount } from '../../utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const compact = below('large')
   const history = useHistory()
-  const { stakeToken } = useAppState()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {

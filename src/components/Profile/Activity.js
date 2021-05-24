@@ -10,11 +10,11 @@ import {
 } from '@1hive/1hive-ui'
 
 import ProposalIcon from '../ProposalIcon'
-import useUser from '../../hooks/useUser'
+import useUser from '@hooks/useUser'
 
-import { convertToString } from '../../types'
-import { dateFormat } from '../../utils/date-utils'
-import { getGardenLabel } from '../../utils/garden-utils'
+import { convertToString } from '@/types'
+import { dateFormat } from '@utils/date-utils'
+import { getGardenLabel } from '@utils/garden-utils'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()

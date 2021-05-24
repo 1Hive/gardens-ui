@@ -25,6 +25,9 @@ const ENV_VARS = {
   ETH_NODE() {
     return process.env.REACT_APP_ETH_NODE || ''
   },
+  INTERCOM_APP_ID() {
+    return process.env.REACT_APP_INTERCOM_APP_ID || ''
+  },
   FORTMATIC_API_KEY() {
     return process.env.REACT_APP_FORTMATIC_API_KEY || ''
   },

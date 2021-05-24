@@ -1,4 +1,4 @@
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 
 /**
  * Generic round function, see:

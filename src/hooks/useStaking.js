@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { useAppState } from '../providers/AppState'
-import BigNumber from '../lib/bigNumber'
+import { useGardenState } from '@providers/GardenState'
+import BigNumber from '@lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
 
-import { encodeFunctionData } from '../utils/web3-utils'
+import { encodeFunctionData } from '@utils/web3-utils'
 
-import stakingFactoryAbi from '../abi/StakingFactory.json'
-import stakingAbi from '../abi/Staking.json'
-import minimeTokenAbi from '../abi/minimeToken.json'
+import stakingFactoryAbi from '@abis/StakingFactory.json'
+import stakingAbi from '@abis/Staking.json'
+import minimeTokenAbi from '@abis/minimeToken.json'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
@@ -19,7 +19,7 @@ const STAKE_GAS_LIMIT = 500000
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
-  const { connectedAgreementApp } = useAppState()
+  const { connectedAgreementApp } = useGardenState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)

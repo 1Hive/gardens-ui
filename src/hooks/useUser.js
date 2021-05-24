@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getUser } from '@1hive/connect-gardens'
 import { useMounted } from './useMounted'
 import { getNetwork } from '../networks'
-import { transformUserData } from '../utils/data-utils'
+import { transformUserData } from '@utils/data-utils'
 
 export default function useUser(address) {
   const [user, setUser] = useState(null)

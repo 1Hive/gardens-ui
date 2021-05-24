@@ -1,4 +1,4 @@
-import { bigNum } from './lib/bigNumber'
+import { bigNum } from '@lib/bigNumber'
 
 export const CONTEXT_ID = '1hive'
 
