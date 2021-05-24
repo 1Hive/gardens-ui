@@ -128,10 +128,8 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
 }
 
 export function ConvictionCountdown({ proposal, shorter }) {
-  const {
-    maxRatio,
-    stakeToken: { symbol, decimals },
-  } = useGardenState()
+  const { config, maxRatio } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const theme = useTheme()
 
@@ -190,7 +188,10 @@ export function ConvictionCountdown({ proposal, shorter }) {
                   <React.Fragment>
                     At least{' '}
                     <Tag>
-                      {`${formatTokenAmount(neededTokens, decimals)} ${symbol}`}
+                      {`${formatTokenAmount(
+                        neededTokens,
+                        stakeToken.decimals
+                      )} ${stakeToken.symbol}`}
                     </Tag>{' '}
                     more needed
                   </React.Fragment>
