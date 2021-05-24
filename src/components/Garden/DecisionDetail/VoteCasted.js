@@ -1,12 +1,12 @@
 import React from 'react'
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getAccountCastStake } from '@utils/vote-utils'
 import { VOTE_YEA } from '@/constants'
 
 function VoteCasted({ account, accountVote, vote }) {
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const accountStake = getAccountCastStake(vote, account)
   const { stakeToken } = config?.conviction || {}
 

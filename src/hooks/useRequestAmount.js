@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
 import BigNumber from '@lib/bigNumber'
@@ -12,7 +12,7 @@ export default function useRequestAmount(stable, amount, tokenIn, tokenOut) {
 
   const mounted = useMounted()
 
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const priceOracleAddress = config.conviction.stableTokenOracle
 
   const priceOracleContract = useContractReadOnly(

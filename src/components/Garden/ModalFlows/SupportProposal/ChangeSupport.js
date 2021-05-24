@@ -11,7 +11,7 @@ import {
 } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { useWallet } from '@providers/Wallet'
 
@@ -29,7 +29,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const theme = useTheme()
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useAppState()
+  const { accountBalance, stakeToken } = useGardenState()
   const { next } = useMultiModal()
 
   const [amount, setAmount] = useState({

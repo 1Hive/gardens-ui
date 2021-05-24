@@ -4,7 +4,7 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '@hooks/useAccountTokens'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
 
@@ -16,7 +16,7 @@ function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
   const history = useHistory()
-  const { accountBalance } = useAppState()
+  const { accountBalance } = useGardenState()
   const {
     connectedGarden: { token },
   } = useGardens()

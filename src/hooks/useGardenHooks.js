@@ -27,7 +27,7 @@ const useAgreementHook = createAppHook(
   connectorConfig.agreement
 )
 
-export function useOrgData() {
+export function useGardenData() {
   const [garden, setGarden] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
@@ -100,7 +100,7 @@ export function useOrgData() {
     config,
     errors,
     connectedAgreementApp,
-    honeypot: garden, // TODO: Update honeypot for garden everywhere
+    garden,
     installedApps: apps,
     organization,
     permissions: convictionAppPermissions,

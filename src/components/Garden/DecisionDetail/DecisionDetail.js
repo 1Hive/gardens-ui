@@ -29,8 +29,8 @@ import VoteActions from './VoteActions'
 import VoteCasted from './VoteCasted'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
 
-import { useAppState } from '@providers/AppState'
 import { useDescribeVote } from '@hooks/useDescribeVote'
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
@@ -48,7 +48,7 @@ function DecisionDetail({ proposal, actions }) {
   const { account: connectedAccount } = useWallet()
   const {
     config: { voting: votingConfig },
-  } = useAppState()
+  } = useGardenState()
 
   const {
     description,
@@ -350,7 +350,7 @@ function DataField({ label, value, loading = false }) {
 
 function SummaryInfo({ vote }) {
   // const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
   const theme = useTheme()
   const { minAcceptQuorum, nay, yea } = vote
 

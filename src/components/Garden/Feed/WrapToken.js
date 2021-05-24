@@ -11,7 +11,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
@@ -25,7 +25,7 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
     stakeToken,
     wrappableAccountBalance,
     wrappableToken,
-  } = useAppState()
+  } = useGardenState()
   const loading = gardenTokenBalance.eq(-1) || wrappableAccountBalance.eq(-1)
 
   const theme = useTheme()

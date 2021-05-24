@@ -9,8 +9,8 @@ import {
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
 
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
-import { useAppState } from '@providers/AppState'
 import { formatTokenAmount } from '@utils/token-utils'
 import { stakesPercentages } from '@utils/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
@@ -45,7 +45,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   stakes,
   totalTokensStaked,
 }) {
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
 
   const totalStakedString = totalTokensStaked.toString(10)
   const transformedStakes = useMemo(() => {

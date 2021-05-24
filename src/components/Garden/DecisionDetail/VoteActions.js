@@ -11,7 +11,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import useExtendedVoteData from '@hooks/useExtendedVoteData'
 import { useWallet } from '@providers/Wallet'
 import { noop, dateFormat } from '@utils/date-utils'
@@ -22,7 +22,7 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   const [ready, setReady] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useAppState()
+  const { stakeToken } = useGardenState()
 
   const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
 

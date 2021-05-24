@@ -5,12 +5,12 @@ import WrapToken from './WrapToken'
 import HeroBanner from './HeroBanner'
 
 import { useWallet } from '@providers/Wallet'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 
 function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
-  const { wrappableToken } = useAppState() // Todo find a better way to identify a byot gardes rather than just using the wrappable token attr
+  const { wrappableToken } = useGardenState() // Todo find a better way to identify a byot gardes rather than just using the wrappable token attr
 
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'

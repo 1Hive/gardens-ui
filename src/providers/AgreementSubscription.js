@@ -4,7 +4,7 @@ import { createAppHook } from '@1hive/connect-react'
 import { connectorConfig } from '../networks'
 import { useWallet } from './Wallet'
 import { useMounted } from '@hooks/useMounted'
-import { useAppState } from './AppState'
+import { useGardenState } from './GardenState'
 import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
@@ -13,7 +13,7 @@ const AgreementSubscriptionContext = React.createContext()
 
 function AgreementSubscriptionProvider({ children }) {
   const { account } = useWallet()
-  const { installedApps } = useAppState()
+  const { installedApps } = useGardenState()
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
 
   const [currentVersion, currentVersionStatus] = useAgreement(

@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
@@ -28,7 +28,7 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps, wrappableToken } = useAppState()
+  const { installedApps, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')

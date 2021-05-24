@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useBlockTimeStamp } from './useBlock'
 import { useContractReadOnly } from './useContract'
-import { useAppState } from '@providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import usePromise from './usePromise'
 import { useWallet } from '@providers/Wallet'
 
@@ -13,7 +13,7 @@ import votingAbi from '@abis/voting.json'
 
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const { stakeToken } = config.conviction
   const { id: votingAddress } = config.voting
 
@@ -75,7 +75,7 @@ export default function useExtendedVoteData(vote) {
 }
 
 export function useCanUserVote(vote) {
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const { account: connectedAccount } = useWallet()
   const { id: votingAddress } = config?.voting || {}
 
