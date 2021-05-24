@@ -158,7 +158,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
-        text: `You need to allow the Covenant as the lock manager of your staked HNY`,
+        text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
         actionButton: 'Collateral manager',
         buttonOnClick: goToStakeManager,
       }
