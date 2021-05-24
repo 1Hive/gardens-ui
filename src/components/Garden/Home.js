@@ -45,13 +45,6 @@ const Home = React.memo(function Home() {
     setFilterSidlerVisible(visible => !visible)
   }, [])
 
-  useEffect(() => {
-    // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
-    if (account && history.location.pathname.includes('create')) {
-      setModalVisible(true)
-    }
-  }, [account, history])
-
   const handleShowModal = useCallback(mode => {
     setModalVisible(true)
     setModalMode(mode)
@@ -76,6 +69,15 @@ const Home = React.memo(function Home() {
   const handleUnwrapToken = useCallback(() => {
     handleShowModal('unwrap')
   }, [handleShowModal])
+
+  useEffect(() => {
+    console.log('running')
+    // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
+    if (account && history.location.pathname.includes('create')) {
+      console.log('entered')
+      handleRequestNewProposal()
+    }
+  }, [account, handleRequestNewProposal, history])
 
   // TODO: Refactor components positioning with a grid layout
   return (
