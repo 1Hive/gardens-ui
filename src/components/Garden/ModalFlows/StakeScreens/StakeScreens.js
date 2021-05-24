@@ -24,15 +24,17 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
   }, [history])
 
   const renderOnCompleteActions = useCallback(() => {
-    return (
-      <Button
-        label="Create proposal"
-        mode="strong"
-        onClick={handleCreateProposal}
-        wide
-      />
-    )
-  }, [handleCreateProposal])
+    if (mode === 'deposit') {
+      return (
+        <Button
+          label="Create proposal"
+          mode="strong"
+          onClick={handleCreateProposal}
+          wide
+        />
+      )
+    }
+  }, [handleCreateProposal, mode])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
