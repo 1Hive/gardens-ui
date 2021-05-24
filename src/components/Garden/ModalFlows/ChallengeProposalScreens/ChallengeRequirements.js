@@ -11,11 +11,7 @@ import { getDisputableAppByName } from '@utils/app-utils'
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
 
-function ChallengeProposalRequirements({
-  agreement,
-  accountBalance,
-  disputeFees,
-}) {
+function ChallengeRequirements({ agreement, accountBalance, disputeFees }) {
   const { next } = useMultiModal()
   const { disputableAppsWithRequirements } = agreement
 
@@ -188,4 +184,4 @@ function InfoBox({ data }) {
   )
 }
 
-export default ChallengeProposalRequirements
+export default ChallengeRequirements

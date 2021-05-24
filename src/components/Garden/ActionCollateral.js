@@ -15,7 +15,7 @@ function ActionCollateral({ proposal }) {
       `}
     >
       <img
-        src={getTokenIconBySymbol(collateralRequirement.tokenSymbol)}
+        src={getTokenIconBySymbol(collateralRequirement.tokenSymbol)} // TODO: Use deefault-token-list
         alt=""
         height="24"
         width="24"
