@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { useGardens } from '../providers/Gardens'
-import { useUniswapHnyPrice } from '../hooks/useUniswapHNYPrice'
+import { useHoneyswapTokenPrice } from '../hooks/useHoneyswapTokenPrice'
 import { formatDecimals, formatTokenAmount } from '../utils/token-utils'
 
 import defaultTokenSvg from '../assets/defaultToken.svg'
@@ -110,7 +110,7 @@ function Metric({ label, value, color }) {
 
 function TokenBalance({ label, token, value, currency }) {
   const theme = useTheme()
-  const price = useUniswapHnyPrice()
+  const price = useHoneyswapTokenPrice(token.id)
   const currencyValue = value * price * currency.rate
 
   return (
@@ -121,7 +121,13 @@ function TokenBalance({ label, token, value, currency }) {
           color: ${theme.green};
         `}
       >
-        {currency.symbol} {formatTokenAmount(currencyValue, token.decimals)}
+        {price >= 0 ? (
+          <span>
+            {currency.symbol} {formatTokenAmount(currencyValue, token.decimals)}
+          </span>
+        ) : (
+          <span>-</span>
+        )}
       </div>
     </>
   )
@@ -129,7 +135,7 @@ function TokenBalance({ label, token, value, currency }) {
 
 function TokenPrice({ currency, token }) {
   const theme = useTheme()
-  const price = useUniswapHnyPrice() // TODO: Update to fetch token price
+  const price = useHoneyswapTokenPrice(token.id)
 
   return (
     <div>
@@ -147,8 +153,14 @@ function TokenPrice({ currency, token }) {
           color: ${theme.green};
         `}
       >
-        {currency.symbol}
-        {formatDecimals(price * currency.rate, 2)}
+        {price > 0 ? (
+          <span>
+            {currency.symbol}
+            {formatDecimals(price * currency.rate, 2)}
+          </span>
+        ) : (
+          <span>-</span>
+        )}
       </span>
     </div>
   )
