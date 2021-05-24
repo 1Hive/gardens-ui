@@ -20,32 +20,34 @@ function RaiseDisputeScreens({ proposal }) {
 
   const temporatyTrx = useRef([])
 
-  const disputeBN = useMemo(() => {
-    if (disputeFees.loading) {
-      return
-    }
-    return new BigNumber(disputeFees.amount.toString())
-  }, [disputeFees])
-
-  const getTransactions = useCallback(
-    async onComplete => {
-      const allowance = await agreementActions.getAllowance()
-      if (allowance.lt(disputeBN)) {
-        if (!allowance.eq(0)) {
-          await agreementActions.approveChallengeTokenAmount(
+  const approveTokenAmount = useCallback(
+    async (tokenAddress, amount) => {
+      const tokenAllowance = await agreementActions.getAllowance(tokenAddress)
+      if (tokenAllowance.lt(amount)) {
+        if (!tokenAllowance.eq(0)) {
+          await agreementActions.approveTokenAmount(
+            tokenAddress,
             ZERO_BN,
             intent => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
-        await agreementActions.approveChallengeTokenAmount(
-          disputeBN.toString(),
+        await agreementActions.approveTokenAmount(
+          tokenAddress,
+          amount,
           intent => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
         )
       }
+    },
+    [agreementActions]
+  )
+
+  const getTransactions = useCallback(
+    async onComplete => {
+      await approveTokenAmount(disputeFees.token, disputeFees.amount)
 
       await agreementActions.disputeAction(
         { actionId: proposal.actionId, submitterFinishedEvidence: true },
@@ -56,7 +58,7 @@ function RaiseDisputeScreens({ proposal }) {
         }
       )
     },
-    [proposal, agreementActions, disputeBN]
+    [agreementActions, approveTokenAmount, disputeFees, proposal]
   )
 
   const screens = useMemo(

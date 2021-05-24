@@ -25,9 +25,6 @@ function ChallengeProposalRequirements({
     env('CONVICTION_APP_NAME')
   )
   const { challengeAmount, token } = convictionAppRequirements
-
-  const disputeFeesBN = new BigNumber(disputeFees.amount.toString())
-
   const enoughChallengeCollateral = accountBalance.gte(challengeAmount)
 
   const error = useMemo(() => {
@@ -55,12 +52,12 @@ function ChallengeProposalRequirements({
           margin-top: ${5 * GU}px;
         `}
       >
-        You must deposit {formatTokenAmount(disputeFeesBN, 18)} {token.symbol}{' '}
-        as the dispute fees.
+        You must deposit {formatTokenAmount(disputeFees.amount, 18)}{' '}
+        {token.symbol} as the dispute fees.
       </InfoField>
       <FeesStatus
         accountBalance={accountBalance}
-        feesAmount={disputeFeesBN}
+        feesAmount={disputeFees.amount}
         token={token}
       />
       <ModalButton

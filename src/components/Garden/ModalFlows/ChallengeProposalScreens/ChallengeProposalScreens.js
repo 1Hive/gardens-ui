@@ -18,14 +18,30 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
 
   const temporatyTrx = useRef([])
 
-  const depositAmount = useMemo(() => {
-    if (disputeFees.loading) {
-      return
-    }
-    return proposal.collateralRequirement.challengeAmount
-      .plus(new BigNumber(disputeFees.amount.toString()))
-      .toString()
-  }, [disputeFees, proposal])
+  const approveTokenAmount = useCallback(
+    async (tokenAddress, amount) => {
+      const tokenAllowance = await agreementActions.getAllowance(tokenAddress)
+      if (tokenAllowance.lt(amount)) {
+        if (!tokenAllowance.eq(0)) {
+          await agreementActions.approveTokenAmount(
+            tokenAddress,
+            ZERO_BN,
+            intent => {
+              temporatyTrx.current = temporatyTrx.current.concat(intent)
+            }
+          )
+        }
+        await agreementActions.approveTokenAmount(
+          tokenAddress,
+          amount,
+          intent => {
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
+          }
+        )
+      }
+    },
+    [agreementActions]
+  )
 
   const getTransactions = useCallback(
     async (
@@ -35,23 +51,12 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
       challengerFinishedEvidence,
       context
     ) => {
-      const allowance = await agreementActions.getAllowance()
-      if (allowance.lt(depositAmount)) {
-        if (!allowance.eq(0)) {
-          await agreementActions.approveChallengeTokenAmount(
-            ZERO_BN,
-            intent => {
-              temporatyTrx.current = temporatyTrx.current.concat(intent)
-            }
-          )
-        }
-        await agreementActions.approveChallengeTokenAmount(
-          depositAmount,
-          intent => {
-            temporatyTrx.current = temporatyTrx.current.concat(intent)
-          }
-        )
-      }
+      const collateralToken = proposal.collateralRequirement.tokenId
+      const collateralAmount = proposal.collateralRequirement.challengeAmount
+
+      await approveTokenAmount(collateralToken, collateralAmount)
+      await approveTokenAmount(disputeFees.token, disputeFees.amount) // TODO: Check if colateralToken and disputeFees.token are the saem then bundle both txs
+
       await agreementActions.challengeAction(
         { actionId, settlementOffer, challengerFinishedEvidence, context },
         intent => {
@@ -61,7 +66,12 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         }
       )
     },
-    [agreementActions, depositAmount]
+    [
+      agreementActions,
+      approveTokenAmount,
+      disputeFees,
+      proposal.collateralRequirement,
+    ]
   )
 
   const screens = useMemo(
@@ -100,9 +110,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
   return (
     <ModalFlowBase
       frontLoad
-      loading={
-        !disputeFees.token || loading || disputeFees.loading || !depositAmount
-      }
+      loading={loading || disputeFees.loading}
       transactions={transactions}
       transactionTitle="Challenge proposal"
       screens={screens}
