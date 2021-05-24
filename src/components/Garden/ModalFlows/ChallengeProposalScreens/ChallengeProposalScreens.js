@@ -7,6 +7,7 @@ import { useDisputeFees } from '@hooks/useDispute'
 import { useAgreement } from '@hooks/useAgreement'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
+import { addressesEqual } from '@1hive/connect-core'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
@@ -54,8 +55,19 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
       const collateralToken = proposal.collateralRequirement.tokenId
       const collateralAmount = proposal.collateralRequirement.challengeAmount
 
-      await approveTokenAmount(collateralToken, collateralAmount)
-      await approveTokenAmount(disputeFees.token, disputeFees.amount) // TODO: Check if colateralToken and disputeFees.token are the saem then bundle both txs
+      const disputeFeeToken = disputeFees.token
+      const disputeFeeAmount = disputeFees.amount
+
+      // If collateral token is the same as the dispute fees token, approve once the added amount
+      if (addressesEqual(collateralToken, disputeFeeToken)) {
+        await approveTokenAmount(
+          collateralToken,
+          collateralAmount.plus(disputeFeeAmount)
+        )
+      } else {
+        await approveTokenAmount(collateralToken, collateralAmount)
+        await approveTokenAmount(disputeFeeToken, disputeFeeAmount)
+      }
 
       await agreementActions.challengeAction(
         { actionId, settlementOffer, challengerFinishedEvidence, context },
