@@ -34,6 +34,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
         />
       )
     }
+    return null
   }, [handleCreateProposal, mode])
 
   const getTransactions = useCallback(
