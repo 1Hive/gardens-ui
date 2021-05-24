@@ -9,6 +9,8 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
+import { formatTokenAmount } from '@utils/token-utils'
+import tokenIcon from '@assets/honey.svg'
 
 function BalanceCard({
   allowance,
