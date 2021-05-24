@@ -93,7 +93,9 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         content: (
           <ChallengeRequirements
             agreement={agreement}
-            accountBalance={(wrappableToken || token).accountBalance}
+            collateralTokenAccountBalance={
+              (wrappableToken || token).accountBalance
+            }
             disputeFees={disputeFees}
           />
         ),
