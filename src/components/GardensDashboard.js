@@ -115,7 +115,7 @@ function GardenCard({ garden }) {
           {garden.proposalCount} Proposal{garden.proposalCount === 1 ? '' : 's'}
         </div>
         <div>
-          {garden.membersCount} Member{garden.membersCount === 1 ? '' : 's'}
+          {garden.supporterCount} Member{garden.supporterCount === 1 ? '' : 's'}
         </div>
       </div>
     </div>
