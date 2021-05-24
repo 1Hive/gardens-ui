@@ -45,7 +45,8 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   stakes,
   totalTokensStaked,
 }) {
-  const { stakeToken } = useGardenState()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
 
   const totalStakedString = totalTokensStaked.toString(10)
   const transformedStakes = useMemo(() => {

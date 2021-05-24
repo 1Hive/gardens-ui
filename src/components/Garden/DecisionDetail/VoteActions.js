@@ -22,7 +22,8 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
   const [ready, setReady] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
-  const { stakeToken } = useGardenState()
+  const { config } = useGardenState()
+  const { token } = config.voting
 
   const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
 
@@ -113,7 +114,7 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
             <TokenReference
               snapshotBlock={snapshotBlock}
               startDate={new Date(startTimestamp)}
-              tokenSymbol={stakeToken.symbol}
+              tokenSymbol={token.symbol}
               userBalance={userBalance}
               userBalanceNow={userBalanceNow}
             />
@@ -180,11 +181,11 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
         {userBalanceNow > 0
           ? 'Although the currently connected account holds tokens, it'
           : 'The currently connected account'}{' '}
-        did not hold any <strong>{stakeToken.tokenSymbol}</strong> tokens when
-        this vote began ({dateFormat(new Date(startTimestamp))}) and therefore
-        cannot participate in this vote. Make sure your accounts are holding{' '}
-        <strong>{stakeToken.tokenSymbol}</strong> at the time a vote begins if
-        you'd like to vote using this Voting app.
+        did not hold any <strong>{token.symbol}</strong> tokens when this vote
+        began ({dateFormat(new Date(startTimestamp))}) and therefore cannot
+        participate in this vote. Make sure your accounts are holding{' '}
+        <strong>{token.symbol}</strong> at the time a vote begins if you'd like
+        to vote using this Voting app.
       </Info>
     </div>
   )

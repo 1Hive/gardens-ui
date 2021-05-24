@@ -8,15 +8,15 @@ import { ProposalTypes } from '@/types'
 function ProposalLoader({ match }) {
   const {
     actions: { agreementActions, convictionActions },
-    isLoading,
+    commonPool,
+    loading,
     permissions,
     proposal,
     requestToken,
     stableToken,
-    vaultBalance,
   } = useProposalLogic(match)
 
-  if (!proposal || isLoading) {
+  if (!proposal || loading) {
     return <Loader />
   }
 
@@ -27,7 +27,7 @@ function ProposalLoader({ match }) {
       permissions={permissions}
       requestToken={requestToken}
       stableToken={stableToken}
-      vaultBalance={vaultBalance}
+      commonPool={commonPool}
     />
   ) : (
     <ProposalDetail
@@ -36,7 +36,7 @@ function ProposalLoader({ match }) {
       permissions={permissions}
       requestToken={requestToken}
       stableToken={stableToken}
-      vaultBalance={vaultBalance}
+      commonPool={commonPool}
     />
   )
 }

@@ -29,7 +29,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const theme = useTheme()
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useGardenState()
+  const { config, token } = useGardenState()
+  const { stakeToken } = config.conviction
   const { next } = useMultiModal()
 
   const [amount, setAmount] = useState({
@@ -40,7 +41,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const { stakes } = proposal
 
   const totalStaked = useAccountTotalStaked(account)
-  const nonStakedTokens = accountBalance.minus(totalStaked)
+  const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const myStake = useMemo(
     () =>
@@ -53,8 +54,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
   )
 
   const maxAvailable = useMemo(
-    () => accountBalance.minus(totalStaked).plus(myStake.amount),
-    [myStake.amount, accountBalance, totalStaked]
+    () => token.accountBalance.minus(totalStaked).plus(myStake.amount),
+    [myStake.amount, token.accountBalance, totalStaked]
   )
 
   useEffect(() => {
@@ -144,7 +145,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   }, [amount, maxAvailable])
 
   // Calculate percentages
-  const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
+  const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
   const stakedPct = round(100 - nonStakedPct)
 
   return (

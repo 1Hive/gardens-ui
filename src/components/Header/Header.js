@@ -33,6 +33,8 @@ function Header() {
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
 
+  const showBalance = connectedGarden && account && !layoutSmall
+
   return (
     <header
       css={`
@@ -96,15 +98,11 @@ function Header() {
             css={`
               display: flex;
               align-items: center;
-              ${account &&
-                connectedGarden &&
-                !layoutSmall &&
-                `min-width: ${42.5 * GU}px`};
+              ${showBalance && `min-width: ${42.5 * GU}px`};
             `}
           >
             <AccountModule compact={layoutSmall} />
-            {/** TODO re arrange the header when the balance module is not present because of not having a connected dao  also we should hide the collateral manager option */}
-            {connectedGarden && account && !layoutSmall && (
+            {showBalance && (
               <>
                 <div
                   css={`
@@ -125,6 +123,7 @@ function Header() {
 
 function GardenNavItems({ garden }) {
   const theme = useTheme()
+  const token = garden.wrappableToken || garden.token
 
   return (
     <>
@@ -139,14 +138,14 @@ function GardenNavItems({ garden }) {
         Covenant
       </Link>
       <Link
-        href={getHoneyswapTradeTokenUrl(garden.token.id)}
+        href={getHoneyswapTradeTokenUrl(token.id)}
         css={`
           text-decoration: none;
           color: ${theme.contentSecondary};
           margin-left: ${4 * GU}px;
         `}
       >
-        Get {garden.token.name}
+        Get {token.name}
       </Link>
       {garden?.wiki && (
         <Link

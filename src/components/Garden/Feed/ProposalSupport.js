@@ -14,7 +14,8 @@ import { VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function ProposalSupport({ proposal }) {
   const theme = useTheme()
-  const { requestToken } = useGardenState()
+  const { config } = useGardenState()
+  const { requestToken } = config.conviction
 
   return (
     <div

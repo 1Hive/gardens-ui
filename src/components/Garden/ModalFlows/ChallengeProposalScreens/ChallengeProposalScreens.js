@@ -13,7 +13,7 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [transactions, setTransactions] = useState([])
   const [agreement, loading] = useAgreement()
-  const { accountBalance } = useGardenState()
+  const { token } = useGardenState()
   const disputeFees = useDisputeFees()
 
   const temporatyTrx = useRef([])
@@ -71,7 +71,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         content: (
           <ChallengeRequirements
             agreement={agreement}
-            accountBalance={accountBalance}
+            accountBalance={token.accountBalance}
             disputeFees={disputeFees}
           />
         ),
@@ -88,12 +88,12 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
       },
     ],
     [
-      accountBalance,
       agreement,
+      agreementActions,
       disputeFees,
       getTransactions,
-      agreementActions,
       proposal,
+      token.accountBalance,
     ]
   )
 

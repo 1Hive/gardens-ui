@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { useWallet } from '@providers/Wallet'
 import {
+  useCommonPool,
   useGardenData,
   useTokenBalances,
-  useVaultBalance,
 } from '@hooks/useGardenHooks'
 import { useGardens } from '@providers/Gardens'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
@@ -17,53 +17,83 @@ function GardenStateProvider({ children }) {
     config,
     errors,
     installedApps,
-    loadingAppData,
+    loading: loadingGardenData,
     ...appData
   } = useGardenData()
 
-  const { account } = useWallet()
-  const {
-    connectedGarden: { wrappableToken },
-  } = useGardens()
-  const { requestToken, stableToken, stakeToken, totalStaked } =
-    config?.conviction || {}
+  const [tokens, tokensLoading] = useTokens()
 
-  const { balance, totalSupply } = useTokenBalances(account, stakeToken)
-  const { balance: wrappableTokenBalance } = useTokenBalances(
-    account,
-    wrappableToken
+  const commonPool = useCommonPool(
+    installedApps,
+    (tokens.wrappableToken || tokens.token).data
   )
-  const vaultBalance = useVaultBalance(installedApps, requestToken)
-  const effectiveSupply = useEffectiveSupply(totalSupply, config)
+  const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
+  const balancesLoading = commonPool.eq(-1) || tokensLoading
 
-  const balancesLoading = vaultBalance.eq(-1) || totalSupply.eq(-1)
+  const [newConfig, loading] = useMemo(() => {
+    if ((!errors && loadingGardenData) || balancesLoading || !effectiveSupply) {
+      return [null, true]
+    }
 
-  const gardenLoading =
-    (!errors && loadingAppData) || balancesLoading || !effectiveSupply
+    return [
+      { ...config, conviction: { ...config.conviction, effectiveSupply } },
+      false,
+    ]
+  }, [balancesLoading, config, effectiveSupply, errors, loadingGardenData])
 
   return (
     <GardenStateContext.Provider
       value={{
         ...appData,
-        accountBalance: balance,
-        config,
-        effectiveSupply,
+        commonPool,
+        config: newConfig,
         errors,
         installedApps,
-        isLoading: gardenLoading,
-        requestToken,
-        stableToken,
-        stakeToken,
-        totalStaked,
-        totalSupply,
-        vaultBalance,
-        wrappableAccountBalance: wrappableTokenBalance,
-        wrappableToken, // TODO- do a reorder here, use an object for every token with the account balance for that tokens
+        loading,
+        ...tokens,
       }}
     >
       {children}
     </GardenStateContext.Provider>
   )
+}
+
+function useTokens() {
+  const { account } = useWallet()
+  const { connectedGarden } = useGardens()
+  const { token, wrappableToken } = connectedGarden
+
+  const {
+    balance: gardenTokenAccountBalance,
+    totalSupply: gardenTokenTotalSuuply,
+  } = useTokenBalances(account, token)
+  const {
+    balance: wrappableTokenAccountBalance,
+    totalSupply: wrappableTokenTotalSupply,
+  } = useTokenBalances(account, wrappableToken)
+
+  const loading =
+    gardenTokenTotalSuuply.eq(-1) &&
+    wrappableToken &&
+    wrappableTokenTotalSupply.eq(-1)
+
+  return [
+    {
+      token: {
+        accountBalance: gardenTokenAccountBalance,
+        data: token,
+        totalSupply: gardenTokenTotalSuuply,
+      },
+      wrappableToken: wrappableToken
+        ? {
+            accountBalance: wrappableTokenAccountBalance,
+            data: wrappableToken,
+            totalSupply: wrappableTokenTotalSupply,
+          }
+        : null,
+    },
+    loading,
+  ]
 }
 
 GardenStateProvider.propTypes = {

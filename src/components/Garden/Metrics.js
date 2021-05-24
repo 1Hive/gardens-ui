@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 
-import { useGardens } from '@providers/Gardens'
 import { useUniswapHnyPrice } from '@hooks/useUniswapHNYPrice'
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
@@ -10,14 +9,12 @@ import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 const Metrics = React.memo(function Metrics({
   commonPool,
   onExecuteIssuance,
+  token,
   totalActiveTokens,
   totalSupply,
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const {
-    connectedGarden: { token },
-  } = useGardens()
   const currency = {
     name: 'USD',
     symbol: '$',

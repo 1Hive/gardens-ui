@@ -27,11 +27,12 @@ const SupportProposal = React.memo(function SupportProposal({
   })
 
   const { account } = useWallet()
-  const { accountBalance, stakeToken } = useGardenState()
+  const { config, token } = useGardenState()
+  const { stakeToken } = config.conviction
   const { next } = useMultiModal()
 
   const totalStaked = useAccountTotalStaked(account)
-  const nonStakedTokens = accountBalance.minus(totalStaked)
+  const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
     editMode => {
@@ -116,7 +117,7 @@ const SupportProposal = React.memo(function SupportProposal({
   }, [amount, nonStakedTokens])
 
   // Calculate percentages
-  const nonStakedPct = round(pct(nonStakedTokens, accountBalance))
+  const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
   const stakedPct = round(100 - nonStakedPct)
 
   return (

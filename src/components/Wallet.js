@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 import useAccountTokens from '@hooks/useAccountTokens'
 import { useGardenState } from '@providers/GardenState'
-import { useTokenBalances } from '@hooks/useGardenHooks'
 
 import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function Wallet({ account }) {
   const theme = useTheme()
-  const { stakeToken } = useGardenState()
-  const { balance } = useTokenBalances(account, stakeToken)
-  const { inactiveTokens } = useAccountTokens(account, balance)
+  const { token } = useGardenState()
+  const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   return (
     <Box padding={0}>
@@ -22,19 +20,19 @@ function Wallet({ account }) {
       >
         <div>
           <Balance
-            amount={balance}
-            decimals={stakeToken.decimals}
+            amount={token.accountBalance}
+            decimals={token.data.decimals}
             label="Balance"
-            loading={balance.lt(0)}
-            symbol={stakeToken.symbol}
+            loading={token.accountBalance.lt(0)}
+            symbol={token.data.symbol}
           />
           <LineSeparator border={theme.border} />
           <Balance
             amount={inactiveTokens}
-            decimals={stakeToken.decimals}
+            decimals={token.data.decimals}
             inactive
             label="Idle"
-            symbol={stakeToken.symbol}
+            symbol={token.data.symbol}
           />
         </div>
       </div>
