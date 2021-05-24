@@ -23,13 +23,13 @@ const Home = React.memo(function Home() {
   const {
     actions,
     commonPool,
+    config,
     errors,
     filters,
-    isLoading,
+    loading,
+    metricsToken,
     proposals,
     proposalsFetchedCount,
-    totalStaked,
-    totalSupply,
   } = useGardenLogic()
 
   const history = useHistory()
@@ -81,7 +81,7 @@ const Home = React.memo(function Home() {
   return (
     <div>
       <NetworkErrorModal visible={Boolean(errors)} />
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div>
@@ -105,8 +105,9 @@ const Home = React.memo(function Home() {
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
-                    totalActiveTokens={totalStaked}
-                    totalSupply={totalSupply}
+                    token={metricsToken.data}
+                    totalActiveTokens={config.conviction.totalStaked}
+                    totalSupply={metricsToken.totalSupply}
                   />
                 )}
                 <div

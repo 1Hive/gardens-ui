@@ -67,32 +67,26 @@ export function useProposals() {
 function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
-  const { config, effectiveSupply, isLoading } = useGardenState()
+  const { config, loading } = useGardenState()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
   // because decisions are technically closed if the executionBlock has passed.
   const proposalsWithData = useMemo(() => {
-    if (isLoading) {
+    if (loading) {
       return proposals
     }
 
     return proposals.map(proposal =>
       proposal.type === ProposalTypes.Decision
         ? processDecision(proposal)
-        : processProposal(
-            proposal,
-            latestBlock,
-            effectiveSupply,
-            account,
-            config?.conviction
-          )
+        : processProposal(proposal, latestBlock, account, config.conviction)
     )
-  }, [account, config, effectiveSupply, isLoading, latestBlock, proposals])
+  }, [account, config, latestBlock, loading, proposals])
 
   const filteredProposals = useMemo(
     () =>
-      isLoading
+      loading
         ? proposalsWithData
         : proposalsWithData?.filter(proposal => {
             const proposalSupportStatus = getProposalSupportStatus(
@@ -112,7 +106,7 @@ function useFilteredProposals(filters, account, latestBlock) {
 
             return supportFilterPassed && statusFilterPassed
           }),
-    [filters, isLoading, myStakes, proposalsWithData]
+    [filters, loading, myStakes, proposalsWithData]
   )
 
   const proposalsFetchedCount = proposals.length
@@ -127,37 +121,32 @@ export function useProposal(proposalId, appAddress) {
     appAddress
   )
   const latestBlock = useLatestBlock()
-  const { config, effectiveSupply, isLoading } = useGardenState()
+  const { config, loading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
 
-  if (isLoading || !proposal) {
+  if (loading || !proposal) {
     return [null, blockHasLoaded]
   }
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
       ? processDecision(proposal)
-      : processProposal(
-          proposal,
-          latestBlock,
-          effectiveSupply,
-          account,
-          config?.conviction
-        )
+      : processProposal(proposal, latestBlock, account, config.conviction)
 
   return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
 export function useProposalWithThreshold(proposal) {
+  const { commonPool, config } = useGardenState()
   const {
-    config,
+    alpha,
     effectiveSupply,
+    maxRatio,
     requestToken,
     stableToken,
-    vaultBalance,
-  } = useGardenState()
-  const { alpha, maxRatio, weight } = config.conviction || {}
+    weight,
+  } = config.conviction
   const { requestedAmount, totalTokensStaked, stable, type } = proposal
 
   const [requestAmount, loadingRequestAmount] = useRequestAmount(
@@ -177,7 +166,7 @@ export function useProposalWithThreshold(proposal) {
   if (type === ProposalTypes.Proposal) {
     threshold = calculateThreshold(
       requestAmount,
-      vaultBalance || new BigNumber('0'),
+      commonPool || new BigNumber('0'),
       effectiveSupply || new BigNumber('0'),
       alpha,
       maxRatio,
@@ -228,14 +217,8 @@ export function useProposalEndDate(proposal) {
   return endDate
 }
 
-function processProposal(
-  proposal,
-  latestBlock,
-  effectiveSupply,
-  account,
-  config
-) {
-  const { alpha } = config || {}
+function processProposal(proposal, latestBlock, account, config) {
+  const { alpha, effectiveSupply } = config
   const { stakesHistory, totalTokensStaked } = proposal
 
   const maxConviction = getMaxConviction(

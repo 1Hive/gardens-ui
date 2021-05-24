@@ -7,10 +7,10 @@ function DecisionLoader({ match }) {
   const {
     actions: { agreementActions, votingActions },
     proposal,
-    isLoading,
+    loading,
   } = useProposalLogic(match)
 
-  if (!proposal || isLoading) {
+  if (!proposal || loading) {
     return <Loader />
   }
 

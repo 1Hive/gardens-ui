@@ -47,12 +47,12 @@ import { ZERO_ADDR } from '@/constants'
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
 function ProposalDetail({
+  commonPool,
   proposal,
   actions,
   permissions,
   requestToken,
   stableToken,
-  vaultBalance,
 }) {
   const theme = useTheme()
   const history = useHistory()
@@ -187,10 +187,7 @@ function ProposalDetail({
                         </strong>{' '}
                         {requestToken.name} out of{' '}
                         <strong>
-                          {formatTokenAmount(
-                            vaultBalance,
-                            requestToken.decimals
-                          )}
+                          {formatTokenAmount(commonPool, requestToken.decimals)}
                         </strong>{' '}
                         {requestToken.name} currently in the common pool.
                       </span>

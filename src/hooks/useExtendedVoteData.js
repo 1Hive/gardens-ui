@@ -14,12 +14,12 @@ import votingAbi from '@abis/voting.json'
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()
   const { config } = useGardenState()
-  const { stakeToken } = config.conviction
+  const { token } = config.voting
   const { id: votingAddress } = config.voting
 
   const votingContract = useContractReadOnly(votingAddress, votingAbi)
 
-  const tokenContract = useContractReadOnly(stakeToken.id, minimeTokenAbi)
+  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
 
   const userBalancePromise = useMemo(() => {
     if (!vote?.id) {
@@ -29,12 +29,12 @@ export default function useExtendedVoteData(vote) {
       connectedAccount,
       vote.snapshotBlock,
       tokenContract,
-      stakeToken.decimals
+      token.decimals
     )
   }, [
     connectedAccount,
     tokenContract,
-    stakeToken.decimals,
+    token.decimals,
     vote.id,
     vote.snapshotBlock,
   ])
@@ -53,9 +53,8 @@ export default function useExtendedVoteData(vote) {
   const { canUserVote, canUserVotePromise } = useCanUserVote(vote)
 
   const userBalanceNowPromise = useMemo(
-    () =>
-      getUserBalanceNow(connectedAccount, tokenContract, stakeToken.decimals),
-    [connectedAccount, tokenContract, stakeToken.decimals]
+    () => getUserBalanceNow(connectedAccount, tokenContract, token.decimals),
+    [connectedAccount, tokenContract, token.decimals]
   )
   const userBalanceNow = usePromise(userBalanceNowPromise, [], -1, 4)
 
