@@ -4,7 +4,6 @@ import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import BigNumber from '@lib/bigNumber'
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'

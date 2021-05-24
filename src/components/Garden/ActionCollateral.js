@@ -2,7 +2,7 @@ import React from 'react'
 import { GU } from '@1hive/1hive-ui'
 
 import { formatTokenAmount } from '@utils/token-utils'
-import honeyIconSvg from '@assets/honey.svg'
+import { getTokenIconBySymbol } from '../../utils/token-utils'
 import lockIconSvg from '@assets/icon-lock.svg'
 
 function ActionCollateral({ proposal }) {
@@ -15,12 +15,12 @@ function ActionCollateral({ proposal }) {
       `}
     >
       <img
-        src={honeyIconSvg}
+        src={getTokenIconBySymbol(collateralRequirement.tokenSymbol)}
         alt=""
-        height="28"
-        width="28"
+        height="24"
+        width="24"
         css={`
-          margin-right: ${0.5 * GU}px;
+          margin-right: ${1 * GU}px;
         `}
       />
       <div
