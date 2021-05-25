@@ -171,7 +171,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
               wrappableToken.accountBalance,
               wrappableToken.data.decimals
             )}
-            {wrappableToken.symbol}
+            {wrappableToken.data.symbol}
           </span>
           {' and '}
           <span
@@ -180,7 +180,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
             `}
           >
             {formatTokenAmount(token.accountBalance, token.data.decimals)}
-            {token.symbol}
+            {token.data.symbol}
           </span>
         </span>
       </Field>

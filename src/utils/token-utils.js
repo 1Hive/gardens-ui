@@ -1,10 +1,4 @@
-import { toUtf8 } from './web3-utils'
 import { round } from './math-utils'
-import tokenSymbolAbi from '@abis/token-symbol.json'
-import tokenSymbolBytesAbi from '@abis/token-symbol-bytes.json'
-import tokenNameAbi from '@abis/token-name.json'
-import tokenNameBytesAbi from '@abis/token-name-bytes.json'
-
 import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'
 import stableTokenSvg from '@assets/stable-token.svg'
@@ -61,38 +55,6 @@ export const tokenDataFallback = (tokenAddress, fieldName, networkType) => {
     return null
   }
   return fallbacksForNetwork.get(addressWithoutChecksum)[fieldName] || null
-}
-
-export async function getTokenSymbol(app, address) {
-  // Symbol is optional; note that aragon.js doesn't return an error (only an falsey value) when
-  // getting this value fails
-  let tokenSymbol
-  try {
-    const token = app.external(address, tokenSymbolAbi)
-    tokenSymbol = await token.symbol().toPromise()
-  } catch (err) {
-    // Some tokens (e.g. DS-Token) use bytes32 as the return type for symbol().
-    const token = app.external(address, tokenSymbolBytesAbi)
-    tokenSymbol = toUtf8(await token.symbol().toPromise())
-  }
-
-  return tokenSymbol || null
-}
-
-export async function getTokenName(app, address) {
-  // Name is optional; note that aragon.js doesn't return an error (only an falsey value) when
-  // getting this value fails
-  let tokenName
-  try {
-    const token = app.external(address, tokenNameAbi)
-    tokenName = await token.name().toPromise()
-  } catch (err) {
-    // Some tokens (e.g. DS-Token) use bytes32 as the return type for name().
-    const token = app.external(address, tokenNameBytesAbi)
-    tokenName = toUtf8(await token.name().toPromise())
-  }
-
-  return tokenName || null
 }
 
 export function getPresetTokens(networkType) {

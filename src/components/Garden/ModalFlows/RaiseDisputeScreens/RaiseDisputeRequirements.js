@@ -1,10 +1,19 @@
 import React, { useCallback, useMemo } from 'react'
-import { Button, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  Button,
+  GU,
+  Info,
+  Link,
+  LoadingRing,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+import { useWallet } from '@providers/Wallet'
 
-import BigNumber from '@lib/bigNumber'
 import { formatTokenAmount } from '@utils/token-utils'
 
 import iconError from '@assets/iconError.svg'
@@ -12,16 +21,15 @@ import iconCheck from '@assets/iconCheck.svg'
 import { getNetwork } from '@/networks'
 
 function RaiseDisputeRequirements({
-  accountBalance,
   celesteSynced,
   disputeFees,
   getTransactions,
 }) {
+  const { account } = useWallet()
   const { next } = useMultiModal()
-
-  const disputeFeesBN = new BigNumber(disputeFees.amount.toString())
-
-  const enoughDisputeFees = accountBalance.gte(disputeFeesBN)
+  // Dispute fee token data
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
+  const accountBalance = useTokenBalanceOf(disputeFees.token, account)
 
   const handleOnCreateDispute = useCallback(() => {
     getTransactions(() => {
@@ -29,14 +37,28 @@ function RaiseDisputeRequirements({
     })
   }, [next, getTransactions])
 
+  const enoughDisputeFees = accountBalance.gte(disputeFees.amount)
   return (
     <div>
       <InfoField label="Dispute fees">
-        You must deposit {formatTokenAmount(disputeFeesBN, 18)} HNY as the
-        dispute fees. This balance will be returned to your account if Celeste
-        outcome is to allow the action.
+        {loadingFeeToken ? (
+          <LoadingRing />
+        ) : (
+          <span>
+            You must deposit{' '}
+            {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{' '}
+            {feeToken.symbol} as the dispute fees. This balance will be returned
+            to your account if Celeste outcome is to allow the action.
+          </span>
+        )}
       </InfoField>
-      <FeesStatus accountBalance={accountBalance} feesAmount={disputeFeesBN} />
+      {!loadingFeeToken && (
+        <FeesStatus
+          accountBalance={accountBalance}
+          feesAmount={disputeFees.amount}
+          token={feeToken}
+        />
+      )}
       <div
         css={`
           margin-top: ${3 * GU}px;
@@ -59,7 +81,7 @@ function RaiseDisputeRequirements({
   )
 }
 
-function FeesStatus({ accountBalance, feesAmount }) {
+function FeesStatus({ accountBalance, feesAmount, token }) {
   const theme = useTheme()
 
   const infoData = useMemo(() => {
@@ -70,8 +92,8 @@ function FeesStatus({ accountBalance, feesAmount }) {
         icon: iconCheck,
         text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
           feesAmount,
-          18
-        )} HNY as the dispute fees.`,
+          token.decimals
+        )} ${token.symbol} as the dispute fees.`,
       }
     }
 
@@ -81,10 +103,10 @@ function FeesStatus({ accountBalance, feesAmount }) {
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
         feesAmount,
-        18
-      )} HNY as the dispute fees.`,
+        token.decimals
+      )} ${token.symbol} as the dispute fees.`,
     }
-  }, [accountBalance, feesAmount, theme])
+  }, [accountBalance, feesAmount, theme, token])
 
   return <InfoBox data={infoData} />
 }

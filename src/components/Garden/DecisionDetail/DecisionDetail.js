@@ -303,7 +303,7 @@ function DecisionDetail({ proposal, actions }) {
             agreementActions={{
               challengeAction: actions.challengeAction,
               getAllowance: actions.getAllowance,
-              approveChallengeTokenAmount: actions.approveChallengeTokenAmount,
+              approveTokenAmount: actions.approveTokenAmount,
             }}
             proposal={proposal}
           />

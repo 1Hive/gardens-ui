@@ -1,10 +1,18 @@
 import React, { useCallback, useMemo } from 'react'
-import { Button, GU, Info, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  Button,
+  GU,
+  Info,
+  LoadingRing,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+import { useWallet } from '@providers/Wallet'
 
-import BigNumber from '@lib/bigNumber'
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
@@ -12,11 +20,12 @@ import { getDisputableAppByName } from '@utils/app-utils'
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
 
-function ChallengeProposalRequirements({
+function ChallengeRequirements({
   agreement,
-  accountBalance,
+  collateralTokenAccountBalance,
   disputeFees,
 }) {
+  const { account } = useWallet()
   const { next } = useMultiModal()
   const { disputableAppsWithRequirements } = agreement
 
@@ -26,13 +35,21 @@ function ChallengeProposalRequirements({
   )
   const { challengeAmount, token } = convictionAppRequirements
 
-  const disputeFeesBN = new BigNumber(disputeFees.amount.toString())
-
-  const enoughChallengeCollateral = accountBalance.gte(challengeAmount)
+  // Dispute fee token data
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
+  const feeTokenAccountBalance = useTokenBalanceOf(disputeFees.token, account)
 
   const error = useMemo(() => {
-    return !enoughChallengeCollateral
-  }, [enoughChallengeCollateral])
+    return (
+      !collateralTokenAccountBalance.gte(challengeAmount) ||
+      !feeTokenAccountBalance.gte(disputeFees.amount)
+    )
+  }, [
+    challengeAmount,
+    collateralTokenAccountBalance,
+    disputeFees,
+    feeTokenAccountBalance,
+  ])
 
   const handleOnContinue = useCallback(() => {
     next()
@@ -45,7 +62,7 @@ function ChallengeProposalRequirements({
         {token.symbol} as the collateral required to challenge this action.
       </InfoField>
       <CollateralStatus
-        accountBalance={accountBalance}
+        accountBalance={collateralTokenAccountBalance}
         challengeAmount={challengeAmount}
         token={token}
       />
@@ -55,14 +72,23 @@ function ChallengeProposalRequirements({
           margin-top: ${5 * GU}px;
         `}
       >
-        You must deposit {formatTokenAmount(disputeFeesBN, 18)} {token.symbol}{' '}
-        as the dispute fees.
+        {loadingFeeToken ? (
+          <LoadingRing />
+        ) : (
+          <span>
+            You must deposit{' '}
+            {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{' '}
+            {feeToken.symbol} as the dispute fees.
+          </span>
+        )}
       </InfoField>
-      <FeesStatus
-        accountBalance={accountBalance}
-        feesAmount={disputeFeesBN}
-        token={token}
-      />
+      {!loadingFeeToken && (
+        <FeesStatus
+          accountBalance={feeTokenAccountBalance}
+          feesAmount={disputeFees.amount}
+          token={feeToken}
+        />
+      )}
       <ModalButton
         mode="strong"
         loading={false}
@@ -79,7 +105,8 @@ function ChallengeProposalRequirements({
         The action collateral and dispute fees will be returned to your account
         if the submitter accepts your settlement offer or if you win the dispute
         raised to Celeste. Your wallet balance is{' '}
-        {formatTokenAmount(accountBalance, token.decimals)} {token.symbol}.
+        {formatTokenAmount(collateralTokenAccountBalance, token.decimals)}{' '}
+        {token.symbol}.
       </Info>
     </div>
   )
@@ -192,4 +219,4 @@ function InfoBox({ data }) {
   )
 }
 
-export default ChallengeProposalRequirements
+export default ChallengeRequirements

@@ -9,8 +9,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-import { formatTokenAmount } from '@utils/token-utils'
-import tokenIcon from '@assets/honey.svg'
+import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
 
 function BalanceCard({
   allowance,
@@ -63,7 +62,7 @@ function BalanceCard({
       `}
     >
       <img
-        src={tokenIcon}
+        src={getTokenIconBySymbol(tokenSymbol)} // TODO: Use default-token-list
         width={6.5 * GU}
         height={6.5 * GU}
         css={`

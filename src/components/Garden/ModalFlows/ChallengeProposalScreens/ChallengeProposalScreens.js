@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { addressesEqual } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeRequirements from './ChallengeRequirements'
 import ChallengeForm from './ChallengeForm'
@@ -13,19 +14,37 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [transactions, setTransactions] = useState([])
   const [agreement, loading] = useAgreement()
-  const { token } = useGardenState()
+  const { token, wrappableToken } = useGardenState()
   const disputeFees = useDisputeFees()
+
+  const collateralToken = wrappableToken || token
 
   const temporatyTrx = useRef([])
 
-  const depositAmount = useMemo(() => {
-    if (disputeFees.loading) {
-      return
-    }
-    return proposal.collateralRequirement.challengeAmount
-      .plus(new BigNumber(disputeFees.amount.toString()))
-      .toString()
-  }, [disputeFees, proposal])
+  const approveTokenAmount = useCallback(
+    async (tokenAddress, amount) => {
+      const tokenAllowance = await agreementActions.getAllowance(tokenAddress)
+      if (tokenAllowance.lt(amount)) {
+        if (!tokenAllowance.eq(0)) {
+          await agreementActions.approveTokenAmount(
+            tokenAddress,
+            ZERO_BN,
+            intent => {
+              temporatyTrx.current = temporatyTrx.current.concat(intent)
+            }
+          )
+        }
+        await agreementActions.approveTokenAmount(
+          tokenAddress,
+          amount,
+          intent => {
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
+          }
+        )
+      }
+    },
+    [agreementActions]
+  )
 
   const getTransactions = useCallback(
     async (
@@ -35,23 +54,21 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
       challengerFinishedEvidence,
       context
     ) => {
-      const allowance = await agreementActions.getAllowance()
-      if (allowance.lt(depositAmount)) {
-        if (!allowance.eq(0)) {
-          await agreementActions.approveChallengeTokenAmount(
-            ZERO_BN,
-            intent => {
-              temporatyTrx.current = temporatyTrx.current.concat(intent)
-            }
-          )
-        }
-        await agreementActions.approveChallengeTokenAmount(
-          depositAmount,
-          intent => {
-            temporatyTrx.current = temporatyTrx.current.concat(intent)
-          }
+      const collateralToken = proposal.collateralRequirement.tokenId
+      const collateralAmount = proposal.collateralRequirement.challengeAmount
+      const { amount: disputeFeeAmount, token: disputeFeeToken } = disputeFees
+
+      // If collateral token is the same as the dispute fees token, approve once the added amount
+      if (addressesEqual(collateralToken, disputeFeeToken)) {
+        await approveTokenAmount(
+          collateralToken,
+          collateralAmount.plus(disputeFeeAmount)
         )
+      } else {
+        await approveTokenAmount(collateralToken, collateralAmount)
+        await approveTokenAmount(disputeFeeToken, disputeFeeAmount)
       }
+
       await agreementActions.challengeAction(
         { actionId, settlementOffer, challengerFinishedEvidence, context },
         intent => {
@@ -61,7 +78,12 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         }
       )
     },
-    [agreementActions, depositAmount]
+    [
+      agreementActions,
+      approveTokenAmount,
+      disputeFees,
+      proposal.collateralRequirement,
+    ]
   )
 
   const screens = useMemo(
@@ -71,7 +93,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         content: (
           <ChallengeRequirements
             agreement={agreement}
-            accountBalance={token.accountBalance}
+            collateralTokenAccountBalance={collateralToken.accountBalance}
             disputeFees={disputeFees}
           />
         ),
@@ -90,19 +112,17 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
     [
       agreement,
       agreementActions,
+      collateralToken,
       disputeFees,
       getTransactions,
       proposal,
-      token.accountBalance,
     ]
   )
 
   return (
     <ModalFlowBase
       frontLoad
-      loading={
-        !disputeFees.token || loading || disputeFees.loading || !depositAmount
-      }
+      loading={loading || disputeFees.loading}
       transactions={transactions}
       transactionTitle="Challenge proposal"
       screens={screens}

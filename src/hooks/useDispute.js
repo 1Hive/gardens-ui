@@ -3,6 +3,7 @@ import { getNetwork } from '@/networks'
 import arbitratorAbi from '@abis/arbitrator.json'
 import disputeManagerAbi from '@abis/DisputeManager.json'
 import { useContractReadOnly } from './useContract'
+import BigNumber from '@lib/bigNumber'
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
 
 export function useDisputeState(disputeId) {
@@ -90,7 +91,7 @@ export function useDisputeFees() {
 
       if (!cancelled) {
         setFees({
-          amount: result.feeAmount,
+          amount: new BigNumber(result.feeAmount.toString()),
           token: result.feeToken,
           loading: false,
         })
