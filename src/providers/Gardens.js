@@ -53,7 +53,10 @@ function useGardensList() {
   useEffect(() => {
     const fetchGardens = async () => {
       try {
-        const result = await getGardens({ network: getNetwork().chainId }, {})
+        const result = await getGardens(
+          { network: getNetwork().chainId },
+          { orderBy: 'honeyLiquidity' }
+        )
         setGardens(result)
       } catch (err) {
         console.error(`Error fetching daos ${err}`)

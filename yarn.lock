@@ -138,10 +138,10 @@
   dependencies:
     "@1hive/connect-core" "^0.8.5"
 
-"@1hive/connect-gardens@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.0.5.tgz#abd999fcb22bc64ed923cfa4a16b44fc8e5ef1fa"
-  integrity sha512-zXbb/MKUUNENVVfK0vRzN9toga3IGFtiV7enRvAjAIar2VgFwjeeOkE3bU+0HOhWWjItk+h6FSwhB1UPViWUCg==
+"@1hive/connect-gardens@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.0.tgz#57db53203b251e9804b3004d76bda08547d7965f"
+  integrity sha512-yv43Xh4v6reVdkSiQO5Dkhc25RKZdE2nssE9+5dljWdijKGpDGns4/fwFECkvw1l0tpZfuHjPpmRyqvqRP+8zA==
   dependencies:
     "@aragon/connect-core" "0.7.0"
     "@aragon/connect-thegraph" "0.7.0"

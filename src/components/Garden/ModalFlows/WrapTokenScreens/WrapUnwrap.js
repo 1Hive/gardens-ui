@@ -34,7 +34,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
           token: wrappableToken.data,
           accountBalance: wrappableToken.accountBalance,
         }
-      : { token: token.data, accountBalance: token.wrappableBalance }
+      : { token: token.data, accountBalance: token.accountBalance }
   }, [token, wrappableToken, wrapMode])
 
   const handleEditMode = useCallback(
