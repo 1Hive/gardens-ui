@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { addressesEqual } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeRequirements from './ChallengeRequirements'
 import ChallengeForm from './ChallengeForm'
@@ -7,7 +8,6 @@ import { useDisputeFees } from '@hooks/useDispute'
 import { useAgreement } from '@hooks/useAgreement'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
-import { addressesEqual } from '@1hive/connect-core'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
@@ -16,6 +16,8 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [agreement, loading] = useAgreement()
   const { token, wrappableToken } = useGardenState()
   const disputeFees = useDisputeFees()
+
+  const collateralToken = wrappableToken || token
 
   const temporatyTrx = useRef([])
 
@@ -54,9 +56,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
     ) => {
       const collateralToken = proposal.collateralRequirement.tokenId
       const collateralAmount = proposal.collateralRequirement.challengeAmount
-
-      const disputeFeeToken = disputeFees.token
-      const disputeFeeAmount = disputeFees.amount
+      const { amount: disputeFeeAmount, token: disputeFeeToken } = disputeFees
 
       // If collateral token is the same as the dispute fees token, approve once the added amount
       if (addressesEqual(collateralToken, disputeFeeToken)) {
@@ -93,9 +93,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         content: (
           <ChallengeRequirements
             agreement={agreement}
-            collateralTokenAccountBalance={
-              (wrappableToken || token).accountBalance
-            }
+            collateralTokenAccountBalance={collateralToken.accountBalance}
             disputeFees={disputeFees}
           />
         ),
@@ -114,11 +112,10 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
     [
       agreement,
       agreementActions,
+      collateralToken,
       disputeFees,
       getTransactions,
       proposal,
-      token,
-      wrappableToken,
     ]
   )
 

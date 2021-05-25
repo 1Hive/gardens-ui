@@ -7,6 +7,8 @@ import lockIconSvg from '@assets/icon-lock.svg'
 
 function ActionCollateral({ proposal }) {
   const { collateralRequirement } = proposal
+  const tokenIcon = getTokenIconBySymbol(collateralRequirement.tokenSymbol)
+
   return (
     <div
       css={`
@@ -15,7 +17,7 @@ function ActionCollateral({ proposal }) {
       `}
     >
       <img
-        src={getTokenIconBySymbol(collateralRequirement.tokenSymbol)} // TODO: Use deefault-token-list
+        src={tokenIcon} // TODO: Use deefault-token-list
         alt=""
         height="24"
         width="24"
