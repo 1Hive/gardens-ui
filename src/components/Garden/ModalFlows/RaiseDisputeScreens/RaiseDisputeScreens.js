@@ -4,16 +4,14 @@ import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
 import useActions from '@hooks/useActions'
-import { useGardenState } from '@providers/GardenState'
-import { useDisputeFees } from '@hooks/useDispute'
 import { useCelesteSynced } from '@hooks/useCeleste'
+import { useDisputeFees } from '@hooks/useDispute'
 import BigNumber from '@lib/bigNumber'
 
 const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
-  const { token } = useGardenState()
   const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
   const { agreementActions } = useActions()
@@ -67,7 +65,6 @@ function RaiseDisputeScreens({ proposal }) {
         title: 'Raise dispute to Celeste',
         content: (
           <RaiseDisputeRequirements
-            accountBalance={token.accountBalance}
             celesteSynced={celesteSynced}
             disputeFees={disputeFees}
             getTransactions={getTransactions}
@@ -75,7 +72,7 @@ function RaiseDisputeScreens({ proposal }) {
         ),
       },
     ],
-    [celesteSynced, disputeFees, getTransactions, token.accountBalance]
+    [celesteSynced, disputeFees, getTransactions]
   )
 
   return (
