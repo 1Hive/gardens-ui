@@ -25,11 +25,11 @@ export function useLatestBlock() {
 
     const pollBlock = async () => {
       try {
+        console.log('block time', blockTime)
+        console.log('calling')
         const { number, timestamp } = await ethers.getBlock('latest')
         // Prevent unnecessary re-renders
-        if (number !== block.number) {
-          setBlock({ number, timestamp })
-        }
+        setBlock({ number, timestamp })
       } catch (err) {
         console.error('Error fetching block', err)
       }
@@ -44,7 +44,7 @@ export function useLatestBlock() {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [blockTime, block.number, ethers, mounted])
+  }, [blockTime, ethers, mounted])
 
   return block
 }
