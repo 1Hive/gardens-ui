@@ -24,7 +24,7 @@ function GardenStateProvider({ children }) {
   const [tokens, tokensLoading] = useTokens()
 
   const commonPool = useCommonPool(
-    installedApps,
+    config?.conviction.vault,
     (tokens.wrappableToken || tokens.token).data
   )
   const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)

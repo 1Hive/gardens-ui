@@ -15,7 +15,7 @@ import { useConfigSubscription } from './useSubscriptions'
 import env from '@/environment'
 import BigNumber from '@lib/bigNumber'
 import { addressesEqual } from '@utils/web3-utils'
-import { getAppAddressByName, getAppByName } from '@utils/data-utils'
+import { getAppByName } from '@utils/data-utils'
 import { connectorConfig } from '@/networks'
 
 // abis
@@ -108,12 +108,8 @@ export function useGardenData() {
   }
 }
 
-export function useCommonPool(installedApps, token, timeout = 3000) {
-  const vaultAddress =
-    getAppAddressByName(installedApps, 'vault') ||
-    getAppAddressByName(installedApps, 'agent')
+export function useCommonPool(vaultAddress, token, timeout = 3000) {
   const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
-
   const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   useEffect(() => {
