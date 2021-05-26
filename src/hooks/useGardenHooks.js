@@ -22,6 +22,8 @@ import { connectorConfig } from '@/networks'
 import minimeTokenAbi from '@abis/minimeToken.json'
 import vaultAbi from '@abis/vault-balance.json'
 
+const INITIAL_TIMER = 2000
+
 const useAgreementHook = createAppHook(
   connectAgreement,
   connectorConfig.agreement
@@ -139,7 +141,7 @@ export function useCommonPool(vaultAddress, token, timeout = 8000) {
       }
     }
 
-    pollCommonPool()
+    timeoutId = setTimeout(pollCommonPool, INITIAL_TIMER)
 
     return () => {
       cancelled = true
@@ -195,7 +197,7 @@ export function useTokenBalances(account, token, timeout = 5000) {
       }
     }
 
-    pollAccountBalance()
+    timeoutId = setTimeout(pollAccountBalance, INITIAL_TIMER)
 
     return () => {
       cancelled = true
