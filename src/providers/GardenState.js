@@ -50,6 +50,7 @@ function GardenStateProvider({ children }) {
         errors,
         installedApps,
         loading,
+        mainToken: tokens.wrappableToken || tokens.token,
         ...tokens,
       }}
     >

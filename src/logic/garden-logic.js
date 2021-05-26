@@ -4,14 +4,7 @@ import { useProposals } from '@hooks/useProposals'
 
 // Handles the main logic of the app.
 export default function useAppLogic() {
-  const {
-    commonPool,
-    config,
-    errors,
-    loading,
-    token,
-    wrappableToken,
-  } = useGardenState()
+  const { commonPool, config, errors, loading, mainToken } = useGardenState()
 
   const actions = useActions()
   const [
@@ -28,7 +21,7 @@ export default function useAppLogic() {
     errors,
     filters,
     loading: loading || !blockHasLoaded,
-    metricsToken: wrappableToken || token,
+    mainToken,
     proposals,
     proposalsFetchedCount,
   }

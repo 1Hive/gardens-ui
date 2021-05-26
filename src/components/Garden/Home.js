@@ -27,7 +27,7 @@ const Home = React.memo(function Home() {
     errors,
     filters,
     loading,
-    metricsToken,
+    mainToken,
     proposals,
     proposalsFetchedCount,
   } = useGardenLogic()
@@ -105,9 +105,9 @@ const Home = React.memo(function Home() {
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
-                    token={metricsToken.data}
+                    token={mainToken.data}
                     totalActiveTokens={config.conviction.totalStaked}
-                    totalSupply={metricsToken.totalSupply}
+                    totalSupply={mainToken.totalSupply}
                   />
                 )}
                 <div
