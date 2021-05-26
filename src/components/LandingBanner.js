@@ -112,8 +112,12 @@ const LandingBanner = React.forwardRef((props, ref) => {
                   margin-right: ${2 * GU}px;
                 `}
               />
-              <Button label="Create garden" mode="strong" wide />
-              {/* TODO: add link */}
+              <Button
+                label="Create garden"
+                href="https://gardens.substack.com/p/introducing-gardens"
+                mode="strong"
+                wide
+              />
             </div>
           </div>
         </div>
