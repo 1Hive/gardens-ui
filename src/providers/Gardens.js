@@ -78,10 +78,18 @@ function mergeGardenMetadata(garden) {
     ...garden.token,
     ...metadata.token,
   }
+  const wrappableToken = garden.wrappableToken
+    ? {
+        ...garden.wrappableToken,
+        ...metadata.wrappableToken,
+      }
+    : null
+
   return {
     ...garden,
     ...metadata,
-    token,
     address: garden.id,
+    token,
+    wrappableToken,
   }
 }

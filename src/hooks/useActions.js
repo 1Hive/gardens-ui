@@ -33,7 +33,7 @@ export default function useActions() {
     env('CONVICTION_APP_NAME')
   )
 
-  const wrappableTokenContract = useContract(wrappableToken?.id, tokenAbi)
+  const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
@@ -351,7 +351,7 @@ export default function useActions() {
         amount,
         wrappableTokenContract,
         hookedTokenManagerApp.address,
-        `Approve ${wrappableToken.symbol}`
+        `Approve ${wrappableToken.data.symbol}`
       )
 
       if (mounted()) {
