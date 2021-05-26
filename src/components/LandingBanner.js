@@ -1,29 +1,63 @@
 import React from 'react'
-import { Button, GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import landingBannerSvg from '@assets/landingBanner.png'
+import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
+
+import desktopBanner from '@assets/landingBanner.png'
+import mobileBanner from '@assets/landingBanner-mobile.png'
+import tabletBanner from '@assets/landingBanner-tablet.png'
+
+const BANNERS = {
+  small: {
+    aspectRatio: '53.5%',
+    hFontSize: '32px',
+    image: mobileBanner,
+    pFontSize: '14px',
+  },
+  medium: {
+    image: tabletBanner,
+    aspectRatio: '36.5%',
+    hFontSize: '52px',
+    pFontSize: '18px',
+  },
+  large: {
+    image: desktopBanner,
+    aspectRatio: '26.5%',
+    hFontSize: '52px',
+    pFontSize: '18px',
+  },
+  max: {
+    image: desktopBanner,
+    aspectRatio: '26.5%',
+    hFontSize: '64px',
+    pFontSize: '20px',
+  },
+}
 
 const LandingBanner = React.forwardRef((props, ref) => {
   const theme = useTheme()
+  const { layoutName } = useLayout()
+
+  const { aspectRatio, hFontSize, image, pFontSize } = BANNERS[layoutName]
 
   return (
     <div
       ref={ref}
       css={`
-        background: url(${landingBannerSvg}) no-repeat;
+        background: url(${image}) no-repeat;
         background-size: contain;
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        padding-top: 26.5%;
+        padding-top: ${aspectRatio};
       `}
     >
       <div
         css={`
           position: absolute;
-          top: 25%;
-          left: 0;
+          top: 40%;
+          left: 50%;
           width: 100%;
+          transform: translate(-50%, -50%);
         `}
       >
         <div
@@ -37,7 +71,7 @@ const LandingBanner = React.forwardRef((props, ref) => {
         >
           <div
             css={`
-              width: 33%;
+              width: min(650px, calc(100% - 150px));
             `}
           >
             <div
@@ -47,7 +81,7 @@ const LandingBanner = React.forwardRef((props, ref) => {
             >
               <h1
                 css={`
-                  font-size: 52px;
+                  font-size: ${hFontSize};
                   font-weight: bold;
                   color: #048333;
                 `}
@@ -56,8 +90,8 @@ const LandingBanner = React.forwardRef((props, ref) => {
               </h1>
               <p
                 css={`
+                  font-size: ${pFontSize};
                   color: ${theme.contentSecondary};
-                  ${textStyle('body1')};
                 `}
               >
                 Gardens are digital economies that anyone can help shape
