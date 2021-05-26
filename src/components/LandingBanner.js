@@ -71,12 +71,15 @@ const LandingBanner = React.forwardRef((props, ref) => {
             >
               <Button
                 label="Documentation"
+                href="https://wiki.1hive.org/projects/gardens"
+                target="_blank"
                 wide
                 css={`
                   margin-right: ${2 * GU}px;
                 `}
               />
               <Button label="Create garden" mode="strong" wide />
+              {/* TODO: add link */}
             </div>
           </div>
         </div>

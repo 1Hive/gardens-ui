@@ -34,6 +34,8 @@ function GardenCard({ garden }) {
     history.push(`/garden/${garden.address}`)
   }, [garden, history])
 
+  const token = garden.wrappableToken || garden.token
+
   return (
     <div
       onClick={handleSelectGarden}
@@ -90,7 +92,7 @@ function GardenCard({ garden }) {
         `}
       >
         <img
-          src={garden.token?.logo || defaultTokenLogo}
+          src={token?.logo || defaultTokenLogo}
           alt=""
           height="20"
           width="20"
@@ -100,7 +102,7 @@ function GardenCard({ garden }) {
             margin-left: ${0.75 * GU}px;
           `}
         >
-          {garden.token?.symbol}
+          {token?.symbol}
         </span>
       </div>
       <div
