@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { Contract as EthersContract, providers as Providers } from 'ethers'
-import { getNetwork } from '../networks'
 import { useWallet } from '@providers/Wallet'
 
-const ethEndpoint = getNetwork().defaultEthNode
+import { getNetwork } from '../networks'
 
-const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(ethEndpoint)
+const ethEndpoint = getNetwork().defaultEthNode
+const DEFAULT_PROVIDER = new Providers.StaticJsonRpcProvider(ethEndpoint)
 
 export function useContractReadOnly(address, abi) {
   const ethProvider = useMemo(() => (ethEndpoint ? DEFAULT_PROVIDER : null), [])
