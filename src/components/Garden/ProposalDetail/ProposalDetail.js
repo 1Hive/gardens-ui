@@ -36,7 +36,7 @@ import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
-import { getTokenIconBySymbol, formatTokenAmount } from '@utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
@@ -421,7 +421,7 @@ const Amount = ({
 }) => {
   const theme = useTheme()
   const primaryToken = stable ? stableToken : requestToken
-  const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
+
   return (
     <DataField
       label="Request Amount"
@@ -436,7 +436,7 @@ const Amount = ({
             amount={requestedAmount}
             decimals={primaryToken.decimals}
             symbol={primaryToken.symbol}
-            icon={tokenIcon}
+            icon={primaryToken.icon}
           />
           {stable && (
             <div

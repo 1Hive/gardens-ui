@@ -31,7 +31,9 @@ function Footer() {
   if (!connectedGarden) {
     return null
   }
-  const logo = connectedGarden.logo ? connectedGarden.logo : defaultGardenLogo
+
+  const { links, logo, token, wrappableToken } = connectedGarden
+  const logoSvg = logo || defaultGardenLogo
 
   return (
     <footer
@@ -44,7 +46,7 @@ function Footer() {
     >
       <Layout paddingBottom={0}>
         {compactMode ? (
-          <FixedFooter token={connectedGarden.token} />
+          <FixedFooter token={wrappableToken || token} />
         ) : (
           <div
             css={`
@@ -58,9 +60,9 @@ function Footer() {
             `}
           >
             <div>
-              <img src={logo} height="40" alt="" />
+              <img src={logoSvg} height="40" alt="" />
             </div>
-            {connectedGarden.links?.community && (
+            {links?.community && (
               <div>
                 <h5
                   css={`
@@ -70,7 +72,7 @@ function Footer() {
                 >
                   Community
                 </h5>
-                {connectedGarden.links.community.map((link, i) => {
+                {links.community.map((link, i) => {
                   return (
                     <Link key={i} href={link.link} external>
                       {link.label}
@@ -79,7 +81,7 @@ function Footer() {
                 })}
               </div>
             )}
-            {connectedGarden.links?.documentation && (
+            {links?.documentation && (
               <div>
                 <h5
                   css={`
@@ -89,7 +91,7 @@ function Footer() {
                 >
                   Documentation
                 </h5>
-                {connectedGarden.links.documentation.map((link, i) => {
+                {links.documentation.map((link, i) => {
                   return (
                     <Link key={i} href={link.link} external>
                       {link.label}

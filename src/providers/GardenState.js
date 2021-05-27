@@ -9,6 +9,7 @@ import {
 } from '@hooks/useGardenHooks'
 import { useGardens } from '@providers/Gardens'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
+import { getGardenTokenIcon } from '@utils/token-utils'
 
 const GardenStateContext = React.createContext()
 
@@ -21,25 +22,19 @@ function GardenStateProvider({ children }) {
     ...appData
   } = useGardenData()
 
-  const [tokens, tokensLoading] = useTokens()
-
+  const [tokens, tokensLoading] = useTokens(config)
   const commonPool = useCommonPool(
     config?.conviction.vault,
     (tokens.wrappableToken || tokens.token).data
   )
   const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
+
+  // loading states
   const balancesLoading = commonPool.eq(-1) || tokensLoading
+  const loading = loadingGardenData || balancesLoading || !effectiveSupply
 
-  const [newConfig, loading] = useMemo(() => {
-    if ((!errors && loadingGardenData) || balancesLoading || !effectiveSupply) {
-      return [null, true]
-    }
-
-    return [
-      { ...config, conviction: { ...config.conviction, effectiveSupply } },
-      false,
-    ]
-  }, [balancesLoading, config, effectiveSupply, errors, loadingGardenData])
+  // transform config
+  const newConfig = useNewConfig(config, effectiveSupply, loading)
 
   return (
     <GardenStateContext.Provider
@@ -79,22 +74,65 @@ function useTokens() {
     wrappableTokenTotalSupply.eq(-1)
 
   return [
-    {
-      token: {
-        accountBalance: gardenTokenAccountBalance,
-        data: token,
-        totalSupply: gardenTokenTotalSuuply,
-      },
-      wrappableToken: wrappableToken
-        ? {
-            accountBalance: wrappableTokenAccountBalance,
-            data: wrappableToken,
-            totalSupply: wrappableTokenTotalSupply,
-          }
-        : null,
-    },
+    useMemo(
+      () => ({
+        token: {
+          accountBalance: gardenTokenAccountBalance,
+          data: token,
+          totalSupply: gardenTokenTotalSuuply,
+        },
+        wrappableToken: wrappableToken
+          ? {
+              accountBalance: wrappableTokenAccountBalance,
+              data: wrappableToken,
+              totalSupply: wrappableTokenTotalSupply,
+            }
+          : null,
+      }),
+      [
+        gardenTokenAccountBalance,
+        gardenTokenTotalSuuply,
+        token,
+        wrappableToken,
+        wrappableTokenAccountBalance,
+        wrappableTokenTotalSupply,
+      ]
+    ),
+
     loading,
   ]
+}
+
+function useNewConfig(config, effectiveSupply, loading, tokens) {
+  const { connectedGarden } = useGardens()
+
+  return useMemo(() => {
+    if (loading) {
+      return null
+    }
+
+    const { requestToken, stableToken, stakeToken } = config.conviction
+
+    // tokenIcons
+    const requestTokenIcon = getGardenTokenIcon(connectedGarden, requestToken)
+    const stableTokenIcon = getGardenTokenIcon(connectedGarden, stableToken)
+    const stakeTokenIcon = getGardenTokenIcon(connectedGarden, stakeToken)
+
+    const tokensWithIcon = {
+      requestToken: { ...requestToken, icon: requestTokenIcon },
+      stableToken: { ...stableToken, icon: stableTokenIcon },
+      stakeToken: { ...stakeToken, icon: stakeTokenIcon },
+    }
+
+    return {
+      ...config,
+      conviction: {
+        ...config.conviction,
+        ...tokensWithIcon,
+        effectiveSupply,
+      },
+    }
+  }, [config, connectedGarden, effectiveSupply, loading])
 }
 
 GardenStateProvider.propTypes = {
