@@ -23,17 +23,18 @@ function GardenStateProvider({ children }) {
   } = useGardenData()
 
   const [tokens, tokensLoading] = useTokens(config)
-
   const commonPool = useCommonPool(
     config?.conviction.vault,
     (tokens.wrappableToken || tokens.token).data
   )
   const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
-  const balancesLoading = commonPool.eq(-1) || tokensLoading
-  const loading =
-    (!errors && loadingGardenData) || balancesLoading || !effectiveSupply
 
-  const newConfig = useNewConfig(config, effectiveSupply, loading, tokens)
+  // loading states
+  const balancesLoading = commonPool.eq(-1) || tokensLoading
+  const loading = loadingGardenData || balancesLoading || !effectiveSupply
+
+  // transform config
+  const newConfig = useNewConfig(config, effectiveSupply, loading)
 
   return (
     <GardenStateContext.Provider
@@ -103,6 +104,8 @@ function useTokens() {
 }
 
 function useNewConfig(config, effectiveSupply, loading, tokens) {
+  const { connectedGarden } = useGardens()
+
   return useMemo(() => {
     if (loading) {
       return null
@@ -111,9 +114,9 @@ function useNewConfig(config, effectiveSupply, loading, tokens) {
     const { requestToken, stableToken, stakeToken } = config.conviction
 
     // tokenIcons
-    const requestTokenIcon = getGardenTokenIcon(tokens, requestToken)
-    const stableTokenIcon = getGardenTokenIcon(tokens, stableToken)
-    const stakeTokenIcon = getGardenTokenIcon(tokens, stakeToken)
+    const requestTokenIcon = getGardenTokenIcon(connectedGarden, requestToken)
+    const stableTokenIcon = getGardenTokenIcon(connectedGarden, stableToken)
+    const stakeTokenIcon = getGardenTokenIcon(connectedGarden, stakeToken)
 
     const tokensWithIcon = {
       requestToken: { ...requestToken, icon: requestTokenIcon },
@@ -129,7 +132,7 @@ function useNewConfig(config, effectiveSupply, loading, tokens) {
         effectiveSupply,
       },
     }
-  }, [config, effectiveSupply, loading, tokens])
+  }, [config, connectedGarden, effectiveSupply, loading])
 }
 
 GardenStateProvider.propTypes = {

@@ -85,18 +85,19 @@ export function useGardenData() {
 
   const config = useConfigSubscription(garden)
 
-  const loading =
-    orgStatus.loading ||
-    appsStatus.loading ||
-    permissionsStatus.loading ||
-    agreementAppLoading ||
-    !config
-
   const errors =
     orgStatus.error ||
     appsStatus.error ||
     permissionsStatus.error ||
     agreementError
+
+  const loading =
+    !errors &&
+    (orgStatus.loading ||
+      appsStatus.loading ||
+      permissionsStatus.loading ||
+      agreementAppLoading ||
+      !config)
 
   return {
     config,
