@@ -140,14 +140,7 @@ const Home = React.memo(function Home() {
                     proposalCountFilter={filters.count.filter}
                     onProposalCountIncrease={filters.count.onChange}
                     onRankingFilterChange={filters.ranking.onChange}
-                    onStakeToProposal={
-                      actions.convictionActions.stakeToProposal
-                    }
                     onToggleFilterSlider={handleFilterSliderToggle}
-                    onVoteOnDecision={actions.votingActions.voteOnDecision}
-                    onWithdrawFromProposal={
-                      actions.convictionActions.withdrawFromProposal
-                    }
                     rankingItems={filters.ranking.items}
                     selectedRanking={filters.ranking.filter}
                   />
