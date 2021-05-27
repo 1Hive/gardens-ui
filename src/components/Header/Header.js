@@ -3,14 +3,14 @@ import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
-import { useGardens } from '../../providers/Gardens'
-import { useWallet } from '../../providers/Wallet'
-import { getHoneyswapTradeTokenUrl } from '../../endpoints'
-import { getNetwork } from '../../networks'
+import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
+import { getHoneyswapTradeTokenUrl } from '@/endpoints'
+import { getNetwork } from '@/networks'
 
-import defaultGardenLogo from '../../assets/defaultGardenLogo.svg'
-import gardensLogo from '../../assets/gardensLogo.svg'
-import gardensLogoType from '../../assets/gardensLogoType.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import gardensLogo from '@assets/gardensLogo.svg'
+import gardensLogoType from '@assets/gardensLogoType.svg'
 
 function Header() {
   const theme = useTheme()

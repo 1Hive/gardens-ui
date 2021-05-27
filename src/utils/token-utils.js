@@ -1,6 +1,6 @@
 import { addressesEqual } from '@1hive/1hive-ui'
 import { round } from './math-utils'
-import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
+import defaultTokenSvg from '@assets/defaultTokenLogo.png'
 import honeyIconSvg from '@assets/honey.svg'
 import stableTokenSvg from '@assets/stable-token.svg'
 

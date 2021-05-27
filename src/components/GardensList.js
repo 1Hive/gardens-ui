@@ -4,8 +4,8 @@ import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useGardens } from '@providers/Gardens'
 
-import defaultGardenLogo from '@assets/defaultGardenLogo.svg'
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import defaultTokenLogo from '@assets/defaultTokenLogo.png'
 
 function GardensList() {
   // TODO :  add loading component

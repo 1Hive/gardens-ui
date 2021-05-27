@@ -4,7 +4,7 @@ import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import defaultTokenLogo from '@assets/defaultTokenLogo.png'
 
 const Metrics = React.memo(function Metrics({
   commonPool,
