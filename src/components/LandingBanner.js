@@ -105,7 +105,7 @@ const LandingBanner = React.forwardRef((props, ref) => {
             >
               <Button
                 label="Documentation"
-                href="https://wiki.1hive.org/projects/gardens"
+                href="https://1hive.gitbook.io/gardens/"
                 target="_blank"
                 wide
                 css={`
