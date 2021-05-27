@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMounted } from '@hooks/useMounted'
 import { useWallet } from '@providers/Wallet'
@@ -19,6 +19,7 @@ export function useLatestBlock() {
   const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
   const blockTime = useBlockTime()
+  const blockNumberRef = useRef(block.number)
 
   useEffect(() => {
     let timeoutId
@@ -26,7 +27,10 @@ export function useLatestBlock() {
     const pollBlock = async () => {
       try {
         const { number, timestamp } = await ethers.getBlock('latest')
-        setBlock({ number, timestamp })
+
+        if (number !== blockNumberRef.current) {
+          setBlock({ number, timestamp })
+        }
       } catch (err) {
         console.error('Error fetching block', err)
       }
