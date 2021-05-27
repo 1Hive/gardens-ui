@@ -18,7 +18,7 @@ import { useWallet } from '@providers/Wallet'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
-import defaultGardenLogo from '@assets/defaultGardenLogo.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
 import homeSvg from '@assets/home.svg'
 
