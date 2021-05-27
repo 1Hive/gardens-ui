@@ -41,13 +41,15 @@ function ProposalActions({
       return null
     }
     if (currentConviction.gte(threshold)) {
-      return 'execute'
+      if (proposal.statusData.open) {
+        return 'execute'
+      }
     }
     if (didIStake) {
       return 'update'
     }
     return 'support'
-  }, [currentConviction, didIStake, hasEnded, threshold])
+  }, [currentConviction, didIStake, hasEnded, proposal.statusData, threshold])
 
   const handleExecute = useCallback(() => {
     onExecuteProposal(id)
