@@ -12,12 +12,14 @@ const LOCAL_TOKEN_ICONS = new Map([
 ])
 
 export function getGardenTokenIcon(garden, token) {
-  if (addressesEqual(garden.token.id, token.id)) {
-    return garden.token.logo || defaultTokenSvg
-  }
+  if (garden) {
+    if (addressesEqual(garden.token.id, token.id)) {
+      return garden.token.logo || defaultTokenSvg
+    }
 
-  if (addressesEqual(garden.wrappableToken?.id, token.id)) {
-    return garden.wrappableToken.logo || defaultTokenSvg
+    if (addressesEqual(garden.wrappableToken?.id, token.id)) {
+      return garden.wrappableToken.logo || defaultTokenSvg
+    }
   }
 
   // Look up in the local mapping
