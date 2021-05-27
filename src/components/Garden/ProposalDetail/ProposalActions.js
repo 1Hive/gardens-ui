@@ -44,7 +44,6 @@ function ProposalActions({
       if (proposal.statusData.open) {
         return 'execute'
       }
-      return null
     }
     if (didIStake) {
       return 'update'
