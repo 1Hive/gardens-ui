@@ -1,72 +1,30 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
-import useAccountTokens from '@hooks/useAccountTokens'
-import { useGardenState } from '@providers/GardenState'
-import { useCanUserVote } from '@hooks/useExtendedVoteData'
 import { useWallet } from '@providers/Wallet'
 
-import BigNumber from '@lib/bigNumber'
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
-import { isEntitySupporting } from '@lib/conviction'
-import { PCT_BASE, QUICK_STAKE_PCT, VOTE_NAY, VOTE_YEA } from '@/constants'
+import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
+import { getConnectedAccountVote } from '../../../utils/vote-utils'
 
-function ProposalCardFooter({
-  proposal,
-  onStakeToProposal,
-  onVoteOnDecision,
-  onWithdrawFromProposal,
-}) {
+function ProposalCardFooter({ proposal }) {
   if (proposal.type === ProposalTypes.Decision) {
-    return (
-      <DecisionFooter proposal={proposal} onVoteOnDecision={onVoteOnDecision} />
-    )
+    return <DecisionFooter proposal={proposal} />
   }
 
-  return (
-    <ProposalFooter
-      proposal={proposal}
-      onStakeToProposal={onStakeToProposal}
-      onWithdrawFromProposal={onWithdrawFromProposal}
-    />
-  )
+  return <ProposalFooter proposal={proposal} />
 }
 
-function ProposalFooter({
-  proposal,
-  onStakeToProposal,
-  onWithdrawFromProposal,
-}) {
+function ProposalFooter({ proposal }) {
   const theme = useTheme()
-  const { account } = useWallet()
-  const { token } = useGardenState()
-  const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   const supportersCount = useMemo(
     () => proposal.stakes.filter(({ amount }) => amount.gt(0)).length,
     [proposal]
   )
-
-  const handleThumbsUp = useCallback(() => {
-    // Staking the minimum between account's inactive tokens and 5% of account's balance
-    const amount = BigNumber.min(
-      inactiveTokens,
-      token.accountBalance.times(QUICK_STAKE_PCT).div(PCT_BASE)
-    )
-
-    onStakeToProposal({ proposalId: proposal.id, amount: amount.toFixed(0) })
-  }, [token.accountBalance, inactiveTokens, onStakeToProposal, proposal.id])
-
-  const handleThumbsDown = useCallback(() => {
-    // Withdraw all the staked tokens on the proposal
-    onWithdrawFromProposal({ proposalId: proposal.id })
-  }, [proposal.id, onWithdrawFromProposal])
-
-  const canSupport = inactiveTokens.gt(0)
-  const isSupporting = isEntitySupporting(proposal, account)
 
   // TODO: Use mapping and status symbol
   const proposalStatusLabel = useMemo(() => {
@@ -99,33 +57,17 @@ function ProposalFooter({
 
   return (
     <Main color={theme.contentSecondary}>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-        `}
-      >
-        {account && proposal.statusData.open && (
-          <QuickActions
-            canThumbsUp={canSupport}
-            canThumbsDown={isSupporting}
-            onThumbsUp={handleThumbsUp}
-            onThumbsDown={handleThumbsDown}
-          />
-        )}
-        <div>
-          {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
-        </div>
+      <div>
+        {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
       </div>
       <div>Status: {proposalStatusLabel}</div>
     </Main>
   )
 }
 
-function DecisionFooter({ proposal, onVoteOnDecision }) {
+function DecisionFooter({ proposal }) {
   const theme = useTheme()
   const { account } = useWallet()
-
   const { label: statusLabel } = getStatusAttributes(proposal, theme)
 
   const votesCount = proposal.casts.length
@@ -138,9 +80,7 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
           align-items: center;
         `}
       >
-        {account && proposal.statusData.open && (
-          <VoteActions proposal={proposal} onVote={onVoteOnDecision} />
-        )}
+        {account && <SupportIndicator account={account} vote={proposal} />}
         <div>
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
@@ -150,63 +90,16 @@ function DecisionFooter({ proposal, onVoteOnDecision }) {
   )
 }
 
-function VoteActions({ proposal, onVote }) {
-  const handleThumbsUp = useCallback(() => {
-    onVote(proposal.id, VOTE_YEA)
-  }, [onVote, proposal.id])
+function SupportIndicator({ account, vote }) {
+  const accountVote = getConnectedAccountVote(vote, account)
 
-  const handleThumbsDown = useCallback(() => {
-    onVote(proposal.id, VOTE_NAY)
-  }, [onVote, proposal.id])
+  if (accountVote === VOTE_YEA) {
+    return <ThumbsUpIcon />
+  } else if (accountVote === VOTE_NAY) {
+    return <ThumbsDownIcon />
+  }
 
-  const { canUserVote } = useCanUserVote(proposal)
-
-  return (
-    <QuickActions
-      canThumbsUp={canUserVote}
-      canThumbsDown={canUserVote}
-      onThumbsUp={handleThumbsUp}
-      onThumbsDown={handleThumbsDown}
-    />
-  )
-}
-
-function QuickActions({
-  canThumbsUp,
-  canThumbsDown,
-  onThumbsUp,
-  onThumbsDown,
-}) {
-  return (
-    <div
-      css={`
-        display: flex;
-        align-items: center;
-      `}
-    >
-      <ButtonBase
-        onClick={canThumbsUp ? onThumbsUp : null}
-        css={`
-          display: flex;
-          margin-right: ${1 * GU}px;
-        `}
-        disabled={!canThumbsUp}
-      >
-        <ThumbsUpIcon disabled={!canThumbsUp} />
-      </ButtonBase>
-
-      <ButtonBase
-        onClick={canThumbsDown ? onThumbsDown : null}
-        css={`
-          display: flex;
-          margin-right: ${1.5 * GU}px;
-        `}
-        disabled={!canThumbsDown}
-      >
-        <ThumbsDownIcon disabled={!canThumbsDown} />
-      </ButtonBase>
-    </div>
-  )
+  return null
 }
 
 const Main = styled.div`

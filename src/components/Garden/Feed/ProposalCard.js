@@ -23,13 +23,7 @@ function ConvictionProposalCard({ proposal, ...props }) {
   return <Card proposal={proposalWithThreshold} loading={loading} {...props} />
 }
 
-function Card({
-  loading = false,
-  proposal,
-  onStakeToProposal,
-  onVoteOnDecision,
-  onWithdrawFromProposal,
-}) {
+function Card({ loading = false, proposal }) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -74,12 +68,7 @@ function Card({
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
       />
-      <ProposalFooter
-        proposal={proposal}
-        onStakeToProposal={onStakeToProposal}
-        onVoteOnDecision={onVoteOnDecision}
-        onWithdrawFromProposal={onWithdrawFromProposal}
-      />
+      <ProposalFooter proposal={proposal} />
     </div>
   )
 }

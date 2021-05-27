@@ -20,10 +20,7 @@ function ProposalsList({
   proposalCountFilter,
   onProposalCountIncrease,
   onRankingFilterChange,
-  onStakeToProposal,
   onToggleFilterSlider,
-  onVoteOnDecision,
-  onWithdrawFromProposal,
   rankingItems,
   selectedRanking,
 }) {
@@ -83,15 +80,7 @@ function ProposalsList({
         {proposals.length ? (
           <>
             {proposals.map((proposal, index) => {
-              return (
-                <ProposalCard
-                  key={index}
-                  proposal={proposal}
-                  onStakeToProposal={onStakeToProposal}
-                  onVoteOnDecision={onVoteOnDecision}
-                  onWithdrawFromProposal={onWithdrawFromProposal}
-                />
-              )
+              return <ProposalCard key={index} proposal={proposal} />
             })}
             {(proposalsFetchedCount === proposalCountFilter ||
               (proposalsFetchedCount < proposalCountFilter && fetching)) && (
