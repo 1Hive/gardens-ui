@@ -4,10 +4,14 @@ import { GU, Checkbox, Field, useLayout } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
 import signGraphic from '@assets/smart-contract.svg'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { useGardens } from '@providers/Gardens'
+import { useGardenState } from '@providers/GardenState'
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const { connectedGarden } = useGardens()
+  const { mainToken } = useGardenState()
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
 
@@ -54,14 +58,14 @@ function SignOverview({ getTransactions }) {
         >
           <Checkbox checked={acceptedTerms} onChange={handleAcceptTerms} />
         </div>
-        By signing this Covenant, you agree to the 1Hive Community manifesto, by
-        laws and community code of behavior.
+        {`By signing this Covenant, you agree to the ${connectedGarden.name} Community manifesto, by
+        laws and community code of behavior.`}
       </label>
       <Field label="Covenant action collateral">
         <p>
-          In order to perform or challenge actions bound by this Covenant, you
-          must deposit some HNY as the action collateral first. Different apps
-          might require different tokens and amounts as the action collateral.
+          {`In order to perform or challenge actions bound by this Covenant, you
+          must deposit some ${mainToken.data.symbol} as the action collateral first. Different apps
+          might require different tokens and amounts as the action collateral.`}
         </p>
       </Field>
 

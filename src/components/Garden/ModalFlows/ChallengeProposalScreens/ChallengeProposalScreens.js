@@ -14,10 +14,8 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [transactions, setTransactions] = useState([])
   const [agreement, loading] = useAgreement()
-  const { token, wrappableToken } = useGardenState()
+  const { mainToken: collateralToken } = useGardenState()
   const disputeFees = useDisputeFees()
-
-  const collateralToken = wrappableToken || token
 
   const temporatyTrx = useRef([])
 
