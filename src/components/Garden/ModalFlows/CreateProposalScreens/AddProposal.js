@@ -141,10 +141,15 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     setFormData(formData => ({ ...formData, link: updatedLink }))
   }, [])
 
-  const handleOnContinue = useCallback(() => {
-    setProposalData(formData)
-    next()
-  }, [formData, next, setProposalData])
+  const handleOnContinue = useCallback(
+    event => {
+      event.preventDefault()
+
+      setProposalData(formData)
+      next()
+    },
+    [formData, next, setProposalData]
+  )
 
   const [requestAmount, loadingRequestAmount] = useRequestAmount(
     formData.amount.stable,
@@ -190,11 +195,11 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   }, [alpha, commonPool, effectiveSupply, maxRatio, requestAmount, weight])
 
   const submitDisabled =
-    (formData.proposalType === FUNDING_PROPOSAL &&
-      (formData.amount.valueBN.eq(0) || !formData.beneficiary)) ||
     !formData.title ||
     !formData.link ||
-    errors.length > 0
+    errors.length > 0 ||
+    (formData.proposalType === FUNDING_PROPOSAL &&
+      (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
   return (
     <form onSubmit={handleOnContinue}>
