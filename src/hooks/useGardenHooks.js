@@ -22,6 +22,8 @@ import { connectorConfig } from '@/networks'
 import minimeTokenAbi from '@abis/minimeToken.json'
 import vaultAbi from '@abis/vault-balance.json'
 
+const INITIAL_TIMER = 2000
+
 const useAgreementHook = createAppHook(
   connectAgreement,
   connectorConfig.agreement
@@ -108,7 +110,7 @@ export function useGardenData() {
   }
 }
 
-export function useCommonPool(vaultAddress, token, timeout = 3000) {
+export function useCommonPool(vaultAddress, token, timeout = 8000) {
   const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
   const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
@@ -123,11 +125,9 @@ export function useCommonPool(vaultAddress, token, timeout = 3000) {
     const pollCommonPool = async () => {
       try {
         const commonPoolResult = await vaultContract.balance(token.id)
-
+        // Contract value is bn.js so we need to convert it to bignumber.js
+        const newValue = new BigNumber(commonPoolResult.toString())
         if (!cancelled) {
-          // Contract value is bn.js so we need to convert it to bignumber.js
-          const newValue = new BigNumber(commonPoolResult.toString())
-
           if (!newValue.eq(commonPool)) {
             setCommonPool(newValue)
           }
@@ -141,7 +141,7 @@ export function useCommonPool(vaultAddress, token, timeout = 3000) {
       }
     }
 
-    pollCommonPool()
+    timeoutId = setTimeout(pollCommonPool, INITIAL_TIMER)
 
     return () => {
       cancelled = true
@@ -152,7 +152,7 @@ export function useCommonPool(vaultAddress, token, timeout = 3000) {
   return commonPool
 }
 
-export function useTokenBalances(account, token, timeout = 3000) {
+export function useTokenBalances(account, token, timeout = 5000) {
   const [balances, setBalances] = useState({
     balance: new BigNumber(-1),
     totalSupply: new BigNumber(-1),
@@ -197,7 +197,7 @@ export function useTokenBalances(account, token, timeout = 3000) {
       }
     }
 
-    pollAccountBalance()
+    timeoutId = setTimeout(pollAccountBalance, INITIAL_TIMER)
 
     return () => {
       cancelled = true

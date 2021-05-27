@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
-import useInterval from './useInterval'
+import { useMounted } from '@hooks/useMounted'
 import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '../networks'
 
@@ -13,19 +13,39 @@ const NETWORK_TIMES = new Map([
   ['xdai', 5],
 ])
 
-export function useLatestBlock(updateEvery = 1000) {
+export function useLatestBlock() {
+  const mounted = useMounted()
   const { ethers } = useWallet()
   const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
-  const fetchBlock = useCallback(async () => {
-    const { number, timestamp } = ethers
-      ? await ethers.getBlock('latest')
-      : block
-    // Prevent unnecessary re-renders
-    if (number !== block.number) setBlock({ number, timestamp })
-  }, [block, ethers])
+  const blockTime = useBlockTime()
+  const blockNumberRef = useRef(block.number)
 
-  useInterval(fetchBlock, updateEvery, true)
+  useEffect(() => {
+    let timeoutId
+
+    const pollBlock = async () => {
+      try {
+        const { number, timestamp } = await ethers.getBlock('latest')
+
+        if (number !== blockNumberRef.current) {
+          setBlock({ number, timestamp })
+        }
+      } catch (err) {
+        console.error('Error fetching block', err)
+      }
+
+      if (mounted()) {
+        timeoutId = setTimeout(pollBlock, blockTime * 1000)
+      }
+    }
+
+    pollBlock()
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [blockTime, ethers, mounted])
 
   return block
 }
