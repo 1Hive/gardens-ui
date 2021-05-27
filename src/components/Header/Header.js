@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react'
+import { useHistory } from 'react-router'
 import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
+
+import { buildGardenPath } from '@utils/routing-utils'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 import { getNetwork } from '@/networks'
 
@@ -18,6 +21,7 @@ function Header() {
   const { below } = useViewport()
   const layoutSmall = below('medium')
   const network = getNetwork()
+  const history = useHistory()
   const { connectedGarden } = useGardens()
 
   const { logo, logotype } = useMemo(() => {
@@ -32,6 +36,9 @@ function Header() {
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
+  const logoLink = `#${
+    connectedGarden ? buildGardenPath(history.location, '') : '/home'
+  }`
 
   const showBalance = connectedGarden && account && !layoutSmall
 
@@ -61,7 +68,7 @@ function Header() {
             `}
           >
             <Link
-              href="#/home"
+              href={logoLink}
               external={false}
               css={`
                 display: flex;
