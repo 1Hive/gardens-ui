@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import { GU, useLayout, useViewport } from '@1hive/1hive-ui'
+import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import Filters from './Filters/Filters'
@@ -41,6 +41,10 @@ const Home = React.memo(function Home() {
   const largeMode = layoutName === 'large'
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
+  const handleBack = useCallback(() => {
+    history.push('/home')
+  }, [history])
+
   const handleFilterSliderToggle = useCallback(() => {
     setFilterSidlerVisible(visible => !visible)
   }, [])
@@ -80,6 +84,22 @@ const Home = React.memo(function Home() {
   // TODO: Refactor components positioning with a grid layout
   return (
     <div>
+      <div
+        css={`
+          margin-left: ${1 * GU}px;
+          position: ${compactMode ? 'absolute' : 'sticky'};
+          top: 16px;
+          z-index: 2;
+        `}
+      >
+        <BackButton
+          onClick={handleBack}
+          css={`
+            background: transparent;
+            border: 0;
+          `}
+        />
+      </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
         <Loader />
