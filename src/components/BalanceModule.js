@@ -9,6 +9,7 @@ import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
+import { safeDivBN } from '@utils/math-utils'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
@@ -27,12 +28,10 @@ function BalanceModule() {
     history.push(path)
   }, [history])
 
-  const inactivePct = inactiveTokens.eq('0')
-    ? '0'
-    : inactiveTokens
-        .times('100')
-        .div(token.accountBalance)
-        .toString()
+  const inactivePct = safeDivBN(
+    inactiveTokens.times('100'),
+    token.accountBalance
+  ).toString()
 
   return (
     <HeaderModule
