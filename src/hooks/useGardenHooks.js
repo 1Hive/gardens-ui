@@ -30,7 +30,7 @@ const useAgreementHook = createAppHook(
 )
 
 export function useGardenData() {
-  const [garden, setGarden] = useState(null)
+  const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
@@ -69,7 +69,7 @@ export function useGardenData() {
         const gardenConnector = await connectGarden(organization)
 
         if (!cancelled) {
-          setGarden(gardenConnector)
+          setConnector(gardenConnector)
         }
       } catch (err) {
         console.error(`Error fetching honey pot connector: ${err}`)
@@ -83,7 +83,7 @@ export function useGardenData() {
     }
   }, [organization])
 
-  const config = useConfigSubscription(garden)
+  const config = useConfigSubscription(connector)
 
   const loading =
     orgStatus.loading ||
@@ -101,8 +101,8 @@ export function useGardenData() {
   return {
     config,
     connectedAgreementApp,
+    connector,
     errors,
-    garden,
     installedApps: apps,
     loading,
     organization,

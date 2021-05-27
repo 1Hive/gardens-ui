@@ -42,7 +42,7 @@ export function useConfigSubscription(garden) {
 }
 
 export function useProposalsSubscription(filters) {
-  const { garden, config } = useGardenState()
+  const { config, connector } = useGardenState()
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
@@ -62,11 +62,11 @@ export function useProposalsSubscription(filters) {
   )
 
   useEffect(() => {
-    if (!garden) {
+    if (!connector) {
       return
     }
 
-    proposalsSubscription.current = garden.onProposals(
+    proposalsSubscription.current = connector.onProposals(
       {
         first: filters.count.filter,
         ...filters.name.queryArgs,
@@ -79,13 +79,13 @@ export function useProposalsSubscription(filters) {
 
     return () => proposalsSubscription.current.unsubscribe()
   }, [
+    connector,
     filters.count,
     filters.name,
     filters.proposalCount,
     filters.ranking,
     filters.status,
     filters.type,
-    garden,
     onProposalsHandler,
   ])
 
@@ -94,7 +94,7 @@ export function useProposalsSubscription(filters) {
 
 // TODO: Handle errors
 export function useProposalSubscription(proposalId, appAddress) {
-  const { garden, config } = useGardenState()
+  const { config, connector } = useGardenState()
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -123,22 +123,22 @@ export function useProposalSubscription(proposalId, appAddress) {
   )
 
   useEffect(() => {
-    if (!garden || !proposalId || !appAddress) {
+    if (!connector || !proposalId || !appAddress) {
       return
     }
 
-    proposalSubscription.current = garden.onProposal(
+    proposalSubscription.current = connector.onProposal(
       { number: proposalId, appAddress },
       onProposalHandler
     )
 
     return () => proposalSubscription.current.unsubscribe()
-  }, [appAddress, garden, onProposalHandler, proposalId])
+  }, [appAddress, connector, onProposalHandler, proposalId])
 
   return [proposal, loading]
 }
 
-export function useSupporterSubscription(garden, account) {
+export function useSupporterSubscription(connector, account) {
   const [supporter, setSupporter] = useState(null)
 
   const rawSupporterRef = useRef(null)
@@ -162,11 +162,11 @@ export function useSupporterSubscription(garden, account) {
   }, [])
 
   useEffect(() => {
-    if (!garden || !account) {
+    if (!connector || !account) {
       return
     }
 
-    supporterSubscription.current = garden.onSupporter(
+    supporterSubscription.current = connector.onSupporter(
       { id: account.toLowerCase() },
       onSupporterHandler
     )
@@ -174,7 +174,7 @@ export function useSupporterSubscription(garden, account) {
     return () => {
       supporterSubscription.current.unsubscribe()
     }
-  }, [account, garden, onSupporterHandler])
+  }, [account, connector, onSupporterHandler])
 
   return supporter
 }
