@@ -141,12 +141,21 @@ export function useProposalSubscription(proposalId, appAddress) {
 export function useSupporterSubscription(garden, account) {
   const [supporter, setSupporter] = useState(null)
 
+  const rawSupporterRef = useRef(null)
   const supporterSubscription = useRef(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {
     if (err || !supporter) {
+      setSupporter(null)
       return
     }
+
+    const rawSupporter = JSON.stringify(supporter)
+    if (rawSupporterRef?.current === rawSupporter) {
+      return
+    }
+
+    rawSupporterRef.current = rawSupporter
 
     const transformedSupported = transformSupporterData(supporter)
     setSupporter(transformedSupported)
