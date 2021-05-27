@@ -4,7 +4,7 @@ import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
 import { useNodeHeight } from '@hooks/useNodeHeight'
 
-function GardensDashboard() {
+function Home() {
   const [height, ref] = useNodeHeight()
 
   return (
@@ -21,4 +21,4 @@ const DynamicDiv = styled.div.attrs(props => ({
   style: { marginTop: props.marginTop + 'px' },
 }))``
 
-export default GardensDashboard
+export default Home
