@@ -4,11 +4,12 @@ import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 import useAccountTokens from '@hooks/useAccountTokens'
 import { useGardenState } from '@providers/GardenState'
 
-import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 function Wallet({ account }) {
   const theme = useTheme()
   const { token } = useGardenState()
+  const { decimals, logo, symbol } = token.data
   const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   return (
@@ -21,18 +22,20 @@ function Wallet({ account }) {
         <div>
           <Balance
             amount={token.accountBalance}
-            decimals={token.data.decimals}
+            decimals={decimals}
+            icon={logo}
             label="Balance"
             loading={token.accountBalance.lt(0)}
-            symbol={token.data.symbol}
+            symbol={symbol}
           />
           <LineSeparator border={theme.border} />
           <Balance
             amount={inactiveTokens}
-            decimals={token.data.decimals}
+            decimals={decimals}
+            icon={logo}
             inactive
             label="Idle"
-            symbol={token.data.symbol}
+            symbol={symbol}
           />
         </div>
       </div>
@@ -43,13 +46,13 @@ function Wallet({ account }) {
 const Balance = ({
   amount,
   decimals,
+  icon,
   inactive = false,
   label,
   loading,
   symbol,
 }) => {
   const theme = useTheme()
-  const tokenIcon = getTokenIconBySymbol(symbol)
 
   return (
     <div
@@ -64,7 +67,7 @@ const Balance = ({
         `}
       >
         <img
-          src={tokenIcon}
+          src={icon}
           height="50"
           alt=""
           css={`

@@ -8,8 +8,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-import { formatTokenAmount, getTokenIconBySymbol } from '@utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 function BalanceCard({
   allowance,
@@ -24,6 +25,10 @@ function BalanceCard({
   const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
   const theme = useTheme()
   const tokenPrice = useHoneyswapTokenPrice(tokenAddress)
+  const tokenIcon = useGardenTokenIcon({
+    id: tokenAddress,
+    symbol: tokenSymbol,
+  })
 
   const allowManagerDisabled = useMemo(() => {
     if (!allowLockManager) {
@@ -62,7 +67,7 @@ function BalanceCard({
       `}
     >
       <img
-        src={getTokenIconBySymbol(tokenSymbol)} // TODO: Use default-token-list
+        src={tokenIcon}
         width={6.5 * GU}
         height={6.5 * GU}
         css={`

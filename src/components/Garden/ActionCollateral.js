@@ -1,13 +1,16 @@
 import React from 'react'
 import { GU } from '@1hive/1hive-ui'
 
+import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { formatTokenAmount } from '@utils/token-utils'
-import { getTokenIconBySymbol } from '../../utils/token-utils'
 import lockIconSvg from '@assets/icon-lock.svg'
 
 function ActionCollateral({ proposal }) {
   const { collateralRequirement } = proposal
-  const tokenIcon = getTokenIconBySymbol(collateralRequirement.tokenSymbol)
+  const tokenIcon = useGardenTokenIcon({
+    id: collateralRequirement.tokenId,
+    symbol: collateralRequirement.tokenSymbol,
+  })
 
   return (
     <div

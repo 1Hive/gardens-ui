@@ -32,11 +32,12 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
+import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
-import { getTokenIconBySymbol, formatTokenAmount } from '@utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
@@ -421,7 +422,7 @@ const Amount = ({
 }) => {
   const theme = useTheme()
   const primaryToken = stable ? stableToken : requestToken
-  const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
+  const tokenIcon = useGardenTokenIcon(primaryToken)
   return (
     <DataField
       label="Request Amount"
