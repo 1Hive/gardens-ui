@@ -45,8 +45,8 @@ export function useAccountStakes(account) {
 }
 
 export function useAccountStakesByGarden(account) {
-  const { garden } = useGardenState()
-  const supporter = useSupporterSubscription(garden, account)
+  const { connector } = useGardenState()
+  const supporter = useSupporterSubscription(connector, account)
 
   return useMemo(() => {
     if (!supporter) {
