@@ -32,7 +32,6 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
-import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { useWallet } from '@providers/Wallet'
 
 // utils
@@ -422,7 +421,7 @@ const Amount = ({
 }) => {
   const theme = useTheme()
   const primaryToken = stable ? stableToken : requestToken
-  const tokenIcon = useGardenTokenIcon(primaryToken)
+
   return (
     <DataField
       label="Request Amount"
@@ -437,7 +436,7 @@ const Amount = ({
             amount={requestedAmount}
             decimals={primaryToken.decimals}
             symbol={primaryToken.symbol}
-            icon={tokenIcon}
+            icon={primaryToken.icon}
           />
           {stable && (
             <div

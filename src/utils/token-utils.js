@@ -1,3 +1,4 @@
+import { addressesEqual } from '@1hive/1hive-ui'
 import { round } from './math-utils'
 import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'
@@ -9,6 +10,23 @@ const LOCAL_TOKEN_ICONS = new Map([
   ['DAI', stableTokenSvg],
   ['XDAI', stableTokenSvg],
 ])
+
+export function getGardenTokenIcon(garden, token) {
+  if (addressesEqual(garden.token.id, token.id)) {
+    return garden.token.logo || defaultTokenSvg
+  }
+
+  if (addressesEqual(garden.wrappableToken?.id, token.id)) {
+    return garden.wrappableToken.logo || defaultTokenSvg
+  }
+
+  // Look up in the local mapping
+  return getLocalTokenIconBySymbol(token.symbol)
+}
+
+export function getLocalTokenIconBySymbol(symbol) {
+  return LOCAL_TOKEN_ICONS.get(symbol) || defaultTokenSvg
+}
 
 export function formatDecimals(value, digits) {
   try {
@@ -44,10 +62,6 @@ export function formatTokenAmount(
     (displaySign ? (isIncoming ? '+' : '-') : '') +
     (commas ? formattedAmount : formattedAmount.replace(',', ''))
   )
-}
-
-export function getLocalTokenIconBySymbol(symbol) {
-  return LOCAL_TOKEN_ICONS.get(symbol) || defaultTokenSvg
 }
 
 export async function getUserBalanceAt(

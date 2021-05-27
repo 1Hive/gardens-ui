@@ -4,7 +4,6 @@ import Balance from '../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
-import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 
 import { ProposalTypes } from '@/types'
 import { useGardenState } from '@providers/GardenState'
@@ -15,7 +14,6 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const { config } = useGardenState()
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
-  const tokenIcon = useGardenTokenIcon(primaryToken)
 
   return (
     <div>
@@ -42,7 +40,7 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
           <Balance
             amount={proposal.requestedAmount}
             decimals={primaryToken.decimals}
-            icon={tokenIcon}
+            icon={primaryToken.icon}
             symbol={primaryToken.symbol}
           />
           {proposal.stable && (
