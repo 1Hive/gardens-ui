@@ -60,7 +60,7 @@ function Footer() {
             `}
           >
             <div>
-              <img src={logoSvg} height="40" alt="" />
+              <img src={logoSvg} height="60" alt="" />
             </div>
             {links?.community && (
               <div>
