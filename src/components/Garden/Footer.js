@@ -44,7 +44,7 @@ function Footer() {
         background: ${theme.surface};
       `}
     >
-      <Layout paddingBottom={0}>
+      <Layout paddingBottom={40}>
         {compactMode ? (
           <FixedFooter token={wrappableToken || token} />
         ) : (

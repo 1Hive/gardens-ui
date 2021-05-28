@@ -37,7 +37,7 @@ function MainView({ children }) {
               min-height: 100vh;
               margin: 0;
               display: grid;
-              grid-template-rows: 1fr ${compactMode ? 'auto' : `${40 * GU}px`};
+              grid-template-rows: 1fr auto;
             `}
           >
             <div
