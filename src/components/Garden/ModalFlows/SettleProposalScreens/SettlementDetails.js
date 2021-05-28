@@ -5,7 +5,12 @@ import ModalButton from '../ModalButton'
 import { formatTokenAmount } from '@utils/token-utils'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-function SettlementDetails({ proposal, challengeContext, getTransactions }) {
+function SettlementDetails({
+  challengeContext,
+  getTransactions,
+  isChallenger,
+  proposal,
+}) {
   const { id, challenger, settlementOffer } = proposal
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
@@ -23,9 +28,12 @@ function SettlementDetails({ proposal, challengeContext, getTransactions }) {
       `}
     >
       <span>
-        By accepting this settlement offer you agree to cancel Proposal {id} and
+        {isChallenger
+          ? `This proposal has been cancelled as the submitter never responded the settlement offer. 
+          Claiming your collateral will transfer your settlement offer amount from the submitter to you. You'll also get a refund for your action deposit and dispute fees.`
+          : `By accepting this settlement offer you agree to cancel Proposal ${id} and
         part of your action collateral will be slashed from your total staking
-        balance.
+        balance.`}
       </span>
 
       <div
@@ -38,7 +46,13 @@ function SettlementDetails({ proposal, challengeContext, getTransactions }) {
           margin-top: ${3 * GU}px;
         `}
       >
-        <InfoField label="Amount that will be slashed">
+        <InfoField
+          label={
+            isChallenger
+              ? 'Amount you will get from submitter'
+              : 'Amount that will be slashed'
+          }
+        >
           {formatTokenAmount(settlementOffer, 18)} HNY
         </InfoField>
 
@@ -63,7 +77,7 @@ function SettlementDetails({ proposal, challengeContext, getTransactions }) {
         {challengeContext}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
-        Accept settlement
+        {isChallenger ? 'Claim collateral' : 'Accept settlement'}
       </ModalButton>
     </div>
   )
