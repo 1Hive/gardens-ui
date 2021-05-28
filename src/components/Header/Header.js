@@ -67,7 +67,11 @@ function Header() {
                 display: flex;
               `}
             >
-              {layoutSmall ? Logo : <img src={logotype} height="40" alt="" />}
+              {layoutSmall ? (
+                Logo
+              ) : (
+                <img src={logotype} height={connectedGarden ? 40 : 24} alt="" />
+              )}
             </Link>
             {!below('large') && (
               <nav
