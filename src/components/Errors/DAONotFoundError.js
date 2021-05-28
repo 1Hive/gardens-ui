@@ -1,10 +1,12 @@
 import React from 'react'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { useHistory } from 'react-router'
+import { Button, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { getNetworkName } from '../../utils/web3-utils'
 import env from '../../environment'
 
 function DAONotFoundError({ daoId }) {
   const theme = useTheme()
+  const history = useHistory()
 
   return (
     <React.Fragment>
@@ -30,6 +32,16 @@ function DAONotFoundError({ daoId }) {
         {<span css="font-weight: bold;">“{daoId}”</span>} on the Ethereum{' '}
         {getNetworkName(env('CHAIN_ID'))} network
       </div>
+      <Button
+        mode="strong"
+        onClick={() => history.push('/home')}
+        wide
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
+      >
+        Go back
+      </Button>
     </React.Fragment>
   )
 }
