@@ -113,7 +113,7 @@ const LandingBanner = React.forwardRef((props, ref) => {
                 `}
               />
               <Button
-                label="Create garden"
+                label="Create Garden"
                 href="https://gardens.substack.com/p/introducing-gardens"
                 mode="strong"
                 wide
