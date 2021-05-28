@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import { addressesEqual } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import SettlementDetails from './SettlementDetails'
-
 import useActions from '@hooks/useActions'
+import { useWallet } from '@providers/Wallet'
+
 import { hexToUtf8 } from 'web3-utils'
 
 function SettleProposalScreens({ proposal }) {
+  const [loading, setLoading] = useState(true)
   const [transactions, setTransactions] = useState([])
   const [challengeContext, setChallengeContext] = useState()
+
+  const { account } = useWallet()
   const { agreementActions } = useActions()
-  const [loading, setLoading] = useState(true)
+
+  const isChallenger = addressesEqual(account, proposal.challenger)
 
   useEffect(() => {
     // we need to do this contract call here to get the challenge because in the agreement connector we don't have a challenge entity
@@ -40,17 +46,18 @@ function SettleProposalScreens({ proposal }) {
   const screens = useMemo(
     () => [
       {
-        title: 'Accept settlement offer',
+        title: isChallenger ? 'Claim collateral' : 'Accept settlement offer',
         content: (
           <SettlementDetails
-            proposal={proposal}
-            getTransactions={getTransactions}
             challengeContext={challengeContext}
+            getTransactions={getTransactions}
+            isChallenger={isChallenger}
+            proposal={proposal}
           />
         ),
       },
     ],
-    [getTransactions, proposal, challengeContext]
+    [challengeContext, getTransactions, isChallenger, proposal]
   )
 
   return (
@@ -58,7 +65,7 @@ function SettleProposalScreens({ proposal }) {
       screens={screens}
       loading={loading}
       transactions={transactions}
-      transactionTitle="Accept settlement"
+      transactionTitle={isChallenger ? 'Claim collateral' : 'Accept settlement'}
     />
   )
 }

@@ -82,12 +82,12 @@ function getInfoActionContent(proposal, account, actions) {
     }
   }
 
-  // Means proposal is settled because submitter didn't responded
+  // Means proposal is settled because submitter didn't respond
   if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
         info:
-          'When you claim your collateral, you’ll get a refund for your settlement offer, action deposit and dispute fees.',
+          'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
         actions: [
           {
             label: 'Claim collateral',
