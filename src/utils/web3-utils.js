@@ -9,7 +9,7 @@ function getBackendServicesKeys() {
   return {
     alchemy: env('ALCHEMY_API_KEY'),
     etherscan: env('ETHERSCAN_API_KEY'),
-    infura: env('INFURA_API_KEY') || null,
+    infura: env('INFURA_API_KEY'),
     pocket: env('POCKET_API_KEY'),
   }
 }
