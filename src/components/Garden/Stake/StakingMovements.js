@@ -130,6 +130,7 @@ function StakingMovements({ stakingMovements, token }) {
       emptyState={{
         default: {
           illustration: <img src={noDataIllustration} alt="" />,
+          subtitle: "You haven't locked any collateral yet",
         },
       }}
       renderEntry={({
