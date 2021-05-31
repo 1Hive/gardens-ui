@@ -8,12 +8,11 @@ import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import LayoutBox from '../Layout/LayoutBox'
 import LayoutColumns from '../Layout/LayoutColumns'
+import Loader from '@components/Loader'
 import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
-
-import Loader from '@components/Loader'
 
 import warningSvg from './assets/warning.svg'
 

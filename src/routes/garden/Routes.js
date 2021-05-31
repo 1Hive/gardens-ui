@@ -12,7 +12,7 @@ export default function Routes() {
       <Route exact path="*/proposal/:id" component={ProposalLoader} />
       <Route exact path="*/vote/:id" component={DecisionLoader} />
       <Route exact path="*/covenant" component={Agreement} />
-      <Route exact path="*/collateral/*" component={StakeManagement} />
+      <Route exact path="*/collateral*" component={StakeManagement} />
       <Route path="*/" component={Home} />
     </Switch>
   )
