@@ -15,8 +15,10 @@ import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
 
 function CreateProposalRequirements({ agreement, staking }) {
-  const { disputableAppsWithRequirements, signedLatest } = agreement
+  const history = useHistory()
   const { next } = useMultiModal()
+
+  const { disputableAppsWithRequirements, signedLatest } = agreement
   const { available: availableStaked, allowance } = staking || {}
 
   const convictionAppRequirements = getDisputableAppByName(
@@ -39,7 +41,10 @@ function CreateProposalRequirements({ agreement, staking }) {
     <div>
       <InfoField label="Covenant signature and version">
         You must sign the{' '}
-        <Link href="#/covenant" external={false}>
+        <Link
+          href={`#${buildGardenPath(history.location, 'covenant')}`}
+          external={false}
+        >
           Community Covenant
         </Link>{' '}
         in order to create a proposal. The Covenant was last updated on{' '}
@@ -55,7 +60,10 @@ function CreateProposalRequirements({ agreement, staking }) {
         You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
         {token.symbol} as the collateral required to create a proposal. You can
         manage your balance in the{' '}
-        <Link href="#/collateral" external={false}>
+        <Link
+          href={`#${buildGardenPath(history.location, 'collateral')}`}
+          external={false}
+        >
           Collateral Manager
         </Link>
       </InfoField>
