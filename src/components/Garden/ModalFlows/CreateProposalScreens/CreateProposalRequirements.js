@@ -138,6 +138,11 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
     history.push(path)
   }, [history])
 
+  const goToStakeManagerDeposit = useCallback(() => {
+    const path = buildGardenPath(history.location, 'collateral/deposit')
+    history.push(path)
+  }, [history])
+
   const infoData = useMemo(() => {
     if (!availableStaked.gte(actionAmount)) {
       return {
@@ -149,7 +154,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
           token.decimals
         )} ${token.symbol} as the action collateral.`,
         actionButton: 'Deposit collateral',
-        buttonOnClick: goToStakeManager,
+        buttonOnClick: goToStakeManagerDeposit,
       }
     }
 
@@ -173,7 +178,15 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         token.decimals
       )} ${token.symbol} as the action collateral.`,
     }
-  }, [allowance, availableStaked, actionAmount, token, goToStakeManager, theme])
+  }, [
+    actionAmount,
+    allowance,
+    availableStaked,
+    goToStakeManager,
+    goToStakeManagerDeposit,
+    theme,
+    token,
+  ])
 
   return <InfoBox data={infoData} />
 }
