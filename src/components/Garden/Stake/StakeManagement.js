@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useHistory } from 'react-router'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import LayoutColumns from '../Layout/LayoutColumns'
@@ -15,6 +16,7 @@ import { useWallet } from '@providers/Wallet'
 
 const StakeManagement = React.memo(function StakeManagement() {
   const { account } = useWallet()
+  const history = useHistory()
   const [stakeModalMode, setStakeModalMode] = useState()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 
@@ -22,6 +24,13 @@ const StakeManagement = React.memo(function StakeManagement() {
     stakeActions.reFetchTotalBalance()
     setStakeModalMode(null)
   }, [stakeActions])
+
+  useEffect(() => {
+    // Components that redirect to deposit collateral will do so through "garden/${gardenId}/collateral/deposit" url
+    if (account && history.location.pathname.includes('deposit')) {
+      setStakeModalMode('deposit')
+    }
+  }, [account, history])
 
   const orderedStakingMovements = useMemo(() => {
     if (!stakeManagement?.stakingMovements) {
