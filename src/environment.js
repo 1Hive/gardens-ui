@@ -1,4 +1,4 @@
-// rinkeby
+// xdai
 const DEFAULT_CHAIN_ID = 100
 
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement'
@@ -13,6 +13,9 @@ const ENV_VARS = {
       process.env.REACT_APP_AGREEMENT_APP_NAME || DEFAULT_AGREEMENT_APP_NAME
     )
   },
+  ALCHEMY_API_KEY() {
+    return process.env.REACT_APP_ALCHEMY_API_KEY || null
+  },
   CHAIN_ID() {
     const chainId = parseInt(process.env.REACT_APP_CHAIN_ID)
     return isNaN(chainId) ? DEFAULT_CHAIN_ID : chainId
@@ -25,11 +28,23 @@ const ENV_VARS = {
   ETH_NODE() {
     return process.env.REACT_APP_ETH_NODE || ''
   },
+  ETHERSCAN_API_KEY() {
+    return process.env.REACT_APP_ETHERSCAN_API_KEY || null
+  },
   INTERCOM_APP_ID() {
     return process.env.REACT_APP_INTERCOM_APP_ID || ''
   },
   FORTMATIC_API_KEY() {
     return process.env.REACT_APP_FORTMATIC_API_KEY || ''
+  },
+  HOOKED_TOKEN_MANAGER_APP_NAME() {
+    return (
+      process.env.REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME ||
+      DEFAULT_HOOKED_TOKEN_MANAGER
+    )
+  },
+  INFURA_API_KEY() {
+    return process.env.REACT_APP_INFURA_API_KEY || null
   },
   INSTANCE() {
     return process.env.REACT_APP_APP_INSTANCE || ''
@@ -37,14 +52,11 @@ const ENV_VARS = {
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
   },
+  POCKET_API_KEY() {
+    return process.env.REACT_APP_POCKET_API_KEY || null
+  },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
-  },
-  HOOKED_TOKEN_MANAGER_APP_NAME() {
-    return (
-      process.env.REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME ||
-      DEFAULT_HOOKED_TOKEN_MANAGER
-    )
   },
 }
 

@@ -1,8 +1,27 @@
+import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
-import env from '../environment'
-import { getDefaultChain } from '../local-settings'
+import env from '@/environment'
+import { getDefaultChain } from '@/local-settings'
 
 const DEFAULT_LOCAL_CHAIN = ''
+
+function getBackendServicesKeys() {
+  return {
+    alchemy: env('ALCHEMY_API_KEY'),
+    etherscan: env('ETHERSCAN_API_KEY'),
+    infura: env('INFURA_API_KEY'),
+    pocket: env('POCKET_API_KEY'),
+  }
+}
+
+export function getDefaultProvider() {
+  const type = getNetworkType()
+  const defaultEthNode = env('ETH_NODE')
+
+  return defaultEthNode
+    ? new Providers.StaticJsonRpcProvider(defaultEthNode)
+    : ethers.getDefaultProvider(type, getBackendServicesKeys())
+}
 
 export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
@@ -19,19 +38,6 @@ export function getUseWalletProviders() {
   }
 
   return providers
-}
-
-export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
-  return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
-}
-
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
-    if (provider.useWalletConf) {
-      connectors[provider.id] = provider.useWalletConf
-    }
-    return connectors
-  }, {})
 }
 
 export function getNetworkType(chainId = getDefaultChain()) {
@@ -54,6 +60,19 @@ export function getNetworkName(chainId = getDefaultChain()) {
   if (chainId === '100') return 'xDai'
 
   return 'unknown'
+}
+
+export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
+  return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
+}
+
+export function getUseWalletConnectors() {
+  return getUseWalletProviders().reduce((connectors, provider) => {
+    if (provider.useWalletConf) {
+      connectors[provider.id] = provider.useWalletConf
+    }
+    return connectors
+  }, {})
 }
 
 // Check address equality with checksums
