@@ -100,5 +100,6 @@ function mergeGardenMetadata(garden) {
     address: garden.id,
     token,
     wrappableToken,
+    forumURL: metadata.forum || 'https://forum.1hive.org/',
   }
 }
