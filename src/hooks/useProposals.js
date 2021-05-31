@@ -173,15 +173,17 @@ export function useProposalWithThreshold(proposal) {
       weight
     )
 
-    neededConviction = threshold?.div(proposal.maxConviction)
-    minTokensNeeded = getMinNeededStake(threshold, alpha)
-    neededTokens = minTokensNeeded.minus(totalTokensStaked)
-    remainingBlocksToPass = getRemainingTimeToPass(
-      threshold,
-      proposal.currentConviction,
-      totalTokensStaked,
-      alpha
-    )
+    if (threshold) {
+      neededConviction = threshold.div(proposal.maxConviction)
+      minTokensNeeded = getMinNeededStake(threshold, alpha)
+      neededTokens = minTokensNeeded.minus(totalTokensStaked)
+      remainingBlocksToPass = getRemainingTimeToPass(
+        threshold,
+        proposal.currentConviction,
+        totalTokensStaked,
+        alpha
+      )
+    }
   }
 
   return [

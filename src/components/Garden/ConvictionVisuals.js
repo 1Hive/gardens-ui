@@ -128,8 +128,8 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
 }
 
 export function ConvictionCountdown({ proposal, shorter }) {
-  const { config, maxRatio } = useGardenState()
-  const { stakeToken } = config.conviction
+  const { config } = useGardenState()
+  const { maxRatio, stakeToken } = config.conviction
 
   const theme = useTheme()
 
@@ -174,9 +174,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
                   color: ${theme.surfaceContent};
                 `}
               >
-                {!isNaN(neededTokens)
-                  ? 'Insufficient staked tokens'
-                  : 'Not enough funds in the organization'}
+                {isNaN(neededTokens)
+                  ? 'Not enough funds in the organization'
+                  : 'Insufficient staked tokens'}
               </span>
               <span
                 css={`
@@ -184,7 +184,10 @@ export function ConvictionCountdown({ proposal, shorter }) {
                 `}
               >
                 (
-                {!isNaN(neededTokens) ? (
+                {isNaN(neededTokens) ? (
+                  `Funding requests must be below ${maxRatio *
+                    100}% of organization total funds`
+                ) : (
                   <React.Fragment>
                     At least{' '}
                     <Tag>
@@ -195,9 +198,6 @@ export function ConvictionCountdown({ proposal, shorter }) {
                     </Tag>{' '}
                     more needed
                   </React.Fragment>
-                ) : (
-                  `Funding requests must be below ${maxRatio *
-                    100}% organization total funds`
                 )}
                 ).
               </span>
