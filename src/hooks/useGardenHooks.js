@@ -85,6 +85,14 @@ export function useGardenData() {
 
   const config = useConfigSubscription(connector)
 
+  console.log(
+    'Errors ',
+    orgStatus.error,
+    appsStatus.error,
+    permissionsStatus.error,
+    agreementError
+  )
+
   const errors =
     orgStatus.error ||
     appsStatus.error ||
