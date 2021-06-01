@@ -8,13 +8,22 @@ import GlobalErrorHandler from './GlobalErrorHandler'
 import { GardensProvider } from './providers/Gardens'
 import { WalletProvider } from './providers/Wallet'
 import { ProfileProvider } from './providers/Profile'
+import { useAppTheme } from './providers/AppTheme'
+import theme from './theme'
 import env from './environment'
 
 function App() {
+  const { appearance } = useAppTheme()
+
   return (
     <HashRouter>
       <IntercomProvider appId={env('INTERCOM_APP_ID')} autoBoot>
-        <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+        <Main
+          assetsUrl="/aragon-ui/"
+          layout={false}
+          scrollView={false}
+          theme={theme[appearance]}
+        >
           <GlobalErrorHandler>
             <WalletProvider>
               <ProfileProvider>

@@ -47,7 +47,7 @@ function Header() {
       css={`
         position: relative;
         z-index: 1;
-        background: #fff;
+        background: ${theme.surface};
         box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
       `}
     >
