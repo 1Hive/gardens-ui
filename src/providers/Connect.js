@@ -30,11 +30,3 @@ function ConnectProvider({ children }) {
 }
 
 export { ConnectProvider }
-
-/** {[
-        'thegraph',
-        {
-          orgSubgraphUrl:
-            'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
-        },
-      ]} */
