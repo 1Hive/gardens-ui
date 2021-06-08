@@ -13,6 +13,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
+import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useRequestAmount from '@hooks/useRequestAmount'
@@ -21,7 +22,6 @@ import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
-import { useGardens } from '@providers/Gardens'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -277,7 +277,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
         </span>{' '}
         In order to create a proposal you must first create a post on the{' '}
         <Link href="https://forum.1hive.org/new-topic?category=proposals">
-          1Hive Forum
+          {connectedGarden.name} Forum
         </Link>{' '}
         under the 🌿 Proposals category and paste the link to the corresponding
         post in the LINK field.
