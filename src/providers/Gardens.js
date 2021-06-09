@@ -13,7 +13,7 @@ import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 
 const DAOContext = React.createContext()
-const hiveForumURL = 'https://forum.1hive.org/'
+const dafaultForumURL = 'https://forum.1hive.org/'
 
 export function GardensProvider({ children }) {
   const [gardens, loading] = useGardensList()
@@ -99,7 +99,7 @@ function mergeGardenMetadata(garden) {
     ...garden,
     ...metadata,
     address: garden.id,
-    forumURL: metadata.forum || hiveForumURL,
+    forumURL: metadata.forum || dafaultForumURL,
     token,
     wrappableToken,
   }

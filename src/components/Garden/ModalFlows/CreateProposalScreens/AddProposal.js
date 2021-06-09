@@ -276,7 +276,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
         </span>{' '}
         In order to create a proposal you must first create a post on the{' '}
-        <Link href="https://forum.1hive.org/new-topic?category=proposals">
+        <Link href={connectedGarden.forumURL}>
           {connectedGarden.name} Forum
         </Link>{' '}
         under the 🌿 Proposals category and paste the link to the corresponding
