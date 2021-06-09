@@ -13,6 +13,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
+import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useRequestAmount from '@hooks/useRequestAmount'
@@ -21,8 +22,6 @@ import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
-
-const FORUM_POST_REGEX = /https:\/\/forum.1hive.org\/t\/.*?\/([0-9]+)/
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -54,9 +53,12 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     weight,
   } = config.conviction
 
+  const { connectedGarden } = useGardens()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
+
+  const forumRegex = new RegExp(connectedGarden.forumURL)
 
   const handleAmountEditMode = useCallback(
     editMode => {
@@ -172,12 +174,12 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       }
     }
 
-    if (link && !FORUM_POST_REGEX.test(link)) {
+    if (link && !forumRegex.test(link)) {
       errors.push('Forum post link not provided ')
     }
 
     return errors
-  }, [formData, requestToken])
+  }, [formData, forumRegex, requestToken])
 
   const neededThreshold = useMemo(() => {
     const threshold = calculateThreshold(
@@ -274,8 +276,8 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
         </span>{' '}
         In order to create a proposal you must first create a post on the{' '}
-        <Link href="https://forum.1hive.org/new-topic?category=proposals">
-          1Hive Forum
+        <Link href={connectedGarden.forumURL}>
+          {connectedGarden.name} Forum
         </Link>{' '}
         under the 🌿 Proposals category and paste the link to the corresponding
         post in the LINK field.
