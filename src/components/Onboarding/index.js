@@ -122,8 +122,8 @@ function AnimatedSlider({ children, visible }) {
   )
 }
 
-export default () => (
+export default ({ ...props }) => (
   <OnboardingProvider>
-    <Onboarding />
+    <Onboarding {...props} />
   </OnboardingProvider>
 )
