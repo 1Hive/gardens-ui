@@ -10,10 +10,10 @@ import HoneyswapLiquidity from './HoneyswapLiquidity'
 export const Screens = [
   { Screen: GardenTypeSelector, title: 'Type selection' },
   { Screen: GardenMetadata, title: 'Garden data' },
-  { Screen: HoneyswapLiquidity, title: 'HoneyswapLiquidity' },
+  { Screen: HoneyswapLiquidity, title: 'Honeyswap Liquidity' },
   { Screen: TokensSettings, title: 'Tokens settings' },
   { Screen: VotingSettings, title: 'Voting settings' },
-  { Screen: ConvictionVotingSettings, title: 'Conviction voting settings' },
+  { Screen: ConvictionVotingSettings, title: 'Conviction Voting settings' },
   { Screen: IssuanceSettings, title: 'Issuance settings' },
   { Screen: AgreementSettings, title: 'Covenant settings' },
 ]
