@@ -1,13 +1,13 @@
 import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
-import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
+import { OnboardingProvider } from '@providers/Onboarding'
 import Screens from './Screens'
-import StepsPanel from './Steps/StepsPanel'
+// import StepsPanel from './Steps/StepsPanel'
 
 function Onboarding({ onClose, visible }) {
   const theme = useTheme()
-  const { step, steps } = useOnboardingState()
+  // const { step, steps } = useOnboardingState()
 
   return (
     <AnimatedSlider visible={visible}>
@@ -37,7 +37,7 @@ function Onboarding({ onClose, visible }) {
             flex-grow: 0;
           `}
         >
-          <StepsPanel step={step} steps={steps} />
+          {/* <StepsPanel step={step} steps={steps} /> */}
         </div>
         <section
           css={`

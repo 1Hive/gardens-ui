@@ -1,11 +1,13 @@
 import AgreementSettings from './Apps/AgreementSettings'
 import ConvictionVotingSettings from './Apps/ConvictionVotingSettings'
+import GardenMetadata from './GardenMetadata'
+import GardenTypeSelector from './GardenTypeSelector'
+import HoneyswapLiquidity from './HoneyswapLiquidity'
 import IssuanceSettings from './Apps/IssuanceSettings'
+import LaunchGarden from './LaunchGarden'
+import ReviewInformation from './ReviewInformation'
 import TokensSettings from './Apps/TokensSettings'
 import VotingSettings from './Apps/VotingSettings'
-import GardenTypeSelector from './GardenTypeSelector'
-import GardenMetadata from './GardenMetadata'
-import HoneyswapLiquidity from './HoneyswapLiquidity'
 
 export const Screens = [
   { Screen: GardenTypeSelector, title: 'Type selection' },
@@ -16,4 +18,6 @@ export const Screens = [
   { Screen: ConvictionVotingSettings, title: 'Conviction Voting settings' },
   { Screen: IssuanceSettings, title: 'Issuance settings' },
   { Screen: AgreementSettings, title: 'Covenant settings' },
+  { Screen: ReviewInformation, title: 'Review information' },
+  { Screen: LaunchGarden, title: 'Launch Garden' },
 ]
