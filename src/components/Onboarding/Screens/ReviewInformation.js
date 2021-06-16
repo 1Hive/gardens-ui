@@ -9,7 +9,7 @@ function ReviewInformation() {
     <div>
       Review information
       <Navigation
-        backEnabled={false}
+        backEnabled
         nextEnabled
         nextLabel="Next:"
         onBack={onBack}

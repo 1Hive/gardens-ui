@@ -9,7 +9,7 @@ function ReviewInformation() {
     <div>
       Launch Garden
       <Navigation
-        backEnabled={false}
+        backEnabled
         nextEnabled
         nextLabel="Next:"
         onBack={onBack}

@@ -3,33 +3,19 @@ import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import { OnboardingProvider } from '@providers/Onboarding'
 import Screens from './Screens'
-// import StepsPanel from './Steps/StepsPanel'
+import StepsPanel from './Steps/StepsPanel'
 
 function Onboarding({ onClose, visible }) {
   const theme = useTheme()
-  // const { step, steps } = useOnboardingState()
 
   return (
     <AnimatedSlider visible={visible}>
       <div
         css={`
-          padding: ${3 * GU}px;
           display: flex;
-          align-items: center;
-          justify-content: space-between;
+          height: 100%;
         `}
       >
-        <div />
-        <div
-          css={`
-            cursor: pointer;
-          `}
-          onClick={onClose}
-        >
-          <IconCross color={theme.surfaceIcon} />
-        </div>
-      </div>
-      <div>
         <div
           css={`
             width: ${41 * GU}px;
@@ -37,12 +23,10 @@ function Onboarding({ onClose, visible }) {
             flex-grow: 0;
           `}
         >
-          {/* <StepsPanel step={step} steps={steps} /> */}
+          <StepsPanel />
         </div>
-        <section
+        <div
           css={`
-            display: flex;
-            flex-direction: column;
             width: 100%;
             flex-grow: 1;
             flex-shrink: 1;
@@ -50,16 +34,41 @@ function Onboarding({ onClose, visible }) {
         >
           <div
             css={`
+              padding: ${3 * GU}px;
               display: flex;
-              flex-direction: column;
-              flex-grow: 1;
-              position: relative;
-              overflow: hidden;
+              align-items: center;
+              justify-content: space-between;
             `}
           >
-            <Screens />
+            <div />
+            <div
+              css={`
+                cursor: pointer;
+              `}
+              onClick={onClose}
+            >
+              <IconCross color={theme.surfaceIcon} />
+            </div>
           </div>
-        </section>
+          <section
+            css={`
+              display: flex;
+              flex-direction: column;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                position: relative;
+                overflow: hidden;
+              `}
+            >
+              <Screens />
+            </div>
+          </section>
+        </div>
       </div>
     </AnimatedSlider>
   )

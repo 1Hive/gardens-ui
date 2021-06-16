@@ -1,10 +1,37 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useMemo } from 'react'
 import { CircleGraph, GU, useTheme } from '@1hive/1hive-ui'
 import StepsItem from './StepsItem'
+import { Screens } from '../Screens/config'
+import { useOnboardingState } from '@providers/Onboarding'
 
-function StepsPanel({ step, steps }) {
+function StepsPanel() {
   const theme = useTheme()
+  const { step } = useOnboardingState()
+
+  const [displayedSteps, displayedStepsCount] = useMemo(() => {
+    let displayCount = 0
+
+    const displayedSteps = Screens.map((step, index) => {
+      const hiddenCount = index - displayCount
+
+      if (step.key !== Screens[index + 1]?.key) {
+        displayCount++
+        return [index, index - hiddenCount, true]
+      }
+
+      let statusIndex = index
+      while (
+        step.key === Screens[statusIndex + 1].key &&
+        statusIndex < Screens.length
+      ) {
+        statusIndex++
+      }
+
+      return [statusIndex, index - hiddenCount, false]
+    }, [])
+
+    return [displayedSteps, displayCount]
+  }, [])
 
   return (
     <aside
@@ -25,7 +52,10 @@ function StepsPanel({ step, steps }) {
           height: ${25 * GU}px;
         `}
       >
-        <CircleGraph value={step / steps} size={25 * GU} />
+        <CircleGraph
+          value={displayedSteps[step][1] / (displayedStepsCount - 1)}
+          size={25 * GU}
+        />
         <div
           css={`
             position: absolute;
@@ -35,7 +65,7 @@ function StepsPanel({ step, steps }) {
             opacity: 0.7;
           `}
         >
-          {`${step}/${steps}`}
+          {`${displayedSteps[step][1] + 1}/${displayedStepsCount}`}
         </div>
       </div>
       <div
@@ -43,13 +73,13 @@ function StepsPanel({ step, steps }) {
           padding: ${8 * GU}px ${3 * GU}px ${3 * GU}px;
         `}
       >
-        {steps.map(
+        {displayedSteps.map(
           ([statusIndex, displayIndex, show], index) =>
             show && (
               <StepsItem
                 key={index}
-                currentStep={groupedSteps[step][0]}
-                label={steps[statusIndex]}
+                currentStep={displayedSteps[step][0]}
+                label={Screens[statusIndex].key}
                 step={statusIndex}
                 stepNumber={displayIndex + 1}
               />
@@ -58,11 +88,6 @@ function StepsPanel({ step, steps }) {
       </div>
     </aside>
   )
-}
-
-StepsPanel.propTypes = {
-  step: PropTypes.number.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default StepsPanel
