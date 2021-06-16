@@ -52,17 +52,15 @@ function Onboarding({ onClose, visible }) {
           </div>
           <section
             css={`
-              display: flex;
-              flex-direction: column;
+              margin: 0px auto;
+              max-width: 800px;
+              padding: 0px 24px 48px;
             `}
           >
             <div
               css={`
                 display: flex;
                 flex-direction: column;
-                flex-grow: 1;
-                position: relative;
-                overflow: hidden;
               `}
             >
               <Screens />
