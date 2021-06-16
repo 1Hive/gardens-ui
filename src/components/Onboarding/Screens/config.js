@@ -9,15 +9,54 @@ import ReviewInformation from './ReviewInformation'
 import TokensSettings from './Apps/TokensSettings'
 import VotingSettings from './Apps/VotingSettings'
 
+const STEPS = [
+  'Select garden type',
+  'Configure garden',
+  'Review information',
+  'Launch Garden',
+]
+
 export const Screens = [
-  { Screen: GardenTypeSelector, title: 'Type selection' },
-  { Screen: GardenMetadata, title: 'Garden data' },
-  { Screen: HoneyswapLiquidity, title: 'Honeyswap Liquidity' },
-  { Screen: TokensSettings, title: 'Tokens settings' },
-  { Screen: VotingSettings, title: 'Voting settings' },
-  { Screen: ConvictionVotingSettings, title: 'Conviction Voting settings' },
-  { Screen: IssuanceSettings, title: 'Issuance settings' },
-  { Screen: AgreementSettings, title: 'Covenant settings' },
-  { Screen: ReviewInformation, title: 'Review information' },
-  { Screen: LaunchGarden, title: 'Launch Garden' },
+  {
+    key: STEPS[0],
+    title: 'Type selection',
+    Screen: GardenTypeSelector,
+  },
+  { key: STEPS[1], title: 'Garden data', Screen: GardenMetadata },
+  {
+    key: STEPS[1],
+    title: 'Honeyswap Liquidity',
+    Screen: HoneyswapLiquidity,
+  },
+  {
+    key: STEPS[1],
+    title: 'Tokens settings',
+    Screen: TokensSettings,
+  },
+  {
+    key: STEPS[1],
+    title: 'Voting settings',
+    Screen: VotingSettings,
+  },
+  {
+    key: STEPS[1],
+    title: 'Conviction Voting settings',
+    Screen: ConvictionVotingSettings,
+  },
+  {
+    key: STEPS[1],
+    title: 'Issuance settings',
+    Screen: IssuanceSettings,
+  },
+  {
+    key: STEPS[1],
+    title: 'Covenant settings',
+    Screen: AgreementSettings,
+  },
+  {
+    key: STEPS[2],
+    title: 'Review information',
+    Screen: ReviewInformation,
+  },
+  { key: STEPS[3], title: 'Launch Garden', Screen: LaunchGarden },
 ]
