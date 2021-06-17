@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
       documentation: [],
       community: [],
     },
-    type: null,
+    type: -1,
   },
   agreement: {
     title: '',
