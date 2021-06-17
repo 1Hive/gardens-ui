@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { GU, springs } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import { Screens } from './config'
 import { useOnboardingState } from '@providers/Onboarding'
 
 const AnimatedDiv = animated.div
 
 function OnboardingScreens() {
   const [prevStep, setPrevStep] = useState(-1)
-  const { step } = useOnboardingState()
+  const { step, steps } = useOnboardingState()
 
   useEffect(() => {
     setPrevStep(step)
   }, [step])
 
   const direction = step > prevStep ? 1 : -1
-  const { Screen, title } = Screens[step]
+  const { Screen, title } = steps[step]
 
   return (
     <Transition
