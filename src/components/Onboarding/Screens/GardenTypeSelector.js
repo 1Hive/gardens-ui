@@ -61,14 +61,14 @@ function GardenTypeSelector() {
       >
         <Card
           icon={defaultGardenLogo}
-          paragraph="Explanation of Native garden"
+          paragraph="Launch garden with new token"
           onSelect={handleSelectNative}
           selected={selectedType === NATIVE_TYPE}
           title="Native"
         />
         <Card
           icon={defaultGardenLogo}
-          paragraph="Explanation of BYOT garden"
+          paragraph="Launch garden with existing token"
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
           title="BYOT"
