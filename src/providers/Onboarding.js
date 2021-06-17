@@ -1,10 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Screens } from '@components/Onboarding/Screens/config'
+import { Screens as steps } from '@components/Onboarding/Screens/config'
 
 const OnboardingContext = React.createContext()
-
-const stepsLength = Screens.length
 
 const DEFAULT_CONFIG = {
   garden: {
@@ -83,7 +81,7 @@ function OnboardingProvider({ children }) {
   }, [])
 
   const handleNext = useCallback(() => {
-    setStep(index => Math.min(stepsLength - 1, index + 1))
+    setStep(index => Math.min(steps.length - 1, index + 1))
   }, [])
 
   return (
@@ -94,7 +92,7 @@ function OnboardingProvider({ children }) {
         onConfigChange: handleConfigChange,
         onNext: handleNext,
         step,
-        stepsLength,
+        steps,
       }}
     >
       {children}
