@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
-import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import { GU, Link, useTheme, useViewport, ButtonBase } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '../../providers/AppTheme'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
@@ -14,6 +15,8 @@ import { getNetwork } from '@/networks'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogo.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
+import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
+import darkModeIconDark from '@assets/icon-dark-mode-dark.svg'
 
 function Header() {
   const theme = useTheme()
@@ -23,6 +26,7 @@ function Header() {
   const network = getNetwork()
   const history = useHistory()
   const { connectedGarden } = useGardens()
+  const AppTheme = useAppTheme()
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -39,6 +43,10 @@ function Header() {
   const logoLink = `#${
     connectedGarden ? buildGardenPath(history.location, '') : '/home'
   }`
+
+  const toggleDarkMode = useCallback(() => {
+    AppTheme.toggleAppearance()
+  }, [AppTheme])
 
   const showBalance = connectedGarden && account && !layoutSmall
 
@@ -109,10 +117,32 @@ function Header() {
             css={`
               display: flex;
               align-items: center;
-              ${showBalance && `min-width: ${42.5 * GU}px`};
+              justify-content: space-between;
+              min-width: ${showBalance
+                ? 42.5 * GU
+                : layoutSmall
+                ? 10 * GU
+                : 29 * GU}px;
             `}
           >
             <AccountModule compact={layoutSmall} />
+            <ButtonBase
+              css={`
+                width: ${3.5 * GU}px;
+                height: ${3.5 * GU}px;
+              `}
+              onClick={toggleDarkMode}
+            >
+              <img
+                css="width: 100%;"
+                src={
+                  AppTheme.appearance === 'light'
+                    ? darkModeIconLight
+                    : darkModeIconDark
+                }
+              />
+            </ButtonBase>
+
             {showBalance && (
               <>
                 <div
