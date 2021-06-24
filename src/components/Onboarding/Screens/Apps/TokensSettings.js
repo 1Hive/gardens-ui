@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../Navigation'
 
-function TokensSettings() {
-  const { onBack, onNext } = useOnboardingState()
+function TokensSettings({ title }) {
+  const { onBack, onNext, step, steps } = useOnboardingState()
 
   return (
     <div>
-      Tokens settings
+      {title}
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={onNext}
       />

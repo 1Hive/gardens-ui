@@ -45,7 +45,7 @@ const Navigation = React.forwardRef(function Navigation(
       <Button
         ref={nextRef}
         disabled={!nextEnabled}
-        label="Next"
+        label={nextLabel}
         mode="strong"
         onClick={onNext}
         type="submit"

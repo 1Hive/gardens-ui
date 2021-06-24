@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function GardenMetadata() {
-  const { onBack, onNext } = useOnboardingState()
+function GardenMetadata({ title }) {
+  const { onBack, onNext, step, steps } = useOnboardingState()
 
   return (
     <div>
-      GardenMetadata
+      {title}
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={onNext}
       />

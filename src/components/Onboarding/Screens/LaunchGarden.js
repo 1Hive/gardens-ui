@@ -2,16 +2,15 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function ReviewInformation() {
+function LaunchGarden({ title }) {
   const { onBack, onNext } = useOnboardingState()
 
   return (
     <div>
-      Launch Garden
+      {title}
       <Navigation
         backEnabled
-        nextEnabled
-        nextLabel="Next:"
+        nextEnabled={false}
         onBack={onBack}
         onNext={onNext}
       />
@@ -19,4 +18,4 @@ function ReviewInformation() {
   )
 }
 
-export default ReviewInformation
+export default LaunchGarden

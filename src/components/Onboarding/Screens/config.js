@@ -22,7 +22,7 @@ export const Screens = [
     title: 'Type selection',
     Screen: GardenTypeSelector,
   },
-  { key: STEPS[1], title: 'Garden data', Screen: GardenMetadata },
+  { key: STEPS[1], title: 'Garden metadata', Screen: GardenMetadata },
   {
     key: STEPS[1],
     title: 'Honeyswap Liquidity',
