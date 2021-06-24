@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../Navigation'
 
-function IssuanceSettings() {
-  const { onBack, onNext } = useOnboardingState()
+function IssuanceSettings({ title }) {
+  const { onBack, onNext, step, steps } = useOnboardingState()
 
   return (
     <div>
-      Issuance settings
+      {title}
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={onNext}
       />

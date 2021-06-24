@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function GardenTypeSelector() {
-  const { onBack, onNext } = useOnboardingState()
+function GardenTypeSelector({ title }) {
+  const { onBack, onNext, step, steps } = useOnboardingState()
 
   return (
     <div>
-      Garden type
+      {title}
       <Navigation
         backEnabled={false}
         nextEnabled
-        nextLabel="Next:"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={onNext}
       />

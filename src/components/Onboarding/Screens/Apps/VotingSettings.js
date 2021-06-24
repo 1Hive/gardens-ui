@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../Navigation'
 
-function VotingSettings() {
-  const { onBack, onNext } = useOnboardingState()
+function VotingSettings({ title }) {
+  const { onBack, onNext, step, steps } = useOnboardingState()
 
   return (
     <div>
-      VotingSettings
+      {title}
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={onNext}
       />
