@@ -1,6 +1,8 @@
 import React from 'react'
+import { Button } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
+import { commitNewDao } from '../../../services/gihub'
 
 function GardenMetadata() {
   const { onBack, onNext } = useOnboardingState()
@@ -8,6 +10,7 @@ function GardenMetadata() {
   return (
     <div>
       GardenMetadata
+      <Button onClick={commitNewDao}> TEST </Button>
       <Navigation
         backEnabled
         nextEnabled
