@@ -14,51 +14,45 @@ import {
   PercentageField,
   Carousel,
 } from '../../kit'
-import { DAY_IN_SECONDS } from '@/utils/kit-utils'
-
-const DEFAULT_SUPPORT = 50
-const DEFAULT_MIN_ACCEPTANCE_QUORUM = 10
-const DEFAULT_DURATION = DAY_IN_SECONDS * 5
-const DEFAULT_DELEGATED_VOTING_PERIOD = DAY_IN_SECONDS * 2
-const DEFAULT_QUITE_ENDING_PERIOD = DAY_IN_SECONDS * 1
-const DEFAULT_QUITE_ENDING_EXTENSION_PERIOD = DAY_IN_SECONDS * 0.5
-const DEFAULT_EXECUTION_DELAY_PERIOD = DAY_IN_SECONDS * 1
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
-    case 'support':
+    case 'voteSupportRequired':
       return {
         ...fields,
-        support: value,
-        quorum: Math.min(fields.quorum, value),
+        voteSupportRequired: value,
+        voteMinAcceptanceQuorum: Math.min(
+          fields.voteMinAcceptanceQuorum,
+          value
+        ),
       }
-    case 'quorum':
+    case 'voteMinAcceptanceQuorum':
       return {
         ...fields,
-        quorum: value,
-        support: Math.max(fields.support, value),
+        voteSupportRequired: Math.max(fields.voteSupportRequired, value),
+        voteMinAcceptanceQuorum: value,
       }
-    case 'duration':
+    case 'voteDuration':
       return {
         ...fields,
-        duration: value,
+        voteDuration: value,
       }
-    case 'delegatedVotingPeriod':
+    case 'voteDelegatedVotingPeriod':
       return {
         ...fields,
-        delegatedVotingPeriod: value,
+        voteDelegatedVotingPeriod: value,
       }
-    case 'quiteEndingPeriod':
+    case 'voteQuietEndingPeriod':
       return {
         ...fields,
-        quiteEndingPeriod: value,
+        voteQuietEndingPeriod: value,
       }
-    case 'quiteEndingExtensionPeriod':
+    case 'voteQuietEndingExtension':
       return {
         ...fields,
-        quiteEndingExtensionPeriod: value,
+        voteQuietEndingExtension: value,
       }
-    case 'executionDelayPeriod':
+    case 'voteExecutionDelay':
       return {
         ...fields,
         executionDelayPeriod: value,
@@ -70,27 +64,26 @@ const reduceFields = (fields, [field, value]) => {
 
 function VotingSettings() {
   const [isLastItemChecked, setIsLastItemChecked] = useState(false)
-  const { onBack, onNext, onConfigChange, step, steps } = useOnboardingState()
+  const {
+    config,
+    onBack,
+    onNext,
+    onConfigChange,
+    step,
+    steps,
+  } = useOnboardingState()
   const [
     {
-      support,
-      quorum,
-      duration,
-      delegatedVotingPeriod,
-      quiteEndingPeriod,
-      quiteEndingExtensionPeriod,
-      executionDelayPeriod,
+      voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
+      voteDelegatedVotingPeriod,
+      voteQuietEndingPeriod,
+      voteQuietEndingExtension,
+      voteExecutionDelay,
     },
     updateField,
-  ] = useReducer(reduceFields, {
-    support: DEFAULT_SUPPORT,
-    quorum: DEFAULT_MIN_ACCEPTANCE_QUORUM,
-    duration: DEFAULT_DURATION,
-    delegatedVotingPeriod: DEFAULT_DELEGATED_VOTING_PERIOD,
-    quiteEndingPeriod: DEFAULT_QUITE_ENDING_PERIOD,
-    quiteEndingExtensionPeriod: DEFAULT_QUITE_ENDING_EXTENSION_PERIOD,
-    executionDelayPeriod: DEFAULT_EXECUTION_DELAY_PERIOD,
-  })
+  ] = useReducer(reduceFields, { ...config.voting })
   const supportRef = useRef()
 
   const handleSupportRef = useCallback(ref => {
@@ -102,61 +95,61 @@ function VotingSettings() {
 
   const handleSupportChange = useCallback(
     value => {
-      updateField(['support', value])
+      updateField(['voteSupportRequired', value])
     },
     [updateField]
   )
 
   const handleQuorumChange = useCallback(
     value => {
-      updateField(['quorum', value])
+      updateField(['voteMinAcceptanceQuorum', value])
     },
     [updateField]
   )
 
   const handleDurationChange = useCallback(
     value => {
-      updateField(['duration', value])
+      updateField(['voteDuration', value])
     },
     [updateField]
   )
 
   const handleDelegatedVotingPeriodChange = useCallback(
     value => {
-      updateField(['delegatedVotingPeriod', value])
+      updateField(['voteDelegatedVotingPeriod', value])
     },
     [updateField]
   )
   const handleQuiteEndingPeriodChange = useCallback(
     value => {
-      updateField(['quiteEndingPeriod', value])
+      updateField(['voteQuietEndingPeriod', value])
     },
     [updateField]
   )
 
   const handleQuiteEndingExtensionPeriodChange = useCallback(
     value => {
-      updateField(['quiteEndingExtensionPeriod', value])
+      updateField(['voteQuietEndingExtension', value])
     },
     [updateField]
   )
 
   const handleExecutionDelayPeriodChange = useCallback(
     value => {
-      updateField(['executionDelayPeriod', value])
+      updateField(['voteExecutionDelay', value])
     },
     [updateField]
   )
 
   const handleNextClick = () => {
     onConfigChange('voting', {
-      voteDuration: duration,
-      voteSupportRequired: support,
-      voteMinAcceptanceQuorum: quorum,
-      voteDelegatedVotingPeriod: delegatedVotingPeriod,
-      voteQuietEndingPeriod: quiteEndingPeriod,
-      voteQuietEndingExtension: quiteEndingExtensionPeriod,
-      voteExecutionDelay: executionDelayPeriod,
+      voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
+      voteDelegatedVotingPeriod,
+      voteQuietEndingPeriod,
+      voteQuietEndingExtension,
+      voteExecutionDelay,
     })
     onNext()
   }
@@ -165,31 +158,31 @@ function VotingSettings() {
     <TimeParameterPanel
       title="Voting Duration"
       description="Vote duration is the length of time that the vote will be open for participation. For example, if the Vote Duration is set to 24 hours, then tokenholders have 24 hours to participate in the vote."
-      value={duration}
+      value={voteDuration}
       onUpdate={handleDurationChange}
     />,
     <TimeParameterPanel
       title="Delegate Voting Period"
       description="Delegate voting period is the duration from the start of a vote that representatives are allowed to vote on behalf of principals."
-      value={delegatedVotingPeriod}
+      value={voteDelegatedVotingPeriod}
       onUpdate={handleDelegatedVotingPeriodChange}
     />,
     <TimeParameterPanel
       title="Quite Ending Period"
       description="Quite ending period is the duration before the end of a vote to detect non-quiet endings. Non-quiet endings are endings which involve a late swing in the vote."
-      value={quiteEndingPeriod}
+      value={voteQuietEndingPeriod}
       onUpdate={handleQuiteEndingPeriodChange}
     />,
     <TimeParameterPanel
       title="Quite Ending Extension Period"
       description="Quite ending extension period is the duration to extend a vote in the case of a non-quiet ending."
-      value={quiteEndingExtensionPeriod}
+      value={voteQuietEndingExtension}
       onUpdate={handleQuiteEndingExtensionPeriodChange}
     />,
     <TimeParameterPanel
       title="Delay Period"
       description="Delay period is the duration to wait before a passed vote can be executed. This allows people to react to the outcome and make decisions before the effects of the vote are realised."
-      value={executionDelayPeriod}
+      value={voteExecutionDelay}
       onUpdate={handleExecutionDelayPeriodChange}
     />,
   ]
@@ -222,7 +215,7 @@ function VotingSettings() {
             </Help>
           </Fragment>
         }
-        value={support}
+        value={voteSupportRequired}
         onChange={handleSupportChange}
       />
       <PercentageField
@@ -238,7 +231,7 @@ function VotingSettings() {
             </Help>
           </Fragment>
         }
-        value={quorum}
+        value={voteMinAcceptanceQuorum}
         onChange={handleQuorumChange}
       />
       <div
