@@ -21,11 +21,7 @@ const DEFAULT_CONFIG = {
   agreement: {
     title: '',
     content: '',
-    challengePeriod: 0,
-    actionAmount: 0,
-    challengeAmount: 0,
-    actionAmountsStable: [],
-    challengeAmountsStable: [],
+    challengePeriod: DAY_IN_SECONDS * 3,
   },
   conviction: {
     decay: 0,
