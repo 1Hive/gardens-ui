@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GU, Help } from '@1hive/1hive-ui'
+import { GU, Help, Info } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../Navigation'
 import {
@@ -14,6 +14,31 @@ import {
   PercentageField,
   Carousel,
 } from '../../kit'
+
+const validateVotingSettings = (
+  voteDuration,
+  voteDelegatedVotingPeriod,
+  voteQuietEndingPeriod,
+  voteQuietEndingExtension,
+  voteExecutionDelay
+) => {
+  if (!voteDuration) {
+    return 'Please add a vote duration.'
+  }
+  if (!voteDelegatedVotingPeriod) {
+    return 'Please add a delegate voting period.'
+  }
+  if (!voteQuietEndingPeriod) {
+    return 'Please add a vote quite ending period.'
+  }
+  if (!voteQuietEndingExtension) {
+    return 'Please add a vote quite ending extension period.'
+  }
+  if (!voteExecutionDelay) {
+    return 'Please add a vote execution delay period.'
+  }
+  return null
+}
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
@@ -55,7 +80,7 @@ const reduceFields = (fields, [field, value]) => {
     case 'voteExecutionDelay':
       return {
         ...fields,
-        executionDelayPeriod: value,
+        voteExecutionDelay: value,
       }
     default:
       return fields
@@ -72,6 +97,7 @@ function VotingSettings() {
     step,
     steps,
   } = useOnboardingState()
+  const [formError, setFormError] = useState()
   const [
     {
       voteDuration,
@@ -109,6 +135,7 @@ function VotingSettings() {
 
   const handleDurationChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteDuration', value])
     },
     [updateField]
@@ -116,12 +143,14 @@ function VotingSettings() {
 
   const handleDelegatedVotingPeriodChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteDelegatedVotingPeriod', value])
     },
     [updateField]
   )
   const handleQuiteEndingPeriodChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteQuietEndingPeriod', value])
     },
     [updateField]
@@ -129,6 +158,7 @@ function VotingSettings() {
 
   const handleQuiteEndingExtensionPeriodChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteQuietEndingExtension', value])
     },
     [updateField]
@@ -136,22 +166,34 @@ function VotingSettings() {
 
   const handleExecutionDelayPeriodChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteExecutionDelay', value])
     },
     [updateField]
   )
 
   const handleNextClick = () => {
-    onConfigChange('voting', {
+    const error = validateVotingSettings(
       voteDuration,
-      voteSupportRequired,
-      voteMinAcceptanceQuorum,
       voteDelegatedVotingPeriod,
       voteQuietEndingPeriod,
       voteQuietEndingExtension,
-      voteExecutionDelay,
-    })
-    onNext()
+      voteExecutionDelay
+    )
+    setFormError(error)
+
+    if (!error) {
+      onConfigChange('voting', {
+        voteDuration,
+        voteSupportRequired,
+        voteMinAcceptanceQuorum,
+        voteDelegatedVotingPeriod,
+        voteQuietEndingPeriod,
+        voteQuietEndingExtension,
+        voteExecutionDelay,
+      })
+      onNext()
+    }
   }
 
   const carouselItems = [
@@ -234,19 +276,25 @@ function VotingSettings() {
         value={voteMinAcceptanceQuorum}
         onChange={handleQuorumChange}
       />
-      <div
-        css={`
-          margin-bottom: ${7 * GU}px;
-        `}
-      >
+      <div>
         <Carousel
           itemWidth={80 * GU}
-          itemHeight={40 * GU}
+          itemHeight={38 * GU}
           itemSpacing={2 * GU}
           items={carouselItems}
           onItemSelected={handleItemSelected}
         />
       </div>
+      {formError && (
+        <Info
+          css={`
+            margin-bottom: ${6 * GU}px;
+          `}
+          mode="error"
+        >
+          {formError}
+        </Info>
+      )}
       <Navigation
         backEnabled
         nextEnabled={isLastItemChecked}
