@@ -26,7 +26,7 @@ const validateVotingSettings = (
     return 'Please add a vote duration.'
   }
   if (!voteDelegatedVotingPeriod) {
-    return 'Please add a delegate voting period.'
+    return 'Please add a delegated voting period.'
   }
   if (!voteQuietEndingPeriod) {
     return 'Please add a vote quite ending period.'
@@ -204,8 +204,8 @@ function VotingSettings() {
       onUpdate={handleDurationChange}
     />,
     <TimeParameterPanel
-      title="Delegate Voting Period"
-      description="Delegate voting period is the duration from the start of a vote that representatives are allowed to vote on behalf of principals."
+      title="Delegated Voting Period"
+      description="Delegated voting period is the duration from the start of a vote that representatives are allowed to vote on behalf of principals."
       value={voteDelegatedVotingPeriod}
       onUpdate={handleDelegatedVotingPeriodChange}
     />,
