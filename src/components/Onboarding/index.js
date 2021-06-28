@@ -63,7 +63,14 @@ function Onboarding({ onClose, visible }) {
                 flex-direction: column;
               `}
             >
-              <Screens />
+              <div
+                css={`
+                  overflow-y: auto;
+                  height: calc(100vh - 127px);
+                `}
+              >
+                <Screens />
+              </div>
             </div>
           </section>
         </div>

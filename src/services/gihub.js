@@ -7,7 +7,7 @@ export const fetchLatestCommitSha = async () => {
     const result = await fetch(endpoint, {
       method: 'GET',
       headers: {
-        Authorization: ,
+        Authorization: '',
         Accept: 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
       },
@@ -27,7 +27,7 @@ export const fetchBaseTreeSha = async commitSha => {
     const result = await fetch(endpoint, {
       method: 'GET',
       headers: {
-        Authorization: ,
+        Authorization: '',
         Accept: 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
       },
@@ -43,6 +43,7 @@ export const fetchBaseTreeSha = async commitSha => {
 
 export const createTree = async (baseTreSha, fileContent) => {
   const endpoint = `https://api.github.com/repos/rperez89/dao-list-test/git/trees`
+  // const imagePath = path.join(__dirname, 'example.png')
 
   const bodyData = {
     base_tree: baseTreSha,
@@ -59,12 +60,14 @@ export const createTree = async (baseTreSha, fileContent) => {
     const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        Authorization: ,
+        Authorization: '',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(bodyData),
     })
     const data = await result.json()
+
+    console.log('create tre!!!!!!!!!!', data)
 
     return { data: data.sha, error: !result.ok }
   } catch (err) {
@@ -84,7 +87,7 @@ export const createCommit = async (latestCommitSha, newTreeSha) => {
     const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        Authorization: ,
+        Authorization: '',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(bodyData),
@@ -125,7 +128,7 @@ export const createFileContent = async commitSha => {
     const result = await fetch(endpoint, {
       method: 'PUT',
       headers: {
-        Authorization:,
+        Authorization: '',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(bodyData),
@@ -148,7 +151,7 @@ export const changeHeadsCommitSha = async commitSha => {
     const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        Authorization: ,
+        Authorization: '',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(bodyData),
@@ -196,7 +199,7 @@ export const fetchFileContent = async () => {
     const result = await fetch(endpoint, {
       method: 'GET',
       headers: {
-        Authorization: ,
+        Authorization: '',
         Accept: 'application/vnd.github.VERSION.raw',
         'Content-Type': 'application/json',
       },
