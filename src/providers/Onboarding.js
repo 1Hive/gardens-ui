@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens as steps } from '@components/Onboarding/Screens/config'
+import { DAY_IN_SECONDS } from '../utils/kit-utils'
 
 const OnboardingContext = React.createContext()
 
@@ -49,13 +50,13 @@ const DEFAULT_CONFIG = {
     commonPool: 0, // Only used in NATIVE
   },
   voting: {
-    voteDuration: 0,
-    voteSupportRequired: 0,
-    voteMinAcceptanceQuorum: 0,
-    voteDelegatedVotingPeriod: 0,
-    voteQuietEndingPeriod: 0,
-    voteQuietEndingExtension: 0,
-    voteExecutionDelay: 0,
+    voteDuration: DAY_IN_SECONDS * 5,
+    voteSupportRequired: 50,
+    voteMinAcceptanceQuorum: 10,
+    voteDelegatedVotingPeriod: DAY_IN_SECONDS * 2,
+    voteQuietEndingPeriod: DAY_IN_SECONDS * 1,
+    voteQuietEndingExtension: DAY_IN_SECONDS * 0.5,
+    voteExecutionDelay: DAY_IN_SECONDS * 1,
   },
 }
 

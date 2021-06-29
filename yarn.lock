@@ -17649,6 +17649,11 @@ react-spring@^8.0.27:
     "@babel/runtime" "^7.3.1"
     prop-types "^15.5.8"
 
+react-use-gesture@5.2.4:
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/react-use-gesture/-/react-use-gesture-5.2.4.tgz#c84ebe0d79703fd90cb26a220812c2f430d3e40d"
+  integrity sha512-oay95IPKBTAIqsZWwPAXJVVlDCpXdg4y2kEKz8oGLSqewpmXsXC4vKlAZq/ZDwZa4djzWlK1pnSIJY2iylx4QQ==
+
 react-use-intercom@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-use-intercom/-/react-use-intercom-1.2.0.tgz#d0958f16bf82caa422d7b8bb3530077d674445a1"
