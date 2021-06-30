@@ -12,8 +12,8 @@ const DEFAULT_CONFIG = {
     logotype: null,
     forum: '',
     links: {
-      documentation: [],
-      community: [],
+      documentation: [[]],
+      community: [[]],
     },
     type: -1,
   },

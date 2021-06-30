@@ -4,6 +4,7 @@ import {
   Button,
   Field,
   GU,
+  Help,
   IconPlus,
   IconTrash,
   TextInput,
@@ -15,87 +16,105 @@ import ImageUploader from '../../ImageUploader'
 import Navigation from '../Navigation'
 import { commitNewDao } from '../../../services/gihub'
 
-const DEFAULT_FORM_DATA = {
-  gardenName: '',
-  gardenDescription: '',
-  forum: '',
-  links: [],
-}
+const COMMUNITY_LINK_TYPE = 'community'
+const DOCUMENTATION_LINK_TYPE = 'documentation'
 
 function GardenMetadata() {
-  const { onBack, onNext } = useOnboardingState()
+  const { config, onBack, onNext } = useOnboardingState()
   const theme = useTheme()
-  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
-
-  const [focusLastMemberNext, setFocusLastMemberNext] = useState(false)
-
-  const linksRef = useRef()
-  const [links, setLinks] = useState(
-    formData.links && formData.links.length > 0 ? formData.links : [['', '']]
-  )
-
-  useEffect(() => {
-    if (!focusLastMemberNext || !linksRef.current) {
-      return
-    }
-
-    setFocusLastMemberNext(false)
-
-    // This could be managed in individual MemberField components, but using
-    // the container with a .member class makes it simpler to manage, since we
-    // want to focus in three cases:
-    //   - A new field is being added.
-    //   - A field is being removed.
-    //   - The first field is being emptied.
-    //
-    const elts = linksRef.current.querySelectorAll('.links')
-    if (elts.length > 0) {
-      elts[elts.length - 1].querySelector('input').focus()
-    }
-  }, [focusLastMemberNext])
+  const [formData, setFormData] = useState(config.garden)
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
-    setFormData(formData => ({ ...formData, gardenName: value }))
+    setFormData(formData => ({ ...formData, name: value }))
   }, [])
 
   const handleGardenDescriptionChange = useCallback(event => {
     const value = event.target.value
-    setFormData(formData => ({ ...formData, gardenDescription: value }))
+    setFormData(formData => ({ ...formData, description: value }))
   }, [])
 
-  const hideRemoveButton = links.length < 2 && !links[0]
-
-  const focusLastMember = useCallback(() => {
-    setFocusLastMemberNext(true)
-  }, [])
-
-  const addMember = useCallback(() => {
-    setLinks(members => [...members, ['', '']])
-    focusLastMember()
-  }, [focusLastMember])
-
-  const removeMember = useCallback(
-    index => {
-      setLinks(members =>
-        members.length < 2
-          ? // When the remove button of the last field
-            // gets clicked, we only empty the field.
-            [['', '']]
-          : members.filter((_, i) => i !== index)
-      )
-      focusLastMember()
+  const addLink = useCallback(
+    type => {
+      const linksObject =
+        type === COMMUNITY_LINK_TYPE
+          ? {
+              ...formData.links,
+              community: [...formData.links.community, ['', '']],
+            }
+          : {
+              ...formData.links,
+              documentation: [...formData.links.documentation, ['', '']],
+            }
+      setFormData(formData => {
+        return {
+          ...formData,
+          links: linksObject,
+        }
+      })
+      // focusLastLink()
     },
-    [focusLastMember]
+    [formData.links]
   )
 
-  const updateMember = useCallback((index, updatedAccount, updatedStake) => {
-    setLinks(members =>
-      members.map((member, i) =>
-        i === index ? [updatedAccount, updatedStake] : member
-      )
-    )
-  }, [])
+  console.log('formData ', formData)
+
+  const removeLink = useCallback(
+    (type, index) => {
+      const linksObject =
+        type === COMMUNITY_LINK_TYPE
+          ? {
+              ...formData.links,
+              community:
+                formData.links.community.length < 2
+                  ? [['', '']]
+                  : formData.links.community.filter((_, i) => i !== index),
+            }
+          : {
+              ...formData.links,
+              documentation:
+                formData.links.documentation.length < 2
+                  ? [['', '']]
+                  : formData.links.documentation.filter((_, i) => i !== index),
+            }
+
+      setFormData(formData => {
+        return {
+          ...formData,
+          links: linksObject,
+        }
+      })
+      // focusLastLink()
+    },
+    [formData.links]
+  )
+
+  const updateLink = useCallback(
+    (type, index, updatedAccount, updatedStake) => {
+      const linksObject =
+        type === COMMUNITY_LINK_TYPE
+          ? {
+              ...formData.links,
+              community: formData.links.community.map((member, i) =>
+                i === index ? [updatedAccount, updatedStake] : member
+              ),
+            }
+          : {
+              ...formData.links,
+              documentation: formData.links.documentation.map((member, i) =>
+                i === index ? [updatedAccount, updatedStake] : member
+              ),
+            }
+
+      setFormData(formData => {
+        return {
+          ...formData,
+          links: linksObject,
+        }
+      })
+    },
+    [formData.links]
+  )
 
   return (
     <div>
@@ -142,7 +161,7 @@ function GardenMetadata() {
           <TextInput
             css="width: 100%;"
             onChange={handleGardenNameChange}
-            value={formData.gardenName}
+            value={formData.name}
             required
           />
         </Field>
@@ -156,7 +175,7 @@ function GardenMetadata() {
           <TextInput
             css="width: 100%;"
             onChange={handleGardenDescriptionChange}
-            value={formData.gardenDescription}
+            value={formData.description}
             required
           />
         </Field>
@@ -209,7 +228,30 @@ function GardenMetadata() {
           </Box>
         </Field>
         <Field
-          label="Forum"
+          label={
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                width: 100%;
+              `}
+            >
+              <p
+                css={`
+                  ${textStyle('body4')};
+                  font-weight: 600;
+                `}
+              >
+                Forum
+              </p>
+              <Help>
+                Add a link to your discussion platform - the best way to do this
+                is to create a discourse (add link to discourse site). If you
+                don't,the 1Hive forum will be assigned (add forum link) by
+                default.
+              </Help>
+            </div>
+          }
           css={`
             width: 100%;
             marging-bottom: ${2 * GU}px;
@@ -218,66 +260,25 @@ function GardenMetadata() {
           <TextInput
             css="width: 100%;"
             onChange={handleGardenNameChange}
-            value={formData.gardenName}
-            required
+            value={formData.name}
           />
         </Field>
-        <Field
-          label="Community Links"
-          css={`
-            width: 100%;
-          `}
-        >
-          <Box
-            css={`
-              width: 100%;
-            `}
-          >
-            <Field
-              label={
-                <div
-                  css={`
-                    width: 100%;
-                    display: grid;
-                    grid-template-columns: auto ${18 * GU}px;
-                    grid-column-gap: ${1.5 * GU}px;
-                    ${textStyle('body3')};
-                  `}
-                >
-                  <div>Link</div>
-                  <div>Label</div>
-                </div>
-              }
-              css={`
-                width: 100%;
-              `}
-            >
-              <div ref={linksRef}>
-                {links.map((member, index) => (
-                  <LinkField
-                    key={index}
-                    index={index}
-                    member={member}
-                    onRemove={removeMember}
-                    hideRemoveButton={hideRemoveButton}
-                    onUpdate={updateMember}
-                  />
-                ))}
-              </div>
-              <Button
-                icon={
-                  <IconPlus
-                    css={`
-                      color: ${theme.accent};
-                    `}
-                  />
-                }
-                label="Add more"
-                onClick={addMember}
-              />
-            </Field>
-          </Box>
-        </Field>
+        <LinksBox
+          fieldTitle="Community Links"
+          linksType={COMMUNITY_LINK_TYPE}
+          links={formData.links.community}
+          onAddLink={addLink}
+          onRemoveLink={removeLink}
+          onUpdateLink={updateLink}
+        />
+        <LinksBox
+          fieldTitle="Documentation Links"
+          linksType={DOCUMENTATION_LINK_TYPE}
+          links={formData.links.documentation}
+          onAddLink={addLink}
+          onRemoveLink={removeLink}
+          onUpdateLink={updateLink}
+        />
       </div>
 
       <Button onClick={commitNewDao}> TEST </Button>
@@ -292,28 +293,147 @@ function GardenMetadata() {
   )
 }
 
-function LinkField({ index, member, hideRemoveButton, onUpdate, onRemove }) {
+function LinksBox({
+  fieldTitle,
+  linksType,
+  links,
+  onAddLink,
+  onRemoveLink,
+  onUpdateLink,
+}) {
+  const [focusLastLinkNext, setFocusLastLinkNext] = useState(false)
+  const linksRef = useRef()
   const theme = useTheme()
 
-  const [account, stake] = member
+  const focusLastLink = useCallback(() => {
+    setFocusLastLinkNext(true)
+  }, [])
+
+  const handleAddLink = useCallback(() => {
+    onAddLink(linksType)
+    focusLastLink()
+  }, [focusLastLink, linksType, onAddLink])
+
+  const handleUpdateLink = useCallback(
+    (index, updatedAccount, updatedStake) => {
+      onUpdateLink(linksType, index, updatedAccount, updatedStake)
+    },
+    [linksType, onUpdateLink]
+  )
+
+  const handleRemoveLink = useCallback(
+    index => {
+      onRemoveLink(linksType, index)
+      focusLastLink()
+    },
+    [focusLastLink, linksType, onRemoveLink]
+  )
+
+  const hideRemoveButton = links.length < 2 && !links[0]
+
+  useEffect(() => {
+    if (!focusLastLinkNext || !linksRef.current) {
+      return
+    }
+
+    setFocusLastLinkNext(false)
+
+    // This could be managed in individual MemberField components, but using
+    // the container with a .member class makes it simpler to manage, since we
+    // want to focus in three cases:
+    //   - A new field is being added.
+    //   - A field is being removed.
+    //   - The first field is being emptied.
+    //
+    const elts = linksRef.current.querySelectorAll('.links')
+    if (elts.length > 0) {
+      elts[elts.length - 1].querySelector('input').focus()
+    }
+  }, [focusLastLinkNext])
+
+  return (
+    <Field
+      label={fieldTitle}
+      css={`
+        width: 100%;
+      `}
+    >
+      <Box
+        css={`
+          width: 100%;
+        `}
+      >
+        <Field
+          label={
+            <div
+              css={`
+                width: 100%;
+                display: grid;
+                grid-template-columns: auto ${18 * GU}px;
+                grid-column-gap: ${1.5 * GU}px;
+                ${textStyle('body3')};
+              `}
+            >
+              <div>Link</div>
+              <div>Label</div>
+            </div>
+          }
+          css={`
+            width: 100%;
+          `}
+        >
+          <div ref={linksRef}>
+            {links.map((link, index) => (
+              <LinkField
+                key={index}
+                index={index}
+                link={link}
+                onRemove={handleRemoveLink}
+                hideRemoveButton={hideRemoveButton}
+                onUpdate={handleUpdateLink}
+              />
+            ))}
+          </div>
+          <Button
+            icon={
+              <IconPlus
+                css={`
+                  color: ${theme.accent};
+                `}
+              />
+            }
+            label="Add more"
+            onClick={handleAddLink}
+            disabled={links.length === 5}
+          />
+        </Field>
+      </Box>
+    </Field>
+  )
+}
+
+function LinkField({ index, link, hideRemoveButton, onUpdate, onRemove }) {
+  const theme = useTheme()
+
+  const [url, label] = link
 
   const handleRemove = useCallback(() => {
     onRemove(index)
   }, [onRemove, index])
 
-  const handleAccountChange = useCallback(
+  const handleUrlChange = useCallback(
     event => {
-      onUpdate(index, event.target.value, stake)
+      onUpdate(index, event.target.value, label)
     },
-    [onUpdate, stake, index]
+    [onUpdate, label, index]
   )
 
-  const handleStakeChange = useCallback(
+  const handleLabelChange = useCallback(
     event => {
-      const value = parseInt(event.target.value, 10)
-      onUpdate(index, account, isNaN(value) ? -1 : value)
+      const value = event.target.value
+      onUpdate(index, url, value)
     },
-    [onUpdate, account, index]
+    [onUpdate, url, index]
   )
 
   return (
@@ -350,9 +470,9 @@ function LinkField({ index, member, hideRemoveButton, onUpdate, onRemove }) {
           }
           adornmentPosition="end"
           adornmentSettings={{ width: 52, padding: 8 }}
-          onChange={handleAccountChange}
+          onChange={handleUrlChange}
           placeholder="Link URL"
-          value={account}
+          value={url}
           wide
           css={`
             padding-left: ${2 * GU}px;
@@ -360,11 +480,7 @@ function LinkField({ index, member, hideRemoveButton, onUpdate, onRemove }) {
         />
       </div>
       <div>
-        <TextInput
-          onChange={handleStakeChange}
-          value={stake === -1 ? '' : stake}
-          wide
-        />
+        <TextInput onChange={handleLabelChange} value={label} wide />
       </div>
     </div>
   )
