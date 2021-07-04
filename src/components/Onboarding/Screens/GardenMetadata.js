@@ -369,7 +369,7 @@ function GardenMetadata() {
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel="Next"
         onBack={onBack}
         onNext={handleNext}
       />

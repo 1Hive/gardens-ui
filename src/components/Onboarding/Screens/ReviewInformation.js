@@ -2,16 +2,16 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function ReviewInformation() {
+function ReviewInformation({ title }) {
   const { onBack, onNext } = useOnboardingState()
 
   return (
     <div>
-      Review information
+      {title}
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next:"
+        nextLabel="Launch your garden"
         onBack={onBack}
         onNext={onNext}
       />

@@ -1,28 +1,30 @@
 import React, { useCallback, useState } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
-import Navigation from '../Navigation'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 function GardenTypeSelector() {
   const theme = useTheme()
-  const { config, onBack, onConfigChange, onNext } = useOnboardingState()
-  const [selectedType, setSelectedType] = useState(config.garden.type)
+  const { config, onConfigChange, onNext } = useOnboardingState()
+  const [selectedType] = useState(config.garden.type)
+
+  const handleNext = useCallback(
+    selectedType => {
+      onConfigChange('garden', { type: selectedType })
+      onNext()
+    },
+    [onConfigChange, onNext]
+  )
 
   const handleSelectNative = useCallback(() => {
-    setSelectedType(NATIVE_TYPE)
-  }, [])
+    handleNext(NATIVE_TYPE)
+  }, [handleNext])
 
   const handleSelectBYOT = useCallback(() => {
-    setSelectedType(BYOT_TYPE)
-  }, [])
-
-  const handleNext = useCallback(() => {
-    onConfigChange('garden', { type: selectedType })
-    onNext()
-  }, [onConfigChange, onNext, selectedType])
+    handleNext(BYOT_TYPE)
+  }, [handleNext])
 
   return (
     <div>
@@ -74,13 +76,6 @@ function GardenTypeSelector() {
           title="BYOT"
         />
       </div>
-      <Navigation
-        backEnabled={false}
-        nextEnabled={selectedType !== -1}
-        nextLabel="Next:"
-        onBack={onBack}
-        onNext={handleNext}
-      />
     </div>
   )
 }
