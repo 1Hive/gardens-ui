@@ -1,112 +1,123 @@
-import React, { useCallback, useState } from 'react'
-import { GU, IconCloudUpload, IconClose, useTheme } from '@1hive/1hive-ui'
+import React, { useState } from 'react'
+import {
+  GU,
+  IconCloudUpload,
+  IconClose,
+  useTheme,
+  textStyle,
+} from '@1hive/1hive-ui'
 import styled from 'styled-components'
 
-function ImageUploader({ onImageSelected }) {
-  const theme = useTheme()
-  // const [file, setFile] = useState()
-  const [imagePreview, setImagePreview] = useState('')
-  const [base64, setBase64] = useState()
-  // const [name, setName] = useState()
-  // const [size, setSize] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+const MAX_FILE_SIZE = 1000000 // 1Mb
 
-  console.log(isLoading)
+function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
+  const theme = useTheme()
+  const [imagePreview, setImagePreview] = useState('')
+  const [error, setError] = useState('')
 
   const photoUpload = e => {
     e.preventDefault()
     const reader = new FileReader()
     const file = e.target.files[0]
-    console.log('reader', reader)
-    console.log('file', file)
-    if (reader !== undefined && file !== undefined) {
-      reader.onloadend = () => {
-        // setFile(file)
-        // setSize(file.size)
-        // setName(file.name)
-        setImagePreview(reader.result)
+    if (file?.size <= MAX_FILE_SIZE) {
+      if (reader !== undefined && file !== undefined) {
+        reader.onloadend = () => {
+          setImagePreview(reader.result)
+        }
+        reader.readAsDataURL(file)
       }
-      reader.readAsDataURL(file)
+    } else {
+      setError('Max size 1Mb')
     }
   }
 
-  const onFileSubmit = useCallback(
-    e => {
-      setIsLoading(true)
-      e.preventDefault()
-      console.log('bine', base64)
-      const payload = { image: base64 }
-      console.log('payload', payload)
-
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 2000)
-    },
-    [base64]
-  )
-
   const onChange = e => {
-    console.log('file', e.target.files[0])
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
-      reader.onload = _handleReaderLoaded
+      reader.onload = () => {
+        handleReaderLoaded(reader, file.type.split('/')[1])
+      }
       reader.readAsBinaryString(file)
     }
   }
 
-  const _handleReaderLoaded = readerEvt => {
-    const binaryString = readerEvt.target.result
-    setBase64(btoa(binaryString))
+  const handleReaderLoaded = (reader, extension) => {
+    const binaryString = reader.result
+    onImageLoaded(btoa(binaryString), extension)
   }
 
-  console.log('base 64 ', base64)
+  const handleRemove = e => {
+    e.preventDefault()
+    setImagePreview('')
+    document.getElementById(`file-${id}`).value = ''
+    onImageRemoved()
+  }
+
   return (
-    <form onSubmit={e => onFileSubmit(e)} onChange={e => onChange(e)}>
-      <Container
-        width={imagePreview === '' ? 95 : 105}
-        height={imagePreview === '' ? 95 : 105}
-        hoverColor={theme.selected}
-      >
-        {imagePreview === '' ? (
-          <IconCloudUpload
-            css={`
-              cursor: pointer;
-            `}
-            size="large"
-          />
-        ) : (
-          <>
-            <img src={imagePreview} alt="Icone adicionar" />
-            <div
+    <div>
+      {imagePreview !== '' && (
+        <div
+          css={`
+            display: flex;
+            position: absolute;
+            height: ${3 * GU}px;
+            width: ${3 * GU}px;
+            right: 5px;
+            top: 5px;
+            bottom: 0;
+            border-style: solid;
+            border-radius: 50%;
+            border-width: 2px;
+            align-items: center;
+            cursor: pointer;
+          `}
+          onClick={handleRemove}
+        >
+          <IconClose size="medium" />
+        </div>
+      )}
+      <form onChange={e => onChange(e)}>
+        <Container width={100} height={100} hoverColor={theme.selected}>
+          {imagePreview === '' ? (
+            <IconCloudUpload
               css={`
-                display: flex;
-                position: absolute;
-                height: ${3 * GU}px;
-                width: ${3 * GU}px;
-                right: 5px;
-                top: 5px;
-                bottom: 0;
-                border-style: solid;
-                border-radius: 50%;
-                border-width: 2px;
-                align-items: center;
+                cursor: pointer;
               `}
-            >
-              <IconClose size="medium" />
-            </div>
-          </>
-        )}
-        <input
-          type="file"
-          name="avatar"
-          id="file"
-          accept=".jpef, .png, .jpg"
-          onChange={photoUpload}
-          src={imagePreview}
-        />
-      </Container>
-    </form>
+              size="large"
+            />
+          ) : (
+            <>
+              <img src={imagePreview} alt="Icone adicionar" />
+            </>
+          )}
+          <input
+            type="file"
+            name="avatar"
+            id={`file-${id}`}
+            accept=".png, .jpg"
+            onChange={photoUpload}
+            src={imagePreview}
+          />
+        </Container>
+      </form>
+      {error && (
+        <div
+          css={`
+            width: 95px;
+          `}
+        >
+          <span
+            css={`
+              color: ${theme.error};
+              ${textStyle('body4')};
+            `}
+          >
+            {error}
+          </span>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -132,8 +143,8 @@ export const Container = styled.div`
     position: absolute;
     border-radius: 100%;
     cursor: pointer;
-    width: 145px;
-    height: 145px;
+    width: 20px;
+    height: 20px;
   }
   &:hover {
     transition: all 1s;

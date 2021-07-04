@@ -9,7 +9,8 @@ const DEFAULT_CONFIG = {
     name: '',
     description: '',
     logo: null,
-    logotype: null,
+    logo_type: null,
+    token_logo: null,
     forum: '',
     links: {
       documentation: [[]],

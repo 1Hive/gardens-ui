@@ -14,13 +14,17 @@ import {
 import { useOnboardingState } from '@providers/Onboarding'
 import ImageUploader from '../../ImageUploader'
 import Navigation from '../Navigation'
-import { commitNewDao } from '../../../services/gihub'
+import { publishNewDao } from '../../../services/github'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
 
+const DAO_LOGO = 'logo_type'
+const DAO_LOGO_MOBILE = 'logo'
+const TOKEN_LOGO = 'token_logo'
+
 function GardenMetadata() {
-  const { config, onBack, onNext } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext } = useOnboardingState()
   const theme = useTheme()
   const [formData, setFormData] = useState(config.garden)
 
@@ -34,17 +38,28 @@ function GardenMetadata() {
     setFormData(formData => ({ ...formData, description: value }))
   }, [])
 
+  const handleForumChange = useCallback(event => {
+    const value = event.target.value
+    setFormData(formData => ({ ...formData, forum: value }))
+  }, [])
+
   const addLink = useCallback(
     type => {
       const linksObject =
         type === COMMUNITY_LINK_TYPE
           ? {
               ...formData.links,
-              community: [...formData.links.community, ['', '']],
+              community: [
+                ...formData.links.community,
+                [{ link: '', label: '' }],
+              ],
             }
           : {
               ...formData.links,
-              documentation: [...formData.links.documentation, ['', '']],
+              documentation: [
+                ...formData.links.documentation,
+                [{ link: '', label: '' }],
+              ],
             }
       setFormData(formData => {
         return {
@@ -52,12 +67,9 @@ function GardenMetadata() {
           links: linksObject,
         }
       })
-      // focusLastLink()
     },
     [formData.links]
   )
-
-  console.log('formData ', formData)
 
   const removeLink = useCallback(
     (type, index) => {
@@ -67,14 +79,14 @@ function GardenMetadata() {
               ...formData.links,
               community:
                 formData.links.community.length < 2
-                  ? [['', '']]
+                  ? [{ link: '', label: '' }]
                   : formData.links.community.filter((_, i) => i !== index),
             }
           : {
               ...formData.links,
               documentation:
                 formData.links.documentation.length < 2
-                  ? [['', '']]
+                  ? [{ link: '', label: '' }]
                   : formData.links.documentation.filter((_, i) => i !== index),
             }
 
@@ -84,25 +96,24 @@ function GardenMetadata() {
           links: linksObject,
         }
       })
-      // focusLastLink()
     },
     [formData.links]
   )
 
   const updateLink = useCallback(
-    (type, index, updatedAccount, updatedStake) => {
+    (type, index, updatedUrl, updatedLabel) => {
       const linksObject =
         type === COMMUNITY_LINK_TYPE
           ? {
               ...formData.links,
-              community: formData.links.community.map((member, i) =>
-                i === index ? [updatedAccount, updatedStake] : member
+              community: formData.links.community.map((link, i) =>
+                i === index ? { link: updatedUrl, label: updatedLabel } : link
               ),
             }
           : {
               ...formData.links,
-              documentation: formData.links.documentation.map((member, i) =>
-                i === index ? [updatedAccount, updatedStake] : member
+              documentation: formData.links.documentation.map((link, i) =>
+                i === index ? { link: updatedUrl, label: updatedLabel } : link
               ),
             }
 
@@ -115,6 +126,63 @@ function GardenMetadata() {
     },
     [formData.links]
   )
+
+  const handleOnAssetAdded = useCallback((type, base64, fileExtension) => {
+    setFormData(formData => {
+      return {
+        ...formData,
+        [type]: base64,
+        [`${type}Extension`]: fileExtension,
+      }
+    })
+  }, [])
+
+  const handleOnDaoLogoLoaded = useCallback(
+    (base64, fileExtension) => {
+      handleOnAssetAdded(DAO_LOGO, base64, fileExtension)
+    },
+    [handleOnAssetAdded]
+  )
+
+  const handleOnMobileLogoLoaded = useCallback(
+    (base64, fileExtension) => {
+      handleOnAssetAdded(DAO_LOGO_MOBILE, base64, fileExtension)
+    },
+    [handleOnAssetAdded]
+  )
+
+  const handleOnTokenLogoLoaded = useCallback(
+    (base64, fileExtension) => {
+      handleOnAssetAdded(TOKEN_LOGO, base64, fileExtension)
+    },
+    [handleOnAssetAdded]
+  )
+
+  const handleOnAssetRemoved = useCallback(type => {
+    setFormData(formData => {
+      return {
+        ...formData,
+        [type]: '',
+      }
+    })
+  }, [])
+
+  const handleOnDaoLogoRemoved = useCallback(() => {
+    handleOnAssetRemoved(DAO_LOGO)
+  }, [handleOnAssetRemoved])
+
+  const handleOnMobileLogoRemoved = useCallback(() => {
+    handleOnAssetRemoved(DAO_LOGO_MOBILE)
+  }, [handleOnAssetRemoved])
+
+  const handleOnTokenLogoRemoved = useCallback(() => {
+    handleOnAssetRemoved(TOKEN_LOGO)
+  }, [handleOnAssetRemoved])
+
+  const handleNext = useCallback(() => {
+    onConfigChange('garden', formData)
+    onNext()
+  }, [onConfigChange, onNext, formData])
 
   return (
     <div>
@@ -160,6 +228,7 @@ function GardenMetadata() {
         >
           <TextInput
             css="width: 100%;"
+            maxLength="15"
             onChange={handleGardenNameChange}
             value={formData.name}
             required
@@ -173,6 +242,8 @@ function GardenMetadata() {
           `}
         >
           <TextInput
+            multiline
+            maxLength="120"
             css="width: 100%;"
             onChange={handleGardenDescriptionChange}
             value={formData.description}
@@ -201,9 +272,14 @@ function GardenMetadata() {
                 <Box
                   css={`
                     text-align: center;
+                    max-height: 143px;
                   `}
                 >
-                  <ImageUploader />
+                  <ImageUploader
+                    id={1}
+                    onImageLoaded={handleOnDaoLogoLoaded}
+                    onImageRemoved={handleOnDaoLogoRemoved}
+                  />
                 </Box>
               </Field>
               <Field label="Dao Logo mobile">
@@ -212,7 +288,11 @@ function GardenMetadata() {
                     text-align: center;
                   `}
                 >
-                  <ImageUploader />
+                  <ImageUploader
+                    id={2}
+                    onImageLoaded={handleOnMobileLogoLoaded}
+                    onImageRemoved={handleOnMobileLogoRemoved}
+                  />
                 </Box>
               </Field>
               <Field label="Token Icon">
@@ -221,7 +301,11 @@ function GardenMetadata() {
                     text-align: center;
                   `}
                 >
-                  <ImageUploader />
+                  <ImageUploader
+                    id={3}
+                    onImageLoaded={handleOnTokenLogoLoaded}
+                    onImageRemoved={handleOnTokenLogoRemoved}
+                  />
                 </Box>
               </Field>
             </div>
@@ -259,8 +343,8 @@ function GardenMetadata() {
         >
           <TextInput
             css="width: 100%;"
-            onChange={handleGardenNameChange}
-            value={formData.name}
+            onChange={handleForumChange}
+            value={formData.forum}
           />
         </Field>
         <LinksBox
@@ -281,13 +365,13 @@ function GardenMetadata() {
         />
       </div>
 
-      <Button onClick={commitNewDao}> TEST </Button>
+      <Button onClick={() => publishNewDao(formData)}> TEST </Button>
       <Navigation
         backEnabled
         nextEnabled
         nextLabel="Next:"
         onBack={onBack}
-        onNext={onNext}
+        onNext={handleNext}
       />
     </div>
   )
@@ -315,8 +399,8 @@ function LinksBox({
   }, [focusLastLink, linksType, onAddLink])
 
   const handleUpdateLink = useCallback(
-    (index, updatedAccount, updatedStake) => {
-      onUpdateLink(linksType, index, updatedAccount, updatedStake)
+    (index, updatedUrl, updatedLabel) => {
+      onUpdateLink(linksType, index, updatedUrl, updatedLabel)
     },
     [linksType, onUpdateLink]
   )
@@ -387,7 +471,7 @@ function LinksBox({
               <LinkField
                 key={index}
                 index={index}
-                link={link}
+                item={link}
                 onRemove={handleRemoveLink}
                 hideRemoveButton={hideRemoveButton}
                 onUpdate={handleUpdateLink}
@@ -412,10 +496,10 @@ function LinksBox({
   )
 }
 
-function LinkField({ index, link, hideRemoveButton, onUpdate, onRemove }) {
+function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
   const theme = useTheme()
 
-  const [url, label] = link
+  const { link, label } = item
 
   const handleRemove = useCallback(() => {
     onRemove(index)
@@ -431,9 +515,9 @@ function LinkField({ index, link, hideRemoveButton, onUpdate, onRemove }) {
   const handleLabelChange = useCallback(
     event => {
       const value = event.target.value
-      onUpdate(index, url, value)
+      onUpdate(index, link, value)
     },
-    [onUpdate, url, index]
+    [onUpdate, link, index]
   )
 
   return (
@@ -472,7 +556,7 @@ function LinkField({ index, link, hideRemoveButton, onUpdate, onRemove }) {
           adornmentSettings={{ width: 52, padding: 8 }}
           onChange={handleUrlChange}
           placeholder="Link URL"
-          value={url}
+          value={link}
           wide
           css={`
             padding-left: ${2 * GU}px;
