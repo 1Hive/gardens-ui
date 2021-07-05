@@ -8,11 +8,17 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
 
 import desktopBanner from '@assets/banner.png'
 import mobileBanner from '@assets/banner-mobile.png'
 import tabletBanner from '@assets/banner-tablet.png'
 import tabletBannerFull from '@assets/banner-tablet-full.png'
+
+import desktopBannerDark from '@assets/dark-mode/banner.png'
+import mobileBannerDark from '@assets/dark-mode/banner-mobile.png'
+import tabletBannerDark from '@assets/dark-mode/banner-tablet.png'
+import tabletBannerFullDark from '@assets/dark-mode/banner-tablet-full.png'
 
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
@@ -22,15 +28,29 @@ const BANNERS = {
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
 
+const BANNERS_DARK_MODE = {
+  small: { image: mobileBannerDark, aspectRatio: '54%' },
+  medium: { image: tabletBannerDark, aspectRatio: '36%' },
+  medium_full: { image: tabletBannerFullDark, aspectRatio: '36%' },
+  large: { image: desktopBannerDark, aspectRatio: '159%' },
+  max: { image: desktopBannerDark, aspectRatio: '159%' },
+}
+
 function HeroBanner({ onRequestNewProposal, fullScreenMode }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  const { appearance } = useAppTheme()
 
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const compactMode = mobileMode || tabletMode
+
+  const bannerType = appearance === 'light' ? BANNERS : BANNERS_DARK_MODE
+
   const banner =
-    fullScreenMode && tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
+    fullScreenMode && tabletMode
+      ? bannerType.medium_full
+      : bannerType[layoutName]
 
   return (
     <div
