@@ -128,8 +128,8 @@ function Header() {
             <AccountModule compact={layoutSmall} />
             <ButtonBase
               css={`
-                width: ${3.5 * GU}px;
-                height: ${3.5 * GU}px;
+                width: ${4 * GU}px;
+                height: ${4 * GU}px;
               `}
               onClick={toggleDarkMode}
             >
