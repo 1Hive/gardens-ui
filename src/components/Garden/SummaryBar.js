@@ -15,6 +15,16 @@ function SummaryBar({
   const theme = useTheme()
   // Third part overlaps first and second if it is negative
   const thirdBegins = firstSize + secondSize + Math.min(thirdSize, 0)
+
+  const CombinedBar = styled.div`
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 6px;
+    border-radius: 2px;
+    background: ${theme.controlDisabled};
+  `
+
   return (
     <Spring
       from={{ progress: 0 }}
@@ -84,15 +94,6 @@ const Main = styled.div`
   align-items: center;
   height: ${({ compact }) => (compact ? '30px' : '50px')};
   margin: ${({ compact }) => (compact ? '0' : '10px 0')};
-`
-
-const CombinedBar = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 6px;
-  border-radius: 2px;
-  background: #edf3f6;
 `
 
 const BarPart = styled(animated.div)`
