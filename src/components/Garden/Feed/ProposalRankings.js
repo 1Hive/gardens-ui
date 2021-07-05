@@ -1,10 +1,17 @@
 import React, { useCallback } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import { useAppTheme } from '@providers/AppTheme'
+
 import iconTopSvg from '@assets/rankings/ranking-top.svg'
 import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
 import iconNewSvg from '@assets/rankings/ranking-new.svg'
 import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
+
+import iconTopSvgDarkMode from '@assets/dark-mode/rankings/ranking-top.svg'
+import iconTopSelectedSvgDarkMode from '@assets/dark-mode/rankings/ranking-top-selected.svg'
+import iconNewSvgDarkMode from '@assets/dark-mode/rankings/ranking-new.svg'
+import iconNewSelectedSvgDarkMode from '@assets/dark-mode/rankings/ranking-new-selected.svg'
 
 const iconsMapping = {
   top: {
@@ -17,11 +24,26 @@ const iconsMapping = {
   },
 }
 
-function getRankingIcon(key, selected) {
-  return iconsMapping[key][selected ? 'iconSelected' : 'icon']
+const iconsMappingDarkMode = {
+  top: {
+    icon: iconTopSvgDarkMode,
+    iconSelected: iconTopSelectedSvgDarkMode,
+  },
+  new: {
+    icon: iconNewSvgDarkMode,
+    iconSelected: iconNewSelectedSvgDarkMode,
+  },
+}
+
+function getRankingIcon(key, selected, mappingType) {
+  return mappingType[key][selected ? 'iconSelected' : 'icon']
 }
 
 function ProposalRankings({ items, onChange, selected }) {
+  const appearance = useAppTheme()
+  const mappingType =
+    appearance.appearance === 'light' ? iconsMapping : iconsMappingDarkMode
+
   return (
     <div
       css={`
@@ -34,7 +56,7 @@ function ProposalRankings({ items, onChange, selected }) {
       {items.map((item, index) => (
         <Item
           key={index}
-          icon={getRankingIcon(item, selected === index)}
+          icon={getRankingIcon(item, selected === index, mappingType)}
           index={index}
           label={item}
           onSelect={onChange}
@@ -57,7 +79,7 @@ function Item({ icon, index, label, onSelect, selected }) {
       css={`
         display: flex;
         align-items: center;
-        color: ${theme.content};
+        color: ${theme.accentContent};
         margin-right: ${1 * GU}px;
         border-radius: ${2 * GU}px;
         padding: ${0.5 * GU}px ${0.75 * GU}px;
