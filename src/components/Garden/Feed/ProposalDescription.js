@@ -11,8 +11,9 @@ function ProposalDescription({ proposal, onSelectProposal }) {
       onClick={onSelectProposal}
       css={`
         cursor: pointer;
-        ${textStyle('body1')};
         margin-bottom: ${3 * GU}px;
+        ${textStyle('body1')};
+        text-decoration: underline;
       `}
     >
       {proposal.type === ProposalTypes.Decision ? (
