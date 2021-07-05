@@ -422,13 +422,6 @@ function LinksBox({
 
     setFocusLastLinkNext(false)
 
-    // This could be managed in individual MemberField components, but using
-    // the container with a .member class makes it simpler to manage, since we
-    // want to focus in three cases:
-    //   - A new field is being added.
-    //   - A field is being removed.
-    //   - The first field is being emptied.
-    //
     const elts = linksRef.current.querySelectorAll('.links')
     if (elts.length > 0) {
       elts[elts.length - 1].querySelector('input').focus()

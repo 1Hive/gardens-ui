@@ -3,8 +3,8 @@ import {
   GU,
   IconCloudUpload,
   IconClose,
-  useTheme,
   textStyle,
+  useTheme,
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 
@@ -31,7 +31,7 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
     }
   }
 
-  const onChange = e => {
+  const handleOnChange = e => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -77,7 +77,7 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
           <IconClose size="medium" />
         </div>
       )}
-      <form onChange={e => onChange(e)}>
+      <form onChange={handleOnChange}>
         <Container width={100} height={100} hoverColor={theme.selected}>
           {imagePreview === '' ? (
             <IconCloudUpload
@@ -88,7 +88,7 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
             />
           ) : (
             <>
-              <img src={imagePreview} alt="Icone adicionar" />
+              <img src={imagePreview} alt="preview" />
             </>
           )}
           <input

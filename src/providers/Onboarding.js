@@ -14,8 +14,8 @@ const DEFAULT_CONFIG = {
     token_logo: null,
     forum: '',
     links: {
-      documentation: [[]],
-      community: [[]],
+      documentation: [{}],
+      community: [{}],
     },
     type: -1,
   },
