@@ -1,7 +1,7 @@
 import daoList from '@1hive/gardens-dao-list'
 import { addressesEqual } from './web3-utils'
 
-const dafaultForumURL = 'https://forum.1hive.org/'
+const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
 
 export function getGardenLabel(address) {
   const dao = daoList.daos.find(dao => addressesEqual(dao.address, address))
@@ -19,8 +19,8 @@ export function getGardenForumUrl(metadata) {
       .flat()
       .find(({ label }) => label.toLowerCase() === 'forum')
 
-    return forumItem?.link || dafaultForumURL
+    return forumItem?.link || DEFAULT_FORUM_URL
   }
 
-  return dafaultForumURL
+  return DEFAULT_FORUM_URL
 }
