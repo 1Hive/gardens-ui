@@ -11,9 +11,9 @@ import { StakingProvider } from './Staking'
 
 import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
+import { getGardenForumUrl } from '../utils/garden-utils'
 
 const DAOContext = React.createContext()
-const dafaultForumURL = 'https://forum.1hive.org/'
 
 export function GardensProvider({ children }) {
   const [gardens, loading] = useGardensList()
@@ -95,11 +95,13 @@ function mergeGardenMetadata(garden) {
       }
     : null
 
+  const forumURL = getGardenForumUrl(metadata)
+
   return {
     ...garden,
     ...metadata,
     address: garden.id,
-    forumURL: metadata.forum || dafaultForumURL,
+    forumURL,
     token,
     wrappableToken,
   }
