@@ -3,11 +3,14 @@ import PropTypes from 'prop-types'
 import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { UnsupportedChainError } from 'use-wallet'
 import { getNetworkName } from '../../utils/web3-utils'
-import connectionError from './assets/connection-error.png'
+import { useAppTheme } from '@providers/AppTheme'
+import connectionErrorLight from './assets/connection-error.png'
+import connectionErrorDark from './assets/connection-error-dark-mode.png'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
+  const { appearance } = useAppTheme()
 
   const [title, secondary] = useMemo(() => {
     if (error instanceof UnsupportedChainError) {
@@ -49,7 +52,10 @@ function AccountModuleErrorScreen({ error, onBack }) {
             position: relative;
             width: 281px;
             height: 188px;
-            background: 50% 50% / 100% 100% no-repeat url(${connectionError});
+            background: 50% 50% / 100% 100% no-repeat
+              url(${appearance === 'light'
+                ? connectionErrorLight
+                : connectionErrorDark});
           `}
         />
         <h1

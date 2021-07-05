@@ -10,12 +10,15 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
-import stakingEmpty from './assets/no-dataview-data.svg'
+import stakingEmptyLight from './assets/no-dataview-data.svg'
+import stakingEmptyDark from '@assets/dark-mode/no-dataview-data.svg'
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
 
 const StakeManagement = React.memo(function StakeManagement() {
   const { account } = useWallet()
+  const { appearance } = useAppTheme()
   const history = useHistory()
   const [stakeModalMode, setStakeModalMode] = useState()
   const { stakeManagement, stakeActions, loading } = useStakingState()
@@ -44,7 +47,11 @@ const StakeManagement = React.memo(function StakeManagement() {
   }, [stakeManagement])
 
   if (!account) {
-    return <EmptyState icon={stakingEmpty} />
+    return (
+      <EmptyState
+        icon={appearance === 'light' ? stakingEmptyLight : stakingEmptyDark}
+      />
+    )
   }
 
   return (
