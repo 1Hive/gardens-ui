@@ -22,25 +22,43 @@ export function useTokenBalanceOf(tokenAddress, account) {
 }
 
 export function useTokenData(tokenAddress) {
-  const [tokenData, setTokenData] = useState({ decimals: 18, symbol: '' })
-  const [loading, setLoading] = useState(true)
+  const [tokenData, setTokenData] = useState({
+    name: '',
+    decimals: 18,
+    symbol: '',
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const mounted = useMounted()
   const tokenContract = useContractReadOnly(tokenAddress, tokenAbi)
 
   useEffect(() => {
     const fetchTokenData = async () => {
-      const decimals = await tokenContract.decimals()
-      const symbol = await tokenContract.symbol()
-
-      if (mounted()) {
-        setTokenData({ decimals, symbol })
+      if (tokenAddress) {
+        setError(null)
+        setTokenData({ name: '', decimals: 18, symbol: '' })
+        setLoading(true)
+      }
+      try {
+        const name = await tokenContract.name()
+        const symbol = await tokenContract.symbol()
+        const decimals = await tokenContract.decimals()
+        if (mounted()) {
+          setTokenData({ name, decimals, symbol })
+          setLoading(false)
+        }
+      } catch (error) {
         setLoading(false)
+        setError(error)
       }
     }
 
+    if (!tokenContract) {
+      return
+    }
     fetchTokenData()
-  }, [mounted, tokenContract])
+  }, [mounted, tokenContract, tokenAddress])
 
-  return [tokenData, loading]
+  return [tokenData, loading, error]
 }
