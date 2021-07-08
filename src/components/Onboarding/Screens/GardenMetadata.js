@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   Help,
   IconPlus,
   IconTrash,
+  Info,
   TextInput,
   textStyle,
   useTheme,
@@ -24,9 +25,14 @@ const GARDEN_LOGO_TYPE = 'logo_type'
 const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
 
+const URL_REGEX = new RegExp(
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+)
+
 function GardenMetadata() {
   const { config, onBack, onConfigChange, onNext } = useOnboardingState()
   const [formData, setFormData] = useState(config.garden)
+  const [displayErrors, setDisplayErrors] = useState(false)
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
@@ -179,10 +185,44 @@ function GardenMetadata() {
     handleOnAssetRemoved(TOKEN_LOGO)
   }, [handleOnAssetRemoved])
 
+  const errors = useMemo(() => {
+    const errors = []
+
+    const { name, description, forum, links } = formData
+    const { documentation, community } = links
+    if (!name) {
+      errors.push('Garden name not provided')
+    }
+    if (!description) {
+      errors.push('Garden description not provided')
+    }
+    if (forum && !URL_REGEX.test(forum)) {
+      errors.push('Forum is not in a valid url format')
+    }
+
+    documentation.map(doc => {
+      if (doc.link && !URL_REGEX.test(doc.link)) {
+        errors.push(`${doc.label} is not in a valid url format`)
+      }
+    })
+
+    community.map(com => {
+      if (com.link && !URL_REGEX.test(com.link)) {
+        errors.push(`${com.label} is not in a valid url format`)
+      }
+    })
+
+    return errors
+  }, [formData])
+
   const handleNext = useCallback(() => {
-    onConfigChange('garden', formData)
-    onNext()
-  }, [onConfigChange, onNext, formData])
+    if (errors.length === 0) {
+      onConfigChange('garden', formData)
+      onNext()
+    } else {
+      setDisplayErrors(true)
+    }
+  }, [errors, onConfigChange, onNext, formData])
 
   return (
     <div>
@@ -343,6 +383,14 @@ function GardenMetadata() {
           onUpdateLink={updateLink}
         />
       </div>
+
+      {displayErrors && errors.length > 0 && (
+        <Info mode="warning">
+          {errors.map((err, index) => (
+            <div key={index}>{err}</div>
+          ))}
+        </Info>
+      )}
 
       <Button onClick={() => publishNewDao(formData)}> TEST </Button>
       <Navigation
@@ -527,7 +575,7 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
           adornmentPosition="end"
           adornmentSettings={{ width: 52, padding: 8 }}
           onChange={handleUrlChange}
-          placeholder="Link URL"
+          placeholder="http://www.example.com"
           value={link}
           wide
           css={`
