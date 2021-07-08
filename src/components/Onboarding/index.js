@@ -50,29 +50,29 @@ function Onboarding({ onClose, visible }) {
               <IconCross color={theme.surfaceIcon} />
             </div>
           </div>
-          <section
+          <div
             css={`
-              margin: 0px auto;
-              max-width: 800px;
-              padding: 0px 24px 48px;
+              overflow-y: auto;
+              height: calc(100vh - 127px);
             `}
           >
-            <div
+            <section
               css={`
-                display: flex;
-                flex-direction: column;
+                margin: 0px auto;
+                max-width: 800px;
+                padding: 0px 24px 48px;
               `}
             >
               <div
                 css={`
-                  overflow-y: auto;
-                  height: calc(100vh - 127px);
+                  display: flex;
+                  flex-direction: column;
                 `}
               >
                 <Screens />
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
     </AnimatedSlider>

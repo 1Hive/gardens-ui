@@ -3,10 +3,10 @@ import env from '@/environment'
 
 const NETWORK = getNetworkName().toLowerCase()
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
+const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
 
 export const fetchLatestCommitSha = async () => {
-  const endpoint =
-    'https://api.github.com/repos/1Hive/dao-list-test/git/refs/heads/master'
+  const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
   try {
     const result = await fetch(endpoint, {
       method: 'GET',
@@ -26,7 +26,7 @@ export const fetchLatestCommitSha = async () => {
 }
 
 export const fetchBaseTreeSha = async commitSha => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/git/commits/${commitSha}`
+  const endpoint = `${ENDPOINT_BASE}/git/commits/${commitSha}`
   try {
     const result = await fetch(endpoint, {
       method: 'GET',
@@ -46,7 +46,7 @@ export const fetchBaseTreeSha = async commitSha => {
 }
 
 export const createTree = async (baseTreSha, fileContent) => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/git/trees`
+  const endpoint = `${ENDPOINT_BASE}/git/trees`
 
   const bodyData = {
     base_tree: baseTreSha,
@@ -78,7 +78,7 @@ export const createTree = async (baseTreSha, fileContent) => {
 }
 
 export const createCommit = async (latestCommitSha, newTreeSha, daoName) => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/git/commits`
+  const endpoint = `${ENDPOINT_BASE}/git/commits`
   const bodyData = {
     parents: [latestCommitSha],
     tree: newTreeSha,
@@ -108,7 +108,7 @@ export const createFileContent = async (
   base64,
   commitMsg
 ) => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/contents/assets/${folderName}/${fileName}`
+  const endpoint = `${ENDPOINT_BASE}/contents/assets/${folderName}/${fileName}`
 
   const bodyData = {
     owner: '1Hive',
@@ -136,7 +136,7 @@ export const createFileContent = async (
 }
 
 export const changeHeadsCommitSha = async commitSha => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/git/refs/heads/master`
+  const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
   const bodyData = {
     sha: commitSha,
   }
@@ -171,7 +171,6 @@ export const publishNewDao = async daoMetaData => {
       description: daoMetaData.description,
       forum: daoMetaData.forum,
       links: daoMetaData.links,
-      type: daoMetaData.type,
       logo:
         daoMetaData.logo &&
         `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/logo.${daoMetaData.logoExtension}`,
@@ -205,7 +204,7 @@ export const publishNewDao = async daoMetaData => {
 }
 
 export const fetchFileContent = async () => {
-  const endpoint = `https://api.github.com/repos/1Hive/dao-list-test/contents/${NETWORK}.json`
+  const endpoint = `${ENDPOINT_BASE}/contents/${NETWORK}.json`
   try {
     const result = await fetch(endpoint, {
       method: 'GET',

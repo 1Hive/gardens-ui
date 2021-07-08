@@ -12,6 +12,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
+import { Header } from '../kit'
 import ImageUploader from '../../ImageUploader'
 import Navigation from '../Navigation'
 import { publishNewDao } from '../../../services/github'
@@ -19,13 +20,12 @@ import { publishNewDao } from '../../../services/github'
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
 
-const DAO_LOGO = 'logo_type'
-const DAO_LOGO_MOBILE = 'logo'
+const GARDEN_LOGO_TYPE = 'logo_type'
+const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
 
 function GardenMetadata() {
   const { config, onBack, onConfigChange, onNext } = useOnboardingState()
-  const theme = useTheme()
   const [formData, setFormData] = useState(config.garden)
 
   const handleGardenNameChange = useCallback(event => {
@@ -137,16 +137,16 @@ function GardenMetadata() {
     })
   }, [])
 
-  const handleOnDaoLogoLoaded = useCallback(
+  const handleOnGardenLogoTypeLoaded = useCallback(
     (base64, fileExtension) => {
-      handleOnAssetAdded(DAO_LOGO, base64, fileExtension)
+      handleOnAssetAdded(GARDEN_LOGO_TYPE, base64, fileExtension)
     },
     [handleOnAssetAdded]
   )
 
-  const handleOnMobileLogoLoaded = useCallback(
+  const handleOnGardenLogoLoaded = useCallback(
     (base64, fileExtension) => {
-      handleOnAssetAdded(DAO_LOGO_MOBILE, base64, fileExtension)
+      handleOnAssetAdded(GARDEN_LOGO, base64, fileExtension)
     },
     [handleOnAssetAdded]
   )
@@ -167,12 +167,12 @@ function GardenMetadata() {
     })
   }, [])
 
-  const handleOnDaoLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(DAO_LOGO)
+  const handleOnGardenLogoTypeRemoved = useCallback(() => {
+    handleOnAssetRemoved(GARDEN_LOGO_TYPE)
   }, [handleOnAssetRemoved])
 
-  const handleOnMobileLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(DAO_LOGO_MOBILE)
+  const handleOnGardenLogoRemoved = useCallback(() => {
+    handleOnAssetRemoved(GARDEN_LOGO)
   }, [handleOnAssetRemoved])
 
   const handleOnTokenLogoRemoved = useCallback(() => {
@@ -186,31 +186,10 @@ function GardenMetadata() {
 
   return (
     <div>
-      <div
-        css={`
-          margin-bottom: ${6 * GU}px;
-          text-align: center;
-        `}
-      >
-        <h1
-          css={`
-            ${textStyle('title1')};
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          Garden Metadata
-        </h1>
-        <div>
-          <p
-            css={`
-              ${textStyle('body1')};
-              color: ${theme.contentSecondary};
-            `}
-          >
-            Fill with your garden information
-          </p>
-        </div>
-      </div>
+      <Header
+        title="Garden Metadata"
+        subtitle="Fill with your garden information"
+      />
       <div
         css={`
           display: flex;
@@ -227,11 +206,11 @@ function GardenMetadata() {
           `}
         >
           <TextInput
-            css="width: 100%;"
             maxLength="15"
             onChange={handleGardenNameChange}
             value={formData.name}
             required
+            css="width: 100%;"
           />
         </Field>
         <Field
@@ -244,10 +223,10 @@ function GardenMetadata() {
           <TextInput
             multiline
             maxLength="120"
-            css="width: 100%;"
             onChange={handleGardenDescriptionChange}
             value={formData.description}
             required
+            css="width: 100%;"
           />
         </Field>
         <Field
@@ -268,7 +247,7 @@ function GardenMetadata() {
                 justify-content: space-around;
               `}
             >
-              <Field label="Dao Logo">
+              <Field label="Garden Logo Type">
                 <Box
                   css={`
                     text-align: center;
@@ -277,12 +256,12 @@ function GardenMetadata() {
                 >
                   <ImageUploader
                     id={1}
-                    onImageLoaded={handleOnDaoLogoLoaded}
-                    onImageRemoved={handleOnDaoLogoRemoved}
+                    onImageLoaded={handleOnGardenLogoTypeLoaded}
+                    onImageRemoved={handleOnGardenLogoTypeRemoved}
                   />
                 </Box>
               </Field>
-              <Field label="Dao Logo mobile">
+              <Field label="Garden Logo">
                 <Box
                   css={`
                     text-align: center;
@@ -290,8 +269,8 @@ function GardenMetadata() {
                 >
                   <ImageUploader
                     id={2}
-                    onImageLoaded={handleOnMobileLogoLoaded}
-                    onImageRemoved={handleOnMobileLogoRemoved}
+                    onImageLoaded={handleOnGardenLogoLoaded}
+                    onImageRemoved={handleOnGardenLogoRemoved}
                   />
                 </Box>
               </Field>
@@ -331,7 +310,7 @@ function GardenMetadata() {
               <Help>
                 Add a link to your discussion platform - the best way to do this
                 is to create a discourse (add link to discourse site). If you
-                don't,the 1Hive forum will be assigned (add forum link) by
+                don't, the 1Hive forum will be assigned (add forum link) by
                 default.
               </Help>
             </div>
@@ -342,9 +321,9 @@ function GardenMetadata() {
           `}
         >
           <TextInput
-            css="width: 100%;"
             onChange={handleForumChange}
             value={formData.forum}
+            css="width: 100%;"
           />
         </Field>
         <LinksBox

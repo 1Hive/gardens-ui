@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {
   GU,
+  IconCheck,
   IconCloudUpload,
   IconClose,
   textStyle,
@@ -12,7 +13,7 @@ const MAX_FILE_SIZE = 1000000 // 1Mb
 
 function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
   const theme = useTheme()
-  const [imagePreview, setImagePreview] = useState('')
+  const [imageLoaded, setImageLoaded] = useState(false)
   const [error, setError] = useState('')
 
   const photoUpload = e => {
@@ -22,7 +23,7 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
     if (file?.size <= MAX_FILE_SIZE) {
       if (reader !== undefined && file !== undefined) {
         reader.onloadend = () => {
-          setImagePreview(reader.result)
+          setImageLoaded(true)
         }
         reader.readAsDataURL(file)
       }
@@ -49,14 +50,14 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
 
   const handleRemove = e => {
     e.preventDefault()
-    setImagePreview('')
+    setImageLoaded(false)
     document.getElementById(`file-${id}`).value = ''
     onImageRemoved()
   }
 
   return (
     <div>
-      {imagePreview !== '' && (
+      {imageLoaded && (
         <div
           css={`
             display: flex;
@@ -78,18 +79,28 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
         </div>
       )}
       <form onChange={handleOnChange}>
-        <Container width={100} height={100} hoverColor={theme.selected}>
-          {imagePreview === '' ? (
+        <Container
+          width={100}
+          height={100}
+          hoverColor={theme.selected}
+          imageLoaded={imageLoaded}
+          successColor={theme.positive}
+        >
+          {imageLoaded ? (
+            <IconCheck
+              css={`
+                cursor: pointer;
+                color: ${theme.positiveContent};
+              `}
+              size="large"
+            />
+          ) : (
             <IconCloudUpload
               css={`
                 cursor: pointer;
               `}
               size="large"
             />
-          ) : (
-            <>
-              <img src={imagePreview} alt="preview" />
-            </>
           )}
           <input
             type="file"
@@ -97,7 +108,6 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
             id={`file-${id}`}
             accept=".png, .jpg"
             onChange={photoUpload}
-            src={imagePreview}
           />
         </Container>
       </form>
@@ -121,23 +131,17 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
   )
 }
 
-export const Container = styled.div`
+const Container = styled.div`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
 
-  background: #eceff4;
+  background: ${props => (props.imageLoaded ? props.successColor : '#eceff4')};
   border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 1s;
-  img {
-    width: ${props => props.width}px;
-    height: ${props => props.height}px;
-    border-radius: 100%;
-    transition: all 1s;
-    object-fit: cover;
-  }
+
   input[type='file'] {
     opacity: 0;
     position: absolute;
@@ -151,4 +155,5 @@ export const Container = styled.div`
     box-shadow: 0px 0px 15px 2px ${props => props.hoverColor};
   }
 `
+
 export default ImageUploader
