@@ -8,9 +8,9 @@ import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
+import { useWallet } from './Wallet'
 
 import { DAONotFound } from '../errors'
-import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
 
 const DAOContext = React.createContext()
@@ -59,12 +59,13 @@ export function useGardens() {
 function useGardensList() {
   const [gardens, setGardens] = useState([])
   const [loading, setLoading] = useState(true)
+  const { chainId } = useWallet()
 
   useEffect(() => {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: getNetwork().chainId },
+          { network: chainId },
           { orderBy: 'honeyLiquidity' }
         )
         setGardens(result)
@@ -75,7 +76,7 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [])
+  }, [chainId])
 
   return [useMemo(() => gardens.map(mergeGardenMetadata), [gardens]), loading]
 }
