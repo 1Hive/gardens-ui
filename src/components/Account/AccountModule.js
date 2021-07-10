@@ -41,13 +41,13 @@ function AccountModule({ compact }) {
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const handleCancelConnection = useCallback(() => {
-    wallet.deactivate()
+    wallet.reset()
   }, [wallet])
 
   const activate = useCallback(
     async providerId => {
       try {
-        await wallet.activate(providerId)
+        await wallet.connect(providerId)
       } catch (error) {
         setActivationError(error)
       }
