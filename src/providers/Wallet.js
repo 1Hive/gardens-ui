@@ -58,8 +58,6 @@ function WalletAugmented({ children }) {
 }
 
 function WalletProvider({ children }) {
-  // const chainId = getDefaultChain()
-
   const connectors = getUseWalletConnectors()
   return (
     <UseWalletProvider
