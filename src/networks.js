@@ -70,3 +70,5 @@ export const connectorConfig = {
     { subgraphUrl: agreementSubgraph },
   ],
 }
+
+export const SUPPORTED_CHAINS = [4, 100, 137]
