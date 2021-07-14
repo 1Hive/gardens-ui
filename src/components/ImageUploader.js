@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 const MAX_FILE_SIZE = 1000000 // 1Mb
 
-function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
+function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
   const theme = useTheme()
   const [imageLoaded, setImageLoaded] = useState(false)
   const [error, setError] = useState('')
@@ -57,7 +57,7 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
 
   return (
     <div>
-      {imageLoaded && (
+      {(imageLoaded || imageExist) && (
         <div
           css={`
             display: flex;
@@ -83,10 +83,10 @@ function ImageUploader({ id, onImageLoaded, onImageRemoved }) {
           width={100}
           height={100}
           hoverColor={theme.selected}
-          imageLoaded={imageLoaded}
+          imageLoaded={imageLoaded || imageExist}
           successColor={theme.positive}
         >
-          {imageLoaded ? (
+          {imageLoaded || imageExist ? (
             <IconCheck
               css={`
                 cursor: pointer;

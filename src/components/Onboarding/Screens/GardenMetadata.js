@@ -16,7 +16,6 @@ import { useOnboardingState } from '@providers/Onboarding'
 import { Header } from '../kit'
 import ImageUploader from '../../ImageUploader'
 import Navigation from '../Navigation'
-import { publishNewDao } from '../../../services/github'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
@@ -224,6 +223,11 @@ function GardenMetadata() {
     }
   }, [errors, onConfigChange, onNext, formData])
 
+  const handleBack = useCallback(() => {
+    onConfigChange('garden', formData)
+    onBack()
+  }, [onConfigChange, onBack, formData])
+
   return (
     <div>
       <Header
@@ -269,67 +273,66 @@ function GardenMetadata() {
             css="width: 100%;"
           />
         </Field>
-        <Field
-          label="Assets"
+        <Box
+          heading="Assets"
           css={`
             width: 100%;
+            margin-bottom: ${3 * GU}px;
           `}
         >
-          <Box
+          <div
             css={`
-              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
             `}
           >
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-              `}
-            >
-              <Field label="Garden Logo Type">
-                <Box
-                  css={`
-                    text-align: center;
-                    max-height: 143px;
-                  `}
-                >
-                  <ImageUploader
-                    id={1}
-                    onImageLoaded={handleOnGardenLogoTypeLoaded}
-                    onImageRemoved={handleOnGardenLogoTypeRemoved}
-                  />
-                </Box>
-              </Field>
-              <Field label="Garden Logo">
-                <Box
-                  css={`
-                    text-align: center;
-                  `}
-                >
-                  <ImageUploader
-                    id={2}
-                    onImageLoaded={handleOnGardenLogoLoaded}
-                    onImageRemoved={handleOnGardenLogoRemoved}
-                  />
-                </Box>
-              </Field>
-              <Field label="Token Icon">
-                <Box
-                  css={`
-                    text-align: center;
-                  `}
-                >
-                  <ImageUploader
-                    id={3}
-                    onImageLoaded={handleOnTokenLogoLoaded}
-                    onImageRemoved={handleOnTokenLogoRemoved}
-                  />
-                </Box>
-              </Field>
-            </div>
-          </Box>
-        </Field>
+            <Field label="Garden Logo Type">
+              <Box
+                css={`
+                  text-align: center;
+                  max-height: 143px;
+                `}
+              >
+                <ImageUploader
+                  id={1}
+                  imageExist={formData.logo_type}
+                  onImageLoaded={handleOnGardenLogoTypeLoaded}
+                  onImageRemoved={handleOnGardenLogoTypeRemoved}
+                />
+              </Box>
+            </Field>
+            <Field label="Garden Logo">
+              <Box
+                css={`
+                  text-align: center;
+                `}
+              >
+                <ImageUploader
+                  id={2}
+                  imageExist={formData.logo}
+                  onImageLoaded={handleOnGardenLogoLoaded}
+                  onImageRemoved={handleOnGardenLogoRemoved}
+                />
+              </Box>
+            </Field>
+            <Field label="Token Icon">
+              <Box
+                css={`
+                  text-align: center;
+                `}
+              >
+                <ImageUploader
+                  id={3}
+                  imageExist={formData.token_logo}
+                  onImageLoaded={handleOnTokenLogoLoaded}
+                  onImageRemoved={handleOnTokenLogoRemoved}
+                />
+              </Box>
+            </Field>
+          </div>
+        </Box>
+
         <Field
           label={
             <div
@@ -385,19 +388,18 @@ function GardenMetadata() {
       </div>
 
       {displayErrors && errors.length > 0 && (
-        <Info mode="warning">
+        <Info mode="error">
           {errors.map((err, index) => (
             <div key={index}>{err}</div>
           ))}
         </Info>
       )}
 
-      <Button onClick={() => publishNewDao(formData)}> TEST </Button>
       <Navigation
         backEnabled
         nextEnabled
         nextLabel="Next"
-        onBack={onBack}
+        onBack={handleBack}
         onNext={handleNext}
       />
     </div>
