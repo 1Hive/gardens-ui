@@ -239,7 +239,7 @@ function GardenMetadata() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-bottom: ${6 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
         <Field
@@ -388,7 +388,12 @@ function GardenMetadata() {
       </div>
 
       {displayErrors && errors.length > 0 && (
-        <Info mode="error">
+        <Info
+          mode="error"
+          css={`
+            margin-bottom: ${3 * GU}px;
+          `}
+        >
           {errors.map((err, index) => (
             <div key={index}>{err}</div>
           ))}
