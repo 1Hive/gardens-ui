@@ -1,7 +1,11 @@
 import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens as steps } from '@components/Onboarding/Screens/config'
-import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import { DAY_IN_HOURS, DAY_IN_SECONDS } from '../utils/kit-utils'
+import {
+  calculateDecay,
+  calculateWeight,
+} from '../utils/conviction-modelling-helpers'
 
 const OnboardingContext = React.createContext()
 
@@ -28,11 +32,13 @@ const DEFAULT_CONFIG = {
     challengeAmountsStable: [],
   },
   conviction: {
-    decay: 0,
-    maxRatio: 0,
-    minThresholdStakePercentage: 0,
-    requestToken: '',
-    weight: 0,
+    decay: calculateDecay(DAY_IN_HOURS * 2),
+    halflifeHours: DAY_IN_HOURS * 2,
+    maxRatio: 0.1,
+    minThreshold: 0.02,
+    minThresholdStakePct: 20,
+    requestToken: '0',
+    weight: calculateWeight(0.02, 0.1),
   },
   issuance: {
     maxAdjustmentRatioPerSecond: 0,
