@@ -5,7 +5,7 @@ import { textStyle, useTheme, GU } from '@1hive/1hive-ui'
 function Header({
   title,
   subtitle,
-  topSpacing = 10 * GU,
+  topSpacing = 3 * GU,
   bottomSpacing = 7 * GU,
 }) {
   const theme = useTheme()
@@ -18,7 +18,6 @@ function Header({
     >
       <h1
         css={`
-          // Not in aragonUI - exceptionally used here
           font-size: 40px;
           font-weight: 600;
           padding-bottom: ${subtitle ? 2 * GU : 0}px;
@@ -48,7 +47,7 @@ Header.propTypes = {
 }
 
 Header.defaultProps = {
-  topSpacing: 10 * GU,
+  topSpacing: 3 * GU,
   bottomSpacing: 7 * GU,
 }
 
