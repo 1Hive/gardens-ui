@@ -1,4 +1,5 @@
 export { default as Header } from './Header'
+export { default as SliderField } from './SliderField'
 export { default as PercentageField } from './PercentageField'
 export { default as TimeParameterPanel } from './TimeParameterPanel'
 export { default as DurationFields } from './DurationFields'
