@@ -53,7 +53,7 @@ function Onboarding({ onClose, visible }) {
           <section
             css={`
               margin: 0px auto;
-              max-width: 800px;
+              max-width: 850px;
               padding: 0px 24px 48px;
             `}
           >
