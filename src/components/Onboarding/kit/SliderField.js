@@ -16,7 +16,7 @@ import {
 } from '@1hive/1hive-ui'
 
 const SliderField = React.forwardRef(function SliderField(
-  { label, value, maxValue, valueSymbol = '', onChange },
+  { label, value, minValue = 0, maxValue = 100, valueSymbol = ' ', onChange },
   ref
 ) {
   const theme = useTheme()
@@ -43,19 +43,20 @@ const SliderField = React.forwardRef(function SliderField(
 
   const handleSliderChange = useCallback(
     v => {
-      onChange(Math.round(v * maxValue))
+      const value = Math.round(v * maxValue)
+      onChange(value < minValue ? minValue : value)
     },
-    [maxValue, onChange]
+    [minValue, maxValue, onChange]
   )
 
   const handleInputChange = useCallback(
     event => {
       const value = parseInt(event.target.value, 10)
-      if (!isNaN(value) && value >= 0 && value <= maxValue) {
+      if (!isNaN(value) && value >= minValue && value <= maxValue) {
         setTextFieldValue(value)
       }
     },
-    [maxValue]
+    [minValue, maxValue]
   )
 
   const handleInputBlur = useCallback(
@@ -131,8 +132,9 @@ const SliderField = React.forwardRef(function SliderField(
 
 SliderField.propTypes = {
   label: PropTypes.node,
-  value: PropTypes.number.isRequired,
+  minValue: PropTypes.number,
   maxValue: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
   valueSymbol: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 }
