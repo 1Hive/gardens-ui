@@ -45,16 +45,17 @@ const ConvictionTimeChart = ({
 }) => {
   const theme = useTheme()
   const totalStakePct = stakeOnProposalPct + stakeOnOtherProposalsPct
-  const chartData = useMemo(() => {
-    const data = computeChartData(
-      decay,
-      stakeOnProposalPct,
-      totalStakePct > minActiveStakePct ? totalStakePct : minActiveStakePct,
-      DEFAULT_MAX_DAY,
-      DEFAULT_INCREMENT
-    )
-    return data
-  }, [decay, minActiveStakePct, stakeOnProposalPct, totalStakePct])
+  const chartData = useMemo(
+    () =>
+      computeChartData(
+        decay,
+        stakeOnProposalPct,
+        Math.max(totalStakePct, minActiveStakePct),
+        DEFAULT_MAX_DAY,
+        DEFAULT_INCREMENT
+      ),
+    [decay, minActiveStakePct, stakeOnProposalPct, totalStakePct]
+  )
 
   return (
     <ChartBase title={title} height={height} width={width}>

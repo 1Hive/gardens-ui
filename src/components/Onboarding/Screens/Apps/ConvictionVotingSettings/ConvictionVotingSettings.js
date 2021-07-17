@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useReducer } from 'react'
-import { GU, Help, useTheme } from '@1hive/1hive-ui'
+import React, { Fragment, useCallback, useReducer, useState } from 'react'
+import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../../Navigation'
 import { Header, PercentageField, SliderField } from '../../../kit'
@@ -8,6 +8,7 @@ import {
   calculateDecay,
   calculateWeight,
 } from '@/utils/conviction-modelling-helpers'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
 
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
@@ -33,11 +34,6 @@ const reduceFields = (fields, [field, value]) => {
         ...fields,
         maxRatio: value,
         weight: calculateWeight(fields.minThreshold, value),
-      }
-    case 'minThresholdStakePct':
-      return {
-        ...fields,
-        minThresholdStakePct: value,
       }
     case 'requestedAmount':
       return {
@@ -80,7 +76,6 @@ function ConvictionVotingSettings() {
       halflifeDays,
       maxRatio,
       minThreshold,
-      minThresholdStakePct,
       requestedAmount,
       stakeOnProposal,
       stakeOnOtherProposals,
@@ -93,6 +88,7 @@ function ConvictionVotingSettings() {
     stakeOnProposal: DEFAULT_STAKE_ON_PROPOSAL,
     stakeOnOtherProposals: DEFAULT_STAKE_ON_OTHER_PROPOSALS,
   })
+  const [openSettingsModal, setOpenSettingsModal] = useState(false)
 
   const handleHalflifeDaysChange = useCallback(
     value => {
@@ -136,13 +132,17 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
+  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
+    setOpenSettingsModal,
+  ])
+
   const handleNextCLick = () => {
     onConfigChange('conviction', {
+      ...config.conviction,
       decay,
       halflifeDays,
       maxRatio,
       minThreshold,
-      minThresholdStakePct,
       weight,
     })
     onNext()
@@ -215,17 +215,31 @@ function ConvictionVotingSettings() {
             value={minThreshold}
             onChange={handleMinThresholdChange}
           />
+          <Button
+            size="mini"
+            css={`
+              align-self: flex-end;
+            `}
+            label="Advanced Settings"
+            onClick={() => setOpenSettingsModal(true)}
+          />
+          <AdvancedSettingsModal
+            stakeOnProposal={stakeOnProposal}
+            visible={openSettingsModal}
+            onClose={handleCloseModal}
+          />
           <div
             css={`
               display: flex;
               flex-direction: column;
-              margin-top: ${1 * GU}px;
+              margin-top: ${4 * GU}px;
             `}
           >
             <div
               css={`
                 color: ${theme.contentSecondary};
                 margin-bottom: ${3 * GU}px;
+                ${textStyle('body3')};
               `}
             >
               The following are not actual parameters. You can adjust them to
@@ -273,7 +287,6 @@ function ConvictionVotingSettings() {
               onChange={handleStakeOnOtherProposalsChange}
             />
           </div>
-          {/* Chart Parameters */}
         </div>
         <div
           css={`
@@ -283,7 +296,7 @@ function ConvictionVotingSettings() {
           <ConvictionVotingCharts
             decay={decay}
             maxRatio={maxRatio}
-            minActiveStakePct={minThresholdStakePct}
+            minActiveStakePct={config.conviction.minThresholdStakePct}
             requestedAmount={requestedAmount}
             stakeOnProposal={stakeOnProposal}
             stakeOnOtherProposals={stakeOnOtherProposals}
