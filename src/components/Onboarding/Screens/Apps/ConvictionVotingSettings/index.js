@@ -163,7 +163,7 @@ function ConvictionVotingSettings() {
           display: flex;
           justify-content: space-between;
           margin-left: ${2 * GU}px;
-          margin-bottom: ${4 * GU}px;
+          margin-bottom: ${1 * GU}px;
         `}
       >
         <div

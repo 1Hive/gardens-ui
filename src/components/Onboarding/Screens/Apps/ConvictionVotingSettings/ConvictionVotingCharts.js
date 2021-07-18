@@ -7,8 +7,8 @@ import {
 import ConvictionTimeChart from './Charts/ConvictionTimeChart'
 import ThresholdRequestedChart from './Charts/ThresholdRequestedChart'
 
-const CHART_HEIGHT = '270px'
-const CHART_WIDTH = '450px'
+const CHART_HEIGHT = '260px'
+const CHART_WIDTH = '550px;'
 
 const ConvictionVotingCharts = ({
   decay,
@@ -30,6 +30,7 @@ const ConvictionVotingCharts = ({
       <div
         css={`
           margin-bottom: ${2 * GU}px;
+          margin-right: ${5 * GU}px;
         `}
       >
         <ConvictionTimeChart
