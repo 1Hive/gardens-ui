@@ -1,14 +1,18 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
 import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
-import Navigation from '../../../Navigation'
-import { Header, PercentageField, SliderField } from '../../../kit'
-import ConvictionVotingCharts from './ConvictionVotingCharts'
 import {
   calculateDecay,
   calculateWeight,
 } from '@/utils/conviction-modelling-helpers'
+import Navigation from '@components/Onboarding/Navigation'
+import {
+  Header,
+  PercentageField,
+  SliderField,
+} from '@components/Onboarding/kit'
 import AdvancedSettingsModal from './AdvancedSettingsModal'
+import ConvictionVotingCharts from './ConvictionVotingCharts'
 
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
@@ -173,11 +177,12 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Conviction Growth (days)
                 <Help hint="What is Conviction Growth?">
-                  <strong>Conviction Growth</strong> represent the number of
-                  days it takes to accumulate or reduce voting power by 50%. For
-                  example, if the half life is set to 1 day your tokens must
-                  back a proposal for 1 day to reach 50% of those tokens' max
-                  voting power, 2 days to reach 75%, 3 days to reach 87.5%, etc.
+                  <strong>Conviction Growth</strong> is the number of days it
+                  takes to accumulate or reduce voting power by 50%. For
+                  example, if the conviction growth is set to 1 day your tokens
+                  must back a proposal for 1 day to reach 50% of those tokens'
+                  max voting power, 2 days to reach 75%, 3 days to reach 87.5%,
+                  etc.
                 </Help>
               </Fragment>
             }
@@ -224,7 +229,7 @@ function ConvictionVotingSettings() {
             onClick={() => setOpenSettingsModal(true)}
           />
           <AdvancedSettingsModal
-            stakeOnProposal={stakeOnProposal}
+            stakeOnProposalPct={stakeOnProposal}
             visible={openSettingsModal}
             onClose={handleCloseModal}
           />

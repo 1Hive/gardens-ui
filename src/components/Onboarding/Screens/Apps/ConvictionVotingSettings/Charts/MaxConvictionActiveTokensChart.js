@@ -1,12 +1,15 @@
 import React, { useMemo } from 'react'
+import { ResponsiveLine } from '@nivo/line'
+import { useCharts } from '@providers/Charts'
 import {
   fromPercentage,
+  generateElements,
   toPercentage,
 } from '@/utils/conviction-modelling-helpers'
-import { ResponsiveLine } from '@nivo/line'
-import ChartBase from './ChartBase'
-import ChartTooltip from './ChartTooltip'
-import { TEXT_STYLES, useTheme } from '@1hive/1hive-ui'
+import {
+  ChartBase,
+  ChartTooltip,
+} from '@components/Onboarding/kit/ChartComponents'
 
 const DEFAULT_INCREMENT = 1
 const DEFAULT_MAX_PERCENTAGE = 100
@@ -28,20 +31,18 @@ const computeMaxConviction = (
 
 const computeChartData = (
   minThresholdStakePct,
-  stakeOnProposal,
+  stakeOnProposalPct,
   maxPercentage,
   increment
 ) => {
-  const activeTokensData = [...Array(maxPercentage / increment + 1).keys()].map(
-    i => i * increment
-  )
+  const activeTokensData = generateElements(maxPercentage, increment)
 
   return activeTokensData.map(activeTokensPct => ({
     x: activeTokensPct,
     y: computeMaxConviction(
       activeTokensPct,
       minThresholdStakePct,
-      stakeOnProposal
+      stakeOnProposalPct
     ),
   }))
 }
@@ -51,7 +52,7 @@ const MaxConvictionActiveTokensChart = ({
   minThresholdStakePct,
   stakeOnProposalPct,
 }) => {
-  const theme = useTheme()
+  const { commonProps, createAxis, createMarker } = useCharts()
   const chartData = useMemo(
     () =>
       computeChartData(
@@ -65,22 +66,18 @@ const MaxConvictionActiveTokensChart = ({
 
   return (
     <ChartBase
+      title="Max Conviction vs Active Tokens"
       height={height}
       width={width}
-      title="Max Conviction vs Active Tokens"
     >
       <ResponsiveLine
+        {...commonProps}
         data={[
           {
             id: 'max-conviction-active-tokens',
             data: chartData,
           },
         ]}
-        lineWidth={3}
-        xScale={{ type: 'linear' }}
-        yScale={{ type: 'linear' }}
-        yFormat=".2f"
-        xFormat=".2f"
         tooltip={({ point: { data } }) => (
           <ChartTooltip
             xLabel="Active Tokens:"
@@ -90,38 +87,14 @@ const MaxConvictionActiveTokensChart = ({
           />
         )}
         markers={[
-          {
-            axis: 'x',
-            value: minThresholdStakePct,
-            lineStyle: { stroke: '#FF9B73', strokeWidth: 2 },
-            textStyle: {
-              fontSize: `${TEXT_STYLES.body3.size}px`,
-              fill: theme.content,
-            },
-            legend: `threshold (${minThresholdStakePct} %)`,
-            legendOrientation: 'vertical',
-          },
+          createMarker(
+            'x',
+            minThresholdStakePct,
+            `Minimum active stake (${minThresholdStakePct}%)`
+          ),
         ]}
-        curve="basis"
-        margin={{ right: 30, bottom: 50, left: 50, top: 30 }}
-        axisBottom={{
-          orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          legend: 'active tokens (%)',
-          legendOffset: 36,
-          legendPosition: 'middle',
-        }}
-        axisLeft={{
-          orient: 'left',
-          tickSize: 5,
-          tickPadding: 5,
-          legend: 'max conviction (%)',
-          legendOffset: -40,
-          legendPosition: 'middle',
-        }}
-        enablePoints={false}
-        useMesh
+        axisBottom={createAxis('active tokens (%)', 'bottom')}
+        axisLeft={createAxis('max conviction (%)', 'left')}
       />
     </ChartBase>
   )

@@ -1,7 +1,7 @@
 import { Help } from '@1hive/1hive-ui'
 import React, { Fragment, useCallback, useState } from 'react'
 import { useOnboardingState } from '@/providers/Onboarding'
-import { Modal, PercentageField } from '../../../kit'
+import { Modal, PercentageField } from '@components/Onboarding//kit'
 import MaxConvictionActiveTokensChart from './Charts/MaxConvictionActiveTokensChart'
 
 const CHART_HEIGHT = '350px'

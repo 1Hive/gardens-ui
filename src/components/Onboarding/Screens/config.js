@@ -1,5 +1,5 @@
 import AgreementSettings from './Apps/AgreementSettings'
-import ConvictionVotingSettings from './Apps/ConvictionVotingSettings'
+import ConvictionVotingSettings from './Apps/ConvictionVotingSettings/ConvictionVotingSettings'
 import GardenMetadata from './GardenMetadata'
 import GardenTypeSelector from './GardenTypeSelector'
 import HoneyswapLiquidity from './HoneyswapLiquidity'
