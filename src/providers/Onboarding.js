@@ -41,7 +41,7 @@ const DEFAULT_CONFIG = {
     weight: calculateWeight(2, 10),
   },
   issuance: {
-    maxAdjustmentRatioPerSecond: 0,
+    maxAdjustmentRatioPerYear: 0,
     targetRatio: 0,
   },
   liquidity: {
