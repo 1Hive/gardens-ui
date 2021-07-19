@@ -3,6 +3,10 @@ import { GU, Help } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import { Header, PercentageField } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
+// import IssuanceChart from './IssuanceChart'
+
+// const CHART_HEIGHT = '350px'
+// const CHART_WIDTH = '100%'
 
 function reduceFields(fields, [field, value]) {
   switch (field) {
@@ -93,6 +97,20 @@ function IssuanceSettings() {
           value={maxAdjustmentRatioPerYear}
           onChange={handleMaxAdjustmentRatioPerYear}
         />
+        {/* Issuance chart */}
+        {/* <div
+          css={`
+            align-self: center;
+            width: 100%;
+          `}
+        >
+          <IssuanceChart
+            height={CHART_HEIGHT}
+            width={CHART_WIDTH}
+            maxAdjustmentRatioPerYear={maxAdjustmentRatioPerYear}
+            targetRatio={targetRatio}
+          />
+        </div> */}
       </div>
       <Navigation
         backEnabled
