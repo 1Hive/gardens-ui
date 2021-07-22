@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useWallet } from 'use-wallet'
 import { Button, GU, IconConnect } from '@1hive/1hive-ui'
+import { useWallet } from '@providers/Wallet'
 
 import ScreenError from './ScreenError'
 import AccountButton from './AccountButton'
@@ -32,12 +32,12 @@ function AccountModule({ compact }) {
   const wallet = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  const [activationError, setActivationError] = useState(null)
+  // const [activationError, setActivationError] = useState(null)
 
   const { boxOpened } = useProfile()
-  const { account, activating } = wallet
+  const { account, activating, error } = wallet
 
-  const clearError = useCallback(() => setActivationError(null), [])
+  // const clearError = useCallback(() => setActivationError(null), [])
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const handleCancelConnection = useCallback(() => {
@@ -49,7 +49,7 @@ function AccountModule({ compact }) {
       try {
         await wallet.connect(providerId)
       } catch (error) {
-        setActivationError(error)
+        console.log('error ', error)
       }
     },
     [wallet]
@@ -63,7 +63,7 @@ function AccountModule({ compact }) {
 
   // Always show the “connecting…” screen, even if there are no delay
   useEffect(() => {
-    if (activationError) {
+    if (error) {
       setActivatingDelayed(null)
     }
 
@@ -79,13 +79,13 @@ function AccountModule({ compact }) {
     return () => {
       clearTimeout(timer)
     }
-  }, [activating, activationError])
+  }, [activating, error])
 
   const previousScreenIndex = useRef(-1)
 
   const { direction, screenIndex } = useMemo(() => {
     const screenId = (() => {
-      if (activationError) return 'error'
+      if (error) return 'error'
       if (activatingDelayed) return 'connecting'
       if (account) return 'connected'
       return 'providers'
@@ -97,7 +97,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [account, activationError, activatingDelayed])
+  }, [account, error, activatingDelayed])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
@@ -109,7 +109,7 @@ function AccountModule({ compact }) {
         return false
       }
       setOpened(false)
-      setActivationError(null)
+      // setActivationError(null)
     },
     [screenId]
   )
@@ -145,7 +145,7 @@ function AccountModule({ compact }) {
         screenData={{
           account,
           activating: activatingDelayed,
-          activationError,
+          activationError: error,
           status,
           screenId,
         }}
@@ -176,7 +176,12 @@ function AccountModule({ compact }) {
             )
           }
           if (screenId === 'error') {
-            return <ScreenError error={activationError} onBack={clearError} />
+            return (
+              <ScreenError
+                error={activationError}
+                onBack={handleCancelConnection}
+              />
+            )
           }
           return <ScreenProviders onActivate={activate} />
         }}

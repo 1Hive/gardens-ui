@@ -3,11 +3,18 @@ import styled from 'styled-components'
 import GardensList from './GardensList'
 import Onboarding from './Onboarding'
 import LandingBanner from './LandingBanner'
+import UnsupportedChainAnimation from './UnsupportedChainAnimation'
+import { useWallet } from '@providers/Wallet'
 import { useNodeHeight } from '@hooks/useNodeHeight'
+
+// import { isSupportedChain } from '@/networks'
 
 function Home() {
   const [height, ref] = useNodeHeight()
   const [onboardingVisible, setOnboardingVisible] = useState(false)
+  const { supportedChain } = useWallet()
+
+  console.log('HOMEEEEEEE')
 
   const handleOnboardingOpen = useCallback(() => {
     setOnboardingVisible(true)
@@ -21,7 +28,7 @@ function Home() {
     <div>
       <LandingBanner ref={ref} onCreateGarden={handleOnboardingOpen} />
       <DynamicDiv marginTop={height}>
-        <GardensList />
+        {supportedChain ? <GardensList /> : <UnsupportedChainAnimation />}
       </DynamicDiv>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
     </div>

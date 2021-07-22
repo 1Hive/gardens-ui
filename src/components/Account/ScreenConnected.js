@@ -46,7 +46,9 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
     wallet,
   ])
 
-  const handleDeactivate = useCallback(() => wallet.reset(), [wallet])
+  const handleDeactivate = useCallback(() => {
+    wallet.resetConnection()
+  }, [wallet])
 
   return (
     <div

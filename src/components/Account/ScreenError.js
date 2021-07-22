@@ -1,22 +1,36 @@
 import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
-import { ChainUnsupportedError } from 'use-wallet'
+import { ChainUnsupportedError } from '@1hive/use-wallet'
+import { SUPPORTED_CHAINS } from '@/networks'
+import { getNetworkName } from '@utils/web3-utils'
+
 import connectionError from './assets/connection-error.png'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
 
+  let networkNames = ''
+  SUPPORTED_CHAINS.forEach((chain, i, array) => {
+    networkNames += getNetworkName(chain)
+    if (i !== array.length - 1) {
+      networkNames += ', '
+    }
+  })
+
   const [title, secondary] = useMemo(() => {
     if (error instanceof ChainUnsupportedError) {
-      return ['Wrong network', `${error.message}`]
+      return [
+        'Wrong network',
+        `Please select one of these networks in your wallet and try again: ${networkNames}`,
+      ]
     }
     return [
       'Failed to enable your account',
       'You can try another Ethereum wallet.',
     ]
-  }, [error])
+  }, [error, networkNames])
 
   return (
     <section
