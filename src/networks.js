@@ -1,4 +1,8 @@
-import { getNetworkType, isLocalOrUnknownNetwork } from '@utils/web3-utils'
+import {
+  getNetworkType,
+  isLocalOrUnknownNetwork,
+  getNetworkName,
+} from '@utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
@@ -50,7 +54,7 @@ function getNetworkInternalName(chainId = getDefaultChain()) {
   return isLocalOrUnknownNetwork(chainId) ? 'local' : getNetworkType(chainId)
 }
 
-export function getNetwork(chainId = getDefaultChain()) {
+export function getNetwork(chainId) {
   return networks[getNetworkInternalName(chainId)]
 }
 
@@ -62,13 +66,29 @@ export function getAvailableNetworks() {
   }))
 }
 
-const agreementSubgraph = getNetwork().subgraphs?.agreement
-
-export const connectorConfig = {
-  agreement: agreementSubgraph && [
-    'thegraph',
-    { subgraphUrl: agreementSubgraph },
-  ],
+export function getAgreementConnectorConfig(chainId) {
+  const agreementSubgraph = getNetwork(chainId).subgraphs?.agreement
+  return {
+    agreement: agreementSubgraph && [
+      'thegraph',
+      { subgraphUrl: agreementSubgraph },
+    ],
+  }
 }
 
-export const SUPPORTED_CHAINS = [4, 100, 137]
+export const SUPPORTED_CHAINS = [4, 100] // Add  polygon and arbitrum  chains id + fill the network json with the data
+
+export function isSupportedChain(chainId) {
+  return SUPPORTED_CHAINS.includes(chainId)
+}
+
+export function getSupportedChainsNamesFormatted() {
+  let networkNames = ''
+  SUPPORTED_CHAINS.forEach((chain, i, array) => {
+    networkNames += getNetworkName(chain)
+    if (i !== array.length - 1) {
+      networkNames += ', '
+    }
+  })
+  return networkNames
+}
