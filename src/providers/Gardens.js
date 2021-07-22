@@ -61,6 +61,8 @@ function useGardensList() {
   const [loading, setLoading] = useState(true)
   const { chainId } = useWallet()
 
+  console.log(' GARDENS WALLET ', chainId)
+
   useEffect(() => {
     const fetchGardens = async () => {
       try {
@@ -70,6 +72,7 @@ function useGardensList() {
         )
         setGardens(result)
       } catch (err) {
+        setGardens([])
         console.error(`Error fetching daos ${err}`)
       }
       setLoading(false)

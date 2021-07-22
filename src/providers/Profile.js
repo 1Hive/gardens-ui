@@ -20,7 +20,7 @@ const ProfileContext = React.createContext()
 const boxCache = new Map([])
 
 function ProfileProvider({ children }) {
-  const { account, ethereum } = useWallet()
+  const { account, ethereum, chainReseted } = useWallet()
   const [box, setBox] = useState(null)
   const [loadingBox, setLoadingBox] = useState(true)
   const [profile, setProfile] = useState(null)
@@ -105,12 +105,11 @@ function ProfileProvider({ children }) {
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
     setBox(null)
-    if (!account) {
+    if (!account || chainReseted) {
       return
     }
-
     auth()
-  }, [account, auth])
+  }, [account, auth, chainReseted])
 
   useEffect(() => {
     if (box) {
