@@ -64,7 +64,7 @@ function StepsPanel() {
           height: ${25 * GU}px;
         `}
       >
-        <CircleGraph value={step / (Screens.length - 1)} size={25 * GU} />
+        <CircleGraph value={step / Screens.length} size={25 * GU} />
       </div>
       <div
         css={`
