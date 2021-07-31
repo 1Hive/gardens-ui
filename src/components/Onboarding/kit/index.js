@@ -1,3 +1,4 @@
+export * from './FileUploaderField'
 export { default as Header } from './Header'
 export { default as PercentageField } from './PercentageField'
 export { default as TimeParameterPanel } from './TimeParameterPanel'

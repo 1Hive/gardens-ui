@@ -5,23 +5,27 @@ import {
   Help,
   Info,
   Link,
+  Markdown,
+  Modal,
   TextInput,
-  textStyle,
-  useTheme,
 } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../../Navigation'
-import { DurationFields, Header } from '../../kit'
+import {
+  DurationFields,
+  Header,
+  FileUploaderField,
+  TextFileUploader,
+} from '../../kit'
 
 const MAX_TITLE_LENGTH = 50
-const MAX_CONTENT_LENGTH = 8000
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
     case 'title':
       return { ...fields, title: value }
-    case 'content':
-      return { ...fields, content: value }
+    case 'covenantFile':
+      return { ...fields, covenantFile: value }
     case 'challengePeriod':
       return { ...fields, challengePeriod: value }
     default:
@@ -29,12 +33,12 @@ const reduceFields = (fields, [field, value]) => {
   }
 }
 
-const validateAgreementSettings = (title, content, challengePeriod) => {
+const validateAgreementSettings = (title, covenantFile, challengePeriod) => {
   if (!title.trim()) {
     return 'Please add a title.'
   }
-  if (!content.trim()) {
-    return 'Please add a content.'
+  if (!covenantFile || !covenantFile.content) {
+    return 'File content empty. Please upload your covenant.'
   }
   if (!challengePeriod) {
     return 'Please add a challenge period.'
@@ -43,7 +47,6 @@ const validateAgreementSettings = (title, content, challengePeriod) => {
 }
 
 function AgreementSettings() {
-  const theme = useTheme()
   const {
     config,
     onBack,
@@ -53,7 +56,8 @@ function AgreementSettings() {
     steps,
   } = useOnboardingState()
   const [formError, setFormError] = useState()
-  const [{ title, content, challengePeriod }, updateField] = useReducer(
+  const [covenantOpened, setCovenantOpened] = useState(false)
+  const [{ title, covenantFile, challengePeriod }, updateField] = useReducer(
     reduceFields,
     config.agreement
   )
@@ -65,17 +69,15 @@ function AgreementSettings() {
         updateField(['title', value])
       }
     },
-    [updateField]
+    [updateField, setFormError]
   )
 
-  const handleContentChange = useCallback(
-    ({ target: { value } }) => {
-      if (value.length <= MAX_CONTENT_LENGTH) {
-        setFormError(null)
-        updateField(['content', value])
-      }
+  const handleCovenantFileChange = useCallback(
+    file => {
+      setFormError(null)
+      updateField(['covenantFile', file])
     },
-    [updateField]
+    [updateField, setFormError]
   )
 
   const handleChallengePeriod = useCallback(
@@ -83,22 +85,26 @@ function AgreementSettings() {
       setFormError(null)
       updateField(['challengePeriod', value])
     },
-    [updateField]
+    [updateField, setFormError]
   )
 
   const handleNextClick = useCallback(() => {
-    const error = validateAgreementSettings(title, content, challengePeriod)
+    const error = validateAgreementSettings(
+      title,
+      covenantFile,
+      challengePeriod
+    )
     setFormError(error)
 
     if (!error) {
       onConfigChange('agreement', {
         title,
-        content,
+        covenantFile,
         challengePeriod,
       })
       onNext()
     }
-  }, [onConfigChange, challengePeriod, content, onNext, title])
+  }, [onConfigChange, challengePeriod, covenantFile, onNext, title])
 
   return (
     <div>
@@ -106,58 +112,101 @@ function AgreementSettings() {
         title="Configure Community Agreement"
         subtitle="Create the character of your DAO"
       />
-      <Field label="Title" required>
-        <TextInput value={title} onChange={handleTitleChange} autofocus wide />
-      </Field>
-      <Field label="Content/Covenant" required>
-        <TextInput
-          value={content}
-          placeholder="Define the mission, vision, and values of your community using
-          markdown format."
-          onChange={handleContentChange}
-          multiline
-          wide
-        />
-      </Field>
-      <DurationFields
-        label={
-          <Fragment>
-            Challenge Period
-            <Help hint="What is the Challenge Period?">
-              Once a proposal has been challenged, this is the amount of time
-              the proposal's creator has to either accept a settlement or raise
-              the dispute to{' '}
-              <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>.
-            </Help>
-          </Fragment>
-        }
-        duration={challengePeriod}
-        onUpdate={handleChallengePeriod}
-      />
       <div
         css={`
-          margin-top: -${2 * GU}px;
-          margin-bottom: ${3 * GU}px;
-          font-style: italic;
-          color: ${theme.contentSecondary.alpha(0.5)};
-          ${textStyle('body3')}
+          margin-bottom: ${4 * GU}px;
         `}
       >
-        We recommend sticking with the default duration.
-      </div>
-      {formError && (
-        <Info
-          mode="error"
+        <Field label="Title" required>
+          <TextInput
+            value={title}
+            onChange={handleTitleChange}
+            autofocus
+            wide
+          />
+        </Field>
+        <div
           css={`
-            margin-bottom: ${4 * GU}px;
+            display: flex;
           `}
         >
-          {formError}
-        </Info>
-      )}
+          <FileUploaderField
+            allowedMIMETypes={['text/markdown', 'text/plain']}
+            file={covenantFile}
+            onFileUpdated={handleCovenantFileChange}
+            description={
+              <>
+                Drag and drop a document here or <TextFileUploader /> to upload
+                your community covenant. By uploading a file, you agree to
+                Gardens uploading this file to IPFS.
+              </>
+            }
+            label="Content/Covenant"
+            previewLabel={
+              <div
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              >
+                <Link
+                  onClick={() => {
+                    setCovenantOpened(true)
+                  }}
+                >
+                  Preview Covenant
+                </Link>
+              </div>
+            }
+            required
+          />
+        </div>
+        <DurationFields
+          label={
+            <Fragment>
+              Challenge Period
+              <Help hint="What is the Challenge Period?">
+                Once a proposal has been challenged, this is the amount of time
+                the proposal's creator has to either accept a settlement or
+                raise the dispute to{' '}
+                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>.
+              </Help>
+            </Fragment>
+          }
+          duration={challengePeriod}
+          onUpdate={handleChallengePeriod}
+        />
+        <Info>We recommend sticking with the default duration.</Info>
+        {formError && (
+          <Info
+            mode="error"
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            {formError}
+          </Info>
+        )}
+      </div>
+      <Modal
+        css={`
+          z-index: 4;
+        `}
+        visible={covenantOpened}
+        onClose={() => setCovenantOpened(false)}
+        width="960px"
+      >
+        <div
+          css={`
+            padding: 0 ${4 * GU}px;
+            padding-top: ${2 * GU}px;
+          `}
+        >
+          <Markdown normalized content={covenantFile?.content ?? ''} />
+        </div>
+      </Modal>
       <Navigation
         backEnabled
-        nextEnabled={Boolean(title && content && challengePeriod)}
+        nextEnabled={Boolean(title && !!covenantFile && challengePeriod)}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}
