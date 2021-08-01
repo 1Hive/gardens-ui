@@ -9,7 +9,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { mimeToExtension, toOxford } from '@utils/kit-utils'
+import { mimeToExtension, readFile, toOxford } from '@utils/kit-utils'
 import FilePreview from './FilePreview'
 
 const DEFAULT_MAX_FILE_SIZE = 1000000 // 1Mb
@@ -74,7 +74,7 @@ export const FileUploaderField = ({
               lastModified: file.lastModified,
             })
           }
-          reader.readAsText(file)
+          readFile(reader, file)
         }
       }
     },

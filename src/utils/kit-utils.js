@@ -37,3 +37,19 @@ export const mimeToExtension = mime => {
       return mime
   }
 }
+
+export const readFile = (reader, file) => {
+  switch (file.type) {
+    case 'text/txt':
+    case 'text/md':
+      reader.readAsText(file)
+      return
+    case 'image/jpg':
+    case 'image/jpeg':
+    case 'image/png':
+      reader.readAsDataURL(file)
+      return
+    default:
+      reader.readAsText(file)
+  }
+}
