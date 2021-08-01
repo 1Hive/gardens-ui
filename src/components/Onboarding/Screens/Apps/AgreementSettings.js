@@ -38,7 +38,7 @@ const validateAgreementSettings = (title, covenantFile, challengePeriod) => {
     return 'Please add a title.'
   }
   if (!covenantFile || !covenantFile.content) {
-    return 'File content empty. Please upload your covenant.'
+    return 'File content empty. Please upload your Covenant.'
   }
   if (!challengePeriod) {
     return 'Please add a challenge period.'
@@ -50,8 +50,8 @@ function AgreementSettings() {
   const {
     config,
     onBack,
-    onNext,
     onConfigChange,
+    onNext,
     step,
     steps,
   } = useOnboardingState()
@@ -109,8 +109,8 @@ function AgreementSettings() {
   return (
     <div>
       <Header
-        title="Configure Community Agreement"
-        subtitle="Create the character of your DAO"
+        title="Configure Community Covenant"
+        subtitle="Encode the social contract of your DAO"
       />
       <div
         css={`
@@ -141,7 +141,7 @@ function AgreementSettings() {
                 Gardens uploading this file to IPFS.
               </>
             }
-            label="Content/Covenant"
+            label="Covenant"
             previewLabel={
               <div
                 css={`
