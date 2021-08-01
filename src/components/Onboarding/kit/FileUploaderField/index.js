@@ -13,7 +13,7 @@ import { mimeToExtension, toOxford } from '@utils/kit-utils'
 import FilePreview from './FilePreview'
 
 const DEFAULT_MAX_FILE_SIZE = 1000000 // 1Mb
-const FILE_UPLOADER_ID = 'file-uploader'
+const DEFAULT_DROPZONE_ID = 'file-uploader'
 
 const getDropzoneColor = (theme, isReject, isAccept) => {
   if (isReject) {
@@ -23,7 +23,10 @@ const getDropzoneColor = (theme, isReject, isAccept) => {
   } else return { mainColor: '#A1A9A4', backgroundColor: '#FFFFFF' }
 }
 
-export const TextFileUploader = ({ label = 'browse your files' }) => {
+export const TextFileUploader = ({
+  dropzoneId = DEFAULT_DROPZONE_ID,
+  label = 'browse your files',
+}) => {
   const theme = useTheme()
 
   return (
@@ -32,7 +35,7 @@ export const TextFileUploader = ({ label = 'browse your files' }) => {
         cursor: pointer;
         color: ${theme.link};
       `}
-      htmlFor={FILE_UPLOADER_ID}
+      htmlFor={dropzoneId}
     >
       {label}
     </label>
@@ -43,6 +46,7 @@ export const FileUploaderField = ({
   allowedMIMETypes,
   file,
   description,
+  id = DEFAULT_DROPZONE_ID,
   label,
   maxFileSize = DEFAULT_MAX_FILE_SIZE,
   onFileUpdated = () => {},
@@ -148,7 +152,7 @@ export const FileUploaderField = ({
           >
             <input
               {...getInputProps({
-                id: FILE_UPLOADER_ID,
+                id,
                 /* Include file extensions as well due to some MIME
                  types aren't working on input tag, e.g., text/markdown. */
                 accept: allowedMIMETypes
@@ -212,11 +216,17 @@ export const FileUploaderField = ({
   )
 }
 
+TextFileUploader.propTypes = {
+  dropzoneId: PropTypes.string,
+  label: PropTypes.string,
+}
+
 FileUploaderField.propTypes = {
   file: PropTypes.object,
   onFileUpdated: PropTypes.func,
-  label: PropTypes.node,
   description: PropTypes.node,
+  id: PropTypes.string,
+  label: PropTypes.node,
   maxFileSize: PropTypes.number,
   previewLabel: PropTypes.node,
   require: PropTypes.bool,
