@@ -9,7 +9,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { mimeToExtension, toOxford } from '@/utils/kit-utils'
+import { mimeToExtension, toOxford } from '@utils/kit-utils'
 import FilePreview from './FilePreview'
 
 const DEFAULT_MAX_FILE_SIZE = 1000000 // 1Mb
@@ -81,6 +81,7 @@ export const FileUploaderField = ({
     getInputProps,
     isDragAccept,
     isDragReject,
+    open,
   } = useDropzone({
     accept: allowedMIMETypes,
     onDrop,
@@ -112,17 +113,6 @@ export const FileUploaderField = ({
             </div>
           )}
         </div>
-        {validExtensions && (
-          <div
-            css={`
-              margin-top: ${1 * GU}px;
-              color: ${mainColor};
-              font-weight: bold;
-            `}
-          >
-            Valid file format: {toOxford(validExtensions)}
-          </div>
-        )}
       </Field>
       {/* Set dropzone here due to some problems with the field component and the onclick event bubbling. */}
       <Card
@@ -169,23 +159,44 @@ export const FileUploaderField = ({
             {!file ? (
               <div
                 css={`
-                  border-radius: 50%;
-                  background-color: ${mainColor};
-                  width: ${iconSize}px;
-                  height: ${iconSize}px;
                   display: flex;
-                  justify-content: center;
+                  flex-direction: column;
                   align-items: center;
                   transition: background-color 0.5s;
                 `}
               >
-                <IconUpload
+                <div
                   css={`
-                    color: white;
-                    width: ${iconSize - 3 * GU}px;
-                    height: ${iconSize - 3 * GU}px;
+                    border-radius: 50%;
+                    background-color: ${mainColor};
+                    cursor: pointer;
+                    width: ${iconSize}px;
+                    height: ${iconSize}px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                   `}
-                />
+                  onClick={open}
+                >
+                  <IconUpload
+                    css={`
+                      color: white;
+                      width: ${iconSize - 3 * GU}px;
+                      height: ${iconSize - 3 * GU}px;
+                    `}
+                  />
+                </div>
+                {validExtensions && (
+                  <div
+                    css={`
+                      margin-top: ${1 * GU}px;
+                      color: ${mainColor};
+                      font-weight: bold;
+                    `}
+                  >
+                    Valid file format: {toOxford(validExtensions)}
+                  </div>
+                )}
               </div>
             ) : (
               <FilePreview
