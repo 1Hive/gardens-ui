@@ -16,7 +16,7 @@ function ConnectProvider({ children }) {
         'thegraph',
         {
           orgSubgraphUrl:
-            'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
+            'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
         },
       ]}
       options={{
