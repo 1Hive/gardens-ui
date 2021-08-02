@@ -19,9 +19,11 @@ const DEFAULT_CONFIG = {
     type: -1,
   },
   agreement: {
-    title: '',
-    content: '',
+    actionAmount: 0.1,
+    challengeAmount: 0.1,
     challengePeriod: DAY_IN_SECONDS * 3,
+    covenantFile: null,
+    title: '',
   },
   conviction: {
     decay: 0,

@@ -16,6 +16,7 @@ import {
   Header,
   FileUploaderField,
   TextFileUploader,
+  AmountField,
 } from '../../kit'
 
 const MAX_TITLE_LENGTH = 50
@@ -28,6 +29,10 @@ const reduceFields = (fields, [field, value]) => {
       return { ...fields, covenantFile: value }
     case 'challengePeriod':
       return { ...fields, challengePeriod: value }
+    case 'challengeAmount':
+      return { ...fields, challengeAmount: value }
+    case 'actionAmount':
+      return { ...fields, actionAmount: value }
     default:
       return fields
   }
@@ -57,9 +62,41 @@ function AgreementSettings() {
   } = useOnboardingState()
   const [formError, setFormError] = useState()
   const [covenantOpened, setCovenantOpened] = useState(false)
-  const [{ title, covenantFile, challengePeriod }, updateField] = useReducer(
-    reduceFields,
-    config.agreement
+  const [
+    { actionAmount, challengeAmount, challengePeriod, covenantFile, title },
+    updateField,
+  ] = useReducer(reduceFields, config.agreement)
+
+  const handleActionAmount = useCallback(
+    value => {
+      setFormError(null)
+      updateField(['actionAmount', value])
+    },
+    [setFormError, updateField]
+  )
+
+  const handleChallengeAmount = useCallback(
+    value => {
+      setFormError(null)
+      updateField(['challengeAmount', value])
+    },
+    [setFormError, updateField]
+  )
+
+  const handleChallengePeriod = useCallback(
+    value => {
+      setFormError(null)
+      updateField(['challengePeriod', value])
+    },
+    [setFormError, updateField]
+  )
+
+  const handleCovenantFileChange = useCallback(
+    file => {
+      setFormError(null)
+      updateField(['covenantFile', file])
+    },
+    [setFormError, updateField]
   )
 
   const handleTitleChange = useCallback(
@@ -69,23 +106,7 @@ function AgreementSettings() {
         updateField(['title', value])
       }
     },
-    [updateField, setFormError]
-  )
-
-  const handleCovenantFileChange = useCallback(
-    file => {
-      setFormError(null)
-      updateField(['covenantFile', file])
-    },
-    [updateField, setFormError]
-  )
-
-  const handleChallengePeriod = useCallback(
-    value => {
-      setFormError(null)
-      updateField(['challengePeriod', value])
-    },
-    [updateField, setFormError]
+    [setFormError, updateField]
   )
 
   const handleNextClick = useCallback(() => {
@@ -98,13 +119,23 @@ function AgreementSettings() {
 
     if (!error) {
       onConfigChange('agreement', {
-        title,
-        covenantFile,
+        actionAmount,
+        challengeAmount,
         challengePeriod,
+        covenantFile,
+        title,
       })
       onNext()
     }
-  }, [onConfigChange, challengePeriod, covenantFile, onNext, title])
+  }, [
+    actionAmount,
+    challengeAmount,
+    challengePeriod,
+    covenantFile,
+    onConfigChange,
+    onNext,
+    title,
+  ])
 
   return (
     <div>
@@ -125,55 +156,83 @@ function AgreementSettings() {
             wide
           />
         </Field>
-        <div
-          css={`
-            display: flex;
-          `}
-        >
-          <FileUploaderField
-            allowedMIMETypes={['text/markdown', 'text/plain']}
-            file={covenantFile}
-            onFileUpdated={handleCovenantFileChange}
-            description={
-              <>
-                Drag and drop a document here or <TextFileUploader /> to upload
-                your community covenant. By uploading a file, you agree to
-                Gardens uploading this file to IPFS.
-              </>
-            }
-            label="Covenant"
-            previewLabel={
-              <div
-                css={`
-                  margin-top: ${2 * GU}px;
-                `}
+        <FileUploaderField
+          allowedMIMETypes={['text/markdown', 'text/plain']}
+          file={covenantFile}
+          onFileUpdated={handleCovenantFileChange}
+          description={
+            <>
+              Drag and drop a document here or <TextFileUploader /> to upload
+              your community covenant. By uploading a file, you agree to Gardens
+              uploading this file to IPFS.
+            </>
+          }
+          label="Covenant"
+          previewLabel={
+            <div
+              css={`
+                margin-top: ${2 * GU}px;
+              `}
+            >
+              <Link
+                onClick={() => {
+                  setCovenantOpened(true)
+                }}
               >
-                <Link
-                  onClick={() => {
-                    setCovenantOpened(true)
-                  }}
-                >
-                  Preview Covenant
-                </Link>
-              </div>
-            }
-            required
-          />
-        </div>
+                Preview Covenant
+              </Link>
+            </div>
+          }
+          required
+        />
         <DurationFields
           label={
             <Fragment>
-              Challenge Period
-              <Help hint="What is the Challenge Period?">
-                Once a proposal has been challenged, this is the amount of time
-                the proposal's creator has to either accept a settlement or
-                raise the dispute to{' '}
-                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>.
+              Settlement Period
+              <Help hint="What is Settlement Period?">
+                <strong>Settlement Period</strong> is the amount of time the
+                proposal's creator has to either accept a settlement or raise
+                the dispute to{' '}
+                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{' '}
+                after a proposal has been challenged.
               </Help>
             </Fragment>
           }
           duration={challengePeriod}
           onUpdate={handleChallengePeriod}
+          required
+        />
+        <AmountField
+          label={
+            <Fragment>
+              Challenge Fee
+              <Help hint="What is Challenge Fee?">
+                <strong>Challenge Fee</strong> is the amount of collateral
+                tokens that will be locked every time an action is challenged.
+              </Help>
+            </Fragment>
+          }
+          value={challengeAmount}
+          onChange={handleChallengeAmount}
+          required
+          unitSymbol={config.tokens.symbol}
+          wide
+        />
+        <AmountField
+          label={
+            <Fragment>
+              Action Fee
+              <Help hint="What is Action Fee?">
+                <strong>The Action Fee</strong> is the amount of collateral
+                tokens that will be locked every time an action is submitted.
+              </Help>
+            </Fragment>
+          }
+          value={actionAmount}
+          onChange={handleActionAmount}
+          required
+          unitSymbol={config.tokens.symbol}
+          wide
         />
         <Info>We recommend sticking with the default duration.</Info>
         {formError && (
@@ -206,7 +265,13 @@ function AgreementSettings() {
       </Modal>
       <Navigation
         backEnabled
-        nextEnabled={Boolean(title && !!covenantFile && challengePeriod)}
+        nextEnabled={Boolean(
+          actionAmount &&
+            challengeAmount &&
+            challengePeriod &&
+            !!covenantFile &&
+            title
+        )}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}
