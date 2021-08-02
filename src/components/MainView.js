@@ -9,8 +9,6 @@ function MainView({ children }) {
   const { below } = useViewport()
   const compactMode = below('large')
 
-  console.log('MAIN VIEW')
-
   return (
     <div
       css={`

@@ -1,7 +1,7 @@
 import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
 import env from '@/environment'
-import { getDefaultChain } from '@/local-settings'
+import { getPreferredChain } from '@/local-settings'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
@@ -40,7 +40,7 @@ export function getUseWalletProviders() {
   return providers
 }
 
-export function getNetworkType(chainId = getDefaultChain()) {
+export function getNetworkType(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'mainnet'
@@ -52,7 +52,7 @@ export function getNetworkType(chainId = getDefaultChain()) {
   return DEFAULT_LOCAL_CHAIN
 }
 
-export function getNetworkName(chainId = getDefaultChain()) {
+export function getNetworkName(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'Mainnet'
@@ -64,7 +64,7 @@ export function getNetworkName(chainId = getDefaultChain()) {
   return 'unknown'
 }
 
-export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
+export function isLocalOrUnknownNetwork(chainId = getPreferredChain()) {
   return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
 }
 

@@ -10,7 +10,7 @@ import { WalletProvider } from './providers/Wallet'
 import { ProfileProvider } from './providers/Profile'
 import env from './environment'
 
-function App() 
+function App() {
   return (
     <HashRouter>
       <IntercomProvider appId={env('INTERCOM_APP_ID')} autoBoot>

@@ -11,7 +11,7 @@ import { UseWalletProvider, useWallet } from '@1hive/use-wallet'
 
 import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
 import { getNetwork, isSupportedChain, SUPPORTED_CHAINS } from '@/networks'
-import { getDefaultChain, setDefaultChain } from '@/local-settings'
+import { getPreferredChain, setPreferredChain } from '@/local-settings'
 
 const WalletAugmentedContext = React.createContext()
 
@@ -35,7 +35,7 @@ function WalletAugmented({ children }) {
     const ensRegistry = getNetwork(wallet.chainId)?.ensRegistry
     return new EthersProviders.Web3Provider(ethereum, {
       name: '',
-      chainId: getDefaultChain(),
+      chainId: getPreferredChain(),
       ensAddress: ensRegistry,
     })
   }, [ethereum, wallet.chainId]) //eslint-disable-line
@@ -74,7 +74,7 @@ function WalletAugmented({ children }) {
   useEffect(() => {
     if (wallet.account != null && chainId !== wallet.chainId) {
       setChainId(wallet.chainId)
-      setDefaultChain(wallet.chainId)
+      setPreferredChain(wallet.chainId)
     }
   }, [wallet.account, wallet.chainId, chainId])
 

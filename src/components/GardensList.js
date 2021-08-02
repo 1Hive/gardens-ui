@@ -11,6 +11,8 @@ function GardensList() {
   // TODO :  add loading component
   const { gardens } = useGardens()
 
+  console.log('Gardens!!! ', gardens)
+
   return (
     <div
       css={`

@@ -1,7 +1,5 @@
-import env from './environment'
-
 const APP_THEME = 'THEME'
-const DEFAULT_CHAIN_ID = 'CHAIN_ID'
+const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 
 // Get a setting from localStorage
 function getLocalStorageSetting(confKey) {
@@ -14,12 +12,12 @@ function setLocalSetting(confKey, value) {
   return window.localStorage.setItem(storageKey, value)
 }
 
-export function getDefaultChain() {
-  return Number(env(DEFAULT_CHAIN_ID))
+export function getPreferredChain() {
+  return Number(getLocalStorageSetting(PREFERRED_CHAIN_ID_KEY))
 }
 
-export function setDefaultChain(chainId) {
-  return setLocalSetting(DEFAULT_CHAIN_ID, chainId)
+export function setPreferredChain(chainId) {
+  return setLocalSetting(PREFERRED_CHAIN_ID_KEY, chainId)
 }
 
 export function getAppTheme() {

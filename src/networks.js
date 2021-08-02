@@ -3,7 +3,8 @@ import {
   isLocalOrUnknownNetwork,
   getNetworkName,
 } from '@utils/web3-utils'
-import { getDefaultChain } from './local-settings'
+import { getPreferredChain } from './local-settings'
+import { DEFAULT_CHAIN_ID } from './constants'
 import env from './environment'
 
 const ETH_NODE = env('ETH_NODE')
@@ -50,11 +51,11 @@ const networks = {
   },
 }
 
-function getNetworkInternalName(chainId = getDefaultChain()) {
+function getNetworkInternalName(chainId = getPreferredChain()) {
   return isLocalOrUnknownNetwork(chainId) ? 'local' : getNetworkType(chainId)
 }
 
-export function getNetwork(chainId) {
+export function getNetwork(chainId = DEFAULT_CHAIN_ID) {
   return networks[getNetworkInternalName(chainId)]
 }
 
