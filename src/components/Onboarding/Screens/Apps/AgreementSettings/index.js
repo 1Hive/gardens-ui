@@ -1,23 +1,15 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import {
-  Field,
-  GU,
-  Help,
-  Info,
-  Link,
-  Markdown,
-  Modal,
-  TextInput,
-} from '@1hive/1hive-ui'
+import { Field, GU, Help, Info, Link, TextInput } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
-import Navigation from '../../Navigation'
 import {
   DurationFields,
   Header,
   FileUploaderField,
   TextFileUploader,
   AmountField,
-} from '../../kit'
+} from '@components/Onboarding/kit'
+import Navigation from '@components/Onboarding/Navigation'
+import CovenantModal from './CovenantModal'
 
 const MAX_TITLE_LENGTH = 50
 
@@ -61,11 +53,11 @@ function AgreementSettings() {
     steps,
   } = useOnboardingState()
   const [formError, setFormError] = useState()
-  const [covenantOpened, setCovenantOpened] = useState(false)
   const [
     { actionAmount, challengeAmount, challengePeriod, covenantFile, title },
     updateField,
   ] = useReducer(reduceFields, config.agreement)
+  const [covenantOpened, setCovenantOpened] = useState(false)
 
   const handleActionAmount = useCallback(
     value => {
@@ -246,23 +238,11 @@ function AgreementSettings() {
           </Info>
         )}
       </div>
-      <Modal
-        css={`
-          z-index: 4;
-        `}
-        visible={covenantOpened}
+      <CovenantModal
+        open={covenantOpened}
+        file={covenantFile}
         onClose={() => setCovenantOpened(false)}
-        width="960px"
-      >
-        <div
-          css={`
-            padding: 0 ${4 * GU}px;
-            padding-top: ${2 * GU}px;
-          `}
-        >
-          <Markdown normalized content={covenantFile?.content ?? ''} />
-        </div>
-      </Modal>
+      />
       <Navigation
         backEnabled
         nextEnabled={Boolean(
