@@ -28,7 +28,7 @@ export const Screens = [
   { parent: STEPS[2], title: 'Garden token', Screen: TokensSettings },
   {
     parent: STEPS[2],
-    title: 'Honeyswap Liquidity',
+    title: 'HNY Liquidity',
     Screen: HoneyswapLiquidity,
   },
   {
