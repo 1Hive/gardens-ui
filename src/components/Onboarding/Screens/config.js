@@ -25,13 +25,13 @@ export const Screens = [
   { key: STEPS[1], title: 'Garden metadata', Screen: GardenMetadata },
   {
     key: STEPS[1],
-    title: 'Honeyswap Liquidity',
-    Screen: HoneyswapLiquidity,
+    title: 'Tokens settings',
+    Screen: TokensSettings,
   },
   {
     key: STEPS[1],
-    title: 'Tokens settings',
-    Screen: TokensSettings,
+    title: 'Honeyswap Liquidity',
+    Screen: HoneyswapLiquidity,
   },
   {
     key: STEPS[1],
