@@ -20,13 +20,11 @@ const DEFAULT_CONFIG = {
     type: -1,
   },
   agreement: {
+    actionAmount: 0.1,
+    challengeAmount: 0.1,
+    challengePeriod: DAY_IN_SECONDS * 3,
+    covenantFile: null,
     title: '',
-    content: '',
-    challengePeriod: 0,
-    actionAmount: 0,
-    challengeAmount: 0,
-    actionAmountsStable: [],
-    challengeAmountsStable: [],
   },
   conviction: {
     decay: 0,
