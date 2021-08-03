@@ -226,7 +226,7 @@ function AgreementSettings() {
           unitSymbol={config.tokens.symbol}
           wide
         />
-        <Info>We recommend sticking with the default duration.</Info>
+        <Info>We recommend sticking with the default values.</Info>
         {formError && (
           <Info
             mode="error"
