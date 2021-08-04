@@ -1,5 +1,12 @@
 import React, { useCallback, useState } from 'react'
-import { Box, GU, TextInput, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  Box,
+  GU,
+  LoadingRing,
+  TextInput,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import Header from '../kit/Header'
 import Navigation from '../Navigation'
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
@@ -11,12 +18,19 @@ const MIN_HNY_USD = 100
 
 function HoneyswapLiquidity() {
   const theme = useTheme()
-  const [hnyAmount, setHnyAmount] = useState('')
-  const [tokenAmount, setTokenAmount] = useState('')
-  const { config, onBack, onNext, step, steps } = useOnboardingState()
-  const tokenSymbol = config.tokens.symbol
+  const {
+    config,
+    onBack,
+    onConfigChange,
+    onNext,
+    step,
+    steps,
+  } = useOnboardingState()
+  const { honeyTokenLiquidity, tokenLiquidity } = config.liquidity
+  const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
 
-  const [hnyPrice] = useHNYPriceOracle(toDecimals('1', 18))
+  const [hnyAmount, setHnyAmount] = useState(honeyTokenLiquidity || '')
+  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity || '')
 
   const handleHnyAmountChange = useCallback(event => {
     const newAmount = event.target.value
@@ -36,8 +50,24 @@ function HoneyswapLiquidity() {
     setTokenAmount(newAmount)
   }, [])
 
+  const handleNext = useCallback(
+    event => {
+      event.preventDefault()
+
+      onConfigChange('liquidity', {
+        honeyTokenLiquidity: hnyAmount,
+        honeyTokenLiquidityStable: hnyAmount * hnyPrice,
+        tokenLiquidity: tokenAmount,
+      })
+
+      onNext()
+    },
+    [hnyAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
+  )
+
   const liquidityProvided = hnyAmount && tokenAmount
   const nextEnabled = liquidityProvided && hnyAmount * hnyPrice >= 100
+  const tokenSymbol = config.tokens.symbol
 
   return (
     <div>
@@ -93,9 +123,22 @@ function HoneyswapLiquidity() {
               <div
                 css={`
                   font-weight: bold;
+                  display: flex;
+                  align-items: center;
                 `}
               >
-                ≈ {parseFloat(hnyPrice * hnyAmount, 2)} USD
+                <span
+                  css={`
+                    margin-right: ${0.5 * GU}px;
+                  `}
+                >
+                  ≈
+                </span>
+                {hnyPriceLoading ? (
+                  <LoadingRing />
+                ) : (
+                  <span>{parseFloat(hnyPrice * hnyAmount).toFixed(2)} USD</span>
+                )}
               </div>
             )}
             <div
@@ -192,7 +235,7 @@ function HoneyswapLiquidity() {
         nextEnabled={nextEnabled}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
-        onNext={onNext}
+        onNext={handleNext}
       />
     </div>
   )

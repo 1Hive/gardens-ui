@@ -38,6 +38,7 @@ const DEFAULT_CONFIG = {
     targetRatio: 0,
   },
   liquidity: {
+    honeyTokenLiquidity: 0,
     honeyTokenLiquidityStable: 0,
     tokenLiquidity: 0,
   },

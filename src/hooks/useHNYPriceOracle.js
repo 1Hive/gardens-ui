@@ -33,7 +33,9 @@ export default function useHNYPriceOracle(amount) {
           stableToken
         )
         if (mounted()) {
-          setConvertedAmount(parseFloat(fromDecimals(result.toString(), 18)), 2)
+          setConvertedAmount(
+            parseFloat(fromDecimals(result.toString(), 18)).toFixed(2)
+          )
         }
       } catch (err) {
         console.error(`Error consulting converted amount ${err}`)
