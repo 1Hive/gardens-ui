@@ -44,6 +44,7 @@ const DEFAULT_CONFIG = {
   },
   tokens: {
     address: '', // Only used in BYOT
+    existingTokenSymbol: '', // Only used in BYOT
     name: '',
     symbol: '',
     holders: [], // Only used in NATIVE

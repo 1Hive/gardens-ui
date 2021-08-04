@@ -84,11 +84,12 @@ function TokensSettingsBYOT() {
           address: tokenAddress,
           name: gTokenName,
           symbol: gTokenSymbol,
+          existingTokenSymbol: tokenData.symbol,
         })
         onNext()
       }
     },
-    [onNext, tokenAddress, gTokenName, gTokenSymbol, onConfigChange]
+    [gTokenName, gTokenSymbol, onConfigChange, onNext, tokenAddress, tokenData]
   )
 
   useEffect(() => {

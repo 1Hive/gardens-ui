@@ -13,6 +13,7 @@ import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
 
 import { toDecimals } from '@utils/math-utils'
+import { BYOT_TYPE } from '../constants'
 import { getLocalTokenIconBySymbol } from '@utils/token-utils'
 
 const MIN_HNY_USD = 100
@@ -68,7 +69,10 @@ function HoneyswapLiquidity() {
 
   const liquidityProvided = hnyAmount && tokenAmount
   const nextEnabled = liquidityProvided && hnyAmount * hnyPrice >= 100
-  const tokenSymbol = config.tokens.symbol
+  const tokenSymbol =
+    config.garden.type === BYOT_TYPE
+      ? config.tokens.existingTokenSymbol
+      : config.tokens.symbol
 
   return (
     <div>
