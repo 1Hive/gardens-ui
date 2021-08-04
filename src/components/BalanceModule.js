@@ -10,7 +10,7 @@ import { useWallet } from '@providers/Wallet'
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { safeDivBN } from '@utils/math-utils'
-import defaultTokenLogo from '@assets/defaultTokenLogo.png'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
   const theme = useTheme()

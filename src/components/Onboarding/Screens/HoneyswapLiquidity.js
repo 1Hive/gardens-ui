@@ -13,6 +13,7 @@ import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
 
 import { toDecimals } from '@utils/math-utils'
+import { getLocalTokenIconBySymbol } from '@utils/token-utils'
 
 const MIN_HNY_USD = 100
 
@@ -104,9 +105,16 @@ function HoneyswapLiquidity() {
                   color: ${theme.contentSecondary};
                 `}
               />
+              <img
+                src={getLocalTokenIconBySymbol('HNY')}
+                width="32"
+                height="32"
+                alt=""
+              />
               <span
                 css={`
                   ${textStyle('title4')};
+                  margin-left: ${1 * GU}px;
                 `}
               >
                 HNY
@@ -183,9 +191,16 @@ function HoneyswapLiquidity() {
                   color: ${theme.contentSecondary};
                 `}
               />
+              <img
+                src={getLocalTokenIconBySymbol(tokenSymbol)}
+                width="32"
+                height="32"
+                alt=""
+              />
               <span
                 css={`
                   ${textStyle('title4')};
+                  margin-left: ${1 * GU}px;
                 `}
               >
                 {tokenSymbol}
@@ -209,7 +224,8 @@ function HoneyswapLiquidity() {
               >
                 <span>Initial price</span>
                 <span>
-                  1 {tokenSymbol} = {hnyAmount / tokenAmount} HNY
+                  1 {tokenSymbol} ={' '}
+                  {parseFloat(hnyAmount / tokenAmount).toFixed(2)} HNY
                 </span>
               </div>
               <div
