@@ -1,6 +1,6 @@
 import { Help } from '@1hive/1hive-ui'
 import React, { Fragment, useCallback, useState } from 'react'
-import { useOnboardingState } from '@/providers/Onboarding'
+import { useOnboardingState } from '@providers/Onboarding'
 import { Modal, PercentageField } from '@components/Onboarding//kit'
 import MaxConvictionActiveTokensChart from './Charts/MaxConvictionActiveTokensChart'
 
@@ -38,7 +38,7 @@ const AdvancedSettingsModal = ({ stakeOnProposalPct, visible, onClose }) => {
           <Fragment>
             Minimum Active Stake
             <Help hint="What is Minimum Active Stake?">
-              <strong>Minimum Active Stake</strong> is the mininum percent of
+              <strong>Minimum Active Stake</strong> is the mininum percentage of
               stake token active supply that is used for calculating the
               threshold.
             </Help>

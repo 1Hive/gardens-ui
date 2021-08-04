@@ -5,7 +5,7 @@ import {
   DAY_IN_SECONDS,
   HOUR_IN_SECONDS,
   MINUTE_IN_SECONDS,
-} from '@/utils/kit-utils'
+} from '@utils/kit-utils'
 
 const DurationFields = ({ duration, onUpdate, label, direction = 'row' }) => {
   const theme = useTheme()

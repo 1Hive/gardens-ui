@@ -1,10 +1,5 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
 import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
-import {
-  calculateDecay,
-  calculateWeight,
-} from '@/utils/conviction-modelling-helpers'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
@@ -13,6 +8,11 @@ import {
 } from '@components/Onboarding/kit'
 import AdvancedSettingsModal from './AdvancedSettingsModal'
 import ConvictionVotingCharts from './ConvictionVotingCharts'
+import { useOnboardingState } from '@providers/Onboarding'
+import {
+  calculateDecay,
+  calculateWeight,
+} from '@utils/conviction-modelling-helpers'
 
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
@@ -155,7 +155,7 @@ function ConvictionVotingSettings() {
   return (
     <div>
       <Header
-        title="Configure Conviction Voting Parameters"
+        title="Configure Conviction Voting"
         subtitle="Set parameters to incentivize community participation."
       />
       <div
@@ -196,7 +196,7 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Spending Limit
                 <Help hint="What is Spending Limit?">
-                  <strong>Spending Limit</strong> is the the maximum percent of
+                  <strong>Spending Limit</strong> is the maximum percentage of
                   total funds an individual proposal can request.
                 </Help>
               </Fragment>
@@ -210,9 +210,9 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Minimum Conviction
                 <Help hint="What is Minimum Conviction?">
-                  <strong>Minimum Conviction</strong> is the mininum percent of
-                  tokens that are used for calculating the threshold to pass any
-                  proposal.
+                  <strong>Minimum Conviction</strong> is the mininum percentage
+                  of tokens that are used for calculating the threshold to pass
+                  any proposal.
                 </Help>
               </Fragment>
             }
@@ -255,8 +255,9 @@ function ConvictionVotingSettings() {
                 <Fragment>
                   Requested Amount
                   <Help hint="What is Requested Amount?">
-                    <strong>Requested Amount</strong> is the percentage of funds
-                    being requested by the proposal displayed in the charts.
+                    <strong>Requested Amount</strong> is the percentage of total
+                    funds being requested by the proposal displayed in the
+                    charts.
                   </Help>
                 </Fragment>
               }

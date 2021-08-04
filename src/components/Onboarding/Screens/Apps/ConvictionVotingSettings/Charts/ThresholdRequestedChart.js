@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import {
+  ChartBase,
+  ChartTooltip,
+} from '@components/Onboarding/kit/ChartComponents'
+import { useCharts } from '@providers/Charts'
+import {
   calculateThreshold,
   fromPercentage,
   generateElements,
   toPercentage,
-} from '@/utils/conviction-modelling-helpers'
-import { useCharts } from '@/providers/Charts'
-import {
-  ChartBase,
-  ChartTooltip,
-} from '@components/Onboarding/kit/ChartComponents'
+} from '@utils/conviction-modelling-helpers'
 
 const DEFAULT_INCREMENT = 1 / 3
 
