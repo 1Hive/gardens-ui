@@ -1,27 +1,31 @@
 import { Help } from '@1hive/1hive-ui'
 import React, { Fragment, useCallback, useState } from 'react'
-import { useOnboardingState } from '@providers/Onboarding'
 import { Modal, PercentageField } from '@components/Onboarding//kit'
 import MaxConvictionActiveTokensChart from './Charts/MaxConvictionActiveTokensChart'
 
 const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '700px'
 
-const AdvancedSettingsModal = ({ stakeOnProposalPct, visible, onClose }) => {
-  const { config, onConfigChange } = useOnboardingState()
-  const [minThresholdStakePct, setMinThresholdStakePct] = useState(
-    config.conviction.minThresholdStakePct
+const AdvancedSettingsModal = ({
+  minThresholdStakePct,
+  stakeOnProposalPct,
+  visible,
+  onClose,
+  onDone,
+}) => {
+  const [currMinThresholdStakePct, setCurrMinThresholdStakePct] = useState(
+    minThresholdStakePct
   )
 
-  const handleMinThresholdStakePct = useCallback(
+  const handleMinThresholdChange = useCallback(
     value => {
-      setMinThresholdStakePct(value)
+      setCurrMinThresholdStakePct(value)
     },
-    [setMinThresholdStakePct]
+    [setCurrMinThresholdStakePct]
   )
 
-  const handleDoneClick = () => {
-    onConfigChange('conviction', { ...config.conviction, minThresholdStakePct })
+  const handleDone = () => {
+    onDone(currMinThresholdStakePct)
     onClose()
   }
 
@@ -29,7 +33,7 @@ const AdvancedSettingsModal = ({ stakeOnProposalPct, visible, onClose }) => {
     <Modal
       title="Advanced Settings"
       visible={visible}
-      onClick={handleDoneClick}
+      onClick={handleDone}
       onClose={onClose}
       width="100"
     >
@@ -44,13 +48,13 @@ const AdvancedSettingsModal = ({ stakeOnProposalPct, visible, onClose }) => {
             </Help>
           </Fragment>
         }
-        value={minThresholdStakePct}
-        onChange={handleMinThresholdStakePct}
+        value={currMinThresholdStakePct}
+        onChange={handleMinThresholdChange}
       />
       <MaxConvictionActiveTokensChart
         height={CHART_HEIGHT}
         width={CHART_WIDTH}
-        minThresholdStakePct={minThresholdStakePct}
+        minThresholdStakePct={currMinThresholdStakePct}
         stakeOnProposalPct={stakeOnProposalPct}
       />
     </Modal>

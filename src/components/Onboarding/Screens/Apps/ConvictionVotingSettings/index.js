@@ -33,6 +33,11 @@ const reduceFields = (fields, [field, value]) => {
         minThreshold: value,
         weight: calculateWeight(value, fields.maxRatio),
       }
+    case 'minThresholdStakePct':
+      return {
+        ...fields,
+        minThresholdStakePct: value,
+      }
     case 'maxRatio':
       return {
         ...fields,
@@ -80,6 +85,7 @@ function ConvictionVotingSettings() {
       halflifeDays,
       maxRatio,
       minThreshold,
+      minThresholdStakePct,
       requestedAmount,
       stakeOnProposal,
       stakeOnOtherProposals,
@@ -101,12 +107,9 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
-  const handleMaxRatioChange = useCallback(
-    value => {
-      updateField(['maxRatio', value])
-    },
-    [updateField]
-  )
+  const handleMaxRatioChange = useCallback(value => {
+    updateField(['maxRatio', value])
+  }, [])
 
   const handleMinThresholdChange = useCallback(
     value => {
@@ -136,17 +139,26 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
+  const handleOpenModal = useCallback(() => {
+    setOpenSettingsModal(true)
+  }, [setOpenSettingsModal])
+
   const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
     setOpenSettingsModal,
   ])
 
-  const handleNextCLick = () => {
+  const handleAdvancedSettingsDone = useCallback(
+    value => updateField(['minThresholdStakePct', value]),
+    [updateField]
+  )
+
+  const handleNextClick = () => {
     onConfigChange('conviction', {
-      ...config.conviction,
       decay,
       halflifeDays,
       maxRatio,
       minThreshold,
+      minThresholdStakePct,
       weight,
     })
     onNext()
@@ -192,15 +204,7 @@ function ConvictionVotingSettings() {
             onChange={handleHalflifeDaysChange}
           />
           <PercentageField
-            label={
-              <Fragment>
-                Spending Limit
-                <Help hint="What is Spending Limit?">
-                  <strong>Spending Limit</strong> is the maximum percentage of
-                  total funds an individual proposal can request.
-                </Help>
-              </Fragment>
-            }
+            label="spending"
             minValue={1}
             value={maxRatio}
             onChange={handleMaxRatioChange}
@@ -222,16 +226,18 @@ function ConvictionVotingSettings() {
           />
           <Button
             size="mini"
+            onClick={handleOpenModal}
+            label="Advanced Settings"
             css={`
               align-self: flex-end;
             `}
-            label="Advanced Settings"
-            onClick={() => setOpenSettingsModal(true)}
           />
           <AdvancedSettingsModal
+            minThresholdStakePct={minThresholdStakePct}
             stakeOnProposalPct={stakeOnProposal}
             visible={openSettingsModal}
             onClose={handleCloseModal}
+            onDone={handleAdvancedSettingsDone}
           />
           <div
             css={`
@@ -302,7 +308,7 @@ function ConvictionVotingSettings() {
           <ConvictionVotingCharts
             decay={decay}
             maxRatio={maxRatio}
-            minActiveStakePct={config.conviction.minThresholdStakePct}
+            minActiveStakePct={minThresholdStakePct}
             requestedAmount={requestedAmount}
             stakeOnProposal={stakeOnProposal}
             stakeOnOtherProposals={stakeOnOtherProposals}
@@ -315,7 +321,7 @@ function ConvictionVotingSettings() {
         nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
-        onNext={handleNextCLick}
+        onNext={handleNextClick}
       />
     </div>
   )
