@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@abis/*": ["abi/*"],
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lib/*": ["lib/*"],
+      "@providers/*": ["providers/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}
