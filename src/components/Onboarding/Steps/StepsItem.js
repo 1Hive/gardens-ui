@@ -2,8 +2,10 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { GU, IconCheck, useTheme } from '@1hive/1hive-ui'
 
-function ConfigureStepsItem({ stepNumber, step, label, currentStep }) {
+function ConfigureStepsItem({ stepNumber, step, label, currentStep, type }) {
   const theme = useTheme()
+
+  const isStepType = type === 'step'
 
   const stepStyles = useMemo(() => {
     if (step === currentStep) {
@@ -31,7 +33,7 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep }) {
       css={`
         display: flex;
         align-items: center;
-        height: ${5 * GU}px;
+        height: ${isStepType ? 5 * GU : 2 * GU}px;
         & + & {
           margin-top: ${3 * GU}px;
         }
@@ -39,9 +41,10 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep }) {
     >
       <div
         css={`
-          width: ${5 * GU}px;
-          height: ${5 * GU}px;
+          width: ${isStepType ? 5 * GU : 3 * GU}px;
+          height: ${isStepType ? 5 * GU : 3 * GU}px;
           display: flex;
+          margin-left: ${isStepType ? 0 : 4 * GU}px;
           align-items: center;
           justify-content: center;
           border-radius: 50%;
@@ -56,8 +59,8 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep }) {
       </div>
       <div
         css={`
-          margin-left: ${3 * GU}px;
-          font-size: 18px;
+          margin-left: ${isStepType ? 3 * GU : 6 * GU}px;
+          font-size: ${isStepType ? 18 : 16}px;
           font-weight: ${step === currentStep ? '600' : '400'};
           overflow: hidden;
           text-overflow: ellipsis;

@@ -1,21 +1,16 @@
 import React from 'react'
-import { useOnboardingState } from '@providers/Onboarding'
-import Navigation from '../../Navigation'
+import { useOnboardingState } from '../../../../providers/Onboarding'
+import { NATIVE_TYPE, BYOT_TYPE } from '../../constants'
+import TokensSettingsNative from './TokensSettingsNative'
+import TokensSettingsBYOT from './TokensSettingsBYOT'
 
-function TokensSettings({ title }) {
-  const { onBack, onNext, step, steps } = useOnboardingState()
-
+function TokensSettings() {
+  const { config } = useOnboardingState()
   return (
-    <div>
-      {title}
-      <Navigation
-        backEnabled
-        nextEnabled
-        nextLabel={`Next: ${steps[step + 1].title}`}
-        onBack={onBack}
-        onNext={onNext}
-      />
-    </div>
+    <>
+      {config.garden.type === NATIVE_TYPE && <TokensSettingsNative />}
+      {config.garden.type === BYOT_TYPE && <TokensSettingsBYOT />}
+    </>
   )
 }
 
