@@ -138,10 +138,10 @@
   dependencies:
     "@1hive/connect-core" "^0.8.5"
 
-"@1hive/connect-gardens@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.1.tgz#fb4e75d370cd645c644c6fd2d5c1410a937de830"
-  integrity sha512-lZxOewRsrtJ7m1jKEKCzgFztxS2cRA8Rs2ELVlxFn7rbtBMXHndVy4Hdp2JstZ3dtPDqsmMoDoLCWmva6/M/2A==
+"@1hive/connect-gardens@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.2.tgz#2834480449114c3cdeaf1fd8f2e2bbebf803f1b7"
+  integrity sha512-ecTMngpML2XGqeUH/+QkYyx2LLT8uTlHvCqi6pE0VoHmPbKKGY9k74zBJZSiwIOV9tHYwgL77l7C1mlrDM0ORg==
   dependencies:
     "@aragon/connect-core" "0.7.0"
     "@aragon/connect-thegraph" "0.7.0"
@@ -176,10 +176,10 @@
     "@1hive/connect-ethereum" "^0.8.5"
     "@1hive/connect-thegraph" "^0.8.5"
 
-"@1hive/gardens-dao-list@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@1hive/gardens-dao-list/-/gardens-dao-list-1.0.12.tgz#3ae88851b401355852d6a12d4b616f48d033bb91"
-  integrity sha512-3oWE4WxTbay61xAlg1upbfoVhrflZLNdnVQoh5Qu+f4LKLlZoVWMRvQsfXJ1buFr2EyjeJ2A2Ju93D4LtBTM1Q==
+"@1hive/gardens-dao-list@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@1hive/gardens-dao-list/-/gardens-dao-list-1.0.14.tgz#fb991a4dab6e98ccf5089846164cea2d4a091064"
+  integrity sha512-nhoBgLoFhc2x8f2xlUDc8Nv11wYzk/h4VjQ7MYd7M9klsAsiOjOL+mZiSoMW56NvMoWHjM83xGqEbgw8EWA8qg==
 
 "@aragon/connect-agreement@^0.0.0-beta.14":
   version "0.0.0-beta.14"
