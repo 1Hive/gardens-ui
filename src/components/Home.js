@@ -36,7 +36,6 @@ function Home() {
   }, [])
 
   const handleCloseModal = useCallback(() => {
-    console.log('close!!!!!')
     setConnectModalVisible(false)
   }, [])
 
@@ -59,63 +58,3 @@ const DynamicDiv = styled.div.attrs(props => ({
 }))``
 
 export default Home
-
-/* <Modal
-        padding={7 * GU}
-        visible={!preferredChain && !account}
-        width={Math.min(55 * GU, width - 40)}
-      >
-        <div
-          css={`
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              border-radius: 50%;
-              background: #f9f9f9;
-              width: ${7 * GU}px;
-              height: ${7 * GU}px;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <IconConnect
-              css={`
-                color: #d7d7d7;
-              `}
-              size="large"
-            />
-          </div>
-          <h3
-            css={`
-              ${textStyle('title2')}
-              margin-top: 24px;
-              margin-bottom: 8px;
-            `}
-          >
-            Login and Authorize Your Wallet
-          </h3>
-          <h4
-            css={`
-              ${textStyle('body3')}
-            `}
-          >
-            This dapp requires access to your wallet, please login and authorize
-            access to your wallet accounts to continue.
-          </h4>
-          <Button
-            onClick={() => {}}
-            wide
-            css={`
-              margin-top: ${3 * GU}px;
-            `}
-          >
-            Dismiss
-          </Button>
-        </div>
-      </Modal> */

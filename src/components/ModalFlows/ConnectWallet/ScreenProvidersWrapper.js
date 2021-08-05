@@ -20,8 +20,6 @@ function ScreenProvidersWrapper({ onError, onSuccess }) {
     [wallet]
   )
 
-  console.log('wallet ', wallet)
-
   useEffect(() => {
     if (error) {
       onError(error)

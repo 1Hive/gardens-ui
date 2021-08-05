@@ -7,14 +7,12 @@ import ScreenProvidersWrapper from './ScreenProvidersWrapper'
 import ScreenError from '@components/Account/ScreenError'
 
 function ConectWalletScreens({ onSuccess }) {
-  // console.log('WALLET ', wallet)
-  // const handleCancelConnection = useCallback(() => {
-  //   wallet.reset()
-  // }, [wallet])
   const [error, setError] = useState(null)
   const handleOnError = useCallback(e => {
     setError(e)
   }, [])
+
+  console.log('error ', error)
 
   const screens = useMemo(() => {
     return [

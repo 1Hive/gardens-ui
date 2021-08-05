@@ -61,8 +61,6 @@ function useGardensList() {
   const [loading, setLoading] = useState(true)
   const { chainId } = useWallet()
 
-  console.log('chainID ', chainId)
-
   useEffect(() => {
     const fetchGardens = async () => {
       try {
@@ -70,7 +68,6 @@ function useGardensList() {
           { network: 4 }, // TODO remove this 4 and check if the chainId is allowed if not default to 4
           { orderBy: 'honeyLiquidity' }
         )
-        console.log('result ', result)
         setGardens(result)
       } catch (err) {
         setGardens([])
