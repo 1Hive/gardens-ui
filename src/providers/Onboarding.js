@@ -41,8 +41,9 @@ const DEFAULT_CONFIG = {
     weight: calculateWeight(2, 10),
   },
   issuance: {
-    maxAdjustmentRatioPerYear: 0,
-    targetRatio: 0,
+    maxAdjustmentRatioPerYear: 15,
+    targetRatio: 30,
+    initialRatio: 10,
   },
   liquidity: {
     honeyTokenLiquidityStable: 0,

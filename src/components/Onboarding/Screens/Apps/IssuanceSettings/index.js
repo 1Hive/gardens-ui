@@ -3,13 +3,15 @@ import { GU, Help } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import { Header, PercentageField } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
-// import IssuanceChart from './IssuanceChart'
+import IssuanceChart from './IssuanceChart'
 
-// const CHART_HEIGHT = '350px'
-// const CHART_WIDTH = '100%'
+const CHART_HEIGHT = '350px'
+const CHART_WIDTH = '100%'
 
 function reduceFields(fields, [field, value]) {
   switch (field) {
+    case 'initialRatio':
+      return { ...fields, initialRatio: value }
     case 'targetRatio':
       return { ...fields, targetRatio: value }
     case 'maxAdjustmentRatioPerYear':
@@ -29,9 +31,16 @@ function IssuanceSettings() {
     steps,
   } = useOnboardingState()
   const [
-    { targetRatio, maxAdjustmentRatioPerYear },
+    { initialRatio, targetRatio, maxAdjustmentRatioPerYear },
     updateField,
   ] = useReducer(reduceFields, { ...config.issuance })
+
+  const handleInitialRatioChange = useCallback(
+    value => {
+      updateField(['initialRatio', value])
+    },
+    [updateField]
+  )
 
   const handleTargetRatioChange = useCallback(
     value => {
@@ -70,12 +79,29 @@ function IssuanceSettings() {
         <PercentageField
           label={
             <Fragment>
-              Token Ratio
-              <Help hint="What is Token Ratio?">
-                <strong>Token Ratio</strong> is the ideal fraction of the total
+              Initial Ratio
+              <Help hint="What is Target Ratio?">
+                <strong>Initial Ratio</strong> is the initial fraction of the
+                total supply that holds the Common Pool. For example, if Garden
+                Seeds hold initially 90 garden tokens, and the initial ratio is
+                10%, this means that the total supply of the Garden tokens is
+                100, 10 of those are in the Common Pool.
+              </Help>
+            </Fragment>
+          }
+          value={initialRatio}
+          onChange={handleInitialRatioChange}
+        />
+        <PercentageField
+          label={
+            <Fragment>
+              Target Ratio
+              <Help hint="What is Target Ratio?">
+                <strong>Target Ratio</strong> is the ideal fraction of the total
                 supply that should be in the Common Pool. For example, a value
-                of 0.3 means that 30% of the total supply should ideally be in
-                the Common Pool.
+                of 30% means that the token is going to be issued or burnt
+                automatically overtime to reach a point in which a 30% of the
+                total supply is in the Common Pool.
               </Help>
             </Fragment>
           }
@@ -85,12 +111,13 @@ function IssuanceSettings() {
         <PercentageField
           label={
             <Fragment>
-              Max. Adjustment Per Year
-              <Help hint="What is Max. Adjustment Per Year?">
-                <strong>Max. Adjustment Per Year</strong>
-                is the maximum issuance that can happen in a year. For example,
-                a value of 0.1 means there can never be more than 10% new
-                issuance per year.
+              Throttle
+              <Help hint="What is Issuance Throttle?">
+                <strong>Throttle</strong>
+                is a magnitude that prevents high issuance adjustments in small
+                amounts of time. For example, a 1% will force the issuance to be
+                practically linear, and a higher value will allow bigger
+                adjustments.
               </Help>
             </Fragment>
           }
@@ -98,7 +125,7 @@ function IssuanceSettings() {
           onChange={handleMaxAdjustmentRatioPerYear}
         />
         {/* Issuance chart */}
-        {/* <div
+        <div
           css={`
             align-self: center;
             width: 100%;
@@ -109,8 +136,9 @@ function IssuanceSettings() {
             width={CHART_WIDTH}
             maxAdjustmentRatioPerYear={maxAdjustmentRatioPerYear}
             targetRatio={targetRatio}
+            initialRatio={initialRatio}
           />
-        </div> */}
+        </div>
       </div>
       <Navigation
         backEnabled

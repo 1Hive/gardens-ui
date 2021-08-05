@@ -27,4 +27,6 @@ export const calculateWeight = (minThresholdPct, maxRatioPct) => {
 }
 
 export const generateElements = (maxElement, increment) =>
-  [...Array(maxElement / increment + 1).keys()].map(i => i * increment)
+  [...Array(parseInt(maxElement / increment) + 1).keys()].map(
+    i => i * increment
+  )
