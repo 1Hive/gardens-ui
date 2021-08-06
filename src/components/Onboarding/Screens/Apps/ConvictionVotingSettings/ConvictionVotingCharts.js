@@ -7,7 +7,7 @@ import {
 import ConvictionTimeChart from './Charts/ConvictionTimeChart'
 import ThresholdRequestedChart from './Charts/ThresholdRequestedChart'
 
-const CHART_HEIGHT = '260px;'
+const CHART_HEIGHT = '270px;'
 const CHART_WIDTH = '550px;'
 
 const ConvictionVotingCharts = ({

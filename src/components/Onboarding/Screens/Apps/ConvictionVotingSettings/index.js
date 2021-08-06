@@ -1,12 +1,11 @@
-import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
+import React, { Fragment, useCallback, useReducer } from 'react'
+import { GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
   PercentageField,
   SliderField,
 } from '@components/Onboarding/kit'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
 import ConvictionVotingCharts from './ConvictionVotingCharts'
 import { useOnboardingState } from '@providers/Onboarding'
 import {
@@ -17,7 +16,7 @@ import {
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
-const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 12
+const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
@@ -54,16 +53,6 @@ const reduceFields = (fields, [field, value]) => {
         ...fields,
         requestToken: value,
       }
-    case 'stakeOnProposal':
-      return {
-        ...fields,
-        stakeOnProposal: value,
-      }
-    case 'stakeOnOtherProposals':
-      return {
-        ...fields,
-        stakeOnOtherProposals: value,
-      }
     default:
       return fields
   }
@@ -98,7 +87,6 @@ function ConvictionVotingSettings() {
     stakeOnProposal: DEFAULT_STAKE_ON_PROPOSAL,
     stakeOnOtherProposals: DEFAULT_STAKE_ON_OTHER_PROPOSALS,
   })
-  const [openSettingsModal, setOpenSettingsModal] = useState(false)
 
   const handleHalflifeDaysChange = useCallback(
     value => {
@@ -125,33 +113,6 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
-  const handleStakeOnProposalChange = useCallback(
-    value => {
-      updateField(['stakeOnProposal', value])
-    },
-    [updateField]
-  )
-
-  const handleStakeOnOtherProposalsChange = useCallback(
-    value => {
-      updateField(['stakeOnOtherProposals', value])
-    },
-    [updateField]
-  )
-
-  const handleOpenModal = useCallback(() => {
-    setOpenSettingsModal(true)
-  }, [setOpenSettingsModal])
-
-  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
-    setOpenSettingsModal,
-  ])
-
-  const handleAdvancedSettingsDone = useCallback(
-    value => updateField(['minThresholdStakePct', value]),
-    [updateField]
-  )
-
   const handleNextClick = () => {
     onConfigChange('conviction', {
       decay,
@@ -175,12 +136,13 @@ function ConvictionVotingSettings() {
           display: flex;
           justify-content: space-between;
           margin-left: ${2 * GU}px;
-          margin-bottom: ${1 * GU}px;
+          margin-bottom: ${3 * GU}px;
         `}
       >
         <div
           css={`
             display: flex;
+            justify-content: center;
             flex-direction: column;
           `}
         >
@@ -232,21 +194,6 @@ function ConvictionVotingSettings() {
             value={minThreshold}
             onChange={handleMinThresholdChange}
           />
-          <Button
-            size="mini"
-            onClick={handleOpenModal}
-            label="Advanced Settings"
-            css={`
-              align-self: flex-end;
-            `}
-          />
-          <AdvancedSettingsModal
-            minThresholdStakePct={minThresholdStakePct}
-            stakeOnProposalPct={stakeOnProposal}
-            visible={openSettingsModal}
-            onClose={handleCloseModal}
-            onDone={handleAdvancedSettingsDone}
-          />
           <div
             css={`
               display: flex;
@@ -261,8 +208,7 @@ function ConvictionVotingSettings() {
                 ${textStyle('body3')};
               `}
             >
-              The following are not actual parameters. You can adjust them to
-              play around with the charts.
+              The next one is only to play around, not an actual parameter:
             </div>
             <PercentageField
               label={
@@ -277,34 +223,6 @@ function ConvictionVotingSettings() {
               }
               value={requestedAmount}
               onChange={handleRequestedAmountChange}
-            />
-            <PercentageField
-              label={
-                <Fragment>
-                  Stake On Proposal
-                  <Help hint="What is Stake On Proposal?">
-                    <strong>Stake On Proposal</strong> is the percentage of your
-                    total stake tokens allocated to the proposal being displayed
-                    in the charts.
-                  </Help>
-                </Fragment>
-              }
-              value={stakeOnProposal}
-              onChange={handleStakeOnProposalChange}
-            />
-            <PercentageField
-              label={
-                <Fragment>
-                  Stake On Other Proposals
-                  <Help hint="What is Stake On Other Proposals?">
-                    <strong>Stake On Other Proposals</strong> is the percentage
-                    of your total stake tokens allocated to proposals other than
-                    the one being displayed in the charts.
-                  </Help>
-                </Fragment>
-              }
-              value={stakeOnOtherProposals}
-              onChange={handleStakeOnOtherProposalsChange}
             />
           </div>
         </div>
