@@ -12,7 +12,7 @@ import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 import { getNetwork } from '@/networks'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import gardensLogo from '@assets/gardensLogo.svg'
+import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
 function Header() {
@@ -77,7 +77,7 @@ function Header() {
               {layoutSmall ? (
                 Logo
               ) : (
-                <img src={logotype} height={connectedGarden ? 40 : 24} alt="" />
+                <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
               )}
             </Link>
             {!below('large') && (
