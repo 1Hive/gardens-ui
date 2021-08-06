@@ -46,6 +46,7 @@ const DEFAULT_CONFIG = {
     address: '', // Only used in BYOT
     existingTokenSymbol: '', // Only used in BYOT
     name: '',
+    decimals: 18,
     symbol: '',
     holders: [], // Only used in NATIVE
     commonPool: 0, // Only used in NATIVE

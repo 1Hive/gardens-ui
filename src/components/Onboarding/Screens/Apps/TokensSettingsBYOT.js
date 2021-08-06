@@ -84,6 +84,7 @@ function TokensSettingsBYOT() {
           address: tokenAddress,
           name: gTokenName,
           symbol: gTokenSymbol,
+          decimals: tokenData.decimals,
           existingTokenSymbol: tokenData.symbol,
         })
         onNext()
