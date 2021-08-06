@@ -24,6 +24,7 @@ const SliderField = React.forwardRef(function SliderField(
   const [textFieldValue, setTextFieldValue] = useState(value)
   const textInputWidth =
     (5 + valueSymbol.length + maxValue.toString().length) * GU
+
   useImperativeHandle(
     ref,
     () => ({
@@ -52,19 +53,27 @@ const SliderField = React.forwardRef(function SliderField(
   const handleInputChange = useCallback(
     event => {
       const value = parseInt(event.target.value, 10)
-      if (!isNaN(value) && value >= minValue && value <= maxValue) {
+
+      // Allow empty values so it can be easier to update input
+      if (!event.target.value) {
+        setTextFieldValue('')
+      } else if (!isNaN(value) && value >= minValue && value <= maxValue) {
         setTextFieldValue(value)
       }
     },
     [minValue, maxValue]
   )
 
-  const handleInputBlur = useCallback(
-    event => {
-      onChange(textFieldValue)
-    },
-    [onChange, textFieldValue]
-  )
+  const handleInputBlur = useCallback(() => {
+    // It can be an empty value so we need to parse it again
+    const value = parseInt(textFieldValue, 10)
+
+    if (!isNaN(value)) {
+      onChange(value)
+    } else {
+      onChange(minValue)
+    }
+  }, [minValue, onChange, textFieldValue])
 
   return (
     <Field label={label}>
