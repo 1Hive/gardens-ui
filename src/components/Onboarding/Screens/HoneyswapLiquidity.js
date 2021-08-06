@@ -106,7 +106,7 @@ function HoneyswapLiquidity() {
                   width: 100%;
                   padding: 0;
                   ${textStyle('title3')};
-                  color: ${theme.contentSecondary};
+                  color: ${theme[hnyAmount ? 'content' : 'contentSecondary']};
                 `}
               />
               <img
@@ -192,7 +192,7 @@ function HoneyswapLiquidity() {
                   width: 100%;
                   padding: 0;
                   ${textStyle('title3')};
-                  color: ${theme.contentSecondary};
+                  color: ${theme[tokenAmount ? 'content' : 'contentSecondary']};
                 `}
               />
               <img
