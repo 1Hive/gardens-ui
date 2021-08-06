@@ -190,9 +190,11 @@ function HoneyswapLiquidity() {
                 ]}
                 selected={denomination}
                 onChange={setDenomination}
-                width="170px"
+                width="135px"
                 css={`
                   border: 0;
+                  padding-left: 0;
+                  padding-right: 0;
                   & > svg {
                     width: 24px;
                     height: 24px;
