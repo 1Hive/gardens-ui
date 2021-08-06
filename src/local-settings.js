@@ -1,3 +1,4 @@
+import { DEFAULT_CHAIN_ID } from '@/constants'
 const APP_THEME = 'THEME'
 const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 
@@ -13,10 +14,12 @@ function setLocalSetting(confKey, value) {
 }
 
 export function getPreferredChain() {
-  return Number(getLocalStorageSetting(PREFERRED_CHAIN_ID_KEY))
+  return (
+    Number(getLocalStorageSetting(PREFERRED_CHAIN_ID_KEY)) || DEFAULT_CHAIN_ID
+  )
 }
 
-export function setPreferredChain(chainId) {
+export function setPreferredChain(chainId = 100) {
   return setLocalSetting(PREFERRED_CHAIN_ID_KEY, chainId)
 }
 

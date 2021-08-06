@@ -24,10 +24,16 @@ function WalletAugmented({ children }) {
   // This new state is neede to avoid showing the user the profile signature request on every network change
   const [chainReseted, setChainReseted] = useState(false)
   const [chainId, setChainId] = useState(-1)
+  /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
+  or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
+  const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
+
   const wallet = useWallet()
   const { ethereum } = wallet
 
   console.log('chainId ', chainId)
+
+  console.log('wallet ', wallet)
 
   const ethers = useMemo(() => {
     if (!ethereum) {
@@ -42,7 +48,7 @@ function WalletAugmented({ children }) {
     })
   }, [ethereum, wallet.chainId]) //eslint-disable-line
 
-  const supportedChain = useMemo(() => {
+  const isSupportedNetwork = useMemo(() => {
     return isSupportedChain(wallet.chainId)
   }, [wallet.chainId])
 
@@ -99,15 +105,31 @@ function WalletAugmented({ children }) {
     wallet,
   ])
 
+  const handleOnPreferredNetworkChange = useCallback(index => {
+    const chainId = SUPPORTED_CHAINS[index]
+    setPreferredNetwork(chainId)
+    setPreferredChain(chainId)
+  }, [])
+
   const contextValue = useMemo(
     () => ({
       ...wallet,
-      supportedChain,
+      handleOnPreferredNetworkChange,
+      preferredNetwork,
+      isSupportedNetwork,
       resetConnection,
       chainReseted,
       ethers,
     }),
-    [chainReseted, ethers, supportedChain, resetConnection, wallet]
+    [
+      chainReseted,
+      ethers,
+      handleOnPreferredNetworkChange,
+      preferredNetwork,
+      isSupportedNetwork,
+      resetConnection,
+      wallet,
+    ]
   )
 
   return (

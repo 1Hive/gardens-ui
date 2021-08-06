@@ -1,28 +1,64 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
-import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  DropDown,
+  GU,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 
 import { useGardens } from '@providers/Gardens'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.png'
+import { SUPPORTED_CHAINS } from '@/networks'
+import { getNetworkName } from '@utils/web3-utils'
+import { useWallet } from '@providers/Wallet'
 
 function GardensList() {
   // TODO :  add loading component
   const { gardens } = useGardens()
+  const {
+    handleOnPreferredNetworkChange,
+    isSupportedNetwork,
+    preferredNetwork,
+  } = useWallet()
+  const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
+
+  const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
 
   return (
     <div
       css={`
         padding: ${3 * GU}px;
-        display: grid;
-        grid-gap: ${2 * GU}px;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        display: flex;
+        flex-direction: column;
       `}
     >
-      {gardens.map(garden => (
-        <GardenCard key={garden.id} garden={garden} />
-      ))}
+      {!isSupportedNetwork && (
+        <DropDown
+          onChange={handleOnPreferredNetworkChange}
+          selected={selectedIndex}
+          items={supportedChains}
+          css={`
+            width: ${40 * GU}px;
+            margin-bottom: ${2 * GU}px;
+          `}
+        />
+      )}
+
+      <div
+        css={`
+          display: grid;
+          grid-gap: ${2 * GU}px;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        `}
+      >
+        {gardens.map(garden => (
+          <GardenCard key={garden.id} garden={garden} />
+        ))}
+      </div>
     </div>
   )
 }

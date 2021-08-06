@@ -59,13 +59,15 @@ export function useGardens() {
 function useGardensList() {
   const [gardens, setGardens] = useState([])
   const [loading, setLoading] = useState(true)
-  const { chainId } = useWallet()
+  const { chainId, preferredNetwork, isSupportedNetwork } = useWallet()
+
+  console.log('useGardens chain id ', chainId)
 
   useEffect(() => {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: 4 }, // TODO remove this 4 and check if the chainId is allowed if not default to 4
+          { network: isSupportedNetwork ? chainId : preferredNetwork },
           { orderBy: 'honeyLiquidity' }
         )
         setGardens(result)
@@ -77,7 +79,7 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [chainId])
+  }, [chainId, isSupportedNetwork, preferredNetwork])
 
   return [useMemo(() => gardens.map(mergeGardenMetadata), [gardens]), loading]
 }
