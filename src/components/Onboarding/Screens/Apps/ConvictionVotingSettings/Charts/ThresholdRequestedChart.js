@@ -46,6 +46,10 @@ const ThresholdRequestedChart = React.memo(
       () => computeChartData(maxRatioPct, weight, DEFAULT_INCREMENT),
       [maxRatioPct, weight]
     )
+    const maxXValue = chartData[chartData.length - 1].x
+    const isOverMax = thresholdPct === 'Infinity' || thresholdPct > 100
+    const thresholdValue =
+      isOverMax || thresholdPct > maxXValue ? maxXValue : thresholdPct
 
     return (
       <ChartBase title={title} height={height} width={width}>
@@ -68,10 +72,8 @@ const ThresholdRequestedChart = React.memo(
           markers={[
             createMarker(
               'x',
-              thresholdPct,
-              `Threshold (${
-                thresholdPct === 'Infinity' ? '∞' : `${thresholdPct}%`
-              })`
+              thresholdValue,
+              `Threshold (${isOverMax ? '∞' : `${thresholdPct}%`})`
             ),
           ]}
           axisBottom={createAxis('requested (%)', 'bottom')}

@@ -204,7 +204,15 @@ function ConvictionVotingSettings() {
             onChange={handleHalflifeDaysChange}
           />
           <PercentageField
-            label="spending"
+            label={
+              <Fragment>
+                Spending Limit
+                <Help hint="What is Spending Limit?">
+                  <strong>Spending Limit</strong> is the the maximum percentage
+                  of total funds an individual proposal can request.
+                </Help>
+              </Fragment>
+            }
             minValue={1}
             value={maxRatio}
             onChange={handleMaxRatioChange}

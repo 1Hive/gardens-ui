@@ -52,7 +52,6 @@ const ConvictionTimeChart = React.memo(
     thresholdPct,
   }) => {
     const { commonProps, createAxis, createMarker } = useCharts()
-
     const chartData = useMemo(
       () =>
         computeChartData(
@@ -65,6 +64,10 @@ const ConvictionTimeChart = React.memo(
         ),
       [decay, stakeOnProposalPct, stakeOnOtherProposalsPct, minActiveStakePct]
     )
+    const maxYValue = chartData[chartData.length - 1].y
+    const isOverMax = thresholdPct === 'Infinity' || thresholdPct > 100
+    const thresholdValue =
+      isOverMax || thresholdPct > maxYValue ? maxYValue : thresholdPct
 
     return (
       <ChartBase title={title} height={height} width={width}>
@@ -91,10 +94,8 @@ const ConvictionTimeChart = React.memo(
           markers={[
             createMarker(
               'y',
-              thresholdPct,
-              `Threshold (${
-                thresholdPct === 'Infinity' ? '∞' : `${thresholdPct}%`
-              })`
+              thresholdValue,
+              `Threshold (${isOverMax ? '∞' : `${thresholdPct}%`})`
             ),
           ]}
           axisBottom={createAxis('time (days)', 'bottom')}
