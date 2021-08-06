@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import {
   Box,
+  DropDown,
   GU,
   LoadingRing,
   TextInput,
@@ -12,11 +13,13 @@ import Navigation from '../Navigation'
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
 
-import { toDecimals } from '@utils/math-utils'
+import { fromDecimals, toDecimals } from '@utils/math-utils'
 import { BYOT_TYPE } from '../constants'
 import { getLocalTokenIconBySymbol } from '@utils/token-utils'
+import BigNumber from 'bignumber.js'
 
 const MIN_HNY_USD = 100
+const HNY_DENOMINATION = 0
 
 function HoneyswapLiquidity() {
   const theme = useTheme()
@@ -31,16 +34,21 @@ function HoneyswapLiquidity() {
   const { honeyTokenLiquidity, tokenLiquidity } = config.liquidity
   const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
 
-  const [hnyAmount, setHnyAmount] = useState(honeyTokenLiquidity || '')
-  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity || '')
+  const [denomination, setDenomination] = useState(HNY_DENOMINATION) // 0 HNY, 1 USD
+  const [denominatedAmount, setDenominatedAmount] = useState(
+    honeyTokenLiquidity ? fromDecimals(honeyTokenLiquidity, 18) : ''
+  )
+  const [tokenAmount, setTokenAmount] = useState(
+    tokenLiquidity ? fromDecimals(tokenLiquidity, config.tokens.decimals) : ''
+  )
 
-  const handleHnyAmountChange = useCallback(event => {
+  const handleDenominatedAmountChange = useCallback(event => {
     const newAmount = event.target.value
     if (isNaN(newAmount)) {
       return
     }
 
-    setHnyAmount(newAmount)
+    setDenominatedAmount(newAmount)
   }, [])
 
   const handleTokenAmountChange = useCallback(event => {
@@ -57,22 +65,59 @@ function HoneyswapLiquidity() {
       event.preventDefault()
 
       onConfigChange('liquidity', {
-        honeyTokenLiquidity: hnyAmount,
-        honeyTokenLiquidityStable: hnyAmount * hnyPrice,
-        tokenLiquidity: tokenAmount,
+        honeyTokenLiquidity: toDecimals(
+          denomination === HNY_DENOMINATION
+            ? denominatedAmount
+            : String(denominatedAmount / hnyPrice),
+          18
+        ),
+        honeyTokenLiquidityStable: new BigNumber(
+          toDecimals(
+            denomination === HNY_DENOMINATION
+              ? String(denominatedAmount * hnyPrice)
+              : denominatedAmount,
+            18
+          )
+        ),
+        tokenLiquidity: toDecimals(tokenAmount, config.tokens.decimals),
       })
 
       onNext()
     },
-    [hnyAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
+    [
+      config.tokens,
+      denomination,
+      denominatedAmount,
+      hnyPrice,
+      onConfigChange,
+      onNext,
+      tokenAmount,
+    ]
   )
 
-  const liquidityProvided = hnyAmount && tokenAmount
-  const nextEnabled = liquidityProvided && hnyAmount * hnyPrice >= 100
+  const liquidityProvided = Boolean(denominatedAmount && tokenAmount)
+  const satisfiesMin =
+    Number(
+      denomination === HNY_DENOMINATION
+        ? denominatedAmount * hnyPrice
+        : denominatedAmount
+    ) >= 100
+
+  const nextEnabled = liquidityProvided && satisfiesMin
+
   const tokenSymbol =
     config.garden.type === BYOT_TYPE
       ? config.tokens.existingTokenSymbol
       : config.tokens.symbol
+
+  const convertedValue = parseFloat(
+    denomination === HNY_DENOMINATION
+      ? denominatedAmount * hnyPrice
+      : denominatedAmount / hnyPrice
+  ).toFixed(2)
+
+  const hnyAmount =
+    denomination === HNY_DENOMINATION ? denominatedAmount : convertedValue
 
   return (
     <div>
@@ -98,31 +143,62 @@ function HoneyswapLiquidity() {
             >
               <TextInput
                 placeholder="0.0"
-                value={hnyAmount}
-                onChange={handleHnyAmountChange}
+                value={denominatedAmount}
+                onChange={handleDenominatedAmountChange}
                 wide
                 css={`
                   border: 0;
                   width: 100%;
                   padding: 0;
                   ${textStyle('title3')};
-                  color: ${theme[hnyAmount ? 'content' : 'contentSecondary']};
+                  color: ${theme[
+                    denominatedAmount ? 'content' : 'contentSecondary'
+                  ]};
                 `}
               />
-              <img
-                src={getLocalTokenIconBySymbol('HNY')}
-                width="32"
-                height="32"
-                alt=""
-              />
-              <span
+              <DropDown
+                items={[
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    <img
+                      src={getLocalTokenIconBySymbol('HNY')}
+                      width="32"
+                      height="32"
+                      alt=""
+                    />
+                    <span
+                      css={`
+                        margin-left: ${1 * GU}px;
+                        ${textStyle('title4')};
+                      `}
+                    >
+                      HNY
+                    </span>
+                  </div>,
+                  <span
+                    css={`
+                      margin-left: ${5 * GU}px;
+                      ${textStyle('title4')};
+                    `}
+                  >
+                    USD
+                  </span>,
+                ]}
+                selected={denomination}
+                onChange={setDenomination}
+                width="170px"
                 css={`
-                  ${textStyle('title4')};
-                  margin-left: ${1 * GU}px;
+                  border: 0;
+                  & > svg {
+                    width: 24px;
+                    height: 24px;
+                  }
                 `}
-              >
-                HNY
-              </span>
+              />
             </div>
           </Box>
           <div
@@ -131,7 +207,7 @@ function HoneyswapLiquidity() {
               color: ${theme.contentSecondary};
             `}
           >
-            {hnyAmount && (
+            {denominatedAmount && (
               <div
                 css={`
                   font-weight: bold;
@@ -149,7 +225,10 @@ function HoneyswapLiquidity() {
                 {hnyPriceLoading ? (
                   <LoadingRing />
                 ) : (
-                  <span>{parseFloat(hnyPrice * hnyAmount).toFixed(2)} USD</span>
+                  <span>
+                    {convertedValue}{' '}
+                    {denomination === HNY_DENOMINATION ? 'USD' : 'HNY'}
+                  </span>
                 )}
               </div>
             )}
