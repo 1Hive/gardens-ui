@@ -1,7 +1,7 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import { IntercomProvider } from 'react-use-intercom'
-import { Main } from '@1hive/1hive-ui'
+import { Main, ToastHub } from '@1hive/1hive-ui'
 import MainView from '@components/MainView'
 import Routes from './routes/Routes'
 import GlobalErrorHandler from './GlobalErrorHandler'
@@ -16,15 +16,17 @@ function App() {
       <IntercomProvider appId={env('INTERCOM_APP_ID')} autoBoot>
         <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
           <GlobalErrorHandler>
-            <WalletProvider>
-              <ProfileProvider>
-                <GardensProvider>
-                  <MainView>
-                    <Routes />
-                  </MainView>
-                </GardensProvider>
-              </ProfileProvider>
-            </WalletProvider>
+            <ToastHub threshold={1} timeout={1500}>
+              <WalletProvider>
+                <ProfileProvider>
+                  <GardensProvider>
+                    <MainView>
+                      <Routes />
+                    </MainView>
+                  </GardensProvider>
+                </ProfileProvider>
+              </WalletProvider>
+            </ToastHub>
           </GlobalErrorHandler>
         </Main>
       </IntercomProvider>
