@@ -2,6 +2,10 @@ import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens as steps } from '@components/Onboarding/Screens/config'
 import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import {
+  calculateDecay,
+  calculateWeight,
+} from '../utils/conviction-modelling-helpers'
 
 const OnboardingContext = React.createContext()
 
@@ -27,11 +31,12 @@ const DEFAULT_CONFIG = {
     title: '',
   },
   conviction: {
-    decay: 0,
-    maxRatio: 0,
-    minThresholdStakePercentage: 0,
-    requestToken: '',
-    weight: 0,
+    decay: calculateDecay(2),
+    halflifeDays: 2,
+    maxRatio: 10,
+    minThreshold: 2,
+    minThresholdStakePct: 5,
+    weight: calculateWeight(2, 10),
   },
   issuance: {
     maxAdjustmentRatioPerSecond: 0,
