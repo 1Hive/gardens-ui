@@ -2,7 +2,7 @@ import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import { OnboardingProvider } from '@providers/Onboarding'
-import { ChartsProvider } from '@/providers/Charts'
+import { ChartsProvider } from '@providers/Charts'
 import Screens from './Screens'
 import StepsPanel from './Steps/StepsPanel'
 

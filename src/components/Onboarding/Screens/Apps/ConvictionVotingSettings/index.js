@@ -1,23 +1,22 @@
-import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
-import {
-  calculateDecay,
-  calculateWeight,
-} from '@/utils/conviction-modelling-helpers'
+import React, { Fragment, useCallback, useReducer } from 'react'
+import { GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
   PercentageField,
   SliderField,
 } from '@components/Onboarding/kit'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
 import ConvictionVotingCharts from './ConvictionVotingCharts'
+import { useOnboardingState } from '@providers/Onboarding'
+import {
+  calculateDecay,
+  calculateWeight,
+} from '@utils/conviction-modelling-helpers'
 
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
-const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 12
+const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
@@ -32,6 +31,11 @@ const reduceFields = (fields, [field, value]) => {
         ...fields,
         minThreshold: value,
         weight: calculateWeight(value, fields.maxRatio),
+      }
+    case 'minThresholdStakePct':
+      return {
+        ...fields,
+        minThresholdStakePct: value,
       }
     case 'maxRatio':
       return {
@@ -48,16 +52,6 @@ const reduceFields = (fields, [field, value]) => {
       return {
         ...fields,
         requestToken: value,
-      }
-    case 'stakeOnProposal':
-      return {
-        ...fields,
-        stakeOnProposal: value,
-      }
-    case 'stakeOnOtherProposals':
-      return {
-        ...fields,
-        stakeOnOtherProposals: value,
       }
     default:
       return fields
@@ -80,6 +74,7 @@ function ConvictionVotingSettings() {
       halflifeDays,
       maxRatio,
       minThreshold,
+      minThresholdStakePct,
       requestedAmount,
       stakeOnProposal,
       stakeOnOtherProposals,
@@ -92,7 +87,6 @@ function ConvictionVotingSettings() {
     stakeOnProposal: DEFAULT_STAKE_ON_PROPOSAL,
     stakeOnOtherProposals: DEFAULT_STAKE_ON_OTHER_PROPOSALS,
   })
-  const [openSettingsModal, setOpenSettingsModal] = useState(false)
 
   const handleHalflifeDaysChange = useCallback(
     value => {
@@ -101,12 +95,9 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
-  const handleMaxRatioChange = useCallback(
-    value => {
-      updateField(['maxRatio', value])
-    },
-    [updateField]
-  )
+  const handleMaxRatioChange = useCallback(value => {
+    updateField(['maxRatio', value])
+  }, [])
 
   const handleMinThresholdChange = useCallback(
     value => {
@@ -122,31 +113,13 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
-  const handleStakeOnProposalChange = useCallback(
-    value => {
-      updateField(['stakeOnProposal', value])
-    },
-    [updateField]
-  )
-
-  const handleStakeOnOtherProposalsChange = useCallback(
-    value => {
-      updateField(['stakeOnOtherProposals', value])
-    },
-    [updateField]
-  )
-
-  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
-    setOpenSettingsModal,
-  ])
-
-  const handleNextCLick = () => {
+  const handleNextClick = () => {
     onConfigChange('conviction', {
-      ...config.conviction,
       decay,
       halflifeDays,
       maxRatio,
       minThreshold,
+      minThresholdStakePct,
       weight,
     })
     onNext()
@@ -155,7 +128,7 @@ function ConvictionVotingSettings() {
   return (
     <div>
       <Header
-        title="Configure Conviction Voting Parameters"
+        title="Configure Conviction Voting"
         subtitle="Set parameters to incentivize community participation."
       />
       <div
@@ -163,12 +136,13 @@ function ConvictionVotingSettings() {
           display: flex;
           justify-content: space-between;
           margin-left: ${2 * GU}px;
-          margin-bottom: ${1 * GU}px;
+          margin-bottom: ${3 * GU}px;
         `}
       >
         <div
           css={`
             display: flex;
+            justify-content: center;
             flex-direction: column;
           `}
         >
@@ -196,8 +170,8 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Spending Limit
                 <Help hint="What is Spending Limit?">
-                  <strong>Spending Limit</strong> is the the maximum percent of
-                  total funds an individual proposal can request.
+                  <strong>Spending Limit</strong> is the the maximum percentage
+                  of total funds an individual proposal can request.
                 </Help>
               </Fragment>
             }
@@ -210,28 +184,15 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Minimum Conviction
                 <Help hint="What is Minimum Conviction?">
-                  <strong>Minimum Conviction</strong> is the mininum percent of
-                  tokens that are used for calculating the threshold to pass any
-                  proposal.
+                  <strong>Minimum Conviction</strong> is the mininum percentage
+                  of tokens that are used for calculating the threshold to pass
+                  any proposal.
                 </Help>
               </Fragment>
             }
             minValue={1}
             value={minThreshold}
             onChange={handleMinThresholdChange}
-          />
-          <Button
-            size="mini"
-            css={`
-              align-self: flex-end;
-            `}
-            label="Advanced Settings"
-            onClick={() => setOpenSettingsModal(true)}
-          />
-          <AdvancedSettingsModal
-            stakeOnProposalPct={stakeOnProposal}
-            visible={openSettingsModal}
-            onClose={handleCloseModal}
           />
           <div
             css={`
@@ -247,49 +208,21 @@ function ConvictionVotingSettings() {
                 ${textStyle('body3')};
               `}
             >
-              The following are not actual parameters. You can adjust them to
-              play around with the charts.
+              The next one is only to play around, not an actual parameter:
             </div>
             <PercentageField
               label={
                 <Fragment>
                   Requested Amount
                   <Help hint="What is Requested Amount?">
-                    <strong>Requested Amount</strong> is the percentage of funds
-                    being requested by the proposal displayed in the charts.
+                    <strong>Requested Amount</strong> is the percentage of total
+                    funds being requested by the proposal displayed in the
+                    charts.
                   </Help>
                 </Fragment>
               }
               value={requestedAmount}
               onChange={handleRequestedAmountChange}
-            />
-            <PercentageField
-              label={
-                <Fragment>
-                  Stake On Proposal
-                  <Help hint="What is Stake On Proposal?">
-                    <strong>Stake On Proposal</strong> is the percentage of your
-                    total stake tokens allocated to the proposal being displayed
-                    in the charts.
-                  </Help>
-                </Fragment>
-              }
-              value={stakeOnProposal}
-              onChange={handleStakeOnProposalChange}
-            />
-            <PercentageField
-              label={
-                <Fragment>
-                  Stake On Other Proposals
-                  <Help hint="What is Stake On Other Proposals?">
-                    <strong>Stake On Other Proposals</strong> is the percentage
-                    of your total stake tokens allocated to proposals other than
-                    the one being displayed in the charts.
-                  </Help>
-                </Fragment>
-              }
-              value={stakeOnOtherProposals}
-              onChange={handleStakeOnOtherProposalsChange}
             />
           </div>
         </div>
@@ -301,7 +234,7 @@ function ConvictionVotingSettings() {
           <ConvictionVotingCharts
             decay={decay}
             maxRatio={maxRatio}
-            minActiveStakePct={config.conviction.minThresholdStakePct}
+            minActiveStakePct={minThresholdStakePct}
             requestedAmount={requestedAmount}
             stakeOnProposal={stakeOnProposal}
             stakeOnOtherProposals={stakeOnOtherProposals}
@@ -314,7 +247,7 @@ function ConvictionVotingSettings() {
         nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
-        onNext={handleNextCLick}
+        onNext={handleNextClick}
       />
     </div>
   )

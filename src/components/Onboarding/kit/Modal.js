@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Modal as OneHiveModal, GU, textStyle, Button } from '@1hive/1hive-ui'
+import { Button, Modal as OneHiveModal, GU, textStyle } from '@1hive/1hive-ui'
 
 const Modal = ({
   children,
@@ -31,7 +31,7 @@ const Modal = ({
       {title && (
         <div
           css={`
-            ${textStyle('title3')}
+            ${textStyle('title3')};
             margin-bottom: ${4 * GU}px;
           `}
         >

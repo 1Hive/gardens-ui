@@ -3,11 +3,11 @@ import React, { useMemo } from 'react'
 import {
   calculateThreshold,
   toPercentage,
-} from '@/utils/conviction-modelling-helpers'
+} from '@utils/conviction-modelling-helpers'
 import ConvictionTimeChart from './Charts/ConvictionTimeChart'
 import ThresholdRequestedChart from './Charts/ThresholdRequestedChart'
 
-const CHART_HEIGHT = '260px'
+const CHART_HEIGHT = '270px;'
 const CHART_WIDTH = '550px;'
 
 const ConvictionVotingCharts = ({
@@ -39,8 +39,8 @@ const ConvictionVotingCharts = ({
           width={CHART_WIDTH}
           decay={decay}
           minActiveStakePct={minActiveStakePct}
-          stakeOnProposalPct={stakeOnProposal}
           stakeOnOtherProposalsPct={stakeOnOtherProposals}
+          stakeOnProposalPct={stakeOnProposal}
           thresholdPct={requestedAmountThresholdPct}
         />
       </div>

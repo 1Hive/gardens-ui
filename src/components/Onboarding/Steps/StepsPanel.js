@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { CircleGraph, GU, useTheme } from '@1hive/1hive-ui'
-import StepsItem from './StepsItem'
+import Step from './Step'
 import { Screens } from '../Screens/config'
 import { useOnboardingState } from '@providers/Onboarding'
 
@@ -8,20 +8,33 @@ function StepsPanel() {
   const theme = useTheme()
   const { step } = useOnboardingState()
 
-  const [displayedSteps, displayedStepsCount] = useMemo(() => {
+  const [displayedSteps] = useMemo(() => {
     let displayCount = 0
 
     const displayedSteps = Screens.map((step, index) => {
       const hiddenCount = index - displayCount
-
-      if (step.key !== Screens[index + 1]?.key) {
+      if (
+        step.parent !== Screens[index + 1]?.parent &&
+        step.parent === Screens[index - 1]?.parent
+      ) {
         displayCount++
-        return [index, index - hiddenCount, true]
+        let substepIndex = index
+        const substeps = []
+        while (Screens[substepIndex].parent === step.parent) {
+          substeps.unshift([Screens[substepIndex], substepIndex])
+          substepIndex--
+        }
+
+        return [index, index - hiddenCount, true, substeps]
+      }
+      if (step.parent !== Screens[index + 1]?.parent) {
+        displayCount++
+        return [index, index - hiddenCount, true, []]
       }
 
       let statusIndex = index
       while (
-        step.key === Screens[statusIndex + 1].key &&
+        step.parent === Screens[statusIndex + 1].parent &&
         statusIndex < Screens.length
       ) {
         statusIndex++
@@ -30,9 +43,8 @@ function StepsPanel() {
       return [statusIndex, index - hiddenCount, false]
     }, [])
 
-    return [displayedSteps, displayCount]
+    return [displayedSteps]
   }, [])
-
   return (
     <aside
       css={`
@@ -52,21 +64,7 @@ function StepsPanel() {
           height: ${25 * GU}px;
         `}
       >
-        <CircleGraph
-          value={displayedSteps[step][1] / (displayedStepsCount - 1)}
-          size={25 * GU}
-        />
-        <div
-          css={`
-            position: absolute;
-            top: 130px;
-            font-size: 20px;
-            color: #8e97b5;
-            opacity: 0.7;
-          `}
-        >
-          {`${displayedSteps[step][1] + 1}/${displayedStepsCount}`}
-        </div>
+        <CircleGraph value={step / Screens.length} size={25 * GU} />
       </div>
       <div
         css={`
@@ -74,14 +72,15 @@ function StepsPanel() {
         `}
       >
         {displayedSteps.map(
-          ([statusIndex, displayIndex, show], index) =>
+          ([statusIndex, displayIndex, show, substeps], index) =>
             show && (
-              <StepsItem
+              <Step
                 key={index}
                 currentStep={displayedSteps[step][0]}
-                label={Screens[statusIndex].key}
+                label={Screens[statusIndex].parent}
                 step={statusIndex}
                 stepNumber={displayIndex + 1}
+                substeps={substeps}
               />
             )
         )}
