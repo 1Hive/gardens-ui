@@ -1,16 +1,19 @@
 import React, { useMemo } from 'react'
+import { useHistory } from 'react-router'
 import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
-import { useGardens } from '../../providers/Gardens'
-import { useWallet } from '../../providers/Wallet'
-import { getHoneyswapTradeTokenUrl } from '../../endpoints'
-import { getNetwork } from '../../networks'
+import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
 
-import defaultGardenLogo from '../../assets/defaultGardenLogo.svg'
-import gardensLogo from '../../assets/gardensLogo.svg'
-import gardensLogoType from '../../assets/gardensLogoType.svg'
+import { buildGardenPath } from '@utils/routing-utils'
+import { getHoneyswapTradeTokenUrl } from '@/endpoints'
+import { getNetwork } from '@/networks'
+
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import gardensLogo from '@assets/gardensLogoMark.svg'
+import gardensLogoType from '@assets/gardensLogoType.svg'
 
 function Header() {
   const theme = useTheme()
@@ -18,6 +21,7 @@ function Header() {
   const { below } = useViewport()
   const layoutSmall = below('medium')
   const network = getNetwork()
+  const history = useHistory()
   const { connectedGarden } = useGardens()
 
   const { logo, logotype } = useMemo(() => {
@@ -32,6 +36,11 @@ function Header() {
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
+  const logoLink = `#${
+    connectedGarden ? buildGardenPath(history.location, '') : '/home'
+  }`
+
+  const showBalance = connectedGarden && account && !layoutSmall
 
   return (
     <header
@@ -59,13 +68,17 @@ function Header() {
             `}
           >
             <Link
-              href="#/home"
+              href={logoLink}
               external={false}
               css={`
                 display: flex;
               `}
             >
-              {layoutSmall ? Logo : <img src={logotype} height="40" alt="" />}
+              {layoutSmall ? (
+                Logo
+              ) : (
+                <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
+              )}
             </Link>
             {!below('large') && (
               <nav
@@ -96,15 +109,11 @@ function Header() {
             css={`
               display: flex;
               align-items: center;
-              ${account &&
-                connectedGarden &&
-                !layoutSmall &&
-                `min-width: ${42.5 * GU}px`};
+              ${showBalance && `min-width: ${42.5 * GU}px`};
             `}
           >
             <AccountModule compact={layoutSmall} />
-            {/** TODO re arrange the header when the balance module is not present because of not having a connected dao  also we should hide the collateral manager option */}
-            {connectedGarden && account && !layoutSmall && (
+            {showBalance && (
               <>
                 <div
                   css={`
@@ -125,6 +134,7 @@ function Header() {
 
 function GardenNavItems({ garden }) {
   const theme = useTheme()
+  const token = garden.wrappableToken || garden.token
 
   return (
     <>
@@ -139,14 +149,14 @@ function GardenNavItems({ garden }) {
         Covenant
       </Link>
       <Link
-        href={getHoneyswapTradeTokenUrl(garden.token.id)}
+        href={getHoneyswapTradeTokenUrl(token.id)}
         css={`
           text-decoration: none;
           color: ${theme.contentSecondary};
           margin-left: ${4 * GU}px;
         `}
       >
-        Get {garden.token.name}
+        Get {token.name}
       </Link>
       {garden?.wiki && (
         <Link

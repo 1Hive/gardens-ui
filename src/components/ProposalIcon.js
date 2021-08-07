@@ -1,6 +1,6 @@
 import React from 'react'
 import { GU, useTheme } from '@1hive/1hive-ui'
-import { ProposalTypes } from '../types'
+import { ProposalTypes } from '@/types'
 
 function ProposalIcon({ type }) {
   const theme = useTheme()

@@ -1,5 +1,5 @@
 import { convertFromString, ProposalTypes } from '../types'
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {
@@ -187,5 +187,5 @@ export function getAppAddressByName(apps, appName) {
 
 export function getAppByName(apps, appName) {
   const regex = new RegExp(`^${appName}.*$`)
-  return apps?.find(app => app.name.match(regex))
+  return apps?.find(app => app?.name?.match(regex))
 }

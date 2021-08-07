@@ -4,7 +4,7 @@ import { Popover, GU, RADIUS, useTheme } from '@1hive/1hive-ui'
 import DatePicker from './DatePicker'
 import Labels from './Labels'
 import { SINGLE_DATE } from './consts'
-import { dayjs, dateFormat } from '../../utils/date-utils'
+import { dayjs, dateFormat } from '@utils/date-utils'
 import handleSingleDateSelect from './utils'
 
 function SingleDatePicker({

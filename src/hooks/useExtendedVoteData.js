@@ -2,24 +2,24 @@ import { useMemo } from 'react'
 
 import { useBlockTimeStamp } from './useBlock'
 import { useContractReadOnly } from './useContract'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 import usePromise from './usePromise'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { getCanUserVote } from '../utils/vote-utils'
-import { getUserBalanceAt, getUserBalanceNow } from '../utils/token-utils'
-import minimeTokenAbi from '../abi/minimeToken.json'
-import votingAbi from '../abi/voting.json'
+import { getCanUserVote } from '@utils/vote-utils'
+import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
+import minimeTokenAbi from '@abis/minimeToken.json'
+import votingAbi from '@abis/voting.json'
 
 export default function useExtendedVoteData(vote) {
   const { account: connectedAccount } = useWallet()
-  const { config } = useAppState()
-  const { stakeToken } = config.conviction
+  const { config } = useGardenState()
+  const { token } = config.voting
   const { id: votingAddress } = config.voting
 
   const votingContract = useContractReadOnly(votingAddress, votingAbi)
 
-  const tokenContract = useContractReadOnly(stakeToken.id, minimeTokenAbi)
+  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
 
   const userBalancePromise = useMemo(() => {
     if (!vote?.id) {
@@ -29,12 +29,12 @@ export default function useExtendedVoteData(vote) {
       connectedAccount,
       vote.snapshotBlock,
       tokenContract,
-      stakeToken.decimals
+      token.decimals
     )
   }, [
     connectedAccount,
     tokenContract,
-    stakeToken.decimals,
+    token.decimals,
     vote.id,
     vote.snapshotBlock,
   ])
@@ -53,9 +53,8 @@ export default function useExtendedVoteData(vote) {
   const { canUserVote, canUserVotePromise } = useCanUserVote(vote)
 
   const userBalanceNowPromise = useMemo(
-    () =>
-      getUserBalanceNow(connectedAccount, tokenContract, stakeToken.decimals),
-    [connectedAccount, tokenContract, stakeToken.decimals]
+    () => getUserBalanceNow(connectedAccount, tokenContract, token.decimals),
+    [connectedAccount, tokenContract, token.decimals]
   )
   const userBalanceNow = usePromise(userBalanceNowPromise, [], -1, 4)
 
@@ -75,7 +74,7 @@ export default function useExtendedVoteData(vote) {
 }
 
 export function useCanUserVote(vote) {
-  const { config } = useAppState()
+  const { config } = useGardenState()
   const { account: connectedAccount } = useWallet()
   const { id: votingAddress } = config?.voting || {}
 

@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import { getGardens } from '@1hive/connect-gardens'
 import daoList from '@1hive/gardens-dao-list'
-import { DAONotFound } from '../errors'
-import { AppStateProvider } from '../providers/AppState'
-import { ConnectProvider as Connect } from '../providers/Connect'
+import { getGardens } from '@1hive/connect-gardens'
 
+import { AgreementSubscriptionProvider } from './AgreementSubscription'
+import { ConnectProvider as Connect } from './Connect'
+import { GardenStateProvider } from './GardenState'
+import { StakingProvider } from './Staking'
+
+import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
+import { getGardenForumUrl } from '../utils/garden-utils'
 
 const DAOContext = React.createContext()
 
@@ -33,7 +37,13 @@ export function GardensProvider({ children }) {
     <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
       {connectedGarden ? (
         <Connect>
-          <AppStateProvider>{children}</AppStateProvider>
+          <GardenStateProvider>
+            <StakingProvider>
+              <AgreementSubscriptionProvider>
+                {children}
+              </AgreementSubscriptionProvider>
+            </StakingProvider>
+          </GardenStateProvider>
         </Connect>
       ) : (
         children
@@ -53,7 +63,10 @@ function useGardensList() {
   useEffect(() => {
     const fetchGardens = async () => {
       try {
-        const result = await getGardens({ network: getNetwork().chainId }, {})
+        const result = await getGardens(
+          { network: getNetwork().chainId },
+          { orderBy: 'honeyLiquidity' }
+        )
         setGardens(result)
       } catch (err) {
         console.error(`Error fetching daos ${err}`)
@@ -75,10 +88,21 @@ function mergeGardenMetadata(garden) {
     ...garden.token,
     ...metadata.token,
   }
+  const wrappableToken = garden.wrappableToken
+    ? {
+        ...garden.wrappableToken,
+        ...metadata.wrappableToken,
+      }
+    : null
+
+  const forumURL = getGardenForumUrl(metadata)
+
   return {
     ...garden,
     ...metadata,
-    token,
     address: garden.id,
+    forumURL,
+    token,
+    wrappableToken,
   }
 }

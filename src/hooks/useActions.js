@@ -2,21 +2,20 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useAppState } from '../providers/AppState'
-import { useWallet } from '../providers/Wallet'
-import { getAppByName } from '../utils/data-utils'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
 
-import { useContract } from './useContract'
-import { useDisputeFees } from './useDispute'
+import { getContract, useContract } from './useContract'
 
-import env from '../environment'
+import env from '@/environment'
 
-import { VOTE_YEA } from '../constants'
-import { encodeFunctionData } from '../utils/web3-utils'
-import BigNumber from '../lib/bigNumber'
-import tokenAbi from '../abi/minimeToken.json'
-import agreementAbi from '../abi/agreement.json'
+import { VOTE_YEA } from '@/constants'
+import { encodeFunctionData } from '@utils/web3-utils'
+import BigNumber from '@lib/bigNumber'
+import tokenAbi from '@abis/minimeToken.json'
+import agreementAbi from '@abis/agreement.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
@@ -28,15 +27,13 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps, wrappableToken } = useAppState()
+  const { installedApps, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
 
-  const disputeFees = useDisputeFees()
-  const feeTokenContract = useContract(disputeFees.token, tokenAbi)
-  const wrappableTokenContract = useContract(wrappableToken?.id, tokenAbi)
+  const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
@@ -220,7 +217,7 @@ export default function useActions() {
     [account, agreementApp, mounted]
   )
 
-  const approveTokenAmount = useCallback(
+  const approve = useCallback(
     (amount, tokenContract, appAddress, trxDescription) => {
       if (!tokenContract || !appAddress) {
         return
@@ -243,24 +240,27 @@ export default function useActions() {
     [account]
   )
 
-  const approveChallengeTokenAmount = useCallback(
-    (depositAmount, onDone = noop) => {
-      if (!feeTokenContract || !agreementApp) {
+  const approveTokenAmount = useCallback(
+    async (tokenAddress, depositAmount, onDone = noop) => {
+      const tokenContract = getContract(tokenAddress, tokenAbi)
+      if (!tokenContract || !agreementApp) {
         return
       }
 
-      const intent = approveTokenAmount(
+      const tokenSymbol = await tokenContract.symbol()
+
+      const intent = approve(
         depositAmount,
-        feeTokenContract,
+        tokenContract,
         agreementApp.address,
-        'Approve HNY'
+        `Approve ${tokenSymbol}`
       )
 
       if (mounted()) {
         onDone(intent)
       }
     },
-    [approveTokenAmount, feeTokenContract, agreementApp, mounted]
+    [agreementApp, approve, mounted]
   )
 
   const getAllowance = useCallback(
@@ -276,12 +276,16 @@ export default function useActions() {
     [account]
   )
 
-  const getAgreementAllowance = useCallback(() => {
-    if (!agreementApp || !feeTokenContract) {
-      return
-    }
-    return getAllowance(feeTokenContract, agreementApp.address)
-  }, [agreementApp, feeTokenContract, getAllowance])
+  const getAgreementTokenAllowance = useCallback(
+    tokenAddress => {
+      const tokenContract = getContract(tokenAddress, tokenAbi)
+      if (!agreementApp || !tokenContract) {
+        return
+      }
+      return getAllowance(tokenContract, agreementApp.address)
+    },
+    [agreementApp, getAllowance]
+  )
 
   const resolveAction = useCallback(
     disputeId => {
@@ -343,11 +347,11 @@ export default function useActions() {
         return
       }
 
-      const intent = approveTokenAmount(
+      const intent = approve(
         amount,
         wrappableTokenContract,
         hookedTokenManagerApp.address,
-        `Approve ${wrappableToken.symbol}`
+        `Approve ${wrappableToken.data.symbol}`
       )
 
       if (mounted()) {
@@ -355,7 +359,7 @@ export default function useActions() {
       }
     },
     [
-      approveTokenAmount,
+      approve,
       hookedTokenManagerApp,
       mounted,
       wrappableToken,
@@ -403,10 +407,10 @@ export default function useActions() {
   // TODO: Memoize objects
   return {
     agreementActions: {
-      approveChallengeTokenAmount,
+      approveTokenAmount,
       challengeAction,
       disputeAction,
-      getAllowance: getAgreementAllowance,
+      getAllowance: getAgreementTokenAllowance,
       getChallenge,
       resolveAction,
       settleAction,

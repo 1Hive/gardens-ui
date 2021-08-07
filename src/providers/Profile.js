@@ -13,7 +13,7 @@ import {
   getAccountPrivateData,
   getProfileForAccount,
   openBoxForAccount,
-} from '../lib/profile'
+} from '@lib/profile'
 
 const ProfileContext = React.createContext()
 

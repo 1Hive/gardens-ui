@@ -4,9 +4,9 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { useAppState } from '../providers/AppState'
+import { useGardenState } from '@providers/GardenState'
 
-export function useConfigSubscription(honeypot) {
+export function useConfigSubscription(garden) {
   const [config, setConfig] = useState(null)
 
   const rawConfigRef = useRef(null)
@@ -29,20 +29,20 @@ export function useConfigSubscription(honeypot) {
   }, [])
 
   useEffect(() => {
-    if (!honeypot) {
+    if (!garden) {
       return
     }
 
-    configSubscription.current = honeypot.onConfig(onConfigHandler)
+    configSubscription.current = garden.onConfig(onConfigHandler)
 
     return () => configSubscription.current.unsubscribe()
-  }, [honeypot, onConfigHandler])
+  }, [garden, onConfigHandler])
 
   return config
 }
 
 export function useProposalsSubscription(filters) {
-  const { honeypot, config } = useAppState()
+  const { config, connector } = useGardenState()
   const [proposals, setProposals] = useState([])
 
   const proposalsSubscription = useRef(null)
@@ -62,11 +62,11 @@ export function useProposalsSubscription(filters) {
   )
 
   useEffect(() => {
-    if (!honeypot) {
+    if (!connector) {
       return
     }
 
-    proposalsSubscription.current = honeypot.onProposals(
+    proposalsSubscription.current = connector.onProposals(
       {
         first: filters.count.filter,
         ...filters.name.queryArgs,
@@ -79,13 +79,13 @@ export function useProposalsSubscription(filters) {
 
     return () => proposalsSubscription.current.unsubscribe()
   }, [
+    connector,
     filters.count,
     filters.name,
     filters.proposalCount,
     filters.ranking,
     filters.status,
     filters.type,
-    honeypot,
     onProposalsHandler,
   ])
 
@@ -94,7 +94,7 @@ export function useProposalsSubscription(filters) {
 
 // TODO: Handle errors
 export function useProposalSubscription(proposalId, appAddress) {
-  const { honeypot, config } = useAppState()
+  const { config, connector } = useGardenState()
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -123,41 +123,50 @@ export function useProposalSubscription(proposalId, appAddress) {
   )
 
   useEffect(() => {
-    if (!honeypot || !proposalId || !appAddress) {
+    if (!connector || !proposalId || !appAddress) {
       return
     }
 
-    proposalSubscription.current = honeypot.onProposal(
+    proposalSubscription.current = connector.onProposal(
       { number: proposalId, appAddress },
       onProposalHandler
     )
 
     return () => proposalSubscription.current.unsubscribe()
-  }, [appAddress, honeypot, onProposalHandler, proposalId])
+  }, [appAddress, connector, onProposalHandler, proposalId])
 
   return [proposal, loading]
 }
 
-export function useSupporterSubscription(honeypot, account) {
+export function useSupporterSubscription(connector, account) {
   const [supporter, setSupporter] = useState(null)
 
+  const rawSupporterRef = useRef(null)
   const supporterSubscription = useRef(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {
     if (err || !supporter) {
+      setSupporter(null)
       return
     }
+
+    const rawSupporter = JSON.stringify(supporter)
+    if (rawSupporterRef?.current === rawSupporter) {
+      return
+    }
+
+    rawSupporterRef.current = rawSupporter
 
     const transformedSupported = transformSupporterData(supporter)
     setSupporter(transformedSupported)
   }, [])
 
   useEffect(() => {
-    if (!honeypot || !account) {
+    if (!connector || !account) {
       return
     }
 
-    supporterSubscription.current = honeypot.onSupporter(
+    supporterSubscription.current = connector.onSupporter(
       { id: account.toLowerCase() },
       onSupporterHandler
     )
@@ -165,7 +174,7 @@ export function useSupporterSubscription(honeypot, account) {
     return () => {
       supporterSubscription.current.unsubscribe()
     }
-  }, [account, honeypot, onSupporterHandler])
+  }, [account, connector, onSupporterHandler])
 
   return supporter
 }

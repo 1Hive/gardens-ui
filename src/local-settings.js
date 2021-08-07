@@ -15,7 +15,7 @@ function setLocalSetting(confKey, value) {
 }
 
 export function getDefaultChain() {
-  return Number(env(DEFAULT_CHAIN_ID)) || ''
+  return Number(env(DEFAULT_CHAIN_ID))
 }
 
 export function setDefaultChain(chainId) {

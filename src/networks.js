@@ -1,4 +1,4 @@
-import { getNetworkType, isLocalOrUnknownNetwork } from './utils/web3-utils'
+import { getNetworkType, isLocalOrUnknownNetwork } from '@utils/web3-utils'
 import { getDefaultChain } from './local-settings'
 import env from './environment'
 
