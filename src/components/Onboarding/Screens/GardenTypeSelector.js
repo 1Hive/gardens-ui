@@ -1,9 +1,13 @@
 import React, { useCallback, useState } from 'react'
+import Lottie from 'react-lottie'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { useOnboardingState } from '@providers/Onboarding'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import byotAnimation from '@assets/byotAnimation.json'
+import nativeAnimation from '@assets/nativeAnimation.json'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 function GardenTypeSelector() {
   const theme = useTheme()
@@ -37,15 +41,16 @@ function GardenTypeSelector() {
         <h1
           css={`
             ${textStyle('title1')};
+            font-size: 3em;
             margin-bottom: ${3 * GU}px;
           `}
         >
-          Garden type
+          Garden Type
         </h1>
         <div>
           <p
             css={`
-              ${textStyle('body1')};
+              ${textStyle('title4')};
               color: ${theme.contentSecondary};
             `}
           >
@@ -57,31 +62,48 @@ function GardenTypeSelector() {
         css={`
           display: flex;
           align-items: center;
-          justify-content: space-around;
-          margin-bottom: ${6 * GU}px;
+          justify-content: center;
+          margin-top: ${5.5 * GU}px;
+          margin-bottom: ${15.5 * GU}px;
         `}
       >
         <Card
           icon={defaultGardenLogo}
-          paragraph="Launch garden with new token"
+          paragraph="Create a new token that is native to your garden. "
           onSelect={handleSelectNative}
           selected={selectedType === NATIVE_TYPE}
-          title="Native"
+          animationData={nativeAnimation}
+          title="Native Token"
         />
         <Card
           icon={defaultGardenLogo}
-          paragraph="Launch garden with existing token"
+          paragraph="Use an existing ERC-20 token to within your garden."
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
-          title="BYOT"
+          animationData={byotAnimation}
+          title="Pre-existing Token"
         />
       </div>
     </div>
   )
 }
 
-function Card({ icon, title, onSelect, paragraph, selected }) {
+function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
+  const [isStopped, setIsStopped] = useState(true)
   const theme = useTheme()
+
+  const handleAnimation = useCallback(() => {
+    setIsStopped(false)
+  }, [setIsStopped])
+
+  const defaultOptions = {
+    loop: false,
+    autoplay: false,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  }
+
   return (
     <div
       css={`
@@ -89,50 +111,56 @@ function Card({ icon, title, onSelect, paragraph, selected }) {
         padding: ${5 * GU}px;
         background: ${theme.surface};
         border: 1px solid ${theme.border};
+        width: ${33 * GU}px;
+        height: ${47.5 * GU}px;
+        margin: ${1.25 * GU}px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.3s ease;
+        border-radius: 50% 50% ${2 * GU}px ${2 * GU}px;
         ${selected
           ? `
-          box-shadow: 0px 0px 7px 1px ${theme.accentStart};
-          background: linear-gradient(
-            268deg,
-            ${theme.accentEnd},
-            ${theme.accentStart}
-          );
+          border: 2px solid #56D571;
         `
           : `  &:hover {
           box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.2);
-        }`}
+        }`};
       `}
       onClick={onSelect}
+      onMouseOver={handleAnimation}
     >
-      <img
-        src={icon}
-        alt=""
-        height="100"
-        width="100"
-        css={`
-          margin-bottom: ${2 * GU}px;
-        `}
-      />
       <div
         css={`
-          margin-bottom: ${3 * GU}px;
-          ${textStyle('title2')};
+          background: #59d673;
+          border-radius: 50%;
+          width: ${27.25 * GU}px;
+          height: ${27.25 * GU}px;
+          padding: ${3 * GU}px;
         `}
       >
-        {title}
+        <Lottie
+          options={{ ...defaultOptions, animationData }}
+          isStopped={isStopped}
+        />
       </div>
-      <div
-        css={`
-          color: ${theme.contentSecondary};
-          ${textStyle('body1')};
-        `}
-      >
-        {paragraph}
+      <div>
+        <div
+          css={`
+            color: ${theme.content};
+            ${textStyle('body1')};
+          `}
+        >
+          {title}
+        </div>
+        <div
+          css={`
+            color: ${theme.contentSecondary};
+            ${textStyle('body2')};
+          `}
+        >
+          {paragraph}
+        </div>
       </div>
     </div>
   )
