@@ -63,8 +63,6 @@ function GardenTypeSelector() {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-top: ${5.5 * GU}px;
-          margin-bottom: ${15.5 * GU}px;
         `}
       >
         <Card
@@ -92,9 +90,13 @@ function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
   const [isStopped, setIsStopped] = useState(true)
   const theme = useTheme()
 
-  const handleAnimation = useCallback(() => {
+  const handleStartAnimation = useCallback(() => {
     setIsStopped(false)
   }, [setIsStopped])
+
+  const handleStopAnimation = useCallback(() => {
+    setIsStopped(!selected)
+  }, [setIsStopped, selected])
 
   const defaultOptions = {
     loop: false,
@@ -108,35 +110,43 @@ function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
     <div
       css={`
         cursor: pointer;
-        padding: ${5 * GU}px;
+        padding-left: ${3.5 * GU}px;
+        padding-right: ${3.5 * GU}px;
+        padding-bottom: ${3.5 * GU}px;
+        margin: ${1.25 * GU}px;
+        max-width: ${34 * GU}px;
+        border-radius: 50% 50% ${2 * GU}px ${2 * GU}px;
         background: ${theme.surface};
         border: 1px solid ${theme.border};
-        width: ${33 * GU}px;
-        height: ${47.5 * GU}px;
-        margin: ${1.25 * GU}px;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        transition: box-shadow 0.3s ease;
-        border-radius: 50% 50% ${2 * GU}px ${2 * GU}px;
+        transition: box-shadow 0.5s ease;
         ${selected
           ? `
           border: 2px solid #56D571;
+          transform: scale(1.02);
         `
           : `  &:hover {
           box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.2);
+          border: 2px solid #56D571;
+          transform: scale(1.02);
+          transition: border-color 1.5s;
         }`};
       `}
       onClick={onSelect}
-      onMouseOver={handleAnimation}
+      onMouseOver={handleStartAnimation}
+      onMouseLeave={handleStopAnimation}
     >
       <div
         css={`
           background: #59d673;
           border-radius: 50%;
-          width: ${27.25 * GU}px;
-          height: ${27.25 * GU}px;
-          padding: ${3 * GU}px;
+          width: 218px;
+          height: 218px;
+          margin: ${3.375 * GU}px;
+          padding: ${3.125 * GU}px;
         `}
       >
         <Lottie
