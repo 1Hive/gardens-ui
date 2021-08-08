@@ -54,7 +54,7 @@ function GardenTypeSelector() {
               color: ${theme.contentSecondary};
             `}
           >
-            Choose which type of garden you'd like to launch.
+            Choose the type of garden you'd like to launch.
           </p>
         </div>
       </div>
