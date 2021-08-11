@@ -6,6 +6,7 @@ const RINKEBY_HONEY_POT = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
 const RINKEBY_STAGING_HONEY_POT = '0xeac000b64fc11a9ce6d885fe91fb4f9c2359cc21'
 const INSTANCE = env('INSTANCE')
 const ETH_NODE = env('ETH_NODE')
+const XDAI_NODE = env('XDAI_NODE')
 
 const networks = {
   mainnet: {
@@ -37,7 +38,7 @@ const networks = {
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     name: 'xDai',
     type: 'xdai',
-    defaultEthNode: 'https://xdai.poanetwork.dev/',
+    defaultEthNode: XDAI_NODE,
     honeypot: '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
