@@ -24,7 +24,7 @@ const ENV_VARS = {
     return process.env.REACT_APP_ETH_NODE || ''
   },
   XDAI_NODE() {
-    return process.env.REACT_APP_XDAI_NODE || ''
+    return process.env.NEXT_PUBLIC_XDAI_NODE || ''
   },
   FORTMATIC_API_KEY() {
     return process.env.REACT_APP_FORTMATIC_API_KEY || ''

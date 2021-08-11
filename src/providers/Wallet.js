@@ -18,7 +18,6 @@ function WalletAugmented({ children }) {
 
   const ethers = useMemo(() => {
     if (!ethereum) {
-      console.log('Network RPC', getNetwork()?.defaultEthNode)
       return new EthersProviders.JsonRpcProvider(getNetwork()?.defaultEthNode)
     }
 
