@@ -9,6 +9,8 @@ const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(ethEndpoint)
 
 export function useContractReadOnly(address, abi) {
   const ethProvider = useMemo(() => (ethEndpoint ? DEFAULT_PROVIDER : null), [])
+  console.log('Network RPC', getNetwork()?.defaultEthNode)
+  console.log('Effective WebP', ethProvider)
 
   return useMemo(() => {
     if (!address) {
