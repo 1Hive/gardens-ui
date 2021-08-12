@@ -1,7 +1,6 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const NETWORK = getNetworkName().toLowerCase()
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
 const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
 
@@ -45,14 +44,15 @@ export const fetchBaseTreeSha = async commitSha => {
   }
 }
 
-export const createTree = async (baseTreSha, fileContent) => {
+export const createTree = async (baseTreSha, chainId, fileContent) => {
   const endpoint = `${ENDPOINT_BASE}/git/trees`
+  const network = getNetworkName(chainId).toLowerCase()
 
   const bodyData = {
     base_tree: baseTreSha,
     tree: [
       {
-        path: `${NETWORK}.json`,
+        path: `${network}.json`,
         mode: '100644',
         type: 'blob',
         content: JSON.stringify(fileContent, null, 4),
@@ -164,7 +164,7 @@ export const publishNewDao = async daoMetaData => {
     const { data: fileContent } = await fetchFileContent()
     await publishDaoAssets(daoMetaData)
 
-    const newDaoList = fileContent.daos
+    const newDaoList = fileContent
     newDaoList.push({
       // address once we have it
       name: daoMetaData.name,
@@ -203,8 +203,10 @@ export const publishNewDao = async daoMetaData => {
   }
 }
 
-export const fetchFileContent = async () => {
-  const endpoint = `${ENDPOINT_BASE}/contents/${NETWORK}.json`
+export const fetchFileContent = async chainId => {
+  const network = getNetworkName(chainId).toLowerCase()
+  const endpoint = `${ENDPOINT_BASE}/contents/${network}.json`
+
   try {
     const result = await fetch(endpoint, {
       method: 'GET',
@@ -214,7 +216,13 @@ export const fetchFileContent = async () => {
         'Content-Type': 'application/json',
       },
     })
-    const data = await result.json()
+
+    let data
+    try {
+      data = await result.json()
+    } catch (err) {
+      console.log('error parsing result ', err)
+    }
 
     return { data, error: !result.ok }
   } catch (err) {

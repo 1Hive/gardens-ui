@@ -34,6 +34,7 @@ function GardensList() {
         padding: ${3 * GU}px;
         display: flex;
         flex-direction: column;
+        margin-bottom: ${10 * GU}px;
       `}
     >
       {!isSupportedNetwork && (

@@ -31,10 +31,6 @@ function WalletAugmented({ children }) {
   const wallet = useWallet()
   const { ethereum } = wallet
 
-  console.log('chainId ', chainId)
-
-  console.log('wallet ', wallet)
-
   const ethers = useMemo(() => {
     if (!ethereum) {
       return getDefaultProvider()

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import daoList from '@1hive/gardens-dao-list'
 import { getGardens } from '@1hive/connect-gardens'
 
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
@@ -10,6 +9,7 @@ import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
 import { useWallet } from './Wallet'
 
+import { fetchFileContent } from '../services/github'
 import { DAONotFound } from '../errors'
 import { getGardenForumUrl } from '../utils/garden-utils'
 
@@ -58,35 +58,60 @@ export function useGardens() {
 
 function useGardensList() {
   const [gardens, setGardens] = useState([])
+  const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
   const { chainId, preferredNetwork, isSupportedNetwork } = useWallet()
 
-  console.log('useGardens chain id ', chainId)
+  const networkId = isSupportedNetwork ? chainId : preferredNetwork
 
   useEffect(() => {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: isSupportedNetwork ? chainId : preferredNetwork },
+          { network: networkId },
           { orderBy: 'honeyLiquidity' }
         )
         setGardens(result)
       } catch (err) {
         setGardens([])
-        console.error(`Error fetching daos ${err}`)
+        console.error(`Error fetching gardens ${err}`)
       }
       setLoading(false)
     }
 
     fetchGardens()
-  }, [chainId, isSupportedNetwork, preferredNetwork])
+  }, [networkId, isSupportedNetwork, preferredNetwork])
 
-  return [useMemo(() => gardens.map(mergeGardenMetadata), [gardens]), loading]
+  useEffect(() => {
+    const fetchGardenMetadata = async () => {
+      try {
+        const result = await fetchFileContent(networkId)
+        setGardensMetadata(result.data)
+      } catch (err) {
+        setGardensMetadata([])
+        console.error(`Error fetching gardens metadata ${err}`)
+      }
+    }
+    fetchGardenMetadata()
+  }, [networkId, isSupportedNetwork, preferredNetwork])
+
+  return [
+    useMemo(
+      () =>
+        gardens.map(garden =>
+          mergeGardenMetadata(garden, gardensMetadata, networkId)
+        ),
+      [gardens, gardensMetadata, networkId]
+    ),
+    loading,
+  ]
 }
 
-function mergeGardenMetadata(garden) {
+function mergeGardenMetadata(garden, gardensMetadata, networkId) {
   const metadata =
-    daoList.daos.find(dao => addressesEqual(dao.address, garden.id)) || {}
+    gardensMetadata.gardens.find(dao =>
+      addressesEqual(dao.address, garden.id)
+    ) || {}
 
   const token = {
     ...garden.token,
@@ -108,5 +133,6 @@ function mergeGardenMetadata(garden) {
     forumURL,
     token,
     wrappableToken,
+    chainId: networkId,
   }
 }
