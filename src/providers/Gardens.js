@@ -18,6 +18,8 @@ const DAOContext = React.createContext()
 export function GardensProvider({ children }) {
   const [gardens, loading] = useGardensList()
 
+  console.log('GARDENS LIST ', gardens)
+
   const match = useRouteMatch('/garden/:daoId')
 
   const connectedGarden = useMemo(() => {
@@ -63,6 +65,8 @@ function useGardensList() {
   const { chainId, preferredNetwork, isSupportedNetwork } = useWallet()
 
   const networkId = isSupportedNetwork ? chainId : preferredNetwork
+
+  console.log('NETWORK ID ', networkId)
 
   useEffect(() => {
     const fetchGardens = async () => {

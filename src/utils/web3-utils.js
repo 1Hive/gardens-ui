@@ -18,8 +18,6 @@ export function getDefaultProvider() {
   const type = getNetworkType(getPreferredChain()).toUpperCase()
   const defaultEthNode = env(`${type}_ETH_NODE`)
 
-  console.log('getDefaultProvider ', defaultEthNode)
-
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)
     : ethers.getDefaultProvider(type, getBackendServicesKeys())

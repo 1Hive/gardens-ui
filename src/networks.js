@@ -27,6 +27,7 @@ const networks = {
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
+      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
@@ -43,6 +44,7 @@ const networks = {
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
     subgraphs: {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
+      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
     },
     celesteUrl: 'https://celeste.1hive.org/#',
@@ -68,7 +70,7 @@ export function getAvailableNetworks() {
 }
 
 export function getAgreementConnectorConfig(chainId) {
-  const agreementSubgraph = getNetwork(chainId).subgraphs?.agreement
+  const agreementSubgraph = getNetwork(chainId)?.subgraphs?.agreement
   return {
     agreement: agreementSubgraph && [
       'thegraph',

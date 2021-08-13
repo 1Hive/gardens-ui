@@ -30,6 +30,7 @@ export function useGardenData() {
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
+
   const useAgreementHook = createAppHook(
     connectAgreement,
     getAgreementConnectorConfig(chainId).agreement
@@ -91,6 +92,14 @@ export function useGardenData() {
     appsStatus.error ||
     permissionsStatus.error ||
     agreementError
+
+  console.log(
+    'errors ',
+    orgStatus.error,
+    appsStatus.error,
+    permissionsStatus.error,
+    agreementError
+  )
 
   const loading =
     !errors &&
@@ -161,8 +170,6 @@ export function useTokenBalances(account, token, timeout = 5000) {
   })
 
   const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
-
-  console.log('tokenContract ', tokenContract)
 
   useEffect(() => {
     if (!token?.id || !tokenContract) {
