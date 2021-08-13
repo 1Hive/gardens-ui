@@ -54,7 +54,7 @@ const StakeManagement = React.memo(function StakeManagement() {
       ) : (
         <LayoutGutter>
           <LayoutLimiter>
-            <Header primary="Collateral Manager" />
+            <Header primary="Deposit Manager" />
 
             <LayoutColumns
               primary={

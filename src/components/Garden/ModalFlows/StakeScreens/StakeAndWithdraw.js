@@ -81,7 +81,7 @@ function StakeAndWithdraw({
   const textData = useMemo(() => {
     if (depositMode) {
       return {
-        descriptionText: `This amount will be locked in the collateral manager and will be used as collateral when creating actions bound by this garden's Covenant.`,
+        descriptionText: `This amount will be placed in the deposit manager and will be used as collateral when creating actions bound by this garden's Covenant.`,
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals

@@ -57,14 +57,14 @@ function CreateProposalRequirements({ agreement, staking }) {
           margin-top: ${5 * GU}px;
         `}
       >
-        You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to create a proposal. You can
-        manage your balance in the{' '}
+        You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
+        {token.symbol} to create a proposal. You can manage your balance in the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
         >
-          Collateral Manager
+          Deposit Manager
+>>>>>>> rename Collateral manager to deposit manager and simplify explanations:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         </Link>
       </InfoField>
       <CollateralStatus
@@ -171,8 +171,13 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
+<<<<<<< HEAD:src/components/Garden/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
         actionButton: 'Collateral manager',
+=======
+        text: `You need to allow the Covenant as the manager of your deposited HNY`,
+        actionButton: 'Deposit  manager',
+>>>>>>> rename Collateral manager to deposit manager and simplify explanations:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         buttonOnClick: goToStakeManager,
       }
     }
