@@ -32,12 +32,10 @@ function AccountModule({ compact }) {
   const wallet = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  // const [activationError, setActivationError] = useState(null)
 
   const { boxOpened } = useProfile()
   const { account, activating, error } = wallet
 
-  // const clearError = useCallback(() => setActivationError(null), [])
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const handleCancelConnection = useCallback(() => {
@@ -109,7 +107,6 @@ function AccountModule({ compact }) {
         return false
       }
       setOpened(false)
-      // setActivationError(null)
     },
     [screenId]
   )

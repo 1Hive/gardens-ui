@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from '@1hive/use-wallet'
-// import UnsupportedChainModal from '../components/UnsupportedChainModal'
 
 import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
 import { getNetwork, isSupportedChain, SUPPORTED_CHAINS } from '@/networks'

@@ -93,14 +93,6 @@ export function useGardenData() {
     permissionsStatus.error ||
     agreementError
 
-  console.log(
-    'errors ',
-    orgStatus.error,
-    appsStatus.error,
-    permissionsStatus.error,
-    agreementError
-  )
-
   const loading =
     !errors &&
     (orgStatus.loading ||

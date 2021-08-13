@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react'
-// import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import ModalFlowBase from '../../Garden/ModalFlows/ModalFlowBase'
 import ConnectWallet from './ConnectWallet'

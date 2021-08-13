@@ -1,27 +1,19 @@
 import React, { useCallback, useState } from 'react'
-// import { useViewport } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import GardensList from './GardensList'
 import Onboarding from './Onboarding'
 import LandingBanner from './LandingBanner'
-// import UnsupportedChainAnimation from './UnsupportedChainAnimation'
 import { useWallet } from '@providers/Wallet'
 import { useNodeHeight } from '@hooks/useNodeHeight'
 import MultiModal from './MultiModal/MultiModal'
 import ConnectWalletScreens from './ModalFlows/ConnectWallet/ConnectWalletScreens'
-// import { getPreferredChain } from '@/local-settings'
-
-// import { isSupportedChain } from '@/networks'
 
 function Home() {
   const [height, ref] = useNodeHeight()
-  // const { width } = useViewport()
   const [onboardingVisible, setOnboardingVisible] = useState(false)
   const [connectModalVisible, setConnectModalVisible] = useState(false)
 
   const { account } = useWallet()
-
-  // const preferredChain = getPreferredChain()
 
   const handleOnboardingOpen = useCallback(() => {
     if (!account) {
