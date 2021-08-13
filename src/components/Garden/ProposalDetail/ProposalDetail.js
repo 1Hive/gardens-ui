@@ -209,11 +209,11 @@ function ProposalDetail({
                   `}
                 >
                   <DataField
-                    label="Link"
+                    label="Forum"
                     value={
                       link ? (
                         <Link href={link} external>
-                          Read more
+                          Read the full proposal
                         </Link>
                       ) : (
                         <span
