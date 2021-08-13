@@ -109,7 +109,7 @@ function useGardensList() {
 
 function mergeGardenMetadata(garden, gardensMetadata, networkId) {
   const metadata =
-    gardensMetadata.gardens.find(dao =>
+    gardensMetadata.gardens?.find(dao =>
       addressesEqual(dao.address, garden.id)
     ) || {}
 

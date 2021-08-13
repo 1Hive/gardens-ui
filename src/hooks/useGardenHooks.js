@@ -162,6 +162,8 @@ export function useTokenBalances(account, token, timeout = 5000) {
 
   const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
 
+  console.log('tokenContract ', tokenContract)
+
   useEffect(() => {
     if (!token?.id || !tokenContract) {
       return

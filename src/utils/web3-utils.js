@@ -15,8 +15,10 @@ function getBackendServicesKeys() {
 }
 
 export function getDefaultProvider() {
-  const type = getNetworkType()
-  const defaultEthNode = env('ETH_NODE')
+  const type = getNetworkType(getPreferredChain()).toUpperCase()
+  const defaultEthNode = env(`${type}_ETH_NODE`)
+
+  console.log('getDefaultProvider ', defaultEthNode)
 
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)

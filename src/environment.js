@@ -25,8 +25,11 @@ const ENV_VARS = {
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
-  ETH_NODE() {
-    return process.env.REACT_APP_ETH_NODE || ''
+  RINKEBY_ETH_NODE() {
+    return process.env.REACT_APP_RINKEBY_ETH_NODE || ''
+  },
+  XDAI_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || ''
   },
   ETHERSCAN_API_KEY() {
     return process.env.REACT_APP_ETHERSCAN_API_KEY || null

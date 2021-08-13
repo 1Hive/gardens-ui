@@ -63,6 +63,7 @@ function useTokens() {
     balance: gardenTokenAccountBalance,
     totalSupply: gardenTokenTotalSuuply,
   } = useTokenBalances(account, token)
+
   const {
     balance: wrappableTokenAccountBalance,
     totalSupply: wrappableTokenTotalSupply,

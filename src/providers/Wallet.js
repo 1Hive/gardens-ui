@@ -39,10 +39,10 @@ function WalletAugmented({ children }) {
     const ensRegistry = getNetwork(wallet.chainId)?.ensRegistry
     return new EthersProviders.Web3Provider(ethereum, {
       name: '',
-      chainId: getPreferredChain(),
+      chainId: preferredNetwork,
       ensAddress: ensRegistry,
     })
-  }, [ethereum, wallet.chainId]) //eslint-disable-line
+  }, [ethereum, preferredNetwork]) //eslint-disable-line
 
   const isSupportedNetwork = useMemo(() => {
     return isSupportedChain(wallet.chainId)
