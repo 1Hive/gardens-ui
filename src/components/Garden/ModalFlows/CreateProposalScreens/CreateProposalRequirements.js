@@ -52,13 +52,13 @@ function CreateProposalRequirements({ agreement, staking }) {
       </InfoField>
       <AgreementStatus agreement={agreement} />
       <InfoField
-        label="Action collateral"
+        label="Proposal collateral"
         css={`
           margin-top: ${5 * GU}px;
         `}
       >
-        You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to create a proposal. You can
+        You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
+        {token.symbol} to create a proposal. You can
         manage your balance in the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
