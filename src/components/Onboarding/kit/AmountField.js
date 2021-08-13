@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Field, GU, TextInput, textStyle, useTheme } from '@1hive/1hive-ui'
 
 // matches a number up to two decimals
@@ -15,21 +15,41 @@ const AmountField = ({
   ...props
 }) => {
   const theme = useTheme()
+  const [amountFieldValue, setAmountFieldValue] = useState(value)
+
+  useEffect(() => {
+    setAmountFieldValue(value)
+  }, [value])
 
   const handleInputChange = useCallback(
     e => {
       const value = parseFloat(e.target.value)
-      if (
+
+      // Allow empty values so it can be easier to update input
+      if (!e.target.value) {
+        setAmountFieldValue('')
+      } else if (
         !isNaN(value) &&
         regex.test(value) &&
         value >= min &&
         (max ? value < max : true)
       ) {
-        onChange(value)
+        setAmountFieldValue(value)
       }
     },
-    [min, max, onChange]
+    [min, max]
   )
+
+  const handleInputBlur = useCallback(() => {
+    // It can be an empty value so we need to parse it again
+    const value = parseFloat(amountFieldValue)
+
+    if (!isNaN(value)) {
+      onChange(value)
+    } else {
+      onChange(min)
+    }
+  }, [min, onChange, amountFieldValue])
 
   return (
     <Field label={label} required={required}>
@@ -39,6 +59,11 @@ const AmountField = ({
         `}
       >
         <TextInput
+          type="number"
+          value={amountFieldValue}
+          onChange={handleInputChange}
+          onBlur={handleInputBlur}
+          {...props}
           css={`
             ::-webkit-inner-spin-button {
               -webkit-appearance: none;
@@ -50,10 +75,6 @@ const AmountField = ({
             }
             -moz-appearance: textfield;
           `}
-          type="number"
-          value={value}
-          onChange={handleInputChange}
-          {...props}
         />
         {unitSymbol && (
           <span

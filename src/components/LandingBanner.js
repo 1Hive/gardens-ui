@@ -113,7 +113,7 @@ const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
                 `}
               />
               <Button
-                label="Create Garden"
+                label="Create a Garden"
                 mode="strong"
                 onClick={onCreateGarden}
                 wide
