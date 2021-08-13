@@ -38,7 +38,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
             tokenAmount={formatTokenAmount(available, token.decimals)}
           />
         }
-        expansion="This is the part of your collateral balance that has not been locked in any action yet. You may withdraw it at any time."
+        expansion="This is the part of your balance that is not currently being deposited on a proposal or challenge. You may withdraw it at any time."
       />
       <ExpandableCard
         content={
@@ -50,7 +50,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
             secondary
           />
         }
-        expansion="This is the part of your collateral balance that is backing a particular action. This Locked amount will move back to Available after the action is finalised if there are no successful challenges."
+        expansion="This is the part of your balance that is currently being deposited on either open proposals you have created, or proposals you have challenged. It is not available to be withdrawn."
       />
     </div>
   )

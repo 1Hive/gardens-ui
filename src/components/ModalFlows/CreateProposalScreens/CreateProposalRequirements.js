@@ -54,7 +54,7 @@ function CreateProposalRequirements({ agreement, staking }) {
         You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
         {token.symbol} to create a proposal. You can manage your balance in the{' '}
         <Link href="#/collateral" external={false}>
-          Collateral Manager
+          Deposit Manager
         </Link>
       </InfoField>
       <CollateralStatus
@@ -154,8 +154,8 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface,
         color: theme.negative,
         icon: iconError,
-        text: `You need to allow the Covenant as the lock manager of your staked HNY`,
-        actionButton: 'Collateral manager',
+        text: `You need to allow the Covenant as the manager of your deposited HNY`,
+        actionButton: 'Deposit  manager',
         buttonOnClick: goToStakeManager,
       }
     }
