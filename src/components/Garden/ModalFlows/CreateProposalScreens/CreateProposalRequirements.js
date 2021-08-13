@@ -58,8 +58,7 @@ function CreateProposalRequirements({ agreement, staking }) {
         `}
       >
         You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} to create a proposal. You can
-        manage your balance in the{' '}
+        {token.symbol} to create a proposal. You can manage your balance in the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}

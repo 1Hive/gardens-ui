@@ -109,8 +109,12 @@ function BalanceCard({
           margin-bottom: ${1.5 * GU}px;
         `}
       />
-      <Button mode="normal" wide label="Withdraw funds" onClick={handleOnWithdraw} />
-
+      <Button
+        mode="normal"
+        wide
+        label="Withdraw funds"
+        onClick={handleOnWithdraw}
+      />
       <div
         css={`
           display: flex;
