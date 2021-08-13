@@ -64,7 +64,7 @@ function CreateProposalRequirements({ agreement, staking }) {
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
         >
-          Collateral Manager
+          Deposit Manager
         </Link>
       </InfoField>
       <CollateralStatus
@@ -172,7 +172,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         color: theme.negative,
         icon: iconError,
         text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
-        actionButton: 'Collateral manager',
+        actionButton: 'Deposit manager',
         buttonOnClick: goToStakeManager,
       }
     }

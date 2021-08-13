@@ -71,7 +71,7 @@ function ProposalChallengedInfo({ proposal }) {
                 in{' '}
               </span>
               <Link href="#/collateral" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
@@ -210,7 +210,7 @@ function ProposalSettledInfo({ proposal }) {
                   }  from your action collateral has been slashed and the remaining unlocked`
                 ) : (
                   <span>
-                    your challenge collateral has returned to your wallet{' '}
+                    your challenge deposit has been returned to your wallet{' '}
                     <span
                       css={`
                         color: ${theme.content};
@@ -227,7 +227,7 @@ function ProposalSettledInfo({ proposal }) {
                 . You can manage your deposit balances in{' '}
               </span>
               <Link href="#/profile" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
