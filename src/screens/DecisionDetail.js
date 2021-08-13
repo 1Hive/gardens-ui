@@ -180,7 +180,7 @@ function DecisionDetail({ proposal, actions }) {
                     cols={proposal.pausedAt > 0 ? 3 : 2}
                   >
                     <DataField
-                      label="Action collateral"
+                      label="Deposit Amount"
                       value={<ActionCollateral proposal={proposal} />}
                     />
                     {proposal.pausedAt > 0 && (
