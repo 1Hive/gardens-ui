@@ -1,6 +1,7 @@
 import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
+import gardensLogo from '@assets/gardensLogoMark.svg'
 import { OnboardingProvider } from '@providers/Onboarding'
 import { ChartsProvider } from '@providers/Charts'
 import Screens from './Screens'
@@ -24,6 +25,16 @@ function Onboarding({ onClose, visible }) {
             flex-grow: 0;
           `}
         >
+          <img
+            css={`
+              display: flex;
+              padding-left: 18px;
+              margin-top: 17px;
+            `}
+            src={gardensLogo}
+            height={32}
+            alt=""
+          />
           <StepsPanel />
         </div>
         <div
@@ -31,6 +42,7 @@ function Onboarding({ onClose, visible }) {
             width: 100%;
             flex-grow: 1;
             flex-shrink: 1;
+            background: #f9f9f8;
           `}
         >
           <div
