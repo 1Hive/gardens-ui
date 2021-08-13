@@ -270,7 +270,7 @@ function ProposalDetail({
                   {proposal.number !== '1' && (
                     <>
                       <DataField
-                        label="Action collateral"
+                        label="Deposit Amount"
                         value={<ActionCollateral proposal={proposal} />}
                       />
                       {proposal.pausedAt > 0 && (

@@ -52,19 +52,24 @@ function CreateProposalRequirements({ agreement, staking }) {
       </InfoField>
       <AgreementStatus agreement={agreement} />
       <InfoField
-        label="Action collateral"
+        label="Proposal deposit"
         css={`
           margin-top: ${5 * GU}px;
         `}
       >
         You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
         {token.symbol} to create a proposal. You can manage your balance in the{' '}
+<<<<<<< HEAD:src/components/Garden/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
         >
           Deposit Manager
 >>>>>>> rename Collateral manager to deposit manager and simplify explanations:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
+=======
+        <Link href="#/collateral" external={false}>
+          Deposit Manager
+>>>>>>> 45a35e3a605e6b0b3a3f88c659d3946760732f0a:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         </Link>
       </InfoField>
       <CollateralStatus
@@ -172,12 +177,17 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         color: theme.negative,
         icon: iconError,
 <<<<<<< HEAD:src/components/Garden/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
+<<<<<<< HEAD:src/components/Garden/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
         actionButton: 'Collateral manager',
 =======
         text: `You need to allow the Covenant as the manager of your deposited HNY`,
         actionButton: 'Deposit  manager',
 >>>>>>> rename Collateral manager to deposit manager and simplify explanations:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
+=======
+        text: `You need to allow the Covenant as the manager of your deposited HNY`,
+        actionButton: 'Deposit  manager',
+>>>>>>> 45a35e3a605e6b0b3a3f88c659d3946760732f0a:src/components/ModalFlows/CreateProposalScreens/CreateProposalRequirements.js
         buttonOnClick: goToStakeManager,
       }
     }

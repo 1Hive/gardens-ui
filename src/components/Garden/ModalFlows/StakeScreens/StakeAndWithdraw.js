@@ -81,7 +81,11 @@ function StakeAndWithdraw({
   const textData = useMemo(() => {
     if (depositMode) {
       return {
+<<<<<<< HEAD:src/components/Garden/ModalFlows/StakeScreens/StakeAndWithdraw.js
         descriptionText: `This amount will be placed in the deposit manager and will be used as collateral when creating actions bound by this garden's Covenant.`,
+=======
+        descriptionText: `This amount will be placed in the deposit manager and will be used as collateral when creating actions bound by this organization's Covenant.`,
+>>>>>>> 45a35e3a605e6b0b3a3f88c659d3946760732f0a:src/components/ModalFlows/StakeScreens/StakeAndWithdraw.js
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals
