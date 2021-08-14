@@ -1,6 +1,7 @@
 export const MINUTE_IN_SECONDS = 60
 export const HOUR_IN_SECONDS = MINUTE_IN_SECONDS * 60
 export const DAY_IN_SECONDS = HOUR_IN_SECONDS * 24
+export const YEARS_IN_SECONDS = 365 * DAY_IN_SECONDS
 
 // Make a list in the Oxford comma style (eg "a, b, c, and d")
 export const toOxford = (arr, conjunction = 'and', ifempty = '') => {
