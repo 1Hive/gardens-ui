@@ -58,7 +58,8 @@ function CreateProposalRequirements({ agreement, staking }) {
         `}
       >
         You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} to create a proposal. You can manage your balance in the{' '}
+        {token.symbol} to create a proposal. You can manage your balance using
+        the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
@@ -156,11 +157,11 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
-        text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
+        text: `Your enabled account does not have sufficient balance to deposit the ${formatTokenAmount(
           actionAmount,
           token.decimals
-        )} ${token.symbol} as the action collateral.`,
-        actionButton: 'Deposit collateral',
+        )} ${token.symbol} required for a proposal.`,
+        actionButton: 'Add funds',
         buttonOnClick: goToStakeManagerDeposit,
       }
     }
@@ -180,10 +181,10 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
       backgroundColor: '#EBFBF6',
       color: theme.positive,
       icon: iconCheck,
-      text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
+      text: `Your enabled account has sufficient balance to deposit the ${formatTokenAmount(
         actionAmount,
         token.decimals
-      )} ${token.symbol} as the action collateral.`,
+      )} ${token.symbol} required for a proposal.`,
     }
   }, [
     actionAmount,

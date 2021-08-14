@@ -136,7 +136,7 @@ function BalanceCard({
             font-weight: 600;
           `}
         >
-          Allow Garden
+          Give Permissions
         </span>
         <div
           css={`
@@ -145,8 +145,8 @@ function BalanceCard({
         >
           <Help hint="">
             {allowManagerDisabled
-              ? `You cannot disallow this garden from locking your funds at this time because you have some collateral locked in scheduled proposals. Once the proposals are finalised you’ll be able to disallow the garden.`
-              : `By enabling this feature you allow this garden to lock the available ${tokenSymbol} you have deposited when creating actions.`}
+              ? `You cannot revoke the deposit manager's ability to lock your funds at this time. You need to wait until your open proposals (proposals you have either created or challenged) have either been completed or removed - scroll to the bottom of the page to see which proposals are concerned.`
+              : `By enabling this feature you allow the deposit manager to lock ${tokenSymbol} funds you have deposited on any proposal that you create or challenge. You need to enable this feature to be able to create or challenge a proposal.`}
           </Help>
         </div>
       </div>
