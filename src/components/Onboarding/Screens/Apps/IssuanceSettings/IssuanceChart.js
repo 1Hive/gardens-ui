@@ -14,14 +14,22 @@ const calculateRatio = (
 ) => {
   let balance = initialRatio
   let supply = 1
-  const ratio = [balance / supply]
+  let currentRatio = balance / supply
+  const ratio = [currentRatio]
+  const maxAdj = maxAdjustmentRatioPerYear / 365 / targetRatio
+  /* We simulate calling `executeAjustment()` every day over one year with
+     the current parameters. */
   for (let i = 0; i < 365; i++) {
-    const adj = ((1.0 - balance / supply / targetRatio) / 365) * supply
-    const maxAdj = maxAdjustmentRatioPerYear / 365 / targetRatio
+    /* Supply adjustment for each day */
+    const adj = ((1.0 - currentRatio / targetRatio) / 365) * supply
+    /* We don't allow an adjustment greater than max adjustment constant */
     const totalAdj = Math.sign(adj) * Math.min(Math.abs(adj), maxAdj)
+    /* We mint / burn tokens from the common pool, so we add tokens to or
+       remove tokens from both common pool balance and token supply. */
     balance += totalAdj
     supply += totalAdj
-    ratio.push(balance / supply)
+    currentRatio = balance / supply
+    ratio.push(currentRatio)
   }
   return ratio
 }
