@@ -102,9 +102,9 @@ function ChallengeRequirements({
           margin-top: ${2 * GU}px;
         `}
       >
-        The action collateral and dispute fees will be returned to your account
-        if the submitter accepts your settlement offer or if you win the dispute
-        raised to Celeste. Your wallet balance is{' '}
+        The challenge deposit and dispute fees will be returned to your account
+        should the submitter accept your settlement offer, or if you win the
+        dispute raised to Celeste. Your wallet balance is{' '}
         {formatTokenAmount(collateralTokenAccountBalance, token.decimals)}{' '}
         {token.symbol}.
       </Info>
