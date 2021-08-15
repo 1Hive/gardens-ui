@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import Lottie from 'react-lottie'
+import Lottie from 'react-lottie-player'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useOnboardingState } from '@providers/Onboarding'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import byotAnimation from '@assets/byotAnimation.json'
-import nativeAnimation from '@assets/nativeAnimation.json'
+import byotAnimation from '@assets/lotties/byotAnimation.json'
+import nativeAnimation from '@assets/lotties/nativeAnimation.json'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
 
@@ -86,25 +86,26 @@ function GardenTypeSelector() {
   )
 }
 
-function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
-  const [isStopped, setIsStopped] = useState(true)
+function Card({
+  icon,
+  title,
+  onSelect,
+  paragraph,
+  selected,
+  animationData,
+  animationSegments,
+}) {
+  const [isPlaying, setIsPlaying] = useState(false)
+
   const theme = useTheme()
 
   const handleStartAnimation = useCallback(() => {
-    setIsStopped(false)
-  }, [setIsStopped])
+    setIsPlaying(true)
+  }, [setIsPlaying])
 
   const handleStopAnimation = useCallback(() => {
-    setIsStopped(!selected)
-  }, [setIsStopped, selected])
-
-  const defaultOptions = {
-    loop: false,
-    autoplay: false,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  }
+    setIsPlaying(false)
+  }, [setIsPlaying])
 
   return (
     <div
@@ -113,8 +114,8 @@ function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
         padding-left: ${3.5 * GU}px;
         padding-right: ${3.5 * GU}px;
         padding-bottom: ${3.5 * GU}px;
-        margin: ${1.25 * GU}px;
-        max-width: ${34 * GU}px;
+        margin: 10px;
+        max-width: 264px;
         border-radius: 50% 50% ${2 * GU}px ${2 * GU}px;
         background: ${theme.surface};
         border: 1px solid ${theme.border};
@@ -145,13 +146,16 @@ function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
           border-radius: 50%;
           width: 218px;
           height: 218px;
-          margin: ${3.375 * GU}px;
-          padding: ${3.125 * GU}px;
+          margin: 23px;
+          padding: 24px;
         `}
       >
         <Lottie
-          options={{ ...defaultOptions, animationData }}
-          isStopped={isStopped}
+          animationData={animationData}
+          loop={false}
+          play={isPlaying}
+          // If selected we place on the last frame of the lottie
+          goTo={selected ? 34 : 0}
         />
       </div>
       <div>
@@ -159,6 +163,7 @@ function Card({ icon, title, onSelect, paragraph, selected, animationData }) {
           css={`
             color: ${theme.content};
             ${textStyle('body1')};
+            margin-bottom: ${2 * GU}px;
           `}
         >
           {title}
