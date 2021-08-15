@@ -20,9 +20,11 @@ function GardensList() {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       `}
     >
-      {gardens.map(garden => (
-        <GardenCard key={garden.id} garden={garden} />
-      ))}
+      {gardens
+        .sort((a, b) => (a.proposalCount < b.proposalCount ? 1 : -1))
+        .map(garden => (
+          <GardenCard key={garden.id} garden={garden} />
+        ))}
     </div>
   )
 }
