@@ -124,7 +124,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           challengeAmount,
           token.decimals
-        )} ${token.symbol} as the challenge collateral.`,
+        )} ${token.symbol} as the challenge deposit.`,
       }
     }
 
@@ -135,7 +135,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         challengeAmount,
         token.decimals
-      )} ${token.symbol} as the challenge collateral.`,
+      )} ${token.symbol} as the challenge deposit.`,
     }
   }, [accountBalance, challengeAmount, token, theme])
 
