@@ -3,7 +3,7 @@ import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {
   'support-percentage': [
-    'Action Collateral',
+    'Support percentage',
     <>
       <strong>Support</strong> is the relative percentage of tokens that are
       required to vote “Yes” for a proposal to be approved. For example, if
