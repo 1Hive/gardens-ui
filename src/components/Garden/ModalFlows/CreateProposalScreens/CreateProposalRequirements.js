@@ -40,12 +40,13 @@ function CreateProposalRequirements({ agreement, staking }) {
   return (
     <div>
       <InfoField label="Covenant signature and version">
-        You must sign the{' '}
+        Since proposals are bound by this community's covenant, you must sign
+        the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'covenant')}`}
           external={false}
         >
-          Community Covenant
+          Covenant
         </Link>{' '}
         in order to create a proposal. The Covenant was last updated on{' '}
         {dateFormat(agreement.effectiveFrom)}
@@ -57,9 +58,9 @@ function CreateProposalRequirements({ agreement, staking }) {
           margin-top: ${5 * GU}px;
         `}
       >
-        You must deposit {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} to create a proposal. You can manage your balance using
-        the{' '}
+        In order to discourage spam proposals, you are required to deposit{' '}
+        {formatTokenAmount(actionAmount, token.decimals)} {token.symbol} for
+        each proposal you create. You can manage your balance using the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
