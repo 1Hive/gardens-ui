@@ -59,7 +59,7 @@ function ChallengeRequirements({
     <div>
       <InfoField label="Challenge deposit">
         You must deposit {formatTokenAmount(challengeAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to challenge a proposal.
+        {token.symbol} in order to challenge a proposal.
       </InfoField>
       <CollateralStatus
         accountBalance={collateralTokenAccountBalance}
