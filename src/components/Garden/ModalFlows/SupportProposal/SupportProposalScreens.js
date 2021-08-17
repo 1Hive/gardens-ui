@@ -5,7 +5,6 @@ import ModalFlowBase from '../ModalFlowBase'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
 
-// import { buildGardenPath } from '@utils/routing-utils'
 import useActions from '@hooks/useActions'
 
 function SupportProposalScreens({ proposal, mode }) {
