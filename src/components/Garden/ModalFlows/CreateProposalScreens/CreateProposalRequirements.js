@@ -53,7 +53,7 @@ function CreateProposalRequirements({ agreement, staking }) {
       </InfoField>
       <AgreementStatus agreement={agreement} />
       <InfoField
-        label="Proposal collateral"
+        label="Proposal deposit"
         css={`
           margin-top: ${5 * GU}px;
         `}

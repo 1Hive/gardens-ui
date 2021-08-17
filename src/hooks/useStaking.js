@@ -360,7 +360,7 @@ export function useStaking() {
             data: allowManagerData,
             from: account,
             to: stakeManagement.stakingInstance,
-            description: 'Give Permissions',
+            description: 'Give Permission',
           },
         ]
         if (mounted()) {
