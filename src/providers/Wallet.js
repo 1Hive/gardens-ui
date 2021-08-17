@@ -68,37 +68,40 @@ function WalletAugmented({ children }) {
 
   // Handle connect automatically if windows.ethereum is available and we have some connected address on the wallet
   useEffect(() => {
-    if (window.ethereum) {
-      connect()
+    async function connectNetwork() {
+      await connect()
     }
-  }, []) //eslint-disable-line
-
-  // This useEffect is needed because we don't have inmediatly available wallet.chainId  right after connecting in the previous hook
-  useEffect(() => {
-    if (wallet.account != null && chainId !== wallet.chainId) {
+    if (window.ethereum && wallet.chainId === -1) {
+      connectNetwork()
+    }
+    if (isSupportedNetwork) {
       setChainId(wallet.chainId)
-      setPreferredChain(wallet.chainId)
     }
-  }, [wallet.account, wallet.chainId, chainId])
+  }, [wallet.chainId]) //eslint-disable-line
 
-  /* Note that with this hook and the previous one we are manually reseting the connection on chain changed detected.
-  Here i noticed that is better to always depend on the data that comes from the use-wallet library instead  of just subscribing to window.ethereum.on('chainChanged', handleChainChanged) 
-  because for some reason the reconnect action is way faster and the windows event subscription was triggering many re renders */
   useEffect(() => {
-    async function reset() {
+    async function connectNetwork() {
       await resetConnection()
       await connect()
     }
-    if (chainId !== -1 && wallet._web3ReactContext.chainId !== chainId) {
-      reset()
+    if (wallet.chainId !== wallet._web3ReactContext.chainId && chainId !== -1) {
+      if (isSupportedChain(wallet._web3ReactContext.chainId)) {
+        connectNetwork()
+      } else {
+        resetConnection()
+      }
     }
-  }, [
-    wallet._web3ReactContext.chainId,
-    chainId,
-    connect,
-    resetConnection,
-    wallet,
-  ])
+    if (isSupportedChain(wallet._web3ReactContext.chainId)) {
+      setChainId(wallet.chainId)
+    }
+  }, [chainId, isSupportedChain, wallet, resetConnection])//eslint-disable-line
+
+
+  useEffect(() => {
+    if (isSupportedChain(chainId)) {
+      setPreferredChain(chainId)
+    }
+  }, [chainId])
 
   const handleOnPreferredNetworkChange = useCallback(index => {
     const chainId = SUPPORTED_CHAINS[index]
