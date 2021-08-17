@@ -1,8 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
-// import { useHistory } from 'react-router'
+import { useHistory } from 'react-router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
-// import { MultiModalProvider, useMultiModal } from '../../../MultiModal/MultiModalProvider'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
 
@@ -11,22 +10,29 @@ import useActions from '@hooks/useActions'
 
 function SupportProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
+  const history = useHistory()
   const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
 
-  const refresh = () => {
-    window.location.reload()
-  }
+  const handleViewProposal = useCallback(() => {
+    const path = '/profile'
+    history.push(path)
+  }, [history])
 
   const renderOnCompleteActions = useCallback(() => {
     if (mode === 'support' ? 'Support this proposal' : 'Change support') {
       return (
-        <Button label="View proposal" mode="strong" onClick={refresh} wide />
+        <Button
+          label="View supported proposals"
+          mode="strong"
+          onClick={handleViewProposal}
+          wide
+        />
       )
     }
     return null
-  }, [mode])
+  }, [handleViewProposal, mode])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
