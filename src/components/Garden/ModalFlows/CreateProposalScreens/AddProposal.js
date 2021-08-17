@@ -388,7 +388,7 @@ function RequestedAmount({
       >
         The larger the requested amount, the more support required for the
         proposal to pass. If you specify the proposal amount in {` `}
-        {stableToken.symbol} it will be converted to {requestToken.symbol} 
+        {stableToken.symbol} it will be converted to {requestToken.symbol}
         if/when it is passed.{' '}
         {neededThreshold
           ? `The conviction
