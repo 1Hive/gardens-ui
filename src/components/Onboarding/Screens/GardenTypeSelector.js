@@ -3,14 +3,13 @@ import Lottie from 'react-lottie-player'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useOnboardingState } from '@providers/Onboarding'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import byotAnimation from '@assets/lotties/byotAnimation.json'
 import nativeAnimation from '@assets/lotties/nativeAnimation.json'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
+import { Header } from '../kit'
 
 function GardenTypeSelector() {
-  const theme = useTheme()
   const { config, onConfigChange, onNext } = useOnboardingState()
   const [selectedType] = useState(config.garden.type)
 
@@ -32,41 +31,18 @@ function GardenTypeSelector() {
 
   return (
     <div>
-      <div
-        css={`
-          margin-bottom: ${6 * GU}px;
-          text-align: center;
-        `}
-      >
-        <h1
-          css={`
-            ${textStyle('title1')};
-            font-size: 3em;
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          Garden Type
-        </h1>
-        <div>
-          <p
-            css={`
-              ${textStyle('title4')};
-              color: ${theme.contentSecondary};
-            `}
-          >
-            Choose the type of garden you'd like to launch.
-          </p>
-        </div>
-      </div>
+      <Header
+        title="Garden Type"
+        subtitle="Choose the type of garden you'd like to launch."
+      />
       <div
         css={`
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: center;
         `}
       >
         <Card
-          icon={defaultGardenLogo}
           paragraph="Create a new token that is native to your garden. "
           onSelect={handleSelectNative}
           selected={selectedType === NATIVE_TYPE}
@@ -74,7 +50,6 @@ function GardenTypeSelector() {
           title="Native Token"
         />
         <Card
-          icon={defaultGardenLogo}
           paragraph="Use an existing ERC-20 token to within your garden."
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
@@ -86,15 +61,7 @@ function GardenTypeSelector() {
   )
 }
 
-function Card({
-  icon,
-  title,
-  onSelect,
-  paragraph,
-  selected,
-  animationData,
-  animationSegments,
-}) {
+function Card({ title, onSelect, paragraph, selected, animationData }) {
   const [isPlaying, setIsPlaying] = useState(false)
 
   const theme = useTheme()
@@ -111,29 +78,26 @@ function Card({
     <div
       css={`
         cursor: pointer;
-        padding-left: ${3.5 * GU}px;
-        padding-right: ${3.5 * GU}px;
-        padding-bottom: ${3.5 * GU}px;
-        margin: 10px;
-        max-width: 264px;
-        border-radius: 50% 50% ${2 * GU}px ${2 * GU}px;
+        margin: 0px 10px;
+        max-width: 274px;
+        border-radius: 135px 135px ${2 * GU}px ${2 * GU}px;
         background: ${theme.surface};
         border: 1px solid ${theme.border};
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        transition: box-shadow 0.5s ease;
+        transition: box-shadow 0.5s ease, transform 0.3s ease,
+          border-color 1.5s ease;
         ${selected
           ? `
           border: 2px solid #56D571;
           transform: scale(1.02);
         `
           : `  &:hover {
-          box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
           border: 2px solid #56D571;
           transform: scale(1.02);
-          transition: border-color 1.5s;
         }`};
       `}
       onClick={onSelect}
@@ -146,8 +110,8 @@ function Card({
           border-radius: 50%;
           width: 218px;
           height: 218px;
-          margin: 23px;
-          padding: 24px;
+          margin: ${3 * GU}px;
+          padding: ${3 * GU}px;
         `}
       >
         <Lottie
@@ -158,7 +122,13 @@ function Card({
           goTo={selected ? 34 : 0}
         />
       </div>
-      <div>
+      <div
+        css={`
+          padding-left: ${3.5 * GU}px;
+          padding-right: ${3.5 * GU}px;
+          padding-bottom: ${3.5 * GU}px;
+        `}
+      >
         <div
           css={`
             color: ${theme.content};
@@ -171,7 +141,6 @@ function Card({
         <div
           css={`
             color: ${theme.contentSecondary};
-            ${textStyle('body2')};
           `}
         >
           {paragraph}
