@@ -146,7 +146,7 @@ function BalanceCard({
           <Help hint="">
             {allowManagerDisabled
               ? `You cannot revoke the deposit manager's ability to lock your funds at this time. You need to wait until your open proposals (proposals you have either created or challenged) have either been completed or removed - scroll to the bottom of the page to see which proposals are concerned.`
-              : `By enabling this feature you allow the deposit manager to lock ${tokenSymbol} funds you have deposited on any proposal that you create or challenge. You need to enable this feature to be able to create or challenge a proposal.`}
+              : `By enabling this feature you permit the deposit manager to lock ${tokenSymbol} funds you have deposited on any proposal that you create or challenge. You need to enable this feature to be able to create or challenge a proposal.`}
           </Help>
         </div>
       </div>
