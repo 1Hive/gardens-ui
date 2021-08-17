@@ -136,7 +136,7 @@ function BalanceCard({
             font-weight: 600;
           `}
         >
-          Give Permissions
+          Give Permission
         </span>
         <div
           css={`
