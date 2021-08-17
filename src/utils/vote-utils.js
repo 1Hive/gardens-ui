@@ -14,7 +14,7 @@ import {
 const EMPTY_SCRIPT = '0x00000001'
 
 export function isVoteAction(vote) {
-  return vote.script && vote.data.script !== EMPTY_SCRIPT
+  return vote.script && vote.data && vote.data.script !== EMPTY_SCRIPT
 }
 
 export function getAccountCastStake(vote, account) {
