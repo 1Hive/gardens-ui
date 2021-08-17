@@ -1,8 +1,12 @@
 import React, { useMemo, useState, useCallback } from 'react'
+// import { useHistory } from 'react-router'
+import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
+// import { MultiModalProvider, useMultiModal } from '../../../MultiModal/MultiModalProvider'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
 
+// import { buildGardenPath } from '@utils/routing-utils'
 import useActions from '@hooks/useActions'
 
 function SupportProposalScreens({ proposal, mode }) {
@@ -10,6 +14,19 @@ function SupportProposalScreens({ proposal, mode }) {
   const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
+
+  const refresh = () => {
+    window.location.reload()
+  }
+
+  const renderOnCompleteActions = useCallback(() => {
+    if (mode === 'support' ? 'Support this proposal' : 'Change support') {
+      return (
+        <Button label="View proposal" mode="strong" onClick={refresh} wide />
+      )
+    }
+    return null
+  }, [mode])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
@@ -82,6 +99,7 @@ function SupportProposalScreens({ proposal, mode }) {
         mode === 'support' ? 'Support this proposal' : 'Change support'
       }
       screens={screens}
+      onCompleteActions={renderOnCompleteActions}
     />
   )
 }
