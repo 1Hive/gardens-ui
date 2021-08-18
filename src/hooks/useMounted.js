@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useLayoutEffect, useRef, useCallback } from 'react'
 
 // Simple hook for checking a component is mounted prior to an async state update
 export function useMounted() {
@@ -6,7 +6,7 @@ export function useMounted() {
 
   const getMounted = useCallback(() => mounted.current, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => {
       mounted.current = false
     }
