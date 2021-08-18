@@ -8,7 +8,7 @@ import React, {
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from '@1hive/use-wallet'
 
-import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
+import { getUseWalletConnectors, getPreferredProvider } from '@utils/web3-utils'
 import { getNetwork, isSupportedChain, SUPPORTED_CHAINS } from '@/networks'
 import { getPreferredChain, setPreferredChain } from '@/local-settings'
 
@@ -32,7 +32,7 @@ function WalletAugmented({ children }) {
 
   const ethers = useMemo(() => {
     if (!ethereum) {
-      return getDefaultProvider()
+      return getPreferredProvider()
     }
 
     const ensRegistry = getNetwork(wallet.chainId)?.ensRegistry

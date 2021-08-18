@@ -14,7 +14,7 @@ function getBackendServicesKeys() {
   }
 }
 
-export function getDefaultProvider() {
+export function getPreferredProvider() {
   const type = getNetworkType(getPreferredChain()).toUpperCase()
   const defaultEthNode = env(`${type}_ETH_NODE`)
 
