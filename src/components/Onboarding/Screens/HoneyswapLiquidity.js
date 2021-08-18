@@ -13,10 +13,9 @@ import Navigation from '../Navigation'
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
 
-import { fromDecimals, toDecimals } from '@utils/math-utils'
+import { toDecimals } from '@utils/math-utils'
 import { BYOT_TYPE } from '../constants'
 import { getLocalTokenIconBySymbol } from '@utils/token-utils'
-import BigNumber from 'bignumber.js'
 
 const MIN_HNY_USD = 100
 const HNY_DENOMINATION = 0
@@ -36,11 +35,9 @@ function HoneyswapLiquidity() {
 
   const [denomination, setDenomination] = useState(HNY_DENOMINATION) // 0 HNY, 1 USD
   const [denominatedAmount, setDenominatedAmount] = useState(
-    honeyTokenLiquidity ? fromDecimals(honeyTokenLiquidity, 18) : ''
+    honeyTokenLiquidity || ''
   )
-  const [tokenAmount, setTokenAmount] = useState(
-    tokenLiquidity ? fromDecimals(tokenLiquidity, config.tokens.decimals) : ''
-  )
+  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity || '')
 
   const handleDenominatedAmountChange = useCallback(event => {
     const newAmount = event.target.value
@@ -65,27 +62,22 @@ function HoneyswapLiquidity() {
       event.preventDefault()
 
       onConfigChange('liquidity', {
-        honeyTokenLiquidity: toDecimals(
+        honeyTokenLiquidity:
           denomination === HNY_DENOMINATION
             ? denominatedAmount
             : String(denominatedAmount / hnyPrice),
-          18
-        ),
-        honeyTokenLiquidityStable: new BigNumber(
-          toDecimals(
-            denomination === HNY_DENOMINATION
-              ? String(denominatedAmount * hnyPrice)
-              : denominatedAmount,
-            18
-          )
-        ),
-        tokenLiquidity: toDecimals(tokenAmount, config.tokens.decimals),
+
+        honeyTokenLiquidityStable:
+          denomination === HNY_DENOMINATION
+            ? String(denominatedAmount * hnyPrice)
+            : denominatedAmount,
+
+        tokenLiquidity: tokenAmount,
       })
 
       onNext()
     },
     [
-      config.tokens,
       denomination,
       denominatedAmount,
       hnyPrice,
@@ -310,7 +302,7 @@ function HoneyswapLiquidity() {
                 <span>Initial price</span>
                 <span>
                   1 {tokenSymbol} ={' '}
-                  {parseFloat(hnyAmount / tokenAmount).toFixed(2)} HNY
+                  {parseFloat(hnyAmount / tokenAmount).toFixed(4)} HNY
                 </span>
               </div>
               <div
