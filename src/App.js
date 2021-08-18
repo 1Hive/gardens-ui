@@ -16,7 +16,19 @@ function App() {
       <IntercomProvider appId={env('INTERCOM_APP_ID')} autoBoot>
         <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
           <GlobalErrorHandler>
-            <ToastHub threshold={1} timeout={1500}>
+            <ToastHub
+              threshold={1}
+              timeout={1500}
+              css={`
+                & > div {
+                  width: auto;
+                  & > div {
+                    rgba(33, 43, 54, 0.9);
+                    border-radius: 16px;
+                  }
+                }
+              `}
+            >
               <WalletProvider>
                 <ProfileProvider>
                   <GardensProvider>
