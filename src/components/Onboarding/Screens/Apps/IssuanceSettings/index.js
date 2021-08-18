@@ -58,7 +58,11 @@ function IssuanceSettings() {
 
   const handleNextClick = () => {
     // TODO: Validate data if necessary
-    onConfigChange('issuance', { targetRatio, maxAdjustmentRatioPerYear })
+    onConfigChange('issuance', {
+      initialRatio,
+      targetRatio,
+      maxAdjustmentRatioPerYear,
+    })
     onNext()
   }
 
@@ -80,7 +84,7 @@ function IssuanceSettings() {
           label={
             <Fragment>
               Initial Ratio
-              <Help hint="What is Target Ratio?">
+              <Help hint="What is Initial Ratio?">
                 <strong>Initial Ratio</strong> is the initial fraction of the
                 total supply that holds the Common Pool. For example, if Garden
                 Seeds hold initially 90 garden tokens, and the initial ratio is
@@ -113,18 +117,16 @@ function IssuanceSettings() {
             <Fragment>
               Throttle
               <Help hint="What is Issuance Throttle?">
-                <strong>Throttle</strong>
-                is a magnitude that prevents high issuance adjustments in small
-                amounts of time. For example, a 1% will force the issuance to be
-                practically linear, and a higher value will allow bigger
-                adjustments.
+                <strong>Throttle</strong> is a magnitude that prevents high
+                issuance adjustments in small amounts of time. For example, a 1%
+                will force the issuance to be practically linear, and a higher
+                value will allow bigger adjustments.
               </Help>
             </Fragment>
           }
           value={maxAdjustmentRatioPerYear}
           onChange={handleMaxAdjustmentRatioPerYear}
         />
-        {/* Issuance chart */}
         <div
           css={`
             align-self: center;
