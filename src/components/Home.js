@@ -18,7 +18,7 @@ function Home() {
 
   const handleOnboardingClose = useCallback(() => {
     setOnboardingVisible(false)
-    toast('Progress saved!')
+    toast('Saved!')
   }, [toast])
 
   return (
