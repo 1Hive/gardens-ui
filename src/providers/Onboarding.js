@@ -7,10 +7,12 @@ import {
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
 import { getNetwork } from '@/networks'
+import { getContract } from '@hooks/useContract'
 
+import { NATIVE_TYPE } from '@components/Onboarding/constants'
 import templateAbi from '@abis/gardensTemplate.json'
-import { getContract } from '@/hooks/useContract'
-import { encodeFunctionData } from '@/utils/web3-utils'
+import { encodeFunctionData } from '@utils/web3-utils'
+import { ZERO_ADDR } from '@/constants'
 
 const OnboardingContext = React.createContext()
 
@@ -57,7 +59,6 @@ const DEFAULT_CONFIG = {
     name: '',
     symbol: '',
     holders: [], // Only used in NATIVE
-    commonPool: 0, // Only used in NATIVE
   },
   voting: {
     voteDuration: DAY_IN_SECONDS * 5,
@@ -87,8 +88,16 @@ function OnboardingProvider({ children }) {
   )
 
   const getTransactions = useCallback(() => {
-    const txs = [{ name: 'Create garden and initialize basic apps' }]
-  }, [])
+    const txs = [createGardenTxOne(config)]
+
+    if (config.garden.type === NATIVE_TYPE) {
+      txs.push(createTokenHoldersTx(config))
+    }
+
+    txs.push(createGardenTxTwo(config), createGardenTxThree(config))
+
+    return txs
+  }, [config])
 
   // Navigation
   const handleBack = useCallback(() => {
@@ -124,7 +133,48 @@ function useOnboardingState() {
   return useContext(OnboardingContext)
 }
 
-// TODO: See where to place it or keep it here
+// TODO: See where to place them or keep them here
+function createGardenTxOne(config) {
+  const existingToken =
+    config.garden.type === NATIVE_TYPE ? ZERO_ADDR : config.tokens.address
+
+  const gardenTokenLiquidity =
+    config.garden.type === NATIVE_TYPE ? config.liquidity.tokenLiquidity : 0
+  const existingTokenLiquidity =
+    config.garden.type === NATIVE_TYPE ? 0 : config.liquidity.tokenLiquidity
+
+  const commonPool = 0 // TODO: Get commonpool from intialRatio and total sum of stakes
+
+  return createTx('createGardenTxOne', [
+    existingToken,
+    config.tokens.name,
+    config.tokens.symbol,
+    [
+      commonPool,
+      config.liquidity.honeyTokenLiquidityStable,
+      gardenTokenLiquidity,
+      existingTokenLiquidity,
+    ],
+    [...config.voting],
+  ])
+}
+
+function createTokenHoldersTx(config) {
+  const accounts = config.tokens.holders.map(([account]) => account)
+  const stakes = config.tokens.holders.map(([_, stake]) => stake)
+
+  return createTx('createTokenHolders', [accounts, stakes])
+}
+
+function createGardenTxTwo(config) {
+  return createTx('createGardenTxTwo', [
+    config.issuance.targetRatio,
+    config.issuance.maxAdjustmentRatioPerYear,
+  ])
+}
+
+function createGardenTxThree(config) {}
+
 function createTx(fn, params) {
   const network = getNetwork()
   const templateAddress = network.template
