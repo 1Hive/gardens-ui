@@ -1,11 +1,16 @@
 import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens as steps } from '@components/Onboarding/Screens/config'
-import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
   calculateWeight,
-} from '../utils/conviction-modelling-helpers'
+} from '@utils/conviction-modelling-helpers'
+import { getNetwork } from '@/networks'
+
+import templateAbi from '@abis/gardensTemplate.json'
+import { getContract } from '@/hooks/useContract'
+import { encodeFunctionData } from '@/utils/web3-utils'
 
 const OnboardingContext = React.createContext()
 
@@ -81,6 +86,10 @@ function OnboardingProvider({ children }) {
     []
   )
 
+  const getTransactions = useCallback(() => {
+    const txs = [{ name: 'Create garden and initialize basic apps' }]
+  }, [])
+
   // Navigation
   const handleBack = useCallback(() => {
     setStep(index => Math.max(0, index - 1))
@@ -94,6 +103,7 @@ function OnboardingProvider({ children }) {
     <OnboardingContext.Provider
       value={{
         config,
+        getTransactions,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
@@ -112,6 +122,20 @@ OnboardingProvider.propTypes = {
 
 function useOnboardingState() {
   return useContext(OnboardingContext)
+}
+
+// TODO: See where to place it or keep it here
+function createTx(fn, params) {
+  const network = getNetwork()
+  const templateAddress = network.template
+  const templateContract = getContract(templateAddress, templateAbi)
+
+  const data = encodeFunctionData(templateContract, fn, params)
+
+  return {
+    to: templateAddress,
+    data,
+  }
 }
 
 export { OnboardingProvider, useOnboardingState }
