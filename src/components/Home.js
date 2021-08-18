@@ -1,12 +1,11 @@
-import { useToast } from '@1hive/1hive-ui'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-
-import { useNodeHeight } from '@hooks/useNodeHeight'
+import { useToast } from '@1hive/1hive-ui'
 
 import GardensList from './GardensList'
 import Onboarding from './Onboarding'
 import LandingBanner from './LandingBanner'
+import { useNodeHeight } from '@hooks/useNodeHeight'
 
 function Home() {
   const [height, ref] = useNodeHeight()
