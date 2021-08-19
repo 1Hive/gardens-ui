@@ -36,7 +36,6 @@ function AccountModule({ compact }) {
   const { boxOpened } = useProfile()
   const { account, status, error, connector } = wallet
 
-  console.log('wallet ', wallet)
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const handleCancelConnection = useCallback(() => {

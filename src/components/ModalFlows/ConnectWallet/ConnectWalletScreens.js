@@ -11,8 +11,6 @@ function ConectWalletScreens({ onSuccess }) {
     setError(e)
   }, [])
 
-  console.log('error ', error)
-
   const screens = useMemo(() => {
     return [
       {

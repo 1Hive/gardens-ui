@@ -98,10 +98,6 @@ function identifyProvider(provider) {
 // Get a provider from its useWallet() identifier.
 function getProviderFromUseWalletId(id) {
   if (id === 'injected') {
-    console.log(
-      'identifyProvider(window.ethereum) ',
-      identifyProvider(window.ethereum)
-    )
     return (
       getProvider(identifyProvider(window.ethereum)) || getProvider('unknown')
     )

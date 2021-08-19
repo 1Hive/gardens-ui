@@ -23,7 +23,6 @@ const AccountModuleConnectingScreen = React.memo(function({
   providerId,
 }) {
   const theme = useTheme()
-  console.log('providerId ', providerId)
   const provider = getProviderFromUseWalletId(providerId)
   return (
     <section
