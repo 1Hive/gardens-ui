@@ -16,6 +16,8 @@ const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
   getProviderFromUseWalletId(provider.id),
 ])
 
+console.log('Providers Info ', PROVIDERS_INFO)
+
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
 
@@ -46,7 +48,6 @@ function ScreenProviders({ onActivate }) {
             display: grid;
             grid-gap: ${1.5 * GU}px;
             grid-auto-flow: row;
-            grid-template-columns: repeat(2, 1fr);
           `}
         >
           {PROVIDERS_INFO.map(([id, provider]) => (

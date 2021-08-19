@@ -28,14 +28,7 @@ export function encodeFunctionData(contract, functionName, params) {
 }
 
 export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
-
-  if (env('FORTMATIC_API_KEY')) {
-    providers.push({
-      id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
-    })
-  }
+  const providers = [{ id: 'injected' } /*, { id: 'frame' } */] // Commented frame until we  figure out what to do
 
   return providers
 }
