@@ -34,7 +34,7 @@ function AccountModule({ compact }) {
   const [activatingDelayed, setActivatingDelayed] = useState(false)
 
   const { boxOpened } = useProfile()
-  const { account, activating, error } = wallet
+  const { account, status, error } = wallet
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
@@ -65,8 +65,8 @@ function AccountModule({ compact }) {
       setActivatingDelayed(null)
     }
 
-    if (activating) {
-      setActivatingDelayed(activating)
+    if (status === 'connecting') {
+      setActivatingDelayed(true)
       return
     }
 
@@ -77,7 +77,7 @@ function AccountModule({ compact }) {
     return () => {
       clearTimeout(timer)
     }
-  }, [activating, error])
+  }, [status, error])
 
   const previousScreenIndex = useRef(-1)
 
