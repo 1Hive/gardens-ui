@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import { useHistory } from 'react-router'
 import {
   ButtonBase,
   GU,
+  IconWrite,
   Link as AragonLink,
   textStyle,
   useLayout,
@@ -32,7 +34,7 @@ function Footer() {
     return null
   }
 
-  const { links, logo, token, wrappableToken } = connectedGarden
+  const { links, logo, token, wrappableToken, address } = connectedGarden
   const logoSvg = logo || defaultGardenLogo
 
   return (
@@ -46,7 +48,10 @@ function Footer() {
     >
       <Layout paddingBottom={40}>
         {compactMode ? (
-          <FixedFooter token={wrappableToken || token} />
+          <FixedFooter
+            token={wrappableToken || token}
+            gardenAddress={address}
+          />
         ) : (
           <div
             css={`
@@ -107,13 +112,18 @@ function Footer() {
   )
 }
 
-function FixedFooter({ token }) {
+function FixedFooter({ token, gardenAddress }) {
   const theme = useTheme()
+  const history = useHistory()
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
+
+  const handleOnGoToCovenant = useCallback(() => {
+    history.push(`/garden/${gardenAddress}/covenant`)
+  }, [gardenAddress, history])
 
   // TODO: Add the create proposal modal here
   return (
@@ -147,6 +157,11 @@ function FixedFooter({ token }) {
               href="#/home"
               icon={<img src={homeSvg} alt="home" />}
               label="Home"
+            />
+            <FooterItem
+              icon={<IconWrite alt="covenant" />}
+              label="Convenant"
+              onClick={handleOnGoToCovenant}
             />
             <FooterItem
               disabled={!account}
