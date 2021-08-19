@@ -66,28 +66,42 @@ function WalletAugmented({ children }) {
     await wallet.reset()
   }, [wallet])
 
+  console.log('wallet ', wallet)
+
   // Handle connect automatically if windows.ethereum is available and we have some connected address on the wallet
   useEffect(() => {
     async function connectNetwork() {
       await connect()
     }
     if (window.ethereum && wallet.chainId === -1) {
+      console.log('FIRST HOOK')
       connectNetwork()
     }
     if (isSupportedNetwork) {
       setChainId(wallet.chainId)
     }
-  }, [wallet.chainId]) //eslint-disable-line
+  }, []) //eslint-disable-line
 
   useEffect(() => {
     async function connectNetwork() {
       await resetConnection()
       await connect()
     }
-    if (wallet.chainId !== wallet._web3ReactContext.chainId && chainId !== -1) {
+
+    console.log(
+      'VALUES ',
+      wallet.chainId !== wallet._web3ReactContext.chainId,
+      chainId !== -1
+    )
+    if (
+      wallet.chainId !== wallet._web3ReactContext.chainId &&
+      chainId !== -1 &&
+      wallet.status !== 'connecting'
+    ) {
       if (isSupportedChain(wallet._web3ReactContext.chainId)) {
         connectNetwork()
       } else {
+        console.log('RESETING ')
         resetConnection()
       }
     }
