@@ -57,9 +57,9 @@ function ChallengeRequirements({
 
   return (
     <div>
-      <InfoField label="Action collateral">
-        You must stake {formatTokenAmount(challengeAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to challenge this action.
+      <InfoField label="Challenge deposit">
+        You must deposit {formatTokenAmount(challengeAmount, token.decimals)}{' '}
+        {token.symbol} in order to challenge a proposal.
       </InfoField>
       <CollateralStatus
         accountBalance={collateralTokenAccountBalance}
@@ -102,9 +102,9 @@ function ChallengeRequirements({
           margin-top: ${2 * GU}px;
         `}
       >
-        The action collateral and dispute fees will be returned to your account
-        if the submitter accepts your settlement offer or if you win the dispute
-        raised to Celeste. Your wallet balance is{' '}
+        The challenge deposit and dispute fees will be returned to your account
+        should the submitter accept your settlement offer, or if you win the
+        dispute raised to Celeste. Your wallet balance is{' '}
         {formatTokenAmount(collateralTokenAccountBalance, token.decimals)}{' '}
         {token.symbol}.
       </Info>
@@ -124,7 +124,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           challengeAmount,
           token.decimals
-        )} ${token.symbol} as the challenge collateral.`,
+        )} ${token.symbol} as the challenge deposit.`,
       }
     }
 
@@ -135,7 +135,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         challengeAmount,
         token.decimals
-      )} ${token.symbol} as the challenge collateral.`,
+      )} ${token.symbol} as the challenge deposit.`,
     }
   }, [accountBalance, challengeAmount, token, theme])
 

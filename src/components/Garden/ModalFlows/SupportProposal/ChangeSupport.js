@@ -157,7 +157,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
       >
         This action will modify the amount of tokens locked with this proposal.
         The token weight backing the proposal will increase over time from 0 up
-        to the max amount specified.
+        to the amount specified.
       </h3>
       <Field
         label="amount"
@@ -209,7 +209,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
+              {formatTokenAmount(totalStaked, stakeToken.decimals)}{' '}
+              {stakeToken.symbol}
             </strong>{' '}
             ({stakedPct}% of your balance).
           </span>

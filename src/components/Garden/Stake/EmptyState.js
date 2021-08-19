@@ -6,7 +6,7 @@ import LayoutColumns from '../Layout/LayoutColumns'
 export default function EmptyState({ icon }) {
   return (
     <>
-      <Header primary="Collateral Manager" />
+      <Header primary="Deposit Manager" />
       <LayoutColumns
         primary={
           <Card
@@ -63,7 +63,7 @@ export default function EmptyState({ icon }) {
                   ${textStyle('body2')};
                 `}
               >
-                To check your balances please connect your account
+                To check your balance please connect your account
               </span>
             </Card>
           </>

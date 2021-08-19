@@ -40,31 +40,32 @@ function CreateProposalRequirements({ agreement, staking }) {
   return (
     <div>
       <InfoField label="Covenant signature and version">
-        You must sign the{' '}
+        Since proposals are bound by this community's covenant, you must sign
+        the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'covenant')}`}
           external={false}
         >
-          Community Covenant
+          Covenant
         </Link>{' '}
         in order to create a proposal. The Covenant was last updated on{' '}
         {dateFormat(agreement.effectiveFrom)}
       </InfoField>
       <AgreementStatus agreement={agreement} />
       <InfoField
-        label="Action collateral"
+        label="Proposal deposit"
         css={`
           margin-top: ${5 * GU}px;
         `}
       >
-        You must lock {formatTokenAmount(actionAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to create a proposal. You can
-        manage your balance in the{' '}
+        In order to discourage spam proposals, you are required to deposit{' '}
+        {formatTokenAmount(actionAmount, token.decimals)} {token.symbol} for
+        each proposal you create. You can manage your balance using the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
         >
-          Collateral Manager
+          Deposit Manager
         </Link>
       </InfoField>
       <CollateralStatus
@@ -157,11 +158,11 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
         icon: iconError,
-        text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
+        text: `Your enabled account does not have sufficient balance to deposit the ${formatTokenAmount(
           actionAmount,
           token.decimals
-        )} ${token.symbol} as the action collateral.`,
-        actionButton: 'Deposit collateral',
+        )} ${token.symbol} required for a proposal.`,
+        actionButton: 'Add funds',
         buttonOnClick: goToStakeManagerDeposit,
       }
     }
@@ -172,7 +173,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         color: theme.negative,
         icon: iconError,
         text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
-        actionButton: 'Collateral manager',
+        actionButton: 'Deposit manager',
         buttonOnClick: goToStakeManager,
       }
     }
@@ -181,10 +182,10 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
       backgroundColor: '#EBFBF6',
       color: theme.positive,
       icon: iconCheck,
-      text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
+      text: `Your enabled account has sufficient balance to deposit the ${formatTokenAmount(
         actionAmount,
         token.decimals
-      )} ${token.symbol} as the action collateral.`,
+      )} ${token.symbol} required for a proposal.`,
     }
   }, [
     actionAmount,

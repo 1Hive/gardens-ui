@@ -29,11 +29,9 @@ function SettlementDetails({
     >
       <span>
         {isChallenger
-          ? `This proposal has been cancelled as the submitter never responded the settlement offer. 
-          Claiming your collateral will transfer your settlement offer amount from the submitter to you. You'll also get a refund for your action deposit and dispute fees.`
-          : `By accepting this settlement offer you agree to cancel Proposal ${id} and
-        part of your action collateral will be slashed from your total staking
-        balance.`}
+          ? `This proposal has been cancelled as the submitter never responded to your settlement offer. 
+          Claiming your deposit will transfer your settlement offer amount from the proposal submitter to you; your challenge deposit will be returned, and your dispute fees refunded.`
+          : `By accepting this settlement offer you agree to cancel Proposal ${id}; you will forfeit your proposal deposit and the settlement will be taken from the available funds in your deposit manager.`}
       </span>
 
       <div
@@ -77,7 +75,7 @@ function SettlementDetails({
         {challengeContext}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
-        {isChallenger ? 'Claim collateral' : 'Accept settlement'}
+        {isChallenger ? 'Claim deposit' : 'Accept settlement'}
       </ModalButton>
     </div>
   )
