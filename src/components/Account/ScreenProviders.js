@@ -16,8 +16,6 @@ const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
   getProviderFromUseWalletId(provider.id),
 ])
 
-console.log('Providers Info ', PROVIDERS_INFO)
-
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
 
