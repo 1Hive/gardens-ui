@@ -22,7 +22,7 @@ import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
-import homeSvg from '@assets/home.svg'
+import gardenSvg from '@assets/gardensLogoMark.svg'
 
 function Footer() {
   const theme = useTheme()
@@ -155,8 +155,10 @@ function FixedFooter({ token, gardenAddress }) {
           >
             <FooterItem
               href="#/home"
-              icon={<img src={homeSvg} alt="home" />}
-              label="Home"
+              icon={
+                <img src={gardenSvg} alt="home" width="24px" height="24px" />
+              }
+              label="Gardens"
             />
             <FooterItem
               icon={
