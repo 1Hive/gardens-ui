@@ -54,6 +54,7 @@ function WalletAugmented({ children }) {
     if (connectedAddresses.length > 0) {
       try {
         await wallet.connect('injected')
+        console.log('WALLET ', wallet)
       } catch (e) {
         console.error(e)
       }
@@ -76,6 +77,7 @@ function WalletAugmented({ children }) {
     }
     if (isSupportedNetwork) {
       setChainId(wallet.chainId)
+      setPreferredNetwork(wallet.chainId)
     }
   }, []) //eslint-disable-line
 
@@ -97,6 +99,7 @@ function WalletAugmented({ children }) {
     }
     if (isSupportedChain(wallet._web3ReactContext.chainId)) {
       setChainId(wallet.chainId)
+      setPreferredNetwork(wallet.chainId)
     }
   }, [chainId, isSupportedChain, wallet, resetConnection])//eslint-disable-line
 
