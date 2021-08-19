@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
@@ -8,7 +7,6 @@ import useActions from '@hooks/useActions'
 
 function SupportProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
-  const history = useHistory()
   const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
@@ -84,7 +82,6 @@ function SupportProposalScreens({ proposal, mode }) {
         mode === 'support' ? 'Support this proposal' : 'Change support'
       }
       screens={screens}
-      onCompleteActions={renderOnCompleteActions}
     />
   )
 }
