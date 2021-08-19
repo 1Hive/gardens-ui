@@ -159,7 +159,20 @@ function FixedFooter({ token, gardenAddress }) {
               label="Home"
             />
             <FooterItem
-              icon={<IconWrite alt="covenant" />}
+              icon={
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    border-radius: 50px;
+                    width: 24px;
+                    height: 24px;
+                    border: 2px solid ${theme.content};
+                  `}
+                >
+                  <IconWrite alt="covenant" />
+                </div>
+              }
               label="Convenant"
               onClick={handleOnGoToCovenant}
             />
