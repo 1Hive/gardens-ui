@@ -17,6 +17,7 @@ import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProp
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
 
+import { buildGardenPath } from '@utils/routing-utils'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
@@ -34,7 +35,7 @@ function Footer() {
     return null
   }
 
-  const { links, logo, token, wrappableToken, address } = connectedGarden
+  const { links, logo, token, wrappableToken } = connectedGarden
   const logoSvg = logo || defaultGardenLogo
 
   return (
@@ -48,10 +49,7 @@ function Footer() {
     >
       <Layout paddingBottom={40}>
         {compactMode ? (
-          <FixedFooter
-            token={wrappableToken || token}
-            gardenAddress={address}
-          />
+          <FixedFooter token={wrappableToken || token} />
         ) : (
           <div
             css={`
@@ -112,7 +110,7 @@ function Footer() {
   )
 }
 
-function FixedFooter({ token, gardenAddress }) {
+function FixedFooter({ token }) {
   const theme = useTheme()
   const history = useHistory()
   const { account } = useWallet()
@@ -122,8 +120,9 @@ function FixedFooter({ token, gardenAddress }) {
   )
 
   const handleOnGoToCovenant = useCallback(() => {
-    history.push(`/garden/${gardenAddress}/covenant`)
-  }, [gardenAddress, history])
+    const path = buildGardenPath(history.location, 'covenant')
+    history.push(path)
+  }, [history])
 
   // TODO: Add the create proposal modal here
   return (
@@ -173,7 +172,7 @@ function FixedFooter({ token, gardenAddress }) {
                   <IconWrite alt="covenant" />
                 </div>
               }
-              label="Convenant"
+              label="Covenant"
               onClick={handleOnGoToCovenant}
             />
             <FooterItem
