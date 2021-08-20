@@ -138,8 +138,9 @@ function GardenNavItems({ garden }) {
   const token = garden.wrappableToken || garden.token
 
   const handleOnGoToCovenant = useCallback(() => {
-    history.push(`/garden/${garden.address}/covenant`)
-  }, [garden.address, history])
+    const path = buildGardenPath(history.location, 'covenant')
+    history.push(path)
+  }, [history])
 
   return (
     <>
