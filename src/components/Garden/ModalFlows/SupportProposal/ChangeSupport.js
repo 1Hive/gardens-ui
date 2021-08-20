@@ -199,7 +199,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
           margin-top: ${2 * GU}px;
         `}
       >
-        You have{' '}
+        You have staked {myStake.amount.c / 10000} {stakeToken.symbol} on this
+        proposal. You have a total of{' '}
         <strong>
           {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
