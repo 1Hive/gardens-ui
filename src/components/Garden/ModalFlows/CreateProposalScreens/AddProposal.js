@@ -17,11 +17,13 @@ import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useRequestAmount from '@hooks/useRequestAmount'
-
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
+
+import { useHistory } from 'react-router-dom'
+import { buildGardenPath } from '@utils/routing-utils'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -203,19 +205,24 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
+  const history = useHistory()
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
-        All proposals are bound by this community's covenant - if you haven't
-        taken the time to read through it yet, please make sure you do so.
+        All proposals are bound by this community's{' '}
+        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
+          Covenant
+        </Link>{' '}
+        If you haven't taken the time to read through it yet, please make sure
+        you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
         <Link href={connectedGarden.forumURL}>
           {connectedGarden.name} Forum
         </Link>{' '}
-        under the 🌿 Proposals category. This post should explain why you
-        believe this proposal is beneficial to the community and (if applicable)
-        what the requested funds will be used for.
+        . This post should explain why you believe this proposal is beneficial
+        to the community and (if applicable) what the requested funds will be
+        used for.
       </Info>
       <Field
         label="Select proposal type"
