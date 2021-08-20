@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
-import { GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
@@ -134,20 +134,18 @@ function Header() {
 
 function GardenNavItems({ garden }) {
   const theme = useTheme()
+  const history = useHistory()
   const token = garden.wrappableToken || garden.token
+
+  const handleOnGoToCovenant = useCallback(() => {
+    const path = buildGardenPath(history.location, 'covenant')
+    history.push(path)
+  }, [history])
 
   return (
     <>
-      <Link
-        href={`#/garden/${garden.address}/covenant`}
-        external={false}
-        css={`
-          text-decoration: none;
-          color: ${theme.contentSecondary};
-        `}
-      >
-        Covenant
-      </Link>
+      <Button label="Covenant" onClick={handleOnGoToCovenant} mode="strong" />
+
       <Link
         href={getHoneyswapTradeTokenUrl(token.id)}
         css={`

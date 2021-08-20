@@ -83,7 +83,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
   const data = useMemo(() => {
     if (mode === 'deposit') {
       return {
-        title: `Deposit ${token.symbol} as collateral`,
+        title: `Add funds (${token.symbol}) to Deposit Manager`,
         transactionTitle: `Deposit ${token.symbol}`,
       }
     }

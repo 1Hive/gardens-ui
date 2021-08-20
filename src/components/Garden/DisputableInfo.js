@@ -67,11 +67,11 @@ function ProposalChallengedInfo({ proposal }) {
                   )}{' '}
                   {proposal.collateralRequirement.tokenSymbol}
                 </span>{' '}
-                as the action collateral. You can manage your deposit balances
+                as the challenge deposit. You can manage your deposit balances
                 in{' '}
               </span>
               <Link href="#/collateral" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
@@ -184,8 +184,8 @@ function ProposalSettledInfo({ proposal }) {
                 `}
               >
                 {isSubmitter
-                  ? 'You acccepted the setttlement offer on'
-                  : 'You have challenged this action on'}
+                  ? 'You acccepted the settlement offer on'
+                  : 'You challenged this action on'}
               </span>{' '}
               {dateFormat(
                 isSubmitter
@@ -207,10 +207,10 @@ function ProposalSettledInfo({ proposal }) {
                     proposal.collateralRequirement.tokenDecimals
                   )} ${
                     proposal.collateralRequirement.tokenSymbol
-                  }  from your action collateral has been slashed and the remaining unlocked`
+                  }  from your proposal deposit has been forfeited and the remaining unlocked`
                 ) : (
                   <span>
-                    your challenge collateral has returned to your wallet{' '}
+                    your challenge deposit has been returned to your wallet{' '}
                     <span
                       css={`
                         color: ${theme.content};
@@ -227,7 +227,7 @@ function ProposalSettledInfo({ proposal }) {
                 . You can manage your deposit balances in{' '}
               </span>
               <Link href="#/profile" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
