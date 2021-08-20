@@ -99,7 +99,7 @@ function Header() {
                       color: ${theme.contentSecondary};
                     `}
                   >
-                    Be A Keeper Of Celeste
+                    Become a Keeper
                   </Link>
                 )}
               </nav>
