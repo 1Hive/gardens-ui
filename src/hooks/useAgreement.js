@@ -22,7 +22,7 @@ export function useAgreement() {
     if (!apps) {
       return
     }
-    
+
     async function processAgreementDetails() {
       const {
         currentVersion,
