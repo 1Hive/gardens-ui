@@ -19,6 +19,10 @@ export function useAgreement() {
   const [initialProcessing, setInitialProcessing] = useState(true)
 
   useEffect(() => {
+    if (!apps) {
+      return
+    }
+
     async function processAgreementDetails() {
       const {
         currentVersion,
