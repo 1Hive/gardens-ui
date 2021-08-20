@@ -213,7 +213,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
         <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
           Covenant
         </Link>{' '}
-        If you haven't taken the time to read through it yet, please make sure
+        . If you haven't taken the time to read through it yet, please make sure
         you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
@@ -286,7 +286,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           </Field>
         </>
       )}
-      <Field label="Link to proposal description">
+      <Field label="Forum post link (proposal details)">
         <TextInput
           onChange={handleLinkChange}
           value={formData.link}
@@ -395,7 +395,7 @@ function RequestedAmount({
       >
         The larger the requested amount, the more support required for the
         proposal to pass. If you specify the proposal amount in {` `}
-        {stableToken.symbol} it will be converted to {requestToken.symbol}
+        {stableToken.symbol} it will be converted to {requestToken.symbol}{' '}
         if/when it is passed.{' '}
         {neededThreshold
           ? `The conviction
