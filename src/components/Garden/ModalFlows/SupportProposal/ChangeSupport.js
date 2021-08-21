@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Button,
-  ButtonBase,
-  GU,
-  Field,
-  Info,
-  TextInput,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Button, ButtonBase, GU, Field, Info, TextInput } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
 import { useGardenState } from '@providers/GardenState'
@@ -26,8 +17,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
   proposal,
   getTransactions,
 }) {
-  const theme = useTheme()
-
   const { account } = useWallet()
   const { config, token } = useGardenState()
   const { stakeToken } = config.conviction
@@ -154,14 +143,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3
-        css={`
-          ${textStyle('body3')}
-        `}
-      >
-        This action modifies the amount of tokens staked on this proposal. Your
-        stake will progressively increase from 0 up to the amount specified.
-      </h3>
       <Field
         label="amount"
         css={`
@@ -177,7 +158,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
             <ButtonBase
               css={`
                 margin-right: ${1 * GU}px;
-                color: ${theme.accent};
+                color: #30db9e;
               `}
               onClick={handleMaxSelected}
             >
@@ -206,7 +187,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
         <strong>
           {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
-        </strong>{' '}
+        </strong>
         . You have up to{' '}
         <strong>
           {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
