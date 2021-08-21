@@ -14,24 +14,51 @@ function SupportProposalScreens({ proposal, mode }) {
 
   const { id: proposalId } = proposal
 
-  const handleViewProposal = useCallback(() => {
+  const handleViewProposals = useCallback(() => {
     const path = '/profile'
+    history.push(path)
+  }, [history])
+
+  const handleViewHome = useCallback(() => {
+    const path = '/home'
     history.push(path)
   }, [history])
 
   const renderOnCompleteActions = useCallback(() => {
     if (mode === 'support' ? 'Support this proposal' : 'Change support') {
       return (
-        <Button
-          label="View supported proposals"
-          mode="strong"
-          onClick={handleViewProposal}
-          wide
-        />
+        <div
+          css={`
+            text-align: center;
+          `}
+        >
+          <Button
+            label="Supported proposals"
+            mode="strong"
+            onClick={handleViewProposals}
+            wide
+            css={`
+              width: 40%;
+              display: inline;
+              margin-right: 0.5rem;
+            `}
+          />
+          <Button
+            label="Home"
+            mode="strong"
+            onClick={handleViewHome}
+            wide
+            css={`
+              width: 40%;
+              display: inline;
+              margin-left: 0.5rem;
+            `}
+          />
+        </div>
       )
     }
     return null
-  }, [handleViewProposal, mode])
+  }, [handleViewProposals, mode])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
