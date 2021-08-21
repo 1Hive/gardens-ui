@@ -42,7 +42,9 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = token.accountBalance.minus(totalStaked)
-
+  console.log('token and account balance')
+  console.log(token)
+  console.log(account)
   const myStake = useMemo(
     () =>
       stakes.find(({ supporter }) =>
@@ -155,9 +157,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
           ${textStyle('body3')}
         `}
       >
-        This action will modify the amount of tokens locked with this proposal.
-        The token weight backing the proposal will increase over time from 0 up
-        to the amount specified.
+        This action modifies the amount of tokens staked on this proposal. Your
+        stake will progressively increase from 0 up to the amount specified.
       </h3>
       <Field
         label="amount"
@@ -199,8 +200,11 @@ const ChangeSupport = React.memo(function ChangeSupport({
           margin-top: ${2 * GU}px;
         `}
       >
-        You have staked {myStake.amount.c / 10000} {stakeToken.symbol} on this
-        proposal. You have an additional{' '}
+        You have staked{' '}
+        <strong>
+          {myStake.amount.c / 10000} {stakeToken.symbol}
+        </strong>{' '}
+        on this proposal. You have an additional{' '}
         <strong>
           {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
