@@ -41,7 +41,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const { stakes } = proposal
 
   const totalStaked = useAccountTotalStaked(account)
-  const nonStakedTokens = token.accountBalance.minus(totalStaked)
+  // const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const myStake = useMemo(
     () =>
@@ -57,6 +57,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
     () => token.accountBalance.minus(totalStaked).plus(myStake.amount),
     [myStake.amount, token.accountBalance, totalStaked]
   )
+
+  const totalStakedOnOthers = totalStaked - myStake.amount
 
   useEffect(() => {
     if (myStake.amount) {
@@ -145,8 +147,10 @@ const ChangeSupport = React.memo(function ChangeSupport({
   }, [amount, maxAvailable])
 
   // Calculate percentages
-  const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
-  const stakedPct = round(100 - nonStakedPct)
+  // const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
+  // const stakedPct = round(100 - nonStakedPct)
+  const maxStakedPct = round(pct(maxAvailable, token.accountBalance))
+  const stakedOthersPct = round(pct(totalStakedOnOthers, token.accountBalance))
 
   return (
     <form onSubmit={handleSubmit}>
@@ -198,27 +202,27 @@ const ChangeSupport = React.memo(function ChangeSupport({
           margin-top: ${2 * GU}px;
         `}
       >
-        You have staked{' '}
+        You are currently supporting this proposal with{' '}
         <strong>
           {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
         </strong>{' '}
-        on this proposal. You can stake up to{' '}
+        . You have up to{' '}
         <strong>
           {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
         </strong>{' '}
-        ({nonStakedPct}% of your balance) available to support this proposal.{' '}
-        {totalStaked.gt(0) === false && (
+        ({maxStakedPct}% of your balance) available to support this proposal.{' '}
+        {
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {formatTokenAmount(totalStaked, stakeToken.decimals)}{' '}
+              {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
               {stakeToken.symbol}
             </strong>{' '}
-            ({stakedPct}% of your balance).
+            ({stakedOthersPct}% of your balance).
           </span>
-        )}
+        }
       </Info>
       <Button
         css={`
