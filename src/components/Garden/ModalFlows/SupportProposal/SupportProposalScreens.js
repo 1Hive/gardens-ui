@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import { Button } from '@1hive/1hive-ui'
 import { useHistory } from 'react-router'
+import { buildGardenPath } from '@utils/routing-utils'
 import ModalFlowBase from '../ModalFlowBase'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
@@ -20,7 +21,7 @@ function SupportProposalScreens({ proposal, mode }) {
   }, [history])
 
   const handleViewHome = useCallback(() => {
-    const path = '/home'
+    const path = buildGardenPath(history.location, 'home')
     history.push(path)
   }, [history])
 
