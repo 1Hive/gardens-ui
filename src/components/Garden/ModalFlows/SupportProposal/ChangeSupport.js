@@ -42,9 +42,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
 
   const totalStaked = useAccountTotalStaked(account)
   const nonStakedTokens = token.accountBalance.minus(totalStaked)
-  console.log('token and account balance')
-  console.log(token)
-  console.log(account)
+
   const myStake = useMemo(
     () =>
       stakes.find(({ supporter }) =>
@@ -202,11 +200,12 @@ const ChangeSupport = React.memo(function ChangeSupport({
       >
         You have staked{' '}
         <strong>
-          {myStake.amount.c / 10000} {stakeToken.symbol}
+          {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
+          {stakeToken.symbol}
         </strong>{' '}
-        on this proposal. You have an additional{' '}
+        on this proposal. You can stake up to{' '}
         <strong>
-          {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
+          {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
         </strong>{' '}
         ({nonStakedPct}% of your balance) available to support this proposal.{' '}
