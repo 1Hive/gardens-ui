@@ -30,7 +30,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const { stakes } = proposal
 
   const totalStaked = useAccountTotalStaked(account)
-  // const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const myStake = useMemo(
     () =>
@@ -136,8 +135,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
   }, [amount, maxAvailable])
 
   // Calculate percentages
-  // const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
-  // const stakedPct = round(100 - nonStakedPct)
   const maxStakedPct = round(pct(maxAvailable, token.accountBalance))
   const stakedOthersPct = round(pct(totalStakedOnOthers, token.accountBalance))
 
