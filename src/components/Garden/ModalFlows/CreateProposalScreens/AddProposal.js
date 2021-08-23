@@ -205,6 +205,18 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
 
   return (
     <form onSubmit={handleOnContinue}>
+      <Info title="Proposal guidelines">
+        All proposals are bound by this community's covenant - if you haven't
+        taken the time to read through it yet, please make sure you do so.
+        <br />
+        <br /> Before creating a proposal you must first create a post on the{' '}
+        <Link href={connectedGarden.forumURL}>
+          {connectedGarden.name} Forum
+        </Link>{' '}
+        under the 🌿 Proposals category. This post should explain why you
+        believe this proposal is beneficial to the community and (if applicable)
+        what the requested funds will be used for.
+      </Info>
       <Field
         label="Select proposal type"
         css={`
@@ -221,6 +233,15 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           wide
         />
       </Field>
+      <Info>
+        <span>
+          {formData.proposalType === SIGNALING_PROPOSAL
+            ? `Suggestion proposals are used to gather community sentiment for
+        ideas or future funding proposals.`
+            : `Funding proposals ask for an amount of funds. These funds are granted
+        if the proposal in question receives enough support (conviction).`}
+        </span>{' '}
+      </Info>
       <Field
         label="Title"
         css={`
@@ -248,7 +269,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             requestToken={requestToken}
             stableToken={stableToken}
           />
-          <Field label="Beneficiary">
+          <Field label="Beneficiary address">
             <TextInput
               onChange={handleBeneficiaryChange}
               value={formData.beneficiary}
@@ -258,7 +279,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           </Field>
         </>
       )}
-      <Field label="Link">
+      <Field label="Link to proposal description">
         <TextInput
           onChange={handleLinkChange}
           value={formData.link}
@@ -266,22 +287,6 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           required
         />
       </Field>
-      <Info title="Proposal guidelines">
-        <span>
-          {formData.proposalType === SIGNALING_PROPOSAL
-            ? `This action will create a suggestion which can be voted on
-            by ${stakeToken.symbol} holders but requests no funds. It is used to
-            gather community sentiment for future funding proposals or
-            particular ideas.`
-            : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
-        </span>{' '}
-        In order to create a proposal you must first create a post on the{' '}
-        <Link href={connectedGarden.forumURL}>
-          {connectedGarden.name} Forum
-        </Link>{' '}
-        under the 🌿 Proposals category and paste the link to the corresponding
-        post in the LINK field.
-      </Info>
       <Button
         wide
         mode="strong"
@@ -293,7 +298,6 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         Continue
       </Button>
-
       {errors.length > 0 && (
         <Info
           mode="warning"
@@ -382,13 +386,15 @@ function RequestedAmount({
           margin-bottom: ${3 * GU}px;
         `}
       >
-        If you specify the proposal amount in {stableToken.symbol} it will be
-        converted to {requestToken.symbol} at time of execution.{' '}
+        The larger the requested amount, the more support required for the
+        proposal to pass. If you specify the proposal amount in {` `}
+        {stableToken.symbol} it will be converted to {requestToken.symbol}
+        if/when it is passed.{' '}
         {neededThreshold
           ? `The conviction
         required in order for the proposal to pass with the requested amount is
-        ~%${neededThreshold}.`
-          : `Proposal might never pass with requested amount`}
+        ≈${neededThreshold}%.`
+          : `The requested amount is extremely high; there's a good chance the proposal might never pass.`}
       </Info>
     </>
   )

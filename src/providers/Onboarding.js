@@ -2,6 +2,10 @@ import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens as steps } from '@components/Onboarding/Screens/config'
 import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import {
+  calculateDecay,
+  calculateWeight,
+} from '../utils/conviction-modelling-helpers'
 
 const OnboardingContext = React.createContext()
 
@@ -20,24 +24,24 @@ const DEFAULT_CONFIG = {
     type: -1,
   },
   agreement: {
+    actionAmount: 0.1,
+    challengeAmount: 0.1,
+    challengePeriod: DAY_IN_SECONDS * 3,
+    covenantFile: null,
     title: '',
-    content: '',
-    challengePeriod: 0,
-    actionAmount: 0,
-    challengeAmount: 0,
-    actionAmountsStable: [],
-    challengeAmountsStable: [],
   },
   conviction: {
-    decay: 0,
-    maxRatio: 0,
-    minThresholdStakePercentage: 0,
-    requestToken: '',
-    weight: 0,
+    decay: calculateDecay(2),
+    halflifeDays: 2,
+    maxRatio: 10,
+    minThreshold: 2,
+    minThresholdStakePct: 5,
+    weight: calculateWeight(2, 10),
   },
   issuance: {
-    maxAdjustmentRatioPerSecond: 0,
-    targetRatio: 0,
+    maxAdjustmentRatioPerYear: 15,
+    targetRatio: 30,
+    initialRatio: 10,
   },
   liquidity: {
     honeyTokenLiquidityStable: 0,

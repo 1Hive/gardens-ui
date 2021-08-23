@@ -81,12 +81,12 @@ function StakeAndWithdraw({
   const textData = useMemo(() => {
     if (depositMode) {
       return {
-        descriptionText: `This amount will be locked in the collateral manager and will be used as collateral when creating actions bound by this garden's Covenant.`,
+        descriptionText: `This amount will be placed in the deposit manager and will be used for deposits when you either create or challenge a proposal. `,
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals
         )} ${symbol}`,
-        buttonText: 'Deposit',
+        buttonText: 'Add funds',
       }
     }
     return {
@@ -167,8 +167,8 @@ function StakeAndWithdraw({
               margin-top: ${2 * GU}px;
             `}
           >
-            You will be able to withdraw your collateral balance at any time,
-            except for any that is locked on a scheduled proposal.
+            You will be able to withdraw the portion of your balance that is not
+            being used for deposits at any time.
           </Info>
         )}
         <Button

@@ -180,8 +180,8 @@ const SupportProposal = React.memo(function SupportProposal({
           <span>
             You are supporting other proposals with{' '}
             <strong>
-              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
-              tokens
+              {formatTokenAmount(totalStaked, stakeToken.decimals)}{' '}
+              {stakeToken.symbol}
             </strong>{' '}
             ({stakedPct}% of your balance).
           </span>

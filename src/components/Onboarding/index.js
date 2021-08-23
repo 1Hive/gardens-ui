@@ -1,7 +1,9 @@
 import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
+import gardensLogo from '@assets/gardensLogoMark.svg'
 import { OnboardingProvider } from '@providers/Onboarding'
+import { ChartsProvider } from '@providers/Charts'
 import Screens from './Screens'
 import StepsPanel from './Steps/StepsPanel'
 
@@ -23,6 +25,16 @@ function Onboarding({ onClose, visible }) {
             flex-grow: 0;
           `}
         >
+          <img
+            css={`
+              display: flex;
+              padding-left: 18px;
+              margin-top: 17px;
+            `}
+            src={gardensLogo}
+            height={32}
+            alt=""
+          />
           <StepsPanel />
         </div>
         <div
@@ -30,6 +42,7 @@ function Onboarding({ onClose, visible }) {
             width: 100%;
             flex-grow: 1;
             flex-shrink: 1;
+            background: #f9f9f8;
           `}
         >
           <div
@@ -59,7 +72,7 @@ function Onboarding({ onClose, visible }) {
             <section
               css={`
                 margin: 0px auto;
-                max-width: 800px;
+                max-width: 950px;
                 padding: 0px 24px 48px;
               `}
             >
@@ -138,6 +151,8 @@ function AnimatedSlider({ children, visible }) {
 
 export default ({ ...props }) => (
   <OnboardingProvider>
-    <Onboarding {...props} />
+    <ChartsProvider>
+      <Onboarding {...props} />
+    </ChartsProvider>
   </OnboardingProvider>
 )
