@@ -91,16 +91,17 @@ function Header() {
                 `}
               >
                 {connectedGarden && <GardenNavItems garden={connectedGarden} />}
-                <Link
-                  href={network.celesteUrl}
-                  css={`
-                    text-decoration: none;
-                    color: ${theme.contentSecondary};
-                    margin-left: ${(connectedGarden ? 4 : 0) * GU}px;
-                  `}
-                >
-                  Stake Honey
-                </Link>
+                {!connectedGarden && (
+                  <Link
+                    href={network.celesteUrl}
+                    css={`
+                      text-decoration: none;
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    Become a Keeper
+                  </Link>
+                )}
               </nav>
             )}
           </div>
