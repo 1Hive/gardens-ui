@@ -59,7 +59,7 @@ function SupportProposalScreens({ proposal, mode }) {
       )
     }
     return null
-  }, [handleViewProposals, mode])
+  }, [handleViewHome, handleViewProposals, mode])
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
