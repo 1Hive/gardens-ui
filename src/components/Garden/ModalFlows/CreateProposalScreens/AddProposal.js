@@ -232,7 +232,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         <DropDown
           header="Select proposal type"
-          placeholder="Proposal type"
+          placeholder="Select proposal type"
           selected={formData.proposalType}
           onChange={handleProposalTypeChange}
           items={PROPOSAL_TYPES}
@@ -257,6 +257,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         <TextInput
           onChange={handleTitleChange}
+          placeholder="Add the title of the proposal"
           value={formData.title}
           wide
           required
@@ -280,6 +281,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             <TextInput
               onChange={handleBeneficiaryChange}
               value={formData.beneficiary}
+              placeholder="Add the beneficiary’s ETH address"
               wide
               required
             />
@@ -290,6 +292,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
         <TextInput
           onChange={handleLinkChange}
           value={formData.link}
+          placeholder="Add the link of the forum post"
           wide
           required
         />
@@ -342,6 +345,7 @@ function RequestedAmount({
         <TextInput
           value={value}
           onChange={onAmountChange}
+          placeholder="Add the requested amount"
           required
           wide
           adornment={
