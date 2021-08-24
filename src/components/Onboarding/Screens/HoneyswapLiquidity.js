@@ -87,7 +87,7 @@ function HoneyswapLiquidity() {
     ]
   )
 
-  const liquidityProvided = Boolean(denominatedAmount && tokenAmount)
+  const liquidityProvided = Boolean(denominatedAmount > 0 && tokenAmount > 0)
   const satisfiesMin =
     Number(
       denomination === HNY_DENOMINATION
