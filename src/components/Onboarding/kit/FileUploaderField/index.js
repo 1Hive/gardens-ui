@@ -66,13 +66,7 @@ export const FileUploaderField = ({
       if (file?.size <= maxFileSize) {
         if (reader !== undefined && file !== undefined) {
           reader.onload = ({ target: { result } }) => {
-            onFileUpdated({
-              name: file.name,
-              content: result,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-            })
+            onFileUpdated({ blob: file, content: result })
           }
           readFile(reader, file)
         }
@@ -204,7 +198,7 @@ export const FileUploaderField = ({
               </div>
             ) : (
               <FilePreview
-                file={file}
+                file={file.blob}
                 onCancel={() => onFileUpdated(null)}
                 label={previewLabel}
               />
