@@ -84,6 +84,13 @@ export function createGardenTxOne({
     tokens.decimals
   ).toString()
 
+  // Ajust voting settings
+  const { voteSupportRequired, voteMinAcceptanceQuorum } = voting
+  const [adjustedSupport, adjustedQuorum] = adjustVotingSettings(
+    voteSupportRequired,
+    voteMinAcceptanceQuorum
+  )
+
   return createTemplateTx('createGardenTxOne', [
     existingToken,
     tokens.name,
@@ -94,7 +101,15 @@ export function createGardenTxOne({
       adjustedGardenTokenLiquidity,
       adjustedExistingTokenLiquidity,
     ],
-    [...voting],
+    [
+      voting.voteDuration,
+      adjustedSupport,
+      adjustedQuorum,
+      voting.voteDelegatedVotingPeriod,
+      voting.voteQuietEndingPeriod,
+      voting.voteQuietEndingExtension,
+      voting.voteExecutionDelay,
+    ],
   ])
 }
 
@@ -183,7 +198,7 @@ function createTemplateTx(fn, params) {
   }
 }
 
-export function createTokenTx(tokenAddress, fn, params) {
+function createTokenTx(tokenAddress, fn, params) {
   const tokenContract = getContract(tokenAddress, tokenAbi)
   const data = encodeFunctionData(tokenContract, fn, params)
 
@@ -191,4 +206,22 @@ export function createTokenTx(tokenAddress, fn, params) {
     to: tokenAddress,
     data,
   }
+}
+
+function adjustVotingSettings(support, quorum) {
+  // The max value for both support and quorum is 100% - 1
+  const onePercent = bigNum('1', 16)
+  const hundredPercent = onePercent.multipliedBy('100')
+
+  let adjustedSupport = onePercent.multipliedBy(support.toString())
+  if (adjustedSupport.eq(hundredPercent)) {
+    adjustedSupport = adjustedSupport.minus('1')
+  }
+
+  let adjustedQuorum = onePercent.multipliedBy(quorum.toString())
+  if (adjustedQuorum.eq(hundredPercent)) {
+    adjustedQuorum = adjustedQuorum.minus('1')
+  }
+
+  return [adjustedSupport.toString(), adjustedQuorum.toString()]
 }
