@@ -9,8 +9,8 @@ import {
 export const TRANSACTION_SIGNING_DESC = {
   [STEP_WAITING]: 'Waiting for signature',
   [STEP_PROMPTING]: 'Waiting for signature',
-  [STEP_WORKING]: 'Transaction is being mined',
-  [STEP_SUCCESS]: 'Transaction successfully mined',
+  [STEP_WORKING]: 'Please be patient while your transaction is being mined',
+  [STEP_SUCCESS]: 'Thank you! Your transaction has been successfully mined',
   [STEP_ERROR]: 'An error has occured',
 }
 

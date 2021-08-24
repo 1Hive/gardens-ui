@@ -11,10 +11,10 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../constants'
 
-const EMPTY_SCRIPT = '0x00000001'
+const EMPTY_SCRIPTS = ['0x00000001', '0x00']
 
 export function isVoteAction(vote) {
-  return vote.script && vote.data && vote.data.script !== EMPTY_SCRIPT
+  return vote.script && !EMPTY_SCRIPTS.includes(vote.script)
 }
 
 export function getAccountCastStake(vote, account) {

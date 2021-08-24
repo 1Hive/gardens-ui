@@ -3,7 +3,7 @@ import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {
   'support-percentage': [
-    'Action Collateral',
+    'Support percentage',
     <>
       <strong>Support</strong> is the relative percentage of tokens that are
       required to vote “Yes” for a proposal to be approved. For example, if
@@ -21,21 +21,20 @@ const KNOWN_HELP_DESCRIPTIONS = {
       it to pass.
     </>,
   ],
-  'challenge-collateral': [
-    'Challenge Collateral',
+  'challenge-deposit': [
+    'Challenge Deposit',
     <>
-      <strong>Challenge Collateral</strong> is the amount of tokens locked every
-      time an action is challenged. This will be submitted at the time of
-      challenge as opposed to being locked in the collateral manager.
+      <strong>Challenge deposit</strong> is the amount of tokens locked every
+      time a proposal is challenged. This deposit will be submitted at the time
+      of the challenge.
     </>,
   ],
-  'action-collateral': [
-    'Action Collateral',
+  'proposal-deposit': [
+    'Proposal Deposit',
     <>
-      <strong>Action Collateral</strong> is the amount of collateral tokens
-      required to be locked every time an action is created. This amount will be
-      automatically locked from the staking pool balance given that access is
-      granted to the Covenant's app as the Lock Manager.
+      <strong>Proposal deposit</strong> is the amount of tokens locked every
+      time a proposal is created. They will be automatically locked from the
+      funds available in your deposit manager.
     </>,
   ],
   'settlement-period': [
