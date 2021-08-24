@@ -84,7 +84,7 @@ function HoneyswapLiquidity() {
     [denom, denominatedAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
   )
 
-  const liquidityProvided = Boolean(denominatedAmount && tokenAmount)
+  const liquidityProvided = Boolean(denominatedAmount > 0 && tokenAmount > 0)
   const satisfiesMin =
     Number(
       denom === HNY_DENOMINATION
@@ -112,7 +112,7 @@ function HoneyswapLiquidity() {
     <div>
       <Header
         title="Honeyswap liquidity"
-        subtitle={`Set the initial HNY - ${tokenSymbol} token equivalence to define the initial Honeyswap liquidity pair.`}
+        subtitle={`Set the initial HNY/${tokenSymbol} token equivalence to define the initial Honeyswap liquidity pair.`}
       />
       <div
         css={`
