@@ -52,12 +52,16 @@ const DEFAULT_CONFIG = {
     initialRatio: 10,
   },
   liquidity: {
-    honeyTokenLiquidityStable: 0,
-    tokenLiquidity: 0,
+    denomination: 0,
+    honeyTokenLiquidity: '',
+    honeyTokenLiquidityStable: '',
+    tokenLiquidity: '',
   },
   tokens: {
     address: '', // Only used in BYOT
+    existingTokenSymbol: '', // Only used in BYOT
     name: '',
+    decimals: 18,
     symbol: '',
     holders: [], // Only used in NATIVE
   },

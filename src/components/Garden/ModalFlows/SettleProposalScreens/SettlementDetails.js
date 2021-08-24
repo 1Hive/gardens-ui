@@ -11,7 +11,7 @@ function SettlementDetails({
   isChallenger,
   proposal,
 }) {
-  const { id, challenger, settlementOffer } = proposal
+  const { id, challenger, collateralRequirement, settlementOffer } = proposal
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
 
@@ -53,7 +53,8 @@ function SettlementDetails({
               : 'Amount that will be slashed'
           }
         >
-          {formatTokenAmount(settlementOffer, 18)} HNY
+          {formatTokenAmount(settlementOffer, 18)}{' '}
+          {collateralRequirement.tokenSymbol}
         </InfoField>
 
         <div
