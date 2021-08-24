@@ -9,10 +9,12 @@ import {
 import { getNetwork } from '@/networks'
 import { getContract } from '@hooks/useContract'
 
-import { NATIVE_TYPE } from '@components/Onboarding/constants'
-import templateAbi from '@abis/gardensTemplate.json'
+import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
+
+import tokenAbi from '@abis/erc20.json'
+import templateAbi from '@abis/gardensTemplate.json'
 
 const OnboardingContext = React.createContext()
 
@@ -93,12 +95,18 @@ function OnboardingProvider({ children }) {
   )
 
   const getTransactions = useCallback(() => {
-    const txs = [createGardenTxOne(config)]
+    // Token approvals
+    const txs = [...createTokenApproveTxs(config)]
+
+    // Tx one
+    txs.push(createGardenTxOne(config))
 
     if (config.garden.type === NATIVE_TYPE) {
+      // Mint seeds balances
       txs.push(createTokenHoldersTx(config))
     }
 
+    // Tx two, tx three
     txs.push(createGardenTxTwo(config), createGardenTxThree(config))
 
     return txs
@@ -139,6 +147,31 @@ function useOnboardingState() {
 }
 
 // TODO: See where to place them or keep them here
+function createTokenApproveTxs({ garden, liquidity, tokens }) {
+  const txs = []
+  const network = getNetwork()
+  const templateAddress = network.template
+  const honeyTokenAddress = network.honeyToken
+
+  txs.push(
+    createTokenTx(honeyTokenAddress, 'approve', [
+      templateAddress,
+      liquidity.honeyTokenLiquidity,
+    ])
+  )
+
+  if (garden.type === BYOT_TYPE) {
+    txs.push(
+      createTokenTx(tokens.address, 'approve', [
+        templateAddress,
+        liquidity.tokenLiquidity,
+      ])
+    )
+  }
+
+  return txs
+}
+
 function createGardenTxOne({ garden, issuance, liquidity, tokens, voting }) {
   let existingToken, commonPool, gardenTokenLiquidity, existingTokenLiquidity
 
@@ -163,7 +196,7 @@ function createGardenTxOne({ garden, issuance, liquidity, tokens, voting }) {
     commonPool = 0
   }
 
-  return createTx('createGardenTxOne', [
+  return createTemplateTx('createGardenTxOne', [
     existingToken,
     tokens.name,
     tokens.symbol,
@@ -181,13 +214,13 @@ function createTokenHoldersTx({ tokens }) {
   const accounts = tokens.holders.map(([account]) => account)
   const stakes = tokens.holders.map(([_, stake]) => stake)
 
-  return createTx('createTokenHolders', [accounts, stakes])
+  return createTemplateTx('createTokenHolders', [accounts, stakes])
 }
 
 function createGardenTxTwo({ conviction, issuance }) {
   const requestToken = conviction.requestToken || ZERO_ADDR
 
-  return createTx('createGardenTxTwo', [
+  return createTemplateTx('createGardenTxTwo', [
     [issuance.targetRatio, issuance.maxAdjustmentRatioPerYear],
     [
       conviction.decay,
@@ -205,7 +238,7 @@ function createGardenTxThree({ agreement, garden }) {
   const actionAmountStable = 0 // TODO: Use token liquidity to obtain stable value
   const challengeAmountStable = 0 // TODO: Use token liquidity to obtain stable value
 
-  return createTx('createGardenTxThree', [
+  return createTemplateTx('createGardenTxThree', [
     daoId,
     agreement.title,
     agreementContent,
@@ -216,7 +249,7 @@ function createGardenTxThree({ agreement, garden }) {
   ])
 }
 
-function createTx(fn, params) {
+function createTemplateTx(fn, params) {
   const network = getNetwork()
   const templateAddress = network.template
   const templateContract = getContract(templateAddress, templateAbi)
@@ -225,6 +258,16 @@ function createTx(fn, params) {
 
   return {
     to: templateAddress,
+    data,
+  }
+}
+
+function createTokenTx(tokenAddress, fn, params) {
+  const tokenContract = getContract(tokenAddress, tokenAbi)
+  const data = encodeFunctionData(tokenContract, fn, params)
+
+  return {
+    to: tokenAddress,
     data,
   }
 }
