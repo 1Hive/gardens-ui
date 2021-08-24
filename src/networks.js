@@ -23,7 +23,6 @@ const networks = {
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     explorer: 'etherscan',
 
-    // TODO: Define if we should get these from subgraph
     honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
     honeyPriceOracle: '0xa87f58dbbe3a4d01d7f776e02b4dd3237f598095',
     stableToken: '0x531eab8bb6a2359fe52ca5d308d85776549a0af9',
@@ -46,7 +45,6 @@ const networks = {
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 
-    // TODO: Define if we should get these from subgraph
     honeyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
     honeyPriceOracle: '0x6f38d112b13eda1e3abafc61e296be2e27f15071',
     stableToken: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
