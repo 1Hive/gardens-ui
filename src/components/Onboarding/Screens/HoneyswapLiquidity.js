@@ -109,7 +109,12 @@ function HoneyswapLiquidity() {
     denom === HNY_DENOMINATION ? denominatedAmount : convertedValue
 
   return (
-    <div>
+    <div
+      css={`
+        max-width: 550px;
+        margin: 0 auto;
+      `}
+    >
       <Header
         title="Honeyswap liquidity"
         subtitle={`Set the initial HNY/${tokenSymbol} token equivalence to define the initial Honeyswap liquidity pair.`}
@@ -179,7 +184,7 @@ function HoneyswapLiquidity() {
                 ]}
                 selected={denom}
                 onChange={setDenom}
-                width="135px"
+                width="150px"
                 css={`
                   border: 0;
                   padding-left: 0;
