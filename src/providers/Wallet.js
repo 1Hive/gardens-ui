@@ -22,7 +22,6 @@ function useWalletAugmented() {
 function WalletAugmented({ children }) {
   // This new state is neede to avoid showing the user the profile signature request on every network change
   const [chainReseted, setChainReseted] = useState(false)
-  const [chainId, setChainId] = useState(-1)
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
@@ -35,7 +34,7 @@ function WalletAugmented({ children }) {
       return getPreferredProvider()
     }
 
-    const ensRegistry = getNetwork(wallet.chainId)?.ensRegistry
+    const ensRegistry = getNetwork(preferredNetwork)?.ensRegistry
     return new EthersProviders.Web3Provider(ethereum, {
       name: '',
       chainId: preferredNetwork,
@@ -54,7 +53,6 @@ function WalletAugmented({ children }) {
     if (connectedAddresses.length > 0) {
       try {
         await wallet.connect('injected')
-        console.log('WALLET ', wallet)
       } catch (e) {
         console.error(e)
       }
@@ -63,7 +61,6 @@ function WalletAugmented({ children }) {
 
   const resetConnection = useCallback(async () => {
     setChainReseted(true)
-    setChainId(-1)
     await wallet.reset()
   }, [wallet])
 
@@ -76,7 +73,6 @@ function WalletAugmented({ children }) {
       connectNetwork()
     }
     if (isSupportedNetwork) {
-      setChainId(wallet.chainId)
       setPreferredNetwork(wallet.chainId)
     }
   }, []) //eslint-disable-line
@@ -93,22 +89,21 @@ function WalletAugmented({ children }) {
     ) {
       if (isSupportedChain(wallet._web3ReactContext.chainId)) {
         connectNetwork()
-      } else {
+      } else if (wallet.chainId !== -1) {
         resetConnection()
       }
     }
     if (isSupportedChain(wallet._web3ReactContext.chainId)) {
-      setChainId(wallet.chainId)
-      setPreferredNetwork(wallet.chainId)
+      setPreferredNetwork(wallet._web3ReactContext.chainId)
     }
-  }, [chainId, isSupportedChain, wallet, resetConnection])//eslint-disable-line
+  }, [isSupportedChain, wallet, resetConnection])//eslint-disable-line
 
 
   useEffect(() => {
-    if (isSupportedChain(chainId)) {
-      setPreferredChain(chainId)
+    if (isSupportedChain(wallet.chainId)) {
+      setPreferredChain(wallet.chainId)
     }
-  }, [chainId])
+  }, [wallet.chainId])
 
   const handleOnPreferredNetworkChange = useCallback(index => {
     const chainId = SUPPORTED_CHAINS[index]

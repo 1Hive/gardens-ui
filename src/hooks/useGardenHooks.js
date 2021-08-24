@@ -26,14 +26,14 @@ import vaultAbi from '@abis/vault-balance.json'
 const INITIAL_TIMER = 2000
 
 export function useGardenData() {
-  const { chainId } = useWallet()
+  const { preferredNetwork } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
   const useAgreementHook = createAppHook(
     connectAgreement,
-    getAgreementConnectorConfig(chainId).agreement
+    getAgreementConnectorConfig(preferredNetwork).agreement
   )
 
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))

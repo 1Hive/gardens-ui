@@ -5,7 +5,7 @@ import ConnectWallet from './ConnectWallet'
 import ScreenProvidersWrapper from './ScreenProvidersWrapper'
 import ScreenError from '@components/Account/ScreenError'
 
-function ConectWalletScreens({ onSuccess }) {
+function ConectWalletScreens({ onCloseModal }) {
   const [error, setError] = useState(null)
   const handleOnError = useCallback(e => {
     setError(e)
@@ -15,14 +15,14 @@ function ConectWalletScreens({ onSuccess }) {
     return [
       {
         graphicHeader: false,
-        content: <ConnectWallet />,
+        content: <ConnectWallet onDismiss={onCloseModal} />,
         width: 550,
       },
       {
         graphicHeader: false,
         content: (
           <ScreenProvidersWrapper
-            onSuccess={onSuccess}
+            onSuccess={onCloseModal}
             onError={handleOnError}
           />
         ),
@@ -34,7 +34,7 @@ function ConectWalletScreens({ onSuccess }) {
         width: 550,
       },
     ]
-  }, [error, handleOnError, onSuccess])
+  }, [error, handleOnError, onCloseModal])
 
   return <ModalFlowBase frontLoad={false} screens={screens} />
 }

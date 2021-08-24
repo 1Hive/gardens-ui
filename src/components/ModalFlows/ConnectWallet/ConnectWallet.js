@@ -3,7 +3,7 @@ import { GU, textStyle, Button } from '@1hive/1hive-ui'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import ProvidersImg from '../../../assets/providers.svg'
 
-function ConectWallet() {
+function ConectWallet({ onDismiss }) {
   const { next } = useMultiModal()
   const handleOnConnect = useCallback(() => {
     next()
@@ -31,7 +31,7 @@ function ConectWallet() {
           margin-top: ${3 * GU}px;
         `}
       >
-        You need to connect your account to create a garden
+        You need to connect your account to create a Garden
       </h4>
       <img
         css={`
@@ -48,7 +48,7 @@ function ConectWallet() {
         `}
       >
         <Button
-          onClick={() => {}}
+          onClick={onDismiss}
           wide
           css={`
             margin-top: ${3 * GU}px;

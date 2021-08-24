@@ -25,8 +25,8 @@ const COURT_CONFIG_QUERY = gql`
 
 function useCelesteConfigPoll() {
   const [config, setConfig] = useState(null)
-  const { chainId } = useWallet()
-  const network = getNetwork(chainId)
+  const { preferredNetwork } = useWallet()
+  const network = getNetwork(preferredNetwork)
   const arbitratorAddress = network.arbitrator
 
   const graphqlClient = new Client({

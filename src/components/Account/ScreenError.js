@@ -2,8 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ChainUnsupportedError } from '@1hive/use-wallet'
-import { SUPPORTED_CHAINS } from '@/networks'
-import { getNetworkName } from '@utils/web3-utils'
+import { getSupportedChainsNamesFormatted } from '@/networks'
 
 import connectionError from './assets/connection-error.png'
 
@@ -11,13 +10,7 @@ function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
 
-  let networkNames = ''
-  SUPPORTED_CHAINS.forEach((chain, i, array) => {
-    networkNames += getNetworkName(chain)
-    if (i !== array.length - 1) {
-      networkNames += ', '
-    }
-  })
+  const networkNames = getSupportedChainsNamesFormatted()
 
   const [title, secondary] = useMemo(() => {
     if (error instanceof ChainUnsupportedError) {

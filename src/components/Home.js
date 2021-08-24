@@ -39,7 +39,7 @@ function Home() {
       </DynamicDiv>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
       <MultiModal visible={connectModalVisible} onClose={handleCloseModal}>
-        <ConnectWalletScreens onSuccess={handleCloseModal} />
+        <ConnectWalletScreens onCloseModal={handleCloseModal} />
       </MultiModal>
     </div>
   )

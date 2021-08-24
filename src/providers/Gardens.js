@@ -18,6 +18,7 @@ const DAOContext = React.createContext()
 export function GardensProvider({ children }) {
   const [gardens, loading] = useGardensList()
 
+  console.log('CALLING PROVIDER AGAIN ', loading)
   const match = useRouteMatch('/garden/:daoId')
 
   const connectedGarden = useMemo(() => {
@@ -60,15 +61,19 @@ function useGardensList() {
   const [gardens, setGardens] = useState([])
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
-  const { chainId, preferredNetwork, isSupportedNetwork } = useWallet()
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const { preferredNetwork } = useWallet()
 
-  const networkId = isSupportedNetwork ? chainId : preferredNetwork
+  useEffect(() => {
+    setLoading(true)
+    setLoadingMetadata(true)
+  }, [preferredNetwork])
 
   useEffect(() => {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: networkId },
+          { network: preferredNetwork },
           { orderBy: 'honeyLiquidity' }
         )
         setGardens(result)
@@ -80,30 +85,31 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [networkId, isSupportedNetwork, preferredNetwork])
+  }, [preferredNetwork])
 
   useEffect(() => {
     const fetchGardenMetadata = async () => {
       try {
-        const result = await fetchFileContent(networkId)
+        const result = await fetchFileContent(preferredNetwork)
         setGardensMetadata(result.data)
       } catch (err) {
         setGardensMetadata([])
         console.error(`Error fetching gardens metadata ${err}`)
       }
+      setLoadingMetadata(false)
     }
     fetchGardenMetadata()
-  }, [networkId, isSupportedNetwork, preferredNetwork])
+  }, [preferredNetwork])
 
   return [
     useMemo(
       () =>
         gardens.map(garden =>
-          mergeGardenMetadata(garden, gardensMetadata, networkId)
+          mergeGardenMetadata(garden, gardensMetadata, preferredNetwork)
         ),
-      [gardens, gardensMetadata, networkId]
+      [gardens, gardensMetadata, preferredNetwork]
     ),
-    loading,
+    loading || loadingMetadata,
   ]
 }
 
@@ -115,7 +121,7 @@ function mergeGardenMetadata(garden, gardensMetadata, networkId) {
 
   const token = {
     ...garden.token,
-    ...metadata.token,
+    logo: metadata.token_logo,
   }
   const wrappableToken = garden.wrappableToken
     ? {

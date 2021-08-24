@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import Loader from '@components/Loader'
 import { useGardens } from '@providers/Gardens'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
@@ -17,8 +18,7 @@ import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@providers/Wallet'
 
 function GardensList() {
-  // TODO :  add loading component
-  const { gardens } = useGardens()
+  const { gardens, loading } = useGardens()
   const {
     handleOnPreferredNetworkChange,
     isSupportedNetwork,
@@ -27,6 +27,12 @@ function GardensList() {
   const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
 
   const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
+
+  console.log('LOADING!!!!  ', loading)
+
+  if (loading) {
+    return <Loader />
+  }
 
   return (
     <div

@@ -19,6 +19,8 @@ const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
 
+  // Line 49 style that we need to re add once we add again several providers : grid-template-columns: repeat(2, 1fr);
+
   return (
     <div>
       <h4

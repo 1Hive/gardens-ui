@@ -4,7 +4,6 @@ import {
   getNetworkName,
 } from '@utils/web3-utils'
 import { getPreferredChain } from './local-settings'
-import { DEFAULT_CHAIN_ID } from './constants'
 import env from './environment'
 
 const ETH_NODE = env('ETH_NODE')
@@ -57,7 +56,7 @@ function getNetworkInternalName(chainId = getPreferredChain()) {
   return isLocalOrUnknownNetwork(chainId) ? 'local' : getNetworkType(chainId)
 }
 
-export function getNetwork(chainId = DEFAULT_CHAIN_ID) {
+export function getNetwork(chainId = getPreferredChain()) {
   return networks[getNetworkInternalName(chainId)]
 }
 
@@ -86,12 +85,5 @@ export function isSupportedChain(chainId) {
 }
 
 export function getSupportedChainsNamesFormatted() {
-  let networkNames = ''
-  SUPPORTED_CHAINS.forEach((chain, i, array) => {
-    networkNames += getNetworkName(chain)
-    if (i !== array.length - 1) {
-      networkNames += ', '
-    }
-  })
-  return networkNames
+  return SUPPORTED_CHAINS.map(chainId => getNetworkName(chainId)).join(', ')
 }

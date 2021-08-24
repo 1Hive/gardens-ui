@@ -40,7 +40,7 @@ export function getNetworkType(chainId = getPreferredChain()) {
   if (chainId === '3') return 'ropsten'
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
-  if (chainId === '137') return 'Polygon'
+  if (chainId === '137') return 'polygon'
 
   return DEFAULT_LOCAL_CHAIN
 }
