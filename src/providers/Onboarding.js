@@ -38,9 +38,10 @@ const DEFAULT_CONFIG = {
     targetRatio: 0,
   },
   liquidity: {
-    honeyTokenLiquidity: 0,
-    honeyTokenLiquidityStable: 0,
-    tokenLiquidity: 0,
+    denomination: 0,
+    honeyTokenLiquidity: '',
+    honeyTokenLiquidityStable: '',
+    tokenLiquidity: '',
   },
   tokens: {
     address: '', // Only used in BYOT

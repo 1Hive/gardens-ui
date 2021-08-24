@@ -13,8 +13,8 @@ import Navigation from '../Navigation'
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
 
-import { toDecimals } from '@utils/math-utils'
 import { BYOT_TYPE } from '../constants'
+import { safeDiv, toDecimals } from '@utils/math-utils'
 import { getLocalTokenIconBySymbol } from '@utils/token-utils'
 
 const MIN_HNY_USD = 100
@@ -30,14 +30,19 @@ function HoneyswapLiquidity() {
     step,
     steps,
   } = useOnboardingState()
-  const { honeyTokenLiquidity, tokenLiquidity } = config.liquidity
+  const {
+    denomination,
+    honeyTokenLiquidity,
+    honeyTokenLiquidityStable,
+    tokenLiquidity,
+  } = config.liquidity
   const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
 
-  const [denomination, setDenomination] = useState(HNY_DENOMINATION) // 0 HNY, 1 USD
+  const [denom, setDenom] = useState(denomination) // 0 HNY, 1 USD
   const [denominatedAmount, setDenominatedAmount] = useState(
-    honeyTokenLiquidity || ''
+    denom === HNY_DENOMINATION ? honeyTokenLiquidity : honeyTokenLiquidityStable
   )
-  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity || '')
+  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity)
 
   const handleDenominatedAmountChange = useCallback(event => {
     const newAmount = event.target.value
@@ -62,35 +67,27 @@ function HoneyswapLiquidity() {
       event.preventDefault()
 
       onConfigChange('liquidity', {
+        denomination: denom,
         honeyTokenLiquidity:
-          denomination === HNY_DENOMINATION
+          denom === HNY_DENOMINATION
             ? denominatedAmount
             : String(denominatedAmount / hnyPrice),
-
         honeyTokenLiquidityStable:
-          denomination === HNY_DENOMINATION
+          denom === HNY_DENOMINATION
             ? String(denominatedAmount * hnyPrice)
             : denominatedAmount,
-
         tokenLiquidity: tokenAmount,
       })
 
       onNext()
     },
-    [
-      denomination,
-      denominatedAmount,
-      hnyPrice,
-      onConfigChange,
-      onNext,
-      tokenAmount,
-    ]
+    [denom, denominatedAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
   )
 
   const liquidityProvided = Boolean(denominatedAmount && tokenAmount)
   const satisfiesMin =
     Number(
-      denomination === HNY_DENOMINATION
+      denom === HNY_DENOMINATION
         ? denominatedAmount * hnyPrice
         : denominatedAmount
     ) >= 100
@@ -103,18 +100,18 @@ function HoneyswapLiquidity() {
       : config.tokens.symbol
 
   const convertedValue = parseFloat(
-    denomination === HNY_DENOMINATION
+    denom === HNY_DENOMINATION
       ? denominatedAmount * hnyPrice
       : denominatedAmount / hnyPrice
   ).toFixed(2)
 
   const hnyAmount =
-    denomination === HNY_DENOMINATION ? denominatedAmount : convertedValue
+    denom === HNY_DENOMINATION ? denominatedAmount : convertedValue
 
   return (
     <div>
       <Header
-        title="Configure HNY liquidity"
+        title="Honeyswap liquidity"
         subtitle={`Set the initial HNY - ${tokenSymbol} token equivalence to define the initial Honeyswap liquidity pair.`}
       />
       <div
@@ -180,8 +177,8 @@ function HoneyswapLiquidity() {
                     USD
                   </span>,
                 ]}
-                selected={denomination}
-                onChange={setDenomination}
+                selected={denom}
+                onChange={setDenom}
                 width="135px"
                 css={`
                   border: 0;
@@ -221,7 +218,7 @@ function HoneyswapLiquidity() {
                 ) : (
                   <span>
                     {convertedValue}{' '}
-                    {denomination === HNY_DENOMINATION ? 'USD' : 'HNY'}
+                    {denom === HNY_DENOMINATION ? 'USD' : 'HNY'}
                   </span>
                 )}
               </div>
@@ -302,7 +299,7 @@ function HoneyswapLiquidity() {
                 <span>Initial price</span>
                 <span>
                   1 {tokenSymbol} ={' '}
-                  {parseFloat(hnyAmount / tokenAmount).toFixed(4)} HNY
+                  {parseFloat(safeDiv(hnyAmount, tokenAmount)).toFixed(4)} HNY
                 </span>
               </div>
               <div
