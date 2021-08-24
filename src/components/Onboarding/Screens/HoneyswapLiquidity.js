@@ -41,7 +41,7 @@ function HoneyswapLiquidity() {
 
   const handleDenominatedAmountChange = useCallback(event => {
     const newAmount = event.target.value
-    if (isNaN(newAmount)) {
+    if (isNaN(newAmount) || newAmount < 0) {
       return
     }
 
