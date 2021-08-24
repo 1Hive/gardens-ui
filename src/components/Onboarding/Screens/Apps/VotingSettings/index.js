@@ -254,7 +254,6 @@ function VotingSettings() {
         }
         duration={voteDuration}
         onUpdate={handleDurationChange}
-        required
       />
       <DurationFields
         label={
@@ -270,7 +269,6 @@ function VotingSettings() {
         }
         duration={voteExecutionDelay}
         onUpdate={handleExecutionDelayPeriodChange}
-        required
       />
       <DurationFields
         label={
@@ -285,7 +283,6 @@ function VotingSettings() {
         }
         duration={voteQuietEndingPeriod}
         onUpdate={handleQuiteEndingPeriodChange}
-        required
       />
       <Button
         size="mini"

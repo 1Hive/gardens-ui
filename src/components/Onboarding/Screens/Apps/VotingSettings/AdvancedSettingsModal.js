@@ -39,7 +39,6 @@ const AdvancedSettingsModal = ({
         }
         duration={voteQuietEndingExtension}
         onUpdate={handleQuiteEndingExtensionPeriodChange}
-        required
       />
       <DurationFields
         label={
@@ -55,7 +54,6 @@ const AdvancedSettingsModal = ({
         }
         duration={voteDelegatedVotingPeriod}
         onUpdate={handleDelegatedVotingPeriodChange}
-        required
       />
     </Modal>
   )
