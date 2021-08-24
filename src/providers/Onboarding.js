@@ -94,7 +94,7 @@ function OnboardingProvider({ children }) {
     []
   )
 
-  const getTransactions = useCallback(() => {
+  const getTransactions = useCallback(async () => {
     // Token approvals
     const txs = [...createTokenApproveTxs(config)]
 
@@ -107,7 +107,7 @@ function OnboardingProvider({ children }) {
     }
 
     // Tx two, tx three
-    txs.push(createGardenTxTwo(config), createGardenTxThree(config))
+    txs.push(createGardenTxTwo(config), await createGardenTxThree(config))
 
     return txs
   }, [config])
