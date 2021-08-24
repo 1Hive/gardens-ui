@@ -50,7 +50,7 @@ function HoneyswapLiquidity() {
 
   const handleTokenAmountChange = useCallback(event => {
     const newAmount = event.target.value
-    if (isNaN(newAmount)) {
+    if (isNaN(newAmount) || newAmount < 0) {
       return
     }
 
