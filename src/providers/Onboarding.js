@@ -43,6 +43,7 @@ const DEFAULT_CONFIG = {
     maxRatio: 10,
     minThreshold: 2,
     minThresholdStakePct: 5,
+    requestToken: '',
     weight: calculateWeight(2, 10),
   },
   issuance: {
@@ -134,46 +135,82 @@ function useOnboardingState() {
 }
 
 // TODO: See where to place them or keep them here
-function createGardenTxOne(config) {
-  const existingToken =
-    config.garden.type === NATIVE_TYPE ? ZERO_ADDR : config.tokens.address
+function createGardenTxOne({ garden, issuance, liquidity, tokens, voting }) {
+  let existingToken, commonPool, gardenTokenLiquidity, existingTokenLiquidity
 
-  const gardenTokenLiquidity =
-    config.garden.type === NATIVE_TYPE ? config.liquidity.tokenLiquidity : 0
-  const existingTokenLiquidity =
-    config.garden.type === NATIVE_TYPE ? 0 : config.liquidity.tokenLiquidity
+  // New token
+  if (garden.type === NATIVE_TYPE) {
+    existingToken = ZERO_ADDR
+    gardenTokenLiquidity = liquidity.tokenLiquidity
+    existingTokenLiquidity = 0
 
-  const commonPool = 0 // TODO: Get commonpool from intialRatio and total sum of stakes
+    // commonPool = totalSeedsAmount * initialRatio / (1 - initialRatio)
+    const totalSeedsAmount = tokens.holders.reduce(
+      (acc, [_, stake]) => acc + stake,
+      0
+    )
+    const initialRatio = issuance.initialRatio / 100
+    commonPool = (totalSeedsAmount * initialRatio) / (1 - initialRatio)
+  } else {
+    // Existing token
+    existingToken = tokens.address
+    gardenTokenLiquidity = 0
+    existingTokenLiquidity = liquidity.tokenLiquidity
+    commonPool = 0
+  }
 
   return createTx('createGardenTxOne', [
     existingToken,
-    config.tokens.name,
-    config.tokens.symbol,
+    tokens.name,
+    tokens.symbol,
     [
       commonPool,
-      config.liquidity.honeyTokenLiquidityStable,
+      liquidity.honeyTokenLiquidityStable,
       gardenTokenLiquidity,
       existingTokenLiquidity,
     ],
-    [...config.voting],
+    [...voting],
   ])
 }
 
-function createTokenHoldersTx(config) {
-  const accounts = config.tokens.holders.map(([account]) => account)
-  const stakes = config.tokens.holders.map(([_, stake]) => stake)
+function createTokenHoldersTx({ tokens }) {
+  const accounts = tokens.holders.map(([account]) => account)
+  const stakes = tokens.holders.map(([_, stake]) => stake)
 
   return createTx('createTokenHolders', [accounts, stakes])
 }
 
-function createGardenTxTwo(config) {
+function createGardenTxTwo({ conviction, issuance }) {
+  const requestToken = conviction.requestToken || ZERO_ADDR
+
   return createTx('createGardenTxTwo', [
-    config.issuance.targetRatio,
-    config.issuance.maxAdjustmentRatioPerYear,
+    [issuance.targetRatio, issuance.maxAdjustmentRatioPerYear],
+    [
+      conviction.decay,
+      conviction.maxRatio,
+      conviction.weight,
+      conviction.minThresholdStakePct,
+    ],
+    requestToken,
   ])
 }
 
-function createGardenTxThree(config) {}
+function createGardenTxThree({ agreement, garden }) {
+  const daoId = garden.name // TODO: Remember to do a check for the garden.name on the garden metadata screen, otherwise tx might fail if garden name already taken
+  const agreementContent = '' // TODO: Get the ipfs hash obtained from posting agreement.covenantFile to ipfs
+  const actionAmountStable = 0 // TODO: Use token liquidity to obtain stable value
+  const challengeAmountStable = 0 // TODO: Use token liquidity to obtain stable value
+
+  return createTx('createGardenTxThree', [
+    daoId,
+    agreement.title,
+    agreementContent,
+    agreement.challengePeriod,
+    [agreement.actionAmount, agreement.challengeAmount],
+    [actionAmountStable, actionAmountStable],
+    [challengeAmountStable, challengeAmountStable],
+  ])
+}
 
 function createTx(fn, params) {
   const network = getNetwork()
