@@ -64,7 +64,7 @@ const DEFAULT_CONFIG = {
     voteMinAcceptanceQuorum: 10,
     voteDelegatedVotingPeriod: DAY_IN_SECONDS * 2,
     voteQuietEndingPeriod: DAY_IN_SECONDS * 1,
-    voteQuietEndingExtension: DAY_IN_SECONDS * 0.5,
+    voteQuietEndingExtension: DAY_IN_SECONDS * 1,
     voteExecutionDelay: DAY_IN_SECONDS * 1,
   },
 }
