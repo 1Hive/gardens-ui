@@ -1,11 +1,12 @@
 import React, { useCallback, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Screens as steps } from '@components/Onboarding/Screens/config'
+import { Screens } from '@components/Onboarding/Screens/config'
 import { DAY_IN_SECONDS } from '../utils/kit-utils'
 import {
   calculateDecay,
   calculateWeight,
 } from '../utils/conviction-modelling-helpers'
+import { BYOT_TYPE } from '@/components/Onboarding/constants'
 
 const OnboardingContext = React.createContext()
 
@@ -71,6 +72,7 @@ const DEFAULT_CONFIG = {
 
 function OnboardingProvider({ children }) {
   const [step, setStep] = useState(0)
+  const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
 
   const handleConfigChange = useCallback(
@@ -85,6 +87,20 @@ function OnboardingProvider({ children }) {
     []
   )
 
+  const handleStepsChange = useCallback(selectedGardenType => {
+    selectedGardenType === BYOT_TYPE
+      ? setSteps(
+          Screens.filter(step => {
+            // We skip the issuance screen for BYOT Gardens
+            if (step.title === 'Issuance policy') {
+              return false
+            }
+            return true
+          })
+        )
+      : setSteps(Screens)
+  }, [])
+
   // Navigation
   const handleBack = useCallback(() => {
     setStep(index => Math.max(0, index - 1))
@@ -92,7 +108,7 @@ function OnboardingProvider({ children }) {
 
   const handleNext = useCallback(() => {
     setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [])
+  }, [steps.length])
 
   return (
     <OnboardingContext.Provider
@@ -100,6 +116,7 @@ function OnboardingProvider({ children }) {
         config,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
+        onStepsChange: handleStepsChange,
         onNext: handleNext,
         step,
         steps,
