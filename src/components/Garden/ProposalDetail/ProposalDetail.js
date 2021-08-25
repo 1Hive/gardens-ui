@@ -209,11 +209,11 @@ function ProposalDetail({
                   `}
                 >
                   <DataField
-                    label="Link"
+                    label="Forum"
                     value={
                       link ? (
                         <Link href={link} external>
-                          Read more
+                          Read the full proposal
                         </Link>
                       ) : (
                         <span
@@ -270,7 +270,7 @@ function ProposalDetail({
                   {proposal.number !== '1' && (
                     <>
                       <DataField
-                        label="Action collateral"
+                        label="Deposit Amount"
                         value={<ActionCollateral proposal={proposal} />}
                       />
                       {proposal.pausedAt > 0 && (

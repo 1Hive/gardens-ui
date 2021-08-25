@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import { useHistory } from 'react-router'
 import {
   ButtonBase,
   GU,
+  IconWrite,
   Link as AragonLink,
   textStyle,
   useLayout,
@@ -15,12 +17,13 @@ import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProp
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
 
+import { buildGardenPath } from '@utils/routing-utils'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
-import homeSvg from '@assets/home.svg'
+import gardenSvg from '@assets/gardensLogoMark.svg'
 
 function Footer() {
   const theme = useTheme()
@@ -109,11 +112,17 @@ function Footer() {
 
 function FixedFooter({ token }) {
   const theme = useTheme()
+  const history = useHistory()
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
+
+  const handleOnGoToCovenant = useCallback(() => {
+    const path = buildGardenPath(history.location, 'covenant')
+    history.push(path)
+  }, [history])
 
   // TODO: Add the create proposal modal here
   return (
@@ -145,8 +154,28 @@ function FixedFooter({ token }) {
           >
             <FooterItem
               href="#/home"
-              icon={<img src={homeSvg} alt="home" />}
+              icon={
+                <img src={gardenSvg} alt="home" width="24px" height="24px" />
+              }
               label="Home"
+            />
+            <FooterItem
+              icon={
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    border-radius: 50px;
+                    width: 24px;
+                    height: 24px;
+                    border: 2px solid ${theme.content};
+                  `}
+                >
+                  <IconWrite alt="covenant" />
+                </div>
+              }
+              label="Covenant"
+              onClick={handleOnGoToCovenant}
             />
             <FooterItem
               disabled={!account}

@@ -9,6 +9,7 @@ const LOCAL_TOKEN_ICONS = new Map([
   ['HNYT', honeyIconSvg],
   ['DAI', stableTokenSvg],
   ['XDAI', stableTokenSvg],
+  ['WXDAI', stableTokenSvg],
 ])
 
 export function getGardenTokenIcon(garden, token) {
