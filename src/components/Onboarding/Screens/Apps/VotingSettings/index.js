@@ -176,6 +176,8 @@ function VotingSettings() {
 
   const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [])
 
+  const handleOpenModal = useCallback(() => setOpenSettingsModal(true), [])
+
   const handleNextClick = () => {
     const error = validateVotingSettings(
       voteDuration,
@@ -241,7 +243,7 @@ function VotingSettings() {
       <DurationFields
         label={
           <Fragment>
-            Voting Duration
+            Vote Duration
             <Help hint="What is Vote Duration?">
               <strong>Vote Duration</strong> is the length of time that the vote
               will be open for participation. For example, if the Vote Duration
@@ -282,19 +284,15 @@ function VotingSettings() {
         duration={voteQuietEndingPeriod}
         onUpdate={handleQuiteEndingPeriodChange}
       />
-      <div 
-         css={`  
-            display: flex;
-            align-items: flex-end; 
-            margin-bottom: ${5 * GU}px;
-          `}
-       >
-         <Button
-           size="mini"
-           label="Advanced..."
-           onClick={handleOpenModal}
-         />
-     </div>
+      <div
+        css={`
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: ${5 * GU}px;
+        `}
+      >
+        <Button size="mini" label="Advanced..." onClick={handleOpenModal} />
+      </div>
       <AdvancedSettingsModal
         voteQuietEndingExtension={voteQuietEndingExtension}
         handleQuiteEndingExtensionPeriodChange={
