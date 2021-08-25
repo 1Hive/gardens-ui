@@ -1,5 +1,6 @@
-import { Help } from '@1hive/1hive-ui'
 import React, { Fragment } from 'react'
+import { Help } from '@1hive/1hive-ui'
+
 import { DurationFields, Modal } from '@components/Onboarding//kit'
 
 const AdvancedSettingsModal = ({

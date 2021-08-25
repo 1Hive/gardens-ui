@@ -174,9 +174,7 @@ function VotingSettings() {
     [updateField]
   )
 
-  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
-    setOpenSettingsModal,
-  ])
+  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [])
 
   const handleNextClick = () => {
     const error = validateVotingSettings(
@@ -284,16 +282,19 @@ function VotingSettings() {
         duration={voteQuietEndingPeriod}
         onUpdate={handleQuiteEndingPeriodChange}
       />
-      <Button
-        size="mini"
-        css={`
-          align-self: flex-end;
-          float: right;
-          margin-bottom: ${5 * GU}px;
-        `}
-        label="Advanced..."
-        onClick={() => setOpenSettingsModal(true)}
-      />
+      <div 
+         css={`  
+            display: flex;
+            align-items: flex-end; 
+            margin-bottom: ${5 * GU}px;
+          `}
+       >
+         <Button
+           size="mini"
+           label="Advanced..."
+           onClick={handleOpenModal}
+         />
+     </div>
       <AdvancedSettingsModal
         voteQuietEndingExtension={voteQuietEndingExtension}
         handleQuiteEndingExtensionPeriodChange={
