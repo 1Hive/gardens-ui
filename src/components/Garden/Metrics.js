@@ -29,26 +29,28 @@ const Metrics = React.memo(function Metrics({
           justify-content: space-around;
         `}
       >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
-          `}
-        >
-          <img
-            src={token.logo || defaultTokenLogo}
-            height="60"
-            width="60"
-            alt=""
-            onClick={onExecuteIssuance}
+        {!(layoutName === 'medium') && (
+          <div
             css={`
-              margin-right: ${4 * GU}px;
-              cursor: pointer;
+              display: flex;
+              align-items: center;
+              margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
             `}
-          />
-          <TokenPrice currency={currency} token={token} />
-        </div>
+          >
+            <img
+              src={token.logo || defaultTokenLogo}
+              height="60"
+              width="60"
+              alt=""
+              onClick={onExecuteIssuance}
+              css={`
+                margin-right: ${4 * GU}px;
+                cursor: pointer;
+              `}
+            />
+            <TokenPrice currency={currency} token={token} />
+          </div>
+        )}
         <div>
           <TokenBalance
             label="Common Pool"
