@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
 import { DAY_IN_SECONDS } from '../utils/kit-utils'
@@ -9,6 +9,8 @@ import {
 import { BYOT_TYPE } from '@components/Onboarding/constants'
 
 const OnboardingContext = React.createContext()
+
+const SKIPPED_SCREENS = ['Issuance policy']
 
 const DEFAULT_CONFIG = {
   garden: {
@@ -91,10 +93,7 @@ function OnboardingProvider({ children }) {
     if (config.garden.type !== -1) {
       config.garden.type === BYOT_TYPE
         ? setSteps(
-            Screens.filter(step => {
-              // We skip the issuance screen for BYOT Gardens
-              return step.title !== 'Issuance policy'
-            })
+            Screens.filter(screen => !SKIPPED_SCREENS.includes(screen.title))
           )
         : setSteps(Screens)
     }
@@ -115,7 +114,6 @@ function OnboardingProvider({ children }) {
         config,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
-        onStepsChange: handleStepsChange,
         onNext: handleNext,
         step,
         steps,

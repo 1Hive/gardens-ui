@@ -10,16 +10,15 @@ import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
 import { Header } from '../kit'
 
 function GardenTypeSelector() {
-  const { config, onConfigChange, onStepsChange, onNext } = useOnboardingState()
+  const { config, onConfigChange, onNext } = useOnboardingState()
   const [selectedType] = useState(config.garden.type)
 
   const handleNext = useCallback(
     selectedType => {
       onConfigChange('garden', { type: selectedType })
-      onStepsChange(selectedType)
       onNext()
     },
-    [onConfigChange, onNext, onStepsChange]
+    [onConfigChange, onNext]
   )
 
   const handleSelectNative = useCallback(() => {
