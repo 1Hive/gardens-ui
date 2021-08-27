@@ -87,19 +87,18 @@ function OnboardingProvider({ children }) {
     []
   )
 
-  const handleStepsChange = useCallback(selectedGardenType => {
-    selectedGardenType === BYOT_TYPE
-      ? setSteps(
-          Screens.filter(step => {
-            // We skip the issuance screen for BYOT Gardens
-            if (step.title === 'Issuance policy') {
-              return false
-            }
-            return true
-          })
-        )
-      : setSteps(Screens)
-  }, [])
+  useEffect(() => {
+    if (config.garden.type !== -1) {
+      config.garden.type === BYOT_TYPE
+        ? setSteps(
+            Screens.filter(step => {
+              // We skip the issuance screen for BYOT Gardens
+              return step.title !== 'Issuance policy'
+            })
+          )
+        : setSteps(Screens)
+    }
+  }, [config.garden.type])
 
   // Navigation
   const handleBack = useCallback(() => {
