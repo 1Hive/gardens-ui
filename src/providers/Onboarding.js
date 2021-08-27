@@ -6,7 +6,7 @@ import {
   calculateDecay,
   calculateWeight,
 } from '../utils/conviction-modelling-helpers'
-import { BYOT_TYPE } from '@/components/Onboarding/constants'
+import { BYOT_TYPE } from '@components/Onboarding/constants'
 
 const OnboardingContext = React.createContext()
 

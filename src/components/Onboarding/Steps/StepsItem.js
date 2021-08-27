@@ -48,7 +48,7 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep, type }) {
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          font-size: ${isStepType ? 2.25 * GU : 1 * GU}px;
+          font-size: ${isStepType ? 18 : 12}px;
           font-weight: 600;
           ${stepStyles};
           flex-shrink: 0;
