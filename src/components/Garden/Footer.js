@@ -157,7 +157,7 @@ function FixedFooter({ token }) {
               icon={
                 <img src={gardenSvg} alt="home" width="24px" height="24px" />
               }
-              label="Gardens"
+              label="Home"
             />
             <FooterItem
               icon={

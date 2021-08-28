@@ -5,15 +5,16 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GU, Help, Info } from '@1hive/1hive-ui'
+import { Button, GU, Help, Info } from '@1hive/1hive-ui'
+
 import { useOnboardingState } from '@providers/Onboarding'
-import Navigation from '../../Navigation'
+import Navigation from '@components/Onboarding/Navigation'
 import {
-  TimeParameterPanel,
+  DurationFields,
   Header,
   PercentageField,
-  Carousel,
-} from '../../kit'
+} from '@components/Onboarding/kit'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
 
 const validateVotingSettings = (
   voteDuration,
@@ -88,7 +89,6 @@ const reduceFields = (fields, [field, value]) => {
 }
 
 function VotingSettings() {
-  const [isLastItemChecked, setIsLastItemChecked] = useState(false)
   const {
     config,
     onBack,
@@ -111,6 +111,7 @@ function VotingSettings() {
     updateField,
   ] = useReducer(reduceFields, { ...config.voting })
   const supportRef = useRef()
+  const [openSettingsModal, setOpenSettingsModal] = useState(false)
 
   const handleSupportRef = useCallback(ref => {
     supportRef.current = ref
@@ -141,17 +142,26 @@ function VotingSettings() {
     [updateField]
   )
 
-  const handleDelegatedVotingPeriodChange = useCallback(
-    value => {
-      setFormError(null)
-      updateField(['voteDelegatedVotingPeriod', value])
-    },
-    [updateField]
-  )
   const handleQuiteEndingPeriodChange = useCallback(
     value => {
       setFormError(null)
       updateField(['voteQuietEndingPeriod', value])
+    },
+    [updateField]
+  )
+
+  const handleExecutionDelayPeriodChange = useCallback(
+    value => {
+      setFormError(null)
+      updateField(['voteExecutionDelay', value])
+    },
+    [updateField]
+  )
+
+  const handleDelegatedVotingPeriodChange = useCallback(
+    value => {
+      setFormError(null)
+      updateField(['voteDelegatedVotingPeriod', value])
     },
     [updateField]
   )
@@ -164,13 +174,9 @@ function VotingSettings() {
     [updateField]
   )
 
-  const handleExecutionDelayPeriodChange = useCallback(
-    value => {
-      setFormError(null)
-      updateField(['voteExecutionDelay', value])
-    },
-    [updateField]
-  )
+  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [])
+
+  const handleOpenModal = useCallback(() => setOpenSettingsModal(true), [])
 
   const handleNextClick = () => {
     const error = validateVotingSettings(
@@ -195,48 +201,6 @@ function VotingSettings() {
       onNext()
     }
   }
-
-  const carouselItems = [
-    <TimeParameterPanel
-      title="Voting Duration"
-      description="Vote duration is the length of time that the vote will be open for participation. For example, if the Vote Duration is set to 24 hours, then tokenholders have 24 hours to participate in the vote."
-      value={voteDuration}
-      onUpdate={handleDurationChange}
-    />,
-    <TimeParameterPanel
-      title="Delegated Voting Period"
-      description="Delegated voting period is the duration from the start of a vote that representatives are allowed to vote on behalf of principals."
-      value={voteDelegatedVotingPeriod}
-      onUpdate={handleDelegatedVotingPeriodChange}
-    />,
-    <TimeParameterPanel
-      title="Quite Ending Period"
-      description="Quite ending period is the duration before the end of a vote to detect non-quiet endings. Non-quiet endings are endings which involve a late swing in the vote."
-      value={voteQuietEndingPeriod}
-      onUpdate={handleQuiteEndingPeriodChange}
-    />,
-    <TimeParameterPanel
-      title="Quite Ending Extension Period"
-      description="Quite ending extension period is the duration to extend a vote in the case of a non-quiet ending."
-      value={voteQuietEndingExtension}
-      onUpdate={handleQuiteEndingExtensionPeriodChange}
-    />,
-    <TimeParameterPanel
-      title="Delay Period"
-      description="Delay period is the duration to wait before a passed vote can be executed. This allows people to react to the outcome and make decisions before the effects of the vote are realised."
-      value={voteExecutionDelay}
-      onUpdate={handleExecutionDelayPeriodChange}
-    />,
-  ]
-
-  const handleItemSelected = useCallback(
-    index => {
-      if (index === carouselItems.length - 1) {
-        setIsLastItemChecked(true)
-      }
-    },
-    [carouselItems.length]
-  )
 
   return (
     <div>
@@ -276,15 +240,69 @@ function VotingSettings() {
         value={voteMinAcceptanceQuorum}
         onChange={handleQuorumChange}
       />
-      <div>
-        <Carousel
-          itemWidth={80 * GU}
-          itemHeight={38 * GU}
-          itemSpacing={2 * GU}
-          items={carouselItems}
-          onItemSelected={handleItemSelected}
-        />
+      <DurationFields
+        label={
+          <Fragment>
+            Vote Duration
+            <Help hint="What is Vote Duration?">
+              <strong>Vote Duration</strong> is the length of time that the vote
+              will be open for participation. For example, if the Vote Duration
+              is set to 24 hours, then tokenholders have 24 hours to participate
+              in the vote.
+            </Help>
+          </Fragment>
+        }
+        duration={voteDuration}
+        onUpdate={handleDurationChange}
+      />
+      <DurationFields
+        label={
+          <Fragment>
+            Execution Delay
+            <Help hint="What is Execution Delay?">
+              <strong>Execution Delay</strong> is the required amount of time
+              after a proposal passes for the proposal to be executed. This
+              allows everyone to react to the outcome and make decisions before
+              the effects of the vote are realised.
+            </Help>
+          </Fragment>
+        }
+        duration={voteExecutionDelay}
+        onUpdate={handleExecutionDelayPeriodChange}
+      />
+      <DurationFields
+        label={
+          <Fragment>
+            Quite Ending Period
+            <Help hint="What is Quite Ending Period?">
+              <strong>Quite Ending Period</strong> is the duration before the
+              end of a vote to detect non-quiet endings. Non-quiet endings are
+              endings which involve a late swing in the vote.
+            </Help>
+          </Fragment>
+        }
+        duration={voteQuietEndingPeriod}
+        onUpdate={handleQuiteEndingPeriodChange}
+      />
+      <div
+        css={`
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: ${5 * GU}px;
+        `}
+      >
+        <Button size="mini" label="Advanced..." onClick={handleOpenModal} />
       </div>
+      <AdvancedSettingsModal
+        voteQuietEndingExtension={voteQuietEndingExtension}
+        handleQuiteEndingExtensionPeriodChange={
+          handleQuiteEndingExtensionPeriodChange
+        }
+        voteDelegatedVotingPeriod={voteDelegatedVotingPeriod}
+        handleDelegatedVotingPeriodChange={handleDelegatedVotingPeriodChange}
+        visible={openSettingsModal}
+        onClose={handleCloseModal}
+      />
       {formError && (
         <Info
           css={`
@@ -297,7 +315,7 @@ function VotingSettings() {
       )}
       <Navigation
         backEnabled
-        nextEnabled={isLastItemChecked}
+        nextEnabled={!formError}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}
