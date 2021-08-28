@@ -85,7 +85,6 @@ function Header() {
                 css={`
                   display: flex;
                   align-items: center;
-
                   height: 100%;
                   margin-left: ${6.5 * GU}px;
                 `}
