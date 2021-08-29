@@ -74,7 +74,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
     'Active Supply',
     <>
       The <strong>Active Supply</strong> is the amount of tokens currently being
-      used to support the proposals listed below.
+      used to support proposals.
     </>,
   ],
 }

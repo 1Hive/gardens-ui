@@ -88,15 +88,22 @@ function Metric({ label, value, color, helptip }) {
 
   return (
     <>
-      <p
+      <div
         css={`
           color: ${theme.contentSecondary};
           margin-bottom: ${0.5 * GU}px;
         `}
       >
         {label}
-        <HelpTip type={helptip} />
-      </p>
+        <span
+          css={`
+            padding-left: 0.2rem;
+            display: inline-block;
+          `}
+        >
+          <HelpTip type={helptip} />
+        </span>
+      </div>
       <span
         css={`
           ${textStyle('title2')};
