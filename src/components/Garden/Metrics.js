@@ -14,7 +14,6 @@ const Metrics = React.memo(function Metrics({
   totalSupply,
 }) {
   const { layoutName } = useLayout()
-  // const theme = useTheme()
   const compactMode = layoutName === 'small'
   const currency = {
     name: 'USD',

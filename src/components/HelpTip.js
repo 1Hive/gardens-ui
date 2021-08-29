@@ -59,19 +59,22 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'common-pool': [
     'Common Pool',
     <>
-      The <strong>Common Pool</strong>
+      The <strong>Common Pool</strong> is the amount of tokens available for
+      funding proposals.
     </>,
   ],
   'total-supply': [
     'Total Supply',
     <>
-      The <strong>Total Supply</strong>
+      The <strong>Total Supply</strong> is the the total amount of tokens in
+      circulation, including the common pool.
     </>,
   ],
   'active-supply': [
     'Active Supply',
     <>
-      The <strong>Active Supply</strong>
+      The <strong>Active Supply</strong> is the amount of tokens currently being
+      used to support the proposals listed below.
     </>,
   ],
 }
