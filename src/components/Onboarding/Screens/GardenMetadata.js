@@ -13,8 +13,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
-import { Header } from '../kit'
-import ImageUploader from '../../ImageUploader'
+import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
 
 const COMMUNITY_LINK_TYPE = 'community'
@@ -29,9 +28,13 @@ const URL_REGEX = new RegExp(
 )
 
 function GardenMetadata() {
+  const theme = useTheme()
   const { config, onBack, onConfigChange, onNext } = useOnboardingState()
   const [formData, setFormData] = useState(config.garden)
   const [displayErrors, setDisplayErrors] = useState(false)
+  const [formatValidationColor, setFormatValidationColor] = useState(
+    theme.contentSecondary
+  )
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
@@ -132,57 +135,41 @@ function GardenMetadata() {
     [formData.links]
   )
 
-  const handleOnAssetAdded = useCallback((type, base64, fileExtension) => {
+  const handleOnAssetUpdated = useCallback((type, file) => {
     setFormData(formData => {
       return {
         ...formData,
-        [type]: base64,
-        [`${type}Extension`]: fileExtension,
+        [type]: file
+          ? {
+              ...file,
+              base64: btoa(file.content),
+              imageExtension: file.type.split('/')[1],
+            }
+          : '',
       }
     })
   }, [])
 
-  const handleOnGardenLogoTypeLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(GARDEN_LOGO_TYPE, base64, fileExtension)
+  const handleOnGardenLogoTypeUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(GARDEN_LOGO_TYPE, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
 
-  const handleOnGardenLogoLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(GARDEN_LOGO, base64, fileExtension)
+  const handleOnGardenLogoUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(GARDEN_LOGO, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
 
-  const handleOnTokenLogoLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(TOKEN_LOGO, base64, fileExtension)
+  const handleOnTokenLogoUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(TOKEN_LOGO, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
-
-  const handleOnAssetRemoved = useCallback(type => {
-    setFormData(formData => {
-      return {
-        ...formData,
-        [type]: '',
-      }
-    })
-  }, [])
-
-  const handleOnGardenLogoTypeRemoved = useCallback(() => {
-    handleOnAssetRemoved(GARDEN_LOGO_TYPE)
-  }, [handleOnAssetRemoved])
-
-  const handleOnGardenLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(GARDEN_LOGO)
-  }, [handleOnAssetRemoved])
-
-  const handleOnTokenLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(TOKEN_LOGO)
-  }, [handleOnAssetRemoved])
 
   const errors = useMemo(() => {
     const errors = []
@@ -228,6 +215,13 @@ function GardenMetadata() {
     onBack()
   }, [onConfigChange, onBack, formData])
 
+  const handleOnDragAccepted = useCallback(() => {
+    setFormatValidationColor(theme.contentSecondary)
+  }, [theme])
+  const handleOnDragRejected = useCallback(() => {
+    setFormatValidationColor(theme.error)
+  }, [theme])
+
   return (
     <div>
       <Header
@@ -253,7 +247,6 @@ function GardenMetadata() {
             maxLength="15"
             onChange={handleGardenNameChange}
             value={formData.name}
-            required
             css="width: 100%;"
           />
         </Field>
@@ -269,70 +262,9 @@ function GardenMetadata() {
             maxLength="120"
             onChange={handleGardenDescriptionChange}
             value={formData.description}
-            required
             css="width: 100%;"
           />
         </Field>
-        <Box
-          heading="Assets"
-          css={`
-            width: 100%;
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-around;
-            `}
-          >
-            <Field label="Garden Logo Type">
-              <Box
-                css={`
-                  text-align: center;
-                  max-height: 143px;
-                `}
-              >
-                <ImageUploader
-                  id={1}
-                  imageExist={formData.logo_type}
-                  onImageLoaded={handleOnGardenLogoTypeLoaded}
-                  onImageRemoved={handleOnGardenLogoTypeRemoved}
-                />
-              </Box>
-            </Field>
-            <Field label="Garden Logo">
-              <Box
-                css={`
-                  text-align: center;
-                `}
-              >
-                <ImageUploader
-                  id={2}
-                  imageExist={formData.logo}
-                  onImageLoaded={handleOnGardenLogoLoaded}
-                  onImageRemoved={handleOnGardenLogoRemoved}
-                />
-              </Box>
-            </Field>
-            <Field label="Token Icon">
-              <Box
-                css={`
-                  text-align: center;
-                `}
-              >
-                <ImageUploader
-                  id={3}
-                  imageExist={formData.token_logo}
-                  onImageLoaded={handleOnTokenLogoLoaded}
-                  onImageRemoved={handleOnTokenLogoRemoved}
-                />
-              </Box>
-            </Field>
-          </div>
-        </Box>
-
         <Field
           label={
             <div
@@ -369,6 +301,105 @@ function GardenMetadata() {
             css="width: 100%;"
           />
         </Field>
+
+        <div
+          css={`
+            width: 100%;
+          `}
+        >
+          <div>
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              {/* We need to have this Field without using the field component to avoid the  issue about clicking outside  the file chooser and poping up the selelector */}
+              <span
+                css={`
+                  ${textStyle('body2')};
+                  color: ${theme.content};
+                  margin-right: ${0.5 * GU}px;
+                `}
+              >
+                ASSETS (optional)
+              </span>
+              <Help>
+                If you don’t have this images yet, you will get default ones
+                assigned in the meantime.
+              </Help>
+            </div>
+            <div
+              css={`
+                display: flex;
+                flex-direction: column;
+                ${textStyle('body2')};
+                color: ${theme.contentSecondary};
+                margin-top: ${1 * GU}px;
+              `}
+            >
+              <span>Drag and drop or browse your files to upload one.</span>
+              <span
+                css={`
+                  color: ${formatValidationColor};
+                `}
+              >
+                Valid file formats are: JPG and PNG
+              </span>
+            </div>
+          </div>
+          <div
+            css={`
+              margin-top: ${2 * GU}px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            `}
+          >
+            <div
+              css={`
+                min-width: 194px;
+              `}
+            >
+              <FileUploaderField
+                allowedMIMETypes={['image/jpeg', 'image/png']}
+                file={formData.logo_type}
+                onDragaAccepted={handleOnDragAccepted}
+                onDragRejected={handleOnDragRejected}
+                onFileUpdated={handleOnGardenLogoTypeUpdated}
+                label="GARDEN LOGO TYPE"
+              />
+            </div>
+            <div
+              css={`
+                min-width: 194px;
+              `}
+            >
+              <FileUploaderField
+                allowedMIMETypes={['image/jpeg', 'image/png']}
+                file={formData.logo}
+                onDragaAccepted={handleOnDragAccepted}
+                onDragRejected={handleOnDragRejected}
+                onFileUpdated={handleOnGardenLogoUpdated}
+                label="GARDEN LOGO"
+              />
+            </div>
+            <div
+              css={`
+                min-width: 194px;
+              `}
+            >
+              <FileUploaderField
+                allowedMIMETypes={['image/jpeg', 'image/png']}
+                file={formData.token_logo}
+                onDragaAccepted={handleOnDragAccepted}
+                onDragRejected={handleOnDragRejected}
+                onFileUpdated={handleOnTokenLogoUpdated}
+                label="TOKEN LOGO"
+              />
+            </div>
+          </div>
+        </div>
         <LinksBox
           fieldTitle="Community Links"
           linksType={COMMUNITY_LINK_TYPE}
