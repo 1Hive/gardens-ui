@@ -87,7 +87,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
   const screens = useMemo(
     () => [
       {
-        title: 'Challenge action requirements',
+        title: 'Proposal challenge requirements',
         content: (
           <ChallengeRequirements
             agreement={agreement}
