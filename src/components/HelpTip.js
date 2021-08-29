@@ -56,6 +56,24 @@ const KNOWN_HELP_DESCRIPTIONS = {
       greater than the collateral locked for the action but it can be zero.
     </>,
   ],
+  'common-pool': [
+    'Common Pool',
+    <>
+      The <strong>Common Pool</strong>
+    </>,
+  ],
+  'total-supply': [
+    'Total Supply',
+    <>
+      The <strong>Total Supply</strong>
+    </>,
+  ],
+  'active-supply': [
+    'Active Supply',
+    <>
+      The <strong>Active Supply</strong>
+    </>,
+  ],
 }
 
 function HelpTip({ type }) {
