@@ -29,12 +29,11 @@ const Metrics = React.memo(function Metrics({
           justify-content: space-around;
         `}
       >
-        {!(layoutName === 'medium') && (
+        {layoutName !== 'medium' && (
           <div
             css={`
               display: flex;
               align-items: center;
-              margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
             `}
           >
             <img
@@ -97,7 +96,7 @@ function Metric({ label, value, color, helptip }) {
         {label}
         <span
           css={`
-            padding-left: 0.2rem;
+            padding-left: ${1 * GU}px;
             display: inline-block;
           `}
         >

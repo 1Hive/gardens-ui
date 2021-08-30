@@ -121,7 +121,7 @@ const Home = React.memo(function Home() {
                   margin: ${(below('medium') ? 0 : 3) * GU}px;
                 `}
               >
-                {!(layoutName === 'small') && (
+                {layoutName !== 'small' && (
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
