@@ -14,18 +14,38 @@ import {
 } from '@1hive/1hive-ui'
 import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
+import { getNetwork } from '@/networks'
 
 function GardenSettings() {
   const theme = useTheme()
   const { layoutName } = useLayout()
   const { connectedGarden } = useGardens()
-  const { installedApps, loading } = useGardenState()
+  const { installedApps, loading, config } = useGardenState()
+
+  const { explorer, type } = getNetwork()
 
   const shortAddresses = layoutName === 'small'
 
   return (
     <React.Fragment>
       <Header primary="Garden Settings" />
+      <Box heading="Common Pool address">
+        {config?.conviction.vault && (
+          <div
+            css={`
+              margin-top: ${2 * GU}px;
+              margin-bottom: ${3 * GU}px;
+            `}
+          >
+            <IdentityBadge
+              entity={config?.conviction.vault}
+              shorten={shortAddresses}
+              explorerProvider={explorer}
+              networkType={type}
+            />
+          </div>
+        )}
+      </Box>
       <Box heading="Garden address">
         {connectedGarden && (
           <>
@@ -38,6 +58,8 @@ function GardenSettings() {
               <IdentityBadge
                 entity={connectedGarden.address}
                 shorten={shortAddresses}
+                explorerProvider={explorer}
+                networkType={type}
               />
             </div>
             <Info
@@ -51,6 +73,31 @@ function GardenSettings() {
           </>
         )}
       </Box>
+      {/* <div
+        css={`
+          margin-bottom: ${3 * GU}px;
+        `}
+      >
+        <InfoField label="Covenant IPFS Link">
+          <Link
+            href={getIpfsUrlFromUri(ipfsUri)}
+            css={`
+              max-width: 90%;
+            `}
+          >
+            <span
+              css={`
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: left;
+              `}
+            >
+              {getIpfsCidFromUri(ipfsUri)}
+            </span>
+          </Link>
+        </InfoField>
+      </div> */}
       {loading ? (
         <Box heading="Installed Aragon apps">
           <div
@@ -77,31 +124,38 @@ function GardenSettings() {
                 margin-bottom: -${3 * GU}px;
               `}
             >
-              {installedApps.map(({ name, address }) => (
-                <li
-                  key={address}
-                  css={`
-                    margin-bottom: ${3 * GU}px;
-                  `}
-                >
-                  <label
+              {installedApps
+                .filter(({ name }) => Boolean(name))
+                .map(({ name, address }) => (
+                  <li
+                    key={address}
                     css={`
-                      color: ${theme.surfaceContentSecondary};
-                      ${unselectable()};
-                      ${textStyle('label2')};
+                      margin-bottom: ${3 * GU}px;
                     `}
                   >
-                    {name}
-                  </label>
-                  <div
-                    css={`
-                      margin-top: ${1 * GU}px;
-                    `}
-                  >
-                    <IdentityBadge entity={address} shorten={shortAddresses} />
-                  </div>
-                </li>
-              ))}
+                    <label
+                      css={`
+                        color: ${theme.surfaceContentSecondary};
+                        ${unselectable()};
+                        ${textStyle('label2')};
+                      `}
+                    >
+                      {name}
+                    </label>
+                    <div
+                      css={`
+                        margin-top: ${1 * GU}px;
+                      `}
+                    >
+                      <IdentityBadge
+                        entity={address}
+                        shorten={shortAddresses}
+                        explorerProvider={explorer}
+                        networkType={type}
+                      />
+                    </div>
+                  </li>
+                ))}
             </ul>
           </Box>
         </React.Fragment>
