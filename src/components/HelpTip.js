@@ -80,7 +80,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
 function HelpTip({ type }) {
   const [name, description] = KNOWN_HELP_DESCRIPTIONS[type]
 
-  return <Help hint={`What is ${name}?`}>{description}</Help>
+  return <Help hint={`What is the ${name}?`}>{description}</Help>
 }
 
 export default HelpTip
