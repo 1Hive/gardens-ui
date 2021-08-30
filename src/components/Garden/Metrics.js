@@ -29,7 +29,7 @@ const Metrics = React.memo(function Metrics({
           justify-content: space-around;
         `}
       >
-        {!(layoutName === 'medium') && (
+        {layoutName !== 'medium' && (
           <div
             css={`
               display: flex;
