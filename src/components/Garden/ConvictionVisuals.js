@@ -176,7 +176,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
               >
                 {isNaN(neededTokens)
                   ? 'Not enough funds in the organization'
-                  : 'Insufficient staked tokens'}
+                  : 'Not enough support received'}
               </span>
               <span
                 css={`
