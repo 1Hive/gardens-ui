@@ -3,6 +3,12 @@ import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
 import { GU, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
+
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import { useMounted } from '@hooks/useMounted'
+import { useMultiModal } from '../MultiModal/MultiModalProvider'
+import useStepperLayout from './useStepperLayout'
+
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -11,9 +17,6 @@ import {
   STEP_WORKING,
 } from './stepper-statuses'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
-import { useMounted } from '@hooks/useMounted'
-import useStepperLayout from './useStepperLayout'
 
 const AnimatedDiv = animated.div
 
@@ -45,6 +48,7 @@ function reduceSteps(steps, [action, stepIndex, value]) {
 function Stepper({ steps, onComplete, onCompleteActions }) {
   const theme = useTheme()
   const mounted = useMounted()
+  const { close } = useMultiModal()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const [stepperStage, setStepperStage] = useState(0)
   const [stepState, updateStep] = useReducer(
@@ -159,6 +163,16 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     stepperStage === stepsCount &&
     stepState[stepperStage].status === STEP_SUCCESS
 
+  useEffect(() => {
+    let timeout
+    if (completed && !onCompleteActions) {
+      timeout = setTimeout(() => close(), 2000)
+    }
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [close, completed, onCompleteActions])
+
   return (
     <div
       css={`
@@ -244,7 +258,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
             margin-top: ${5 * GU}px;
           `}
         >
-          {onCompleteActions()}
+          {onCompleteActions}
         </div>
       )}
     </div>
@@ -266,7 +280,7 @@ Stepper.propTypes = {
     })
   ).isRequired,
   onComplete: PropTypes.func,
-  onCompleteActions: PropTypes.func,
+  onCompleteActions: PropTypes.node,
 }
 
 Stepper.defaultProps = {
