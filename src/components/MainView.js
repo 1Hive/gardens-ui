@@ -40,7 +40,7 @@ function MainView({ children }) {
 
   return (
     <div css="display: flex">
-      {connectedGarden && (
+      {connectedGarden && !below('medium') && (
         <Sidebar
           gardens={sidebarGardens}
           activeGarden={connectedGarden.address}
