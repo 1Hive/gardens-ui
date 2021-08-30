@@ -97,7 +97,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         ),
       },
       {
-        title: 'Challenge action requirements',
+        title: 'Proposal challenge form',
         content: (
           <ChallengeForm
             getTransactions={getTransactions}
