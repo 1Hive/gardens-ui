@@ -17,16 +17,16 @@ const KNOWN_HELP_DESCRIPTIONS = {
       The <strong>Minimum Approval</strong> is the percentage of the total token
       supply that is required to vote “Yes” on this type of proposal before it
       can be approved. For example, if the “Minimum Approval” is set to 20%,
-      then more than 20% of the outstanding token supply must vote “Yes” on a
-      proposal for it to pass.
+      then more than 20% of the outstanding token supply must vote “Yes” for it
+      to pass.
     </>,
   ],
   'challenge-deposit': [
     'Challenge Deposit',
     <>
       The <strong>Challenge deposit</strong> is the amount of tokens locked
-      every time a proposal is challenged. This deposit will be submitted at the
-      time of the challenge.
+      every time a proposal is challenged. This deposit is submitted at the time
+      of the challenge.
     </>,
   ],
   'proposal-deposit': [
