@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Button,
   GU,
   Info,
+  Link,
   LoadingRing,
   textStyle,
   useTheme,
-  Link,
 } from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
@@ -17,12 +18,10 @@ import { useWallet } from '@providers/Wallet'
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
+import { buildGardenPath } from '@utils/routing-utils'
 
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
-
-import { useHistory } from 'react-router-dom'
-import { buildGardenPath } from '@utils/routing-utils'
 
 function ChallengeRequirements({
   agreement,
@@ -68,7 +67,9 @@ function ChallengeRequirements({
           margin-bottom: ${2 * GU}px;
         `}
       >
-        Challenging a proposal invokes{' '}
+        Challenging a proposal gives the proposal author a chance to settle the
+        dispute by accepting your settlement offer (and withdrawing their
+        proposal). If they refuse, the dispute is raised to{' '}
         <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link> (a{' '}
         <Link href="https://www.brightid.org/">BrightID</Link> integrated fork
         of{' '}
@@ -200,6 +201,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       )} ${token.symbol} as the dispute fees.`,
       actionButton: 'Get HNY',
       buttonOnClick: () =>
+        // TODO : remove once we have swap integration
         window.open('https://app.honeyswap.org/#/swap', '_blank'),
     }
   }, [accountBalance, feesAmount, token, theme])
