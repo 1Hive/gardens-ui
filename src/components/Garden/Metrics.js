@@ -96,7 +96,7 @@ function Metric({ label, value, color, helptip }) {
         {label}
         <span
           css={`
-            padding-left: 0.2rem;
+            padding-left: ${1 * GU}px;
             display: inline-block;
           `}
         >
