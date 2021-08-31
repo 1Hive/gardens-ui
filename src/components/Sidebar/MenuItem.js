@@ -10,6 +10,19 @@ function MenuItem({ active, path, name, src, onOpen }) {
         position: relative;
         background: ${active ? 'rgb(249, 249, 248)' : theme.surface};
         height: ${8.5 * GU}px;
+        ${name &&
+          ` &:hover:after {
+              content: "${name}";
+              background: rgba(44, 52, 55, 0.8);
+              border-radius: 12px;
+              color: white;
+              padding: ${0.5 * GU}px ${2 * GU}px;
+              position: absolute;
+              top: calc(50% - 16px);
+              left: 80px;
+              z-index: 2;
+          }
+        `}
       `}
     >
       {active && (
