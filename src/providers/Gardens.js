@@ -86,7 +86,7 @@ function mergeGardenMetadata(garden) {
 
   const token = {
     ...garden.token,
-    ...metadata.token,
+    logo: metadata.token_logo,
   }
   const wrappableToken = garden.wrappableToken
     ? {
