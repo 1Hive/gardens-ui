@@ -3,7 +3,7 @@ import env from '@/environment'
 
 const NETWORK = getNetworkName().toLowerCase()
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
-const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
+const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 
 export const fetchLatestCommitSha = async () => {
   const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
