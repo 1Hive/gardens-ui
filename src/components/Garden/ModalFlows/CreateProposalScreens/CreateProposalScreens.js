@@ -72,7 +72,7 @@ function CreateProposalScreens() {
         ? []
         : [
             {
-              title: 'Submit proposal requirements',
+              title: 'Create proposal requirements',
               graphicHeader: false,
               content: (
                 <CreateProposalRequirements
