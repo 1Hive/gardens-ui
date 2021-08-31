@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useMemo } from 'react'
 import { GU, useTheme, Link } from '@1hive/1hive-ui'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
@@ -8,15 +7,7 @@ import { useGardens } from '@/providers/Gardens'
 
 function Sidebar() {
   const theme = useTheme()
-  const history = useHistory()
   const { connectedGarden, gardens } = useGardens()
-
-  const handleSelectGarden = useCallback(
-    path => {
-      history.push(path)
-    },
-    [history]
-  )
 
   const gardenData = useMemo(
     () =>
@@ -81,7 +72,6 @@ function Sidebar() {
               path={garden.path}
               name={garden.name}
               src={garden.src}
-              onOpen={handleSelectGarden}
             />
           ))}
         </ul>

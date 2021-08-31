@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, GU, useTheme } from '@1hive/1hive-ui'
 
-function MenuItem({ active, path, name, src, onOpen }) {
+function MenuItem({ active, path, name, src }) {
   const theme = useTheme()
 
   return (
