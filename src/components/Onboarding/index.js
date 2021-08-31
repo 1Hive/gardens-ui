@@ -3,7 +3,6 @@ import { animated, Transition } from 'react-spring/renderprops'
 import { GU, IconCross, RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import { OnboardingProvider } from '@providers/Onboarding'
-import { ChartsProvider } from '@providers/Charts'
 import Screens from './Screens'
 import StepsPanel from './Steps/StepsPanel'
 
@@ -151,8 +150,6 @@ function AnimatedSlider({ children, visible }) {
 
 export default ({ ...props }) => (
   <OnboardingProvider>
-    <ChartsProvider>
-      <Onboarding {...props} />
-    </ChartsProvider>
+    <Onboarding {...props} />
   </OnboardingProvider>
 )

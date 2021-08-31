@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, Root, ScrollView, useViewport } from '@1hive/1hive-ui'
+import { GU, Root, ScrollView, useViewport, ToastHub } from '@1hive/1hive-ui'
 
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
@@ -10,48 +10,62 @@ function MainView({ children }) {
   const compactMode = below('large')
 
   return (
-    <div
+    <ToastHub
+      threshold={1}
+      timeout={1500}
       css={`
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-      `}
+                & > div {
+                  width: auto;
+                  & > div {
+                    rgba(33, 43, 54, 0.9);
+                    border-radius: 16px;
+                  }
+                }
+              `}
     >
-      <Root.Provider
+      <div
         css={`
-          flex-grow: 1;
-          height: 100%;
-          position: relative;
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
         `}
       >
-        <div
+        <Root.Provider
           css={`
-            flex-shrink: 0;
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
           `}
         >
-          <Header />
-        </div>
-        <ScrollView>
           <div
             css={`
-              min-height: 100vh;
-              margin: 0;
-              display: grid;
-              grid-template-rows: 1fr auto;
+              flex-shrink: 0;
             `}
           >
+            <Header />
+          </div>
+          <ScrollView>
             <div
               css={`
-                margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
+                min-height: 100vh;
+                margin: 0;
+                display: grid;
+                grid-template-rows: 1fr auto;
               `}
             >
-              <Layout paddingBottom={3 * GU}>{children}</Layout>
+              <div
+                css={`
+                  margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
+                `}
+              >
+                <Layout paddingBottom={3 * GU}>{children}</Layout>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </ScrollView>
-      </Root.Provider>
-    </div>
+          </ScrollView>
+        </Root.Provider>
+      </div>
+    </ToastHub>
   )
 }
 
