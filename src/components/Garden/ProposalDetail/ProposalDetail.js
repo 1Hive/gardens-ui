@@ -298,7 +298,6 @@ function ProposalDetail({
                   onChangeSupport={() => handleShowModal('update')}
                   onExecuteProposal={actions.executeProposal}
                   onRequestSupportProposal={() => handleShowModal('support')}
-                  onWithdrawFromProposal={actions.withdrawFromProposal}
                 />
               </section>
             </Box>

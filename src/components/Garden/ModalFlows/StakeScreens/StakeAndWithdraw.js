@@ -81,7 +81,7 @@ function StakeAndWithdraw({
   const textData = useMemo(() => {
     if (depositMode) {
       return {
-        descriptionText: `This amount will be placed in the deposit manager and will be used for deposits when you either create or challenge a proposal. `,
+        descriptionText: `These funds will be placed in the deposit manager and used for deposits when you either create or challenge a proposal. `,
         balanceText: `Your account balance is ${formatTokenAmount(
           accountBalance,
           decimals
@@ -90,12 +90,12 @@ function StakeAndWithdraw({
       }
     }
     return {
-      descriptionText: `This amount will be withdrawn from your available balance and directly credited to your enabled account.`,
+      descriptionText: `These funds will be withdrawn from your available balance and directly credited to your enabled account.`,
       balanceText: `Your available balance is ${formatTokenAmount(
         stakeManagement.staking.available,
         decimals
       )} ${symbol}`,
-      buttonText: 'Withdraw',
+      buttonText: 'Withdraw funds',
     }
   }, [
     accountBalance,
@@ -167,8 +167,8 @@ function StakeAndWithdraw({
               margin-top: ${2 * GU}px;
             `}
           >
-            You will be able to withdraw the portion of your balance that is not
-            being used for deposits at any time.
+            You will be able to withdraw any funds that are not being used for
+            deposits at any time.
           </Info>
         )}
         <Button

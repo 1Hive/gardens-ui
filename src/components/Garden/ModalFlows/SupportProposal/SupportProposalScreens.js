@@ -26,7 +26,7 @@ function SupportProposalScreens({ proposal, mode }) {
   }, [history])
 
   const renderOnCompleteActions = useCallback(() => {
-    if (mode === 'support' ? 'Support this proposal' : 'Change support') {
+    if (mode === 'support') {
       return (
         <div
           css={`
