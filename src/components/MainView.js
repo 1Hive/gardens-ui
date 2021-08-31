@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { GU, Root, ScrollView, useViewport } from '@1hive/1hive-ui'
 import { useGardens } from '@/providers/Gardens'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
@@ -10,43 +8,13 @@ import Sidebar from './Sidebar/Sidebar'
 
 function MainView({ children }) {
   const { below } = useViewport()
-  const history = useHistory()
-  const { connectedGarden, gardens } = useGardens()
-  const [sidebarGardens, setSidebarGardens] = useState([])
+  const { connectedGarden } = useGardens()
 
   const compactMode = below('large')
 
-  const handleSelectGarden = useCallback(
-    path => {
-      history.push(path)
-    },
-    [history]
-  )
-
-  useEffect(() => {
-    setSidebarGardens(
-      gardens
-        .map(garden => {
-          return {
-            name: garden.name,
-            address: garden.address,
-            path: `/garden/${garden.address}`,
-            src: garden.logo || defaultGardenLogo,
-          }
-        })
-        .slice(0, 10)
-    )
-  }, [gardens])
-
   return (
     <div css="display: flex">
-      {connectedGarden && !below('medium') && (
-        <Sidebar
-          gardens={sidebarGardens}
-          activeGarden={connectedGarden.address}
-          onOpen={handleSelectGarden}
-        />
-      )}
+      {connectedGarden && !below('medium') && <Sidebar />}
       <div
         css={`
           display: flex;

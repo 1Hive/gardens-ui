@@ -1,36 +1,55 @@
-import React, { useCallback } from 'react'
-import { Link, GU } from '@1hive/1hive-ui'
+import React from 'react'
+import { Link, GU, useTheme } from '@1hive/1hive-ui'
 
 function MenuItem({ active, path, name, src, onOpen }) {
-  const handleClick = useCallback(
-    event => {
-      event.preventDefault()
-      onOpen(path)
-    },
-    [onOpen, path]
-  )
+  const theme = useTheme()
 
   return (
     <li
       css={`
         position: relative;
-        background: ${active ? 'rgba(249, 249, 248, 1)' : null};
-        border-left: ${active
-          ? `4px solid rgba(141, 233, 149, 1)`
-          : '4px solid transparent'};
+        background: ${active ? 'rgb(249, 249, 248)' : theme.surface};
         height: ${8.5 * GU}px;
       `}
     >
-      <Link external={false} href={path} onClick={handleClick}>
+      {active && (
         <div
           css={`
-            padding: ${1.5 * GU}px;
-            padding-left: ${1 * GU}px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            background: rgb(141, 233, 149);
+          `}
+        />
+      )}
+      <div
+        css={`
+          display: flex;
+          padding: ${1.5 * GU}px;
+        `}
+      >
+        <Link
+          external={false}
+          href={path}
+          css={`
+            display: block;
           `}
         >
-          <img src={src} height={48} width={48} alt="" />
-        </div>
-      </Link>
+          <img
+            src={src}
+            height={48}
+            width={48}
+            alt=""
+            css={`
+              display: block;
+              border: 2px solid ${theme.surface};
+              border-radius: 50%;
+            `}
+          />
+        </Link>
+      </div>
     </li>
   )
 }
