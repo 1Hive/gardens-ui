@@ -67,11 +67,11 @@ function ProposalChallengedInfo({ proposal }) {
                   )}{' '}
                   {proposal.collateralRequirement.tokenSymbol}
                 </span>{' '}
-                as the action collateral. You can manage your deposit balances
+                as the challenge deposit. You can manage your deposit balances
                 in{' '}
               </span>
               <Link href="#/collateral" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
@@ -87,15 +87,8 @@ function ProposalChallengedInfo({ proposal }) {
         `}
       >
         {proposal.type === ProposalTypes.Decision
-          ? `This vote has been paused as the result of the originating action being
-          challenged. When the challenge is resolved, if allowed, the voting
-          period will resume and last the rest of its duration time. Othersiwe, it
-          will be cancelled.`
-          : `This proposal has been challenged but you can continue to support it to increase conviction. When the challenge is resolved, if allowed, the proposal will be resumed ${
-              proposal.type === ProposalTypes.Proposal
-                ? `for the remainder of its duration`
-                : ''
-            }. Otherwise this proposal will be cancelled.`}
+          ? `This proposal has been challenged, and as a result this vote has been paused. If the challenge is unsuccessful, the voting period will resume. Otherwise, it will be cancelled.`
+          : `This proposal has been challenged. You can continue to support it to give it a greater chance of passing (should the challenge prove to be unsuccessful). If the challenge is successful however, the proposal will be cancelled, regardless of how much support it has received.`}
       </Info>
     </div>
   )
@@ -150,7 +143,7 @@ function ProposalDisputedInfo({ proposal }) {
       >
         Celeste has been invoked to settle a dispute with this proposal
         {proposal.type !== ProposalTypes.Decision
-          ? ' but you can still support it and increase its conviction'
+          ? ' but you can still support it and increase its support (conviction)'
           : ''}
         . When the dispute is resolved, if allowed, the proposal will continue
         as normal othersiwe it will be cancelled.
@@ -184,8 +177,8 @@ function ProposalSettledInfo({ proposal }) {
                 `}
               >
                 {isSubmitter
-                  ? 'You acccepted the setttlement offer on'
-                  : 'You have challenged this action on'}
+                  ? 'You acccepted the settlement offer on'
+                  : 'You challenged this proposal on'}
               </span>{' '}
               {dateFormat(
                 isSubmitter
@@ -207,10 +200,10 @@ function ProposalSettledInfo({ proposal }) {
                     proposal.collateralRequirement.tokenDecimals
                   )} ${
                     proposal.collateralRequirement.tokenSymbol
-                  }  from your action collateral has been slashed and the remaining unlocked`
+                  }  from your proposal deposit has been forfeited and the remaining unlocked`
                 ) : (
                   <span>
-                    your challenge collateral has returned to your wallet{' '}
+                    your challenge deposit has been returned to your wallet{' '}
                     <span
                       css={`
                         color: ${theme.content};
@@ -227,7 +220,7 @@ function ProposalSettledInfo({ proposal }) {
                 . You can manage your deposit balances in{' '}
               </span>
               <Link href="#/profile" external={false}>
-                Collateral Manager
+                Deposit Manager
               </Link>
               .
             </div>
@@ -236,8 +229,8 @@ function ProposalSettledInfo({ proposal }) {
       )}
       <Info mode="warning">
         This {proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'}{' '}
-        has been cancelled as the result of the originating action being
-        challenged and the settlement offer being accepted.
+        has been cancelled: it was challenged, and the settlement offer
+        accepted.
       </Info>
     </div>
   )

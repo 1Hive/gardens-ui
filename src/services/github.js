@@ -3,7 +3,7 @@ import env from '@/environment'
 
 const NETWORK = getNetworkName().toLowerCase()
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
-const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
+const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 
 export const fetchLatestCommitSha = async () => {
   const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
@@ -112,7 +112,7 @@ export const createFileContent = async (
 
   const bodyData = {
     owner: '1Hive',
-    repo: 'dao-list-test',
+    repo: 'dao-list',
     path: fileName,
     message: commitMsg,
     content: base64,
@@ -173,13 +173,13 @@ export const publishNewDao = async daoMetaData => {
       links: daoMetaData.links,
       logo:
         daoMetaData.logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/logo.${daoMetaData.logoExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetaData.name}/logo.${daoMetaData.logoExtension}`,
       logo_type:
         daoMetaData.logo_type &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/logo_type.${daoMetaData.logo_typeExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetaData.name}/logo_type.${daoMetaData.logo_typeExtension}`,
       token_logo:
         daoMetaData.token_logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/token_logo.${daoMetaData.token_logoExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetaData.name}/token_logo.${daoMetaData.token_logoExtension}`,
     })
     const newContent = {
       ...fileContent,

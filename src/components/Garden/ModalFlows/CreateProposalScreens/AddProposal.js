@@ -17,11 +17,13 @@ import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useRequestAmount from '@hooks/useRequestAmount'
-
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
+
+import { useHistory } from 'react-router-dom'
+import { buildGardenPath } from '@utils/routing-utils'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -203,8 +205,25 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
+  const history = useHistory()
   return (
     <form onSubmit={handleOnContinue}>
+      <Info title="Proposal guidelines">
+        All proposals are bound by this community's{' '}
+        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
+          Covenant
+        </Link>{' '}
+        . If you haven't taken the time to read through it yet, please make sure
+        you do so.
+        <br />
+        <br /> Before creating a proposal you must first create a post on the{' '}
+        <Link href={connectedGarden.forumURL}>
+          {connectedGarden.name} Forum
+        </Link>{' '}
+        . This post should explain why you believe this proposal is beneficial
+        to the community and (if applicable) what the requested funds will be
+        used for.
+      </Info>
       <Field
         label="Select proposal type"
         css={`
@@ -213,7 +232,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         <DropDown
           header="Select proposal type"
-          placeholder="Proposal type"
+          placeholder="Select proposal type"
           selected={formData.proposalType}
           onChange={handleProposalTypeChange}
           items={PROPOSAL_TYPES}
@@ -221,6 +240,15 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           wide
         />
       </Field>
+      <Info>
+        <span>
+          {formData.proposalType === SIGNALING_PROPOSAL
+            ? `Suggestion proposals are used to gather community sentiment for
+        ideas or future funding proposals.`
+            : `Funding proposals ask for an amount of funds. These funds are granted
+        if the proposal in question receives enough support (conviction).`}
+        </span>{' '}
+      </Info>
       <Field
         label="Title"
         css={`
@@ -229,6 +257,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         <TextInput
           onChange={handleTitleChange}
+          placeholder="Add the title of the proposal"
           value={formData.title}
           wide
           required
@@ -248,40 +277,26 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
             requestToken={requestToken}
             stableToken={stableToken}
           />
-          <Field label="Beneficiary">
+          <Field label="Beneficiary address">
             <TextInput
               onChange={handleBeneficiaryChange}
               value={formData.beneficiary}
+              placeholder="Add the beneficiary’s ETH address"
               wide
               required
             />
           </Field>
         </>
       )}
-      <Field label="Link">
+      <Field label="Forum post link (proposal details)">
         <TextInput
           onChange={handleLinkChange}
           value={formData.link}
+          placeholder="Add the link of the forum post"
           wide
           required
         />
       </Field>
-      <Info title="Proposal guidelines">
-        <span>
-          {formData.proposalType === SIGNALING_PROPOSAL
-            ? `This action will create a suggestion which can be voted on
-            by ${stakeToken.symbol} holders but requests no funds. It is used to
-            gather community sentiment for future funding proposals or
-            particular ideas.`
-            : `This action will create a funding proposal which can be voted on by ${stakeToken.symbol} holders. Funding will be granted if the accrued total stake reaches above the threshold.`}
-        </span>{' '}
-        In order to create a proposal you must first create a post on the{' '}
-        <Link href={connectedGarden.forumURL}>
-          {connectedGarden.name} Forum
-        </Link>{' '}
-        under the 🌿 Proposals category and paste the link to the corresponding
-        post in the LINK field.
-      </Info>
       <Button
         wide
         mode="strong"
@@ -293,7 +308,6 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       >
         Continue
       </Button>
-
       {errors.length > 0 && (
         <Info
           mode="warning"
@@ -331,6 +345,7 @@ function RequestedAmount({
         <TextInput
           value={value}
           onChange={onAmountChange}
+          placeholder="Add the requested amount"
           required
           wide
           adornment={
@@ -382,13 +397,15 @@ function RequestedAmount({
           margin-bottom: ${3 * GU}px;
         `}
       >
-        If you specify the proposal amount in {stableToken.symbol} it will be
-        converted to {requestToken.symbol} at time of execution.{' '}
+        The larger the requested amount, the more support required for the
+        proposal to pass. If you specify the proposal amount in {` `}
+        {stableToken.symbol} it will be converted to {requestToken.symbol}{' '}
+        if/when it is passed.{' '}
         {neededThreshold
           ? `The conviction
         required in order for the proposal to pass with the requested amount is
-        ~%${neededThreshold}.`
-          : `Proposal might never pass with requested amount`}
+        ≈${neededThreshold}%.`
+          : `The requested amount is extremely high; there's a good chance the proposal might never pass.`}
       </Info>
     </>
   )

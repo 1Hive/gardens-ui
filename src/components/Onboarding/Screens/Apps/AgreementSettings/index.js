@@ -181,10 +181,10 @@ function AgreementSettings() {
           label={
             <Fragment>
               Settlement Period
-              <Help hint="What is Settlement Period?">
-                <strong>Settlement Period</strong> is the amount of time the
-                proposal's creator has to either accept a settlement or raise
-                the dispute to{' '}
+              <Help hint="What is the Settlement Period?">
+                The <strong>Settlement Period</strong> is the amount of time the
+                proposal author has to either accept a settlement or raise the
+                dispute to{' '}
                 <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{' '}
                 after a proposal has been challenged.
               </Help>

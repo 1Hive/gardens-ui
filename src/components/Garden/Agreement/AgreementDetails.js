@@ -121,7 +121,8 @@ function AgreementDetails({
                   color: ${theme.surfaceContentSecondary};
                 `}
               >
-                You can now manage your token balances on Collateral Manager.
+                You can now manage your token balances using the Deposit
+                Manager.
               </p>
             </div>
           </div>
