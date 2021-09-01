@@ -28,6 +28,8 @@ const networks = {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
+      organizations:
+        'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
     },
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     legacyNetworkType: 'rinkeby',
@@ -49,6 +51,8 @@ const networks = {
     subgraphs: {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
+      organizations:
+        'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
     },
     celesteUrl: 'https://celeste.1hive.org/#',
     legacyNetworkType: 'main',
