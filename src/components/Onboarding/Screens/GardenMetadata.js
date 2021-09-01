@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  Box,
   Button,
   Field,
   GU,
@@ -15,6 +14,8 @@ import {
 import { useOnboardingState } from '@providers/Onboarding'
 import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
+
+import LinksTooltipImg from '@assets/linksTooltip.svg'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
@@ -335,7 +336,7 @@ function GardenMetadata() {
                 flex-direction: column;
                 ${textStyle('body2')};
                 color: ${theme.contentSecondary};
-                margin-top: ${1 * GU}px;
+                margin-top: ${2 * GU}px;
               `}
             >
               <span>Drag and drop or browse your files to upload one.</span>
@@ -401,7 +402,7 @@ function GardenMetadata() {
           </div>
         </div>
         <LinksBox
-          fieldTitle="Community Links"
+          fieldTitle="COMMUNITY LINKS"
           linksType={COMMUNITY_LINK_TYPE}
           links={formData.links.community}
           onAddLink={addLink}
@@ -409,7 +410,7 @@ function GardenMetadata() {
           onUpdateLink={updateLink}
         />
         <LinksBox
-          fieldTitle="Documentation Links"
+          fieldTitle="DOCUMENTATION LINKS"
           linksType={DOCUMENTATION_LINK_TYPE}
           links={formData.links.documentation}
           onAddLink={addLink}
@@ -494,15 +495,55 @@ function LinksBox({
   }, [focusLastLinkNext])
 
   return (
-    <Field
-      label={fieldTitle}
+    <div
       css={`
         width: 100%;
+        margin-top: ${2 * GU}px;
       `}
     >
-      <Box
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <span
+          css={`
+            ${textStyle('body2')};
+            color: ${theme.content};
+            margin-right: ${0.5 * GU}px;
+          `}
+        >
+          {fieldTitle} (optional)
+        </span>
+        <Help>
+          <div
+            css={`
+              width: 100%;
+            `}
+          >
+            <h3
+              css={`
+                ${textStyle('body3')};
+                color: ${theme.contentSecondary};
+              `}
+            >
+              This links will be displayed at the footer of your Garden
+            </h3>
+            <img
+              css={`
+                width: 100%;
+              `}
+              alt=""
+              src={LinksTooltipImg}
+            />
+          </div>
+        </Help>
+      </div>
+      <div
         css={`
           width: 100%;
+          margin-top: ${2 * GU}px;
         `}
       >
         <Field
@@ -549,8 +590,8 @@ function LinksBox({
             disabled={links.length === 5}
           />
         </Field>
-      </Box>
-    </Field>
+      </div>
+    </div>
   )
 }
 
