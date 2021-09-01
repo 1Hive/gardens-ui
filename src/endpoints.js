@@ -3,7 +3,7 @@ import { CONTEXT_ID } from './constants'
 
 export const NODE_URL = 'http:%2f%2fnode.brightid.org'
 
-export const BRIGHT_ID_ENDPOINT_V5 = 'https://brightid.1hive.org/node/v5'
+export const BRIGHT_ID_ENDPOINT_V5 = 'https://app.brightid.org/node/v5'
 export const BRIGHTID_VERIFICATION_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/verifications`
 export const BRIGHTID_1HIVE_INFO_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/apps/1hive`
 export const BRIGHTID_SUBSCRIPTION_ENDPOINT = `${BRIGHT_ID_ENDPOINT_V5}/operations`
