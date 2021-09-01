@@ -162,7 +162,21 @@ function DecisionDetail({ proposal, actions }) {
                         emptyScript ? (
                           proposal.metadata || 'No description'
                         ) : (
-                          <Description path={description} />
+                          <div>
+                            {proposal.metadata && (
+                              <div>
+                                <div
+                                  css={`
+                                    margin-bottom: ${1 * GU}px;
+                                  `}
+                                >
+                                  {proposal.metadata}
+                                </div>
+                                <b>Actions</b>
+                              </div>
+                            )}
+                            <Description path={description} />
+                          </div>
                         )
                       }
                       loading={descriptionLoading}
