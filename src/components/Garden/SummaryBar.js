@@ -15,6 +15,7 @@ function SummaryBar({
   const theme = useTheme()
   // Third part overlaps first and second if it is negative
   const thirdBegins = firstSize + secondSize + Math.min(thirdSize, 0)
+  const s = 1 // requiredSize > 0 ? 1000 * requiredSize : 1
   return (
     <Spring
       from={{ progress: 0 }}
@@ -29,7 +30,7 @@ function SummaryBar({
               style={{
                 backgroundColor: theme.accent,
                 transform: progress.interpolate(
-                  v => `scale3d(${firstSize * v}, 1, 1)`
+                  v => `scale3d(${firstSize * s * v}, 1, 1)`
                 ),
               }}
             />
@@ -38,8 +39,8 @@ function SummaryBar({
                 backgroundColor: theme.accent,
                 transform: progress.interpolate(
                   v => `
-                    translate3d(${100 * firstSize * v}%, 0, 0)
-                    scale3d(${secondSize * v}, 1, 1)
+                    translate3d(${100 * firstSize * s * v}%, 0, 0)
+                    scale3d(${secondSize * s * v}, 1, 1)
                   `
                 ),
               }}
@@ -51,8 +52,8 @@ function SummaryBar({
                 transform: progress.interpolate(
                   v => `
                     translate3d(
-                      ${100 * thirdBegins * v}%, 0, 0)
-                    scale3d(${Math.abs(thirdSize) * v}, 1, 1)
+                      ${100 * thirdBegins * s * v}%, 0, 0)
+                    scale3d(${Math.abs(thirdSize) * s * v}, 1, 1)
                   `
                 ),
               }}

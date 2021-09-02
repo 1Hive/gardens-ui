@@ -322,7 +322,8 @@ function ProposalDetail({
                           color: ${theme.contentSecondary};
                         `}
                       >
-                        You can remove this proposal from consideration
+                        As the original author, you can remove this proposal
+                        from consideration
                       </span>
                       <Button
                         onClick={handleCancelProposal}
