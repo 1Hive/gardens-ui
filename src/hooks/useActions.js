@@ -35,7 +35,7 @@ export default function useActions() {
 
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
-  const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
+  const votingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
   const hookedTokenManagerApp = getAppByName(
@@ -167,22 +167,22 @@ export default function useActions() {
   // Vote actions
   const voteOnDecision = useCallback(
     (voteId, voteType) => {
-      sendIntent(dandelionVotingApp, 'vote', [voteId, voteType === VOTE_YEA], {
+      sendIntent(votingApp, 'vote', [voteId, voteType === VOTE_YEA], {
         ethers,
         from: account,
       })
     },
-    [account, ethers, dandelionVotingApp]
+    [account, ethers, votingApp]
   )
 
   const executeDecision = useCallback(
-    voteId => {
-      sendIntent(dandelionVotingApp, 'executeVote', [voteId], {
+    (voteId, script) => {
+      sendIntent(votingApp, 'executeVote', [voteId, script], {
         ethers,
         from: account,
       })
     },
-    [account, dandelionVotingApp, ethers]
+    [account, ethers, votingApp]
   )
 
   // Agreement actions
