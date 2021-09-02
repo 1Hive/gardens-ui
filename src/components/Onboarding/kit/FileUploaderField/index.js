@@ -65,12 +65,9 @@ export const FileUploaderField = ({
       const reader = new FileReader()
       const file = files[0]
 
-      console.log('ON DROP!!!! ')
-
       if (file?.size <= maxFileSize) {
         if (reader !== undefined && file !== undefined) {
           reader.onload = ({ target: { result } }) => {
-            console.log('RESULT!!! ', result)
             onFileUpdated({
               name: file.name,
               content: result,
@@ -110,7 +107,6 @@ export const FileUploaderField = ({
 
     onDragaAccepted()
   }, [isDragAccept, isDragReject, onDragaAccepted, onDragRejected])
-  console.log('FILEEEEEEE ', file)
 
   return (
     <div

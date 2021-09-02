@@ -178,24 +178,24 @@ function GardenMetadata() {
     const { name, description, forum, links } = formData
     const { documentation, community } = links
     if (!name) {
-      errors.push('Garden name not provided')
+      errors.push('Garden name not provided.')
     }
     if (!description) {
-      errors.push('Garden description not provided')
+      errors.push('Garden description not provided.')
     }
     if (forum && !URL_REGEX.test(forum)) {
-      errors.push('Forum is not in a valid url format')
+      errors.push('Forum is not in a valid url format.')
     }
 
     documentation.map(doc => {
       if (doc.link && !URL_REGEX.test(doc.link)) {
-        errors.push(`${doc.label} is not in a valid url format`)
+        errors.push(`${doc.label} is not in a valid url format.`)
       }
     })
 
     community.map(com => {
       if (com.link && !URL_REGEX.test(com.link)) {
-        errors.push(`${com.label} is not in a valid url format`)
+        errors.push(`${com.label} is not in a valid url format.`)
       }
     })
 
@@ -281,13 +281,12 @@ function GardenMetadata() {
                   font-weight: 600;
                 `}
               >
-                Forum
+                Forum (optional)
               </p>
               <Help>
-                Add a link to your discussion platform - the best way to do this
-                is to create a discourse (add link to discourse site). If you
-                don't, the 1Hive forum will be assigned (add forum link) by
-                default.
+                Add the URL to your discussion platform - we recommend discourse
+                (https://www.discourse.org). If you don't, the 1Hive forum will
+                be assigned (https://forum.1hive.org) by default.
               </Help>
             </div>
           }
@@ -343,6 +342,7 @@ function GardenMetadata() {
               <span
                 css={`
                   color: ${formatValidationColor};
+                  font-weight: 600;
                 `}
               >
                 Valid file formats are: JPG and PNG
