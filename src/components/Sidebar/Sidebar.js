@@ -1,46 +1,77 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GU, useTheme, Link } from '@1hive/1hive-ui'
 import gardensLogo from '@assets/gardensLogoMark.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import MenuItem from './MenuItem'
+import { useGardens } from '@/providers/Gardens'
 
-function Sidebar({ gardens, activeGarden, onOpen }) {
+function Sidebar() {
   const theme = useTheme()
+  const { connectedGarden, gardens } = useGardens()
+
+  const gardenData = useMemo(
+    () =>
+      gardens.slice(0, 10).map(garden => {
+        return {
+          name: garden.name,
+          address: garden.address,
+          path: `#/garden/${garden.address}`,
+          src: garden.logo || defaultGardenLogo,
+        }
+      }),
+    [gardens]
+  )
+
   return (
     <div
       css={`
+        z-index: 1;
         width: ${9 * GU}px;
         flex-shrink: 0;
         background: ${theme.surface};
         border-right: 1px solid ${theme.border};
-        box-shadow: 2px 0 3px rgba(0, 0, 0, 0.05);
+        box-shadow: 2px 0px 4px rgba(160, 168, 194, 0.16);
       `}
     >
       <div
         css={`
-          padding: ${2 * GU}px;
-          padding-bottom: ${1 * GU}px;
+          padding: ${1.5 * GU}px ${2 * GU}px;
         `}
       >
-        <Link href="#/home" external={false}>
-          <div
+        <div
+          css={`
+            display: flex;
+            padding-bottom: ${1.5 * GU}px;
+            border-bottom: 1px solid ${theme.border};
+          `}
+        >
+          <Link
+            href="#/home"
+            external={false}
             css={`
-              border-bottom: 1px solid ${theme.border};
+              display: block;
             `}
           >
-            <img src={gardensLogo} height={40} alt="" />
-          </div>
-        </Link>
+            <img
+              src={gardensLogo}
+              height={40}
+              alt=""
+              css={`
+                display: block;
+              `}
+            />
+          </Link>
+        </div>
       </div>
       <nav>
         <ul>
-          {gardens.map((garden, i) => (
+          {gardenData.map((garden, i) => (
             <MenuItem
-              key={garden.path}
-              active={garden.address === activeGarden}
+              key={garden.address}
+              active={garden.address === connectedGarden.address}
               path={garden.path}
               name={garden.name}
               src={garden.src}
-              onOpen={onOpen}
             />
           ))}
         </ul>
