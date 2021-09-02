@@ -19,7 +19,7 @@ function SignAgreementScreens({ versionId }) {
     history.push(path)
   }, [history])
 
-  const renderOnCompleteActions = useCallback(() => {
+  const onCompleteActions = useMemo(() => {
     return (
       <Button
         label="Create proposal"
@@ -57,7 +57,7 @@ function SignAgreementScreens({ versionId }) {
       transactions={transactions}
       transactionTitle="Sign Covenant"
       screens={screens}
-      onCompleteActions={renderOnCompleteActions}
+      onCompleteActions={onCompleteActions}
     />
   )
 }
