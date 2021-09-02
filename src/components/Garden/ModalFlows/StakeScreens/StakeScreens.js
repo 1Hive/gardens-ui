@@ -23,7 +23,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
     history.push(path)
   }, [history])
 
-  const renderOnCompleteActions = useCallback(() => {
+  const onCompleteActions = useMemo(() => {
     if (mode === 'deposit') {
       return (
         <Button
@@ -120,7 +120,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
           : `Withdraw ${token.symbol}`
       }
       screens={screens}
-      onCompleteActions={renderOnCompleteActions}
+      onCompleteActions={onCompleteActions}
     />
   )
 }
