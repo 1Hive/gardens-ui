@@ -92,13 +92,15 @@ const Home = React.memo(function Home() {
           z-index: 2;
         `}
       >
-        <BackButton
-          onClick={handleBack}
-          css={`
-            background: transparent;
-            border: 0;
-          `}
-        />
+        {below('medium') && (
+          <BackButton
+            onClick={handleBack}
+            css={`
+              background: transparent;
+              border: 0;
+            `}
+          />
+        )}
       </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
@@ -121,7 +123,7 @@ const Home = React.memo(function Home() {
                   margin: ${(below('medium') ? 0 : 3) * GU}px;
                 `}
               >
-                {!compactMode && (
+                {layoutName !== 'small' && (
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
