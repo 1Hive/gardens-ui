@@ -1,5 +1,14 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Field, GU, Help, Info, Link, TextInput } from '@1hive/1hive-ui'
+import {
+  Field,
+  GU,
+  Help,
+  Info,
+  Link,
+  TextInput,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import {
   DurationFields,
@@ -44,6 +53,7 @@ const validateAgreementSettings = (title, covenantFile, challengePeriod) => {
 }
 
 function AgreementSettings() {
+  const theme = useTheme()
   const {
     config,
     onBack,
@@ -58,6 +68,9 @@ function AgreementSettings() {
     updateField,
   ] = useReducer(reduceFields, config.agreement)
   const [covenantOpened, setCovenantOpened] = useState(false)
+  const [formatValidationColor, setFormatValidationColor] = useState(
+    theme.contentSecondary
+  )
 
   const handleActionAmount = useCallback(
     value => {
@@ -129,18 +142,27 @@ function AgreementSettings() {
     title,
   ])
 
+  const handleOnDragAccepted = useCallback(() => {
+    setFormatValidationColor(theme.contentSecondary)
+  }, [theme])
+
+  const handleOnDragRejected = useCallback(() => {
+    setFormatValidationColor(theme.error)
+  }, [theme])
+
   return (
     <div>
       <Header
-        title="Configure Community Covenant"
-        subtitle="Encode the social contract of your DAO"
+        title="Garden Governance"
+        subtitle="Community Covenant"
+        thirdtitle=" Encode the social contract of your DAO"
       />
       <div
         css={`
           margin-bottom: ${4 * GU}px;
         `}
       >
-        <Field label="Title" required>
+        <Field label="Title">
           <TextInput
             value={title}
             onChange={handleTitleChange}
@@ -148,18 +170,56 @@ function AgreementSettings() {
             wide
           />
         </Field>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            margin-bottom: ${1 * GU}px;
+          `}
+        >
+          <span
+            css={`
+              ${textStyle('body2')};
+              color: ${theme.content};
+              margin-right: ${0.5 * GU}px;
+            `}
+          >
+            Covenant
+          </span>
+          <Help>
+            If you don’t have this images yet, you will get default ones
+            assigned in the meantime.
+          </Help>
+        </div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            ${textStyle('body2')};
+            color: ${theme.contentSecondary};
+          `}
+        >
+          <span>
+            Drag and drop a document here or <TextFileUploader /> to upload your
+            community covenant. By uploading a file, you agree to Gardens
+            uploading this file to IPFS.
+          </span>
+          <span
+            css={`
+              color: ${formatValidationColor};
+              font-weight: 600;
+              margin-top: ${1 * GU}px;
+            `}
+          >
+            Valid file formats are: MD and TXT
+          </span>
+        </div>
         <FileUploaderField
           allowedMIMETypes={['text/markdown', 'text/plain']}
           file={covenantFile}
+          onDragaAccepted={handleOnDragAccepted}
+          onDragRejected={handleOnDragRejected}
           onFileUpdated={handleCovenantFileChange}
-          description={
-            <>
-              Drag and drop a document here or <TextFileUploader /> to upload
-              your community covenant. By uploading a file, you agree to Gardens
-              uploading this file to IPFS.
-            </>
-          }
-          label="Covenant"
           previewLabel={
             <div
               css={`
@@ -175,7 +235,6 @@ function AgreementSettings() {
               </Link>
             </div>
           }
-          required
         />
         <DurationFields
           label={
@@ -192,41 +251,39 @@ function AgreementSettings() {
           }
           duration={challengePeriod}
           onUpdate={handleChallengePeriod}
-          required
         />
         <AmountField
           label={
             <Fragment>
-              Challenge Fee
-              <Help hint="What is Challenge Fee?">
-                <strong>Challenge Fee</strong> is the amount of collateral
-                tokens that will be locked every time an action is challenged.
+              Challenge Deposit
+              <Help hint="What is Challenge Deposit?">
+                <strong>Challenge Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal and decision vote) is challenged.
               </Help>
             </Fragment>
           }
           value={challengeAmount}
           onChange={handleChallengeAmount}
-          required
           unitSymbol={config.tokens.symbol}
           wide
         />
         <AmountField
           label={
             <Fragment>
-              Action Fee
-              <Help hint="What is Action Fee?">
-                <strong>The Action Fee</strong> is the amount of collateral
-                tokens that will be locked every time an action is submitted.
+              Action Deposit
+              <Help hint="What is Action Deposit?">
+                <strong>Action Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal and decision vote) is submitted.
               </Help>
             </Fragment>
           }
           value={actionAmount}
           onChange={handleActionAmount}
-          required
           unitSymbol={config.tokens.symbol}
           wide
         />
-        <Info>We recommend sticking with the default values.</Info>
         {formError && (
           <Info
             mode="error"
