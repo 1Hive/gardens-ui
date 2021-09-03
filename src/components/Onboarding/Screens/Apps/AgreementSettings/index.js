@@ -209,6 +209,7 @@ function AgreementSettings() {
               color: ${formatValidationColor};
               font-weight: 600;
               margin-top: ${1 * GU}px;
+              margin-bottom: ${2 * GU}px;
             `}
           >
             Valid file formats are: MD and TXT
