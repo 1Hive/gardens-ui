@@ -292,6 +292,7 @@ function GardenMetadata() {
                 css={`
                   color: ${formatValidationColor};
                   font-weight: 600;
+                  margin-top: ${1 * GU}px;
                 `}
               >
                 Valid file formats are: JPG and PNG
@@ -301,13 +302,12 @@ function GardenMetadata() {
               css={`
                 margin-top: ${2 * GU}px;
                 display: flex;
-                align-items: center;
-                justify-content: space-between;
               `}
             >
               <div
                 css={`
-                  min-width: 194px;
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
                 `}
               >
                 <FileUploaderField
@@ -316,12 +316,13 @@ function GardenMetadata() {
                   onDragaAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoTypeUpdated}
-                  label="GARDEN HEADER LOGO "
+                  label="HEADER LOGO "
                 />
               </div>
               <div
                 css={`
-                  min-width: 194px;
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
                 `}
               >
                 <FileUploaderField
@@ -335,7 +336,7 @@ function GardenMetadata() {
               </div>
               <div
                 css={`
-                  min-width: 194px;
+                  width: 100%;
                 `}
               >
                 <FileUploaderField
@@ -344,7 +345,7 @@ function GardenMetadata() {
                   onDragaAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
-                  label="TOKEN LOGO"
+                  label="TOKEN ICON"
                 />
               </div>
             </div>
@@ -483,7 +484,6 @@ function LinksBox({
                 display: grid;
                 grid-template-columns: auto ${18 * GU}px;
                 grid-column-gap: ${1.5 * GU}px;
-                ${textStyle('body3')};
               `}
             >
               <div>Link</div>
@@ -615,8 +615,8 @@ function MetadataField({ children, label, optional, tooltip }) {
       >
         <span
           css={`
-            ${textStyle('body2')};
-            color: ${theme.content};
+            ${textStyle('label2')};
+            color: ${theme.surfaceContentSecondary};
             margin-right: ${0.5 * GU}px;
           `}
         >
