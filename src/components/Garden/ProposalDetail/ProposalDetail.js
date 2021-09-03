@@ -27,10 +27,11 @@ import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
-import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
+
 
 // Hooks
 import { useWallet } from '@providers/Wallet'
