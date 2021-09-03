@@ -89,13 +89,16 @@ export default function useActions() {
   )
 
   const cancelProposal = useCallback(
-    async proposalId => {
-      sendIntent(convictionVotingApp, 'cancelProposal', [proposalId], {
-        ethers,
-        from: account,
-      })
+    async (proposalId, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'cancelProposal',
+        [proposalId],
+        {
+          actAs: account,
+        }
+      )
 
-      // onDone()
+      onDone(intent.transactions)
     },
     [account, convictionVotingApp, ethers]
   )
