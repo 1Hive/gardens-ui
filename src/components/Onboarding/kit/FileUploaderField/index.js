@@ -116,15 +116,17 @@ export const FileUploaderField = ({
         ${textStyle('body2')};
       `}
     >
-      <Field label={label} required={required}>
-        <div
-          css={`
-            margin-top: ${1 * GU}px;
-          `}
-        >
-          {description}
-        </div>
-      </Field>
+      {label && (
+        <Field label={label} required={required}>
+          <div
+            css={`
+              margin-top: ${1 * GU}px;
+            `}
+          >
+            {description}
+          </div>
+        </Field>
+      )}
       {/* Set dropzone here due to some problems with the field component and the onclick event bubbling. */}
       <Card
         width="100%"
