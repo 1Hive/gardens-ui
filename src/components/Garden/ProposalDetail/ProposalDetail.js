@@ -30,6 +30,7 @@ import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeS
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
+import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 
 // Hooks
 import { useWallet } from '@providers/Wallet'
@@ -64,7 +65,7 @@ function ProposalDetail({
   const { account: connectedAccount } = useWallet()
 
   const {
-    id,
+    // id,
     name,
     creator,
     beneficiary,
@@ -82,10 +83,6 @@ function ProposalDetail({
   const handleBack = useCallback(() => {
     history.goBack()
   }, [history])
-
-  const handleCancelProposal = useCallback(() => {
-    actions.cancelProposal(id)
-  }, [id, actions])
 
   const handleResolveAction = useCallback(() => {
     actions.resolveAction(proposal.disputeId)
@@ -326,7 +323,7 @@ function ProposalDetail({
                         from consideration
                       </span>
                       <Button
-                        onClick={handleCancelProposal}
+                        onClick={() => handleShowModal('remove')}
                         wide
                         css={`
                           margin-top: ${3 * GU}px;
@@ -379,6 +376,9 @@ function ProposalDetail({
         {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
         {(modalMode === 'support' || modalMode === 'update') && (
           <SupportProposalScreens proposal={proposal} mode={modalMode} />
+        )}
+        {modalMode === 'remove' && (
+          <RemoveProposalScreens proposal={proposal} />
         )}
       </MultiModal>
     </div>
