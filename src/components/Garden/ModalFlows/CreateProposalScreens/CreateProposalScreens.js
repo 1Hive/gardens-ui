@@ -111,7 +111,7 @@ function CreateProposalScreens() {
       frontLoad
       loading={loading}
       transactions={transactions}
-      transactionTitle="Create transaction"
+      transactionTitle="Create proposal"
       screens={screens}
     />
   )

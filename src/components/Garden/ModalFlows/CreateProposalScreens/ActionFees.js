@@ -104,7 +104,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         </div>
       </div>
       <Button
-        label="Create transaction"
+        label="Deposit and create proposal"
         mode="strong"
         onClick={handleOnCreateTransaction}
         css={`
