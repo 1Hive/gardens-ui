@@ -100,7 +100,7 @@ export default function useActions() {
 
       onDone(intent.transactions)
     },
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp]
   )
 
   const stakeToProposal = useCallback(
