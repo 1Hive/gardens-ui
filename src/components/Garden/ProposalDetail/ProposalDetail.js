@@ -32,7 +32,6 @@ import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettlePro
 import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
-
 // Hooks
 import { useWallet } from '@providers/Wallet'
 
