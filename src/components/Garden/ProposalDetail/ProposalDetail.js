@@ -65,7 +65,6 @@ function ProposalDetail({
   const { account: connectedAccount } = useWallet()
 
   const {
-    // id,
     name,
     creator,
     beneficiary,
