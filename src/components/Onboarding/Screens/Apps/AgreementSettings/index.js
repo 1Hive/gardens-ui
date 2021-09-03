@@ -179,8 +179,8 @@ function AgreementSettings() {
         >
           <span
             css={`
-              ${textStyle('body2')};
-              color: ${theme.content};
+              ${textStyle('label2')};
+              color: ${theme.surfaceContentSecondary};
               margin-right: ${0.5 * GU}px;
             `}
           >
