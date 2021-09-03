@@ -7,6 +7,7 @@ import {
   IconPlus,
   IconTrash,
   Info,
+  Link,
   TextInput,
   textStyle,
   useTheme,
@@ -223,6 +224,15 @@ function GardenMetadata() {
     setFormatValidationColor(theme.error)
   }, [theme])
 
+  const ForumTooltip = (
+    <div>
+      Add the URL to your discussion platform - we recommend{' '}
+      <Link href="https://www.discourse.org">discourse</Link> if you don't, the{' '}
+      <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned
+      by default.
+    </div>
+  )
+
   return (
     <div>
       <Header
@@ -237,27 +247,15 @@ function GardenMetadata() {
           margin-bottom: ${4 * GU}px;
         `}
       >
-        <Field
-          label="Garden Name"
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        <MetadataField label="GARDEN NAME">
           <TextInput
             maxLength="15"
             onChange={handleGardenNameChange}
             value={formData.name}
             css="width: 100%;"
           />
-        </Field>
-        <Field
-          label="Garden Description"
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        </MetadataField>
+        <MetadataField label="GARDEN DESCRIPTION">
           <TextInput
             multiline
             maxLength="120"
@@ -265,77 +263,28 @@ function GardenMetadata() {
             value={formData.description}
             css="width: 100%;"
           />
-        </Field>
-        <Field
-          label={
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                width: 100%;
-              `}
-            >
-              <p
-                css={`
-                  ${textStyle('body4')};
-                  font-weight: 600;
-                `}
-              >
-                Forum (optional)
-              </p>
-              <Help>
-                Add the URL to your discussion platform - we recommend discourse
-                (https://www.discourse.org). If you don't, the 1Hive forum will
-                be assigned (https://forum.1hive.org) by default.
-              </Help>
-            </div>
-          }
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        </MetadataField>
+        <MetadataField label="FORUM" optional tooltip={ForumTooltip}>
           <TextInput
             onChange={handleForumChange}
             value={formData.forum}
             css="width: 100%;"
           />
-        </Field>
+        </MetadataField>
 
-        <div
-          css={`
-            width: 100%;
-          `}
+        <MetadataField
+          optional
+          label="ASSETS"
+          tooltip="If you don’t have this images yet, you will get default ones
+                assigned in the meantime."
         >
           <div>
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-              `}
-            >
-              {/* We need to have this Field without using the field component to avoid the  issue about clicking outside  the file chooser and poping up the selelector */}
-              <span
-                css={`
-                  ${textStyle('body2')};
-                  color: ${theme.content};
-                  margin-right: ${0.5 * GU}px;
-                `}
-              >
-                ASSETS (optional)
-              </span>
-              <Help>
-                If you don’t have this images yet, you will get default ones
-                assigned in the meantime.
-              </Help>
-            </div>
             <div
               css={`
                 display: flex;
                 flex-direction: column;
                 ${textStyle('body2')};
                 color: ${theme.contentSecondary};
-                margin-top: ${2 * GU}px;
               `}
             >
               <span>Drag and drop or browse your files to upload one.</span>
@@ -343,64 +292,65 @@ function GardenMetadata() {
                 css={`
                   color: ${formatValidationColor};
                   font-weight: 600;
+                  margin-top: ${1 * GU}px;
                 `}
               >
                 Valid file formats are: JPG and PNG
               </span>
             </div>
+            <div
+              css={`
+                margin-top: ${2 * GU}px;
+                display: flex;
+              `}
+            >
+              <div
+                css={`
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.logo_type}
+                  onDragaAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnGardenLogoTypeUpdated}
+                  label="HEADER LOGO "
+                />
+              </div>
+              <div
+                css={`
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.logo}
+                  onDragaAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnGardenLogoUpdated}
+                  label="GARDEN LOGO"
+                />
+              </div>
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.token_logo}
+                  onDragaAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnTokenLogoUpdated}
+                  label="TOKEN ICON"
+                />
+              </div>
+            </div>
           </div>
-          <div
-            css={`
-              margin-top: ${2 * GU}px;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            `}
-          >
-            <div
-              css={`
-                min-width: 194px;
-              `}
-            >
-              <FileUploaderField
-                allowedMIMETypes={['image/jpeg', 'image/png']}
-                file={formData.logo_type}
-                onDragaAccepted={handleOnDragAccepted}
-                onDragRejected={handleOnDragRejected}
-                onFileUpdated={handleOnGardenLogoTypeUpdated}
-                label="GARDEN LOGO TYPE"
-              />
-            </div>
-            <div
-              css={`
-                min-width: 194px;
-              `}
-            >
-              <FileUploaderField
-                allowedMIMETypes={['image/jpeg', 'image/png']}
-                file={formData.logo}
-                onDragaAccepted={handleOnDragAccepted}
-                onDragRejected={handleOnDragRejected}
-                onFileUpdated={handleOnGardenLogoUpdated}
-                label="GARDEN LOGO"
-              />
-            </div>
-            <div
-              css={`
-                min-width: 194px;
-              `}
-            >
-              <FileUploaderField
-                allowedMIMETypes={['image/jpeg', 'image/png']}
-                file={formData.token_logo}
-                onDragaAccepted={handleOnDragAccepted}
-                onDragRejected={handleOnDragRejected}
-                onFileUpdated={handleOnTokenLogoUpdated}
-                label="TOKEN LOGO"
-              />
-            </div>
-          </div>
-        </div>
+        </MetadataField>
         <LinksBox
           fieldTitle="COMMUNITY LINKS"
           linksType={COMMUNITY_LINK_TYPE}
@@ -494,52 +444,32 @@ function LinksBox({
     }
   }, [focusLastLinkNext])
 
-  return (
+  const ImageTooltip = (
     <div
       css={`
         width: 100%;
-        margin-top: ${2 * GU}px;
       `}
     >
-      <div
+      <h3
         css={`
-          display: flex;
-          align-items: center;
+          ${textStyle('body3')};
+          color: ${theme.contentSecondary};
         `}
       >
-        <span
-          css={`
-            ${textStyle('body2')};
-            color: ${theme.content};
-            margin-right: ${0.5 * GU}px;
-          `}
-        >
-          {fieldTitle} (optional)
-        </span>
-        <Help>
-          <div
-            css={`
-              width: 100%;
-            `}
-          >
-            <h3
-              css={`
-                ${textStyle('body3')};
-                color: ${theme.contentSecondary};
-              `}
-            >
-              This links will be displayed at the footer of your Garden
-            </h3>
-            <img
-              css={`
-                width: 100%;
-              `}
-              alt=""
-              src={LinksTooltipImg}
-            />
-          </div>
-        </Help>
-      </div>
+        This links will be displayed at the footer of your Garden
+      </h3>
+      <img
+        css={`
+          width: 100%;
+        `}
+        alt=""
+        src={LinksTooltipImg}
+      />
+    </div>
+  )
+
+  return (
+    <MetadataField optional label={fieldTitle} tooltip={ImageTooltip}>
       <div
         css={`
           width: 100%;
@@ -554,7 +484,6 @@ function LinksBox({
                 display: grid;
                 grid-template-columns: auto ${18 * GU}px;
                 grid-column-gap: ${1.5 * GU}px;
-                ${textStyle('body3')};
               `}
             >
               <div>Link</div>
@@ -591,7 +520,7 @@ function LinksBox({
           />
         </Field>
       </div>
-    </div>
+    </MetadataField>
   )
 }
 
@@ -669,4 +598,41 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
   )
 }
 
+function MetadataField({ children, label, optional, tooltip }) {
+  const theme = useTheme()
+  return (
+    <div
+      css={`
+        width: 100%;
+        margin-top: ${2 * GU}px;
+      `}
+    >
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <span
+          css={`
+            ${textStyle('label2')};
+            color: ${theme.surfaceContentSecondary};
+            margin-right: ${0.5 * GU}px;
+          `}
+        >
+          {label} {optional && ' (optional)'}
+        </span>
+        {tooltip && <Help>{tooltip}</Help>}
+      </div>
+      <div
+        css={`
+          width: 100%;
+          margin-top: ${1 * GU}px;
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
 export default GardenMetadata
