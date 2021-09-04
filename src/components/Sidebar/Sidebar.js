@@ -1,26 +1,9 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { GU, useTheme, Link } from '@1hive/1hive-ui'
 import gardensLogo from '@assets/gardensLogoMark.svg'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import MenuItem from './MenuItem'
-import { useGardens } from '@/providers/Gardens'
 
 function Sidebar() {
   const theme = useTheme()
-  const { connectedGarden, gardens } = useGardens()
-
-  const gardenData = useMemo(
-    () =>
-      gardens.slice(0, 10).map(garden => {
-        return {
-          name: garden.name,
-          address: garden.address,
-          path: `#/garden/${garden.address}`,
-          src: garden.logo || defaultGardenLogo,
-        }
-      }),
-    [gardens]
-  )
 
   return (
     <div
@@ -31,6 +14,7 @@ function Sidebar() {
         background: ${theme.surface};
         border-right: 1px solid ${theme.border};
         box-shadow: 2px 0px 4px rgba(160, 168, 194, 0.16);
+        height: 64px;
       `}
     >
       <div
@@ -63,19 +47,6 @@ function Sidebar() {
           </Link>
         </div>
       </div>
-      <nav>
-        <ul>
-          {gardenData.map((garden, i) => (
-            <MenuItem
-              key={garden.address}
-              active={garden.address === connectedGarden.address}
-              path={garden.path}
-              name={garden.name}
-              src={garden.src}
-            />
-          ))}
-        </ul>
-      </nav>
     </div>
   )
 }
