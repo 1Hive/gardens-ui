@@ -50,7 +50,7 @@ export const FileUploaderField = ({
   label,
   maxFileSize = DEFAULT_MAX_FILE_SIZE,
   onDragRejected = () => {},
-  onDragaAccepted = () => {},
+  onDragAccepted = () => {},
   onFileUpdated = () => {},
   previewLabel,
   required = false,
@@ -105,8 +105,8 @@ export const FileUploaderField = ({
       return
     }
 
-    onDragaAccepted()
-  }, [isDragAccept, isDragReject, onDragaAccepted, onDragRejected])
+    onDragAccepted()
+  }, [isDragAccept, isDragReject, onDragAccepted, onDragRejected])
 
   return (
     <div
@@ -223,7 +223,7 @@ TextFileUploader.propTypes = {
 
 FileUploaderField.propTypes = {
   file: PropTypes.object,
-  onDragaAccepted: PropTypes.func,
+  onDragAccepted: PropTypes.func,
   onDragRejected: PropTypes.func,
   onFileUpdated: PropTypes.func,
   description: PropTypes.node,

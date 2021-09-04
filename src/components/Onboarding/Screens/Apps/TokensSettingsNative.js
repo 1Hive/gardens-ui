@@ -14,9 +14,9 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
+import Header from '../../kit/Header'
 import Navigation from '../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
-import Header from '../../kit/Header'
 
 function useFieldsLayout() {
   return `

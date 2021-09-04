@@ -12,9 +12,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
 import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
+import { useOnboardingState } from '@providers/Onboarding'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
 
@@ -227,7 +227,7 @@ function GardenMetadata() {
   const ForumTooltip = (
     <div>
       Add the URL to your discussion platform - we recommend{' '}
-      <Link href="https://www.discourse.org">discourse</Link> if you don't, the{' '}
+      <Link href="https://www.discourse.org">discourse</Link>. If you don't, the{' '}
       <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned
       by default.
     </div>
@@ -313,10 +313,10 @@ function GardenMetadata() {
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
                   file={formData.logo_type}
-                  onDragaAccepted={handleOnDragAccepted}
+                  onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoTypeUpdated}
-                  label="HEADER LOGO "
+                  label="HEADER LOGO"
                 />
               </div>
               <div
@@ -328,7 +328,7 @@ function GardenMetadata() {
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
                   file={formData.logo}
-                  onDragaAccepted={handleOnDragAccepted}
+                  onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoUpdated}
                   label="GARDEN LOGO"
@@ -342,7 +342,7 @@ function GardenMetadata() {
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
                   file={formData.token_logo}
-                  onDragaAccepted={handleOnDragAccepted}
+                  onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
                   label="TOKEN ICON"

@@ -155,7 +155,7 @@ function AgreementSettings() {
       <Header
         title="Garden Governance"
         subtitle="Community Covenant"
-        thirdtitle=" Encode the social contract of your DAO"
+        thirdtitle="Encode the social contract of your DAO"
       />
       <div
         css={`
@@ -187,8 +187,12 @@ function AgreementSettings() {
             Covenant
           </span>
           <Help>
-            If you don’t have this images yet, you will get default ones
-            assigned in the meantime.
+            A covenant is a document, stored on IPFS, which explains what the
+            Garden is about in plain English. It establishes values, rules, and
+            customs. And is used to protect the Garden from malicious actors
+            without sacrificing the agency of its members. Take{' '}
+            <Link href="https://1hive.org/#/covenant">1Hive’s Covenant</Link> as
+            an example.
           </Help>
         </div>
         <div
@@ -218,7 +222,7 @@ function AgreementSettings() {
         <FileUploaderField
           allowedMIMETypes={['text/markdown', 'text/plain']}
           file={covenantFile}
-          onDragaAccepted={handleOnDragAccepted}
+          onDragAccepted={handleOnDragAccepted}
           onDragRejected={handleOnDragRejected}
           onFileUpdated={handleCovenantFileChange}
           previewLabel={
@@ -237,38 +241,6 @@ function AgreementSettings() {
             </div>
           }
         />
-        <DurationFields
-          label={
-            <Fragment>
-              Settlement Period
-              <Help hint="What is the Settlement Period?">
-                The <strong>Settlement Period</strong> is the amount of time the
-                proposal author has to either accept a settlement or raise the
-                dispute to{' '}
-                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{' '}
-                after a proposal has been challenged.
-              </Help>
-            </Fragment>
-          }
-          duration={challengePeriod}
-          onUpdate={handleChallengePeriod}
-        />
-        <AmountField
-          label={
-            <Fragment>
-              Challenge Deposit
-              <Help hint="What is Challenge Deposit?">
-                <strong>Challenge Deposit</strong> is the amount of collateral
-                tokens that will be locked every time an action (proposal for
-                funding, signaling proposal and decision vote) is challenged.
-              </Help>
-            </Fragment>
-          }
-          value={challengeAmount}
-          onChange={handleChallengeAmount}
-          unitSymbol={config.tokens.symbol}
-          wide
-        />
         <AmountField
           label={
             <Fragment>
@@ -284,6 +256,38 @@ function AgreementSettings() {
           onChange={handleActionAmount}
           unitSymbol={config.tokens.symbol}
           wide
+        />
+        <AmountField
+          label={
+            <Fragment>
+              Challenge Deposit
+              <Help hint="What is Challenge Deposit?">
+                <strong>Challenge Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal or decision vote) is challenged.
+              </Help>
+            </Fragment>
+          }
+          value={challengeAmount}
+          onChange={handleChallengeAmount}
+          unitSymbol={config.tokens.symbol}
+          wide
+        />
+        <DurationFields
+          label={
+            <Fragment>
+              Settlement Period
+              <Help hint="What is the Settlement Period?">
+                The <strong>Settlement Period</strong> is the amount of time the
+                proposal author has to either accept a settlement or raise the
+                dispute to{' '}
+                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{' '}
+                after a proposal has been challenged.
+              </Help>
+            </Fragment>
+          }
+          duration={challengePeriod}
+          onUpdate={handleChallengePeriod}
         />
         {formError && (
           <Info

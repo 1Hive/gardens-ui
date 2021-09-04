@@ -21,7 +21,6 @@ function Header({
         css={`
           font-size: 40px;
           font-weight: 600;
-          padding-bottom: ${subtitle || thirdtitle ? 1 * GU : 0}px;
         `}
       >
         {title}
@@ -31,7 +30,7 @@ function Header({
           css={`
             ${textStyle('title3')};
             color: ${theme.contentSecondary};
-            padding-bottom: ${thirdtitle ? 2 * GU : 0}px;
+            padding-top: ${1 * GU}px;
           `}
         >
           {subtitle}
@@ -42,6 +41,7 @@ function Header({
           css={`
             ${textStyle('body2')};
             color: ${theme.contentSecondary};
+            padding-top: ${2 * GU}px;
           `}
         >
           {thirdtitle}
