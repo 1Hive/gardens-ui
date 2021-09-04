@@ -172,6 +172,8 @@ function AgreementSettings() {
         </Field>
         <div
           css={`
+            display: flex;
+            align-items: center;
             margin-bottom: ${1 * GU}px;
           `}
         >
@@ -184,6 +186,14 @@ function AgreementSettings() {
           >
             Covenant
           </span>
+          <Help>
+            A covenant is a document, stored on IPFS, which explains what the
+            Garden is about in plain English. It establishes values, rules, and
+            customs. And is used to protect the Garden from malicious actors
+            without sacrificing the agency of its members. Take{' '}
+            <Link href="https://1hive.org/#/covenant">1Hive’s Covenant</Link> as
+            an example.
+          </Help>
         </div>
         <div
           css={`
