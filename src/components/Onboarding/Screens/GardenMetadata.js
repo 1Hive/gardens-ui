@@ -31,7 +31,14 @@ const URL_REGEX = new RegExp(
 
 function GardenMetadata() {
   const theme = useTheme()
-  const { config, onBack, onConfigChange, onNext } = useOnboardingState()
+  const {
+    config,
+    onBack,
+    onConfigChange,
+    onNext,
+    steps,
+    step,
+  } = useOnboardingState()
   const [formData, setFormData] = useState(config.garden)
   const [displayErrors, setDisplayErrors] = useState(false)
   const [formatValidationColor, setFormatValidationColor] = useState(
@@ -385,7 +392,7 @@ function GardenMetadata() {
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next"
+        nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={handleBack}
         onNext={handleNext}
       />
