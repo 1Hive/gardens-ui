@@ -4,22 +4,21 @@ import {
   GU,
   Help,
   Info,
-  IconCheck,
-  IconCross,
   isAddress,
   LoadingRing,
   TextInput,
-  theme,
 } from '@1hive/1hive-ui'
-import Header from '../../kit/Header'
-import Navigation from '../../Navigation'
+import Header from '../../../kit/Header'
+import Navigation from '../../../Navigation'
 import { useTokenData } from '@hooks/useToken'
 import { useOnboardingState } from '@providers/Onboarding'
+import iconError from '@assets/iconError.svg'
+import iconCheck from '@assets/iconCheck.svg'
 
 function useFieldsLayout() {
   return `
     display: grid;
-    grid-template-columns: auto ${21 * GU}px;
+    grid-template-columns: 8fr 1fr 1fr;
     grid-column-gap: ${1.5 * GU}px;
   `
 }
@@ -39,7 +38,7 @@ function validationError(tokenAddress, tokenName, tokenSymbol) {
   return null
 }
 
-function TokensSettingsBYOT() {
+function TokenSettingsBYOT() {
   const fieldsLayout = useFieldsLayout()
 
   const {
@@ -56,8 +55,10 @@ function TokensSettingsBYOT() {
   const [tokenData, loadingTokenData, tokenDataError] = useTokenData(
     isAddress(tokenAddress) && tokenAddress
   )
-  const [gTokenName, setGTokenName] = useState(config.tokens.name)
-  const [gTokenSymbol, setGTokenSymbol] = useState(config.tokens.symbol)
+  const [gardenTokenName, setGardenTokenName] = useState(config.tokens.name)
+  const [gardenTokenSymbol, setGardenTokenSymbol] = useState(
+    config.tokens.symbol
+  )
 
   const handleTokenAddressChange = useCallback(event => {
     setFormError(null)
@@ -65,34 +66,44 @@ function TokensSettingsBYOT() {
   }, [])
   const handleTokenNameChange = useCallback(event => {
     setFormError(null)
-    setGTokenName(event.target.value)
+    setGardenTokenName(event.target.value)
   }, [])
   const handleTokenSymbolChange = useCallback(event => {
     setFormError(null)
-    setGTokenSymbol(event.target.value.trim().toUpperCase())
+    setGardenTokenSymbol(event.target.value.trim().toUpperCase())
   }, [])
 
   const handleNext = useCallback(
     event => {
       event.preventDefault()
 
-      const error = validationError(tokenAddress, gTokenName, gTokenSymbol)
+      const error = validationError(
+        tokenAddress,
+        gardenTokenName,
+        gardenTokenSymbol
+      )
       setFormError(error)
 
       if (!error) {
         onConfigChange('tokens', {
           address: tokenAddress,
-          name: gTokenName,
-          symbol: gTokenSymbol,
+          name: gardenTokenName,
+          symbol: gardenTokenSymbol,
           decimals: tokenData.decimals,
           existingTokenSymbol: tokenData.symbol,
         })
         onNext()
       }
     },
-    [gTokenName, gTokenSymbol, onConfigChange, onNext, tokenAddress, tokenData]
+    [
+      gardenTokenName,
+      gardenTokenSymbol,
+      onConfigChange,
+      onNext,
+      tokenAddress,
+      tokenData,
+    ]
   )
-
   useEffect(() => {
     if (
       isAddress(tokenAddress) &&
@@ -101,11 +112,11 @@ function TokensSettingsBYOT() {
       tokenData.symbol &&
       !loadingTokenData
     ) {
-      setGTokenName(`Garden ${tokenData.name}`)
-      setGTokenSymbol(`g${tokenData.symbol}`)
+      setGardenTokenName(`Garden ${tokenData.name}`)
+      setGardenTokenSymbol(`g${tokenData.symbol}`)
     } else {
-      setGTokenName('')
-      setGTokenSymbol('')
+      setGardenTokenName('')
+      setGardenTokenSymbol('')
     }
   }, [tokenData, loadingTokenData, tokenAddress, tokenDataError])
 
@@ -113,18 +124,13 @@ function TokensSettingsBYOT() {
     <form
       css={`
         display: grid;
-        align-items: center;
-        justify-content: center;
       `}
     >
-      <div
-        css={`
-          width: 752px;
-        `}
-      >
+      <div>
         <Header
-          title="Configure Garden Token"
-          subtitle={<span>Choose your settings below.</span>}
+          title="Garden Tokenomics"
+          subtitle="Garden token"
+          thirdtitle="Choose the settings of your token"
         />
         <div
           css={`
@@ -136,11 +142,14 @@ function TokensSettingsBYOT() {
               <React.Fragment>
                 Token address
                 <Help hint="What is Token Address?">
-                  <strong>Token Address</strong> is the address of the token you
-                  want to bring to the garden.
+                  <strong>Token Address</strong> is the address of an existent
+                  ERC-20 token to use within your garden.
                 </Help>
               </React.Fragment>
             }
+            css={`
+              grid-column: 1/3;
+            `}
           >
             {({ id }) => (
               <TextInput
@@ -170,12 +179,12 @@ function TokensSettingsBYOT() {
             )}
 
             {!tokenDataError &&
-              gTokenSymbol &&
-              gTokenName &&
-              !loadingTokenData && <IconCheck color={theme.positive} />}
+              gardenTokenSymbol &&
+              gardenTokenName &&
+              !loadingTokenData && <img src={iconCheck} />}
 
             {tokenDataError && !loadingTokenData && isAddress(tokenAddress) && (
-              <IconCross color={theme.negative} />
+              <img src={iconError} />
             )}
           </div>
 
@@ -185,7 +194,7 @@ function TokensSettingsBYOT() {
                 Garden Token Name
                 <Help hint="What is Token Name?">
                   <strong>Garden Token Name</strong> is the name you can assign
-                  to the token you are bringing to this garden.
+                  to the token that will be minted when creating this garden.
                 </Help>
               </React.Fragment>
             }
@@ -195,32 +204,34 @@ function TokensSettingsBYOT() {
                 id={id}
                 onChange={handleTokenNameChange}
                 placeholder="Garden Token Name"
-                value={gTokenName}
-                disabled={!gTokenName}
+                value={gardenTokenName}
+                disabled={!gardenTokenName}
                 wide
               />
             )}
           </Field>
-
           <Field
             label={
               <React.Fragment>
                 Garden Token Symbol
                 <Help hint="What is Token Symbol?">
                   <strong>Garden Token Symbol</strong> or ticker is a shortened
-                  name (typically in capital letters) that refers to a token or
-                  coin on a trading platform. For example: HNY.
+                  name (typically in capital letters) that refers to a token on
+                  a trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
+            css={`
+              grid-column: 2/4;
+            `}
           >
             {({ id }) => (
               <TextInput
                 id={id}
                 onChange={handleTokenSymbolChange}
-                value={gTokenSymbol}
+                value={gardenTokenSymbol}
                 placeholder="MCT"
-                disabled={!gTokenSymbol}
+                disabled={!gardenTokenSymbol}
                 wide
               />
             )}
@@ -238,15 +249,15 @@ function TokensSettingsBYOT() {
           {formError}
         </Info>
       )}
-      {gTokenName && gTokenSymbol && (
+      {gardenTokenName && gardenTokenSymbol && (
         <Info
           mode="warning"
           css={`
             margin-bottom: ${3 * GU}px;
           `}
         >
-          We recommend sticking with the default syntax here unless you have a
-          good reason not to.
+          We recommend sticking with the default syntax unless you have a good
+          reason not to.
         </Info>
       )}
 
@@ -263,11 +274,12 @@ function TokensSettingsBYOT() {
 
       <Info
         css={`
-          margin-bottom: ${3 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
-        These settings will determine the name and symbol of your community
-        token. Add the address of the token you want to bring to your Garden.
+        Add the address of an existent ERC-20 token you want to use within your
+        Garden. These settings will determine the name and symbol of a new token
+        that will govern your community.
       </Info>
 
       <Navigation
@@ -281,4 +293,4 @@ function TokensSettingsBYOT() {
   )
 }
 
-export default TokensSettingsBYOT
+export default TokenSettingsBYOT
