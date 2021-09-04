@@ -14,8 +14,8 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import Header from '../../kit/Header'
-import Navigation from '../../Navigation'
+import Header from '../../../kit/Header'
+import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
 
 function useFieldsLayout() {
@@ -53,7 +53,7 @@ function validationError(tokenName, tokenSymbol, members) {
   return null
 }
 
-function TokensSettingsNative() {
+function TokenSettingsNative() {
   const theme = useTheme()
   const fieldsLayout = useFieldsLayout()
 
@@ -167,14 +167,12 @@ function TokensSettingsNative() {
     <form
       css={`
         display: grid;
-        align-items: center;
-        justify-content: center;
       `}
     >
       <div>
         <Header
-          title="Configure Garden Token"
-          subtitle={<span>Choose your settings below.</span>}
+          title="Configure Tokenomics"
+          subtitle={<span>Token Settings</span>}
         />
 
         <div
@@ -414,4 +412,4 @@ MemberField.propTypes = {
   onUpdate: PropTypes.func.isRequired,
 }
 
-export default TokensSettingsNative
+export default TokenSettingsNative
