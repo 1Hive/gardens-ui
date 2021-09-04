@@ -2,7 +2,6 @@ import { bigNum } from '@lib/bigNumber'
 import { getNetwork } from '@/networks'
 import { ZERO_ADDR } from '@/constants'
 import { getContract } from '@hooks/useContract'
-import { uploadToPinata } from '@/services/pinata'
 import { encodeFunctionData } from '@utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
@@ -157,19 +156,11 @@ export function createGardenTxTwo({ conviction, issuance }) {
   ])
 }
 
-export async function createGardenTxThree({
-  agreement,
-  garden,
-  liquidity,
-  tokens,
-}) {
+export async function createGardenTxThree(
+  { agreement, garden, liquidity, tokens },
+  agreementContent
+) {
   const daoId = garden.name // TODO: Remember to do a check for the garden.name on the garden metadata screen, otherwise tx might fail if garden name already taken
-  const pinataResult = await uploadToPinata(agreement.covenantFile.blob)
-  if (pinataResult.error) {
-    throw new Error(pinataResult.error)
-  }
-
-  const agreementContent = pinataResult.data.IpfsHash
 
   // Adjust action and challenge amounts (challenge period already comes in seconds)
   const { actionAmount, challengeAmount } = agreement

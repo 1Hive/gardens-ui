@@ -94,23 +94,29 @@ function OnboardingProvider({ children }) {
     []
   )
 
-  const getTransactions = useCallback(async () => {
-    // Token approvals
-    const txs = [...createTokenApproveTxs(config)]
+  const getTransactions = useCallback(
+    async covenantIpfsHash => {
+      // Token approvals
+      const txs = [...createTokenApproveTxs(config)]
 
-    // Tx one
-    txs.push(createGardenTxOne(config))
+      // Tx one
+      txs.push(createGardenTxOne(config))
 
-    if (config.garden.type === NATIVE_TYPE) {
-      // Mint seeds balances
-      txs.push(createTokenHoldersTx(config))
-    }
+      if (config.garden.type === NATIVE_TYPE) {
+        // Mint seeds balances
+        txs.push(createTokenHoldersTx(config))
+      }
 
-    // Tx two, tx three
-    txs.push(createGardenTxTwo(config), await createGardenTxThree(config))
+      // Tx two, tx three
+      txs.push(
+        createGardenTxTwo(config),
+        createGardenTxThree(config, covenantIpfsHash)
+      )
 
-    return txs
-  }, [config])
+      return txs
+    },
+    [config]
+  )
 
   // Navigation
   const handleBack = useCallback(() => {
