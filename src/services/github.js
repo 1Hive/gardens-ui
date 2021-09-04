@@ -198,7 +198,7 @@ const changeHeadsCommitSha = async commitSha => {
   }
 }
 
-const fetchFileContent = async () => {
+export const fetchFileContent = async () => {
   const endpoint = `${ENDPOINT_BASE}/contents/${NETWORK}.json`
   try {
     const result = await fetch(endpoint, {
