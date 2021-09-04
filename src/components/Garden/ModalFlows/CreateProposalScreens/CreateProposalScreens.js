@@ -72,7 +72,7 @@ function CreateProposalScreens() {
         ? []
         : [
             {
-              title: 'Submit proposal requirements',
+              title: 'Create proposal requirements',
               graphicHeader: false,
               content: (
                 <CreateProposalRequirements
@@ -111,7 +111,7 @@ function CreateProposalScreens() {
       frontLoad
       loading={loading}
       transactions={transactions}
-      transactionTitle="Create transaction"
+      transactionTitle="Create proposal"
       screens={screens}
     />
   )

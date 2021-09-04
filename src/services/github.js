@@ -3,7 +3,7 @@ import env from '@/environment'
 
 const NETWORK = getNetworkName().toLowerCase()
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
-const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
+const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 
 // This step must be called after the dao is published and we have the dao address
 export async function publishNewDao(daoMetadata) {
@@ -20,13 +20,13 @@ export async function publishNewDao(daoMetadata) {
       links: daoMetadata.links,
       logo:
         daoMetadata.logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
       logo_type:
         daoMetadata.logo_type &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
       token_logo:
         daoMetadata.token_logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
+        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
     })
     const newContent = {
       ...fileContent,
@@ -152,7 +152,7 @@ const createFileContent = async (folderName, fileName, base64, commitMsg) => {
 
   const bodyData = {
     owner: '1Hive',
-    repo: 'dao-list-test',
+    repo: 'dao-list',
     path: fileName,
     message: commitMsg,
     content: base64,

@@ -11,10 +11,10 @@ import {
   TextInput,
   theme,
 } from '@1hive/1hive-ui'
-import Navigation from '../../Navigation'
-import { useOnboardingState } from '@providers/Onboarding'
-import { useTokenData } from '@hooks/useToken'
 import Header from '../../kit/Header'
+import Navigation from '../../Navigation'
+import { useTokenData } from '@hooks/useToken'
+import { useOnboardingState } from '@providers/Onboarding'
 
 function useFieldsLayout() {
   return `

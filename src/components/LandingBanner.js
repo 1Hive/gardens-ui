@@ -112,11 +112,9 @@ const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
                 wide
                 css={`
                   margin-right: ${2 * GU}px;
-                  width: ${30 * GU}px;
                 `}
               />
-              {// We hide the button until we finalize the onboarding
-              false && above('medium') && (
+              {above('medium') && (
                 <Button
                   label="Create a Garden"
                   mode="strong"
