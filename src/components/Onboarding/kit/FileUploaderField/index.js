@@ -50,7 +50,7 @@ export const FileUploaderField = ({
   label,
   maxFileSize = DEFAULT_MAX_FILE_SIZE,
   onDragRejected = () => {},
-  onDragaAccepted = () => {},
+  onDragAccepted = () => {},
   onFileUpdated = () => {},
   previewLabel,
   required = false,
@@ -68,13 +68,7 @@ export const FileUploaderField = ({
       if (file?.size <= maxFileSize) {
         if (reader !== undefined && file !== undefined) {
           reader.onload = ({ target: { result } }) => {
-            onFileUpdated({
-              name: file.name,
-              content: result,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-            })
+            onFileUpdated({ blob: file, content: result })
           }
           readFile(reader, file)
         }
@@ -105,8 +99,8 @@ export const FileUploaderField = ({
       return
     }
 
-    onDragaAccepted()
-  }, [isDragAccept, isDragReject, onDragaAccepted, onDragRejected])
+    onDragAccepted()
+  }, [isDragAccept, isDragReject, onDragAccepted, onDragRejected])
 
   return (
     <div
@@ -116,15 +110,17 @@ export const FileUploaderField = ({
         ${textStyle('body2')};
       `}
     >
-      <Field label={label} required={required}>
-        <div
-          css={`
-            margin-top: ${1 * GU}px;
-          `}
-        >
-          {description}
-        </div>
-      </Field>
+      {label && (
+        <Field label={label} required={required}>
+          <div
+            css={`
+              margin-top: ${1 * GU}px;
+            `}
+          >
+            {description}
+          </div>
+        </Field>
+      )}
       {/* Set dropzone here due to some problems with the field component and the onclick event bubbling. */}
       <Card
         width="100%"
@@ -202,7 +198,7 @@ export const FileUploaderField = ({
               </div>
             ) : (
               <FilePreview
-                file={file}
+                file={file.blob}
                 onCancel={() => onFileUpdated(null)}
                 label={previewLabel}
               />
@@ -221,7 +217,7 @@ TextFileUploader.propTypes = {
 
 FileUploaderField.propTypes = {
   file: PropTypes.object,
-  onDragaAccepted: PropTypes.func,
+  onDragAccepted: PropTypes.func,
   onDragRejected: PropTypes.func,
   onFileUpdated: PropTypes.func,
   description: PropTypes.node,
