@@ -171,8 +171,9 @@ function TokenSettingsNative() {
     >
       <div>
         <Header
-          title="Configure Tokenomics"
-          subtitle={<span>Token Settings</span>}
+          title="Garden Tokenomics"
+          subtitle="Garden Token"
+          thirdtitle="Choose your token settings"
         />
 
         <div
@@ -208,8 +209,8 @@ function TokenSettingsNative() {
                 Token symbol
                 <Help hint="What is Token Symbol?">
                   <strong>Token Symbol</strong> or ticker is a shortened name
-                  (typically in capital letters) that refers to a token or coin
-                  on a trading platform. For example: HNY.
+                  (typically in capital letters) that refers to a token on a
+                  trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
@@ -234,7 +235,7 @@ function TokenSettingsNative() {
               ${fieldsLayout}
             `}
           >
-            <div>Seed holders 🌱</div>
+            <div>Seed token holders 🌱</div>
             <div>Balances</div>
           </div>
         }
@@ -280,9 +281,9 @@ function TokenSettingsNative() {
           margin-bottom: ${3 * GU}px;
         `}
       >
-        These settings will determine the name and symbol of the token that will
-        be created for your community. Add seed members to define the initial
-        distribution of this token.
+        Add seed token holders to define the initial token distribution. These
+        settings will determine the name, symbol, and distribution of the token
+        that will govern your community.
       </Info>
 
       <Navigation

@@ -128,8 +128,9 @@ function TokenSettingsBYOT() {
     >
       <div>
         <Header
-          title="Configure Tokenomics"
-          subtitle={<span>Token Settings</span>}
+          title="Garden Tokenomics"
+          subtitle="Garden Token"
+          thirdtitle="Choose your token settings"
         />
         <div
           css={`
@@ -141,8 +142,8 @@ function TokenSettingsBYOT() {
               <React.Fragment>
                 Token address
                 <Help hint="What is Token Address?">
-                  <strong>Token Address</strong> is the address of the token you
-                  want to bring to the garden.
+                  <strong>Token Address</strong> is the address of an existent
+                  ERC-20 token to use within your garden.
                 </Help>
               </React.Fragment>
             }
@@ -193,7 +194,7 @@ function TokenSettingsBYOT() {
                 Garden Token Name
                 <Help hint="What is Token Name?">
                   <strong>Garden Token Name</strong> is the name you can assign
-                  to the token you are bringing to this garden.
+                  to the token that will be minted when creating this garden.
                 </Help>
               </React.Fragment>
             }
@@ -215,8 +216,8 @@ function TokenSettingsBYOT() {
                 Garden Token Symbol
                 <Help hint="What is Token Symbol?">
                   <strong>Garden Token Symbol</strong> or ticker is a shortened
-                  name (typically in capital letters) that refers to a token or
-                  coin on a trading platform. For example: HNY.
+                  name (typically in capital letters) that refers to a token on
+                  a trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
@@ -255,8 +256,8 @@ function TokenSettingsBYOT() {
             margin-bottom: ${3 * GU}px;
           `}
         >
-          We recommend sticking with the default syntax here unless you have a
-          good reason not to.
+          We recommend sticking with the default syntax unless you have a good
+          reason not to.
         </Info>
       )}
 
@@ -276,8 +277,9 @@ function TokenSettingsBYOT() {
           margin-bottom: ${3 * GU}px;
         `}
       >
-        These settings will determine the name and symbol of your community
-        token. Add the address of the token you want to bring to your Garden.
+        Add the address of an existent ERC-20 token you want to use within your
+        Garden. These settings will determine the name and symbol of a new token
+        that will govern your community.
       </Info>
 
       <Navigation
