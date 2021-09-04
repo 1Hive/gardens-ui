@@ -236,7 +236,7 @@ function GardenMetadata() {
   return (
     <div>
       <Header
-        title="Garden Metadata"
+        title="Add Profile"
         subtitle="Fill with your garden information"
       />
       <div

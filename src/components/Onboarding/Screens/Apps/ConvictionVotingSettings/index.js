@@ -128,8 +128,9 @@ function ConvictionVotingSettings() {
   return (
     <div>
       <Header
-        title="Configure Conviction Voting"
-        subtitle="Set parameters to incentivize community participation."
+        title="Configure Governance"
+        subtitle="Conviction voting"
+        thirdtitle="Set parameters to incentivize community participation"
       />
       <div
         css={`
@@ -154,9 +155,9 @@ function ConvictionVotingSettings() {
                   <strong>Conviction Growth</strong> is the number of days it
                   takes to accumulate or reduce voting power by 50%. For
                   example, if the conviction growth is set to 1 day your tokens
-                  must back a proposal for 1 day to reach 50% of those tokens'
-                  max voting power, 2 days to reach 75%, 3 days to reach 87.5%,
-                  etc.
+                  must support a proposal for 1 day to reach 50% of those
+                  tokens' max voting power, 2 days to reach 75%, 3 days to reach
+                  87.5%, etc.
                 </Help>
               </Fragment>
             }
@@ -171,7 +172,8 @@ function ConvictionVotingSettings() {
                 Spending Limit
                 <Help hint="What is Spending Limit?">
                   <strong>Spending Limit</strong> is the the maximum percentage
-                  of total funds an individual proposal can request.
+                  of total funds an individual proposal can request from the
+                  common pool.
                 </Help>
               </Fragment>
             }
@@ -208,7 +210,9 @@ function ConvictionVotingSettings() {
                 ${textStyle('body3')};
               `}
             >
-              The next one is only to play around, not an actual parameter:
+              The next configuration is to play with different amounts, not an
+              actual parameter. It will help understand what will be the
+              threshold for conviction voting proposals:
             </div>
             <PercentageField
               label={
@@ -216,8 +220,7 @@ function ConvictionVotingSettings() {
                   Requested Amount
                   <Help hint="What is Requested Amount?">
                     <strong>Requested Amount</strong> is the percentage of total
-                    funds being requested by the proposal displayed in the
-                    charts.
+                    supply being requested.
                   </Help>
                 </Fragment>
               }

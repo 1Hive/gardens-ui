@@ -153,9 +153,9 @@ function AgreementSettings() {
   return (
     <div>
       <Header
-        title="Garden Governance"
-        subtitle="Community Covenant"
-        thirdtitle="Encode the social contract of your DAO"
+        title="Configure Governance"
+        subtitle="Community covenant"
+        thirdtitle="Encode the social contract of your garden"
       />
       <div
         css={`

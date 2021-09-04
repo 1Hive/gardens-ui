@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useReducer } from 'react'
-import { GU, Help } from '@1hive/1hive-ui'
+import { GU, Help, Info } from '@1hive/1hive-ui'
 import { useOnboardingState } from '@providers/Onboarding'
 import { Header, PercentageField } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
@@ -69,15 +69,16 @@ function IssuanceSettings() {
   return (
     <div>
       <Header
-        title="Configure Issuance Parameters"
-        subtitle="Model and create your community's economy "
+        title="Configure Tokenomics"
+        subtitle="Issuance policy"
+        thirdtitle="Model the economy of your community"
       />
       <div
         css={`
           display: flex;
           flex-direction: column;
           margin: 0 ${2 * GU}px;
-          margin-bottom: ${5 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
         <PercentageField
@@ -86,10 +87,10 @@ function IssuanceSettings() {
               Initial Ratio
               <Help hint="What is Initial Ratio?">
                 <strong>Initial Ratio</strong> is the initial fraction of the
-                total supply that holds the Common Pool. For example, if Garden
-                Seeds hold initially 90 garden tokens, and the initial ratio is
-                10%, this means that the total supply of the Garden tokens is
-                100, 10 of those are in the Common Pool.
+                total supply that holds the common pool. For example, if seed
+                token holders have 90 tokens, and the initial ratio is 10%, this
+                means that the total supply of tokens is 100. And 10 are in the
+                common pool.
               </Help>
             </Fragment>
           }
@@ -102,10 +103,10 @@ function IssuanceSettings() {
               Target Ratio
               <Help hint="What is Target Ratio?">
                 <strong>Target Ratio</strong> is the ideal fraction of the total
-                supply that should be in the Common Pool. For example, a value
+                supply that should be in the common pool. For example, a value
                 of 30% means that the token is going to be issued or burnt
-                automatically overtime to reach a point in which a 30% of the
-                total supply is in the Common Pool.
+                overtime to reach a point in which a 30% of the total supply is
+                in the common pool.
               </Help>
             </Fragment>
           }
@@ -118,9 +119,9 @@ function IssuanceSettings() {
               Throttle
               <Help hint="What is Issuance Throttle?">
                 <strong>Throttle</strong> is a magnitude that prevents high
-                issuance adjustments in small amounts of time. For example, a 1%
-                will force the issuance to be practically linear, and a higher
-                value will allow bigger adjustments.
+                issuance or burnt adjustments in short periods of time. For
+                example, a 1% will force a linear grow. A higher value will
+                allow bigger adjustments.
               </Help>
             </Fragment>
           }
@@ -141,6 +142,14 @@ function IssuanceSettings() {
             initialRatio={initialRatio}
           />
         </div>
+        <Info
+          css={`
+            margin-top: ${3 * GU}px;
+          `}
+        >
+          The initial ratio of token will be mint and send to the Common Pool,
+          this will be the tokens distribute by conviction voting governance.
+        </Info>
       </div>
       <Navigation
         backEnabled

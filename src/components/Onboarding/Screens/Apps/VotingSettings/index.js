@@ -205,8 +205,9 @@ function VotingSettings() {
   return (
     <div>
       <Header
-        title="Configure Community Voting"
-        subtitle="Choose your settings below"
+        title="Configure Governance"
+        subtitle="Tao voting"
+        thirdtitle="Set parameters to take decision as a community"
       />
       <PercentageField
         ref={handleSupportRef}
