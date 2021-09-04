@@ -274,7 +274,7 @@ function TokenSettingsBYOT() {
 
       <Info
         css={`
-          margin-bottom: ${3 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
         Add the address of an existent ERC-20 token you want to use within your

@@ -278,7 +278,7 @@ function TokenSettingsNative() {
 
       <Info
         css={`
-          margin-bottom: ${3 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
         Add seed token holders to define the initial token distribution. These
