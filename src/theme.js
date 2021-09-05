@@ -21,12 +21,24 @@ export default {
     background: '#031A3A',
     border: '#063374',
     surface: '#041F46',
+    content: '#DEE2E7',
     contentSecondary: '#ACB5C2',
 
     surfaceInteractive: '#05295D',
     surfaceContent: '#DFE3EA',
+    surfaceContentSecondary: '#ACB5C2',
     surfaceIcon: '#DFE3EA',
     surfaceUnder: '#51709E',
+
+    link: '#7CA8FF',
+
+    badge: '#1F4782',
+    badgeContent: '#DEE2E7',
+
+    help: '#DEE2E7',
+    helpIcon: '#88A8E4',
+    helpSurface: '#1F4782',
+    helpContent: '#041F46',
 
     warning: '#FFA410',
     warningSurface: '#363A3B',
@@ -52,10 +64,12 @@ export default {
 
     celeste: '#B19AFF',
     celesteBorder: '#2B235F',
-    celesteSurface: '#FCFAFF',
+    celesteSurface: '#FFFFFF',
 
     challenge: '#FFA410',
     challengeBorder: '#FFA410',
     challengeSurface: '#FFFDFA',
+
+    green: '#71EEB8',
   },
 }
