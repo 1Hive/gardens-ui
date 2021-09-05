@@ -4,6 +4,7 @@ import { useGardens } from '@/providers/Gardens'
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
+import Sidebar from './Sidebar/Sidebar'
 
 function MainView({ children }) {
   const { below } = useViewport()
@@ -26,7 +27,7 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {connectedGarden && !below('medium')}
+        {connectedGarden && !below('medium') && <Sidebar />}
         <div
           css={`
             display: flex;

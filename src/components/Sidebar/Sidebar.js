@@ -11,7 +11,7 @@ function Sidebar() {
 
   const gardenData = useMemo(
     () =>
-      gardens.slice(0, 10).map(garden => {
+      gardens.slice(0, 100).map(garden => {
         return {
           name: garden.name,
           address: garden.address,
@@ -65,15 +65,17 @@ function Sidebar() {
       </div>
       <nav>
         <ul>
-          {gardenData.map((garden, i) => (
-            <MenuItem
-              key={garden.address}
-              active={garden.address === connectedGarden.address}
-              path={garden.path}
-              name={garden.name}
-              src={garden.src}
-            />
-          ))}
+          {gardenData
+            .filter(garden => garden.address === connectedGarden.address)
+            .map((garden, i) => (
+              <MenuItem
+                key={garden.address}
+                active={garden.address === connectedGarden.address}
+                path={garden.path}
+                name={garden.name}
+                src={garden.src}
+              />
+            ))}
         </ul>
       </nav>
     </div>
