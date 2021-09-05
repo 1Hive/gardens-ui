@@ -103,7 +103,7 @@ function useTokens() {
   ]
 }
 
-function useNewConfig(config, effectiveSupply, loading, tokens) {
+function useNewConfig(config, effectiveSupply, loading) {
   const { connectedGarden } = useGardens()
 
   return useMemo(() => {

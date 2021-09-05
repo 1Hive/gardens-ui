@@ -8,7 +8,7 @@ import { useWallet } from '@providers/Wallet'
 import useActions from '@hooks/useActions'
 import { useStakingState } from '@providers/Staking'
 
-function CreateProposalScreens() {
+function CreateProposalScreens({ onComplete }) {
   const [loading, setLoading] = useState(true)
   const [transactions, setTransactions] = useState([])
   const { account } = useWallet()
@@ -111,8 +111,9 @@ function CreateProposalScreens() {
       frontLoad
       loading={loading}
       transactions={transactions}
-      transactionTitle="Create transaction"
+      transactionTitle="Create proposal"
       screens={screens}
+      onComplete={onComplete}
     />
   )
 }

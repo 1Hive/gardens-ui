@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
-
+import HelpTip from '@components/HelpTip'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
@@ -14,7 +14,6 @@ const Metrics = React.memo(function Metrics({
   totalSupply,
 }) {
   const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
   const currency = {
     name: 'USD',
     symbol: '$',
@@ -29,48 +28,52 @@ const Metrics = React.memo(function Metrics({
           justify-content: space-around;
         `}
       >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
-          `}
-        >
-          <img
-            src={token.logo || defaultTokenLogo}
-            height="60"
-            width="60"
-            alt=""
-            onClick={onExecuteIssuance}
+        {layoutName !== 'medium' && (
+          <div
             css={`
-              margin-right: ${4 * GU}px;
-              cursor: pointer;
+              display: flex;
+              align-items: center;
             `}
-          />
-          <TokenPrice currency={currency} token={token} />
-        </div>
+          >
+            <img
+              src={token.logo || defaultTokenLogo}
+              height="60"
+              width="60"
+              alt=""
+              onClick={onExecuteIssuance}
+              css={`
+                margin-right: ${4 * GU}px;
+                cursor: pointer;
+              `}
+            />
+            <TokenPrice currency={currency} token={token} />
+          </div>
+        )}
         <div>
           <TokenBalance
             label="Common Pool"
             value={commonPool}
             token={token}
             currency={currency}
+            helptip="common-pool"
           />
         </div>
         <div>
           <TokenBalance
-            label="Token Supply"
+            label="Total Supply"
             value={totalSupply}
             token={token}
             currency={currency}
+            helptip="total-supply"
           />
         </div>
         <div>
           <TokenBalance
-            label="Active"
+            label="Active Supply"
             value={totalActiveTokens}
             token={token}
             currency={currency}
+            helptip="active-supply"
           />
         </div>
       </div>
@@ -78,19 +81,27 @@ const Metrics = React.memo(function Metrics({
   )
 })
 
-function Metric({ label, value, color }) {
+function Metric({ label, value, color, helptip }) {
   const theme = useTheme()
 
   return (
     <>
-      <p
+      <div
         css={`
           color: ${theme.contentSecondary};
           margin-bottom: ${0.5 * GU}px;
         `}
       >
         {label}
-      </p>
+        <span
+          css={`
+            padding-left: ${1 * GU}px;
+            display: inline-block;
+          `}
+        >
+          <HelpTip type={helptip} />
+        </span>
+      </div>
       <span
         css={`
           ${textStyle('title2')};
@@ -103,14 +114,18 @@ function Metric({ label, value, color }) {
   )
 }
 
-function TokenBalance({ label, token, value, currency }) {
+function TokenBalance({ label, token, value, currency, helptip }) {
   const theme = useTheme()
   const price = useHoneyswapTokenPrice(token.id)
   const currencyValue = value * price * currency.rate
 
   return (
     <>
-      <Metric label={label} value={formatTokenAmount(value, token.decimals)} />
+      <Metric
+        label={label}
+        value={formatTokenAmount(value, token.decimals)}
+        helptip={helptip}
+      />
       <div
         css={`
           color: ${theme.green};

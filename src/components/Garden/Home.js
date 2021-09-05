@@ -74,6 +74,10 @@ const Home = React.memo(function Home() {
     handleShowModal('unwrap')
   }, [handleShowModal])
 
+  const handleProposalCreated = useCallback(() => {
+    filters.ranking.onChange(1)
+  }, [filters])
+
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
     if (account && history.location.pathname.includes('create')) {
@@ -92,13 +96,15 @@ const Home = React.memo(function Home() {
           z-index: 2;
         `}
       >
-        <BackButton
-          onClick={handleBack}
-          css={`
-            background: transparent;
-            border: 0;
-          `}
-        />
+        {below('medium') && (
+          <BackButton
+            onClick={handleBack}
+            css={`
+              background: transparent;
+              border: 0;
+            `}
+          />
+        )}
       </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
@@ -121,7 +127,7 @@ const Home = React.memo(function Home() {
                   margin: ${(below('medium') ? 0 : 3) * GU}px;
                 `}
               >
-                {!compactMode && (
+                {layoutName !== 'small' && (
                   <Metrics
                     commonPool={commonPool}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
@@ -193,7 +199,9 @@ const Home = React.memo(function Home() {
             onClose={handleHideModal}
             onClosed={() => setModalMode(null)}
           >
-            {modalMode === 'createProposal' && <CreateProposalScreens />}
+            {modalMode === 'createProposal' && (
+              <CreateProposalScreens onComplete={handleProposalCreated} />
+            )}
             {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
             {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
           </MultiModal>

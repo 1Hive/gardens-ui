@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
 import {
@@ -9,7 +9,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { mimeToExtension, readFile, toOxford } from '@utils/kit-utils'
+import { mimeToExtension, readFile } from '@utils/kit-utils'
 import FilePreview from './FilePreview'
 
 const DEFAULT_MAX_FILE_SIZE = 1000000 // 1Mb
@@ -25,7 +25,7 @@ const getDropzoneColor = (theme, isReject, isAccept) => {
 
 export const TextFileUploader = ({
   dropzoneId = DEFAULT_DROPZONE_ID,
-  label = 'browse your files',
+  label = 'browse your file',
 }) => {
   const theme = useTheme()
 
@@ -49,6 +49,8 @@ export const FileUploaderField = ({
   id = DEFAULT_DROPZONE_ID,
   label,
   maxFileSize = DEFAULT_MAX_FILE_SIZE,
+  onDragRejected = () => {},
+  onDragAccepted = () => {},
   onFileUpdated = () => {},
   previewLabel,
   required = false,
@@ -66,13 +68,7 @@ export const FileUploaderField = ({
       if (file?.size <= maxFileSize) {
         if (reader !== undefined && file !== undefined) {
           reader.onload = ({ target: { result } }) => {
-            onFileUpdated({
-              name: file.name,
-              content: result,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-            })
+            onFileUpdated({ blob: file, content: result })
           }
           readFile(reader, file)
         }
@@ -97,6 +93,15 @@ export const FileUploaderField = ({
     isDragAccept
   )
 
+  useEffect(() => {
+    if (isDragReject) {
+      onDragRejected()
+      return
+    }
+
+    onDragAccepted()
+  }, [isDragAccept, isDragReject, onDragAccepted, onDragRejected])
+
   return (
     <div
       css={`
@@ -105,19 +110,17 @@ export const FileUploaderField = ({
         ${textStyle('body2')};
       `}
     >
-      <Field label={label} required={required}>
-        <div
-          css={`
-            margin-top: ${1 * GU}px;
-          `}
-        >
-          {description || (
-            <div>
-              Drag and drop a file here or <TextFileUploader />.
-            </div>
-          )}
-        </div>
-      </Field>
+      {label && (
+        <Field label={label} required={required}>
+          <div
+            css={`
+              margin-top: ${1 * GU}px;
+            `}
+          >
+            {description}
+          </div>
+        </Field>
+      )}
       {/* Set dropzone here due to some problems with the field component and the onclick event bubbling. */}
       <Card
         width="100%"
@@ -179,6 +182,7 @@ export const FileUploaderField = ({
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin-bottom: ${1 * GU}px;
                   `}
                   onClick={open}
                 >
@@ -190,21 +194,11 @@ export const FileUploaderField = ({
                     `}
                   />
                 </div>
-                {validExtensions && (
-                  <div
-                    css={`
-                      margin-top: ${1 * GU}px;
-                      color: ${mainColor};
-                      font-weight: bold;
-                    `}
-                  >
-                    Valid file format: {toOxford(validExtensions)}
-                  </div>
-                )}
+                <TextFileUploader />
               </div>
             ) : (
               <FilePreview
-                file={file}
+                file={file.blob}
                 onCancel={() => onFileUpdated(null)}
                 label={previewLabel}
               />
@@ -223,6 +217,8 @@ TextFileUploader.propTypes = {
 
 FileUploaderField.propTypes = {
   file: PropTypes.object,
+  onDragAccepted: PropTypes.func,
+  onDragRejected: PropTypes.func,
   onFileUpdated: PropTypes.func,
   description: PropTypes.node,
   id: PropTypes.string,

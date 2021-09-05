@@ -6,7 +6,7 @@ import HoneyswapLiquidity from './HoneyswapLiquidity'
 import IssuanceSettings from './Apps/IssuanceSettings'
 import LaunchGarden from './LaunchGarden'
 import ReviewInformation from './ReviewInformation'
-import TokensSettings from './Apps/TokensSettings'
+import TokenSettings from './Apps/TokenSettings'
 import VotingSettings from './Apps/VotingSettings'
 
 const STEPS = [
@@ -25,7 +25,7 @@ export const Screens = [
     Screen: GardenTypeSelector,
   },
   { parent: STEPS[1], title: 'Garden metadata', Screen: GardenMetadata },
-  { parent: STEPS[2], title: 'Garden token', Screen: TokensSettings },
+  { parent: STEPS[2], title: 'Garden token', Screen: TokenSettings },
   {
     parent: STEPS[2],
     title: 'Honeyswap Liquidity',

@@ -19,6 +19,9 @@ const networks = {
     defaultEthNode: ETH_NODE,
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
+    template: '0x2427F0f1B842665d9FB9f0d8Ca347E044Ef5F15a',
+    celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
+    explorer: 'etherscan',
 
     honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
     honeyPriceOracle: '0xa87f58dbbe3a4d01d7f776e02b4dd3237f598095',
@@ -28,19 +31,21 @@ const networks = {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
+      organizations:
+        'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
     },
-    celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
-    legacyNetworkType: 'rinkeby',
-    explorer: 'etherscan',
   },
   xdai: {
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     name: 'xDai',
     type: 'xdai',
-    defaultEthNode: 'https://xdai.poanetwork.dev/',
+    defaultEthNode: ETH_NODE,
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
+    template: '0xd90deE41a68291d15AD4B1939ab5d4e75Db4Fc3d',
+    celesteUrl: 'https://celeste.1hive.org/#',
+    explorer: 'blockscout',
 
     honeyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
     honeyPriceOracle: '0x6f38d112b13eda1e3abafc61e296be2e27f15071',
@@ -49,10 +54,9 @@ const networks = {
     subgraphs: {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
+      organizations:
+        'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
     },
-    celesteUrl: 'https://celeste.1hive.org/#',
-    legacyNetworkType: 'main',
-    explorer: 'blockscout',
   },
 }
 

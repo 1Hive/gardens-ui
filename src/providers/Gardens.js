@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import daoList from '@1hive/gardens-dao-list'
 import { getGardens } from '@1hive/connect-gardens'
 
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
+
+import { fetchFileContent } from '../services/github'
 
 import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
@@ -58,7 +59,14 @@ export function useGardens() {
 
 function useGardensList() {
   const [gardens, setGardens] = useState([])
+  const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    setLoadingMetadata(true)
+  }, [])
 
   useEffect(() => {
     const fetchGardens = async () => {
@@ -69,7 +77,8 @@ function useGardensList() {
         )
         setGardens(result)
       } catch (err) {
-        console.error(`Error fetching daos ${err}`)
+        setGardens([])
+        console.error(`Error fetching gardens ${err}`)
       }
       setLoading(false)
     }
@@ -77,16 +86,38 @@ function useGardensList() {
     fetchGardens()
   }, [])
 
-  return [useMemo(() => gardens.map(mergeGardenMetadata), [gardens]), loading]
+  useEffect(() => {
+    const fetchGardenMetadata = async () => {
+      try {
+        const result = await fetchFileContent(getNetwork().chainId)
+        setGardensMetadata(result.data)
+      } catch (err) {
+        setGardensMetadata([])
+        console.error(`Error fetching gardens metadata ${err}`)
+      }
+      setLoadingMetadata(false)
+    }
+    fetchGardenMetadata()
+  }, [])
+
+  return [
+    useMemo(
+      () => gardens.map(garden => mergeGardenMetadata(garden, gardensMetadata)),
+      [gardens, gardensMetadata]
+    ),
+    loading || loadingMetadata,
+  ]
 }
 
-function mergeGardenMetadata(garden) {
+function mergeGardenMetadata(garden, gardensMetadata) {
   const metadata =
-    daoList.daos.find(dao => addressesEqual(dao.address, garden.id)) || {}
+    gardensMetadata.gardens?.find(dao =>
+      addressesEqual(dao.address, garden.id)
+    ) || {}
 
   const token = {
     ...garden.token,
-    ...metadata.token,
+    logo: metadata.token_logo,
   }
   const wrappableToken = garden.wrappableToken
     ? {
