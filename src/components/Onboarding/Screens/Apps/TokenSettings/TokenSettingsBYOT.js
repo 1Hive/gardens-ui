@@ -92,6 +92,9 @@ function TokenSettingsBYOT() {
           decimals: tokenData.decimals,
           existingTokenSymbol: tokenData.symbol,
         })
+        onConfigChange('conviction', {
+          requestToken: tokenAddress,
+        })
         onNext()
       }
     },

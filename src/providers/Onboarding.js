@@ -19,7 +19,7 @@ const OnboardingContext = React.createContext()
 
 const SKIPPED_SCREENS = ['Issuance policy']
 
-const DEFAULT_CONFIG = {
+export const DEFAULT_CONFIG = {
   garden: {
     name: '',
     description: '',
