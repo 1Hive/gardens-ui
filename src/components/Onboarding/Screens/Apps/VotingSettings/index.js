@@ -207,7 +207,7 @@ function VotingSettings() {
       <Header
         title="Configure Governance"
         subtitle="Tao voting"
-        thirdtitle="Set parameters to take decision as a community"
+        thirdtitle="Set parameters to take decisions as a community"
       />
       <PercentageField
         ref={handleSupportRef}

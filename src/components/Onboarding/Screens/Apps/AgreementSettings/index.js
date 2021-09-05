@@ -155,7 +155,7 @@ function AgreementSettings() {
       <Header
         title="Configure Governance"
         subtitle="Community covenant"
-        thirdtitle="Encode the social contract of your garden"
+        thirdtitle="Encode your garden's social contract"
       />
       <div
         css={`

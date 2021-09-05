@@ -210,8 +210,8 @@ function ConvictionVotingSettings() {
                 ${textStyle('body3')};
               `}
             >
-              The next configuration is to play with different amounts, not an
-              actual parameter. It will help understand what will be the
+              The next configuration allows you to play with different amounts, it is not an
+              actual parameter. It will help you understand the significance of the
               threshold for conviction voting proposals:
             </div>
             <PercentageField
@@ -219,7 +219,7 @@ function ConvictionVotingSettings() {
                 <Fragment>
                   Requested Amount
                   <Help hint="What is Requested Amount?">
-                    <strong>Requested Amount</strong> is the percentage of total
+                    <strong>Requested Amount</strong> is the percentage of the total
                     supply being requested.
                   </Help>
                 </Fragment>

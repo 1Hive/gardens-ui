@@ -71,7 +71,7 @@ function IssuanceSettings() {
       <Header
         title="Configure Tokenomics"
         subtitle="Issuance policy"
-        thirdtitle="Model the economy of your community"
+        thirdtitle="Model your community's economy"
       />
       <div
         css={`
@@ -87,7 +87,7 @@ function IssuanceSettings() {
               Initial Ratio
               <Help hint="What is Initial Ratio?">
                 <strong>Initial Ratio</strong> is the initial fraction of the
-                total supply that holds the common pool. For example, if seed
+                total supply that is held in the common pool. For example, if seed
                 token holders have 90 tokens, and the initial ratio is 10%, this
                 means that the total supply of tokens is 100. And 10 are in the
                 common pool.
@@ -104,9 +104,9 @@ function IssuanceSettings() {
               <Help hint="What is Target Ratio?">
                 <strong>Target Ratio</strong> is the ideal fraction of the total
                 supply that should be in the common pool. For example, a value
-                of 30% means that the token is going to be issued or burnt
-                overtime to reach a point in which a 30% of the total supply is
-                in the common pool.
+                of 30% means the token will be issued or burnt
+                overtime to ensure that the amount of tokens held in the common pool
+               always converges to 30% of the total supply.
               </Help>
             </Fragment>
           }
@@ -118,10 +118,10 @@ function IssuanceSettings() {
             <Fragment>
               Throttle
               <Help hint="What is Issuance Throttle?">
-                <strong>Throttle</strong> is a magnitude that prevents high
+                The <strong>issuance throttle</strong> prevents high
                 issuance or burnt adjustments in short periods of time. For
-                example, a 1% will force a linear grow. A higher value will
-                allow bigger adjustments.
+                example, a 1% throttle will force the issuance to be practically
+               linear. Higher values allow for bigger adjustments.
               </Help>
             </Fragment>
           }
@@ -147,8 +147,8 @@ function IssuanceSettings() {
             margin-top: ${3 * GU}px;
           `}
         >
-          The initial ratio of token will be mint and send to the Common Pool,
-          this will be the tokens distribute by conviction voting governance.
+          The initial ratio refers to the ratio of tokens to be minted and sent to the Common Pool.
+          These will then be available to be distributed through conviction voting.
         </Info>
       </div>
       <Navigation
