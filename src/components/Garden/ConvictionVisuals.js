@@ -14,6 +14,7 @@ import styled from 'styled-components'
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'
 
+import challengeIconSvg from '@assets/challenge-icon.svg'
 import { useGardenState } from '@providers/GardenState'
 import { useProposalEndDate } from '@hooks/useProposals'
 import { useWallet } from '@providers/Wallet'
@@ -26,6 +27,7 @@ const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
 const AVAILABLE = 2
 const EXECUTED = 3
+const CHALLENGED = 4
 
 export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const { maxConviction, threshold } = proposal
@@ -146,6 +148,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
     if (statusData.executed) {
       return EXECUTED
     }
+    if (statusData.challenged) {
+      return CHALLENGED
+    }
     if (currentConviction.gte(threshold)) {
       return AVAILABLE
     }
@@ -203,6 +208,10 @@ export function ConvictionCountdown({ proposal, shorter }) {
               </span>
             </>
           )}
+        </>
+      ) : view === CHALLENGED ? (
+        <>
+          <Outcome result="Challenged" challenged />
         </>
       ) : (
         <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
@@ -268,7 +277,7 @@ const PositiveOutcome = ({ endDate, shorter, view }) => {
   )
 }
 
-const Outcome = ({ result, positive }) => {
+const Outcome = ({ result, positive, challenged = false }) => {
   const theme = useTheme()
 
   return (
@@ -279,7 +288,23 @@ const Outcome = ({ result, positive }) => {
         align-items: center;
       `}
     >
-      {positive ? <IconCheck /> : <IconCross />} {result}
+      {challenged ? (
+        <img
+          src={challengeIconSvg}
+          alt=""
+          width="24"
+          height="24"
+          css={`
+            display: block;
+            margin-right: ${0.5 * GU}px;
+          `}
+        />
+      ) : positive ? (
+        <IconCheck />
+      ) : (
+        <IconCross />
+      )}{' '}
+      {result}
     </div>
   )
 }
