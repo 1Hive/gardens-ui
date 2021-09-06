@@ -116,8 +116,9 @@ function HoneyswapLiquidity() {
       `}
     >
       <Header
-        title="Honeyswap liquidity"
-        subtitle={`Set the initial HNY/${tokenSymbol} token equivalence to define the initial Honeyswap liquidity pair.`}
+        title="Configure Tokenomics"
+        subtitle="Honeyswap liquidity"
+        thirdtitle={`Set the initial HNY/${tokenSymbol} token equivalence`}
       />
       <div
         css={`
