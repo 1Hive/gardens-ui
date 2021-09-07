@@ -22,7 +22,6 @@ function ListFilter({ items, selected, onChange }) {
 function ListItem({ index, item, onSelect, selected, helptip }) {
   const theme = useTheme()
 
-  console.log(item)
   const handleOnClick = useCallback(() => {
     onSelect(index)
   }, [index, onSelect])
@@ -31,13 +30,7 @@ function ListItem({ index, item, onSelect, selected, helptip }) {
     <div
       css={`
         margin-bottom: ${1 * GU}px;
-        color: ${theme.contentSecondary};
-
-        ${selected === index
-          ? `
-          color:${theme.content}
-        `
-          : 'cursor:default'};
+        color: ${theme[selected ? 'content' : 'contentSecondary'};
       `}
     >
       <span css="cursor:pointer" onClick={handleOnClick}>
@@ -45,7 +38,7 @@ function ListItem({ index, item, onSelect, selected, helptip }) {
       </span>
       <span
         css={`
-          padding-left: ${1 * GU}px;
+          margin-left: ${1 * GU}px;
           display: inline-block;
         `}
       >

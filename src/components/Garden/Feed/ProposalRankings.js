@@ -10,15 +10,21 @@ const iconsMapping = {
   top: {
     icon: iconTopSvg,
     iconSelected: iconTopSelectedSvg,
+    label: 'Most supported',
   },
   new: {
     icon: iconNewSvg,
     iconSelected: iconNewSelectedSvg,
+    label: 'Newest',
   },
 }
 
 function getRankingIcon(key, selected) {
   return iconsMapping[key][selected ? 'iconSelected' : 'icon']
+}
+
+function getRankingLabel(key) {
+  return iconsMapping[key]['.label']
 }
 
 function ProposalRankings({ items, onChange, selected }) {
@@ -36,7 +42,7 @@ function ProposalRankings({ items, onChange, selected }) {
           key={index}
           icon={getRankingIcon(item, selected === index)}
           index={index}
-          label={item}
+          label={getRankingLabel(item)}
           onSelect={onChange}
           selected={selected === index}
         />
@@ -87,7 +93,7 @@ function Item({ icon, index, label, onSelect, selected }) {
           margin-left: ${0.75 * GU}px;
         `}
       >
-        {label === 'top' ? 'Most supported' : 'Newest'}
+        {label}
       </div>
     </div>
   )
