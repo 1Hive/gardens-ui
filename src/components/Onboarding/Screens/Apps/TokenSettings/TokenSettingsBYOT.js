@@ -12,6 +12,7 @@ import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useTokenData } from '@hooks/useToken'
 import { useOnboardingState } from '@providers/Onboarding'
+
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
 
@@ -91,6 +92,9 @@ function TokenSettingsBYOT() {
           symbol: gardenTokenSymbol,
           decimals: tokenData.decimals,
           existingTokenSymbol: tokenData.symbol,
+        })
+        onConfigChange('conviction', {
+          requestToken: tokenAddress,
         })
         onNext()
       }

@@ -1,13 +1,23 @@
-import React, { Fragment, useCallback, useReducer } from 'react'
-import { GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
+import React, { Fragment, useCallback, useReducer, useState } from 'react'
+import {
+  Button,
+  GU,
+  Help,
+  Info,
+  isAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
+import ConvictionVotingCharts from './ConvictionVotingCharts'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
   PercentageField,
   SliderField,
 } from '@components/Onboarding/kit'
-import ConvictionVotingCharts from './ConvictionVotingCharts'
-import { useOnboardingState } from '@providers/Onboarding'
+import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
+
 import {
   calculateDecay,
   calculateWeight,
@@ -76,6 +86,7 @@ function ConvictionVotingSettings() {
       minThreshold,
       minThresholdStakePct,
       requestedAmount,
+      requestToken,
       stakeOnProposal,
       stakeOnOtherProposals,
       weight,
@@ -87,6 +98,11 @@ function ConvictionVotingSettings() {
     stakeOnProposal: DEFAULT_STAKE_ON_PROPOSAL,
     stakeOnOtherProposals: DEFAULT_STAKE_ON_OTHER_PROPOSALS,
   })
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
+
+  const requestTokenInvalid = Boolean(requestToken) && !isAddress(requestToken)
 
   const handleHalflifeDaysChange = useCallback(
     value => {
@@ -113,6 +129,36 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
+  const handleMinThresholdStakePctChange = useCallback(
+    value => {
+      updateField(['minThresholdStakePct', value])
+    },
+    [updateField]
+  )
+
+  const handleRequestTokenChange = useCallback(
+    value => {
+      updateField(['requestToken', value])
+    },
+    [updateField]
+  )
+
+  const handleOpenModal = useCallback(() => setModalVisible(true), [])
+
+  const handleCloseModal = useCallback(() => setModalVisible(false), [])
+
+  const handleReset = useCallback(() => {
+    updateField(['halflifeDays', DEFAULT_CONVICTION_CONFIG.halflifeDays])
+    updateField(['maxRatio', DEFAULT_CONVICTION_CONFIG.maxRatio])
+    updateField(['minThreshold', DEFAULT_CONVICTION_CONFIG.minThreshold])
+    updateField([
+      'minThresholdStakePct',
+      DEFAULT_CONVICTION_CONFIG.minThresholdStakePct,
+    ])
+    updateField(['requestToken', config.tokens.address])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config.tokens.address, updateField])
+
   const handleNextClick = () => {
     onConfigChange('conviction', {
       decay,
@@ -120,6 +166,7 @@ function ConvictionVotingSettings() {
       maxRatio,
       minThreshold,
       minThresholdStakePct,
+      requestToken,
       weight,
     })
     onNext()
@@ -196,6 +243,22 @@ function ConvictionVotingSettings() {
             value={minThreshold}
             onChange={handleMinThresholdChange}
           />
+          <Button
+            size="mini"
+            onClick={handleOpenModal}
+            label="Advanced..."
+            css={`
+              align-self: flex-end;
+            `}
+          />
+          <AdvancedSettingsModal
+            requestToken={requestToken}
+            minThresholdStakePct={minThresholdStakePct}
+            handleRequestTokenChange={handleRequestTokenChange}
+            handleMinThresholdStakePctChange={handleMinThresholdStakePctChange}
+            visible={modalVisible}
+            onClose={handleCloseModal}
+          />
           <div
             css={`
               display: flex;
@@ -227,6 +290,14 @@ function ConvictionVotingSettings() {
               value={requestedAmount}
               onChange={handleRequestedAmountChange}
             />
+            <Button
+              size="mini"
+              onClick={handleReset}
+              label="Reset Defaults"
+              css={`
+                align-self: flex-end;
+              `}
+            />
           </div>
         </div>
         <div
@@ -245,9 +316,21 @@ function ConvictionVotingSettings() {
           />
         </div>
       </div>
+
+      {requestTokenInvalid && (
+        <Info
+          mode="error"
+          css={`
+            margin-bottom: ${3 * GU}px;
+          `}
+        >
+          The request token address should be a valid address.
+        </Info>
+      )}
+
       <Navigation
         backEnabled
-        nextEnabled
+        nextEnabled={!requestTokenInvalid}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}

@@ -1,9 +1,9 @@
 import React, { Fragment, useCallback, useReducer } from 'react'
-import { GU, Help, Info } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
+import { Button, GU, Help, Info } from '@1hive/1hive-ui'
+import IssuanceChart from './IssuanceChart'
 import { Header, PercentageField } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
-import IssuanceChart from './IssuanceChart'
+import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
 
 const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '100%'
@@ -35,6 +35,8 @@ function IssuanceSettings() {
     updateField,
   ] = useReducer(reduceFields, { ...config.issuance })
 
+  const { issuance: DEFAULT_ISSUANCE_CONFIG } = DEFAULT_CONFIG
+
   const handleInitialRatioChange = useCallback(
     value => {
       updateField(['initialRatio', value])
@@ -55,6 +57,16 @@ function IssuanceSettings() {
     },
     [updateField]
   )
+
+  const handleReset = useCallback(() => {
+    updateField(['initialRatio', DEFAULT_ISSUANCE_CONFIG.initialRatio])
+    updateField(['targetRatio', DEFAULT_ISSUANCE_CONFIG.targetRatio])
+    updateField([
+      'maxAdjustmentRatioPerYear',
+      DEFAULT_ISSUANCE_CONFIG.maxAdjustmentRatioPerYear,
+    ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateField])
 
   const handleNextClick = () => {
     // TODO: Validate data if necessary
@@ -127,6 +139,14 @@ function IssuanceSettings() {
           }
           value={maxAdjustmentRatioPerYear}
           onChange={handleMaxAdjustmentRatioPerYear}
+        />
+        <Button
+          size="mini"
+          onClick={handleReset}
+          label="Reset Defaults"
+          css={`
+            align-self: flex-end;
+          `}
         />
         <div
           css={`
