@@ -7,14 +7,14 @@ import React, {
 } from 'react'
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
 
-import { useOnboardingState } from '@providers/Onboarding'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   DurationFields,
   Header,
   PercentageField,
 } from '@components/Onboarding/kit'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
+import { useOnboardingState } from '@providers/Onboarding'
 
 const validateVotingSettings = (
   voteDuration,
@@ -205,8 +205,9 @@ function VotingSettings() {
   return (
     <div>
       <Header
-        title="Configure Community Voting"
-        subtitle="Choose your settings below"
+        title="Configure Governance"
+        subtitle="Tao voting"
+        thirdtitle="Set parameters to take decisions as a community"
       />
       <PercentageField
         ref={handleSupportRef}

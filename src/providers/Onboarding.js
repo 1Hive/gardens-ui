@@ -164,4 +164,4 @@ function useOnboardingState() {
   return useContext(OnboardingContext)
 }
 
-export { OnboardingProvider, useOnboardingState }
+export { OnboardingProvider, useOnboardingState, DEFAULT_CONFIG }

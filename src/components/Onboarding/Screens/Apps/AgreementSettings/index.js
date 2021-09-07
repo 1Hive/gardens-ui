@@ -9,7 +9,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
+import CovenantModal from './CovenantModal'
 import {
   DurationFields,
   Header,
@@ -18,7 +18,7 @@ import {
   AmountField,
 } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
-import CovenantModal from './CovenantModal'
+import { useOnboardingState } from '@providers/Onboarding'
 
 const MAX_TITLE_LENGTH = 50
 
@@ -153,9 +153,9 @@ function AgreementSettings() {
   return (
     <div>
       <Header
-        title="Garden Governance"
-        subtitle="Community Covenant"
-        thirdtitle="Encode the social contract of your DAO"
+        title="Configure Governance"
+        subtitle="Community covenant"
+        thirdtitle="Encode your garden's social contract"
       />
       <div
         css={`

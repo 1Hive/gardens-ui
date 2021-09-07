@@ -74,7 +74,11 @@ const IssuanceChart = ({
   )
   return (
     <div>
-      <ChartBase title="Ratio over first year" height={height} width={width}>
+      <ChartBase
+        title="Ratio of tokens in the common pool during the first year"
+        height={height}
+        width={width}
+      >
         <ResponsiveLine
           {...commonProps}
           data={[{ id: 'ratio-time', data: chartData }]}

@@ -25,6 +25,8 @@ const GARDEN_LOGO_TYPE = 'logo_type'
 const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
 
+const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
+
 const URL_REGEX = new RegExp(
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 )
@@ -152,7 +154,7 @@ function GardenMetadata() {
           ? {
               ...file,
               base64: btoa(file.content),
-              imageExtension: file.type.split('/')[1],
+              imageExtension: file.blob.type.split('/')[1],
             }
           : '',
       }
@@ -212,17 +214,15 @@ function GardenMetadata() {
 
   const handleNext = useCallback(() => {
     if (errors.length === 0) {
-      onConfigChange('garden', formData)
+      onConfigChange('garden', {
+        ...formData,
+        forum: formData.forum || DEFAULT_FORUM_LINK,
+      })
       onNext()
     } else {
       setDisplayErrors(true)
     }
   }, [errors, onConfigChange, onNext, formData])
-
-  const handleBack = useCallback(() => {
-    onConfigChange('garden', formData)
-    onBack()
-  }, [onConfigChange, onBack, formData])
 
   const handleOnDragAccepted = useCallback(() => {
     setFormatValidationColor(theme.contentSecondary)
@@ -243,7 +243,7 @@ function GardenMetadata() {
   return (
     <div>
       <Header
-        title="Garden Metadata"
+        title="Add Profile"
         subtitle="Fill with your garden information"
       />
       <div
@@ -393,7 +393,7 @@ function GardenMetadata() {
         backEnabled
         nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
-        onBack={handleBack}
+        onBack={onBack}
         onNext={handleNext}
       />
     </div>

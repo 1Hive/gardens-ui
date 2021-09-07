@@ -10,12 +10,12 @@ import TokenSettings from './Apps/TokenSettings'
 import VotingSettings from './Apps/VotingSettings'
 
 const STEPS = [
-  'Select Garden type',
-  'Add Garden metadata',
+  'Select type',
+  'Add profile',
   'Configure tokenomics',
   'Configure governance',
   'Review information',
-  'Launch Garden',
+  'Launch garden',
 ]
 
 export const Screens = [
@@ -28,7 +28,7 @@ export const Screens = [
   { parent: STEPS[2], title: 'Garden token', Screen: TokenSettings },
   {
     parent: STEPS[2],
-    title: 'Honeyswap Liquidity',
+    title: 'Honeyswap liquidity',
     Screen: HoneyswapLiquidity,
   },
   {
@@ -38,7 +38,7 @@ export const Screens = [
   },
   {
     parent: STEPS[3],
-    title: 'Community Convenant',
+    title: 'Community convenant',
     Screen: AgreementSettings,
   },
   {
@@ -48,7 +48,7 @@ export const Screens = [
   },
   {
     parent: STEPS[3],
-    title: 'Decision voting',
+    title: 'Tao voting',
     Screen: VotingSettings,
   },
   {
@@ -56,5 +56,5 @@ export const Screens = [
     title: 'Review information',
     Screen: ReviewInformation,
   },
-  { parent: STEPS[5], title: 'Launch Garden', Screen: LaunchGarden },
+  { parent: STEPS[5], title: 'Launch garden', Screen: LaunchGarden },
 ]
