@@ -8,19 +8,20 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
+import ConvictionVotingCharts from './ConvictionVotingCharts'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
   PercentageField,
   SliderField,
 } from '@components/Onboarding/kit'
-import ConvictionVotingCharts from './ConvictionVotingCharts'
 import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
+
 import {
   calculateDecay,
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
 
 const MAX_HALF_LIFE_DAYS = 20
 const DEFAULT_REQUESTED_AMOUNT = 2
@@ -97,9 +98,11 @@ function ConvictionVotingSettings() {
     stakeOnProposal: DEFAULT_STAKE_ON_PROPOSAL,
     stakeOnOtherProposals: DEFAULT_STAKE_ON_OTHER_PROPOSALS,
   })
-  const [openSettingsModal, setOpenSettingsModal] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
-  const { conviction: DEFAULT_CONVICTION_CONFIG } = DEFAULT_CONFIG
+  const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
+
+  const requestTokenInvalid = Boolean(requestToken) && !isAddress(requestToken)
 
   const handleHalflifeDaysChange = useCallback(
     value => {
@@ -126,21 +129,23 @@ function ConvictionVotingSettings() {
     [updateField]
   )
 
-  const handleOpenModal = useCallback(() => {
-    setOpenSettingsModal(true)
-  }, [setOpenSettingsModal])
-
-  const handleCloseModal = useCallback(() => setOpenSettingsModal(false), [
-    setOpenSettingsModal,
-  ])
-
-  const handleAdvancedSettingsDone = useCallback(
+  const handleMinThresholdStakePctChange = useCallback(
     value => {
-      updateField(['minThresholdStakePct', value.currMinThresholdStakePct])
-      updateField(['requestToken', value.requestToken])
+      updateField(['minThresholdStakePct', value])
     },
     [updateField]
   )
+
+  const handleRequestTokenChange = useCallback(
+    value => {
+      updateField(['requestToken', value])
+    },
+    [updateField]
+  )
+
+  const handleOpenModal = useCallback(() => setModalVisible(true), [])
+
+  const handleCloseModal = useCallback(() => setModalVisible(false), [])
 
   const handleReset = useCallback(() => {
     updateField(['halflifeDays', DEFAULT_CONVICTION_CONFIG.halflifeDays])
@@ -247,12 +252,12 @@ function ConvictionVotingSettings() {
             `}
           />
           <AdvancedSettingsModal
-            requestTokenAddress={requestToken}
+            requestToken={requestToken}
             minThresholdStakePct={minThresholdStakePct}
-            stakeOnProposalPct={stakeOnProposal}
-            visible={openSettingsModal}
+            handleRequestTokenChange={handleRequestTokenChange}
+            handleMinThresholdStakePctChange={handleMinThresholdStakePctChange}
+            visible={modalVisible}
             onClose={handleCloseModal}
-            onDone={handleAdvancedSettingsDone}
           />
           <div
             css={`
@@ -312,7 +317,7 @@ function ConvictionVotingSettings() {
         </div>
       </div>
 
-      {Boolean(requestToken) && !isAddress(requestToken) && (
+      {requestTokenInvalid && (
         <Info
           mode="error"
           css={`
@@ -325,7 +330,7 @@ function ConvictionVotingSettings() {
 
       <Navigation
         backEnabled
-        nextEnabled={!(Boolean(requestToken) && !isAddress(requestToken))}
+        nextEnabled={!requestTokenInvalid}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}

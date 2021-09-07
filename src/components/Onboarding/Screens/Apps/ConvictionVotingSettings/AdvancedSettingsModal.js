@@ -1,43 +1,19 @@
 import { Field, Help, TextInput } from '@1hive/1hive-ui'
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Modal, PercentageField } from '@components/Onboarding//kit'
 
 const AdvancedSettingsModal = ({
-  requestTokenAddress,
+  requestToken,
   minThresholdStakePct,
-  stakeOnProposalPct,
+  handleRequestTokenChange,
+  handleMinThresholdStakePctChange,
   visible,
   onClose,
   onDone,
 }) => {
-  const [requestToken, setRequestToken] = useState(requestTokenAddress)
-  const [currMinThresholdStakePct, setCurrMinThresholdStakePct] = useState(
-    minThresholdStakePct
-  )
-
-  const handleMinThresholdChange = useCallback(
-    value => {
-      setCurrMinThresholdStakePct(value)
-    },
-    [setCurrMinThresholdStakePct]
-  )
-
-  const handleRequestTokenChange = useCallback(
-    event => {
-      setRequestToken(event.target.value)
-    },
-    [setRequestToken]
-  )
-
   const handleDone = () => {
-    onDone({ currMinThresholdStakePct, requestToken })
     onClose()
   }
-
-  useEffect(() => {
-    setCurrMinThresholdStakePct(minThresholdStakePct)
-    setRequestToken(requestTokenAddress)
-  }, [minThresholdStakePct, requestTokenAddress])
 
   return (
     <Modal
@@ -45,7 +21,7 @@ const AdvancedSettingsModal = ({
       visible={visible}
       onClick={handleDone}
       onClose={onClose}
-      width="100"
+      width="600px"
     >
       <Field
         label={
@@ -58,9 +34,6 @@ const AdvancedSettingsModal = ({
             </Help>
           </React.Fragment>
         }
-        css={`
-          width: 500px;
-        `}
       >
         {({ id }) => (
           <TextInput
@@ -83,8 +56,8 @@ const AdvancedSettingsModal = ({
             </Help>
           </Fragment>
         }
-        value={currMinThresholdStakePct}
-        onChange={handleMinThresholdChange}
+        value={minThresholdStakePct}
+        onChange={handleMinThresholdStakePctChange}
       />
     </Modal>
   )

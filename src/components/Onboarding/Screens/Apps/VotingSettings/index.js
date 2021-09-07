@@ -7,14 +7,14 @@ import React, {
 } from 'react'
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
 
-import { useOnboardingState } from '@providers/Onboarding'
+import AdvancedSettingsModal from './AdvancedSettingsModal'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   DurationFields,
   Header,
   PercentageField,
 } from '@components/Onboarding/kit'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
+import { useOnboardingState } from '@providers/Onboarding'
 
 const validateVotingSettings = (
   voteDuration,

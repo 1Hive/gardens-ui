@@ -216,7 +216,7 @@ function GardenMetadata() {
     if (errors.length === 0) {
       onConfigChange('garden', {
         ...formData,
-        forum: formData.forum ? formData.forum : DEFAULT_FORUM_LINK,
+        forum: formData.forum || DEFAULT_FORUM_LINK,
       })
       onNext()
     } else {

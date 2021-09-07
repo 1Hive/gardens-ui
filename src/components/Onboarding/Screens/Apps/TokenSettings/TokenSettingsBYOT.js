@@ -12,6 +12,7 @@ import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useTokenData } from '@hooks/useToken'
 import { useOnboardingState } from '@providers/Onboarding'
+
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
 

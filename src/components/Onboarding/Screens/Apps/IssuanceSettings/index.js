@@ -1,9 +1,9 @@
 import React, { Fragment, useCallback, useReducer } from 'react'
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
-import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
+import IssuanceChart from './IssuanceChart'
 import { Header, PercentageField } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
-import IssuanceChart from './IssuanceChart'
+import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
 
 const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '100%'
