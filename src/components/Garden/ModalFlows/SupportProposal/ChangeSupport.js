@@ -148,7 +148,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
       >
         <TextInput
           value={amount.value}
-          type="number"
           onChange={handleAmountChange}
           wide
           adornment={
