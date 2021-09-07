@@ -70,7 +70,7 @@ const FilterBar = React.memo(
         <TextFilter
           textFilter={proposalTextFilter}
           updateTextFilter={handleTextFilterChange}
-          placeholder="Search by name"
+          placeholder="Search by proposal name"
           visible={textFieldVisible}
           setVisible={setTextFieldVisible}
           openerRef={textFilterOpener}

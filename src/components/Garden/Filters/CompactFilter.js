@@ -171,7 +171,7 @@ function CompactFilterSlider({
             <SearchInput
               value={proposalNameFilter}
               onChange={onNameFilterChange}
-              placeholder="Search by name"
+              placeholder="Search by proposal name"
               wide
               css="border-radius: 0;"
             />
