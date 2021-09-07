@@ -14,9 +14,9 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import Navigation from '../../Navigation'
+import Header from '../../../kit/Header'
+import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
-import Header from '../../kit/Header'
 
 function useFieldsLayout() {
   return `
@@ -53,7 +53,7 @@ function validationError(tokenName, tokenSymbol, members) {
   return null
 }
 
-function TokensSettingsNative() {
+function TokenSettingsNative() {
   const theme = useTheme()
   const fieldsLayout = useFieldsLayout()
 
@@ -167,14 +167,13 @@ function TokensSettingsNative() {
     <form
       css={`
         display: grid;
-        align-items: center;
-        justify-content: center;
       `}
     >
       <div>
         <Header
-          title="Configure Garden Token"
-          subtitle={<span>Choose your settings below.</span>}
+          title="Garden Tokenomics"
+          subtitle="Garden token"
+          thirdtitle="Choose the settings of your token"
         />
 
         <div
@@ -210,8 +209,8 @@ function TokensSettingsNative() {
                 Token symbol
                 <Help hint="What is Token Symbol?">
                   <strong>Token Symbol</strong> or ticker is a shortened name
-                  (typically in capital letters) that refers to a token or coin
-                  on a trading platform. For example: HNY.
+                  (typically in capital letters) that refers to a token on a
+                  trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
@@ -236,7 +235,7 @@ function TokensSettingsNative() {
               ${fieldsLayout}
             `}
           >
-            <div>Seed holders 🌱</div>
+            <div>Seed token holders 🌱</div>
             <div>Balances</div>
           </div>
         }
@@ -279,12 +278,12 @@ function TokensSettingsNative() {
 
       <Info
         css={`
-          margin-bottom: ${3 * GU}px;
+          margin-bottom: ${4 * GU}px;
         `}
       >
-        These settings will determine the name and symbol of the token that will
-        be created for your community. Add seed members to define the initial
-        distribution of this token.
+        Add seed token holders to define the initial token distribution. These
+        settings will determine the name, symbol, and distribution of the token
+        that will govern your community.
       </Info>
 
       <Navigation
@@ -414,4 +413,4 @@ MemberField.propTypes = {
   onUpdate: PropTypes.func.isRequired,
 }
 
-export default TokensSettingsNative
+export default TokenSettingsNative

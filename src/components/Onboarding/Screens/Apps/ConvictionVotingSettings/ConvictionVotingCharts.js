@@ -1,11 +1,12 @@
 import { GU } from '@1hive/1hive-ui'
 import React, { useMemo } from 'react'
+import ConvictionTimeChart from './Charts/ConvictionTimeChart'
+import ThresholdRequestedChart from './Charts/ThresholdRequestedChart'
+
 import {
   calculateThreshold,
   toPercentage,
 } from '@utils/conviction-modelling-helpers'
-import ConvictionTimeChart from './Charts/ConvictionTimeChart'
-import ThresholdRequestedChart from './Charts/ThresholdRequestedChart'
 
 const CHART_HEIGHT = '270px;'
 const CHART_WIDTH = '550px;'

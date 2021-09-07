@@ -89,15 +89,18 @@ export default function useActions() {
   )
 
   const cancelProposal = useCallback(
-    async proposalId => {
-      sendIntent(convictionVotingApp, 'cancelProposal', [proposalId], {
-        ethers,
-        from: account,
-      })
+    async (proposalId, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'cancelProposal',
+        [proposalId],
+        {
+          actAs: account,
+        }
+      )
 
-      // onDone()
+      onDone(intent.transactions)
     },
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp]
   )
 
   const stakeToProposal = useCallback(
@@ -145,15 +148,18 @@ export default function useActions() {
   )
 
   const executeProposal = useCallback(
-    proposalId => {
-      sendIntent(convictionVotingApp, 'executeProposal', [proposalId], {
-        ethers,
-        from: account,
-      })
+    async (proposalId, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'executeProposal',
+        [proposalId],
+        {
+          actAs: account,
+        }
+      )
 
-      // onDone()
+      onDone(intent.transactions)
     },
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp]
   )
 
   // Issuance actions

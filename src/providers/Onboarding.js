@@ -1,12 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
-import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
   calculateWeight,
-} from '../utils/conviction-modelling-helpers'
-import { BYOT_TYPE } from '@components/Onboarding/constants'
+} from '@utils/conviction-modelling-helpers'
+import {
+  createGardenTxOne,
+  createGardenTxThree,
+  createGardenTxTwo,
+  createTokenApproveTxs,
+  createTokenHoldersTx,
+} from '@components/Onboarding/transaction-logic'
+import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
 const OnboardingContext = React.createContext()
 
@@ -39,6 +46,7 @@ const DEFAULT_CONFIG = {
     maxRatio: 10,
     minThreshold: 2,
     minThresholdStakePct: 5,
+    requestToken: '',
     weight: calculateWeight(2, 10),
   },
   issuance: {
@@ -59,7 +67,6 @@ const DEFAULT_CONFIG = {
     decimals: 18,
     symbol: '',
     holders: [], // Only used in NATIVE
-    commonPool: 0, // Only used in NATIVE
   },
   voting: {
     voteDuration: DAY_IN_SECONDS * 5,
@@ -89,6 +96,30 @@ function OnboardingProvider({ children }) {
     []
   )
 
+  const getTransactions = useCallback(
+    async covenantIpfsHash => {
+      // Token approvals
+      const txs = [...createTokenApproveTxs(config)]
+
+      // Tx one
+      txs.push(createGardenTxOne(config))
+
+      if (config.garden.type === NATIVE_TYPE) {
+        // Mint seeds balances
+        txs.push(createTokenHoldersTx(config))
+      }
+
+      // Tx two, tx three
+      txs.push(
+        createGardenTxTwo(config),
+        createGardenTxThree(config, covenantIpfsHash)
+      )
+
+      return txs
+    },
+    [config]
+  )
+
   useEffect(() => {
     if (config.garden.type !== -1) {
       config.garden.type === BYOT_TYPE
@@ -112,6 +143,7 @@ function OnboardingProvider({ children }) {
     <OnboardingContext.Provider
       value={{
         config,
+        getTransactions,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
@@ -132,4 +164,4 @@ function useOnboardingState() {
   return useContext(OnboardingContext)
 }
 
-export { OnboardingProvider, useOnboardingState }
+export { OnboardingProvider, useOnboardingState, DEFAULT_CONFIG }

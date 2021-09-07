@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  Box,
   Button,
   Field,
   GU,
@@ -8,14 +7,16 @@ import {
   IconPlus,
   IconTrash,
   Info,
+  Link,
   TextInput,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
-import { Header } from '../kit'
-import ImageUploader from '../../ImageUploader'
+import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
+import { useOnboardingState } from '@providers/Onboarding'
+
+import LinksTooltipImg from '@assets/linksTooltip.svg'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
@@ -24,14 +25,27 @@ const GARDEN_LOGO_TYPE = 'logo_type'
 const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
 
+const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
+
 const URL_REGEX = new RegExp(
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 )
 
 function GardenMetadata() {
-  const { config, onBack, onConfigChange, onNext } = useOnboardingState()
+  const theme = useTheme()
+  const {
+    config,
+    onBack,
+    onConfigChange,
+    onNext,
+    steps,
+    step,
+  } = useOnboardingState()
   const [formData, setFormData] = useState(config.garden)
   const [displayErrors, setDisplayErrors] = useState(false)
+  const [formatValidationColor, setFormatValidationColor] = useState(
+    theme.contentSecondary
+  )
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
@@ -132,57 +146,41 @@ function GardenMetadata() {
     [formData.links]
   )
 
-  const handleOnAssetAdded = useCallback((type, base64, fileExtension) => {
+  const handleOnAssetUpdated = useCallback((type, file) => {
     setFormData(formData => {
       return {
         ...formData,
-        [type]: base64,
-        [`${type}Extension`]: fileExtension,
+        [type]: file
+          ? {
+              ...file,
+              base64: btoa(file.content),
+              imageExtension: file.blob.type.split('/')[1],
+            }
+          : '',
       }
     })
   }, [])
 
-  const handleOnGardenLogoTypeLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(GARDEN_LOGO_TYPE, base64, fileExtension)
+  const handleOnGardenLogoTypeUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(GARDEN_LOGO_TYPE, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
 
-  const handleOnGardenLogoLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(GARDEN_LOGO, base64, fileExtension)
+  const handleOnGardenLogoUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(GARDEN_LOGO, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
 
-  const handleOnTokenLogoLoaded = useCallback(
-    (base64, fileExtension) => {
-      handleOnAssetAdded(TOKEN_LOGO, base64, fileExtension)
+  const handleOnTokenLogoUpdated = useCallback(
+    file => {
+      handleOnAssetUpdated(TOKEN_LOGO, file)
     },
-    [handleOnAssetAdded]
+    [handleOnAssetUpdated]
   )
-
-  const handleOnAssetRemoved = useCallback(type => {
-    setFormData(formData => {
-      return {
-        ...formData,
-        [type]: '',
-      }
-    })
-  }, [])
-
-  const handleOnGardenLogoTypeRemoved = useCallback(() => {
-    handleOnAssetRemoved(GARDEN_LOGO_TYPE)
-  }, [handleOnAssetRemoved])
-
-  const handleOnGardenLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(GARDEN_LOGO)
-  }, [handleOnAssetRemoved])
-
-  const handleOnTokenLogoRemoved = useCallback(() => {
-    handleOnAssetRemoved(TOKEN_LOGO)
-  }, [handleOnAssetRemoved])
 
   const errors = useMemo(() => {
     const errors = []
@@ -190,24 +188,24 @@ function GardenMetadata() {
     const { name, description, forum, links } = formData
     const { documentation, community } = links
     if (!name) {
-      errors.push('Garden name not provided')
+      errors.push('Garden name not provided.')
     }
     if (!description) {
-      errors.push('Garden description not provided')
+      errors.push('Garden description not provided.')
     }
     if (forum && !URL_REGEX.test(forum)) {
-      errors.push('Forum is not in a valid url format')
+      errors.push('Forum is not in a valid url format.')
     }
 
     documentation.map(doc => {
       if (doc.link && !URL_REGEX.test(doc.link)) {
-        errors.push(`${doc.label} is not in a valid url format`)
+        errors.push(`${doc.label} is not in a valid url format.`)
       }
     })
 
     community.map(com => {
       if (com.link && !URL_REGEX.test(com.link)) {
-        errors.push(`${com.label} is not in a valid url format`)
+        errors.push(`${com.label} is not in a valid url format.`)
       }
     })
 
@@ -216,22 +214,36 @@ function GardenMetadata() {
 
   const handleNext = useCallback(() => {
     if (errors.length === 0) {
-      onConfigChange('garden', formData)
+      onConfigChange('garden', {
+        ...formData,
+        forum: formData.forum || DEFAULT_FORUM_LINK,
+      })
       onNext()
     } else {
       setDisplayErrors(true)
     }
   }, [errors, onConfigChange, onNext, formData])
 
-  const handleBack = useCallback(() => {
-    onConfigChange('garden', formData)
-    onBack()
-  }, [onConfigChange, onBack, formData])
+  const handleOnDragAccepted = useCallback(() => {
+    setFormatValidationColor(theme.contentSecondary)
+  }, [theme])
+  const handleOnDragRejected = useCallback(() => {
+    setFormatValidationColor(theme.error)
+  }, [theme])
+
+  const ForumTooltip = (
+    <div>
+      Add the URL to your discussion platform - we recommend{' '}
+      <Link href="https://www.discourse.org">discourse</Link>. If you don't, the{' '}
+      <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned
+      by default.
+    </div>
+  )
 
   return (
     <div>
       <Header
-        title="Garden Metadata"
+        title="Add Profile"
         subtitle="Fill with your garden information"
       />
       <div
@@ -242,135 +254,112 @@ function GardenMetadata() {
           margin-bottom: ${4 * GU}px;
         `}
       >
-        <Field
-          label="Garden Name"
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        <MetadataField label="GARDEN NAME">
           <TextInput
             maxLength="15"
             onChange={handleGardenNameChange}
             value={formData.name}
-            required
             css="width: 100%;"
           />
-        </Field>
-        <Field
-          label="Garden Description"
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        </MetadataField>
+        <MetadataField label="GARDEN DESCRIPTION">
           <TextInput
             multiline
             maxLength="120"
             onChange={handleGardenDescriptionChange}
             value={formData.description}
-            required
             css="width: 100%;"
           />
-        </Field>
-        <Box
-          heading="Assets"
-          css={`
-            width: 100%;
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-around;
-            `}
-          >
-            <Field label="Garden Logo Type">
-              <Box
-                css={`
-                  text-align: center;
-                  max-height: 143px;
-                `}
-              >
-                <ImageUploader
-                  id={1}
-                  imageExist={formData.logo_type}
-                  onImageLoaded={handleOnGardenLogoTypeLoaded}
-                  onImageRemoved={handleOnGardenLogoTypeRemoved}
-                />
-              </Box>
-            </Field>
-            <Field label="Garden Logo">
-              <Box
-                css={`
-                  text-align: center;
-                `}
-              >
-                <ImageUploader
-                  id={2}
-                  imageExist={formData.logo}
-                  onImageLoaded={handleOnGardenLogoLoaded}
-                  onImageRemoved={handleOnGardenLogoRemoved}
-                />
-              </Box>
-            </Field>
-            <Field label="Token Icon">
-              <Box
-                css={`
-                  text-align: center;
-                `}
-              >
-                <ImageUploader
-                  id={3}
-                  imageExist={formData.token_logo}
-                  onImageLoaded={handleOnTokenLogoLoaded}
-                  onImageRemoved={handleOnTokenLogoRemoved}
-                />
-              </Box>
-            </Field>
-          </div>
-        </Box>
-
-        <Field
-          label={
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                width: 100%;
-              `}
-            >
-              <p
-                css={`
-                  ${textStyle('body4')};
-                  font-weight: 600;
-                `}
-              >
-                Forum
-              </p>
-              <Help>
-                Add a link to your discussion platform - the best way to do this
-                is to create a discourse (add link to discourse site). If you
-                don't, the 1Hive forum will be assigned (add forum link) by
-                default.
-              </Help>
-            </div>
-          }
-          css={`
-            width: 100%;
-            marging-bottom: ${2 * GU}px;
-          `}
-        >
+        </MetadataField>
+        <MetadataField label="FORUM" optional tooltip={ForumTooltip}>
           <TextInput
             onChange={handleForumChange}
             value={formData.forum}
             css="width: 100%;"
           />
-        </Field>
+        </MetadataField>
+
+        <MetadataField
+          optional
+          label="ASSETS"
+          tooltip="If you don’t have this images yet, you will get default ones
+                assigned in the meantime."
+        >
+          <div>
+            <div
+              css={`
+                display: flex;
+                flex-direction: column;
+                ${textStyle('body2')};
+                color: ${theme.contentSecondary};
+              `}
+            >
+              <span>Drag and drop or browse your files to upload one.</span>
+              <span
+                css={`
+                  color: ${formatValidationColor};
+                  font-weight: 600;
+                  margin-top: ${1 * GU}px;
+                `}
+              >
+                Valid file formats are: JPG and PNG
+              </span>
+            </div>
+            <div
+              css={`
+                margin-top: ${2 * GU}px;
+                display: flex;
+              `}
+            >
+              <div
+                css={`
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.logo_type}
+                  onDragAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnGardenLogoTypeUpdated}
+                  label="HEADER LOGO"
+                />
+              </div>
+              <div
+                css={`
+                  width: 100%;
+                  margin-right: ${1.5 * GU}px;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.logo}
+                  onDragAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnGardenLogoUpdated}
+                  label="GARDEN LOGO"
+                />
+              </div>
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                <FileUploaderField
+                  allowedMIMETypes={['image/jpeg', 'image/png']}
+                  file={formData.token_logo}
+                  onDragAccepted={handleOnDragAccepted}
+                  onDragRejected={handleOnDragRejected}
+                  onFileUpdated={handleOnTokenLogoUpdated}
+                  label="TOKEN ICON"
+                />
+              </div>
+            </div>
+          </div>
+        </MetadataField>
         <LinksBox
-          fieldTitle="Community Links"
+          fieldTitle="COMMUNITY LINKS"
           linksType={COMMUNITY_LINK_TYPE}
           links={formData.links.community}
           onAddLink={addLink}
@@ -378,7 +367,7 @@ function GardenMetadata() {
           onUpdateLink={updateLink}
         />
         <LinksBox
-          fieldTitle="Documentation Links"
+          fieldTitle="DOCUMENTATION LINKS"
           linksType={DOCUMENTATION_LINK_TYPE}
           links={formData.links.documentation}
           onAddLink={addLink}
@@ -403,8 +392,8 @@ function GardenMetadata() {
       <Navigation
         backEnabled
         nextEnabled
-        nextLabel="Next"
-        onBack={handleBack}
+        nextLabel={`Next: ${steps[step + 1].title}`}
+        onBack={onBack}
         onNext={handleNext}
       />
     </div>
@@ -462,16 +451,36 @@ function LinksBox({
     }
   }, [focusLastLinkNext])
 
-  return (
-    <Field
-      label={fieldTitle}
+  const ImageTooltip = (
+    <div
       css={`
         width: 100%;
       `}
     >
-      <Box
+      <h3
+        css={`
+          ${textStyle('body3')};
+          color: ${theme.contentSecondary};
+        `}
+      >
+        This links will be displayed at the footer of your Garden
+      </h3>
+      <img
         css={`
           width: 100%;
+        `}
+        alt=""
+        src={LinksTooltipImg}
+      />
+    </div>
+  )
+
+  return (
+    <MetadataField optional label={fieldTitle} tooltip={ImageTooltip}>
+      <div
+        css={`
+          width: 100%;
+          margin-top: ${2 * GU}px;
         `}
       >
         <Field
@@ -482,7 +491,6 @@ function LinksBox({
                 display: grid;
                 grid-template-columns: auto ${18 * GU}px;
                 grid-column-gap: ${1.5 * GU}px;
-                ${textStyle('body3')};
               `}
             >
               <div>Link</div>
@@ -518,8 +526,8 @@ function LinksBox({
             disabled={links.length === 5}
           />
         </Field>
-      </Box>
-    </Field>
+      </div>
+    </MetadataField>
   )
 }
 
@@ -597,4 +605,41 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
   )
 }
 
+function MetadataField({ children, label, optional, tooltip }) {
+  const theme = useTheme()
+  return (
+    <div
+      css={`
+        width: 100%;
+        margin-top: ${2 * GU}px;
+      `}
+    >
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <span
+          css={`
+            ${textStyle('label2')};
+            color: ${theme.surfaceContentSecondary};
+            margin-right: ${0.5 * GU}px;
+          `}
+        >
+          {label} {optional && ' (optional)'}
+        </span>
+        {tooltip && <Help>{tooltip}</Help>}
+      </div>
+      <div
+        css={`
+          width: 100%;
+          margin-top: ${1 * GU}px;
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
 export default GardenMetadata

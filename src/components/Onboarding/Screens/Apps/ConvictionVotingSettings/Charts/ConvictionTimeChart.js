@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { ResponsiveLine } from '@nivo/line'
 import {
   ChartBase,
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
+import { ResponsiveLine } from '@nivo/line'
 import { useCharts } from '@providers/Charts'
+
 import {
   calculateConviction,
   calculateMaxConviction,

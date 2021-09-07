@@ -27,6 +27,8 @@ import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
+import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
@@ -64,7 +66,6 @@ function ProposalDetail({
   const { account: connectedAccount } = useWallet()
 
   const {
-    id,
     name,
     creator,
     beneficiary,
@@ -82,10 +83,6 @@ function ProposalDetail({
   const handleBack = useCallback(() => {
     history.goBack()
   }, [history])
-
-  const handleCancelProposal = useCallback(() => {
-    actions.cancelProposal(id)
-  }, [id, actions])
 
   const handleResolveAction = useCallback(() => {
     actions.resolveAction(proposal.disputeId)
@@ -296,7 +293,7 @@ function ProposalDetail({
                 <ProposalActions
                   proposal={proposal}
                   onChangeSupport={() => handleShowModal('update')}
-                  onExecuteProposal={actions.executeProposal}
+                  onExecuteProposal={() => handleShowModal('execute')}
                   onRequestSupportProposal={() => handleShowModal('support')}
                 />
               </section>
@@ -322,10 +319,11 @@ function ProposalDetail({
                           color: ${theme.contentSecondary};
                         `}
                       >
-                        You can remove this proposal from consideration
+                        As the original author, you can remove this proposal
+                        from consideration
                       </span>
                       <Button
-                        onClick={handleCancelProposal}
+                        onClick={() => handleShowModal('remove')}
                         wide
                         css={`
                           margin-top: ${3 * GU}px;
@@ -378,6 +376,12 @@ function ProposalDetail({
         {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
         {(modalMode === 'support' || modalMode === 'update') && (
           <SupportProposalScreens proposal={proposal} mode={modalMode} />
+        )}
+        {modalMode === 'remove' && (
+          <RemoveProposalScreens proposal={proposal} />
+        )}
+        {modalMode === 'execute' && (
+          <ExecuteProposalScreens proposal={proposal} />
         )}
       </MultiModal>
     </div>

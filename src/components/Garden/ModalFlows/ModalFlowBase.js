@@ -22,6 +22,7 @@ function ModalFlowBase({
   screens,
   transactions,
   transactionTitle,
+  onComplete,
   onCompleteActions,
 }) {
   const { ethers } = useWallet()
@@ -97,6 +98,7 @@ function ModalFlowBase({
         content: (
           <Stepper
             steps={transactionSteps}
+            onComplete={onComplete}
             onCompleteActions={onCompleteActions}
           />
         ),
@@ -105,12 +107,13 @@ function ModalFlowBase({
 
     return allScreens
   }, [
-    transactions,
+    frontLoad,
+    loading,
     screens,
+    transactions,
     transactionSteps,
     transactionTitle,
-    loading,
-    frontLoad,
+    onComplete,
     onCompleteActions,
   ])
 
