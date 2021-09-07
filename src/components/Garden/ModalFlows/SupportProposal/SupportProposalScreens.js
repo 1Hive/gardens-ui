@@ -25,8 +25,8 @@ function SupportProposalScreens({ proposal, mode }) {
     history.push(path)
   }, [history])
 
-  const renderOnCompleteActions = useCallback(() => {
-    if (mode === 'support' ? 'Support this proposal' : 'Change support') {
+  const onCompleteActions = useMemo(() => {
+    if (mode === 'support') {
       return (
         <div
           css={`
@@ -132,7 +132,7 @@ function SupportProposalScreens({ proposal, mode }) {
         mode === 'support' ? 'Support this proposal' : 'Change support'
       }
       screens={screens}
-      onCompleteActions={renderOnCompleteActions}
+      onCompleteActions={onCompleteActions}
     />
   )
 }

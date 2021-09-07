@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   ButtonBase,
@@ -24,19 +24,61 @@ import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
+import gardensLogoType from '@assets/gardensLogoType.svg'
+
+const defaultFooterData = {
+  links: {
+    community: [
+      {
+        label: 'Discord',
+        link: 'https://discord.gg/4fm7pgB',
+      },
+      {
+        label: 'Github',
+        link: 'https://github.com/1hive/gardens',
+      },
+      {
+        label: 'Twitter',
+        link: 'https://twitter.com/gardensdao',
+      },
+      {
+        label: 'Website',
+        link: 'https://gardens.1hive.org/',
+      },
+    ],
+    documentation: [
+      {
+        label: 'Gitbook',
+        link: 'https://1hive.gitbook.io/gardens',
+      },
+    ],
+  },
+  logo: gardensLogoType,
+  garden: false,
+}
 
 function Footer() {
   const theme = useTheme()
   const { below } = useViewport()
   const compactMode = below('large')
+  const [footerData, setFooterData] = useState(defaultFooterData)
 
   const { connectedGarden } = useGardens()
-  if (!connectedGarden) {
-    return null
-  }
 
-  const { links, logo, token, wrappableToken } = connectedGarden
-  const logoSvg = logo || defaultGardenLogo
+  useEffect(() => {
+    if (connectedGarden) {
+      const { links, logo, token, wrappableToken } = connectedGarden
+      setFooterData({
+        links,
+        logo,
+        token,
+        wrappableToken,
+        garden: true,
+      })
+    }
+  }, [connectedGarden])
+
+  const logoSvg = footerData.logo || defaultGardenLogo
 
   return (
     <footer
@@ -49,7 +91,11 @@ function Footer() {
     >
       <Layout paddingBottom={40}>
         {compactMode ? (
-          <FixedFooter token={wrappableToken || token} />
+          footerData.garden && (
+            <FixedFooter
+              token={footerData.wrappableToken || footerData.token}
+            />
+          )
         ) : (
           <div
             css={`
@@ -63,9 +109,13 @@ function Footer() {
             `}
           >
             <div>
-              <img src={logoSvg} height="60" alt="" />
+              <img
+                src={logoSvg}
+                height={footerData.garden ? '60' : '40'}
+                alt=""
+              />
             </div>
-            {links?.community && (
+            {footerData.links?.community && (
               <div>
                 <h5
                   css={`
@@ -75,7 +125,7 @@ function Footer() {
                 >
                   Community
                 </h5>
-                {links.community.map((link, i) => {
+                {footerData.links.community.map((link, i) => {
                   return (
                     <Link key={i} href={link.link} external>
                       {link.label}
@@ -84,7 +134,7 @@ function Footer() {
                 })}
               </div>
             )}
-            {links?.documentation && (
+            {footerData.links?.documentation && (
               <div>
                 <h5
                   css={`
@@ -94,7 +144,7 @@ function Footer() {
                 >
                   Documentation
                 </h5>
-                {links.documentation.map((link, i) => {
+                {footerData.links.documentation.map((link, i) => {
                   return (
                     <Link key={i} href={link.link} external>
                       {link.label}
