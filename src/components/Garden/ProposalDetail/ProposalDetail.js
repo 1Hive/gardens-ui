@@ -27,6 +27,7 @@ import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
@@ -292,7 +293,7 @@ function ProposalDetail({
                 <ProposalActions
                   proposal={proposal}
                   onChangeSupport={() => handleShowModal('update')}
-                  onExecuteProposal={actions.executeProposal}
+                  onExecuteProposal={() => handleShowModal('execute')}
                   onRequestSupportProposal={() => handleShowModal('support')}
                 />
               </section>
@@ -378,6 +379,9 @@ function ProposalDetail({
         )}
         {modalMode === 'remove' && (
           <RemoveProposalScreens proposal={proposal} />
+        )}
+        {modalMode === 'execute' && (
+          <ExecuteProposalScreens proposal={proposal} />
         )}
       </MultiModal>
     </div>
