@@ -205,8 +205,8 @@ function AgreementSettings() {
         >
           <span>
             Drag and drop a document here or <TextFileUploader /> to upload your
-            community covenant. By uploading a file, you agree to Gardens
-            uploading this file to IPFS.
+            community covenant. By uploading this file, you agree to it being
+            uploaded to IPFS.
           </span>
           <span
             css={`

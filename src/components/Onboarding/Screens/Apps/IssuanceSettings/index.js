@@ -143,7 +143,7 @@ function IssuanceSettings() {
         <Button
           size="mini"
           onClick={handleReset}
-          label="Reset Defaults"
+          label="Restore Defaults"
           css={`
             align-self: flex-end;
           `}
@@ -168,8 +168,8 @@ function IssuanceSettings() {
           `}
         >
           The initial ratio refers to the ratio of tokens to be minted and sent
-          to the Common Pool. These will then be available to be distributed
-          through conviction voting.
+          to the Common Pool. These tokens will then be available to be
+          distributed through conviction voting.
         </Info>
       </div>
       <Navigation

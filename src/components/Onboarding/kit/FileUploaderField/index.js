@@ -25,7 +25,7 @@ const getDropzoneColor = (theme, isReject, isAccept) => {
 
 export const TextFileUploader = ({
   dropzoneId = DEFAULT_DROPZONE_ID,
-  label = 'browse your file',
+  label = 'browse your computer',
 }) => {
   const theme = useTheme()
 

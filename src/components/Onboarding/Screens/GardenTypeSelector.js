@@ -50,7 +50,7 @@ function GardenTypeSelector() {
           title="Native Token"
         />
         <Card
-          paragraph="Use an existing ERC-20 token to within your garden."
+          paragraph="Use an existing ERC-20 token within your garden."
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
           animationData={byotAnimation}
