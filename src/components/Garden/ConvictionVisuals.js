@@ -86,7 +86,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
           {stakedConviction.eq(0)
             ? '0'
             : stakedConviction.multipliedBy(new BigNumber('100')).toFixed(2)}
-          %{' '}
+          %{' of the Total Support '}
           {!signalingProposal &&
             (withThreshold ? (
               <span
@@ -95,7 +95,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
                 `}
               >
                 {neededConviction
-                  ? `(${neededConviction
+                  ? `(at least ${neededConviction
                       .multipliedBy(new BigNumber('100'))
                       .toFixed(2)}% needed)`
                   : `(threshold out of range)`}

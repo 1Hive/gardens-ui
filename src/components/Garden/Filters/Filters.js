@@ -126,7 +126,7 @@ const Filters = React.memo(({ compact, ...props }) => {
       <TextFilter
         text={proposalNameFilter}
         onChange={onNameFilterChange}
-        placeholder="Search by name"
+        placeholder="Search by proposal name"
       />
     </div>
   )
