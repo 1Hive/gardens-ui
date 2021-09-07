@@ -3,7 +3,7 @@ import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {
   'support-percentage': [
-    'Support percentage',
+    'Support Percentage',
     <>
       <strong>Support</strong> is the relative percentage of tokens that are
       required to vote “Yes” for a proposal to be approved. For example, if
@@ -24,7 +24,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'challenge-deposit': [
     'Challenge Deposit',
     <>
-      The <strong>Challenge deposit</strong> is the amount of tokens locked
+      The <strong>Challenge Deposit</strong> is the amount of tokens locked
       every time a proposal is challenged. This deposit is submitted at the time
       of the challenge.
     </>,
@@ -32,13 +32,13 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'proposal-deposit': [
     'Proposal Deposit',
     <>
-      The <strong>Proposal deposit</strong> is the amount of tokens locked every
+      The <strong>Proposal Deposit</strong> is the amount of tokens locked every
       time a proposal is created. They will be automatically locked from the
       funds available in your deposit manager.
     </>,
   ],
   'settlement-period': [
-    'Minimum Approval',
+    'Settlement Period',
     <>
       The <strong>Settlement Period</strong> is the amount of time the proposal
       author has to either accept the settlement offer or raise the dispute to
