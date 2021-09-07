@@ -182,16 +182,16 @@ function ProposalDetail({
                             requestToken.decimals
                           )}
                         </strong>{' '}
-                        {requestToken.name} out of{' '}
+                        {requestToken.symbol} out of{' '}
                         <strong>
                           {formatTokenAmount(commonPool, requestToken.decimals)}
                         </strong>{' '}
-                        {requestToken.name} currently in the common pool.
+                        {requestToken.symbol} currently in the common pool.
                       </span>
                     ) : (
                       <span>
                         This suggestion is for signaling purposes and is not
-                        requesting any {requestToken.name}
+                        requesting any {requestToken.symbol}
                       </span>
                     )}
                   </div>
@@ -463,7 +463,7 @@ const Amount = ({
                 {requestToken.symbol}
               </span>
               <Help hint="">
-                Converted to {requestToken.name} at time of execution
+                Converted to {requestToken.symbol} at time of execution
               </Help>
             </div>
           )}

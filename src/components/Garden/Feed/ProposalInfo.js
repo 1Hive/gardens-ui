@@ -69,7 +69,7 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
                     {requestToken.symbol}
                   </span>
                   <Help hint="">
-                    Converted to {requestToken.name} at time of execution
+                    Converted to {requestToken.symbol} at time of execution
                   </Help>
                 </div>
               )}
