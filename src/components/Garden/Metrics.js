@@ -69,11 +69,11 @@ const Metrics = React.memo(function Metrics({
         </div>
         <div>
           <TokenBalance
-            label="Active Supply"
+            label="Total Support"
             value={totalActiveTokens}
             token={token}
             currency={currency}
-            helptip="active-supply"
+            helptip="total-support"
           />
         </div>
       </div>

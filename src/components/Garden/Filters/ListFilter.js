@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { GU, useTheme } from '@1hive/1hive-ui'
+import HelpTip from '@components/HelpTip'
 
 function ListFilter({ items, selected, onChange }) {
   return (
@@ -11,22 +12,23 @@ function ListFilter({ items, selected, onChange }) {
           item={item}
           onSelect={onChange}
           selected={selected}
+          helptip={item.toLowerCase()}
         />
       ))}
     </div>
   )
 }
 
-function ListItem({ index, item, onSelect, selected }) {
+function ListItem({ index, item, onSelect, selected, helptip }) {
   const theme = useTheme()
 
+  console.log(item)
   const handleOnClick = useCallback(() => {
     onSelect(index)
   }, [index, onSelect])
 
   return (
     <div
-      onClick={handleOnClick}
       css={`
         margin-bottom: ${1 * GU}px;
         color: ${theme.contentSecondary};
@@ -35,10 +37,20 @@ function ListItem({ index, item, onSelect, selected }) {
           ? `
           color:${theme.content}
         `
-          : 'cursor:pointer'};
+          : 'cursor:default'};
       `}
     >
-      {item}
+      <span css="cursor:pointer" onClick={handleOnClick}>
+        {item}
+      </span>
+      <span
+        css={`
+          padding-left: ${1 * GU}px;
+          display: inline-block;
+        `}
+      >
+        <HelpTip type={helptip} />
+      </span>
     </div>
   )
 }

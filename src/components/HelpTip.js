@@ -68,19 +68,43 @@ const KNOWN_HELP_DESCRIPTIONS = {
       circulation, including the common pool.
     </>,
   ],
-  'active-supply': [
-    'Active Supply',
+  'total-support': [
+    'Total Support',
     <>
-      The <strong>Active Supply</strong> is the amount of tokens currently being
+      The <strong>Total Support</strong> is the amount of tokens currently being
       used to support proposals.
+    </>,
+  ],
+  all: [
+    'All proposals',
+    <>View all proposals (suggestion, funding, and decision).</>,
+  ],
+  suggestion: [
+    'Suggestion Proposals',
+    <>
+      Suggestion proposals are used to gather community sentiment for ideas or
+      future funding proposals.
+    </>,
+  ],
+  decision: [
+    'Decision proposals',
+    <>
+      Decisions are proposals which seek to update the DAO's DNA (i.e. the
+      metagovernance parameters)
+    </>,
+  ],
+  funding: [
+    'Funding proposals',
+    <>
+      Funding proposals ask for an amount of funds. These funds are granted if
+      the proposal in question receives enough support (conviction).
     </>,
   ],
 }
 
 function HelpTip({ type }) {
   const [name, description] = KNOWN_HELP_DESCRIPTIONS[type]
-
-  return <Help hint={`What is the ${name}?`}>{description}</Help>
+  return <Help hint={`${name}`}>{description}</Help>
 }
 
 export default HelpTip

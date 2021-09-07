@@ -87,7 +87,7 @@ function Item({ icon, index, label, onSelect, selected }) {
           margin-left: ${0.75 * GU}px;
         `}
       >
-        {label}
+        {label === 'top' ? 'Most supported' : 'Newest'}
       </div>
     </div>
   )
