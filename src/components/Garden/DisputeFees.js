@@ -50,9 +50,9 @@ function DisputeFees({ proposal }) {
             <div>
               {formatTokenAmount(
                 fees.amount,
-                proposal.challengerArbitratorFee.tokenDecimals
+                proposal.challengerArbitratorFee?.tokenDecimals
               )}{' '}
-              {proposal.challengerArbitratorFee.tokenSymbol}
+              {proposal.challengerArbitratorFee?.tokenSymbol}
             </div>
           </div>
         </div>
