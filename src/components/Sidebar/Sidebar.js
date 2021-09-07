@@ -11,15 +11,17 @@ function Sidebar() {
 
   const gardenData = useMemo(
     () =>
-      gardens.slice(0, 100).map(garden => {
-        return {
-          name: garden.name,
-          address: garden.address,
-          path: `#/garden/${garden.address}`,
-          src: garden.logo || defaultGardenLogo,
-        }
-      }),
-    [gardens]
+      gardens
+        .map(garden => {
+          return {
+            name: garden.name,
+            address: garden.address,
+            path: `#/garden/${garden.address}`,
+            src: garden.logo || defaultGardenLogo,
+          }
+        })
+        .filter(garden => garden.address === connectedGarden.address),
+    [connectedGarden, gardens]
   )
 
   return (
@@ -65,17 +67,15 @@ function Sidebar() {
       </div>
       <nav>
         <ul>
-          {gardenData
-            .filter(garden => garden.address === connectedGarden.address)
-            .map((garden, i) => (
-              <MenuItem
-                key={garden.address}
-                active={garden.address === connectedGarden.address}
-                path={garden.path}
-                name={garden.name}
-                src={garden.src}
-              />
-            ))}
+          {gardenData.map((garden, i) => (
+            <MenuItem
+              key={garden.address}
+              active={garden.address === connectedGarden.address}
+              path={garden.path}
+              name={garden.name}
+              src={garden.src}
+            />
+          ))}
         </ul>
       </nav>
     </div>
