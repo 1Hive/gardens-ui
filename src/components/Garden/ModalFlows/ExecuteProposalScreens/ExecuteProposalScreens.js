@@ -4,7 +4,7 @@ import ExecuteProposal from './ExecuteProposal'
 
 import useActions from '@hooks/useActions'
 
-function ExecuteProposalScreens({ proposal, mode }) {
+function ExecuteProposalScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
   const { convictionActions } = useActions()
 
