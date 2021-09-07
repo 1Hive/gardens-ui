@@ -24,7 +24,7 @@ function getRankingIcon(key, selected) {
 }
 
 function getRankingLabel(key) {
-  return iconsMapping[key]['.label']
+  return iconsMapping[key].label
 }
 
 function ProposalRankings({ items, onChange, selected }) {

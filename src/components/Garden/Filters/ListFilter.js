@@ -30,7 +30,7 @@ function ListItem({ index, item, onSelect, selected, helptip }) {
     <div
       css={`
         margin-bottom: ${1 * GU}px;
-        color: ${theme[selected ? 'content' : 'contentSecondary']};
+        color: ${theme[selected === index ? 'content' : 'contentSecondary']};
       `}
     >
       <span css="cursor:pointer" onClick={handleOnClick}>
