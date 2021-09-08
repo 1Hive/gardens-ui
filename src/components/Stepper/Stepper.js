@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { GU, noop, springs, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
 
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
@@ -163,21 +163,22 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     stepperStage === stepsCount &&
     stepState[stepperStage].status === STEP_SUCCESS
 
-  useEffect(() => {
-    let timeout
-    if (completed && !onCompleteActions) {
-      timeout = setTimeout(() => close(), 2000)
-    }
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [close, completed, onCompleteActions])
+  // Commented just in case we want to add again the auto close
+
+  // useEffect(() => {
+  //   let timeout
+  //   if (completed && !onCompleteActions) {
+  //     timeout = setTimeout(() => close(), 2000)
+  //   }
+  //   return () => {
+  //     clearTimeout(timeout)
+  //   }
+  // }, [close, completed, onCompleteActions])
 
   return (
     <div
       css={`
         margin-top: ${3.25 * GU}px;
-        margin-bottom: ${(completed && onCompleteActions ? 0 : 5.5) * GU}px;
       `}
     >
       <div
@@ -252,6 +253,17 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
+      {completed && !onCompleteActions && (
+        <Button
+          label="Close"
+          mode="strong"
+          onClick={close}
+          wide
+          css={`
+            margin-top: ${5 * GU}px;
+          `}
+        />
+      )}
       {completed && onCompleteActions && (
         <div
           css={`
