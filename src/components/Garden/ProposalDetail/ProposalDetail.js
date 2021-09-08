@@ -45,6 +45,7 @@ import {
 } from '@utils/web3-utils'
 import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
+import DiscourseComments from '@/components/DiscourseComments'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -79,6 +80,9 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  // We take the last section of the link that includes the topicId
+  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -354,6 +358,7 @@ function ProposalDetail({
             </div>
           }
         />
+        {link && <DiscourseComments topicId={discourseTopicId} />}
       </div>
       <MultiModal
         visible={modalVisible}
