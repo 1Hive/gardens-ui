@@ -358,7 +358,27 @@ function ProposalDetail({
             </div>
           }
         />
-        {link && <DiscourseComments topicId={discourseTopicId} />}
+        <Split
+          primary={
+            link && (
+              <div>
+                <Button
+                  href={link}
+                  target="_blank"
+                  css={`
+                    margin-top: ${3 * GU}px;
+                  `}
+                >
+                  Continue discussion
+                </Button>
+                <DiscourseComments topicId={discourseTopicId} />
+                <Button href={link} target="_blank">
+                  Continue discussion
+                </Button>
+              </div>
+            )
+          }
+        />
       </div>
       <MultiModal
         visible={modalVisible}
