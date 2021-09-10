@@ -361,13 +361,26 @@ function ProposalDetail({
         <Split
           primary={
             link && (
-              <div>
+              <div
+                css={`
+                  padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
+                `}
+              >
                 <div
                   css={`
                     ${textStyle('title3')};
                   `}
                 >
                   Comments
+                  <Button
+                    css={`
+                      margin-left: ${1.5 * GU}px;
+                    `}
+                    href={link}
+                    target="_blank"
+                  >
+                    Read proposal ↗
+                  </Button>
                 </div>
                 <DiscourseComments topicId={discourseTopicId} />
                 <Button href={link} target="_blank">
