@@ -3,7 +3,7 @@ import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {
   'support-percentage': [
-    'Support percentage',
+    'Support Percentage',
     <>
       <strong>Support</strong> is the relative percentage of tokens that are
       required to vote “Yes” for a proposal to be approved. For example, if
@@ -24,7 +24,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'challenge-deposit': [
     'Challenge Deposit',
     <>
-      The <strong>Challenge deposit</strong> is the amount of tokens locked
+      The <strong>Challenge Deposit</strong> is the amount of tokens locked
       every time a proposal is challenged. This deposit is submitted at the time
       of the challenge.
     </>,
@@ -32,13 +32,13 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'proposal-deposit': [
     'Proposal Deposit',
     <>
-      The <strong>Proposal deposit</strong> is the amount of tokens locked every
+      The <strong>Proposal Deposit</strong> is the amount of tokens locked every
       time a proposal is created. They will be automatically locked from the
       funds available in your deposit manager.
     </>,
   ],
   'settlement-period': [
-    'Minimum Approval',
+    'Settlement Period',
     <>
       The <strong>Settlement Period</strong> is the amount of time the proposal
       author has to either accept the settlement offer or raise the dispute to
@@ -68,19 +68,43 @@ const KNOWN_HELP_DESCRIPTIONS = {
       circulation, including the common pool.
     </>,
   ],
-  'active-supply': [
-    'Active Supply',
+  'total-support': [
+    'Total Support',
     <>
-      The <strong>Active Supply</strong> is the amount of tokens currently being
+      The <strong>Total Support</strong> is the amount of tokens currently being
       used to support proposals.
+    </>,
+  ],
+  all: [
+    'All proposals',
+    <>View all proposals (suggestion, funding, and decision).</>,
+  ],
+  suggestion: [
+    'Suggestion Proposals',
+    <>
+      Suggestion proposals are used to gather community sentiment for ideas or
+      future funding proposals.
+    </>,
+  ],
+  decision: [
+    'Decision proposals',
+    <>
+      Decisions are proposals which seek to update the DAO's DNA (i.e. the
+      metagovernance parameters)
+    </>,
+  ],
+  funding: [
+    'Funding proposals',
+    <>
+      Funding proposals ask for an amount of funds. These funds are granted if
+      the proposal in question receives enough support (conviction).
     </>,
   ],
 }
 
 function HelpTip({ type }) {
   const [name, description] = KNOWN_HELP_DESCRIPTIONS[type]
-
-  return <Help hint={`What is the ${name}?`}>{description}</Help>
+  return <Help hint={`${name}`}>{description}</Help>
 }
 
 export default HelpTip

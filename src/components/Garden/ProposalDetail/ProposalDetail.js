@@ -21,12 +21,14 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
+import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
@@ -78,6 +80,9 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  // We take the last section of the link that includes the topicId
+  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -181,16 +186,16 @@ function ProposalDetail({
                             requestToken.decimals
                           )}
                         </strong>{' '}
-                        {requestToken.name} out of{' '}
+                        {requestToken.symbol} out of{' '}
                         <strong>
                           {formatTokenAmount(commonPool, requestToken.decimals)}
                         </strong>{' '}
-                        {requestToken.name} currently in the common pool.
+                        {requestToken.symbol} currently in the common pool.
                       </span>
                     ) : (
                       <span>
                         This suggestion is for signaling purposes and is not
-                        requesting any {requestToken.name}
+                        requesting any {requestToken.symbol}
                       </span>
                     )}
                   </div>
@@ -292,7 +297,7 @@ function ProposalDetail({
                 <ProposalActions
                   proposal={proposal}
                   onChangeSupport={() => handleShowModal('update')}
-                  onExecuteProposal={actions.executeProposal}
+                  onExecuteProposal={() => handleShowModal('execute')}
                   onRequestSupportProposal={() => handleShowModal('support')}
                 />
               </section>
@@ -353,6 +358,25 @@ function ProposalDetail({
             </div>
           }
         />
+        <Split
+          primary={
+            link && (
+              <div>
+                <div
+                  css={`
+                    ${textStyle('title3')};
+                  `}
+                >
+                  Comments
+                </div>
+                <DiscourseComments topicId={discourseTopicId} />
+                <Button href={link} target="_blank">
+                  Continue discussion ↗
+                </Button>
+              </div>
+            )
+          }
+        />
       </div>
       <MultiModal
         visible={modalVisible}
@@ -378,6 +402,9 @@ function ProposalDetail({
         )}
         {modalMode === 'remove' && (
           <RemoveProposalScreens proposal={proposal} />
+        )}
+        {modalMode === 'execute' && (
+          <ExecuteProposalScreens proposal={proposal} />
         )}
       </MultiModal>
     </div>
@@ -459,7 +486,7 @@ const Amount = ({
                 {requestToken.symbol}
               </span>
               <Help hint="">
-                Converted to {requestToken.name} at time of execution
+                Converted to {requestToken.symbol} at time of execution
               </Help>
             </div>
           )}

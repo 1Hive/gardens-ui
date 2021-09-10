@@ -80,7 +80,7 @@ function Header() {
                 <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
               )}
             </Link>
-            {!below('large') && (
+            {!below('small') && (
               <nav
                 css={`
                   display: flex;
@@ -154,7 +154,7 @@ function GardenNavItems({ garden }) {
           margin-left: ${4 * GU}px;
         `}
       >
-        Get {token.name}
+        Get {token.symbol}
       </Link>
       {garden?.wiki && (
         <Link

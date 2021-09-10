@@ -11,15 +11,17 @@ function Sidebar() {
 
   const gardenData = useMemo(
     () =>
-      gardens.slice(0, 10).map(garden => {
-        return {
-          name: garden.name,
-          address: garden.address,
-          path: `#/garden/${garden.address}`,
-          src: garden.logo || defaultGardenLogo,
-        }
-      }),
-    [gardens]
+      gardens
+        .map(garden => {
+          return {
+            name: garden.name,
+            address: garden.address,
+            path: `#/garden/${garden.address}`,
+            src: garden.logo || defaultGardenLogo,
+          }
+        })
+        .filter(garden => garden.address === connectedGarden.address),
+    [connectedGarden, gardens]
   )
 
   return (
