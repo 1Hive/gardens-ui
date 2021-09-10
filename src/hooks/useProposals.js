@@ -41,6 +41,14 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
   const { account } = useWallet()
+  const { commonPool, config } = useGardenState()
+  const { requestToken, stableToken } = config.conviction
+  const [requestAmount, loadingRequestAmount] = useRequestAmount(
+    stable,
+    requestedAmount,
+    stableToken.id,
+    requestToken.id
+  )
 
   const latestBlock = useLatestBlock()
 
@@ -60,6 +68,17 @@ export function useProposals() {
       filters.count.onChange()
     }
   }, [filters.count, proposals.length, proposalsFetchedCount])
+
+  const proposalsWithFundingData = useMemo(() => {
+    return proposals.map(proposal => {
+      const fundingData = getFundingProposalData(
+        proposal,
+        requestAmount,
+        commonPool,
+        config
+      )
+    })
+  }, [commonPool, config, proposals])
 
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
@@ -139,15 +158,8 @@ export function useProposal(proposalId, appAddress) {
 
 export function useProposalWithThreshold(proposal) {
   const { commonPool, config } = useGardenState()
-  const {
-    alpha,
-    effectiveSupply,
-    maxRatio,
-    requestToken,
-    stableToken,
-    weight,
-  } = config.conviction
-  const { requestedAmount, totalTokensStaked, stable, type } = proposal
+  const { requestToken, stableToken } = config.conviction
+  const { requestedAmount, stable } = proposal
 
   const [requestAmount, loadingRequestAmount] = useRequestAmount(
     stable,
@@ -156,45 +168,25 @@ export function useProposalWithThreshold(proposal) {
     requestToken.id
   )
 
-  let threshold,
-    neededConviction,
-    minTokensNeeded,
-    neededTokens,
-    remainingBlocksToPass
-
-  // Funding proposal needed values
-  if (type === ProposalTypes.Proposal) {
-    threshold = calculateThreshold(
+  let fundingData
+  if (!loadingRequestAmount) {
+    fundingData = getFundingProposalData(
+      proposal,
       requestAmount,
-      commonPool || new BigNumber('0'),
-      effectiveSupply || new BigNumber('0'),
-      alpha,
-      maxRatio,
-      weight
+      commonPool,
+      config
     )
-
-    if (threshold) {
-      neededConviction = threshold.div(proposal.maxConviction)
-      minTokensNeeded = getMinNeededStake(threshold, alpha)
-      neededTokens = minTokensNeeded.minus(totalTokensStaked)
-      remainingBlocksToPass = getRemainingTimeToPass(
-        threshold,
-        proposal.currentConviction,
-        totalTokensStaked,
-        alpha
-      )
-    }
   }
 
   return [
     {
       ...proposal,
-      neededConviction,
-      neededTokens,
-      minTokensNeeded,
-      remainingBlocksToPass,
+      neededConviction: fundingData && fundingData.neededConviction,
+      neededTokens: fundingData && fundingData.neededTokens,
+      minTokensNeeded: fundingData && fundingData.minTokensNeeded,
+      remainingBlocksToPass: fundingData && fundingData.remainingBlocksToPass,
       requestedAmountConverted: requestAmount,
-      threshold,
+      threshold: fundingData && fundingData.threshold,
     },
     loadingRequestAmount,
   ]
@@ -284,5 +276,52 @@ function processDecision(proposal) {
     endDate,
     hasEnded,
     statusData,
+  }
+}
+
+export function getFundingProposalData(
+  proposal,
+  requestAmount,
+  commonPool,
+  config
+) {
+  const { totalTokensStaked, type } = proposal
+  const { alpha, effectiveSupply, maxRatio, weight } = config.conviction
+
+  let threshold,
+    neededConviction,
+    minTokensNeeded,
+    neededTokens,
+    remainingBlocksToPass
+
+  // Funding proposal needed values
+  if (type === ProposalTypes.Proposal) {
+    threshold = calculateThreshold(
+      requestAmount,
+      commonPool || new BigNumber('0'),
+      effectiveSupply || new BigNumber('0'),
+      alpha,
+      maxRatio,
+      weight
+    )
+
+    if (threshold) {
+      neededConviction = threshold.div(proposal.maxConviction)
+      minTokensNeeded = getMinNeededStake(threshold, alpha)
+      neededTokens = minTokensNeeded.minus(totalTokensStaked)
+      remainingBlocksToPass = getRemainingTimeToPass(
+        threshold,
+        proposal.currentConviction,
+        totalTokensStaked,
+        alpha
+      )
+    }
+  }
+  return {
+    neededConviction,
+    neededTokens,
+    minTokensNeeded,
+    remainingBlocksToPass,
+    threshold,
   }
 }
