@@ -21,6 +21,7 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
+import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
@@ -45,7 +46,6 @@ import {
 } from '@utils/web3-utils'
 import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
-import DiscourseComments from '@/components/DiscourseComments'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -362,15 +362,13 @@ function ProposalDetail({
           primary={
             link && (
               <div>
-                <Button
-                  href={link}
-                  target="_blank"
+                <div
                   css={`
-                    margin-top: ${3 * GU}px;
+                    ${textStyle('title3')};
                   `}
                 >
-                  Continue discussion ↗
-                </Button>
+                  Comments
+                </div>
                 <DiscourseComments topicId={discourseTopicId} />
                 <Button href={link} target="_blank">
                   Continue discussion ↗
