@@ -369,11 +369,11 @@ function ProposalDetail({
                     margin-top: ${3 * GU}px;
                   `}
                 >
-                  Continue discussion
+                  Continue discussion ↗
                 </Button>
                 <DiscourseComments topicId={discourseTopicId} />
                 <Button href={link} target="_blank">
-                  Continue discussion
+                  Continue discussion ↗
                 </Button>
               </div>
             )
