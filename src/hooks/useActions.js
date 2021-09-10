@@ -7,15 +7,16 @@ import { useWallet } from '@providers/Wallet'
 import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
 
-import { getContract, useContract } from './useContract'
+import { getContract, useContract, useContractReadOnly } from './useContract'
 
 import env from '@/environment'
 
 import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
-import tokenAbi from '@abis/minimeToken.json'
 import agreementAbi from '@abis/agreement.json'
+import convictionAbi from '@abis/conviction.json'
+import tokenAbi from '@abis/minimeToken.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
@@ -44,6 +45,11 @@ export default function useActions() {
   )
 
   const agreementContract = useContract(agreementApp?.address, agreementAbi)
+
+  const convictionVotingContract = useContractReadOnly(
+    convictionVotingApp?.address,
+    convictionAbi
+  )
 
   // Conviction voting actions
   const newProposal = useCallback(
@@ -161,6 +167,44 @@ export default function useActions() {
     },
     [account, convictionVotingApp]
   )
+
+  const setConvictionSettings = useCallback(
+    async (
+      { decay, maxRatio, weight, minThresholdStakePercentage },
+      onDone = noop
+    ) => {
+      const intent = await convictionVotingApp.intent(
+        'setConvictionCalculationSettings',
+        [decay, maxRatio, weight, minThresholdStakePercentage],
+        {
+          actAs: account,
+        }
+      )
+
+      onDone(intent.transactions)
+    },
+    [account, convictionVotingApp]
+  )
+
+  const getConvictionSettings = useCallback(async () => {
+    if (!convictionVotingContract) {
+      return
+    }
+
+    const decay = await convictionVotingContract.decay()
+    const maxRatio = await convictionVotingContract.maxRatio()
+    const weight = await convictionVotingContract.weight()
+    const minThresholdStakePercentage = await convictionVotingContract.minThresholdStakePercentage()
+    const requestToken = await convictionVotingContract.requestToken()
+
+    return {
+      decay,
+      maxRatio,
+      weight,
+      minThresholdStakePercentage,
+      requestToken,
+    }
+  }, [convictionVotingContract])
 
   // Issuance actions
   const executeIssuance = useCallback(() => {
@@ -432,6 +476,8 @@ export default function useActions() {
       newSignalingProposal,
       stakeToProposal,
       withdrawFromProposal,
+      setConvictionSettings,
+      getConvictionSettings,
     },
     hookedTokenManagerActions: {
       approveWrappableTokenAmount,
