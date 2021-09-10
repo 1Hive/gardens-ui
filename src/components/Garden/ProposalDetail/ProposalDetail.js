@@ -21,6 +21,7 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
+import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
@@ -79,6 +80,9 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  // We take the last section of the link that includes the topicId
+  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -352,6 +356,38 @@ function ProposalDetail({
                 totalTokensStaked={totalTokensStaked}
               />
             </div>
+          }
+        />
+        <Split
+          primary={
+            link && (
+              <div
+                css={`
+                  padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
+                `}
+              >
+                <div
+                  css={`
+                    ${textStyle('title3')};
+                  `}
+                >
+                  Comments
+                  <Button
+                    css={`
+                      margin-left: ${1.5 * GU}px;
+                    `}
+                    href={link}
+                    target="_blank"
+                  >
+                    Read proposal ↗
+                  </Button>
+                </div>
+                <DiscourseComments topicId={discourseTopicId} />
+                <Button href={link} target="_blank">
+                  Continue discussion ↗
+                </Button>
+              </div>
+            )
           }
         />
       </div>
