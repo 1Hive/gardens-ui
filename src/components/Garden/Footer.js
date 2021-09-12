@@ -67,10 +67,11 @@ function Footer() {
 
   useEffect(() => {
     if (connectedGarden) {
-      const { links, logo, token, wrappableToken } = connectedGarden
+      // eslint-disable-next-line camelcase
+      const { links, logo_type, token, wrappableToken } = connectedGarden
       setFooterData({
         links,
-        logo,
+        logo: logo_type,
         token,
         wrappableToken,
         garden: true,
