@@ -11,11 +11,11 @@ function MainView({ children }) {
   const { below } = useViewport()
   const { connectedGarden } = useGardens()
 
-  let loading = true
+  let loadingGardenState = true
   if (connectedGarden) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { loading: loadingGardenState } = useGardenState()
-    loading = loadingGardenState
+    const { loading } = useGardenState()
+    loadingGardenState = loading
   }
 
   const compactMode = below('large')
@@ -74,7 +74,11 @@ function MainView({ children }) {
                 >
                   <Layout paddingBottom={3 * GU}>{children}</Layout>
                 </div>
-                {connectedGarden ? !loading && <Footer /> : <Footer />}
+                {connectedGarden ? (
+                  !loadingGardenState && <Footer />
+                ) : (
+                  <Footer />
+                )}
               </div>
             </ScrollView>
           </Root.Provider>
