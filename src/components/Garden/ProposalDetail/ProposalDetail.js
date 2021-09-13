@@ -383,7 +383,13 @@ function ProposalDetail({
                   </Button>
                 </div>
                 <DiscourseComments topicId={discourseTopicId} />
-                <Button href={link} target="_blank">
+                <Button
+                  href={link}
+                  target="_blank"
+                  css={`
+                    margin-bottom: ${1.5 * GU}px;
+                  `}
+                >
                   Continue discussion ↗
                 </Button>
               </div>
