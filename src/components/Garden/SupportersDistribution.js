@@ -11,11 +11,13 @@ import IdentityBadge from '../IdentityBadge'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
 import { formatTokenAmount } from '@utils/token-utils'
 import { stakesPercentages } from '@utils/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
 import noSupportIllustration from '@assets/noSupportIllustration.svg'
+import noSupportIllustrationDark from '@assets/dark-mode/noSupportIllustrationDark.svg'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -46,6 +48,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
   totalTokensStaked,
 }) {
   const { config } = useGardenState()
+  const AppTheme = useAppTheme()
   const { stakeToken } = config.conviction
 
   const totalStakedString = totalTokensStaked.toString(10)
@@ -89,7 +92,14 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
               justify-content: center;
             `}
           >
-            <img src={noSupportIllustration} alt="" />
+            <img
+              src={
+                AppTheme.appearance === 'light'
+                  ? noSupportIllustration
+                  : noSupportIllustrationDark
+              }
+              alt=""
+            />
           </div>
           <div
             css={`

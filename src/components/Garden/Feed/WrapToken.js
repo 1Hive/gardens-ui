@@ -12,14 +12,18 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useGardenState } from '@providers/GardenState'
+import { useAppTheme } from '@providers/AppTheme'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
+import wrappedIconDark from '@assets/dark-mode/wrappedIconDark.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import unwrappedIconDark from '@assets/dark-mode/unwrappedIconDark.svg'
 
 function WrapToken({ onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
+  const AppTheme = useAppTheme()
   const { token, wrappableToken } = useGardenState()
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
@@ -46,6 +50,7 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
           mode="wrap"
           onClick={onWrapToken}
           token={wrappableToken.data}
+          darkTheme={AppTheme.appearance === 'dark'}
         />
         <LineSeparator border={theme.border} />
         <Token
@@ -54,15 +59,25 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
           mode="unwrap"
           onClick={onUnwrapToken}
           token={token.data}
+          darkTheme={AppTheme.appearance === 'dark'}
         />
       </div>
     </Box>
   )
 }
 
-function Token({ balance, loading, mode, onClick, token }) {
+function Token({ balance, loading, mode, darkTheme, onClick, token }) {
   const wrapMode = mode === 'wrap'
-  const icon = wrapMode ? unwrappedIcon : wrappedIcon
+
+  const icon = wrapMode
+    ? darkTheme
+      ? wrappedIconDark
+      : wrappedIcon
+    : darkTheme
+    ? unwrappedIconDark
+    : unwrappedIcon
+
+  console.log(icon)
   const button = wrapMode
     ? { mode: 'strong', label: 'Wrap' }
     : { mode: 'normal', label: 'Unwrap' }

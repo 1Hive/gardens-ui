@@ -35,10 +35,14 @@ export default {
     badge: '#1F4782',
     badgeContent: '#DEE2E7',
 
+    disabled: '#02142E',
+    disabledContent: '#818A97',
+    disabledBorder: '#1F4782',
+
     help: '#DEE2E7',
     helpIcon: '#88A8E4',
     helpSurface: '#1F4782',
-    helpContent: '#041F46',
+    helpContent: '#031A3A',
 
     warning: '#FFA410',
     warningSurface: '#363A3B',
@@ -53,10 +57,10 @@ export default {
     negativeSurface: '#362F4E',
     negativeSurfaceContent: '#FF6D6D',
 
-    accent: '#AAF5D4',
-    accentStart: '#7CE0D6',
-    accentEnd: '#AAF5D4',
-    accentContent: '#19364e',
+    accent: '#7FDBBD',
+    accentStart: '#64B7B4',
+    accentEnd: '#7FDBBD',
+    accentContent: '#13334b',
 
     positive: '#2BC58E',
     positiveContent: '#2BC58E',

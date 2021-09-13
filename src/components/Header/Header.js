@@ -6,7 +6,7 @@ import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
-import { useAppTheme } from '../../providers/AppTheme'
+import { useAppTheme } from '@providers/AppTheme'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getHoneyswapTradeTokenUrl } from '@/endpoints'
@@ -15,6 +15,7 @@ import { getNetwork } from '@/networks'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogo.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
+import gardensLogoTypeDark from '@assets/dark-mode/gardensLogoTypeDark.svg'
 import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
 import darkModeIconDark from '@assets/icon-dark-mode-dark.svg'
 
@@ -30,14 +31,20 @@ function Header() {
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
-      return { logo: gardensLogo, logotype: gardensLogoType }
+      return {
+        logo: gardensLogo,
+        logotype:
+          AppTheme.appearance === 'light'
+            ? gardensLogoType
+            : gardensLogoTypeDark,
+      }
     }
 
     return {
       logo: connectedGarden?.logo || defaultGardenLogo,
       logotype: connectedGarden?.logo_type || defaultGardenLogo,
     }
-  }, [connectedGarden])
+  }, [connectedGarden, AppTheme.appearance])
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
   const logoLink = `#${
@@ -126,22 +133,6 @@ function Header() {
             `}
           >
             <AccountModule compact={layoutSmall} />
-            <ButtonBase
-              css={`
-                width: ${4 * GU}px;
-                height: ${4 * GU}px;
-              `}
-              onClick={toggleDarkMode}
-            >
-              <img
-                css="width: 100%;"
-                src={
-                  AppTheme.appearance === 'light'
-                    ? darkModeIconLight
-                    : darkModeIconDark
-                }
-              />
-            </ButtonBase>
 
             {showBalance && (
               <>
@@ -155,6 +146,22 @@ function Header() {
                 <BalanceModule />
               </>
             )}
+            <ButtonBase
+              css={`
+                width: ${3 * GU}px;
+                height: ${3 * GU}px;
+              `}
+              onClick={toggleDarkMode}
+            >
+              <img
+                css="width: 100%;"
+                src={
+                  AppTheme.appearance === 'light'
+                    ? darkModeIconLight
+                    : darkModeIconDark
+                }
+              />
+            </ButtonBase>
           </div>
         </div>
       </Layout>
