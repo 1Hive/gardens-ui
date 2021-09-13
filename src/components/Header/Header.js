@@ -80,7 +80,7 @@ function Header() {
                 <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
               )}
             </Link>
-            {!below('small') && (
+            {!below('medium') && (
               <nav
                 css={`
                   display: flex;
