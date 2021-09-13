@@ -60,7 +60,7 @@ const defaultFooterData = {
 function Footer() {
   const theme = useTheme()
   const { below } = useViewport()
-  const compactMode = below('large')
+  const compactMode = below('medium')
   const [footerData, setFooterData] = useState(defaultFooterData)
 
   const { connectedGarden } = useGardens()
