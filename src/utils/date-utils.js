@@ -6,6 +6,11 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { round } from './math-utils'
 
+export const SECOND = 1000
+export const MINUTE = 60 * SECOND
+export const HOUR = 60 * MINUTE
+export const DAY = 24 * HOUR
+
 const KNOWN_FORMATS = {
   onlyDate: 'DD/MM/YYYY',
   iso: 'YYYY-MM-DD',
@@ -37,4 +42,20 @@ export function toMilliseconds(seconds) {
   return parseInt(seconds) * 1000
 }
 
-export { dayjs, dateFormat, durationTime, toMs, durationToHours }
+// Displays the difference between two dates
+function getRelativeTime(from, to) {
+  return dayjs(to)
+    .from(from)
+    .replace(/minutes?/, 'min')
+    .replace(/seconds?/, 'sec')
+    .trim()
+}
+
+export {
+  dayjs,
+  dateFormat,
+  durationTime,
+  getRelativeTime,
+  toMs,
+  durationToHours,
+}

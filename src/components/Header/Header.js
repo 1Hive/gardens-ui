@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
+import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
 import Layout from '../Layout'
 import { useGardens } from '@providers/Gardens'
@@ -125,6 +126,15 @@ function Header() {
                 <BalanceModule />
               </>
             )}
+            <div
+              css={`
+                display: flex;
+                height: 100%;
+                margin-left: ${2 * GU}px;
+              `}
+            >
+              <ActivityButton />
+            </div>
           </div>
         </div>
       </Layout>
