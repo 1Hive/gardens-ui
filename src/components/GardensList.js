@@ -1,28 +1,69 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
-import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
-
+import {
+  GU,
+  Pagination,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import { useGardens } from '@providers/Gardens'
-
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import Loader from './Loader'
+
+const GARDENS_PER_PAGE = 8
+
+const computeCurrentGardens = (gardens, currentPage) => {
+  const currentGardens = gardens.slice(
+    currentPage * GARDENS_PER_PAGE,
+    GARDENS_PER_PAGE * (currentPage + 1)
+  )
+
+  return currentGardens
+}
 
 function GardensList() {
-  // TODO :  add loading component
-  const { gardens } = useGardens()
+  const { gardens, loading } = useGardens()
+  const [selectedPage, setSelectedPage] = useState(0)
+  const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
+  const currentGardens = useMemo(
+    () => computeCurrentGardens(gardens, selectedPage),
+    [gardens, selectedPage]
+  )
+
+  const handlePageChange = useCallback(page => {
+    setSelectedPage(page)
+  }, [])
 
   return (
-    <div
-      css={`
-        padding: ${3 * GU}px;
-        display: grid;
-        grid-gap: ${2 * GU}px;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      `}
-    >
-      {gardens.map(garden => (
-        <GardenCard key={garden.id} garden={garden} />
-      ))}
+    <div>
+      {!loading ? (
+        <div>
+          <div
+            css={`
+              padding: ${3 * GU}px;
+              display: grid;
+              grid-gap: ${4 * GU}px;
+              grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+              grid-template-rows: repeat(auto-fill, minmax(280px, 1fr));
+            `}
+          >
+            {currentGardens.map(garden => (
+              <GardenCard key={garden.id} garden={garden} />
+            ))}
+          </div>
+          {pages > 1 && (
+            <Pagination
+              pages={pages}
+              selected={selectedPage}
+              onChange={handlePageChange}
+            />
+          )}
+        </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   )
 }
