@@ -21,15 +21,15 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_ADJUSTMENT]: {
-    title: 'Excecute issuance',
+    title: 'Execute issuance',
     icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_DECISION]: {
-    title: 'Excecute decision',
+    title: 'Execute decision',
     icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_PROPOSAL]: {
-    title: 'Execute proposal',
+    title: 'Exeute proposal',
     icon: GARDEN_LOGO,
   },
   [actions.NEW_PROPOSAL]: {

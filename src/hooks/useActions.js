@@ -11,7 +11,9 @@ import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
+// import actions from '../actions/garden-action-types'
 import { VOTE_YEA } from '@/constants'
+// import { formatTokenAmount } from '@utils/token-utils'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import tokenAbi from '@abis/minimeToken.json'
@@ -114,9 +116,15 @@ export default function useActions() {
       )
 
       intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
+      // const formattedAmount = formatTokenAmount(amount)
 
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone({
+          transaction: intent.transactions,
+          // description: radspec[actions.STAKE_TO_PROPOSAL]({
+          //   amount: formattedAmount,
+          // }),
+        })
       }
     },
     [account, convictionVotingApp, mounted]
