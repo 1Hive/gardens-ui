@@ -17,7 +17,7 @@ function GardensList() {
         padding: ${3 * GU}px;
         display: grid;
         grid-gap: ${2 * GU}px;
-        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       `}
     >
       {gardens.map(garden => (
@@ -48,7 +48,7 @@ function GardenCard({ garden }) {
         cursor: pointer;
 
         display: grid;
-        grid-template-rows: 72px 32px 72px auto auto;
+        grid-template-rows: 72px 32px 92px auto auto;
         grid-gap: ${2 * GU}px;
         text-align: center;
       `}
@@ -74,7 +74,7 @@ function GardenCard({ garden }) {
         css={`
           color: ${theme.contentSecondary};
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
           overflow: hidden;
         `}
