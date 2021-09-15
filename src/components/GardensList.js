@@ -46,7 +46,6 @@ function GardenCard({ garden }) {
         border-radius: ${2.5 * GU}px;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
         cursor: pointer;
-
         display: grid;
         grid-template-rows: 72px 32px 92px auto auto;
         grid-gap: ${2 * GU}px;
