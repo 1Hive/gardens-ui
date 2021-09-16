@@ -31,7 +31,7 @@ function SettlementDetails({
         {isChallenger
           ? `This proposal has been cancelled as the submitter never responded to your settlement offer. 
           Claiming your deposit will transfer your settlement offer amount from the proposal submitter to you; your challenge deposit will be returned, and your dispute fees refunded.`
-          : `By accepting this settlement offer you agree to cancel Proposal ${id}; you will forfeit your proposal deposit and the settlement will be taken from the available funds in your deposit manager.`}
+          : `By accepting this settlement offer you agree to cancel Proposal ${id}; the settlement amount will be taken from your proposal deposit.`}
       </span>
 
       <div
