@@ -13,11 +13,15 @@ import { fetchFileContent } from '../services/github'
 import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
+import useGardenFilters from '@/hooks/useGardenFilters'
+import { testNameFilter } from '@/utils/garden-filters-utils'
+import { useDebounce } from '@/hooks/useDebounce'
 
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const [gardens, loading] = useGardensList()
+  const [queryFilters, filters] = useGardenFilters()
+  const [gardens, loading] = useGardensList(queryFilters, filters)
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -35,7 +39,15 @@ export function GardensProvider({ children }) {
   }
 
   return (
-    <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
+    <DAOContext.Provider
+      value={{
+        connectedGarden,
+        internalFilters: filters,
+        externalFilters: queryFilters,
+        gardens,
+        loading,
+      }}
+    >
       {connectedGarden ? (
         <Connect>
           <GardenStateProvider>
@@ -57,23 +69,31 @@ export function useGardens() {
   return useContext(DAOContext)
 }
 
-function useGardensList() {
+function useGardensList(queryFilters, filters) {
   const [gardens, setGardens] = useState([])
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const debouncedNameFilter = useDebounce(filters.name.filter, 500)
+  const filteredGardens = useMemo(() => {
+    if (!debouncedNameFilter) {
+      return gardens
+    }
+    return gardens.filter(garden => testNameFilter(debouncedNameFilter, garden))
+  }, [debouncedNameFilter, gardens])
+  const { network, sorting } = queryFilters
 
   useEffect(() => {
-    setLoading(true)
     setLoadingMetadata(true)
   }, [])
 
   useEffect(() => {
     const fetchGardens = async () => {
       try {
+        setLoading(true)
         const result = await getGardens(
-          { network: getNetwork().chainId },
-          { orderBy: 'honeyLiquidity' }
+          { ...network.queryArgs },
+          { ...sorting.queryArgs }
         )
         setGardens(result)
       } catch (err) {
@@ -84,7 +104,7 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [])
+  }, [network.queryArgs, sorting.queryArgs])
 
   useEffect(() => {
     const fetchGardenMetadata = async () => {
@@ -102,8 +122,11 @@ function useGardensList() {
 
   return [
     useMemo(
-      () => gardens.map(garden => mergeGardenMetadata(garden, gardensMetadata)),
-      [gardens, gardensMetadata]
+      () =>
+        filteredGardens.map(garden =>
+          mergeGardenMetadata(garden, gardensMetadata)
+        ),
+      [filteredGardens, gardensMetadata]
     ),
     loading || loadingMetadata,
   ]

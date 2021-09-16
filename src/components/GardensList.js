@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   GU,
@@ -7,10 +7,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useGardens } from '@providers/Gardens'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-import Loader from './Loader'
+import EmptyResults from './Garden/Feed/EmptyResults'
 
 const GARDENS_PER_PAGE = 8
 
@@ -23,8 +22,7 @@ const computeCurrentGardens = (gardens, currentPage) => {
   return currentGardens
 }
 
-function GardensList() {
-  const { gardens, loading } = useGardens()
+function GardensList({ gardens }) {
   const [selectedPage, setSelectedPage] = useState(0)
   const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
   const currentGardens = useMemo(
@@ -36,17 +34,23 @@ function GardensList() {
     setSelectedPage(page)
   }, [])
 
+  useEffect(() => {
+    if (gardens.length) {
+      setSelectedPage(0)
+    }
+  }, [gardens])
+
   return (
     <div>
-      {!loading ? (
+      {currentGardens.length ? (
         <div>
           <div
             css={`
-              padding: ${3 * GU}px;
               display: grid;
               grid-gap: ${4 * GU}px;
-              grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-              grid-template-rows: repeat(auto-fill, minmax(280px, 1fr));
+              grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+              grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+              margin-bottom: ${2 * GU}px;
             `}
           >
             {currentGardens.map(garden => (
@@ -62,7 +66,7 @@ function GardensList() {
           )}
         </div>
       ) : (
-        <Loader />
+        <EmptyResults title="No gardens found" />
       )}
     </div>
   )
