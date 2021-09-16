@@ -311,21 +311,20 @@ function ProposalDetail({
                   />
                 </section>
               </Box>
-              {(statusData.challenged || statusData.settled) &&
-                connectedAccount && (
-                  <Box
-                    padding={2.4 * GU}
-                    css={`
-                      background: ${background};
-                      border-color: ${borderColor};
-                    `}
-                  >
-                    <ArgumentBox
-                      proposal={proposal}
-                      connectedAccount={connectedAccount}
-                    />
-                  </Box>
-                )}
+              {(statusData.challenged || statusData.settled) && (
+                <Box
+                  padding={2.4 * GU}
+                  css={`
+                    background: ${background};
+                    border-color: ${borderColor};
+                  `}
+                >
+                  <ArgumentBox
+                    proposal={proposal}
+                    connectedAccount={connectedAccount}
+                  />
+                </Box>
+              )}
             </>
           }
           secondary={
