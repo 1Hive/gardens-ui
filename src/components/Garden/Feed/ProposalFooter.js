@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
-import { useWallet } from '@providers/Wallet'
 import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
@@ -30,7 +30,7 @@ function ProposalFooter({ proposal }) {
     [proposal]
   )
 
-  const formattedTokensNeeded = formatTokenAmount(
+  const formattedNeededTokens = formatTokenAmount(
     proposal.neededTokens,
     stakeToken.decimals
   )
@@ -71,7 +71,7 @@ function ProposalFooter({ proposal }) {
       </div>
       {proposal.type === ProposalTypes.Proposal && (
         <div>
-          {stakeToken.symbol} needed to pass: {formattedTokensNeeded}
+          {stakeToken.symbol} needed to pass: {formattedNeededTokens}
         </div>
       )}
       <div>Status: {proposalStatusLabel}</div>
