@@ -3,11 +3,13 @@ import styled from 'styled-components'
 import { textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
 import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
+import { formatTokenAmount } from '@utils/token-utils'
 import { getConnectedAccountVote } from '../../../utils/vote-utils'
 
 function ProposalCardFooter({ proposal }) {
@@ -19,11 +21,18 @@ function ProposalCardFooter({ proposal }) {
 }
 
 function ProposalFooter({ proposal }) {
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
   const theme = useTheme()
 
   const supportersCount = useMemo(
     () => proposal.stakes.filter(({ amount }) => amount.gt(0)).length,
     [proposal]
+  )
+
+  const formattedNeededTokens = formatTokenAmount(
+    proposal.neededTokens,
+    stakeToken.decimals
   )
 
   // TODO: Use mapping and status symbol
@@ -60,6 +69,11 @@ function ProposalFooter({ proposal }) {
       <div>
         {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
       </div>
+      {proposal.type === ProposalTypes.Proposal && (
+        <div>
+          {stakeToken.symbol} needed to pass: {formattedNeededTokens}
+        </div>
+      )}
       <div>Status: {proposalStatusLabel}</div>
     </Main>
   )
