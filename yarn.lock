@@ -100,10 +100,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.10.tgz#ece483c69bcee6eb430dc79fef7b659d0e608512"
-  integrity sha512-6tmGMtxbWLEL24fe4dnNiy9psc63zdsxOmPIONPn++kr4QCP8yVHpUrfOBkFXfsfYwR/t6RsiwPa5JAtUmdiNg==
+"@1hive/1hive-ui@1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.11.tgz#057cc73fcea1df56e25fdb96c09e6f2ffb600d1a"
+  integrity sha512-ZiX/a7OIWgdA/OnxLiCS0kh69eJ+JgCb8MVh0t+OfW9XEvqZJ2k3SStJ9x7UQfXqtFShfUNvPJrS3keOwXrc+Q==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"
@@ -18016,11 +18016,6 @@ react-use-gesture@5.2.4:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/react-use-gesture/-/react-use-gesture-5.2.4.tgz#c84ebe0d79703fd90cb26a220812c2f430d3e40d"
   integrity sha512-oay95IPKBTAIqsZWwPAXJVVlDCpXdg4y2kEKz8oGLSqewpmXsXC4vKlAZq/ZDwZa4djzWlK1pnSIJY2iylx4QQ==
-
-react-use-intercom@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-use-intercom/-/react-use-intercom-1.2.0.tgz#d0958f16bf82caa422d7b8bb3530077d674445a1"
-  integrity sha512-Cbs9E5p8ISzyq4GnV04mVluHhfgSwM84FlHeY7clk9shW0XvuIylNUjnyopMjZgh5HawKWHIhRrcml20gPWVSQ==
 
 react-use-measure@^2.0.1:
   version "2.0.3"
