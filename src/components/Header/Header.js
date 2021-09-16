@@ -168,6 +168,16 @@ function GardenNavItems({ garden }) {
           Wiki
         </Link>
       )}
+      <Link
+        href="https://1hive.gitbook.io/gardens"
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Gardens docs
+      </Link>
     </>
   )
 }
