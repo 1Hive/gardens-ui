@@ -4,16 +4,13 @@ import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { formatTokenAmount } from '@utils/token-utils'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import useChallenge from '@hooks/useChallenge'
 
-function SettlementDetails({
-  challengeContext,
-  getTransactions,
-  isChallenger,
-  proposal,
-}) {
+function SettlementDetails({ getTransactions, isChallenger, proposal }) {
   const { id, challenger, collateralRequirement, settlementOffer } = proposal
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
+  const { challenge, loading } = useChallenge(proposal)
 
   const handleOnContinue = useCallback(() => {
     getTransactions(() => {
@@ -73,7 +70,7 @@ function SettlementDetails({
           margin-top: ${3 * GU}px;
         `}
       >
-        {challengeContext}
+        {!loading && challenge.context}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
         {isChallenger ? 'Claim deposit' : 'Accept settlement'}
