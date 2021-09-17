@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import { useContractReadOnly } from './useContract'
-import { useMounted } from './useMounted'
 import { useGardenState } from '@providers/GardenState'
+import { useMounted } from './useMounted'
+
 import { getProfileForAccount } from '@lib/profile'
 import { hexToUtf8 } from '@utils/web3-utils'
+
 import agreementAbi from '../abi/agreement.json'
 
 export default function useChallenge(proposal) {
@@ -43,7 +45,7 @@ export default function useChallenge(proposal) {
     }
 
     getChallengeData()
-  }, [proposal.challengeId, mounted, agreementContract])
+  }, [agreementContract, mounted, proposal])
 
   return { challenge, loading }
 }
