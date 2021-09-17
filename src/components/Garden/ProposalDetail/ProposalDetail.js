@@ -4,10 +4,15 @@ import {
   BackButton,
   Box,
   Button,
+  EthIdenticon,
   GU,
   Help,
+  IconDown,
+  IconUp,
   Link,
+  shortenAddress,
   Split,
+  Tag,
   textStyle,
   useLayout,
   useTheme,
@@ -36,6 +41,7 @@ import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposa
 
 // Hooks
 import { useWallet } from '@providers/Wallet'
+import useChallenge from '@hooks/useChallenge'
 
 // utils
 import BigNumber from '@lib/bigNumber'
@@ -46,6 +52,9 @@ import {
 } from '@utils/web3-utils'
 import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
+
+// assets
+import warningIcon from '../Agreement/assets/warning.svg'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -147,161 +156,180 @@ function ProposalDetail({
       >
         <Split
           primary={
-            <Box
-              css={`
-                background: ${background};
-                border-color: ${borderColor};
-              `}
-            >
-              <section
+            <>
+              <Box
                 css={`
-                  display: grid;
-                  grid-template-rows: auto;
-                  grid-row-gap: ${7 * GU}px;
+                  background: ${background};
+                  border-color: ${borderColor};
                 `}
               >
-                <div>
-                  <ProposalHeader proposal={proposal} />
-                  <h1
-                    css={`
-                      ${textStyle('title2')};
-                    `}
-                  >
-                    {name}
-                  </h1>
-                  <div
-                    css={`
-                      margin-top: ${2 * GU}px;
-                      grid-column: span 2;
-                      min-width: ${40 * GU}px;
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    {fundingProposal ? (
-                      <span>
-                        This proposal is requesting{' '}
-                        <strong>
-                          {formatTokenAmount(
-                            requestedAmountConverted,
-                            requestToken.decimals
-                          )}
-                        </strong>{' '}
-                        {requestToken.symbol} out of{' '}
-                        <strong>
-                          {formatTokenAmount(commonPool, requestToken.decimals)}
-                        </strong>{' '}
-                        {requestToken.symbol} currently in the common pool.
-                      </span>
-                    ) : (
-                      <span>
-                        This suggestion is for signaling purposes and is not
-                        requesting any {requestToken.symbol}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div
+                <section
                   css={`
                     display: grid;
-                    grid-template-columns: ${layoutName !== 'small'
-                      ? 'auto auto auto'
-                      : 'auto'};
-                    grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
+                    grid-template-rows: auto;
+                    grid-row-gap: ${7 * GU}px;
                   `}
                 >
-                  <DataField
-                    label="Forum"
-                    value={
-                      link ? (
-                        <Link href={link} external>
-                          Read the full proposal
-                        </Link>
-                      ) : (
-                        <span
-                          css={`
-                            ${textStyle('body2')};
-                          `}
-                        >
-                          No link provided
+                  <div>
+                    <ProposalHeader proposal={proposal} />
+                    <h1
+                      css={`
+                        ${textStyle('title2')};
+                      `}
+                    >
+                      {name}
+                    </h1>
+                    <div
+                      css={`
+                        margin-top: ${2 * GU}px;
+                        grid-column: span 2;
+                        min-width: ${40 * GU}px;
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      {fundingProposal ? (
+                        <span>
+                          This proposal is requesting{' '}
+                          <strong>
+                            {formatTokenAmount(
+                              requestedAmountConverted,
+                              requestToken.decimals
+                            )}
+                          </strong>{' '}
+                          {requestToken.symbol} out of{' '}
+                          <strong>
+                            {formatTokenAmount(
+                              commonPool,
+                              requestToken.decimals
+                            )}
+                          </strong>{' '}
+                          {requestToken.symbol} currently in the common pool.
                         </span>
-                      )
-                    }
-                    css="grid-column-start: span 2;"
-                  />
-                  <DataField
-                    label="Status"
-                    value={<ProposalStatus proposal={proposal} />}
-                  />
-                  {fundingProposal && (
-                    <Amount
-                      requestedAmount={requestedAmount}
-                      requestedAmountConverted={requestedAmountConverted}
-                      requestToken={requestToken}
-                      stable={stable}
-                      stableToken={stableToken}
-                    />
-                  )}
-
-                  {fundingProposal && (
+                      ) : (
+                        <span>
+                          This suggestion is for signaling purposes and is not
+                          requesting any {requestToken.symbol}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    css={`
+                      display: grid;
+                      grid-template-columns: ${layoutName !== 'small'
+                        ? 'auto auto auto'
+                        : 'auto'};
+                      grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
+                    `}
+                  >
                     <DataField
-                      label="Beneficiary"
+                      label="Forum"
+                      value={
+                        link ? (
+                          <Link href={link} external>
+                            Read the full proposal
+                          </Link>
+                        ) : (
+                          <span
+                            css={`
+                              ${textStyle('body2')};
+                            `}
+                          >
+                            No link provided
+                          </span>
+                        )
+                      }
+                      css="grid-column-start: span 2;"
+                    />
+                    <DataField
+                      label="Status"
+                      value={<ProposalStatus proposal={proposal} />}
+                    />
+                    {fundingProposal && (
+                      <Amount
+                        requestedAmount={requestedAmount}
+                        requestedAmountConverted={requestedAmountConverted}
+                        requestToken={requestToken}
+                        stable={stable}
+                        stableToken={stableToken}
+                      />
+                    )}
+
+                    {fundingProposal && (
+                      <DataField
+                        label="Beneficiary"
+                        value={
+                          <IdentityBadge
+                            connectedAccount={addressesEqual(
+                              beneficiary,
+                              connectedAccount
+                            )}
+                            entity={beneficiary}
+                          />
+                        }
+                      />
+                    )}
+                    <DataField
+                      label="Created By"
                       value={
                         <IdentityBadge
                           connectedAccount={addressesEqual(
-                            beneficiary,
+                            creator,
                             connectedAccount
                           )}
-                          entity={beneficiary}
+                          entity={creator}
+                        />
+                      }
+                    />
+                    {proposal.number !== '1' && (
+                      <>
+                        <DataField
+                          label="Deposit Amount"
+                          value={<ActionCollateral proposal={proposal} />}
+                        />
+                        {proposal.pausedAt > 0 && (
+                          <DisputeFees proposal={proposal} />
+                        )}
+                      </>
+                    )}
+                  </div>
+                  {(statusData.open ||
+                    statusData.challenged ||
+                    statusData.disputed) && (
+                    <DataField
+                      label="Progress"
+                      value={
+                        <ConvictionBar
+                          proposal={proposal}
+                          withThreshold={!!requestToken}
                         />
                       }
                     />
                   )}
-                  <DataField
-                    label="Created By"
-                    value={
-                      <IdentityBadge
-                        connectedAccount={addressesEqual(
-                          creator,
-                          connectedAccount
-                        )}
-                        entity={creator}
-                      />
-                    }
+                  <DisputableInfo proposal={proposal} />
+                  <ProposalActions
+                    proposal={proposal}
+                    onChangeSupport={() => handleShowModal('update')}
+                    onExecuteProposal={() => handleShowModal('execute')}
+                    onRequestSupportProposal={() => handleShowModal('support')}
                   />
-                  {proposal.number !== '1' && (
-                    <>
-                      <DataField
-                        label="Deposit Amount"
-                        value={<ActionCollateral proposal={proposal} />}
-                      />
-                      {proposal.pausedAt > 0 && (
-                        <DisputeFees proposal={proposal} />
-                      )}
-                    </>
-                  )}
-                </div>
-                {(statusData.open ||
-                  statusData.challenged ||
-                  statusData.disputed) && (
-                  <DataField
-                    label="Progress"
-                    value={
-                      <ConvictionBar
-                        proposal={proposal}
-                        withThreshold={!!requestToken}
-                      />
-                    }
+                </section>
+              </Box>
+              {(statusData.challenged || statusData.settled) && (
+                <Box
+                  padding={2.4 * GU}
+                  css={`
+                    background: ${background};
+                    border-color: ${borderColor};
+                  `}
+                >
+                  <ArgumentBox
+                    proposal={proposal}
+                    connectedAccount={connectedAccount}
                   />
-                )}
-                <DisputableInfo proposal={proposal} />
-                <ProposalActions
-                  proposal={proposal}
-                  onChangeSupport={() => handleShowModal('update')}
-                  onExecuteProposal={() => handleShowModal('execute')}
-                  onRequestSupportProposal={() => handleShowModal('support')}
-                />
-              </section>
-            </Box>
+                </Box>
+              )}
+            </>
           }
           secondary={
             <div>
@@ -427,6 +455,131 @@ function ProposalDetail({
         )}
       </MultiModal>
     </div>
+  )
+}
+
+function ArgumentBox({ proposal, connectedAccount }) {
+  const theme = useTheme()
+
+  const { challenge } = useChallenge(proposal)
+  const [showArgument, setShowArgument] = useState(false)
+
+  return (
+    <>
+      <div
+        css={`
+          display: flex;
+          justify-content: space-between;
+          ${textStyle('body1')};
+          color: ${theme.warning};
+        `}
+      >
+        <div
+          css={`
+            display: grid;
+            grid-template-columns: ${5 * GU}px ${35 * GU}px;
+            align-items: center;
+          `}
+        >
+          <img src={warningIcon} width={30} height={30} />
+          <h1>
+            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal
+            has been challenged
+          </h1>
+        </div>
+        <div
+          onClick={() => setShowArgument(!showArgument)}
+          css={`
+            display: flex;
+            align-items: center;
+            :hover {
+              cursor: pointer;
+              text-decoration: underline;
+            }
+          `}
+        >
+          <h1
+            css={`
+              width: ${18 * GU}px;
+            `}
+          >
+            {showArgument ? 'Hide' : 'Show'} arguments
+          </h1>
+          {showArgument ? <IconUp /> : <IconDown />}
+        </div>
+      </div>
+      {showArgument && (
+        <div
+          css={`
+            display: flex;
+            justify-content: flex-start;
+            margin: ${4.5 * GU}px ${4.5 * GU}px 0 0;
+          `}
+        >
+          <div
+            css={`
+              width: ${5 * GU}px;
+              margin-right: ${5 * GU}px;
+            `}
+          >
+            {challenge.challenger.image ? (
+              <img
+                src={challenge.challenger.image}
+                height={43}
+                width={43}
+                css={`
+                  border-radius: 50%;
+                `}
+              />
+            ) : (
+              <EthIdenticon
+                address={challenge.challenger.address}
+                radius={50}
+                scale={1.8}
+              />
+            )}
+          </div>
+          <div
+            css={`
+              flex-direction: column;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                justify-content: flex-start;
+                width: ${30 * GU}px;
+              `}
+            >
+              <h2
+                css={`
+                  font-weight: 600;
+                  margin-right: ${1 * GU}px;
+                `}
+              >
+                {challenge.challenger.name
+                  ? challenge.challenger.name
+                  : shortenAddress(challenge.challenger.address)}
+              </h2>
+              <Tag
+                background={theme.warningSurface.toString()}
+                color={theme.warningSurfaceContent.toString()}
+              >
+                challenger
+              </Tag>
+            </div>
+            <div
+              css={`
+                margin-top: ${1.5 * GU}px;
+                color: ${theme.contentSecondary};
+              `}
+            >
+              {challenge.context}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

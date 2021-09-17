@@ -15,7 +15,6 @@ import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import tokenAbi from '@abis/minimeToken.json'
-import agreementAbi from '@abis/agreement.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
@@ -42,8 +41,6 @@ export default function useActions() {
     installedApps,
     env('HOOKED_TOKEN_MANAGER_APP_NAME')
   )
-
-  const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
   // Conviction voting actions
   const newProposal = useCallback(
@@ -336,19 +333,6 @@ export default function useActions() {
     [account, agreementApp, mounted]
   )
 
-  const getChallenge = useCallback(
-    async challengeId => {
-      if (!agreementContract) {
-        return
-      }
-
-      const challengeData = await agreementContract.getChallenge(challengeId)
-
-      return challengeData
-    },
-    [agreementContract]
-  )
-
   // Hoked token manager actions
   const approveWrappableTokenAmount = useCallback(
     (amount, onDone = noop) => {
@@ -420,7 +404,6 @@ export default function useActions() {
       challengeAction,
       disputeAction,
       getAllowance: getAgreementTokenAllowance,
-      getChallenge,
       resolveAction,
       settleAction,
       signAgreement,
