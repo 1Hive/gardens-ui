@@ -14,6 +14,10 @@ import {
   createTokenHoldersTx,
 } from '@components/Onboarding/transaction-logic'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+import {
+  STATUS_GARDEN_DEPLOYMENT,
+  STATUS_GARDEN_SETUP,
+} from '@components/Onboarding/statuses'
 
 const OnboardingContext = React.createContext()
 
@@ -80,6 +84,7 @@ const DEFAULT_CONFIG = {
 }
 
 function OnboardingProvider({ children }) {
+  const [status, setStatus] = useState(STATUS_GARDEN_SETUP)
   const [step, setStep] = useState(0)
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
@@ -95,6 +100,10 @@ function OnboardingProvider({ children }) {
       })),
     []
   )
+
+  const handleStartDeployment = useCallback(() => {
+    setStatus(STATUS_GARDEN_DEPLOYMENT)
+  }, [])
 
   const getTransactions = useCallback(
     async covenantIpfsHash => {
@@ -147,6 +156,8 @@ function OnboardingProvider({ children }) {
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
+        onStartDeployment: handleStartDeployment,
+        status,
         step,
         steps,
       }}
