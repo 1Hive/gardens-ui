@@ -4,7 +4,7 @@ import { Button, GU, Modal, Viewport } from '@1hive/1hive-ui'
 
 const EMBED_ID = '1ZvXNsLEPAg'
 
-const WelcomeModal = React.memo(function WelcomeModal({ onComplete, visible }) {
+const WelcomeModal = React.memo(function WelcomeModal({ onClose, visible }) {
   return (
     <Viewport>
       {({ width }) => {
@@ -46,7 +46,7 @@ const WelcomeModal = React.memo(function WelcomeModal({ onComplete, visible }) {
                 padding: ${3 * GU}px;
               `}
             >
-              <Button label="Close" wide mode="strong" onClick={onComplete} />
+              <Button label="Close" wide mode="strong" onClick={onClose} />
             </div>
           </Modal>
         )
@@ -57,7 +57,7 @@ const WelcomeModal = React.memo(function WelcomeModal({ onComplete, visible }) {
 
 WelcomeModal.propTypes = {
   visible: PropTypes.bool.isRequired,
-  onComplete: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 }
 
 export default WelcomeModal
