@@ -208,8 +208,9 @@ const Home = React.memo(function Home() {
             {modalMode === 'createProposal' && (
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}
-            {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
-            {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
+            {(modalMode === 'wrap' || modalMode === 'unwrap') && (
+              <WrapTokenScreens mode={modalMode} />
+            )}
           </MultiModal>
         </div>
       )}
