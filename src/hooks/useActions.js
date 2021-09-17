@@ -11,11 +11,11 @@ import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
-// import actions from '../actions/garden-action-types'
+import actions from '../actions/garden-action-types'
 import { VOTE_YEA } from '@/constants'
-// import { formatTokenAmount } from '@utils/token-utils'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
+import radspec from '../radspec'
 import tokenAbi from '@abis/minimeToken.json'
 import agreementAbi from '@abis/agreement.json'
 
@@ -116,15 +116,21 @@ export default function useActions() {
       )
 
       intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
-      // const formattedAmount = formatTokenAmount(amount)
 
+      const description = radspec[actions.STAKE_TO_PROPOSAL]({
+        proposalId,
+      })
+      const type = actions.STAKE_TO_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      console.log('TRANSACTIONS ', transactions)
       if (mounted()) {
-        onDone({
-          transaction: intent.transactions,
-          // description: radspec[actions.STAKE_TO_PROPOSAL]({
-          //   amount: formattedAmount,
-          // }),
-        })
+        onDone(transactions)
       }
     },
     [account, convictionVotingApp, mounted]
@@ -476,4 +482,8 @@ function imposeGasLimit(intent, gasLimit) {
     ...intent,
     transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
   }
+}
+
+function attachTrxMetadata(transactions, description, type) {
+  return transactions.map(tx => ({ ...tx, description, type }))
 }
