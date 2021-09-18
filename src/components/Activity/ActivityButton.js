@@ -16,19 +16,18 @@ const ActivityButton = React.memo(function ActivityButton() {
   const theme = useTheme()
   const [opened, setOpened] = useState(false)
   const { activities, markActivitiesRead, unreadCount } = useActivity()
-
   const containerRef = useRef()
   const popoverFocusElement = useRef()
 
   const handleToggle = useCallback(
     () =>
       setOpened(opened => {
-        // if (opened) {
-        //   markActivitiesRead()
-        // }
+        if (opened) {
+          markActivitiesRead()
+        }
         return !opened
       }),
-    []
+    [markActivitiesRead]
   )
 
   const handleClose = useCallback(() => {
