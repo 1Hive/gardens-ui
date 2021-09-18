@@ -126,15 +126,17 @@ function Header() {
                 <BalanceModule />
               </>
             )}
-            <div
-              css={`
-                display: flex;
-                height: 100%;
-                margin-left: ${2 * GU}px;
-              `}
-            >
-              <ActivityButton />
-            </div>
+            {account && (
+              <div
+                css={`
+                  display: flex;
+                  height: 100%;
+                  margin-left: ${2 * GU}px;
+                `}
+              >
+                <ActivityButton />
+              </div>
+            )}
           </div>
         </div>
       </Layout>

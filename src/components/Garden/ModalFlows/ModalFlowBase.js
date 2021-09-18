@@ -5,6 +5,7 @@ import { useTheme, GU } from '@1hive/1hive-ui'
 import LoadingRing from '@components/LoadingRing'
 import MultiModalScreens from '@components/MultiModal/MultiModalScreens'
 import Stepper from '@components/Stepper/Stepper'
+import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
@@ -25,6 +26,7 @@ function ModalFlowBase({
   onComplete,
   onCompleteActions,
 }) {
+  const { addActivity } = useActivity()
   const { ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
@@ -56,6 +58,11 @@ function ModalFlowBase({
                   }
                   const tx = await signer.sendTransaction(trx)
 
+                  await addActivity(
+                    tx,
+                    transaction.type,
+                    transaction.description
+                  )
                   setHash(tx.hash)
 
                   setWorking()
@@ -73,7 +80,7 @@ function ModalFlowBase({
             }
           })
         : null,
-    [transactions, signer]
+    [addActivity, transactions, signer]
   )
   const extendedScreens = useMemo(() => {
     const allScreens = []

@@ -26,7 +26,7 @@ import {
 import { getNetwork } from '../../networks'
 import { getActivityData } from './activity-types'
 
-import GARDEN_LOGO from '@assets/gardensLogo.svg'
+import GARDEN_LOGO from '@assets/gardensLogoMark.svg'
 
 function ActivityItem({ activity }) {
   const theme = useTheme()

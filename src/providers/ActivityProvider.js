@@ -102,10 +102,10 @@ function ActivityProvider({ children }) {
   const updateActivities = useCallback(
     cb => {
       const newActivities = cb(activities)
-      setActivities(newActivities)
       if (storedList.current) {
         storedList.current.update(newActivities)
       }
+      setActivities(newActivities)
     },
     [activities]
   )
@@ -114,14 +114,10 @@ function ActivityProvider({ children }) {
   const addActivity = useCallback(
     async (
       tx,
-
       // see types defined in ../actions/court-action-types.js
       type,
       description = ''
     ) => {
-      // tx might be a promise resolving into a tx
-      tx = await tx
-
       updateActivities(activities => [
         ...activities,
         {
@@ -136,8 +132,6 @@ function ActivityProvider({ children }) {
           transactionHash: tx.hash,
         },
       ])
-
-      return tx
     },
     [updateActivities]
   )

@@ -127,8 +127,6 @@ export default function useActions() {
         description,
         type
       )
-
-      console.log('TRANSACTIONS ', transactions)
       if (mounted()) {
         onDone(transactions)
       }
