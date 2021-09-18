@@ -16,7 +16,7 @@ const ActivityButton = React.memo(function ActivityButton() {
   const theme = useTheme()
   const [opened, setOpened] = useState(false)
   const { activities, markActivitiesRead, unreadCount } = useActivity()
-  console.log('activity button ', unreadCount)
+
   const containerRef = useRef()
   const popoverFocusElement = useRef()
 
