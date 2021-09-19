@@ -1,12 +1,15 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import { Main } from '@1hive/1hive-ui'
+
+import GlobalErrorHandler from './GlobalErrorHandler'
 import MainView from '@components/MainView'
 import Routes from './routes/Routes'
-import GlobalErrorHandler from './GlobalErrorHandler'
+import WelcomeLoader from '@components/Welcome/WelcomeLoader'
+
 import { GardensProvider } from './providers/Gardens'
-import { WalletProvider } from './providers/Wallet'
 import { ProfileProvider } from './providers/Profile'
+import { WalletProvider } from './providers/Wallet'
 
 function App() {
   return (
@@ -16,6 +19,7 @@ function App() {
           <WalletProvider>
             <ProfileProvider>
               <GardensProvider>
+                <WelcomeLoader />
                 <MainView>
                   <Routes />
                 </MainView>
