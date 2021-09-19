@@ -46,6 +46,7 @@ function DecisionDescription({ proposal }) {
           css={`
             -webkit-line-clamp: 2;
             overflow: hidden;
+            max-width: 750px;
             -webkit-box-orient: vertical;
             display: -webkit-box;
           `}

@@ -1,14 +1,22 @@
 import React from 'react'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
-import { useGardens } from '@/providers/Gardens'
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
 import Sidebar from './Sidebar/Sidebar'
+import { useGardens } from '@/providers/Gardens'
+import { useGardenState } from '@/providers/GardenState'
 
 function MainView({ children }) {
   const { below } = useViewport()
   const { connectedGarden } = useGardens()
+
+  let loadingGardenState = true
+  if (connectedGarden) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { loading } = useGardenState()
+    loadingGardenState = loading
+  }
 
   const compactMode = below('large')
 
@@ -66,7 +74,11 @@ function MainView({ children }) {
                 >
                   <Layout paddingBottom={3 * GU}>{children}</Layout>
                 </div>
-                <Footer />
+                {connectedGarden ? (
+                  !loadingGardenState && <Footer />
+                ) : (
+                  <Footer />
+                )}
               </div>
             </ScrollView>
           </Root.Provider>

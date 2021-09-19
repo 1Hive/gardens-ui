@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { Button, GU, noop, springs, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
 
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
@@ -253,24 +253,34 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
-      {completed && !onCompleteActions && (
-        <Button
-          label="Close"
-          mode="strong"
-          onClick={close}
-          wide
-          css={`
-            margin-top: ${5 * GU}px;
-          `}
-        />
-      )}
-      {completed && onCompleteActions && (
-        <div
-          css={`
-            margin-top: ${5 * GU}px;
-          `}
-        >
-          {onCompleteActions}
+      {completed && (
+        <div>
+          <Info
+            css={`
+              margin-top: ${5 * GU}px;
+            `}
+          >
+            You might need to wait a few seconds for the UI to update
+          </Info>
+          {onCompleteActions ? (
+            <div
+              css={`
+                margin-top: ${3 * GU}px;
+              `}
+            >
+              {onCompleteActions}
+            </div>
+          ) : (
+            <Button
+              label="Close"
+              mode="strong"
+              onClick={close}
+              wide
+              css={`
+                margin-top: ${5 * GU}px;
+              `}
+            />
+          )}
         </div>
       )}
     </div>

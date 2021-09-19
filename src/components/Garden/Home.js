@@ -108,7 +108,13 @@ const Home = React.memo(function Home() {
       </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
-        <Loader />
+        <div
+          css={`
+            margin-top: ${20 * GU}px;
+          `}
+        >
+          <Loader />
+        </div>
       ) : (
         <div>
           <div
@@ -202,8 +208,9 @@ const Home = React.memo(function Home() {
             {modalMode === 'createProposal' && (
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}
-            {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
-            {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
+            {(modalMode === 'wrap' || modalMode === 'unwrap') && (
+              <WrapTokenScreens mode={modalMode} />
+            )}
           </MultiModal>
         </div>
       )}
