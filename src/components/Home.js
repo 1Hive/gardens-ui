@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { GU, useToast } from '@1hive/1hive-ui'
-import { useNodeHeight } from '@hooks/useNodeHeight'
 import { useGardens } from '@/providers/Gardens'
+import { useNodeHeight } from '@hooks/useNodeHeight'
 
 import GardensFilters from './GardensFilters'
 import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
-import Onboarding from './Onboarding'
 import Loader from './Loader'
+import Onboarding from './Onboarding'
 
 function Home() {
   const [height, ref] = useNodeHeight()

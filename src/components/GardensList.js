@@ -9,7 +9,7 @@ import {
 } from '@1hive/1hive-ui'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-import EmptyResults from './Garden/Feed/EmptyResults'
+import EmptyResults from './EmptyResults'
 
 const GARDENS_PER_PAGE = 8
 
