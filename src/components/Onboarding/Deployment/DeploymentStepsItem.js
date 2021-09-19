@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { textStyle, GU, IconCheck, useTheme } from '@aragon/ui'
+import { textStyle, GU, IconCheck, useTheme } from '@1hive/1hive-ui'
 import {
   STEP_SUCCESS,
   STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
+import { TransactionStatusType } from '@/prop-types'
 
 function DeploymentStepsItem({ index, name, status }) {
   const theme = useTheme()
@@ -83,13 +84,6 @@ function DeploymentStepsItem({ index, name, status }) {
     </div>
   )
 }
-
-export const TransactionStatusType = PropTypes.oneOf([
-  STEP_ERROR,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-])
 
 DeploymentStepsItem.propTypes = {
   index: PropTypes.number.isRequired,

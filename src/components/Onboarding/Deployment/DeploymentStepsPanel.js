@@ -1,9 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { textStyle, GU, Link, useTheme, ProgressBar, Info } from '@aragon/ui'
-import { useWallet } from '../../wallet'
+import {
+  textStyle,
+  GU,
+  Link,
+  useTheme,
+  ProgressBar,
+  Info,
+} from '@1hive/1hive-ui'
 import DeploymentStepsItem from './DeploymentStepsItem'
-import { TransactionStatusType } from '../../prop-types'
+import { useWallet } from '@providers/Wallet'
+import { TransactionStatusType } from '@/prop-types'
 
 function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
   const theme = useTheme()

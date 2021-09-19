@@ -10,18 +10,18 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring'
-import {
-  TRANSACTION_STATUS_PENDING,
-  TRANSACTION_STATUS_SUCCESS,
-} from '../../symbols'
-import { TransactionStatusType } from '../../prop-types'
-import { TITLE_ONBOARDING } from '../styles'
+import { Transition, animated } from 'react-spring/renderprops'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 
-import progressImgLarge from './assets/illustration-progress-large.svg'
-import progressImgMedium from './assets/illustration-progress-medium.svg'
-import allDoneImg from './assets/illustration-all-done.png'
+import {
+  STEP_WORKING,
+  STEP_SUCCESS,
+} from '@components/Stepper/stepper-statuses'
+import { TransactionStatusType } from '@/prop-types'
+
+// import progressImgLarge from './assets/illustration-progress-large.svg'
+// import progressImgMedium from './assets/illustration-progress-medium.svg'
+// import allDoneImg from './assets/illustration-all-done.png'
 
 const AnimDiv = animated.div
 const AnimSection = animated.section
@@ -126,8 +126,7 @@ function BoxProgress({
         css={`
           width: ${fullWidth ? 100 : 50}%;
           height: ${fullWidth ? '430px' : '100%'};
-          background: #bbcbe1 50% 50% / cover no-repeat
-            url(${fullWidth ? progressImgMedium : progressImgLarge});
+          background: #bbcbe1 50% 50% / cover no-repeat url('');
         `}
       />
       <div
@@ -142,9 +141,8 @@ function BoxProgress({
       >
         <h1
           css={`
-              ${TITLE_ONBOARDING}
-              margin-bottom: ${2 * GU}px;
-            `}
+            margin-bottom: ${2 * GU}px;
+          `}
         >
           Organizations
           <br />
@@ -218,13 +216,13 @@ function BoxReady({ onOpenOrg, opacity, boxTransform }) {
     <BoxBase opacity={opacity} boxTransform={boxTransform}>
       <div
         css={`
-          ${small ? textStyle('title1') : TITLE_ONBOARDING}
+          ${textStyle('title1')};
           text-align: center;
           padding: ${6 * GU}px ${small ? 6 * GU : 10 * GU}px;
         `}
       >
         <img
-          src={allDoneImg}
+          src=""
           alt=""
           width="253"
           height="206"
@@ -269,11 +267,8 @@ const Deployment = React.memo(function Deployment({
       return [0, false]
     }
     return [
-      transactionsStatus.findIndex(
-        ({ status }) => status === TRANSACTION_STATUS_PENDING
-      ),
-      transactionsStatus[transactionsStatus.length - 1].status ===
-        TRANSACTION_STATUS_SUCCESS,
+      transactionsStatus.findIndex(({ status }) => status === STEP_WORKING),
+      transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
     ]
   }, [transactionsStatus])
   return (
@@ -358,3 +353,5 @@ Deployment.propTypes = {
     })
   ).isRequired,
 }
+
+export default Deployment

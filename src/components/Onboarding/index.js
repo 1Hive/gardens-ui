@@ -1,7 +1,7 @@
 import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
-import Deployment from './Deployment'
+import Deployment from './Deployment/Deployment'
 import { ChartsProvider } from '@providers/Charts'
 import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
 import Setup from './Setup'
