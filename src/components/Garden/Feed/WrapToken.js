@@ -12,13 +12,14 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useGardenState } from '@providers/GardenState'
+import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 
-function WrapToken({ onUnwrapToken, onWrapToken }) {
+function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
   const { token, wrappableToken } = useGardenState()
   const loading =
@@ -26,6 +27,8 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
+
+  const earnedRewards = useUnipoolRewards()
 
   return (
     <Box
@@ -48,13 +51,43 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
           token={wrappableToken.data}
         />
         <LineSeparator border={theme.border} />
-        <Token
-          balance={token.accountBalance}
-          loading={loading}
-          mode="unwrap"
-          onClick={onUnwrapToken}
-          token={token.data}
-        />
+        <div>
+          <Token
+            balance={token.accountBalance}
+            loading={loading}
+            mode="unwrap"
+            onClick={onUnwrapToken}
+            token={token.data}
+          />
+          {earnedRewards.gt('0') && (
+            <div
+              css={`
+                margin-top: ${3 * GU}px;
+                padding-top: ${2 * GU}px;
+                border-top: 1px solid ${theme.border};
+              `}
+            >
+              Earned rewards:{' '}
+              <span
+                css={`
+                  color: ${theme.positive};
+                `}
+              >
+                {formatTokenAmount(earnedRewards, wrappableToken.data.decimals)}{' '}
+                {wrappableToken.data.symbol}
+              </span>{' '}
+              <Button
+                label="Claim"
+                mode="strong"
+                wide
+                onClick={onClaimRewards}
+                css={`
+                  margin-top: ${1.5 * GU}px;
+                `}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </Box>
   )
