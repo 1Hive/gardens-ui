@@ -69,7 +69,7 @@ function ProposalFooter({ proposal }) {
       <div>
         {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
       </div>
-      {proposal.type === ProposalTypes.Proposal && (
+      {proposal.type === ProposalTypes.Proposal && proposal.neededTokens > 0 && (
         <div>
           {stakeToken.symbol} needed to pass: {formattedNeededTokens}
         </div>

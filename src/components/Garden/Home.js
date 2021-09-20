@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
+import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import Filters from './Filters/Filters'
 import Loader from '../Loader'
@@ -61,6 +62,10 @@ const Home = React.memo(function Home() {
       history.push(buildGardenPath(history.location, ''))
     }
   }, [history])
+
+  const handleClaimRewards = useCallback(() => {
+    handleShowModal('claim')
+  }, [handleShowModal])
 
   const handleRequestNewProposal = useCallback(() => {
     handleShowModal('createProposal')
@@ -183,6 +188,7 @@ const Home = React.memo(function Home() {
                       `}
                     >
                       <RightPanel
+                        onClaimRewards={handleClaimRewards}
                         onRequestNewProposal={handleRequestNewProposal}
                         onWrapToken={handleWrapToken}
                         onUnwrapToken={handleUnwrapToken}
@@ -194,6 +200,7 @@ const Home = React.memo(function Home() {
             </div>
             {!largeMode && (
               <RightPanel
+                onClaimRewards={handleClaimRewards}
                 onRequestNewProposal={handleRequestNewProposal}
                 onWrapToken={handleWrapToken}
                 onUnwrapToken={handleUnwrapToken}
@@ -208,8 +215,10 @@ const Home = React.memo(function Home() {
             {modalMode === 'createProposal' && (
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}
-            {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
-            {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
+            {(modalMode === 'wrap' || modalMode === 'unwrap') && (
+              <WrapTokenScreens mode={modalMode} />
+            )}
+            {modalMode === 'claim' && <ClaimRewardsScreens />}
           </MultiModal>
         </div>
       )}

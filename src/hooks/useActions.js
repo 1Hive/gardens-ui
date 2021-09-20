@@ -1,12 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
+import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
+import { useWallet } from '@providers/Wallet'
 
+import { getAppByName } from '@utils/data-utils'
 import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
@@ -14,6 +15,8 @@ import env from '@/environment'
 import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
+
+import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
 const GAS_LIMIT = 450000
@@ -26,12 +29,16 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
+  const {
+    connectedGarden: { unipool },
+  } = useGardens()
   const { installedApps, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
 
+  const unipoolContract = useContract(unipool, unipoolAbi)
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
   const votingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
@@ -397,37 +404,81 @@ export default function useActions() {
     [account, hookedTokenManagerApp, mounted]
   )
 
-  // TODO: Memoize objects
-  return {
-    agreementActions: {
+  // Unipool actions
+  const claimRewards = useCallback(
+    (onDone = noop) => {
+      const getRewardData = encodeFunctionData(unipoolContract, 'getReward', [])
+      const intent = [
+        {
+          data: getRewardData,
+          from: account,
+          to: unipoolContract.address,
+        },
+      ]
+
+      if (mounted()) {
+        onDone(intent)
+      }
+    },
+    [account, mounted, unipoolContract]
+  )
+
+  return useMemo(
+    () => ({
+      agreementActions: {
+        approveTokenAmount,
+        challengeAction,
+        disputeAction,
+        getAllowance: getAgreementTokenAllowance,
+        resolveAction,
+        settleAction,
+        signAgreement,
+      },
+      convictionActions: {
+        executeProposal,
+        cancelProposal,
+        newProposal,
+        newSignalingProposal,
+        stakeToProposal,
+        withdrawFromProposal,
+      },
+      hookedTokenManagerActions: {
+        approveWrappableTokenAmount,
+        getAllowance: getHookedTokenManagerAllowance,
+        wrap,
+        unwrap,
+      },
+      issuanceActions: { executeIssuance },
+      unipoolActions: { claimRewards },
+      votingActions: {
+        executeDecision,
+        voteOnDecision,
+      },
+    }),
+    [
       approveTokenAmount,
+      approveWrappableTokenAmount,
+      cancelProposal,
       challengeAction,
+      claimRewards,
       disputeAction,
-      getAllowance: getAgreementTokenAllowance,
+      executeDecision,
+      executeIssuance,
+      executeProposal,
+      getAgreementTokenAllowance,
+      getHookedTokenManagerAllowance,
+      newProposal,
+      newSignalingProposal,
       resolveAction,
       settleAction,
       signAgreement,
-    },
-    convictionActions: {
-      executeProposal,
-      cancelProposal,
-      newProposal,
-      newSignalingProposal,
       stakeToProposal,
+      voteOnDecision,
       withdrawFromProposal,
-    },
-    hookedTokenManagerActions: {
-      approveWrappableTokenAmount,
-      getAllowance: getHookedTokenManagerAllowance,
       wrap,
       unwrap,
-    },
-    issuanceActions: { executeIssuance },
-    votingActions: {
-      executeDecision,
-      voteOnDecision,
-    },
-  }
+    ]
+  )
 }
 
 async function sendIntent(
