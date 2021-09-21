@@ -69,18 +69,23 @@ export function useGardens() {
   return useContext(DAOContext)
 }
 
-function useGardensList(queryFilters, filters) {
-  const [gardens, setGardens] = useState([])
-  const [gardensMetadata, setGardensMetadata] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [loadingMetadata, setLoadingMetadata] = useState(true)
+function useFilteredGardens(gardens, filters) {
   const debouncedNameFilter = useDebounce(filters.name.filter, 500)
-  const filteredGardens = useMemo(() => {
+
+  return useMemo(() => {
     if (!debouncedNameFilter) {
       return gardens
     }
     return gardens.filter(garden => testNameFilter(debouncedNameFilter, garden))
   }, [debouncedNameFilter, gardens])
+}
+
+function useGardensList(queryFilters, filters) {
+  const [gardens, setGardens] = useState([])
+  const filteredGardens = useFilteredGardens(gardens, filters)
+  const [loading, setLoading] = useState(true)
+  const [gardensMetadata, setGardensMetadata] = useState([])
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
   const { network, sorting } = queryFilters
 
   useEffect(() => {
@@ -91,6 +96,7 @@ function useGardensList(queryFilters, filters) {
     const fetchGardens = async () => {
       try {
         setLoading(true)
+
         const result = await getGardens(
           { ...network.queryArgs },
           { ...sorting.queryArgs }
