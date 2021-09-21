@@ -3,13 +3,10 @@ import { DropDown, GU, SearchInput, useLayout } from '@1hive/1hive-ui'
 import React from 'react'
 
 const GardensFilters = ({
-  itemsNetwork,
   itemsSorting,
   nameFilter,
-  networkFilter,
   sortingFilter,
   onNameFilterChange,
-  onNetworkFilterChange,
   onSortingFilterChange,
 }) => {
   const { layoutName } = useLayout()
@@ -24,16 +21,6 @@ const GardensFilters = ({
         flex-wrap: wrap;
       `}
     >
-      <FilterItem>
-        <DropDown
-          header="Network"
-          items={itemsNetwork}
-          onChange={onNetworkFilterChange}
-          selected={networkFilter}
-          disabled
-          wide
-        />
-      </FilterItem>
       <FilterItem>
         <DropDown
           header="Sort by"

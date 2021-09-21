@@ -35,13 +35,10 @@ function Home() {
         `}
       >
         <GardensFilters
-          itemsNetwork={externalFilters.network.items}
           itemsSorting={externalFilters.sorting.items}
           nameFilter={internalFilters.name.filter}
-          networkFilter={externalFilters.network.filter}
           sortingFilter={externalFilters.sorting.filter}
           onNameFilterChange={internalFilters.name.onChange}
-          onNetworkFilterChange={externalFilters.network.onChange}
           onSortingFilterChange={externalFilters.sorting.onChange}
         />
         <div

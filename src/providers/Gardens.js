@@ -86,7 +86,7 @@ function useGardensList(queryFilters, filters) {
   const [loading, setLoading] = useState(true)
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loadingMetadata, setLoadingMetadata] = useState(true)
-  const { network, sorting } = queryFilters
+  const { sorting } = queryFilters
 
   useEffect(() => {
     setLoadingMetadata(true)
@@ -98,7 +98,7 @@ function useGardensList(queryFilters, filters) {
         setLoading(true)
 
         const result = await getGardens(
-          { ...network.queryArgs },
+          { network: getNetwork().chainId },
           { ...sorting.queryArgs }
         )
         setGardens(result)
@@ -110,7 +110,7 @@ function useGardensList(queryFilters, filters) {
     }
 
     fetchGardens()
-  }, [network.queryArgs, sorting.queryArgs])
+  }, [sorting.queryArgs])
 
   useEffect(() => {
     const fetchGardenMetadata = async () => {
