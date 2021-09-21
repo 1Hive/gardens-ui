@@ -70,7 +70,7 @@ export function useGardens() {
 }
 
 function useFilteredGardens(gardens, filters) {
-  const debouncedNameFilter = useDebounce(filters.name.filter, 500)
+  const debouncedNameFilter = useDebounce(filters.name.filter, 300)
 
   return useMemo(() => {
     if (!debouncedNameFilter) {
