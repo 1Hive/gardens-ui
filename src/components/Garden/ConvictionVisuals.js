@@ -22,10 +22,13 @@ import BigNumber from '@lib/bigNumber'
 import { formatTokenAmount } from '@utils/token-utils'
 import { isEntitySupporting } from '@lib/conviction'
 
+import challengeIconSvg from '@assets/challenge-icon.svg'
+
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
 const AVAILABLE = 2
 const EXECUTED = 3
+const CHALLENGED = 4
 
 export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const { maxConviction, threshold } = proposal
@@ -131,8 +134,6 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const { config } = useGardenState()
   const { maxRatio, stakeToken } = config.conviction
 
-  const theme = useTheme()
-
   const {
     currentConviction,
     loading,
@@ -145,6 +146,9 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const view = useMemo(() => {
     if (statusData.executed) {
       return EXECUTED
+    }
+    if (statusData.challenged) {
+      return CHALLENGED
     }
     if (currentConviction.gte(threshold)) {
       return AVAILABLE
@@ -165,45 +169,18 @@ export function ConvictionCountdown({ proposal, shorter }) {
       `}
     >
       {view === UNABLE_TO_PASS ? (
-        <>
-          <Outcome result="Won't pass" positive={false} />
-          {!shorter && (
-            <>
-              <span
-                css={`
-                  color: ${theme.surfaceContent};
-                `}
-              >
-                {isNaN(neededTokens)
-                  ? 'Not enough funds in the organization'
-                  : 'Not enough support received'}
-              </span>
-              <span
-                css={`
-                  color: ${theme.surfaceContentSecondary};
-                `}
-              >
-                (
-                {isNaN(neededTokens) ? (
-                  `Funding requests must be below ${maxRatio *
-                    100}% of organization total funds`
-                ) : (
-                  <React.Fragment>
-                    At least{' '}
-                    <Tag>
-                      {`${formatTokenAmount(
-                        neededTokens,
-                        stakeToken.decimals
-                      )} ${stakeToken.symbol}`}
-                    </Tag>{' '}
-                    more needed
-                  </React.Fragment>
-                )}
-                ).
-              </span>
-            </>
-          )}
-        </>
+        <NegativeOutcome
+          maxRatio={maxRatio}
+          neededTokens={neededTokens}
+          shorter={shorter}
+          stakeToken={stakeToken}
+        />
+      ) : view === CHALLENGED ? (
+        <Outcome
+          result="Challenged"
+          color="#F5A623"
+          icon={<img src={challengeIconSvg} alt="" width="24" height="24" />}
+        />
       ) : (
         <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
       )}
@@ -251,7 +228,7 @@ const PositiveOutcome = ({ endDate, shorter, view }) => {
 
   return (
     <>
-      <Outcome result={text} positive />
+      <Outcome result={text} color={theme.positive} icon={<IconCheck />} />
       {!shorter && view === MAY_PASS && (
         <>
           <span
@@ -268,18 +245,71 @@ const PositiveOutcome = ({ endDate, shorter, view }) => {
   )
 }
 
-const Outcome = ({ result, positive }) => {
+const NegativeOutcome = ({ maxRatio, neededTokens, shorter, stakeToken }) => {
   const theme = useTheme()
+  return (
+    <>
+      <Outcome
+        result="Won't pass"
+        color={theme.negative}
+        icon={<IconCross />}
+      />
+      {!shorter && (
+        <>
+          <span
+            css={`
+              color: ${theme.surfaceContent};
+            `}
+          >
+            {isNaN(neededTokens)
+              ? 'Not enough funds in the organization'
+              : 'Not enough support received'}
+          </span>
+          <span
+            css={`
+              color: ${theme.surfaceContentSecondary};
+            `}
+          >
+            (
+            {isNaN(neededTokens) ? (
+              `Funding requests must be below ${maxRatio *
+                100}% of organization total funds`
+            ) : (
+              <React.Fragment>
+                At least{' '}
+                <Tag>
+                  {`${formatTokenAmount(neededTokens, stakeToken.decimals)} ${
+                    stakeToken.symbol
+                  }`}
+                </Tag>{' '}
+                more needed
+              </React.Fragment>
+            )}
+            ).
+          </span>
+        </>
+      )}
+    </>
+  )
+}
 
+const Outcome = ({ color, icon, result }) => {
   return (
     <div
       css={`
-        color: ${theme[positive ? 'positive' : 'negative']};
+        color: ${color};
         display: flex;
         align-items: center;
       `}
     >
-      {positive ? <IconCheck /> : <IconCross />} {result}
+      {icon}{' '}
+      <span
+        css={`
+          margin-left: ${0.5 * GU}px;
+        `}
+      >
+        {result}
+      </span>
     </div>
   )
 }

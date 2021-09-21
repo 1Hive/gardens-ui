@@ -60,17 +60,18 @@ const defaultFooterData = {
 function Footer() {
   const theme = useTheme()
   const { below } = useViewport()
-  const compactMode = below('large')
+  const compactMode = below('medium')
   const [footerData, setFooterData] = useState(defaultFooterData)
 
   const { connectedGarden } = useGardens()
 
   useEffect(() => {
     if (connectedGarden) {
-      const { links, logo, token, wrappableToken } = connectedGarden
+      // eslint-disable-next-line camelcase
+      const { links, logo_type, token, wrappableToken } = connectedGarden
       setFooterData({
         links,
-        logo,
+        logo: logo_type,
         token,
         wrappableToken,
         garden: true,
@@ -183,6 +184,7 @@ function FixedFooter({ token }) {
           bottom: 0;
           left: 0;
           right: 0;
+          margin-top: ${1.5 * GU}px;
         `}
       >
         <div

@@ -14,6 +14,8 @@ import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
 
+import { getVoidedGardensByNetwork } from '../voided-gardens'
+
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
@@ -75,7 +77,10 @@ function useGardensList() {
           { network: getNetwork().chainId },
           { orderBy: 'honeyLiquidity' }
         )
-        setGardens(result)
+
+        setGardens(
+          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+        )
       } catch (err) {
         setGardens([])
         console.error(`Error fetching gardens ${err}`)
