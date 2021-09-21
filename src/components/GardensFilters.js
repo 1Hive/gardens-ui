@@ -15,8 +15,7 @@ const GardensFilters = ({
     <div
       css={`
         display: flex;
-        justify-content: center;
-        width: ${layoutName === 'max' ? '65%' : 'auto'};
+        width: ${layoutName === 'small' ? 100 : 50}%;
         gap: ${1 * GU}px;
         flex-wrap: wrap;
       `}
@@ -30,8 +29,8 @@ const GardensFilters = ({
           wide
         />
       </FilterItem>
-      {layoutName !== 'max' && <Break />}
-      <FilterItem grow={2}>
+      {layoutName === 'small' && <Break />}
+      <FilterItem grow={1.3}>
         <SearchInput
           value={nameFilter}
           onChange={onNameFilterChange}
