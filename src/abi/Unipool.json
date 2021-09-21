@@ -1,0 +1,1 @@
+["function earned(address account) public view returns (uint256)", " function getReward() external"]

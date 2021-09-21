@@ -136,6 +136,8 @@ function GardenNavItems({ garden }) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
+  const { connectedGarden } = useGardens()
+  const forumURL = connectedGarden.forumURL
 
   const handleOnGoToCovenant = useCallback(() => {
     const path = buildGardenPath(history.location, 'covenant')
@@ -145,7 +147,16 @@ function GardenNavItems({ garden }) {
   return (
     <>
       <Button label="Covenant" onClick={handleOnGoToCovenant} mode="strong" />
-
+      <Link
+        href={forumURL}
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Forum
+      </Link>
       <Link
         href={getHoneyswapTradeTokenUrl(token.id)}
         css={`
