@@ -4,6 +4,10 @@ import GARDEN_LOGO from '../../assets/gardensLogo.svg' // WE NEED SOME ICONS FOR
 
 // The different types of activity
 const ACTIVITY_TYPES = {
+  [actions.ADD_FUNDS]: {
+    icon: GARDEN_LOGO,
+    title: 'Add funds to deposit manager',
+  },
   [actions.APPROVE_TOKEN]: {
     icon: GARDEN_LOGO,
     title: 'Approve token amount',
@@ -63,6 +67,10 @@ const ACTIVITY_TYPES = {
   [actions.VOTE_ON_DECISION]: {
     icon: GARDEN_LOGO,
     title: 'Vote on decision',
+  },
+  [actions.WITHDRAW_FUNDS]: {
+    icon: GARDEN_LOGO,
+    title: 'Withdraw funds from deposit manager',
   },
   [actions.WITHDRAW_FROM_PROPOSAL]: {
     icon: GARDEN_LOGO,

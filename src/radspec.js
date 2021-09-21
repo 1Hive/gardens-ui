@@ -1,8 +1,11 @@
 import actions from './actions/garden-action-types'
 
 export default {
-  [actions.APPROVE_TOKEN]: ({ amount }) => {
-    return `Approve token amount: ${amount} HNY`
+  [actions.ADD_FUNDS]: () => {
+    return `Add funds to deposit manager`
+  },
+  [actions.APPROVE_TOKEN]: ({ symbol }) => {
+    return `Approve ${symbol}`
   },
   [actions.CANCEL_PROPOSAL]: ({ proposalId }) => {
     return `Cancel proposal: ${proposalId}`
@@ -23,10 +26,10 @@ export default {
     return `Execute proposal: ${proposalId}`
   },
   [actions.NEW_PROPOSAL]: () => {
-    return `New funding proposal creation`
+    return `Create new funding proposal`
   },
   [actions.NEW_SIGNALING_PROPOSAL]: () => {
-    return `New signaling proposal creation`
+    return `Create new signalling proposal`
   },
   [actions.RESOLVE_ACTION]: ({ disputeId }) => {
     return `Resolve dispute: ${disputeId}`
@@ -45,6 +48,9 @@ export default {
   },
   [actions.VOTE_ON_DECISION]: ({ voteId }) => {
     return `Vote on decision: ${voteId}`
+  },
+  [actions.WITHDRAW_FUNDS]: () => {
+    return `Withdraw funds from deposit manager`
   },
   [actions.WITHDRAW_FROM_PROPOSAL]: ({ proposalId }) => {
     return `Withdraw support from proposal: ${proposalId}`

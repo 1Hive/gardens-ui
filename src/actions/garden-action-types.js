@@ -1,4 +1,4 @@
-// Ordered by app actions -> conviction, dandelion voting, agreement rather than alphabetically
+// Ordered by app actions -> conviction, dandelion voting, agreement, staking rather than alphabetically
 export default {
   NEW_PROPOSAL: Symbol('NEW_PROPOSAL'),
   NEW_SIGNALING_PROPOSAL: Symbol('NEW_SIGNALING_PROPOSAL'),
@@ -17,4 +17,6 @@ export default {
   DISPUTE_ACTION: Symbol('DISPUTE_ACTION'),
   WRAP_TOKEN: Symbol('WRAP_TOKEN'),
   UNWRAP_TOKEN: Symbol('UNWRAP_TOKEN'),
+  ADD_FUNDS: Symbol('ADD_FUNDS'),
+  WITHDRAW_FUNDS: Symbol('WITHDRAW_FUNDS'),
 }
