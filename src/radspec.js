@@ -4,8 +4,8 @@ export default {
   [actions.ADD_FUNDS]: () => {
     return `Add funds to deposit manager`
   },
-  [actions.APPROVE_TOKEN]: ({ symbol }) => {
-    return `Approve ${symbol}`
+  [actions.APPROVE_TOKEN]: ({ tokenSymbol }) => {
+    return `Approve ${tokenSymbol}`
   },
   [actions.CANCEL_PROPOSAL]: ({ proposalId }) => {
     return `Cancel proposal: ${proposalId}`

@@ -13,8 +13,7 @@ import {
 } from '@1hive/1hive-ui'
 import TimeTag from './TimeTag'
 import TransactionProgress from './TransactionProgress'
-import { useActivity } from '../../providers/ActivityProvider'
-// import { useAsset } from '../../hooks/useAsset'
+import { useActivity } from '@providers/ActivityProvider'
 
 import { getNetworkType, transformAddresses } from '@utils/web3-utils'
 import {
@@ -23,8 +22,8 @@ import {
   ACTIVITY_STATUS_FAILED,
   ACTIVITY_STATUS_TIMED_OUT,
 } from './activity-statuses'
-import { getNetwork } from '../../networks'
 import { getActivityData } from './activity-types'
+import { getNetwork } from '../../networks'
 
 import GARDEN_LOGO from '@assets/gardensLogoMark.svg'
 
@@ -33,7 +32,6 @@ function ActivityItem({ activity }) {
   const { removeActivity } = useActivity()
 
   const { title } = getActivityData(activity.type)
-  //  const iconSrc = useAsset(icon)
   const iconSrc = GARDEN_LOGO
 
   const handleOpen = useCallback(() => {

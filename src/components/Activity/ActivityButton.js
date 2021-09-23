@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import ActivityList from './ActivityList'
-import { useActivity } from '../../providers/ActivityProvider'
+import { useActivity } from '@providers/ActivityProvider'
 
 const ActivityButton = React.memo(function ActivityButton() {
   const theme = useTheme()
@@ -60,7 +60,7 @@ const ActivityButton = React.memo(function ActivityButton() {
             height: 100%;
             width: 100%;
             border-radius: 0;
-            padding-left: ${0.5 * GU}px;
+            padding-left: ${0.75 * GU}px;
             justify-content: space-between;
 
             /* This is a bit of a hack to get the focus ring to appear only

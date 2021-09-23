@@ -1,6 +1,6 @@
 import actions from '../../actions/garden-action-types'
 
-import GARDEN_LOGO from '../../assets/gardensLogo.svg' // WE NEED SOME ICONS FOR DIFERENT ACTIONS
+import GARDEN_LOGO from '@assets/gardensLogo.svg' // WE NEED SOME ICONS FOR DIFERENT ACTIONS
 
 // The different types of activity
 const ACTIVITY_TYPES = {
@@ -21,8 +21,8 @@ const ACTIVITY_TYPES = {
     title: 'Challenge proposal',
   },
   [actions.DISPUTE_ACTION]: {
-    title: 'Dispute proposal',
     icon: GARDEN_LOGO,
+    title: 'Dispute proposal',
   },
   [actions.EXECUTE_ADJUSTMENT]: {
     title: 'Execute issuance',
@@ -33,7 +33,7 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_PROPOSAL]: {
-    title: 'Exeute proposal',
+    title: 'Execute proposal',
     icon: GARDEN_LOGO,
   },
   [actions.NEW_PROPOSAL]: {
@@ -49,11 +49,11 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
   },
   [actions.SETTLE_ACTION]: {
-    title: 'Accept settlement',
+    title: 'Settle challenge',
     icon: GARDEN_LOGO,
   },
   [actions.SIGN_AGREEMENT]: {
-    title: 'Sign agreement',
+    title: 'Sign covenant',
     icon: GARDEN_LOGO,
   },
   [actions.STAKE_TO_PROPOSAL]: {

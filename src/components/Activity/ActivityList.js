@@ -9,10 +9,8 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 import ActivityItem from './ActivityItem'
-import { useActivity } from '../../providers/ActivityProvider'
-// import { useAsset } from '../../hooks/useAsset'
+import { useActivity } from '@providers/ActivityProvider'
 
-// import { NO_DATA } from '../../utils/asset-utils'
 import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
 import noDataSvg from '@assets/noData.svg'
 
@@ -25,7 +23,6 @@ function ActivityList() {
   const theme = useTheme()
   const { below, height } = useViewport()
   const { activities, clearActivities } = useActivity()
-  // const noDataSvg = useAsset(NO_DATA)
 
   const activityItems = useMemo(
     () => activities.sort((a, b) => b.createdAt - a.createdAt),

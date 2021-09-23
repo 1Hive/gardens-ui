@@ -114,7 +114,7 @@ function ActivityProvider({ children }) {
   const addActivity = useCallback(
     async (
       tx,
-      // see types defined in ../actions/court-action-types.js
+      // see types defined in ../actions/garden-action-types.js
       type,
       description = ''
     ) => {

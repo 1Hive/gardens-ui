@@ -108,6 +108,7 @@ function Header() {
 
           <div
             css={`
+              height: 100%;
               display: flex;
               align-items: center;
               ${showBalance && `min-width: ${42.5 * GU}px`};
