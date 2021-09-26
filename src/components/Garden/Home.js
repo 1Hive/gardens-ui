@@ -215,9 +215,14 @@ const Home = React.memo(function Home() {
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}
             {(modalMode === 'wrap' || modalMode === 'unwrap') && (
-              <WrapTokenScreens mode={modalMode} hookedTokenManagerActions={actions.hookedTokenManagerActions} />
+              <WrapTokenScreens
+                mode={modalMode}
+                hookedTokenManagerActions={actions.hookedTokenManagerActions}
+              />
             )}
-            {modalMode === 'claim' && <ClaimRewardsScreens unipoolActions={actions.unipoolActions} />}
+            {modalMode === 'claim' && (
+              <ClaimRewardsScreens unipoolActions={actions.unipoolActions} />
+            )}
           </MultiModal>
         </div>
       )}

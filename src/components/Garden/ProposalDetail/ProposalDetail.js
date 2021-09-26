@@ -464,14 +464,14 @@ function ProposalDetail({
             mode={modalMode}
             convictionActions={{
               stakeToProposal: actions.stakeToProposal,
-              withdrawFromProposal: actions.withdrawFromProposal
+              withdrawFromProposal: actions.withdrawFromProposal,
             }}
           />
         )}
         {modalMode === 'remove' && (
           <RemoveProposalScreens
             convictionActions={{
-              cancelProposal: actions.cancelProposal
+              cancelProposal: actions.cancelProposal,
             }}
             proposal={proposal}
           />
@@ -479,7 +479,7 @@ function ProposalDetail({
         {modalMode === 'execute' && (
           <ExecuteProposalScreens
             convictionActions={{
-              executeProposal: actions.executeProposal
+              executeProposal: actions.executeProposal,
             }}
             proposal={proposal}
           />

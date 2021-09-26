@@ -20,9 +20,7 @@ import warningSvg from './assets/warning.svg'
 function Agreement() {
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
-  const {
-    actions,
-  } = useGardenLogic()
+  const { actions } = useGardenLogic()
 
   const signed = agreement.signedLatest
 
@@ -50,7 +48,10 @@ function Agreement() {
         />
       </LayoutLimiter>
       <MultiModal visible={signModalVisible} onClose={handleHideModal}>
-        <SignAgreementScreens versionId={agreement.versionId} actions={actions} />
+        <SignAgreementScreens
+          versionId={agreement.versionId}
+          actions={actions}
+        />
       </MultiModal>
     </LayoutGutter>
   )
