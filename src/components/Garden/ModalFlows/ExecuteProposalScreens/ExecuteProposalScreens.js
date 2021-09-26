@@ -2,11 +2,8 @@ import React, { useMemo, useState, useCallback } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import ExecuteProposal from './ExecuteProposal'
 
-import useActions from '@hooks/useActions'
-
-function ExecuteProposalScreens({ proposal }) {
+function ExecuteProposalScreens({ proposal, convictionActions }) {
   const [transactions, setTransactions] = useState([])
-  const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
 

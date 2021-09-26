@@ -2,11 +2,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 import ClaimRewards from './ClaimRewards'
 import ModalFlowBase from '../ModalFlowBase'
 
-import useActions from '@hooks/useActions'
-
-function ClaimRewardsScreens() {
+function ClaimRewardsScreens({ unipoolActions }) {
   const [transactions, setTransactions] = useState([])
-  const { unipoolActions } = useActions()
 
   const getTransactions = useCallback(
     async onComplete => {

@@ -441,17 +441,48 @@ function ProposalDetail({
           />
         )}
         {modalMode === 'settle' && (
-          <SettleProposalScreens proposal={proposal} />
+          <SettleProposalScreens
+            agreementActions={{
+              settleAction: actions.settleAction,
+            }}
+            proposal={proposal}
+          />
         )}
-        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+        {modalMode === 'dispute' && (
+          <RaiseDisputeScreens
+            agreementActions={{
+              getAllowance: actions.getAllowance,
+              approveTokenAmount: actions.approveTokenAmount,
+              disputeAction: actions.disputeAction,
+            }}
+            proposal={proposal}
+          />
+        )}
         {(modalMode === 'support' || modalMode === 'update') && (
-          <SupportProposalScreens proposal={proposal} mode={modalMode} />
+          <SupportProposalScreens
+            proposal={proposal}
+            mode={modalMode}
+            convictionActions={{
+              stakeToProposal: actions.stakeToProposal,
+              withdrawFromProposal: actions.withdrawFromProposal,
+            }}
+          />
         )}
         {modalMode === 'remove' && (
-          <RemoveProposalScreens proposal={proposal} />
+          <RemoveProposalScreens
+            convictionActions={{
+              cancelProposal: actions.cancelProposal,
+            }}
+            proposal={proposal}
+          />
         )}
         {modalMode === 'execute' && (
-          <ExecuteProposalScreens proposal={proposal} />
+          <ExecuteProposalScreens
+            convictionActions={{
+              executeProposal: actions.executeProposal,
+            }}
+            proposal={proposal}
+          />
         )}
       </MultiModal>
     </div>

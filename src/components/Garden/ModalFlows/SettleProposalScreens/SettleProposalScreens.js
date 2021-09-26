@@ -2,14 +2,12 @@ import React, { useState, useCallback, useMemo } from 'react'
 import { addressesEqual } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import SettlementDetails from './SettlementDetails'
-import useActions from '@hooks/useActions'
 import { useWallet } from '@providers/Wallet'
 
-function SettleProposalScreens({ proposal }) {
+function SettleProposalScreens({ proposal, agreementActions }) {
   const [transactions, setTransactions] = useState([])
 
   const { account } = useWallet()
-  const { agreementActions } = useActions()
 
   const isChallenger = addressesEqual(account, proposal.challenger)
 

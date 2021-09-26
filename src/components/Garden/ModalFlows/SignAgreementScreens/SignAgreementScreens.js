@@ -4,12 +4,10 @@ import { useHistory } from 'react-router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'
-import useActions from '@hooks/useActions'
 
 import { buildGardenPath } from '@utils/routing-utils'
 
-function SignAgreementScreens({ versionId }) {
-  const actions = useActions()
+function SignAgreementScreens({ versionId, agreementActions }) {
   const [transactions, setTransactions] = useState([])
 
   const history = useHistory()
@@ -32,12 +30,12 @@ function SignAgreementScreens({ versionId }) {
 
   const getTransactions = useCallback(
     async onComplete => {
-      await actions.agreementActions.signAgreement({ versionId }, intent => {
+      await agreementActions.signAgreement({ versionId }, intent => {
         setTransactions(intent.transactions)
         onComplete()
       })
     },
-    [actions, versionId]
+    [agreementActions, versionId]
   )
 
   const screens = useMemo(
