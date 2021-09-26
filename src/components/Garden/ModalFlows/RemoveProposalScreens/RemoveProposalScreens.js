@@ -2,11 +2,8 @@ import React, { useMemo, useState, useCallback } from 'react'
 import ModalFlowBase from '../ModalFlowBase'
 import RemoveProposal from './RemoveProposal'
 
-import useActions from '@hooks/useActions'
-
-function RemoveProposalScreens({ proposal, mode }) {
+function RemoveProposalScreens({ proposal, mode, convictionActions }) {
   const [transactions, setTransactions] = useState([])
-  const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
 

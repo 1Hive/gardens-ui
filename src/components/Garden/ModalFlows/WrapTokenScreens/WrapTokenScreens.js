@@ -3,16 +3,14 @@ import ModalFlowBase from '../ModalFlowBase'
 import WrapUnwrap from './WrapUnwrap'
 
 import { useGardenState } from '@providers/GardenState'
-import useActions from '@hooks/useActions'
 
 import BigNumber from '@lib/bigNumber'
 
 const ZERO_BN = new BigNumber(0)
 
-function WrapTokenScreens({ mode }) {
+function WrapTokenScreens({ mode, hookedTokenManagerActions }) {
   const [transactions, setTransactions] = useState([])
   const { token, wrappableToken } = useGardenState()
-  const { hookedTokenManagerActions } = useActions()
 
   const temporatyTrx = useRef([])
 

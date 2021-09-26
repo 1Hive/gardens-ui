@@ -13,12 +13,16 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
+import useGardenLogic from '@/logic/garden-logic'
 
 import warningSvg from './assets/warning.svg'
 
 function Agreement() {
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
+  const {
+    actions,
+  } = useGardenLogic()
 
   const signed = agreement.signedLatest
 
@@ -46,7 +50,7 @@ function Agreement() {
         />
       </LayoutLimiter>
       <MultiModal visible={signModalVisible} onClose={handleHideModal}>
-        <SignAgreementScreens versionId={agreement.versionId} />
+        <SignAgreementScreens versionId={agreement.versionId} actions={actions} />
       </MultiModal>
     </LayoutGutter>
   )

@@ -32,7 +32,6 @@ const Home = React.memo(function Home() {
     proposals,
     proposalsFetchedCount,
   } = useGardenLogic()
-
   const history = useHistory()
   const { account } = useWallet()
 
@@ -216,9 +215,9 @@ const Home = React.memo(function Home() {
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}
             {(modalMode === 'wrap' || modalMode === 'unwrap') && (
-              <WrapTokenScreens mode={modalMode} />
+              <WrapTokenScreens mode={modalMode} hookedTokenManagerActions={actions.hookedTokenManagerActions} />
             )}
-            {modalMode === 'claim' && <ClaimRewardsScreens />}
+            {modalMode === 'claim' && <ClaimRewardsScreens unipoolActions={actions.unipoolActions} />}
           </MultiModal>
         </div>
       )}

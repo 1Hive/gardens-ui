@@ -3,11 +3,8 @@ import ModalFlowBase from '../ModalFlowBase'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
 
-import useActions from '@hooks/useActions'
-
-function SupportProposalScreens({ proposal, mode }) {
+function SupportProposalScreens({ proposal, mode, convictionActions }) {
   const [transactions, setTransactions] = useState([])
-  const { convictionActions } = useActions()
 
   const { id: proposalId } = proposal
 

@@ -3,18 +3,16 @@ import PropTypes from 'prop-types'
 import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
-import useActions from '@hooks/useActions'
 import { useCelesteSynced } from '@hooks/useCeleste'
 import { useDisputeFees } from '@hooks/useDispute'
 import BigNumber from '@lib/bigNumber'
 
 const ZERO_BN = new BigNumber('0')
 
-function RaiseDisputeScreens({ proposal }) {
+function RaiseDisputeScreens({ proposal, agreementActions }) {
   const [transactions, setTransactions] = useState([])
   const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
   const disputeFees = useDisputeFees()
-  const { agreementActions } = useActions()
 
   const temporatyTrx = useRef([])
 

@@ -324,9 +324,23 @@ function DecisionDetail({ proposal, actions }) {
           />
         )}
         {modalMode === 'settle' && (
-          <SettleProposalScreens proposal={proposal} />
+          <SettleProposalScreens
+            agreementActions={{
+              settleAction: actions.settleAction,
+            }}
+            proposal={proposal}
+          />
         )}
-        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+        {modalMode === 'dispute' && (
+          <RaiseDisputeScreens
+            agreementActions={{
+              getAllowance: actions.getAllowance,
+              approveTokenAmount: actions.approveTokenAmount,
+              disputeAction: actions.disputeAction,
+            }}
+            proposal={proposal}
+          />
+        )}
       </MultiModal>
     </div>
   )
