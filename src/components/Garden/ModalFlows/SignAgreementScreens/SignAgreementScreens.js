@@ -7,8 +7,7 @@ import SignOverview from './SignOverview'
 
 import { buildGardenPath } from '@utils/routing-utils'
 
-function SignAgreementScreens({ versionId, actions }) {
-  const { agreementActions } = actions
+function SignAgreementScreens({ versionId, agreementActions }) {
   const [transactions, setTransactions] = useState([])
 
   const history = useHistory()
@@ -36,7 +35,7 @@ function SignAgreementScreens({ versionId, actions }) {
         onComplete()
       })
     },
-    [actions, versionId]
+    [agreementActions, versionId]
   )
 
   const screens = useMemo(

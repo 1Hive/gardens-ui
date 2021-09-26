@@ -50,7 +50,7 @@ function Agreement() {
       <MultiModal visible={signModalVisible} onClose={handleHideModal}>
         <SignAgreementScreens
           versionId={agreement.versionId}
-          actions={actions}
+          agreementActions={actions.agreementActions}
         />
       </MultiModal>
     </LayoutGutter>
