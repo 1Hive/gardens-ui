@@ -2,7 +2,7 @@ import { bigNum } from '@lib/bigNumber'
 import { getNetwork } from '@/networks'
 import { ZERO_ADDR } from '@/constants'
 import { getContract } from '@hooks/useContract'
-import { encodeFunctionData } from '@utils/web3-utils'
+import { encodeFunctionData, toHex } from '@utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
 import tokenAbi from '@abis/erc20.json'
@@ -167,7 +167,7 @@ export function createGardenTxTwo({ conviction, issuance }) {
   }
 }
 
-export async function createGardenTxThree(
+export function createGardenTxThree(
   { agreement, garden, liquidity, tokens },
   agreementContent
 ) {
@@ -192,7 +192,7 @@ export async function createGardenTxThree(
     transaction: createTemplateTx('createGardenTxThree', [
       daoId,
       agreement.title,
-      agreementContent,
+      toHex(agreementContent),
       agreement.challengePeriod,
       [adjustedActionAmount, adjustedChallengeAmount],
       [actionAmountStable, actionAmountStable],
