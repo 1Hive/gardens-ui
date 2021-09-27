@@ -22,22 +22,24 @@ export function createTokenApproveTxs({ garden, liquidity, tokens }) {
     liquidity.honeyTokenLiquidity
   ).toString()
 
-  txs.push(
-    createTokenTx(honeyTokenAddress, 'approve', [
+  txs.push({
+    name: 'Approve HNY',
+    transaction: createTokenTx(honeyTokenAddress, 'approve', [
       templateAddress,
       adjustedHoneyLiquidity,
-    ])
-  )
+    ]),
+  })
 
   if (garden.type === BYOT_TYPE) {
     const adjustedTokenLiquidity = bigNum(liquidity.tokenLiquidity).toString()
 
-    txs.push(
-      createTokenTx(tokens.address, 'approve', [
+    txs.push({
+      name: `Approve ${tokens.existingTokenSymbol}`,
+      transaction: createTokenTx(tokens.address, 'approve', [
         templateAddress,
         adjustedTokenLiquidity,
-      ])
-    )
+      ]),
+    })
   }
 
   return txs
@@ -91,33 +93,39 @@ export function createGardenTxOne({
     voteMinAcceptanceQuorum
   )
 
-  return createTemplateTx('createGardenTxOne', [
-    existingToken,
-    tokens.name,
-    tokens.symbol,
-    [
-      adjustedCommonPool,
-      adjustedLiquidityStable,
-      adjustedGardenTokenLiquidity,
-      adjustedExistingTokenLiquidity,
-    ],
-    [
-      voting.voteDuration,
-      adjustedSupport,
-      adjustedQuorum,
-      voting.voteDelegatedVotingPeriod,
-      voting.voteQuietEndingPeriod,
-      voting.voteQuietEndingExtension,
-      voting.voteExecutionDelay,
-    ],
-  ])
+  return {
+    name: 'Create organization',
+    transaction: createTemplateTx('createGardenTxOne', [
+      existingToken,
+      tokens.name,
+      tokens.symbol,
+      [
+        adjustedCommonPool,
+        adjustedLiquidityStable,
+        adjustedGardenTokenLiquidity,
+        adjustedExistingTokenLiquidity,
+      ],
+      [
+        voting.voteDuration,
+        adjustedSupport,
+        adjustedQuorum,
+        voting.voteDelegatedVotingPeriod,
+        voting.voteQuietEndingPeriod,
+        voting.voteQuietEndingExtension,
+        voting.voteExecutionDelay,
+      ],
+    ]),
+  }
 }
 
 export function createTokenHoldersTx({ tokens }) {
   const accounts = tokens.holders.map(([account]) => account)
   const stakes = tokens.holders.map(([_, stake]) => bigNum(stake).toString())
 
-  return createTemplateTx('createTokenHolders', [accounts, stakes])
+  return {
+    name: 'Mint seed balances',
+    transaction: createTemplateTx('createTokenHolders', [accounts, stakes]),
+  }
 }
 
 export function createGardenTxTwo({ conviction, issuance }) {
@@ -144,16 +152,19 @@ export function createGardenTxTwo({ conviction, issuance }) {
     conviction.minThresholdStakePct * ONE_HUNDRED_PCT
   ).toString()
 
-  return createTemplateTx('createGardenTxTwo', [
-    [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
-    [
-      adjustedDecay,
-      adjustedMaxRatio,
-      adjustedWeight,
-      adjustedMinThresholdStakePct,
-    ],
-    requestToken,
-  ])
+  return {
+    name: 'Install apps',
+    transaction: createTemplateTx('createGardenTxTwo', [
+      [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
+      [
+        adjustedDecay,
+        adjustedMaxRatio,
+        adjustedWeight,
+        adjustedMinThresholdStakePct,
+      ],
+      requestToken,
+    ]),
+  }
 }
 
 export async function createGardenTxThree(
@@ -176,15 +187,18 @@ export async function createGardenTxThree(
   const actionAmountStable = bigNum(tokenPrice * actionAmount).toString()
   const challengeAmountStable = bigNum(tokenPrice * challengeAmount).toString()
 
-  return createTemplateTx('createGardenTxThree', [
-    daoId,
-    agreement.title,
-    agreementContent,
-    agreement.challengePeriod,
-    [adjustedActionAmount, adjustedChallengeAmount],
-    [actionAmountStable, actionAmountStable],
-    [challengeAmountStable, challengeAmountStable],
-  ])
+  return {
+    name: 'Install apps',
+    transaction: createTemplateTx('createGardenTxThree', [
+      daoId,
+      agreement.title,
+      agreementContent,
+      agreement.challengePeriod,
+      [adjustedActionAmount, adjustedChallengeAmount],
+      [actionAmountStable, actionAmountStable],
+      [challengeAmountStable, challengeAmountStable],
+    ]),
+  }
 }
 
 function createTemplateTx(fn, params) {
