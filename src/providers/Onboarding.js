@@ -1,6 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
+import usePinataUploader from '@hooks/usePinata'
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
@@ -25,6 +32,7 @@ const SKIPPED_SCREENS = ['Issuance policy']
 
 const DEFAULT_CONFIG = {
   garden: {
+    address: '',
     name: '',
     description: '',
     logo: null,
@@ -89,6 +97,12 @@ function OnboardingProvider({ children }) {
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
 
+  // Upload covenant content to ipfs when ready (starting deployment txs)
+  const [covenantIpfs] = usePinataUploader(
+    config.agreement.covenantFile?.blob,
+    status === STATUS_GARDEN_DEPLOYMENT
+  )
+
   const handleConfigChange = useCallback(
     (key, data) =>
       setConfig(config => ({
@@ -106,7 +120,7 @@ function OnboardingProvider({ children }) {
   }, [])
 
   const getTransactions = useCallback(
-    async covenantIpfsHash => {
+    covenantIpfsHash => {
       // Token approvals
       const txs = [...createTokenApproveTxs(config)]
 
@@ -129,6 +143,15 @@ function OnboardingProvider({ children }) {
     [config]
   )
 
+  // Navigation
+  const handleBack = useCallback(() => {
+    setStep(index => Math.max(0, index - 1))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setStep(index => Math.min(steps.length - 1, index + 1))
+  }, [steps.length])
+
   useEffect(() => {
     if (config.garden.type !== -1) {
       config.garden.type === BYOT_TYPE
@@ -139,20 +162,16 @@ function OnboardingProvider({ children }) {
     }
   }, [config.garden.type])
 
-  // Navigation
-  const handleBack = useCallback(() => {
-    setStep(index => Math.max(0, index - 1))
-  }, [])
-
-  const handleNext = useCallback(() => {
-    setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [steps.length])
+  const deployTransactions = useMemo(
+    () => (covenantIpfs ? getTransactions(covenantIpfs) : []),
+    [covenantIpfs, getTransactions]
+  )
 
   return (
     <OnboardingContext.Provider
       value={{
         config,
-        getTransactions,
+        deployTransactions,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
