@@ -3,15 +3,16 @@ import { useOnboardingState } from '@providers/Onboarding'
 import { useWallet } from '@providers/Wallet'
 import {
   STEP_ERROR,
+  STEP_PROMPTING,
   STEP_SUCCESS,
   STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
 
 const DEFAULT_TX_PROGRESS = {
-  signing: 0,
+  signed: 0,
   success: 0,
-  error: -1,
+  errored: -1,
   hashes: [],
 }
 
@@ -41,49 +42,47 @@ export default function useDeploymentState() {
     let cancelled = false
     const createTransactions = async () => {
       // Only process the next transaction after the previous one was successfully mined
-      deployTransactions
-        // If we're retrying, only retry from the last success one
-        .slice(transactionProgress.success)
-        .reduce(async (deployPromise, { transaction }) => {
-          // Wait for the previous promise; if component has unmounted, don't progress any further
-          await deployPromise
+      const remainingTransactions = deployTransactions.slice(
+        transactionProgress.success
+      )
+      for (const deployTransaction in remainingTransactions) {
+        let { transaction } = deployTransaction
+        transaction = {
+          ...transaction,
+          from: account,
+        }
 
-          transaction = {
-            ...transaction,
-            from: account,
+        try {
+          if (!cancelled) {
+            const tx = await signer.sendTransaction(transaction)
+
+            setTransactionProgress(({ signed, hashes, ...txProgress }) => ({
+              signed: signed + 1,
+              hashes: [...hashes, tx.hash],
+              ...txProgress,
+            }))
+
+            await tx.wait()
+
+            setTransactionProgress(({ success, ...txProgress }) => ({
+              success: success + 1,
+              ...txProgress,
+            }))
+          }
+        } catch (err) {
+          console.error('Failed onboarding transaction', err)
+          if (!cancelled) {
+            setTransactionProgress(({ success, ...txProgress }) => ({
+              errored: success,
+              success,
+              ...txProgress,
+            }))
           }
 
-          try {
-            if (!cancelled) {
-              const tx = await signer.sendTransaction(transaction)
-
-              setTransactionProgress(({ signed, hashes, ...txProgress }) => ({
-                signed: signed + 1,
-                hashes: [...hashes, tx.hash],
-                ...txProgress,
-              }))
-
-              await tx.wait()
-
-              setTransactionProgress(({ success, ...txProgress }) => ({
-                success: success + 1,
-                ...txProgress,
-              }))
-            }
-          } catch (err) {
-            console.error('Failed onboarding transaction', err)
-            if (!cancelled) {
-              setTransactionProgress(({ success, ...txProgress }) => ({
-                errored: success,
-                success,
-                ...txProgress,
-              }))
-            }
-
-            // Re-throw error to stop later transactions from being signed
-            throw err
-          }
-        }, Promise.resolve())
+          // Re-throw error to stop later transactions from being signed
+          throw err
+        }
+      }
     }
     createTransactions()
 
@@ -99,15 +98,18 @@ export default function useDeploymentState() {
       return []
     }
 
-    const { signed, errored } = transactionProgress
+    const { signed, success, errored } = transactionProgress
     const status = index => {
       if (errored !== -1 && index >= errored) {
         return STEP_ERROR
       }
       if (index === signed) {
-        return STEP_WORKING
+        return STEP_PROMPTING
       }
       if (index < signed) {
+        if (index === success) {
+          return STEP_WORKING
+        }
         return STEP_SUCCESS
       }
       return STEP_WAITING
@@ -123,7 +125,8 @@ export default function useDeploymentState() {
 
   return {
     erroredTransactions: transactionProgress.errored,
-    transactionsStatus,
     onNextAttempt: handleNextAttempt,
+    ready: deployTransactions.length > 0,
+    transactionsStatus,
   }
 }

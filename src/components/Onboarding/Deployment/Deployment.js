@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Button, GU, springs, useViewport } from '@1hive/1hive-ui'
+import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
 import { Transition } from 'react-spring/renderprops'
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
@@ -16,13 +16,14 @@ import {
 // import progressImgMedium from './assets/illustration-progress-medium.svg'
 // import allDoneImg from './assets/illustration-all-done.png'
 
-const Deployment = React.memo(function Deployment({ onOpenOrg, ready }) {
+const Deployment = React.memo(function Deployment({ onOpenOrg }) {
   const { above } = useViewport()
 
   const {
     erroredTransactions,
-    transactionsStatus,
     onNextAttempt,
+    ready,
+    transactionsStatus,
   } = useDeploymentState()
 
   // TODO: handle transaction error
@@ -45,11 +46,24 @@ const Deployment = React.memo(function Deployment({ onOpenOrg, ready }) {
             flex-grow: 0;
           `}
         >
-          <DeploymentStepsPanel
-            allSuccess={allSuccess}
-            pending={pending}
-            transactionsStatus={transactionsStatus}
-          />
+          {ready ? (
+            <DeploymentStepsPanel
+              allSuccess={allSuccess}
+              pending={pending}
+              transactionsStatus={transactionsStatus}
+            />
+          ) : (
+            <div>
+              <LoadingRing />
+              <span
+                css={`
+                  margin-left: ${1 * GU}px;
+                `}
+              >
+                Loading transactions
+              </span>
+            </div>
+          )}
         </div>
       )}
       <section
@@ -74,16 +88,16 @@ const Deployment = React.memo(function Deployment({ onOpenOrg, ready }) {
             native
             reset
             unique
-            items={ready}
+            items={allSuccess}
             from={{ opacity: 0, transform: `translate3d(10%, 0, 0)` }}
             enter={{ opacity: 1, transform: `translate3d(0%, 0, 0)` }}
             leave={{ opacity: 0, transform: `translate3d(-10%, 0, 0)` }}
             config={springs.smooth}
           >
-            {ready =>
+            {allSuccess =>
               /* eslint-disable react/prop-types */
               ({ opacity, transform }) =>
-                ready ? (
+                allSuccess ? (
                   <BoxReady
                     onOpenOrg={onOpenOrg}
                     opacity={opacity}

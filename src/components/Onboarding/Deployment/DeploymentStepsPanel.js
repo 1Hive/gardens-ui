@@ -9,12 +9,10 @@ import {
   Info,
 } from '@1hive/1hive-ui'
 import DeploymentStepsItem from './DeploymentStepsItem'
-import { useWallet } from '@providers/Wallet'
 import { TransactionStatusType } from '@/prop-types'
 
 function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
   const theme = useTheme()
-  const { providerInfo } = useWallet()
 
   return (
     <aside
@@ -73,23 +71,7 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
         </div>
       </div>
 
-      {!allSuccess && (
-        <Info mode="warning">
-          It might take some time before these transactions get processed.
-          Please be patient and <strong>do not close this window</strong> until
-          it finishes.{' '}
-          {providerInfo.id === 'metamask' && (
-            <>
-              Additionally, do not use the{' '}
-              <InlineLink href="https://metamask.zendesk.com/hc/en-us/articles/360015489251-How-to-Speed-Up-a-Transaction">
-                "Speed Up"
-              </InlineLink>{' '}
-              MetaMask feature, otherwise you may not be able to finish creating
-              your organization.{' '}
-            </>
-          )}
-        </Info>
-      )}
+      {!allSuccess && <Info mode="warning">Info</Info>}
     </aside>
   )
 }
