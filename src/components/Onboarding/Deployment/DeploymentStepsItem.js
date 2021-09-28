@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { textStyle, GU, IconCheck, useTheme } from '@1hive/1hive-ui'
 import {
+  STEP_ERROR,
+  STEP_PROMPTING,
   STEP_SUCCESS,
   STEP_WAITING,
   STEP_WORKING,
@@ -11,23 +13,41 @@ import { TransactionStatusType } from '@/prop-types'
 function DeploymentStepsItem({ index, name, status }) {
   const theme = useTheme()
 
-  const stepStyles = useMemo(() => {
+  const { label, styles } = useMemo(() => {
+    if (status === STEP_PROMPTING) {
+      return {
+        label: 'Waiting for signature',
+        styles: `
+      border: 2px solid ${theme.selected};
+    `,
+      }
+    }
     if (status === STEP_WORKING) {
-      return `
-        border: 2px solid ${theme.selected};
-      `
+      return {
+        label: 'Transaction being processed…',
+        styles: `background: ${theme.accent};`,
+      }
     }
     if (status === STEP_SUCCESS) {
-      return `
+      return {
+        label: 'Transaction successfully processed!',
+        styles: `
         border: 2px solid ${theme.positive};
         color: ${theme.positive};
-      `
+      `,
+      }
     }
-    return `
+
+    if (status === STEP_ERROR) {
+      return { label: 'An error has occured' }
+    }
+    return {
+      styles: `
       padding-top: 2px;
       background: #ECEFF4;
       color: #9CA7B8;
-    `
+    `,
+    }
   }, [status, theme])
 
   return (
@@ -49,9 +69,9 @@ function DeploymentStepsItem({ index, name, status }) {
           border-radius: 50%;
           font-size: 18px;
           font-weight: 600;
-          ${stepStyles};
           flex-shrink: 0;
           flex-grow: 0;
+          ${styles};
         `}
       >
         {status === STEP_SUCCESS ? (
@@ -70,14 +90,14 @@ function DeploymentStepsItem({ index, name, status }) {
         `}
       >
         <div>{name}</div>
-        {status === STEP_SUCCESS && (
+        {label && (
           <div
             css={`
               ${textStyle('body3')};
               color: ${theme.surfaceContentSecondary};
             `}
           >
-            Signature successful
+            {label}
           </div>
         )}
       </div>

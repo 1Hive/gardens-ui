@@ -20,8 +20,7 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
         display: flex;
         flex-direction: column;
         width: 100%;
-        min-height: 100%;
-        padding: ${16 * GU}px ${3 * GU}px ${2 * GU}px;
+        padding: ${5 * GU}px ${3 * GU}px ${2 * GU}px;
         background: ${theme.surface};
         border-right: 1px solid ${theme.border};
       `}
@@ -40,14 +39,13 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
           color: ${theme.surfaceContentSecondary};
         `}
       >
-        Launching your organization
+        Launching your Garden
       </div>
 
       <div
         css={`
           flex-grow: 1;
-          padding-top: ${8 * GU}px;
-          padding-bottom: ${3 * GU}px;
+          padding: ${5 * GU}px 0px;
         `}
       >
         <h1
@@ -71,7 +69,12 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
         </div>
       </div>
 
-      {!allSuccess && <Info mode="warning">Info</Info>}
+      {!allSuccess && (
+        <Info mode="warning">
+          It might take some time before these transactions get processed.
+          Please be patient and do not close this window until it finishes.
+        </Info>
+      )}
     </aside>
   )
 }

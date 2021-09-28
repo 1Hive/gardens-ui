@@ -7,6 +7,8 @@ import ErrorModal from './ErrorModal'
 
 import useDeploymentState from './useDeploymentState'
 
+import gardensLogo from '@assets/gardensLogoMark.svg'
+
 import {
   STEP_WORKING,
   STEP_SUCCESS,
@@ -44,8 +46,19 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
             width: ${41 * GU}px;
             flex-shrink: 0;
             flex-grow: 0;
+            min-height: 100%;
           `}
         >
+          <img
+            css={`
+              display: flex;
+              padding-left: ${2.25 * GU}px;
+              margin-top: ${2 * GU}px;
+            `}
+            src={gardensLogo}
+            height={32}
+            alt=""
+          />
           {ready ? (
             <DeploymentStepsPanel
               allSuccess={allSuccess}
@@ -53,7 +66,13 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
               transactionsStatus={transactionsStatus}
             />
           ) : (
-            <div>
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                margin: ${5 * GU}px ${2 * GU}px;
+              `}
+            >
               <LoadingRing />
               <span
                 css={`

@@ -4,13 +4,14 @@ import {
   Button,
   GU,
   ProgressBar,
-  RADIUS,
   textStyle,
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
 import { animated } from 'react-spring/renderprops'
 
+import flowerSvg from './assets/flower.svg'
+import gardensLogoMark from '@assets/gardensLogoMark.svg'
 import { TransactionStatusType } from '@/prop-types'
 
 const AnimDiv = animated.div
@@ -55,8 +56,10 @@ function BoxBase({
           max-width: ${fullWidth ? 'none' : `${128 * GU}px`};
           height: ${fullWidth ? 'auto' : `${80 * GU}px`};
           background: ${theme.surface};
-          border-radius: ${fullWidth ? 0 : RADIUS}px;
-          box-shadow: ${fullWidth ? 'none' : '0px 4px 6px rgba(0, 0, 0, 0.05)'};
+          border-radius: ${fullWidth ? 0 : 12}px;
+          box-shadow: ${fullWidth
+            ? 'none'
+            : '0px 10px 28px rgba(0, 0, 0, 0.15)'};
           position: ${fullWidth ? 'absolute' : 'static'};
           top: 0;
           left: 0;
@@ -101,86 +104,100 @@ export function BoxProgress({
   )
 
   return (
-    <BoxBase
-      background="linear-gradient(
-        328deg,
-        #95bbce 0%,
-        #c5d0e6 46.04%,
-        #e7e4f6 100%
-      )"
-      boxTransform={boxTransform}
-      direction={fullWidth ? 'column' : 'row-reverse'}
-      opacity={opacity}
-    >
-      <div
+    <>
+      <img
+        src={flowerSvg}
+        height="44"
+        alt=""
         css={`
-          width: ${fullWidth ? 100 : 50}%;
-          height: ${fullWidth ? '430px' : '100%'};
-          background: #bbcbe1 50% 50% / cover no-repeat url('');
+          position: absolute;
+          top: 32px;
+          right: 32px;
+          z-index: 2;
         `}
       />
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          width: ${fullWidth ? 100 : 50}%;
-          height: ${fullWidth ? 'auto' : '100%'};
-          padding: ${6 * GU}px;
-        `}
+      <BoxBase
+        background="#8DE995"
+        boxTransform={boxTransform}
+        direction={fullWidth ? 'column' : 'row-reverse'}
+        opacity={opacity}
       >
-        <h1
+        <div
           css={`
-            margin-bottom: ${2 * GU}px;
+            width: ${fullWidth ? 100 : 50}%;
+            height: ${fullWidth ? '430px' : '100%'};
+            background: linear-gradient(300deg, #3dcb60 -17%, #8de995 280%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
           `}
         >
-          Organizations
-          <br />
-          <span css="color: #8DB9D5">of the future</span>
-        </h1>
-        <p
+          <img src={gardensLogoMark} height="272" alt="" />
+        </div>
+        <div
           css={`
-            ${textStyle('body1')}
-            line-height: 2;
-            color: ${theme.surfaceContentSecondary};
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: ${fullWidth ? 100 : 50}%;
+            height: ${fullWidth ? 'auto' : '100%'};
+            padding: ${6 * GU}px;
           `}
         >
-          Aragon empowers you to freely organize and collaborate without borders
-          or intermediaries. Create global, bureaucracy-free organizations,
-          companies, and communities.
-        </p>
-
-        {fullWidth && (
-          <div
+          <h1
             css={`
-              padding-top: ${2 * GU}px;
+              margin-bottom: ${2 * GU}px;
+              ${textStyle('title1')};
+              width: 320px;
             `}
           >
+            Gardens are digital economies
+          </h1>
+          <p
+            css={`
+              ${textStyle('body1')}
+              line-height: 2;
+              color: ${theme.surfaceContentSecondary};
+            `}
+          >
+            Providing a beautiful foundation for public communities to
+            coordinate around shared resources in a bottom-up fashion.
+          </p>
+
+          {fullWidth && (
             <div
               css={`
-                font-size: 13px;
-                font-weight: 800;
-                text-align: center;
-                padding-bottom: ${1 * GU}px;
+                padding-top: ${2 * GU}px;
               `}
             >
-              {Math.round(progress * 100)}%
+              <div
+                css={`
+                  font-size: 13px;
+                  font-weight: 800;
+                  text-align: center;
+                  padding-bottom: ${1 * GU}px;
+                `}
+              >
+                {Math.round(progress * 100)}%
+              </div>
+              <ProgressBar value={progress} />
+              <div
+                css={`
+                  padding: ${3 * GU}px 0 ${3 * GU}px;
+                  ${textStyle('body1')};
+                  text-align: center;
+                  color: ${theme.surfaceContentSecondary};
+                `}
+              >
+                Launching your Garden
+              </div>
             </div>
-            <ProgressBar value={progress} />
-            <div
-              css={`
-                padding: ${3 * GU}px 0 ${3 * GU}px;
-                ${textStyle('body1')};
-                text-align: center;
-                color: ${theme.surfaceContentSecondary};
-              `}
-            >
-              Launching your organization
-            </div>
-          </div>
-        )}
-      </div>
-    </BoxBase>
+          )}
+        </div>
+      </BoxBase>
+    </>
   )
 }
 
