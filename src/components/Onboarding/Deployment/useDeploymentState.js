@@ -45,7 +45,7 @@ export default function useDeploymentState() {
       const remainingTransactions = deployTransactions.slice(
         transactionProgress.success
       )
-      for (const deployTransaction in remainingTransactions) {
+      for (const deployTransaction of remainingTransactions) {
         let { transaction } = deployTransaction
         transaction = {
           ...transaction,

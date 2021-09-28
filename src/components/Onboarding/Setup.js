@@ -20,8 +20,8 @@ function Setup({ onClose }) {
         <img
           css={`
             display: flex;
-            padding-left: 18px;
-            margin-top: 17px;
+            padding-left: ${2.25 * GU}px;
+            margin-top: ${2 * GU}px;
           `}
           src={gardensLogo}
           height={32}

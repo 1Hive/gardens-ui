@@ -12,33 +12,60 @@ const C_V_ONE_HUNDRED_PERCENT = 1e7
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const ONE_HUNDRED_PCT = 1e18
 
-export function createTokenApproveTxs({ garden, liquidity, tokens }) {
+export async function createPreTransactions(
+  { garden, liquidity, tokens },
+  account
+) {
   const txs = []
   const network = getNetwork()
   const templateAddress = network.template
   const honeyTokenAddress = network.honeyToken
 
-  const adjustedHoneyLiquidity = bigNum(
-    liquidity.honeyTokenLiquidity
-  ).toString()
-
-  txs.push({
-    name: 'Approve HNY',
-    transaction: createTokenTx(honeyTokenAddress, 'approve', [
+  txs.push(
+    ...(await createTokenApproveTxs(
+      honeyTokenAddress,
+      account,
       templateAddress,
-      adjustedHoneyLiquidity,
-    ]),
-  })
+      bigNum(liquidity.honeyTokenLiquidity).toString(),
+      'HNY'
+    ))
+  )
 
   if (garden.type === BYOT_TYPE) {
-    const adjustedTokenLiquidity = bigNum(liquidity.tokenLiquidity).toString()
-
-    txs.push({
-      name: `Approve ${tokens.existingTokenSymbol}`,
-      transaction: createTokenTx(tokens.address, 'approve', [
+    txs.push(
+      ...(await createTokenApproveTxs(
+        tokens.address,
+        account,
         templateAddress,
-        adjustedTokenLiquidity,
-      ]),
+        bigNum(liquidity.tokenLiquidity).toString(),
+        tokens.existingTokenSymbol
+      ))
+    )
+  }
+
+  return txs
+}
+
+async function createTokenApproveTxs(
+  tokenAddress,
+  owner,
+  spender,
+  amount,
+  tokenSymbol
+) {
+  const txs = []
+  const allowance = await getTokenAllowance(tokenAddress, owner, spender)
+
+  if (allowance.lt(amount)) {
+    if (!allowance.eq(0)) {
+      txs.push({
+        name: `Reset ${tokenSymbol} allowance`,
+        transaction: createTokenTx(tokenAddress, 'approve', [spender, '0']),
+      })
+    }
+    txs.push({
+      name: `Approve ${tokenSymbol}`,
+      transaction: createTokenTx(tokenAddress, 'approve', [spender, amount]),
     })
   }
 
@@ -123,7 +150,7 @@ export function createTokenHoldersTx({ tokens }) {
   const stakes = tokens.holders.map(([_, stake]) => bigNum(stake).toString())
 
   return {
-    name: 'Mint seed balances',
+    name: 'Mint new tokens',
     transaction: createTemplateTx('createTokenHolders', [accounts, stakes]),
   }
 }
@@ -153,7 +180,7 @@ export function createGardenTxTwo({ conviction, issuance }) {
   ).toString()
 
   return {
-    name: 'Install apps',
+    name: 'Issuance and conviction voting',
     transaction: createTemplateTx('createGardenTxTwo', [
       [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
       [
@@ -188,7 +215,7 @@ export function createGardenTxThree(
   const challengeAmountStable = bigNum(tokenPrice * challengeAmount).toString()
 
   return {
-    name: 'Install apps',
+    name: 'Activate covenant',
     transaction: createTemplateTx('createGardenTxThree', [
       daoId,
       agreement.title,
@@ -211,6 +238,7 @@ function createTemplateTx(fn, params) {
   return {
     to: templateAddress,
     data,
+    gasLimit: 1500000,
   }
 }
 
@@ -222,6 +250,13 @@ function createTokenTx(tokenAddress, fn, params) {
     to: tokenAddress,
     data,
   }
+}
+
+async function getTokenAllowance(tokenAddress, owner, spender) {
+  const tokenContract = getContract(tokenAddress, tokenAbi)
+  const allowance = await tokenContract.allowance(owner, spender)
+
+  return bigNum(allowance.toString(), 0)
 }
 
 function adjustVotingSettings(support, quorum) {
