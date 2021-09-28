@@ -3,6 +3,7 @@ import { useHistory } from 'react-router'
 import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import BalanceModule from '../BalanceModule'
+import GlobalPreferencesButton from '../Preferences/GlobalPreferencesButton'
 import Layout from '../Layout'
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
@@ -15,7 +16,7 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
-function Header() {
+function Header({ onOpenPreferences }) {
   const theme = useTheme()
   const { account } = useWallet()
   const { below } = useViewport()
@@ -124,6 +125,17 @@ function Header() {
                 />
                 <BalanceModule />
               </>
+            )}
+            {connectedGarden && (
+              <div
+                css={`
+                  display: flex;
+                  height: 100%;
+                  margin-left: ${2 * GU}px;
+                `}
+              >
+                <GlobalPreferencesButton onOpen={onOpenPreferences} />
+              </div>
             )}
           </div>
         </div>

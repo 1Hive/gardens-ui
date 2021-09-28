@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Accordion,
   Box,
@@ -14,26 +14,26 @@ import {
 import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
 import { getNetwork } from '@/networks'
-import ConvictionVotingSettings from './ConvictionVotingSettings'
-import MultiModal from '@/components/MultiModal/MultiModal'
-import {
-  calculateDecay,
-  calculateWeight,
-} from '@/utils/conviction-modelling-helpers'
+// import ConvictionVotingSettings from './ConvictionVotingSettings'
+// import MultiModal from '@/components/MultiModal/MultiModal'
+// import {
+//   calculateDecay,
+//   calculateWeight,
+// } from '@/utils/conviction-modelling-helpers'
 import useActions from '@/hooks/useActions'
-import SetConvictionSettingsScreens from '../ModalFlows/DecisionVoteScreens/SetConvictionSettingsScreens'
+// import SetConvictionSettingsScreens from '../ModalFlows/DecisionVoteScreens/SetConvictionSettingsScreens'
 
 function GardenSettings() {
   const theme = useTheme()
   const { layoutName } = useLayout()
-  const [modalVisible, setModalVisible] = useState(false)
+  // const [modalVisible, setModalVisible] = useState(false)
   const [settings, setSettings] = useState({})
-  const [params, setParams] = useState({})
+  // const [params, setParams] = useState({})
 
   const { connectedGarden } = useGardens()
   const { installedApps, loading, config } = useGardenState()
 
-  const [loadingSettings, setLoadingSettings] = useState(true)
+  // const [loadingSettings, setLoadingSettings] = useState(true)
 
   const { convictionActions } = useActions()
 
@@ -41,26 +41,26 @@ function GardenSettings() {
 
   const shortAddresses = layoutName === 'small'
 
-  const initialSettings = {
-    decay: calculateDecay(2),
-    halflifeDays: 2,
-    maxRatio: 10,
-    minThreshold: 2,
-    minThresholdStakePct: 5,
-    requestToken: '0x5b0f8d8f47e3fdf7ee1c337abca19dbba98524e6',
-    weight: calculateWeight(2, 10),
-  }
+  // const initialSettings = {
+  //   decay: calculateDecay(2),
+  //   halflifeDays: 2,
+  //   maxRatio: 10,
+  //   minThreshold: 2,
+  //   minThresholdStakePct: 5,
+  //   requestToken: '0x5b0f8d8f47e3fdf7ee1c337abca19dbba98524e6',
+  //   weight: calculateWeight(2, 10),
+  // }
 
-  const handleUpdateParameters = useCallback(params => {
-    setParams(params)
-    setModalVisible(true)
-  }, [])
+  // const handleUpdateParameters = useCallback(params => {
+  //   setParams(params)
+  //   setModalVisible(true)
+  // }, [])
 
   useEffect(() => {
     async function getSettingsData() {
       const settings = await convictionActions.getConvictionSettings()
       setSettings(settings)
-      setLoadingSettings(false)
+      // setLoadingSettings(false)
     }
 
     getSettingsData()
@@ -115,12 +115,12 @@ function GardenSettings() {
           )}
         </Box>
         <Box heading="Conviction Voting">
-          {loadingSettings && (
+          {/* {loadingSettings && (
             <ConvictionVotingSettings
               onUpdateParameters={handleUpdateParameters}
               settings={initialSettings}
             />
-          )}
+          )} */}
         </Box>
         {settings && <div>Render</div>}
         <Box heading="Covenant">
@@ -201,9 +201,9 @@ function GardenSettings() {
           ]}
         />
       </React.Fragment>
-      <MultiModal visible={modalVisible} onClose={() => setModalVisible(false)}>
+      {/* <MultiModal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <SetConvictionSettingsScreens params={params} />
-      </MultiModal>
+      </MultiModal> */}
     </div>
   )
 }
