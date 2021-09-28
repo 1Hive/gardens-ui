@@ -57,25 +57,25 @@ export default function useDeploymentState() {
             const tx = await signer.sendTransaction(transaction)
 
             setTransactionProgress(({ signed, hashes, ...txProgress }) => ({
+              ...txProgress,
               signed: signed + 1,
               hashes: [...hashes, tx.hash],
-              ...txProgress,
             }))
 
             await tx.wait()
 
             setTransactionProgress(({ success, ...txProgress }) => ({
-              success: success + 1,
               ...txProgress,
+              success: success + 1,
             }))
           }
         } catch (err) {
           console.error('Failed onboarding transaction', err)
           if (!cancelled) {
             setTransactionProgress(({ success, ...txProgress }) => ({
+              ...txProgress,
               errored: success,
               success,
-              ...txProgress,
             }))
           }
 

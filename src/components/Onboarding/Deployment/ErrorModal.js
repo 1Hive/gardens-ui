@@ -1,6 +1,13 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { GU, Modal, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
+import {
+  GU,
+  Modal,
+  Root,
+  textStyle,
+  useTheme,
+  useViewport,
+} from '@1hive/1hive-ui'
 import CheckDisc from './CheckDisc'
 
 function ErrorModal({ action, content, header, onClose, visible }) {
@@ -14,45 +21,46 @@ function ErrorModal({ action, content, header, onClose, visible }) {
   )
 
   return (
-    <Modal
-      visible={visible}
-      width={modalWidth}
-      onClose={onClose}
-      closeButton={Boolean(onClose)}
-    >
-      <section
-        css={`
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: ${smallMode ? 0 : 3 * GU}px;
-          padding-top: ${smallMode ? 5 * GU : 8 * GU}px;
-          padding-bottom: ${smallMode ? 0 : 2 * GU}px;
-          text-align: center;
-        `}
+    <Root.Provider>
+      <Modal
+        visible={visible}
+        width={modalWidth}
+        onClose={onClose}
+        closeButton={Boolean(onClose)}
       >
-        <CheckDisc mode="error" size={9 * GU} />
-        <h1
+        <section
           css={`
-            margin: ${5 * GU}px auto ${1 * GU}px;
-            ${textStyle('title2')};
-            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: ${smallMode ? 0 : 3 * GU}px;
+            padding-top: ${smallMode ? 5 * GU : 8 * GU}px;
+            padding-bottom: ${smallMode ? 0 : 2 * GU}px;
+            text-align: center;
           `}
         >
-          {header}
-        </h1>
-        <p
-          css={`
-            margin-bottom: ${7 * GU}px;
-            ${textStyle('body1')};
-            color: ${theme.contentSecondary};
-          `}
-        >
-          {content}
-        </p>
-        {action}
-      </section>
-    </Modal>
+          <CheckDisc mode="error" size={9 * GU} />
+          <h1
+            css={`
+              margin: ${4 * GU}px auto ${1 * GU}px;
+              ${textStyle('title2')};
+            `}
+          >
+            {header}
+          </h1>
+          <p
+            css={`
+              margin-bottom: ${7 * GU}px;
+              ${textStyle('body1')};
+              color: ${theme.contentSecondary};
+            `}
+          >
+            {content}
+          </p>
+          {action}
+        </section>
+      </Modal>
+    </Root.Provider>
   )
 }
 

@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { textStyle, GU, IconCheck, useTheme } from '@1hive/1hive-ui'
+import { textStyle, GU, IconCheck, useTheme, IconCross } from '@1hive/1hive-ui'
 import {
   STEP_ERROR,
   STEP_PROMPTING,
   STEP_SUCCESS,
-  STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
 import { TransactionStatusType } from '@/prop-types'
@@ -13,7 +12,7 @@ import { TransactionStatusType } from '@/prop-types'
 function DeploymentStepsItem({ index, name, status }) {
   const theme = useTheme()
 
-  const { label, styles } = useMemo(() => {
+  const { icon, label, styles } = useMemo(() => {
     if (status === STEP_PROMPTING) {
       return {
         label: 'Waiting for signature',
@@ -30,6 +29,7 @@ function DeploymentStepsItem({ index, name, status }) {
     }
     if (status === STEP_SUCCESS) {
       return {
+        icon: <IconCheck />,
         label: 'Transaction successfully processed!',
         styles: `
         border: 2px solid ${theme.positive};
@@ -39,16 +39,24 @@ function DeploymentStepsItem({ index, name, status }) {
     }
 
     if (status === STEP_ERROR) {
-      return { label: 'An error has occured' }
+      return {
+        icon: <IconCross />,
+        label: 'An error has occured',
+        styles: `
+      border: 2px solid ${theme.negative};
+      color: ${theme.negative};
+    `,
+      }
     }
     return {
+      icon: <span> {index + 1}</span>,
       styles: `
       padding-top: 2px;
       background: #ECEFF4;
       color: #9CA7B8;
     `,
     }
-  }, [status, theme])
+  }, [index, status, theme])
 
   return (
     <div
@@ -74,11 +82,7 @@ function DeploymentStepsItem({ index, name, status }) {
           ${styles};
         `}
       >
-        {status === STEP_SUCCESS ? (
-          <IconCheck />
-        ) : (
-          status === STEP_WAITING && index + 1
-        )}
+        {icon || null}
       </div>
       <div
         css={`
