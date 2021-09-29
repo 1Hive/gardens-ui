@@ -352,11 +352,7 @@ export default function useActions() {
       })
       const type = actions.APPROVE_TOKEN
 
-      const transactions = attachTrxMetadata(
-        intent.transactions,
-        description,
-        type
-      )
+      const transactions = attachTrxMetadata(intent, description, type)
 
       if (mounted()) {
         onDone(transactions)
@@ -471,11 +467,7 @@ export default function useActions() {
       })
       const type = actions.APPROVE_TOKEN
 
-      const transactions = attachTrxMetadata(
-        intent.transactions,
-        description,
-        type
-      )
+      const transactions = attachTrxMetadata(intent, description, type)
 
       if (mounted()) {
         onDone(transactions)
