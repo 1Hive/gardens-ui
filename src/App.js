@@ -7,6 +7,7 @@ import MainView from '@components/MainView'
 import Routes from './routes/Routes'
 import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 
+import { ActivityProvider } from './providers/ActivityProvider'
 import { GardensProvider } from './providers/Gardens'
 import { ProfileProvider } from './providers/Profile'
 import { WalletProvider } from './providers/Wallet'
@@ -17,14 +18,16 @@ function App() {
       <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
         <GlobalErrorHandler>
           <WalletProvider>
-            <ProfileProvider>
-              <GardensProvider>
-                <WelcomeLoader />
-                <MainView>
-                  <Routes />
-                </MainView>
-              </GardensProvider>
-            </ProfileProvider>
+            <ActivityProvider>
+              <ProfileProvider>
+                <GardensProvider>
+                  <WelcomeLoader />
+                  <MainView>
+                    <Routes />
+                  </MainView>
+                </GardensProvider>
+              </ProfileProvider>
+            </ActivityProvider>
           </WalletProvider>
         </GlobalErrorHandler>
       </Main>

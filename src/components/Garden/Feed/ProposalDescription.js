@@ -14,6 +14,11 @@ function ProposalDescription({ proposal, onSelectProposal }) {
         margin-bottom: ${3 * GU}px;
         ${textStyle('body1')};
         text-decoration: underline;
+        overflow-wrap: anywhere;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       `}
     >
       {proposal.type === ProposalTypes.Decision ? (
