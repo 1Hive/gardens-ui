@@ -29,16 +29,16 @@ export default {
     return `Create new funding proposal`
   },
   [actions.NEW_SIGNALING_PROPOSAL]: () => {
-    return `Create new signalling proposal`
+    return `Create new signaling proposal`
   },
   [actions.RESOLVE_ACTION]: ({ disputeId }) => {
     return `Resolve dispute: ${disputeId}`
   },
   [actions.SETTLE_ACTION]: ({ actionId }) => {
-    return `Accept settlement for action: ${actionId}`
+    return `Settle action: ${actionId}`
   },
   [actions.SIGN_AGREEMENT]: () => {
-    return `Sign Agreement`
+    return `Sign Covenant`
   },
   [actions.STAKE_TO_PROPOSAL]: ({ proposalId }) => {
     return `Support proposal: ${proposalId}`

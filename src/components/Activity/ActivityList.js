@@ -12,6 +12,7 @@ import ActivityItem from './ActivityItem'
 import { useActivity } from '@providers/ActivityProvider'
 
 import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
+// TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
 import noDataSvg from '@assets/noData.svg'
 
 // 8GU for top bar, 4GU for activity heading,
