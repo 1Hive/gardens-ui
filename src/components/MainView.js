@@ -5,7 +5,7 @@ import { useGardens } from '@/providers/Gardens'
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
-import GlobalPreferences from './Preferences/GlobalPreferences'
+import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
 import Sidebar from './Sidebar/Sidebar'
 
 function MainView({ children }) {

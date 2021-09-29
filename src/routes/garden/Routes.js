@@ -5,7 +5,7 @@ import DecisionLoader from '@components/Garden/DecisionLoader'
 import Home from '@components/Garden/Home'
 import ProposalLoader from '@components/Garden/ProposalLoader'
 import StakeManagement from '@components/Garden/Stake/StakeManagement'
-import GardenSettings from '@/components/Garden/Settings/GardenSettings'
+import GardenSettings from '@/components/Garden/Preferences/AppsAddresses'
 
 export default function Routes() {
   return (

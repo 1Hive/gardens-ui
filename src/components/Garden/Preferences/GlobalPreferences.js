@@ -11,7 +11,9 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import { useEsc } from '../../hooks/useKeyboardArrows'
+import { useEsc } from '../../../hooks/useKeyboardArrows'
+
+import AppsAddresses from './AppsAddresses'
 
 const SECTIONS = new Map([['generalInfo', 'General Info']])
 const PATHS = Array.from(SECTIONS.keys())
@@ -48,7 +50,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             selected={sectionIndex}
           />
 
-          {sectionIndex === NETWORK_INDEX && <div>HELLOOOOOOOOO </div>}
+          {sectionIndex === NETWORK_INDEX && <AppsAddresses />}
         </React.Fragment>
       </Layout>
     </div>
