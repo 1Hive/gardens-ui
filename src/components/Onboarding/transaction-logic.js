@@ -60,12 +60,16 @@ async function createTokenApproveTxs(
     if (!allowance.eq(0)) {
       txs.push({
         name: `Reset ${tokenSymbol} allowance`,
-        transaction: createTokenTx(tokenAddress, 'approve', [spender, '0']),
+        transaction: createTokenTx(tokenAddress, 'approve', [spender, '0'], {
+          gasLimit: 150000,
+        }),
       })
     }
     txs.push({
       name: `Approve ${tokenSymbol}`,
-      transaction: createTokenTx(tokenAddress, 'approve', [spender, amount]),
+      transaction: createTokenTx(tokenAddress, 'approve', [spender, amount], {
+        gasLimit: 150000,
+      }),
     })
   }
 
@@ -124,26 +128,30 @@ export function createGardenTxOne({
 
   return {
     name: 'Create organization',
-    transaction: createTemplateTx('createGardenTxOne', [
-      existingToken,
-      tokens.name,
-      tokens.symbol,
+    transaction: createTemplateTx(
+      'createGardenTxOne',
       [
-        adjustedCommonPool,
-        adjustedLiquidityStable,
-        adjustedGardenTokenLiquidity,
-        adjustedExistingTokenLiquidity,
+        existingToken,
+        tokens.name,
+        tokens.symbol,
+        [
+          adjustedCommonPool,
+          adjustedLiquidityStable,
+          adjustedGardenTokenLiquidity,
+          adjustedExistingTokenLiquidity,
+        ],
+        [
+          voting.voteDuration,
+          adjustedSupport,
+          adjustedQuorum,
+          voting.voteDelegatedVotingPeriod,
+          voting.voteQuietEndingPeriod,
+          voting.voteQuietEndingExtension,
+          voting.voteExecutionDelay,
+        ],
       ],
-      [
-        voting.voteDuration,
-        adjustedSupport,
-        adjustedQuorum,
-        voting.voteDelegatedVotingPeriod,
-        voting.voteQuietEndingPeriod,
-        voting.voteQuietEndingExtension,
-        voting.voteExecutionDelay,
-      ],
-    ]),
+      { gasLimit: 12000000 }
+    ),
   }
 }
 
@@ -153,7 +161,9 @@ export function createTokenHoldersTx({ tokens }) {
 
   return {
     name: 'Mint new tokens',
-    transaction: createTemplateTx('createTokenHolders', [accounts, stakes]),
+    transaction: createTemplateTx('createTokenHolders', [accounts, stakes], {
+      gasLimit: 5000000,
+    }),
   }
 }
 
@@ -163,10 +173,12 @@ export function createGardenTxTwo({ conviction, issuance }) {
   // Adjust issuance params
   const { maxAdjustmentRatioPerYear, targetRatio } = issuance
   const adjustedMaxAdjsRatioPerYear = (
-    maxAdjustmentRatioPerYear * ONE_HUNDRED_PCT
+    (maxAdjustmentRatioPerYear / 100) *
+    ONE_HUNDRED_PCT
   ).toString(10)
   const adjustedTargetRatio = (
-    targetRatio * ISSUANCE_ONE_HUNDRED_PERCENT
+    (targetRatio / 100) *
+    ISSUANCE_ONE_HUNDRED_PERCENT
   ).toString(10)
 
   // Adjust conviction voting params
@@ -183,16 +195,20 @@ export function createGardenTxTwo({ conviction, issuance }) {
 
   return {
     name: 'Issuance and conviction voting',
-    transaction: createTemplateTx('createGardenTxTwo', [
-      [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
+    transaction: createTemplateTx(
+      'createGardenTxTwo',
       [
-        adjustedDecay,
-        adjustedMaxRatio,
-        adjustedWeight,
-        adjustedMinThresholdStakePct,
+        [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
+        [
+          adjustedDecay,
+          adjustedMaxRatio,
+          adjustedWeight,
+          adjustedMinThresholdStakePct,
+        ],
+        requestToken,
       ],
-      requestToken,
-    ]),
+      { gasLimit: 8000000 }
+    ),
   }
 }
 
@@ -222,19 +238,23 @@ export function createGardenTxThree(
 
   return {
     name: 'Activate covenant',
-    transaction: createTemplateTx('createGardenTxThree', [
-      daoId,
-      agreement.title,
-      toHex(agreementContent),
-      agreement.challengePeriod,
-      [adjustedActionAmount, adjustedChallengeAmount],
-      [actionAmountStable, actionAmountStable],
-      [challengeAmountStable, challengeAmountStable],
-    ]),
+    transaction: createTemplateTx(
+      'createGardenTxThree',
+      [
+        daoId,
+        agreement.title,
+        toHex(agreementContent),
+        agreement.challengePeriod,
+        [adjustedActionAmount, adjustedChallengeAmount],
+        [actionAmountStable, actionAmountStable],
+        [challengeAmountStable, challengeAmountStable],
+      ],
+      { gasLimit: 7000000 }
+    ),
   }
 }
 
-function createTemplateTx(fn, params) {
+function createTemplateTx(fn, params, { gasLimit }) {
   const network = getNetwork()
   const templateAddress = network.template
   const templateContract = getContract(templateAddress, templateAbi)
@@ -244,17 +264,18 @@ function createTemplateTx(fn, params) {
   return {
     to: templateAddress,
     data,
-    gasLimit: 1500000,
+    gasLimit,
   }
 }
 
-function createTokenTx(tokenAddress, fn, params) {
+function createTokenTx(tokenAddress, fn, params, { gasLimit = 100000 }) {
   const tokenContract = getContract(tokenAddress, tokenAbi)
   const data = encodeFunctionData(tokenContract, fn, params)
 
   return {
     to: tokenAddress,
     data,
+    gasLimit,
   }
 }
 
