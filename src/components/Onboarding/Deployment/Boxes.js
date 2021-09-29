@@ -10,9 +10,10 @@ import {
 } from '@1hive/1hive-ui'
 import { animated } from 'react-spring/renderprops'
 
+import { TransactionStatusType } from '@/prop-types'
 import flowerSvg from './assets/flower.svg'
 import gardensLogoMark from '@assets/gardensLogoMark.svg'
-import { TransactionStatusType } from '@/prop-types'
+import linesSvg from './assets/lines.svg'
 
 const AnimDiv = animated.div
 const AnimSection = animated.section
@@ -132,9 +133,22 @@ export function BoxProgress({
             justify-content: center;
             border-top-right-radius: 12px;
             border-bottom-right-radius: 12px;
+            position: relative;
           `}
         >
           <img src={gardensLogoMark} height="272" alt="" />
+          <div
+            css={`
+              background: url(${linesSvg});
+              background-repeat: no-repeat;
+              background-size: cover;
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+            `}
+          />
         </div>
         <div
           css={`
@@ -220,7 +234,7 @@ export function BoxReady({ onOpenOrg, opacity, boxTransform }) {
   const small = below('medium')
 
   return (
-    <BoxBase opacity={opacity} boxTransform={boxTransform}>
+    <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
       <div
         css={`
           ${textStyle('title1')};
@@ -229,10 +243,10 @@ export function BoxReady({ onOpenOrg, opacity, boxTransform }) {
         `}
       >
         <img
-          src=""
+          src={gardensLogoMark}
           alt=""
-          width="253"
-          height="206"
+          width="250"
+          height="250"
           css={`
             width: ${fullWidth ? 230 : 253}px;
             height: auto;
@@ -246,7 +260,7 @@ export function BoxReady({ onOpenOrg, opacity, boxTransform }) {
           <p>
             <strong>All done!</strong>
           </p>
-          <p css="font-weight: 400">Your organization is ready</p>
+          <p css="font-weight: 400">Your garden is ready</p>
           <Button label="Get started" mode="strong" onClick={onOpenOrg} />
         </div>
       </div>

@@ -1,22 +1,19 @@
 import React, { useMemo } from 'react'
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
-import { Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops'
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 import ErrorModal from './ErrorModal'
 
 import useDeploymentState from './useDeploymentState'
 
+import flowersLeavesSvg from './assets/flowers-leaves.svg'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 
 import {
   STEP_WORKING,
   STEP_SUCCESS,
 } from '@components/Stepper/stepper-statuses'
-
-// import progressImgLarge from './assets/illustration-progress-large.svg'
-// import progressImgMedium from './assets/illustration-progress-medium.svg'
-// import allDoneImg from './assets/illustration-all-done.png'
 
 const Deployment = React.memo(function Deployment({ onOpenOrg }) {
   const { above } = useViewport()
@@ -92,6 +89,7 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
           width: 100%;
           flex-grow: 1;
           flex-shrink: 1;
+          position: relative;
         `}
       >
         <div
@@ -135,6 +133,32 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
             }
           </Transition>
         </div>
+        <Transition
+          native
+          reset
+          unique
+          items={allSuccess}
+          from={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
+          enter={{ opacity: 1, transform: `translate3d(0, 0%, 0)` }}
+          leave={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
+          config={springs.smooth}
+        >
+          {() => ({ opacity, transform }) => (
+            <animated.div
+              style={{ opacity, transform }}
+              css={`
+                background: url(${flowersLeavesSvg});
+                background-size: cover;
+                background-repeat: no-repeat;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                aspect-ratio: 15 / 4;
+              `}
+            />
+          )}
+        </Transition>
       </section>
       <ErrorModal
         action={
