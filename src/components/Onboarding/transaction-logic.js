@@ -92,7 +92,7 @@ export function createGardenTxOne({
     )
     const initialRatio = issuance.initialRatio / 100
     commonPool =
-      ((totalSeedsAmount + gardenTokenLiquidity) * initialRatio) /
+      ((totalSeedsAmount + liquidity.tokenLiquidity) * initialRatio) /
       (1 - initialRatio)
 
     gardenTokenLiquidity = liquidity.tokenLiquidity
