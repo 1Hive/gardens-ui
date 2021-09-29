@@ -103,7 +103,7 @@ export default function useDeploymentState() {
       if (errored !== -1 && index >= errored) {
         return STEP_ERROR
       }
-      if (index === signed) {
+      if (index === signed && index === success) {
         return STEP_PROMPTING
       }
       if (index < signed) {

@@ -30,7 +30,7 @@ function DeploymentStepsItem({ index, name, status }) {
     if (status === STEP_SUCCESS) {
       return {
         icon: <IconCheck />,
-        label: 'Transaction successfully processed!',
+        label: 'Transaction processed!',
         styles: `
         border: 2px solid ${theme.positive};
         color: ${theme.positive};
