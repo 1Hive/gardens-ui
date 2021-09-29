@@ -85,13 +85,15 @@ export function createGardenTxOne({
   if (garden.type === NATIVE_TYPE) {
     existingToken = ZERO_ADDR
 
-    // commonPool = totalSeedsAmount * initialRatio / (1 - initialRatio)
+    // commonPool = ((totalSeedsAmount + gardenTokenLiquidity) * initialRatio) / (1 - initialRatio)
     const totalSeedsAmount = tokens.holders.reduce(
       (acc, [_, stake]) => acc + stake,
       0
     )
     const initialRatio = issuance.initialRatio / 100
-    commonPool = (totalSeedsAmount * initialRatio) / (1 - initialRatio)
+    commonPool =
+      ((totalSeedsAmount + gardenTokenLiquidity) * initialRatio) /
+      (1 - initialRatio)
 
     gardenTokenLiquidity = liquidity.tokenLiquidity
     existingTokenLiquidity = '0'
@@ -103,15 +105,15 @@ export function createGardenTxOne({
     existingTokenLiquidity = liquidity.tokenLiquidity
   }
 
-  const adjustedCommonPool = bigNum(commonPool).toString()
+  const adjustedCommonPool = bigNum(commonPool).toString(10)
   const adjustedLiquidityStable = bigNum(
     liquidity.honeyTokenLiquidityStable
-  ).toString()
-  const adjustedGardenTokenLiquidity = bigNum(gardenTokenLiquidity).toString()
+  ).toString(10)
+  const adjustedGardenTokenLiquidity = bigNum(gardenTokenLiquidity).toString(10)
   const adjustedExistingTokenLiquidity = bigNum(
     existingTokenLiquidity,
     tokens.decimals
-  ).toString()
+  ).toString(10)
 
   // Ajust voting settings
   const { voteSupportRequired, voteMinAcceptanceQuorum } = voting
@@ -147,7 +149,7 @@ export function createGardenTxOne({
 
 export function createTokenHoldersTx({ tokens }) {
   const accounts = tokens.holders.map(([account]) => account)
-  const stakes = tokens.holders.map(([_, stake]) => bigNum(stake).toString())
+  const stakes = tokens.holders.map(([_, stake]) => bigNum(stake).toString(10))
 
   return {
     name: 'Mint new tokens',
@@ -162,10 +164,10 @@ export function createGardenTxTwo({ conviction, issuance }) {
   const { maxAdjustmentRatioPerYear, targetRatio } = issuance
   const adjustedMaxAdjsRatioPerYear = (
     maxAdjustmentRatioPerYear * ONE_HUNDRED_PCT
-  ).toString()
+  ).toString(10)
   const adjustedTargetRatio = (
     targetRatio * ISSUANCE_ONE_HUNDRED_PERCENT
-  ).toString()
+  ).toString(10)
 
   // Adjust conviction voting params
   const { decay, maxRatio, weight } = conviction
@@ -173,11 +175,11 @@ export function createGardenTxTwo({ conviction, issuance }) {
     decay,
     maxRatio,
     weight,
-  ].map(value => Math.floor(value * C_V_ONE_HUNDRED_PERCENT).toString())
+  ].map(value => Math.floor(value * C_V_ONE_HUNDRED_PERCENT).toString(10))
 
   const adjustedMinThresholdStakePct = (
     conviction.minThresholdStakePct * ONE_HUNDRED_PCT
-  ).toString()
+  ).toString(10)
 
   return {
     name: 'Issuance and conviction voting',
@@ -202,17 +204,21 @@ export function createGardenTxThree(
 
   // Adjust action and challenge amounts (challenge period already comes in seconds)
   const { actionAmount, challengeAmount } = agreement
-  const adjustedActionAmount = bigNum(actionAmount, tokens.decimals).toString()
+  const adjustedActionAmount = bigNum(actionAmount, tokens.decimals).toString(
+    10
+  )
   const adjustedChallengeAmount = bigNum(
     challengeAmount,
     tokens.decimals
-  ).toString()
+  ).toString(10)
 
   // Get action and challenge amount in stable value
   const { honeyTokenLiquidityStable, tokenLiquidity } = liquidity
   const tokenPrice = honeyTokenLiquidityStable / tokenLiquidity
-  const actionAmountStable = bigNum(tokenPrice * actionAmount).toString()
-  const challengeAmountStable = bigNum(tokenPrice * challengeAmount).toString()
+  const actionAmountStable = bigNum(tokenPrice * actionAmount).toString(10)
+  const challengeAmountStable = bigNum(tokenPrice * challengeAmount).toString(
+    10
+  )
 
   return {
     name: 'Activate covenant',
@@ -264,15 +270,15 @@ function adjustVotingSettings(support, quorum) {
   const onePercent = bigNum('1', 16)
   const hundredPercent = onePercent.multipliedBy('100')
 
-  let adjustedSupport = onePercent.multipliedBy(support.toString())
+  let adjustedSupport = onePercent.multipliedBy(support.toString(10))
   if (adjustedSupport.eq(hundredPercent)) {
     adjustedSupport = adjustedSupport.minus('1')
   }
 
-  let adjustedQuorum = onePercent.multipliedBy(quorum.toString())
+  let adjustedQuorum = onePercent.multipliedBy(quorum.toString(10))
   if (adjustedQuorum.eq(hundredPercent)) {
     adjustedQuorum = adjustedQuorum.minus('1')
   }
 
-  return [adjustedSupport.toString(), adjustedQuorum.toString()]
+  return [adjustedSupport.toString(10), adjustedQuorum.toString(10)]
 }
