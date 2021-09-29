@@ -345,14 +345,14 @@ export default function useActions() {
 
       const tokenSymbol = await tokenContract.symbol()
 
-      const intent = approve(depositAmount, tokenContract, agreementApp.address)
+      const trxs = approve(depositAmount, tokenContract, agreementApp.address)
 
       const description = radspec[actions.APPROVE_TOKEN]({
         tokenSymbol,
       })
       const type = actions.APPROVE_TOKEN
 
-      const transactions = attachTrxMetadata(intent, description, type)
+      const transactions = attachTrxMetadata(trxs, description, type)
 
       if (mounted()) {
         onDone(transactions)
@@ -456,7 +456,7 @@ export default function useActions() {
         return
       }
 
-      const intent = approve(
+      const trxs = approve(
         amount,
         wrappableTokenContract,
         hookedTokenManagerApp.address
@@ -467,7 +467,7 @@ export default function useActions() {
       })
       const type = actions.APPROVE_TOKEN
 
-      const transactions = attachTrxMetadata(intent, description, type)
+      const transactions = attachTrxMetadata(trxs, description, type)
 
       if (mounted()) {
         onDone(transactions)
