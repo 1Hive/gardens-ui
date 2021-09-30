@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router'
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
 import { animated, Transition } from 'react-spring/renderprops'
 import { BoxProgress, BoxReady } from './Boxes'
@@ -16,15 +17,24 @@ import {
   STEP_PROMPTING,
 } from '@components/Stepper/stepper-statuses'
 
-const Deployment = React.memo(function Deployment({ onOpenOrg }) {
+const Deployment = React.memo(function Deployment({}) {
   const { above } = useViewport()
+  const history = useHistory()
 
   const {
     erroredTransactions,
+    gardenAddress,
+    isFinalized,
     onNextAttempt,
-    ready,
+    readyToStart,
     transactionsStatus,
   } = useDeploymentState()
+
+  const handleOpenGarden = useCallback(() => {
+    if (gardenAddress && isFinalized) {
+      history.push(`/garden/${gardenAddress}`)
+    }
+  }, [gardenAddress, history, isFinalized])
 
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
@@ -37,6 +47,7 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
       transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
     ]
   }, [transactionsStatus])
+
   return (
     <React.Fragment>
       {above('large') && (
@@ -58,7 +69,7 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
             height={32}
             alt=""
           />
-          {ready ? (
+          {readyToStart ? (
             <DeploymentStepsPanel
               allSuccess={allSuccess}
               pending={pending}
@@ -118,7 +129,7 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
               ({ opacity, transform }) =>
                 allSuccess ? (
                   <BoxReady
-                    onOpenOrg={onOpenOrg}
+                    onOpenGarden={handleOpenGarden}
                     opacity={opacity}
                     boxTransform={transform}
                   />

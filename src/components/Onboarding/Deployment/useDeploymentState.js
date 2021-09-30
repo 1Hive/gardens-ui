@@ -8,6 +8,7 @@ import {
   STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
+import { STATUS_GARDEN_CREATED } from '../statuses'
 
 const DEFAULT_TX_PROGRESS = {
   signed: 0,
@@ -18,7 +19,7 @@ const DEFAULT_TX_PROGRESS = {
 
 export default function useDeploymentState() {
   const { account, ethers } = useWallet()
-  const { deployTransactions } = useOnboardingState()
+  const { deployTransactions, gardenAddress, status } = useOnboardingState()
 
   const [attempts, setAttempts] = useState(0)
   const [transactionProgress, setTransactionProgress] = useState(
@@ -46,7 +47,7 @@ export default function useDeploymentState() {
         transactionProgress.success
       )
       for (const deployTransaction of remainingTransactions) {
-        let { transaction } = deployTransaction
+        let { transaction, onDone } = deployTransaction
         transaction = {
           ...transaction,
           from: account,
@@ -68,6 +69,10 @@ export default function useDeploymentState() {
               ...txProgress,
               success: success + 1,
             }))
+
+            if (onDone) {
+              onDone(tx.hash)
+            }
           }
         } catch (err) {
           console.error('Failed onboarding transaction', err)
@@ -125,8 +130,10 @@ export default function useDeploymentState() {
 
   return {
     erroredTransactions: transactionProgress.errored,
+    gardenAddress,
+    isFinalized: status === STATUS_GARDEN_CREATED,
     onNextAttempt: handleNextAttempt,
-    ready: deployTransactions.length > 0,
+    readyToStart: deployTransactions.length > 0,
     transactionsStatus,
   }
 }
