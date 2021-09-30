@@ -13,6 +13,7 @@ import gardensLogo from '@assets/gardensLogoMark.svg'
 import {
   STEP_WORKING,
   STEP_SUCCESS,
+  STEP_PROMPTING,
 } from '@components/Stepper/stepper-statuses'
 
 const Deployment = React.memo(function Deployment({ onOpenOrg }) {
@@ -25,13 +26,14 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
     transactionsStatus,
   } = useDeploymentState()
 
-  // TODO: handle transaction error
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
       return [0, false]
     }
     return [
-      transactionsStatus.findIndex(({ status }) => status === STEP_WORKING),
+      transactionsStatus.findIndex(
+        ({ status }) => status === STEP_WORKING || status === STEP_PROMPTING
+      ),
       transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
     ]
   }, [transactionsStatus])
@@ -143,21 +145,22 @@ const Deployment = React.memo(function Deployment({ onOpenOrg }) {
           leave={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
           config={springs.smooth}
         >
-          {() => ({ opacity, transform }) => (
-            <animated.div
-              style={{ opacity, transform }}
-              css={`
-                background: url(${flowersLeavesSvg});
-                background-size: cover;
-                background-repeat: no-repeat;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                aspect-ratio: 15 / 4;
-              `}
-            />
-          )}
+          {allSuccess => ({ opacity, transform }) =>
+            !allSuccess && (
+              <animated.div
+                style={{ opacity, transform }}
+                css={`
+                  background: url(${flowersLeavesSvg});
+                  background-size: cover;
+                  background-repeat: no-repeat;
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  aspect-ratio: 15 / 4;
+                `}
+              />
+            )}
         </Transition>
       </section>
       <ErrorModal
