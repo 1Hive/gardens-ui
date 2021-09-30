@@ -254,6 +254,16 @@ export function createGardenTxThree(
   }
 }
 
+export async function extractGardenAddress(ethers, txHash) {
+  const receipt = await ethers.provider.getTransactionReceipt(txHash)
+  const iface = new ethers.utils.Interface([
+    'event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address unipool)',
+  ])
+  const log = iface.parseLog(receipt.logs[1])
+  const { dao } = log.args
+  return dao
+}
+
 function createTemplateTx(fn, params, { gasLimit }) {
   const network = getNetwork()
   const templateAddress = network.template

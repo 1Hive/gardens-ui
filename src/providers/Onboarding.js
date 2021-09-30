@@ -1,13 +1,8 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
 import usePinataUploader from '@hooks/usePinata'
+import { useWallet } from './Wallet'
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
@@ -17,14 +12,17 @@ import {
   createGardenTxOne,
   createGardenTxThree,
   createGardenTxTwo,
-  createTokenApproveTxs,
+  createPreTransactions,
   createTokenHoldersTx,
+  extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 import {
   STATUS_GARDEN_DEPLOYMENT,
+  STATUS_GARDEN_READY,
   STATUS_GARDEN_SETUP,
 } from '@components/Onboarding/statuses'
+import { publishNewDao } from '@/services/github'
 
 const OnboardingContext = React.createContext()
 
@@ -33,8 +31,8 @@ const SKIPPED_SCREENS = ['Issuance policy']
 const DEFAULT_CONFIG = {
   garden: {
     address: '',
-    name: '',
-    description: '',
+    name: `Garden DAO test ${Math.floor(Math.random() * 100000)}`,
+    description: 'test description',
     logo: null,
     logo_type: null,
     token_logo: null,
@@ -43,14 +41,14 @@ const DEFAULT_CONFIG = {
       documentation: [{}],
       community: [{}],
     },
-    type: -1,
+    type: 0,
   },
   agreement: {
     actionAmount: 0.1,
     challengeAmount: 0.1,
     challengePeriod: DAY_IN_SECONDS * 3,
     covenantFile: null,
-    title: '',
+    title: 'agreement title',
   },
   conviction: {
     decay: calculateDecay(2),
@@ -68,17 +66,17 @@ const DEFAULT_CONFIG = {
   },
   liquidity: {
     denomination: 0,
-    honeyTokenLiquidity: '',
+    honeyTokenLiquidity: '1',
     honeyTokenLiquidityStable: '',
-    tokenLiquidity: '',
+    tokenLiquidity: '1',
   },
   tokens: {
     address: '', // Only used in BYOT
     existingTokenSymbol: '', // Only used in BYOT
-    name: '',
+    name: 'Test token',
     decimals: 18,
-    symbol: '',
-    holders: [], // Only used in NATIVE
+    symbol: 'TST',
+    holders: [['0x49C01b61Aa3e4cD4C4763c78EcFE75888b49ef50', 1]], // Only used in NATIVE
   },
   voting: {
     voteDuration: DAY_IN_SECONDS * 5,
@@ -96,6 +94,10 @@ function OnboardingProvider({ children }) {
   const [step, setStep] = useState(0)
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [deployTransactions, setDeployTransactions] = useState([])
+  const [gardenAddress, setGardenAddress] = useState('')
+
+  const { account, ethers } = useWallet()
 
   // Upload covenant content to ipfs when ready (starting deployment txs)
   const [covenantIpfs] = usePinataUploader(
@@ -119,10 +121,28 @@ function OnboardingProvider({ children }) {
     setStatus(STATUS_GARDEN_DEPLOYMENT)
   }, [])
 
+  const publishGardenMetadata = useCallback(
+    async txHash => {
+      try {
+        // Fetch garden address
+        const gardenAddress = await extractGardenAddress(ethers, txHash)
+        handleConfigChange('garden', { address: gardenAddress })
+        setGardenAddress(gardenAddress)
+
+        // Publish metadata to github
+        await publishNewDao(gardenAddress, config.garden)
+        setStatus(STATUS_GARDEN_READY)
+      } catch (err) {
+        console.error(`Error publishing garden metadata ${err}`)
+      }
+    },
+    [config, ethers, handleConfigChange]
+  )
+
   const getTransactions = useCallback(
-    covenantIpfsHash => {
+    async (covenantIpfsHash, account) => {
       // Token approvals
-      const txs = [...createTokenApproveTxs(config)]
+      const txs = [...(await createPreTransactions(config, account))]
 
       // Tx one
       txs.push(createGardenTxOne(config))
@@ -133,14 +153,14 @@ function OnboardingProvider({ children }) {
       }
 
       // Tx two, tx three
-      txs.push(
-        createGardenTxTwo(config),
-        createGardenTxThree(config, covenantIpfsHash)
-      )
+      txs.push(createGardenTxTwo(config), {
+        ...createGardenTxThree(config, covenantIpfsHash),
+        onDone: publishGardenMetadata,
+      })
 
       return txs
     },
-    [config]
+    [config, publishGardenMetadata]
   )
 
   // Navigation
@@ -162,16 +182,29 @@ function OnboardingProvider({ children }) {
     }
   }, [config.garden.type])
 
-  const deployTransactions = useMemo(
-    () => (covenantIpfs ? getTransactions(covenantIpfs) : []),
-    [covenantIpfs, getTransactions]
-  )
+  useEffect(() => {
+    if (!account || !covenantIpfs) {
+      return
+    }
+
+    const buildDeployTransactions = async () => {
+      try {
+        const deployTxs = await getTransactions(covenantIpfs, account)
+        setDeployTransactions(deployTxs)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    buildDeployTransactions()
+  }, [account, covenantIpfs, getTransactions])
 
   return (
     <OnboardingContext.Provider
       value={{
         config,
         deployTransactions,
+        gardenAddress,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
