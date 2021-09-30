@@ -156,7 +156,7 @@ function GardenMetadata() {
               base64: btoa(file.content),
               imageExtension: file.blob.type.split('/')[1],
             }
-          : '',
+          : null,
       }
     })
   }, [])
@@ -319,11 +319,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.logo_type}
+                  file={formData[GARDEN_LOGO_TYPE]}
+                  id="file-uploader-0"
+                  label="HEADER LOGO"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoTypeUpdated}
-                  label="HEADER LOGO"
                 />
               </div>
               <div
@@ -334,11 +335,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.logo}
+                  file={formData[GARDEN_LOGO]}
+                  id="file-uploader-1"
+                  label="GARDEN LOGO"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoUpdated}
-                  label="GARDEN LOGO"
                 />
               </div>
               <div
@@ -348,11 +350,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.token_logo}
+                  file={formData[TOKEN_LOGO]}
+                  id="file-uploader-2"
+                  label="TOKEN ICON"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
-                  label="TOKEN ICON"
                 />
               </div>
             </div>
@@ -629,7 +632,7 @@ function MetadataField({ children, label, optional, tooltip }) {
         >
           {label} {optional && ' (optional)'}
         </span>
-        {tooltip && <Help>{tooltip}</Help>}
+        {tooltip && <Help hint="">{tooltip}</Help>}
       </div>
       <div
         css={`

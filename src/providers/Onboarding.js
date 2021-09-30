@@ -18,8 +18,8 @@ import {
 } from '@components/Onboarding/transaction-logic'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 import {
+  STATUS_GARDEN_CREATED,
   STATUS_GARDEN_DEPLOYMENT,
-  STATUS_GARDEN_READY,
   STATUS_GARDEN_SETUP,
 } from '@components/Onboarding/statuses'
 import { publishNewDao } from '@/services/github'
@@ -129,7 +129,7 @@ function OnboardingProvider({ children }) {
 
         // Publish metadata to github
         await publishNewDao(gardenAddress, config.garden)
-        setStatus(STATUS_GARDEN_READY)
+        setStatus(STATUS_GARDEN_CREATED)
       } catch (err) {
         console.error(`Error publishing garden metadata ${err}`)
       }
