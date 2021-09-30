@@ -261,7 +261,14 @@ export function BoxReady({ onOpenOrg, opacity, boxTransform }) {
             <strong>All done!</strong>
           </p>
           <p css="font-weight: 400">Your garden is ready</p>
-          <Button label="Get started" mode="strong" onClick={onOpenOrg} />
+          <Button
+            label="Get started"
+            mode="strong"
+            onClick={onOpenOrg}
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          />
         </div>
       </div>
     </BoxBase>
