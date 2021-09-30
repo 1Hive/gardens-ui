@@ -1,32 +1,34 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const NETWORK = getNetworkName().toLowerCase()
-const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
+const ASSETS_FOLDER_BASE =
+  'https://raw.githubusercontent.com/1Hive/dao-list/master/assets/'
 const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
+const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
+const NETWORK = getNetworkName().toLowerCase()
 
 // This step must be called after the dao is published and we have the dao address
-export async function publishNewDao(daoMetadata) {
+export async function publishNewDao(daoAddress, daoMetadata) {
   try {
     const { data: fileContent } = await fetchFileContent()
     await publishDaoAssets(daoMetadata)
 
     const newDaoList = fileContent.daos
     newDaoList.push({
-      // address once we have it
+      address: daoAddress,
       name: daoMetadata.name,
       description: daoMetadata.description,
       forum: daoMetadata.forum,
       links: daoMetadata.links,
       logo:
         daoMetadata.logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
+        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
       logo_type:
         daoMetadata.logo_type &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
+        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
       token_logo:
         daoMetadata.token_logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
+        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
     })
     const newContent = {
       ...fileContent,
