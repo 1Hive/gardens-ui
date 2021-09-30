@@ -5,6 +5,7 @@ import {
   DropDown,
   Field,
   GU,
+  Help,
   Info,
   isAddress,
   Link,
@@ -366,6 +367,21 @@ function RequestedAmount({
           >
             <Checkbox checked={stable} onChange={onIsStableChange} />
             <span>Stable amount ({stableToken.symbol})</span>
+            <div
+              css={`
+                margin-left: ${1 * GU}px;
+              `}
+            >
+              <Help hint="Why is my transaction failing?">
+                For funding proposals denominated in DAI to be made
+                successfully, this Garden's{' '}
+                <a href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                  price oracle
+                </a>{' '}
+                must be called consistently. Contact your Garden administrator
+                or development team if your transaction is continually failing.
+              </Help>
+            </div>
           </div>
         </div>
       </Field>
