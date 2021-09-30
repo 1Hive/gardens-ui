@@ -30,7 +30,6 @@ const SKIPPED_SCREENS = ['Issuance policy']
 
 const DEFAULT_CONFIG = {
   garden: {
-    address: '',
     name: `Garden DAO test ${Math.floor(Math.random() * 100000)}`,
     description: 'test description',
     logo: null,
@@ -126,7 +125,6 @@ function OnboardingProvider({ children }) {
       try {
         // Fetch garden address
         const gardenAddress = await extractGardenAddress(ethers, txHash)
-        handleConfigChange('garden', { address: gardenAddress })
         setGardenAddress(gardenAddress)
 
         // Publish metadata to github
@@ -136,7 +134,7 @@ function OnboardingProvider({ children }) {
         console.error(`Error publishing garden metadata ${err}`)
       }
     },
-    [config, ethers, handleConfigChange]
+    [config, ethers]
   )
 
   const getTransactions = useCallback(

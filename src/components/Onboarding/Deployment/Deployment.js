@@ -17,7 +17,7 @@ import {
   STEP_PROMPTING,
 } from '@components/Stepper/stepper-statuses'
 
-const Deployment = React.memo(function Deployment({}) {
+const Deployment = React.memo(function Deployment() {
   const { above } = useViewport()
   const history = useHistory()
 
