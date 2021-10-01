@@ -2,7 +2,7 @@ import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
 const ASSETS_FOLDER_BASE =
-  'https://raw.githubusercontent.com/1Hive/dao-list/master/assets/'
+  'https://raw.githubusercontent.com/1Hive/dao-list/master/assets'
 const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
 const NETWORK = getNetworkName().toLowerCase()
@@ -22,13 +22,13 @@ export async function publishNewDao(daoAddress, daoMetadata) {
       links: daoMetadata.links,
       logo:
         daoMetadata.logo &&
-        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo.${daoMetadata.logo.imageExtension}`,
       logo_type:
         daoMetadata.logo_type &&
-        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo_type.${daoMetadata.logo_type.imageExtension}`,
       token_logo:
         daoMetadata.token_logo &&
-        `${ASSETS_FOLDER_BASE}${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/token_logo.${daoMetadata.token_logo.imageExtension}`,
     })
     const newContent = {
       ...fileContent,
@@ -225,7 +225,7 @@ const publishDaoAssets = async daoMetadata => {
     if (daoMetadata.logo) {
       await createFileContent(
         daoMetadata.name,
-        `logo.${daoMetadata.logoExtension}`,
+        `logo.${daoMetadata.logo.imageExtension}`,
         daoMetadata.logo,
         `Assets:${daoMetadata.name}-logo`
       )
@@ -233,7 +233,7 @@ const publishDaoAssets = async daoMetadata => {
     if (daoMetadata.logo_type) {
       await createFileContent(
         daoMetadata.name,
-        `logo_type.${daoMetadata.logo_typeExtension}`,
+        `logo_type.${daoMetadata.logo_type.imageExtension}`,
         daoMetadata.logo_type,
         `Assets:${daoMetadata.name}-logotype`
       )
@@ -241,7 +241,7 @@ const publishDaoAssets = async daoMetadata => {
     if (daoMetadata.token_logo) {
       await createFileContent(
         daoMetadata.name,
-        `token_logo.${daoMetadata.token_logoExtension}`,
+        `token_logo.${daoMetadata.token_logo.imageExtension}`,
         daoMetadata.token_logo,
         `Assets:${daoMetadata.name}-token_logo`
       )
