@@ -153,7 +153,7 @@ function GardenMetadata() {
         [type]: file
           ? {
               ...file,
-              base64: btoa(file.content),
+              base64: file.content.replace('data:image/png;base64,', ''),
               imageExtension: file.blob.type.split('/')[1],
             }
           : null,
