@@ -226,7 +226,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `logo.${daoMetadata.logo.imageExtension}`,
-        daoMetadata.logo.blob,
+        daoMetadata.logo.base64,
         `Assets:${daoMetadata.name}-logo`
       )
     }
@@ -234,7 +234,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `logo_type.${daoMetadata.logo_type.imageExtension}`,
-        daoMetadata.logo_type.blob,
+        daoMetadata.logo_type.base64,
         `Assets:${daoMetadata.name}-logotype`
       )
     }
@@ -242,7 +242,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `token_logo.${daoMetadata.token_logo.imageExtension}`,
-        daoMetadata.token_logo.blob,
+        daoMetadata.token_logo.base64,
         `Assets:${daoMetadata.name}-token_logo`
       )
     }
