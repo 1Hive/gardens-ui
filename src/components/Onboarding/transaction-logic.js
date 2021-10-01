@@ -1,3 +1,4 @@
+import { utils } from 'ethers'
 import { bigNum } from '@lib/bigNumber'
 import { getNetwork } from '@/networks'
 import { ZERO_ADDR } from '@/constants'
@@ -255,13 +256,17 @@ export function createGardenTxThree(
 }
 
 export async function extractGardenAddress(ethers, txHash) {
-  const receipt = await ethers.provider.getTransactionReceipt(txHash)
-  const iface = new ethers.utils.Interface([
-    'event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address unipool)',
+  const receipt = await ethers.provider.send('eth_getTransactionReceipt', [
+    txHash,
   ])
-  const log = iface.parseLog(receipt.logs[1])
-  const { dao } = log.args
-  return dao
+  const iface = new utils.Interface([
+    'event GardenDeployed(address gardenAddress, address collateralRequirementUpdater)',
+  ])
+  const logs = receipt.result.logs
+
+  const log = iface.parseLog(logs[logs.length - 1])
+  const { gardenAddress } = log.args
+  return gardenAddress
 }
 
 function createTemplateTx(fn, params, { gasLimit }) {
