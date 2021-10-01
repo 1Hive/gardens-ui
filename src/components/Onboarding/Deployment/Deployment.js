@@ -33,6 +33,7 @@ const Deployment = React.memo(function Deployment() {
   const handleOpenGarden = useCallback(() => {
     if (gardenAddress && isFinalized) {
       history.push(`/garden/${gardenAddress}`)
+      history.go(0)
     }
   }, [gardenAddress, history, isFinalized])
 
