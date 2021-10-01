@@ -32,8 +32,8 @@ function DeploymentStepsItem({ index, name, status }) {
         icon: <IconCheck />,
         label: 'Transaction processed!',
         styles: `
-        border: 2px solid ${theme.positive};
-        color: ${theme.positive};
+        background: ${theme.positive};
+        color: white;
       `,
       }
     }

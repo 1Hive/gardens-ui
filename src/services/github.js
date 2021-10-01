@@ -13,7 +13,7 @@ export async function publishNewDao(daoAddress, daoMetadata) {
     const { data: fileContent } = await fetchFileContent()
     await publishDaoAssets(daoMetadata)
 
-    const newDaoList = fileContent.daos
+    const newDaoList = fileContent.gardens
     newDaoList.push({
       address: daoAddress,
       name: daoMetadata.name,
@@ -32,7 +32,7 @@ export async function publishNewDao(daoAddress, daoMetadata) {
     })
     const newContent = {
       ...fileContent,
-      daos: newDaoList,
+      gardens: newDaoList,
     }
 
     const { data: latestCommitSha } = await fetchLatestCommitSha()
@@ -226,7 +226,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `logo.${daoMetadata.logo.imageExtension}`,
-        daoMetadata.logo,
+        daoMetadata.logo.blob,
         `Assets:${daoMetadata.name}-logo`
       )
     }
@@ -234,7 +234,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `logo_type.${daoMetadata.logo_type.imageExtension}`,
-        daoMetadata.logo_type,
+        daoMetadata.logo_type.blob,
         `Assets:${daoMetadata.name}-logotype`
       )
     }
@@ -242,7 +242,7 @@ const publishDaoAssets = async daoMetadata => {
       await createFileContent(
         daoMetadata.name,
         `token_logo.${daoMetadata.token_logo.imageExtension}`,
-        daoMetadata.token_logo,
+        daoMetadata.token_logo.blob,
         `Assets:${daoMetadata.name}-token_logo`
       )
     }
