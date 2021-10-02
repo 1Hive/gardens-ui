@@ -20,6 +20,10 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
     title: 'Challenge proposal',
   },
+  [actions.CLAIM_REWARDS]: {
+    icon: GARDEN_LOGO,
+    title: 'Claim earned rewards',
+  },
   [actions.DISPUTE_ACTION]: {
     icon: GARDEN_LOGO,
     title: 'Dispute proposal',
