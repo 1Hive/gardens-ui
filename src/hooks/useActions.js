@@ -541,7 +541,7 @@ export default function useActions() {
   const claimRewards = useCallback(
     (onDone = noop) => {
       const getRewardData = encodeFunctionData(unipoolContract, 'getReward', [])
-      const intent = [
+      let transactions = [
         {
           data: getRewardData,
           from: account,
@@ -549,8 +549,13 @@ export default function useActions() {
         },
       ]
 
+      const description = radspec[actions.CLAIM_REWARDS]()
+      const type = actions.CLAIM_REWARDS
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
       if (mounted()) {
-        onDone(intent)
+        onDone(transactions)
       }
     },
     [account, mounted, unipoolContract]
