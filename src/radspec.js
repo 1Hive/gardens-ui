@@ -13,6 +13,9 @@ export default {
   [actions.CHALLENGE_ACTION]: ({ actionId }) => {
     return `Challenge proposal: ${actionId}`
   },
+  [actions.CLAIM_REWARDS]: () => {
+    return `Claim earned rewards`
+  },
   [actions.DISPUTE_ACTION]: ({ actionId }) => {
     return `Dispute proposal: ${actionId}`
   },
