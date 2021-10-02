@@ -40,7 +40,7 @@ function getStoredList(account) {
     preStringify: activity => ({
       ...activity,
       status: activity.status.description.replace('ACTIVITY_STATUS_', ''),
-      type: activity.type.description,
+      type: activity.type?.description,
     }),
     postParse: activity => ({
       ...activity,
