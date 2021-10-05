@@ -31,8 +31,8 @@ const SKIPPED_SCREENS = ['Issuance policy']
 
 const DEFAULT_CONFIG = {
   garden: {
-    name: `Garden DAO test ${Math.floor(Math.random() * 100000)}`,
-    description: 'test description',
+    name: '',
+    description: '',
     logo: null,
     logo_type: null,
     token_logo: null,
@@ -41,14 +41,14 @@ const DEFAULT_CONFIG = {
       documentation: [{}],
       community: [{}],
     },
-    type: 0,
+    type: -1,
   },
   agreement: {
     actionAmount: 0.1,
     challengeAmount: 0.1,
     challengePeriod: DAY_IN_SECONDS * 3,
     covenantFile: null,
-    title: 'agreement title',
+    title: '',
   },
   conviction: {
     decay: calculateDecay(2),
@@ -66,17 +66,17 @@ const DEFAULT_CONFIG = {
   },
   liquidity: {
     denomination: 0,
-    honeyTokenLiquidity: '1',
+    honeyTokenLiquidity: '',
     honeyTokenLiquidityStable: '',
-    tokenLiquidity: '1',
+    tokenLiquidity: '',
   },
   tokens: {
     address: '', // Only used in BYOT
     existingTokenSymbol: '', // Only used in BYOT
-    name: 'Test token',
+    name: '',
     decimals: 18,
-    symbol: 'TST',
-    holders: [['0x49C01b61Aa3e4cD4C4763c78EcFE75888b49ef50', 1]], // Only used in NATIVE
+    symbol: '',
+    holders: [], // Only used in NATIVE
   },
   voting: {
     voteDuration: DAY_IN_SECONDS * 5,
