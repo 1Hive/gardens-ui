@@ -131,16 +131,11 @@ function OnboardingProvider({ children }) {
 
         // Publish metadata to github
         await publishNewDao(gardenAddress, config.garden)
-
-        setTimeout(() => {
-          reload()
-          setStatus(STATUS_GARDEN_CREATED)
-        }, 3000)
       } catch (err) {
         console.error(`Error publishing garden metadata ${err}`)
       }
     },
-    [config, ethers, reload]
+    [config, ethers]
   )
 
   const getTransactions = useCallback(
@@ -202,6 +197,19 @@ function OnboardingProvider({ children }) {
 
     buildDeployTransactions()
   }, [account, covenantIpfs, getTransactions])
+
+  useEffect(() => {
+    let timer
+    if (gardenAddress) {
+      // Wait a few seconds to refetch gardens list so that we make sure new garden is picked up by subgraph
+      timer = setTimeout(() => {
+        reload()
+        setStatus(STATUS_GARDEN_CREATED)
+      }, 3000)
+    }
+
+    return () => clearTimeout(timer)
+  }, [gardenAddress, reload])
 
   return (
     <OnboardingContext.Provider

@@ -118,17 +118,18 @@ const Deployment = React.memo(function Deployment() {
             native
             reset
             unique
-            items={[isFinalized, allSuccess]}
+            items={allSuccess}
             from={{ opacity: 0, transform: `translate3d(10%, 0, 0)` }}
             enter={{ opacity: 1, transform: `translate3d(0%, 0, 0)` }}
             leave={{ opacity: 0, transform: `translate3d(-10%, 0, 0)` }}
             config={springs.smooth}
           >
-            {(isFinalized, allSuccess) =>
+            {allSuccess =>
               /* eslint-disable react/prop-types */
               ({ opacity, transform }) =>
-                isFinalized ? (
+                allSuccess ? (
                   <BoxReady
+                    isFinalized={isFinalized}
                     onOpenGarden={handleOpenGarden}
                     opacity={opacity}
                     boxTransform={transform}
@@ -150,14 +151,14 @@ const Deployment = React.memo(function Deployment() {
           native
           reset
           unique
-          items={allSuccess}
+          items={isFinalized}
           from={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
           enter={{ opacity: 1, transform: `translate3d(0, 0%, 0)` }}
           leave={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
           config={springs.smooth}
         >
-          {allSuccess => ({ opacity, transform }) =>
-            !allSuccess && (
+          {isFinalized => ({ opacity, transform }) =>
+            !isFinalized && (
               <animated.div
                 style={{ opacity, transform }}
                 css={`

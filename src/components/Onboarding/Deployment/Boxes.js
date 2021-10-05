@@ -228,7 +228,7 @@ BoxProgress.propTypes = {
   ).isRequired,
 }
 
-export function BoxReady({ onOpenGarden, opacity, boxTransform }) {
+export function BoxReady({ isFinalized, onOpenGarden, opacity, boxTransform }) {
   const { below } = useViewport()
   const fullWidth = below('large')
   const small = below('medium')
@@ -257,18 +257,30 @@ export function BoxReady({ onOpenGarden, opacity, boxTransform }) {
             margin: ${6 * GU}px 0;
           `}
         >
-          <p>
-            <strong>All done!</strong>
-          </p>
-          <p css="font-weight: 400">Your garden is ready</p>
-          <Button
-            label="Get started"
-            mode="strong"
-            onClick={onOpenGarden}
-            css={`
-              margin-top: ${2 * GU}px;
-            `}
-          />
+          {isFinalized ? (
+            <div>
+              <p>
+                <strong>All done!</strong>
+              </p>
+              <p css="font-weight: 400">Your garden is ready</p>
+              <Button
+                label="Get started"
+                mode="strong"
+                onClick={onOpenGarden}
+                css={`
+                  margin-top: ${2 * GU}px;
+                `}
+              />
+            </div>
+          ) : (
+            <div
+              css={`
+                height: 152px;
+              `}
+            >
+              Finalizing garden…
+            </div>
+          )}
         </div>
       </div>
     </BoxBase>
