@@ -27,7 +27,7 @@ export async function createPreTransactions(
       honeyTokenAddress,
       account,
       templateAddress,
-      bigNum(liquidity.honeyTokenLiquidity).toString(),
+      bigNum(liquidity.honeyTokenLiquidity).toString(10),
       'HNY'
     ))
   )
@@ -38,7 +38,7 @@ export async function createPreTransactions(
         tokens.address,
         account,
         templateAddress,
-        bigNum(liquidity.tokenLiquidity).toString(),
+        bigNum(liquidity.tokenLiquidity).toString(10),
         tokens.existingTokenSymbol
       ))
     )
