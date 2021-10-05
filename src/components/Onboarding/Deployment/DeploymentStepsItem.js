@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { textStyle, GU, IconCheck, useTheme, IconCross } from '@1hive/1hive-ui'
+import {
+  textStyle,
+  GU,
+  IconCheck,
+  useTheme,
+  IconCross,
+  TransactionBadge,
+} from '@1hive/1hive-ui'
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -8,9 +15,11 @@ import {
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
 import { TransactionStatusType } from '@/prop-types'
+import { getNetwork } from '@/networks'
 
-function DeploymentStepsItem({ index, name, status }) {
+function DeploymentStepsItem({ index, name, status, txHash }) {
   const theme = useTheme()
+  const network = getNetwork()
 
   const { icon, label, styles } = useMemo(() => {
     if (status === STEP_PROMPTING) {
@@ -63,7 +72,7 @@ function DeploymentStepsItem({ index, name, status }) {
       css={`
         display: flex;
         align-items: center;
-        height: ${5 * GU}px;
+        height: 60px;
         margin-top: ${3 * GU}px;
       `}
     >
@@ -103,6 +112,13 @@ function DeploymentStepsItem({ index, name, status }) {
           >
             {label}
           </div>
+        )}
+        {txHash && (
+          <TransactionBadge
+            transaction={txHash}
+            networkType={network.type}
+            explorerProvider={network.explorer}
+          />
         )}
       </div>
     </div>

@@ -103,7 +103,7 @@ export default function useDeploymentState() {
       return []
     }
 
-    const { signed, success, errored } = transactionProgress
+    const { signed, success, errored, hashes } = transactionProgress
     const status = index => {
       if (errored !== -1 && index >= errored) {
         return STEP_ERROR
@@ -123,6 +123,7 @@ export default function useDeploymentState() {
     return deployTransactions.map(({ name }, index) => ({
       name,
       status: status(index),
+      txHash: hashes[index],
     }))
   }, [deployTransactions, transactionProgress])
 
