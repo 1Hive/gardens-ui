@@ -1,6 +1,6 @@
 import { getNetworkType } from './utils/web3-utils'
 
-const XDAI_VOIDED = [['0x1baa8fd650c870fcfc773dd26e92b27b5b80d415', '_']]
+const XDAI_VOIDED = []
 const RINKEBY_VOIDED = []
 
 const VOIDED_GARDENS = {

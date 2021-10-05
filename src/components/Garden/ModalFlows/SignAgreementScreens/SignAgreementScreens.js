@@ -32,10 +32,13 @@ function SignAgreementScreens({ versionId }) {
 
   const getTransactions = useCallback(
     async onComplete => {
-      await actions.agreementActions.signAgreement({ versionId }, intent => {
-        setTransactions(intent.transactions)
-        onComplete()
-      })
+      await actions.agreementActions.signAgreement(
+        { versionId },
+        transactions => {
+          setTransactions(transactions)
+          onComplete()
+        }
+      )
     },
     [actions, versionId]
   )
