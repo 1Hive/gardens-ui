@@ -195,7 +195,7 @@ export function createGardenTxTwo({ conviction, issuance }) {
   ).toString(10)
 
   return {
-    name: 'Issuance and conviction voting',
+    name: 'Install apps',
     transaction: createTemplateTx(
       'createGardenTxTwo',
       [
@@ -238,7 +238,7 @@ export function createGardenTxThree(
   )
 
   return {
-    name: 'Activate covenant',
+    name: 'Install apps',
     transaction: createTemplateTx(
       'createGardenTxThree',
       [

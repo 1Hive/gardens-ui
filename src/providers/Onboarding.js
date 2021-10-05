@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
 import usePinataUploader from '@hooks/usePinata'
+import { useGardens } from './Gardens'
 import { useWallet } from './Wallet'
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
@@ -96,6 +97,7 @@ function OnboardingProvider({ children }) {
   const [deployTransactions, setDeployTransactions] = useState([])
   const [gardenAddress, setGardenAddress] = useState('')
 
+  const { reload } = useGardens()
   const { account, ethers } = useWallet()
 
   // Upload covenant content to ipfs when ready (starting deployment txs)
@@ -129,12 +131,16 @@ function OnboardingProvider({ children }) {
 
         // Publish metadata to github
         await publishNewDao(gardenAddress, config.garden)
-        setStatus(STATUS_GARDEN_CREATED)
+
+        setTimeout(() => {
+          reload()
+          setStatus(STATUS_GARDEN_CREATED)
+        }, 3000)
       } catch (err) {
         console.error(`Error publishing garden metadata ${err}`)
       }
     },
-    [config, ethers]
+    [config, ethers, reload]
   )
 
   const getTransactions = useCallback(

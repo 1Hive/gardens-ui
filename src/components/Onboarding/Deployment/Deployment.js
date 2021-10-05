@@ -33,7 +33,6 @@ const Deployment = React.memo(function Deployment() {
   const handleOpenGarden = useCallback(() => {
     if (gardenAddress && isFinalized) {
       history.push(`/garden/${gardenAddress}`)
-      history.go(0)
     }
   }, [gardenAddress, history, isFinalized])
 
@@ -119,16 +118,16 @@ const Deployment = React.memo(function Deployment() {
             native
             reset
             unique
-            items={allSuccess}
+            items={[isFinalized, allSuccess]}
             from={{ opacity: 0, transform: `translate3d(10%, 0, 0)` }}
             enter={{ opacity: 1, transform: `translate3d(0%, 0, 0)` }}
             leave={{ opacity: 0, transform: `translate3d(-10%, 0, 0)` }}
             config={springs.smooth}
           >
-            {allSuccess =>
+            {(isFinalized, allSuccess) =>
               /* eslint-disable react/prop-types */
               ({ opacity, transform }) =>
-                allSuccess ? (
+                isFinalized ? (
                   <BoxReady
                     onOpenGarden={handleOpenGarden}
                     opacity={opacity}
