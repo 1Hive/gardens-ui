@@ -113,8 +113,6 @@ function GlobalPreferencesButton({ onOpen }) {
 }
 
 function Item({ children, Icon, label, onClick, href }) {
-  console.log('type!!!! ', typeof icon)
-  console.log('iconnnn ')
   const theme = useTheme()
   return (
     <li

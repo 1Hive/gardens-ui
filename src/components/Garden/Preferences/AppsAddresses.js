@@ -13,10 +13,12 @@ import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
 import { getNetwork } from '@/networks'
 
+import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
+
 function AppsAddresses() {
   const { layoutName } = useLayout()
 
-  const { connectedGarden } = useGardens()
+  const { connectedGarden, loading: loadingGarden } = useGardens()
 
   const gardenState = useGardenState()
 
@@ -24,7 +26,7 @@ function AppsAddresses() {
 
   const shortAddresses = layoutName === 'small'
 
-  if (!gardenState) {
+  if (!gardenState || !connectedGarden) {
     return null
   }
   return (
@@ -32,7 +34,17 @@ function AppsAddresses() {
       <React.Fragment>
         <Header primary="Garden Settings" />
         <Box heading="Garden address">
-          {connectedGarden && (
+          {!connectedGarden || loadingGarden ? (
+            <div
+              css={`
+                display: flex;
+                width: 100%;
+                justify-content: center;
+              `}
+            >
+              <LoadingRing />
+            </div>
+          ) : (
             <>
               <IdentityBadge
                 entity={connectedGarden.address}
@@ -79,9 +91,15 @@ function AppsAddresses() {
                   address={gardenState.config.conviction.vault}
                 />
               )}
-              {gardenState.installedApps.map(app => {
+              {gardenState.installedApps.map((app, index) => {
                 if (app.name) {
-                  return <AppField name={app.name} address={app.address} />
+                  return (
+                    <AppField
+                      name={app.name}
+                      address={app.address}
+                      key={index}
+                    />
+                  )
                 }
               })}
             </div>
@@ -92,18 +110,19 @@ function AppsAddresses() {
   )
 }
 
-function AppField({ name, address }) {
+function AppField({ name, address, index }) {
   const { layoutName } = useLayout()
   const { explorer, type } = getNetwork()
   const shortAddresses = layoutName === 'small'
 
   return (
     <div
+      key={index}
       css={`
         display: flex;
       `}
     >
-      <Field label={name}>
+      <Field label={SHORTENED_APPS_NAMES.get(name)}>
         <IdentityBadge
           entity={address}
           shorten={shortAddresses}

@@ -10,6 +10,8 @@ const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
 const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
 
+// leaving this code here to re use it on the future
+
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
     case 'halflifeDays':

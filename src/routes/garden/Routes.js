@@ -5,7 +5,6 @@ import DecisionLoader from '@components/Garden/DecisionLoader'
 import Home from '@components/Garden/Home'
 import ProposalLoader from '@components/Garden/ProposalLoader'
 import StakeManagement from '@components/Garden/Stake/StakeManagement'
-import GardenSettings from '@/components/Garden/Preferences/AppsAddresses'
 
 export default function Routes() {
   return (
@@ -14,7 +13,6 @@ export default function Routes() {
       <Route exact path="*/vote/:id" component={DecisionLoader} />
       <Route exact path="*/covenant" component={Agreement} />
       <Route exact path="*/collateral*" component={StakeManagement} />
-      <Route exact path="*/settings" component={GardenSettings} />
       <Route path="*/" component={Home} />
     </Switch>
   )

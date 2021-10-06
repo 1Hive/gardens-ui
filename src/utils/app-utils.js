@@ -3,6 +3,17 @@ import iconAcl from '@assets/icon-acl.svg'
 import iconKernel from '@assets/icon-kernel.svg'
 import iconRegistry from '@assets/icon-registry.svg'
 
+export const SHORTENED_APPS_NAMES = new Map([
+  ['agent', 'agent'],
+  ['agreement-1hive', 'covenant'],
+  ['brightid-register', 'brightid-register'],
+  ['disputable-conviction-voting', 'conviction-voting'],
+  ['disputable-voting', 'voting'],
+  ['dynamic-issuance', 'issuance'],
+  ['hooked-token-manager-no-controller', 'token-manager'],
+  ['vault', 'common pool'],
+])
+
 // TODO: Replace with information supplied by connect when available
 // https://github.com/aragon/connect/pull/259
 export const KNOWN_SYSTEM_APPS = new Map([
