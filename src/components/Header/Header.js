@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
+import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
 import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
 import Layout from '../Layout'
@@ -81,7 +82,7 @@ function Header({ onOpenPreferences }) {
                 <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
               )}
             </Link>
-            {!below('small') && (
+            {!below('medium') && (
               <nav
                 css={`
                   display: flex;
@@ -108,6 +109,7 @@ function Header({ onOpenPreferences }) {
 
           <div
             css={`
+              height: 100%;
               display: flex;
               align-items: center;
               ${showBalance && `min-width: ${42.5 * GU}px`};
@@ -137,6 +139,16 @@ function Header({ onOpenPreferences }) {
                 <GlobalPreferencesButton onOpen={onOpenPreferences} />
               </div>
             )}
+            {account && (
+              <div
+                css={`
+                  display: flex;
+                  height: 100%;
+                `}
+              >
+                <ActivityButton />
+              </div>
+            )}
           </div>
         </div>
       </Layout>
@@ -148,6 +160,8 @@ function GardenNavItems({ garden }) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
+  const { connectedGarden } = useGardens()
+  const forumURL = connectedGarden.forumURL
 
   const handleOnGoToCovenant = useCallback(() => {
     const path = buildGardenPath(history.location, 'covenant')
@@ -157,7 +171,16 @@ function GardenNavItems({ garden }) {
   return (
     <>
       <Button label="Covenant" onClick={handleOnGoToCovenant} mode="strong" />
-
+      <Link
+        href={forumURL}
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Forum
+      </Link>
       <Link
         href={getHoneyswapTradeTokenUrl(token.id)}
         css={`
@@ -180,6 +203,16 @@ function GardenNavItems({ garden }) {
           Wiki
         </Link>
       )}
+      <Link
+        href="https://1hive.gitbook.io/gardens"
+        css={`
+          text-decoration: none;
+          color: ${theme.contentSecondary};
+          margin-left: ${4 * GU}px;
+        `}
+      >
+        Gardens docs
+      </Link>
     </>
   )
 }
