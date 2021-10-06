@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   Box,
+  Field,
   GU,
   Header,
   IdentityBadge,
   Info,
+  LoadingRing,
   useLayout,
 } from '@1hive/1hive-ui'
 import { useGardenState } from '@/providers/GardenState'
@@ -15,51 +17,33 @@ function AppsAddresses() {
   const { layoutName } = useLayout()
 
   const { connectedGarden } = useGardens()
-  const { installedApps, loading, config } = useGardenState()
+
+  const gardenState = useGardenState()
 
   const { explorer, type } = getNetwork()
 
   const shortAddresses = layoutName === 'small'
 
+  if (!gardenState) {
+    return null
+  }
   return (
     <div>
       <React.Fragment>
         <Header primary="Garden Settings" />
-        <Box heading="Common Pool address">
-          {config?.conviction.vault && (
-            <div
-              css={`
-                margin-top: ${2 * GU}px;
-                margin-bottom: ${3 * GU}px;
-              `}
-            >
+        <Box heading="Garden address">
+          {connectedGarden && (
+            <>
               <IdentityBadge
-                entity={config?.conviction.vault}
+                entity={connectedGarden.address}
                 shorten={shortAddresses}
                 explorerProvider={explorer}
                 networkType={type}
               />
-            </div>
-          )}
-        </Box>
-        <Box heading="Garden address">
-          {connectedGarden && (
-            <>
-              <div
-                css={`
-                  margin-top: ${2 * GU}px;
-                  margin-bottom: ${3 * GU}px;
-                `}
-              >
-                <IdentityBadge
-                  entity={connectedGarden.address}
-                  shorten={shortAddresses}
-                  explorerProvider={explorer}
-                  networkType={type}
-                />
-              </div>
+
               <Info
                 css={`
+                  margin-top: ${2 * GU}px;
                   width: fit-content;
                 `}
                 mode="warning"
@@ -69,28 +53,64 @@ function AppsAddresses() {
             </>
           )}
         </Box>
-        <Box heading="Conviction Voting">
-          {/* {loadingSettings && (
-            <ConvictionVotingSettings
-              onUpdateParameters={handleUpdateParameters}
-              settings={initialSettings}
-            />
-          )} */}
-        </Box>
-        {settings && <div>Render</div>}
-        <Box heading="Covenant">
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            `}
-          />
+        <Box heading="Apps">
+          {!gardenState || gardenState.loading ? (
+            <div
+              css={`
+                display: flex;
+                width: 100%;
+                justify-content: center;
+              `}
+            >
+              <LoadingRing />
+            </div>
+          ) : (
+            <div
+              css={`
+                display: grid;
+                grid-gap: ${3 * GU}px;
+                grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+                text-align: center;
+              `}
+            >
+              {gardenState.config?.conviction.vault && (
+                <AppField
+                  name="vault"
+                  address={gardenState.config.conviction.vault}
+                />
+              )}
+              {gardenState.installedApps.map(app => {
+                if (app.name) {
+                  return <AppField name={app.name} address={app.address} />
+                }
+              })}
+            </div>
+          )}
         </Box>
       </React.Fragment>
-      {/* <MultiModal visible={modalVisible} onClose={() => setModalVisible(false)}>
-        <SetConvictionSettingsScreens params={params} />
-      </MultiModal> */}
+    </div>
+  )
+}
+
+function AppField({ name, address }) {
+  const { layoutName } = useLayout()
+  const { explorer, type } = getNetwork()
+  const shortAddresses = layoutName === 'small'
+
+  return (
+    <div
+      css={`
+        display: flex;
+      `}
+    >
+      <Field label={name}>
+        <IdentityBadge
+          entity={address}
+          shorten={shortAddresses}
+          explorerProvider={explorer}
+          networkType={type}
+        />
+      </Field>
     </div>
   )
 }
