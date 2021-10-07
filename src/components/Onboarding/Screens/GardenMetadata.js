@@ -14,6 +14,7 @@ import {
 } from '@1hive/1hive-ui'
 import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
+import useGardenNameResolver from '@hooks/useGardenNameResolver'
 import { useOnboardingState } from '@providers/Onboarding'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
@@ -46,6 +47,7 @@ function GardenMetadata() {
   const [formatValidationColor, setFormatValidationColor] = useState(
     theme.contentSecondary
   )
+  const resolvedAddress = useGardenNameResolver(formData.name)
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
@@ -190,6 +192,9 @@ function GardenMetadata() {
     if (!name) {
       errors.push('Garden name not provided.')
     }
+    if (resolvedAddress) {
+      errors.push('Garden name is already taken')
+    }
     if (!description) {
       errors.push('Garden description not provided.')
     }
@@ -210,7 +215,7 @@ function GardenMetadata() {
     })
 
     return errors
-  }, [formData])
+  }, [formData, resolvedAddress])
 
   const handleNext = useCallback(() => {
     if (errors.length === 0) {
