@@ -1,6 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
+import usePinataUploader from '@hooks/usePinata'
+import { useGardens } from './Gardens'
+import { useWallet } from './Wallet'
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
@@ -10,10 +13,17 @@ import {
   createGardenTxOne,
   createGardenTxThree,
   createGardenTxTwo,
-  createTokenApproveTxs,
+  createPreTransactions,
   createTokenHoldersTx,
+  extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+import {
+  STATUS_GARDEN_CREATED,
+  STATUS_GARDEN_DEPLOYMENT,
+  STATUS_GARDEN_SETUP,
+} from '@components/Onboarding/statuses'
+import { publishNewDao } from '@/services/github'
 
 const OnboardingContext = React.createContext()
 
@@ -80,9 +90,21 @@ const DEFAULT_CONFIG = {
 }
 
 function OnboardingProvider({ children }) {
+  const [status, setStatus] = useState(STATUS_GARDEN_SETUP)
   const [step, setStep] = useState(0)
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [deployTransactions, setDeployTransactions] = useState([])
+  const [gardenAddress, setGardenAddress] = useState('')
+
+  const { reload } = useGardens()
+  const { account, ethers } = useWallet()
+
+  // Upload covenant content to ipfs when ready (starting deployment txs)
+  const [covenantIpfs] = usePinataUploader(
+    config.agreement.covenantFile?.blob,
+    status === STATUS_GARDEN_DEPLOYMENT
+  )
 
   const handleConfigChange = useCallback(
     (key, data) =>
@@ -96,10 +118,30 @@ function OnboardingProvider({ children }) {
     []
   )
 
+  const handleStartDeployment = useCallback(() => {
+    setStatus(STATUS_GARDEN_DEPLOYMENT)
+  }, [])
+
+  const publishGardenMetadata = useCallback(
+    async txHash => {
+      try {
+        // Fetch garden address
+        const gardenAddress = await extractGardenAddress(ethers, txHash)
+        setGardenAddress(gardenAddress)
+
+        // Publish metadata to github
+        await publishNewDao(gardenAddress, config.garden)
+      } catch (err) {
+        console.error(`Error publishing garden metadata ${err}`)
+      }
+    },
+    [config, ethers]
+  )
+
   const getTransactions = useCallback(
-    async covenantIpfsHash => {
+    async (covenantIpfsHash, account) => {
       // Token approvals
-      const txs = [...createTokenApproveTxs(config)]
+      const txs = [...(await createPreTransactions(config, account))]
 
       // Tx one
       txs.push(createGardenTxOne(config))
@@ -110,15 +152,24 @@ function OnboardingProvider({ children }) {
       }
 
       // Tx two, tx three
-      txs.push(
-        createGardenTxTwo(config),
-        createGardenTxThree(config, covenantIpfsHash)
-      )
+      txs.push(createGardenTxTwo(config), {
+        ...createGardenTxThree(config, covenantIpfsHash),
+        onDone: publishGardenMetadata,
+      })
 
       return txs
     },
-    [config]
+    [config, publishGardenMetadata]
   )
+
+  // Navigation
+  const handleBack = useCallback(() => {
+    setStep(index => Math.max(0, index - 1))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    setStep(index => Math.min(steps.length - 1, index + 1))
+  }, [steps.length])
 
   useEffect(() => {
     if (config.garden.type !== -1) {
@@ -130,23 +181,47 @@ function OnboardingProvider({ children }) {
     }
   }, [config.garden.type])
 
-  // Navigation
-  const handleBack = useCallback(() => {
-    setStep(index => Math.max(0, index - 1))
-  }, [])
+  useEffect(() => {
+    if (!account || !covenantIpfs) {
+      return
+    }
 
-  const handleNext = useCallback(() => {
-    setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [steps.length])
+    const buildDeployTransactions = async () => {
+      try {
+        const deployTxs = await getTransactions(covenantIpfs, account)
+        setDeployTransactions(deployTxs)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    buildDeployTransactions()
+  }, [account, covenantIpfs, getTransactions])
+
+  useEffect(() => {
+    let timer
+    if (gardenAddress) {
+      // Wait a few seconds to refetch gardens list so that we make sure new garden is picked up by subgraph
+      timer = setTimeout(() => {
+        reload()
+        setStatus(STATUS_GARDEN_CREATED)
+      }, 3000)
+    }
+
+    return () => clearTimeout(timer)
+  }, [gardenAddress, reload])
 
   return (
     <OnboardingContext.Provider
       value={{
         config,
-        getTransactions,
+        deployTransactions,
+        gardenAddress,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
+        onStartDeployment: handleStartDeployment,
+        status,
         step,
         steps,
       }}

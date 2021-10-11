@@ -3,7 +3,7 @@ import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
 function ReviewInformation({ title }) {
-  const { onBack, onNext } = useOnboardingState()
+  const { onBack, onStartDeployment } = useOnboardingState()
 
   return (
     <div>
@@ -13,7 +13,7 @@ function ReviewInformation({ title }) {
         nextEnabled
         nextLabel="Launch your garden"
         onBack={onBack}
-        onNext={onNext}
+        onNext={onStartDeployment}
       />
     </div>
   )

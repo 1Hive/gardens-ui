@@ -14,6 +14,7 @@ import {
 } from '@1hive/1hive-ui'
 import { FileUploaderField, Header } from '../kit'
 import Navigation from '../Navigation'
+import useGardenNameResolver from '@hooks/useGardenNameResolver'
 import { useOnboardingState } from '@providers/Onboarding'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
@@ -46,6 +47,7 @@ function GardenMetadata() {
   const [formatValidationColor, setFormatValidationColor] = useState(
     theme.contentSecondary
   )
+  const resolvedAddress = useGardenNameResolver(formData.name)
 
   const handleGardenNameChange = useCallback(event => {
     const value = event.target.value
@@ -153,10 +155,10 @@ function GardenMetadata() {
         [type]: file
           ? {
               ...file,
-              base64: btoa(file.content),
+              base64: file.content.replace('data:image/png;base64,', ''),
               imageExtension: file.blob.type.split('/')[1],
             }
-          : '',
+          : null,
       }
     })
   }, [])
@@ -190,6 +192,9 @@ function GardenMetadata() {
     if (!name) {
       errors.push('Garden name not provided.')
     }
+    if (resolvedAddress) {
+      errors.push('Garden name is already taken')
+    }
     if (!description) {
       errors.push('Garden description not provided.')
     }
@@ -210,7 +215,7 @@ function GardenMetadata() {
     })
 
     return errors
-  }, [formData])
+  }, [formData, resolvedAddress])
 
   const handleNext = useCallback(() => {
     if (errors.length === 0) {
@@ -319,11 +324,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.logo_type}
+                  file={formData[GARDEN_LOGO_TYPE]}
+                  id="file-uploader-0"
+                  label="HEADER LOGO"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoTypeUpdated}
-                  label="HEADER LOGO"
                 />
               </div>
               <div
@@ -334,11 +340,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.logo}
+                  file={formData[GARDEN_LOGO]}
+                  id="file-uploader-1"
+                  label="GARDEN LOGO"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoUpdated}
-                  label="GARDEN LOGO"
                 />
               </div>
               <div
@@ -348,11 +355,12 @@ function GardenMetadata() {
               >
                 <FileUploaderField
                   allowedMIMETypes={['image/jpeg', 'image/png']}
-                  file={formData.token_logo}
+                  file={formData[TOKEN_LOGO]}
+                  id="file-uploader-2"
+                  label="TOKEN ICON"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
-                  label="TOKEN ICON"
                 />
               </div>
             </div>
@@ -629,7 +637,7 @@ function MetadataField({ children, label, optional, tooltip }) {
         >
           {label} {optional && ' (optional)'}
         </span>
-        {tooltip && <Help>{tooltip}</Help>}
+        {tooltip && <Help hint="">{tooltip}</Help>}
       </div>
       <div
         css={`
