@@ -1,1 +1,3 @@
-["function consult(address tokenIn, uint amountIn, address tokenOut) external view returns (uint amountOut)"]
+["function consult(address tokenIn, uint amountIn, address tokenOut) external view returns (uint amountOut)",
+  "function update(address tokenA, address tokenB) external",
+  "function canUpdate(address tokenA, address tokenB) external view returns (bool)"]
