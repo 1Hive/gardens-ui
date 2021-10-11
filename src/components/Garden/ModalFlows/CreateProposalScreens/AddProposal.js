@@ -16,7 +16,7 @@ import {
 import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import useRequestAmount from '@hooks/useRequestAmount'
+import { usePriceOracle } from '@hooks/usePriceOracle'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
@@ -155,7 +155,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     [formData, next, setProposalData]
   )
 
-  const [requestAmount, loadingRequestAmount] = useRequestAmount(
+  const [requestAmount, loadingRequestAmount] = usePriceOracle(
     formData.amount.stable,
     formData.amount.valueBN,
     stableToken.id,
