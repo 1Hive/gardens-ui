@@ -2,18 +2,24 @@ import { useCallback } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
+import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
+import { getNetwork } from '@/networks'
 
 import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
+import actions from '../actions/garden-action-types'
 import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
+import radspec from '../radspec'
+
+import priceOracleAbi from '@abis/priceOracle.json'
 import tokenAbi from '@abis/minimeToken.json'
 import agreementAbi from '@abis/agreement.json'
 
@@ -27,12 +33,20 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps, wrappableToken } = useGardenState()
+  const {
+    connectedGarden: { incentivisedPriceOracle },
+  } = useGardens()
+  const { installedApps, wrappableToken, mainToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+  const { stableToken } = getNetwork()
 
+  const priceOracleContract = useContract(
+    incentivisedPriceOracle,
+    priceOracleAbi
+  )
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
@@ -404,6 +418,35 @@ export default function useActions() {
     [account, hookedTokenManagerApp, mounted]
   )
 
+  // Price Oracle Actions
+  const updatePriceOracle = useCallback(
+    async (onDone = noop) => {
+      const updatePriceOracleData = encodeFunctionData(
+        priceOracleContract,
+        'update',
+        [stableToken, mainToken.data.id]
+      )
+
+      let transactions = [
+        {
+          data: updatePriceOracleData,
+          from: account,
+          to: priceOracleContract.address,
+        },
+      ]
+
+      const description = radspec[actions.UPDATE_PRICE_ORACLE]()
+      const type = actions.UPDATE_PRICE_ORACLE
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, priceOracleContract, mainToken, stableToken]
+  )
+
   // TODO: Memoize objects
   return {
     agreementActions: {
@@ -431,6 +474,7 @@ export default function useActions() {
       unwrap,
     },
     issuanceActions: { executeIssuance },
+    priceOracleActions: { updatePriceOracle },
     votingActions: {
       executeDecision,
       voteOnDecision,
@@ -459,4 +503,8 @@ function imposeGasLimit(intent, gasLimit) {
     ...intent,
     transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
   }
+}
+
+function attachTrxMetadata(transactions, description, type) {
+  return transactions.map(tx => ({ ...tx, description, type }))
 }
