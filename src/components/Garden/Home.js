@@ -3,6 +3,7 @@ import { useHistory } from 'react-router'
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import Filters from './Filters/Filters'
 import Loader from '../Loader'
 import Metrics from './Metrics'
@@ -74,6 +75,10 @@ const Home = React.memo(function Home() {
     handleShowModal('unwrap')
   }, [handleShowModal])
 
+  const handleUpdatePriceOracle = useCallback(() => {
+    handleShowModal('updatePriceOracle')
+  }, [handleShowModal])
+
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
     if (account && history.location.pathname.includes('create')) {
@@ -124,6 +129,7 @@ const Home = React.memo(function Home() {
                 {!compactMode && (
                   <Metrics
                     commonPool={commonPool}
+                    onRequestUpdatePriceOracle={handleUpdatePriceOracle}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
                     token={mainToken.data}
                     totalActiveTokens={config.conviction.totalStaked}
@@ -196,6 +202,7 @@ const Home = React.memo(function Home() {
             {modalMode === 'createProposal' && <CreateProposalScreens />}
             {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
             {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
+            {modalMode === 'updatePriceOracle' && <PriceOracleScreens />}
           </MultiModal>
         </div>
       )}
