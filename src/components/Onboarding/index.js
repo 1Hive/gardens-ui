@@ -1,8 +1,9 @@
 import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
-import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
 import Deployment from './Deployment/Deployment'
+import { ChartsProvider } from '@providers/Charts'
+import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
 import Setup from './Setup'
 
 import { STATUS_GARDEN_SETUP } from './statuses'
@@ -87,6 +88,8 @@ function AnimatedSlider({ children, visible }) {
 
 export default ({ ...props }) => (
   <OnboardingProvider>
-    <Onboarding {...props} />
+    <ChartsProvider>
+      <Onboarding {...props} />
+    </ChartsProvider>
   </OnboardingProvider>
 )
