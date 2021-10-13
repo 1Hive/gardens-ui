@@ -38,8 +38,8 @@ const DEFAULT_CONFIG = {
     token_logo: null,
     forum: '',
     links: {
-      documentation: [{}],
-      community: [{}],
+      community: [],
+      documentation: [],
     },
     type: -1,
   },
