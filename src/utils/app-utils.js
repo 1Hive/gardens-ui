@@ -11,7 +11,9 @@ export const SHORTENED_APPS_NAMES = new Map([
   ['disputable-voting', 'voting'],
   ['dynamic-issuance', 'issuance'],
   ['hooked-token-manager-no-controller', 'token-manager'],
+  ['vote-token-aggregator', 'token-aggregator'],
   ['vault', 'common pool'],
+  ['wrappable-hooked-token-manager', 'token-manager'],
 ])
 
 // TODO: Replace with information supplied by connect when available

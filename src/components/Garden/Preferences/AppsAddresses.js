@@ -3,7 +3,6 @@ import {
   Box,
   Field,
   GU,
-  Header,
   IdentityBadge,
   Info,
   LoadingRing,
@@ -13,7 +12,7 @@ import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
 import { getNetwork } from '@/networks'
 
-import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
+import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 function AppsAddresses() {
   const { layoutName } = useLayout()
@@ -32,7 +31,6 @@ function AppsAddresses() {
   return (
     <div>
       <React.Fragment>
-        <Header primary="Garden Settings" />
         <Box heading="Garden address">
           {!connectedGarden || loadingGarden ? (
             <div
@@ -92,10 +90,12 @@ function AppsAddresses() {
                 />
               )}
               {gardenState.installedApps.map((app, index) => {
-                if (app.name) {
+                if (app.appId) {
                   return (
                     <AppField
-                      name={app.name}
+                      name={
+                        app?.name || KNOWN_SYSTEM_APPS.get(app.appId).humanName
+                      }
                       address={app.address}
                       key={index}
                     />
@@ -122,7 +122,7 @@ function AppField({ name, address, index }) {
         display: flex;
       `}
     >
-      <Field label={SHORTENED_APPS_NAMES.get(name)}>
+      <Field label={SHORTENED_APPS_NAMES.get(name) || name}>
         <IdentityBadge
           entity={address}
           shorten={shortAddresses}
