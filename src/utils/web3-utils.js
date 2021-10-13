@@ -113,6 +113,6 @@ export {
   hexToUtf8,
   isAddress,
   toChecksumAddress,
-  toUtf8,
+  toHex,
   soliditySha3,
 } from 'web3-utils'

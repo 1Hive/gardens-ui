@@ -194,7 +194,7 @@ export const FileUploaderField = ({
                     `}
                   />
                 </div>
-                <TextFileUploader />
+                <TextFileUploader dropzoneId={id} />
               </div>
             ) : (
               <FilePreview

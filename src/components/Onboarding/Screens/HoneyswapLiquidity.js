@@ -12,16 +12,24 @@ import Header from '../kit/Header'
 import Navigation from '../Navigation'
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useOnboardingState } from '@providers/Onboarding'
+import { useTokenBalanceOf } from '@hooks/useToken'
+import { useWallet } from '@providers/Wallet'
 
-import { BYOT_TYPE } from '../constants'
+import {
+  formatTokenAmount,
+  getLocalTokenIconBySymbol,
+} from '@utils/token-utils'
+import { getNetwork } from '@/networks'
 import { toDecimals } from '@utils/math-utils'
-import { getLocalTokenIconBySymbol } from '@utils/token-utils'
+import { BYOT_TYPE } from '../constants'
+import { bigNum } from '@/lib/bigNumber'
 
 const MIN_HNY_USD = 100
 const HNY_DENOMINATION = 0
 
 function HoneyswapLiquidity() {
   const theme = useTheme()
+  const { account } = useWallet()
   const {
     config,
     onBack,
@@ -38,12 +46,17 @@ function HoneyswapLiquidity() {
   } = config.liquidity
   const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
 
+  // State vars
   const [denom, setDenom] = useState(denomination) // 0 HNY, 1 USD
   const [denominatedAmount, setDenominatedAmount] = useState(
     denom === HNY_DENOMINATION ? honeyTokenLiquidity : honeyTokenLiquidityStable
   )
   const [tokenAmount, setTokenAmount] = useState(tokenLiquidity)
 
+  const hnyTokenBalance = useTokenBalanceOf(getNetwork().honeyToken, account)
+  const existingTokenBalance = useTokenBalanceOf(config.tokens.address, account)
+
+  // Callback functions
   const handleDenominatedAmountChange = useCallback(event => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
@@ -84,6 +97,7 @@ function HoneyswapLiquidity() {
     [denom, denominatedAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
   )
 
+  // Calculate necessary values
   const liquidityProvided = Boolean(denominatedAmount > 0 && tokenAmount > 0)
   const satisfiesMin =
     Number(
@@ -92,21 +106,33 @@ function HoneyswapLiquidity() {
         : denominatedAmount
     ) >= 100
 
-  const nextEnabled = liquidityProvided && satisfiesMin
-
   const tokenSymbol =
     config.garden.type === BYOT_TYPE
       ? config.tokens.existingTokenSymbol
       : config.tokens.symbol
 
-  const convertedValue = parseFloat(
-    denom === HNY_DENOMINATION
-      ? denominatedAmount * hnyPrice
-      : denominatedAmount / hnyPrice
-  ).toFixed(2)
+  const equivalentValue = String(
+    parseFloat(
+      denom === HNY_DENOMINATION
+        ? denominatedAmount * hnyPrice
+        : denominatedAmount / hnyPrice
+    ).toFixed(2)
+  )
 
   const hnyAmount =
-    denom === HNY_DENOMINATION ? denominatedAmount : convertedValue
+    denom === HNY_DENOMINATION ? denominatedAmount : equivalentValue
+
+  const hasSufficientHNYBalance = bigNum(hnyAmount, 18).lte(hnyTokenBalance)
+  const hasSufficientETokenBalance = bigNum(
+    tokenAmount,
+    config.tokens.decimals
+  ).lte(existingTokenBalance)
+
+  const nextEnabled =
+    liquidityProvided &&
+    satisfiesMin &&
+    hasSufficientHNYBalance &&
+    (config.garden.type !== BYOT_TYPE || hasSufficientETokenBalance)
 
   return (
     <div
@@ -197,6 +223,30 @@ function HoneyswapLiquidity() {
                 `}
               />
             </div>
+            {hnyTokenBalance.gte(0) && (
+              <div
+                css={`
+                  color: ${theme[
+                    hasSufficientHNYBalance ? 'contentSecondary' : 'negative'
+                  ]};
+                `}
+              >
+                <span>
+                  {hasSufficientHNYBalance ? null : (
+                    <span
+                      css={`
+                        margin-right: ${0.5 * GU}px;
+                      `}
+                    >
+                      Insufficient funds.
+                    </span>
+                  )}
+                  <span>
+                    Balance: {formatTokenAmount(hnyTokenBalance, 18)} HNY
+                  </span>
+                </span>
+              </div>
+            )}
           </Box>
           <div
             css={`
@@ -223,7 +273,7 @@ function HoneyswapLiquidity() {
                   <LoadingRing />
                 ) : (
                   <span>
-                    {convertedValue}{' '}
+                    {equivalentValue}{' '}
                     {denom === HNY_DENOMINATION ? 'USD' : 'HNY'}
                   </span>
                 )}
@@ -286,7 +336,37 @@ function HoneyswapLiquidity() {
                 {tokenSymbol}
               </span>
             </div>
+            {config.garden.type === BYOT_TYPE && existingTokenBalance.gte(0) && (
+              <div
+                css={`
+                  color: ${theme[
+                    hasSufficientETokenBalance ? 'contentSecondary' : 'negative'
+                  ]};
+                `}
+              >
+                <span>
+                  {hasSufficientETokenBalance ? null : (
+                    <span
+                      css={`
+                        margin-right: ${0.5 * GU}px;
+                      `}
+                    >
+                      Insufficient funds.
+                    </span>
+                  )}
+                  <span>
+                    Balance:{' '}
+                    {formatTokenAmount(
+                      existingTokenBalance,
+                      config.tokens.decimals
+                    )}{' '}
+                    {config.tokens.existingTokenSymbol}
+                  </span>
+                </span>
+              </div>
+            )}
           </Box>
+
           {liquidityProvided && (
             <div
               css={`

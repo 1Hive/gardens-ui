@@ -5,12 +5,16 @@ import { useMounted } from './useMounted'
 const RETRY_EVERY = 2000
 const MAX_RETRIES = 3
 
-export default function usePinataUploader(file) {
+export default function usePinataUploader(file, ready) {
   const [ipfsHash, setIpfsHash] = useState(null)
   const [error, setError] = useState(false)
   const mounted = useMounted()
 
   useEffect(() => {
+    if (!ready) {
+      return
+    }
+
     let retries = 0
     let retryTimer
 
@@ -35,7 +39,7 @@ export default function usePinataUploader(file) {
     return () => {
       clearTimeout(retryTimer)
     }
-  }, [file, mounted])
+  }, [file, mounted, ready])
 
   return [ipfsHash, error]
 }
