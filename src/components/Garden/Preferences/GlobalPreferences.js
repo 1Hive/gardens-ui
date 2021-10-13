@@ -14,8 +14,12 @@ import { Transition, animated } from 'react-spring/renderprops'
 import { useEsc } from '../../../hooks/useKeyboardArrows'
 
 import AppsAddresses from './AppsAddresses'
+import Terminal from './Terminal'
 
-const SECTIONS = new Map([['generalInfo', 'General Info']])
+const SECTIONS = new Map([
+  ['generalInfo', 'Garden Settings'],
+  ['terminal', 'Script Terminal'],
+])
 const PATHS = Array.from(SECTIONS.keys())
 const VALUES = Array.from(SECTIONS.values())
 
@@ -51,6 +55,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
           />
 
           {sectionIndex === NETWORK_INDEX && <AppsAddresses />}
+          {sectionIndex === 1 && <Terminal />}
         </React.Fragment>
       </Layout>
     </div>
