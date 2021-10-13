@@ -199,7 +199,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
         feesAmount,
         token.decimals
       )} ${token.symbol} as the dispute fees.`,
-      actionButton: 'Get HNY',
+      actionButton: 'Get HNY ↗',
       buttonOnClick: () =>
         // TODO : remove once we have swap integration
         window.open('https://app.honeyswap.org/#/swap', '_blank'),

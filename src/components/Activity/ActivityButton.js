@@ -46,7 +46,6 @@ const ActivityButton = React.memo(function ActivityButton() {
       <div
         ref={containerRef}
         css={`
-          width: ${7.25 * GU}px;
           display: flex;
           align-items: center;
           height: 100%;
@@ -114,14 +113,6 @@ const ActivityButton = React.memo(function ActivityButton() {
               )}
             </Spring>
           </div>
-          {/* Extend the width of the button to the edge of the top bar */}
-          <div
-            css={`
-              width: ${3 * GU}px;
-              height: 100%;
-              background: ${theme.surface};
-            `}
-          />
         </ButtonIcon>
       </div>
       <Popover
