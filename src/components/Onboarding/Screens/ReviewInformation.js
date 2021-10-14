@@ -31,10 +31,6 @@ function ReviewInformation() {
       <div
         css={`
           margin-bottom: ${4 * GU}px;
-
-          & table td {
-            background: #f7f5f1;
-          }
         `}
       >
         <Accordion
