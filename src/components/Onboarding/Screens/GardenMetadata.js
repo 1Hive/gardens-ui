@@ -70,16 +70,13 @@ function GardenMetadata() {
         type === COMMUNITY_LINK_TYPE
           ? {
               ...formData.links,
-              community: [
-                ...formData.links.community,
-                [{ link: '', label: '' }],
-              ],
+              community: [...formData.links.community, { link: '', label: '' }],
             }
           : {
               ...formData.links,
               documentation: [
                 ...formData.links.documentation,
-                [{ link: '', label: '' }],
+                { link: '', label: '' },
               ],
             }
       setFormData(formData => {
