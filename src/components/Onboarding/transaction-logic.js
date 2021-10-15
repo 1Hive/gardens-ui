@@ -3,6 +3,7 @@ import { bigNum } from '@lib/bigNumber'
 import { getNetwork } from '@/networks'
 import { ZERO_ADDR } from '@/constants'
 import { getContract } from '@hooks/useContract'
+import { YEARS_IN_SECONDS } from '@utils/kit-utils'
 import { encodeFunctionData, toHex } from '@utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
@@ -173,10 +174,12 @@ export function createGardenTxTwo({ conviction, issuance }) {
 
   // Adjust issuance params
   const { maxAdjustmentRatioPerYear, targetRatio } = issuance
-  const adjustedMaxAdjsRatioPerYear = (
-    (maxAdjustmentRatioPerYear / 100) *
-    ONE_HUNDRED_PCT
-  ).toString(10)
+
+  // See https://github.com/1Hive/issuance-dynamic/blob/master/contracts/Issuance.sol#L35
+  const maxAdjustmentRatioPerSec =
+    (maxAdjustmentRatioPerYear / 100 / YEARS_IN_SECONDS) * ONE_HUNDRED_PCT
+  const adjustedMaxAdjustmentRatioPerSec = maxAdjustmentRatioPerSec.toString(10)
+
   const adjustedTargetRatio = (
     (targetRatio / 100) *
     ISSUANCE_ONE_HUNDRED_PERCENT
@@ -199,7 +202,7 @@ export function createGardenTxTwo({ conviction, issuance }) {
     transaction: createTemplateTx(
       'createGardenTxTwo',
       [
-        [adjustedTargetRatio, adjustedMaxAdjsRatioPerYear],
+        [adjustedTargetRatio, adjustedMaxAdjustmentRatioPerSec],
         [
           adjustedDecay,
           adjustedMaxRatio,
