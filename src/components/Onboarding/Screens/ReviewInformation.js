@@ -198,6 +198,7 @@ function ReviewGardenProfile() {
 }
 /// /////// TOKENOMICS //////////
 function ReviewGardenTokenomics() {
+  const { config } = useOnboardingState()
   return (
     <div
       css={`
@@ -208,8 +209,12 @@ function ReviewGardenTokenomics() {
       <ReviewTokens />
       <LineBreak />
       <ReviewHoneyswapLiquidity />
-      <LineBreak />
-      <ReviewIssuance />
+      {config.garden.type === NATIVE_TYPE && (
+        <>
+          <LineBreak />
+          <ReviewIssuance />
+        </>
+      )}
     </div>
   )
 }
@@ -238,18 +243,24 @@ const ReviewTokens = () => {
       >
         TOKEN SETTINGS
       </div>
+      {config.garden.type === BYOT_TYPE && (
+        <Field
+          label="Token address"
+          value={
+            <div>
+              <AddressBadge address={config.tokens.address} shorten={false} />
+              <span
+                css={`
+                  margin-right: ${0.5 * GU}px;
+                `}
+              >
+                ({config.tokens.existingTokenSymbol})
+              </span>
+            </div>
+          }
+        />
+      )}
       <TwoCols>
-        {config.garden.type === BYOT_TYPE && (
-          <Field
-            label="Token address"
-            value={
-              <div>
-                {config.tokens.address}{' '}
-                <span>({config.tokens.existingTokenSymbol})</span>
-              </div>
-            }
-          />
-        )}
         <Field label="Token name" value={config.tokens.name} />
         <Field label="Token symbol" value={config.tokens.symbol} />
         {config.garden.type === NATIVE_TYPE && (
@@ -436,7 +447,15 @@ const ReviewConvictionVoting = () => {
         />
         {conviction.requestToken &&
           !addressesEqual(conviction.requestToken, ZERO_ADDR) && (
-            <Field label="Request token" value={`${conviction.requestToken}`} />
+            <Field
+              label="Request token"
+              value={
+                <AddressBadge
+                  address={conviction.requestToken}
+                  shorten={false}
+                />
+              }
+            />
           )}
       </div>
     </div>
@@ -537,12 +556,12 @@ const LineBreak = () => {
   )
 }
 
-const AddressBadge = ({ address }) => {
+const AddressBadge = ({ address, shorten = true }) => {
   const { explorer, type } = getNetwork()
   return (
     <IdentityBadge
       entity={address}
-      shorten
+      shorten={shorten}
       explorerProvider={explorer}
       networkType={type}
     />
