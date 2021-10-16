@@ -43,7 +43,7 @@ const networks = {
     defaultEthNode: ETH_NODE,
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0xd90deE41a68291d15AD4B1939ab5d4e75Db4Fc3d',
+    template: '0x5507A6365C47d5b201Af3c1CB18C7fD4a889321b',
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 

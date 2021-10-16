@@ -1,16 +1,39 @@
 import React from 'react'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
-import { useGardens } from '@/providers/Gardens'
+
 import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
+import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
 import Sidebar from './Sidebar/Sidebar'
+import usePreferences from '@hooks/usePreferences'
+import { useGardens } from '@/providers/Gardens'
+import { useGardenState } from '@/providers/GardenState'
 
 function MainView({ children }) {
   const { below } = useViewport()
   const { connectedGarden } = useGardens()
 
+  const [openPreferences, closePreferences, preferenceOption] = usePreferences()
+
+  let loadingGardenState = true
+  if (connectedGarden) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { loading } = useGardenState()
+    loadingGardenState = loading
+  }
+
   const compactMode = below('large')
+
+  if (preferenceOption) {
+    return (
+      <GlobalPreferences
+        path={preferenceOption}
+        onScreenChange={openPreferences}
+        onClose={closePreferences}
+      />
+    )
+  }
 
   return (
     <ToastHub
@@ -48,7 +71,7 @@ function MainView({ children }) {
                 flex-shrink: 0;
               `}
             >
-              <Header />
+              <Header onOpenPreferences={openPreferences} />
             </div>
             <ScrollView>
               <div
@@ -66,7 +89,11 @@ function MainView({ children }) {
                 >
                   <Layout paddingBottom={3 * GU}>{children}</Layout>
                 </div>
-                <Footer />
+                {connectedGarden ? (
+                  !loadingGardenState && <Footer />
+                ) : (
+                  <Footer />
+                )}
               </div>
             </ScrollView>
           </Root.Provider>

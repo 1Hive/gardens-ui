@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
@@ -14,10 +20,12 @@ import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
 
+import { getVoidedGardensByNetwork } from '../voided-gardens'
+
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const [gardens, loading] = useGardensList()
+  const [gardens, loading, reload] = useGardensList()
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -35,7 +43,7 @@ export function GardensProvider({ children }) {
   }
 
   return (
-    <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
+    <DAOContext.Provider value={{ connectedGarden, gardens, loading, reload }}>
       {connectedGarden ? (
         <Connect>
           <GardenStateProvider>
@@ -62,20 +70,24 @@ function useGardensList() {
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const [refetchTriger, setRefetchTriger] = useState(false)
 
-  useEffect(() => {
-    setLoading(true)
-    setLoadingMetadata(true)
+  const reload = useCallback(() => {
+    setRefetchTriger(triger => setRefetchTriger(!triger))
   }, [])
 
   useEffect(() => {
+    setLoading(true)
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
           { network: getNetwork().chainId },
           { orderBy: 'honeyLiquidity' }
         )
-        setGardens(result)
+
+        setGardens(
+          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+        )
       } catch (err) {
         setGardens([])
         console.error(`Error fetching gardens ${err}`)
@@ -84,9 +96,10 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [])
+  }, [refetchTriger])
 
   useEffect(() => {
+    setLoadingMetadata(true)
     const fetchGardenMetadata = async () => {
       try {
         const result = await fetchFileContent(getNetwork().chainId)
@@ -97,8 +110,9 @@ function useGardensList() {
       }
       setLoadingMetadata(false)
     }
+
     fetchGardenMetadata()
-  }, [])
+  }, [refetchTriger])
 
   return [
     useMemo(
@@ -106,6 +120,7 @@ function useGardensList() {
       [gardens, gardensMetadata]
     ),
     loading || loadingMetadata,
+    reload,
   ]
 }
 

@@ -94,7 +94,7 @@ function Step({
         <h2
           css={`
             ${textStyle('title4')}
-
+            height:${6 * GU}px;
             line-height: 1.2;
             text-align: center;
             margin-bottom: ${1 * GU}px;

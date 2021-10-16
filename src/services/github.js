@@ -1,36 +1,38 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const NETWORK = getNetworkName().toLowerCase()
-const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
+const ASSETS_FOLDER_BASE =
+  'https://raw.githubusercontent.com/1Hive/dao-list/master/assets'
 const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
+const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
+const NETWORK = getNetworkName().toLowerCase()
 
 // This step must be called after the dao is published and we have the dao address
-export async function publishNewDao(daoMetadata) {
+export async function publishNewDao(daoAddress, daoMetadata) {
   try {
     const { data: fileContent } = await fetchFileContent()
     await publishDaoAssets(daoMetadata)
 
-    const newDaoList = fileContent.daos
+    const newDaoList = fileContent.gardens
     newDaoList.push({
-      // address once we have it
+      address: daoAddress,
       name: daoMetadata.name,
       description: daoMetadata.description,
       forum: daoMetadata.forum,
       links: daoMetadata.links,
       logo:
         daoMetadata.logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo.${daoMetadata.logoExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo.${daoMetadata.logo.imageExtension}`,
       logo_type:
         daoMetadata.logo_type &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/logo_type.${daoMetadata.logo_typeExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo_type.${daoMetadata.logo_type.imageExtension}`,
       token_logo:
         daoMetadata.token_logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list/master/assets/${daoMetadata.name}/token_logo.${daoMetadata.token_logoExtension}`,
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/token_logo.${daoMetadata.token_logo.imageExtension}`,
     })
     const newContent = {
       ...fileContent,
-      daos: newDaoList,
+      gardens: newDaoList,
     }
 
     const { data: latestCommitSha } = await fetchLatestCommitSha()
@@ -223,24 +225,24 @@ const publishDaoAssets = async daoMetadata => {
     if (daoMetadata.logo) {
       await createFileContent(
         daoMetadata.name,
-        `logo.${daoMetadata.logoExtension}`,
-        daoMetadata.logo,
+        `logo.${daoMetadata.logo.imageExtension}`,
+        daoMetadata.logo.base64,
         `Assets:${daoMetadata.name}-logo`
       )
     }
     if (daoMetadata.logo_type) {
       await createFileContent(
         daoMetadata.name,
-        `logo_type.${daoMetadata.logo_typeExtension}`,
-        daoMetadata.logo_type,
+        `logo_type.${daoMetadata.logo_type.imageExtension}`,
+        daoMetadata.logo_type.base64,
         `Assets:${daoMetadata.name}-logotype`
       )
     }
     if (daoMetadata.token_logo) {
       await createFileContent(
         daoMetadata.name,
-        `token_logo.${daoMetadata.token_logoExtension}`,
-        daoMetadata.token_logo,
+        `token_logo.${daoMetadata.token_logo.imageExtension}`,
+        daoMetadata.token_logo.base64,
         `Assets:${daoMetadata.name}-token_logo`
       )
     }
