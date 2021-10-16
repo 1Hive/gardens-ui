@@ -36,7 +36,7 @@ const FilePreview = ({ file, label, onCancel }) => {
         <div
           title={file.name}
           css={`
-            max-width: 80%;
+            max-width: 200px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

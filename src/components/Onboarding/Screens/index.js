@@ -14,7 +14,7 @@ function OnboardingScreens() {
   }, [step])
 
   const direction = step > prevStep ? 1 : -1
-  const { Screen, title } = steps[step]
+  const { Screen } = steps[step]
 
   return (
     <Transition
@@ -60,7 +60,7 @@ function OnboardingScreens() {
                 margin-bottom: ${2 * GU}px;
               `}
             >
-              <Screen title={title} />
+              <Screen />
             </div>
           </AnimatedDiv>
         </div>
