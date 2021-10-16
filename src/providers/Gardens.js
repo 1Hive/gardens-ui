@@ -19,13 +19,17 @@ import { fetchFileContent } from '../services/github'
 import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
+import useGardenFilters from '@/hooks/useGardenFilters'
+import { testNameFilter } from '@/utils/garden-filters-utils'
+import { useDebounce } from '@/hooks/useDebounce'
 
 import { getVoidedGardensByNetwork } from '../voided-gardens'
 
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const [gardens, loading, reload] = useGardensList()
+  const [queryFilters, filters] = useGardenFilters()
+  const [gardens, loading, reload] = useGardensList(queryFilters, filters)
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -43,7 +47,16 @@ export function GardensProvider({ children }) {
   }
 
   return (
-    <DAOContext.Provider value={{ connectedGarden, gardens, loading, reload }}>
+    <DAOContext.Provider
+      value={{
+        connectedGarden,
+        internalFilters: filters,
+        externalFilters: queryFilters,
+        gardens,
+        loading,
+        reload,
+      }}
+    >
       {connectedGarden ? (
         <Connect>
           <GardenStateProvider>
@@ -65,12 +78,32 @@ export function useGardens() {
   return useContext(DAOContext)
 }
 
-function useGardensList() {
+function useFilteredGardens(gardens, gardensMetadata, filters) {
+  const debouncedNameFilter = useDebounce(filters.name.filter, 300)
+
+  return useMemo(() => {
+    const mergedGardens = gardens.map(garden =>
+      mergeGardenMetadata(garden, gardensMetadata)
+    )
+    if (!debouncedNameFilter) {
+      return mergedGardens
+    }
+    return mergedGardens.filter(garden =>
+      testNameFilter(debouncedNameFilter, garden)
+    )
+  }, [debouncedNameFilter, gardens, gardensMetadata])
+}
+
+function useGardensList(queryFilters, filters) {
   const [gardens, setGardens] = useState([])
-  const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
+  const [gardensMetadata, setGardensMetadata] = useState([])
   const [loadingMetadata, setLoadingMetadata] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
+
+  const { sorting } = queryFilters
+
+  const filteredGardens = useFilteredGardens(gardens, gardensMetadata, filters)
 
   const reload = useCallback(() => {
     setRefetchTriger(triger => setRefetchTriger(!triger))
@@ -80,9 +113,11 @@ function useGardensList() {
     setLoading(true)
     const fetchGardens = async () => {
       try {
+        setLoading(true)
+
         const result = await getGardens(
           { network: getNetwork().chainId },
-          { orderBy: 'honeyLiquidity' }
+          { ...sorting.queryArgs }
         )
 
         setGardens(
@@ -96,7 +131,7 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [refetchTriger])
+  }, [sorting.queryArgs])
 
   useEffect(() => {
     setLoadingMetadata(true)
@@ -114,14 +149,7 @@ function useGardensList() {
     fetchGardenMetadata()
   }, [refetchTriger])
 
-  return [
-    useMemo(
-      () => gardens.map(garden => mergeGardenMetadata(garden, gardensMetadata)),
-      [gardens, gardensMetadata]
-    ),
-    loading || loadingMetadata,
-    reload,
-  ]
+  return [filteredGardens, loading || loadingMetadata, reload]
 }
 
 function mergeGardenMetadata(garden, gardensMetadata) {
