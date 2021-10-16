@@ -114,7 +114,6 @@ const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
                 wide
                 css={`
                   margin-right: ${2 * GU}px;
-                  width: ${30 * GU}px;
                 `}
               />
               {above('medium') && account && (
