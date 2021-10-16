@@ -148,7 +148,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
       >
         <TextInput
           value={amount.value}
-          type="number"
           onChange={handleAmountChange}
           wide
           adornment={
@@ -191,16 +190,14 @@ const ChangeSupport = React.memo(function ChangeSupport({
           {stakeToken.symbol}
         </strong>{' '}
         ({maxStakedPct}% of your balance) available to support this proposal.{' '}
-        {
-          <span>
-            You are supporting other proposals with{' '}
-            <strong>
-              {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
-              {stakeToken.symbol}
-            </strong>{' '}
-            ({stakedOthersPct}% of your balance).
-          </span>
-        }
+        <span>
+          You are supporting other proposals with{' '}
+          <strong>
+            {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
+            {stakeToken.symbol}
+          </strong>{' '}
+          ({stakedOthersPct}% of your balance).
+        </span>
       </Info>
       <Button
         css={`

@@ -1,7 +1,12 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import daoList from '@1hive/gardens-dao-list'
 import { getGardens } from '@1hive/connect-gardens'
 
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
@@ -9,14 +14,18 @@ import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
 
+import { fetchFileContent } from '../services/github'
+
 import { DAONotFound } from '../errors'
 import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
 
+import { getVoidedGardensByNetwork } from '../voided-gardens'
+
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const [gardens, loading] = useGardensList()
+  const [gardens, loading, reload] = useGardensList()
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -34,7 +43,7 @@ export function GardensProvider({ children }) {
   }
 
   return (
-    <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
+    <DAOContext.Provider value={{ connectedGarden, gardens, loading, reload }}>
       {connectedGarden ? (
         <Connect>
           <GardenStateProvider>
@@ -58,35 +67,72 @@ export function useGardens() {
 
 function useGardensList() {
   const [gardens, setGardens] = useState([])
+  const [gardensMetadata, setGardensMetadata] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const [refetchTriger, setRefetchTriger] = useState(false)
+
+  const reload = useCallback(() => {
+    setRefetchTriger(triger => setRefetchTriger(!triger))
+  }, [])
 
   useEffect(() => {
+    setLoading(true)
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
           { network: getNetwork().chainId },
           { orderBy: 'honeyLiquidity' }
         )
-        setGardens(result)
+
+        setGardens(
+          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+        )
       } catch (err) {
-        console.error(`Error fetching daos ${err}`)
+        setGardens([])
+        console.error(`Error fetching gardens ${err}`)
       }
       setLoading(false)
     }
 
     fetchGardens()
-  }, [])
+  }, [refetchTriger])
 
-  return [useMemo(() => gardens.map(mergeGardenMetadata), [gardens]), loading]
+  useEffect(() => {
+    setLoadingMetadata(true)
+    const fetchGardenMetadata = async () => {
+      try {
+        const result = await fetchFileContent(getNetwork().chainId)
+        setGardensMetadata(result.data)
+      } catch (err) {
+        setGardensMetadata([])
+        console.error(`Error fetching gardens metadata ${err}`)
+      }
+      setLoadingMetadata(false)
+    }
+
+    fetchGardenMetadata()
+  }, [refetchTriger])
+
+  return [
+    useMemo(
+      () => gardens.map(garden => mergeGardenMetadata(garden, gardensMetadata)),
+      [gardens, gardensMetadata]
+    ),
+    loading || loadingMetadata,
+    reload,
+  ]
 }
 
-function mergeGardenMetadata(garden) {
+function mergeGardenMetadata(garden, gardensMetadata) {
   const metadata =
-    daoList.daos.find(dao => addressesEqual(dao.address, garden.id)) || {}
+    gardensMetadata.gardens?.find(dao =>
+      addressesEqual(dao.address, garden.id)
+    ) || {}
 
   const token = {
     ...garden.token,
-    ...metadata.token,
+    logo: metadata.token_logo,
   }
   const wrappableToken = garden.wrappableToken
     ? {

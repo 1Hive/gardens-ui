@@ -11,6 +11,7 @@ import {
 
 import ProposalIcon from '../ProposalIcon'
 import useUser from '@hooks/useUser'
+import { useGardens } from '@/providers/Gardens'
 
 import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
@@ -19,6 +20,7 @@ import { getGardenLabel } from '@utils/garden-utils'
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
   const user = useUser(account)
+  const { gardens } = useGardens()
 
   const dedupedStakes = useMemo(() => {
     if (!user?.supports.length) {
@@ -56,7 +58,8 @@ function Activity({ account, isConnectedAccount, profileName }) {
             dedupedStakes.map(({ createdAt, proposal }, index) => {
               const gardenAddress = proposal.organization.id
               const gardenPath = `/#/garden/${gardenAddress}`
-              const gardenLabel = getGardenLabel(gardenAddress)
+              // TODO: evaluate a more efficient way to handle this
+              const gardenLabel = getGardenLabel(gardenAddress, gardens)
 
               return (
                 <div

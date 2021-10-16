@@ -7,7 +7,12 @@ import HeroBanner from './HeroBanner'
 import { useWallet } from '@providers/Wallet'
 import { useGardenState } from '@providers/GardenState'
 
-function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
+function RightPanel({
+  onClaimRewards,
+  onRequestNewProposal,
+  onUnwrapToken,
+  onWrapToken,
+}) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const { wrappableToken } = useGardenState() // Todo find a better way to identify a byot gardes rather than just using the wrappable token attr
@@ -35,6 +40,7 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
             `}
           >
             <WrapToken
+              onClaimRewards={onClaimRewards}
               onUnwrapToken={onUnwrapToken}
               onWrapToken={onWrapToken}
             />
@@ -69,7 +75,11 @@ function RightPanel({ onRequestNewProposal, onUnwrapToken, onWrapToken }) {
       `}
     >
       {showWrapComponent && (
-        <WrapToken onUnwrapToken={onUnwrapToken} onWrapToken={onWrapToken} />
+        <WrapToken
+          onClaimRewards={onClaimRewards}
+          onUnwrapToken={onUnwrapToken}
+          onWrapToken={onWrapToken}
+        />
       )}
       <div
         css={`

@@ -44,7 +44,7 @@ const Modal = ({
           align-self: flex-end;
           margin-top: ${3 * GU}px;
         `}
-        label={buttonLabel ?? 'Done editing'}
+        label={buttonLabel ?? 'Done'}
         mode="strong"
         onClick={onClick}
       />

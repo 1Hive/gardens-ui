@@ -5,6 +5,7 @@ import { textStyle, useTheme, GU } from '@1hive/1hive-ui'
 function Header({
   title,
   subtitle,
+  thirdtitle,
   topSpacing = 3 * GU,
   bottomSpacing = 7 * GU,
 }) {
@@ -20,7 +21,6 @@ function Header({
         css={`
           font-size: 40px;
           font-weight: 600;
-          padding-bottom: ${subtitle ? 2 * GU : 0}px;
         `}
       >
         {title}
@@ -28,11 +28,23 @@ function Header({
       {subtitle && (
         <div
           css={`
-            ${textStyle('title4')};
+            ${textStyle('title3')};
             color: ${theme.contentSecondary};
+            padding-top: ${1 * GU}px;
           `}
         >
           {subtitle}
+        </div>
+      )}
+      {thirdtitle && (
+        <div
+          css={`
+            ${textStyle('body2')};
+            color: ${theme.contentSecondary};
+            padding-top: ${2 * GU}px;
+          `}
+        >
+          {thirdtitle}
         </div>
       )}
     </header>
@@ -42,6 +54,7 @@ function Header({
 Header.propTypes = {
   title: PropTypes.node.isRequired,
   subtitle: PropTypes.node,
+  thirdtitle: PropTypes.node,
   topSpacing: PropTypes.number.isRequired,
   bottomSpacing: PropTypes.number.isRequired,
 }

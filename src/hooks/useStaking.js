@@ -7,6 +7,8 @@ import { useGardenState } from '@providers/GardenState'
 import BigNumber from '@lib/bigNumber'
 import { useContract, useContractReadOnly } from './useContract'
 
+import actions from '../actions/garden-action-types'
+import radspec from '../radspec'
 import { encodeFunctionData } from '@utils/web3-utils'
 
 import stakingFactoryAbi from '@abis/StakingFactory.json'
@@ -248,12 +250,16 @@ export function useStaking() {
         '0x',
       ])
 
+      const description = radspec[actions.ADD_FUNDS]()
+      const type = actions.ADD_FUNDS
+
       const intent = [
         {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: `Deposit ${stakeManagement.token.symbol}`,
+          description,
+          type,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -276,12 +282,16 @@ export function useStaking() {
         '0x',
       ])
 
+      const description = radspec[actions.WITHDRAW_FUNDS]()
+      const type = actions.WITHDRAW_FUNDS
+
       const intent = [
         {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: `Withdraw ${stakeManagement.token.symbol}`,
+          description,
+          type,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -304,12 +314,18 @@ export function useStaking() {
         amount.toString(10),
       ])
 
+      const description = radspec[actions.APPROVE_TOKEN]({
+        tokenSymbol: stakeManagement.token.symbol,
+      })
+      const type = actions.APPROVE_TOKEN
+
       const intent = [
         {
           data: approveData,
           from: account,
           to: stakeManagement.token.id,
-          description: `Approve ${stakeManagement.token.symbol}`,
+          description,
+          type,
         },
       ]
 

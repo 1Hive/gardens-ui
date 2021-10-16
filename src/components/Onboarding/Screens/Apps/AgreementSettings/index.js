@@ -1,6 +1,15 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Field, GU, Help, Info, Link, TextInput } from '@1hive/1hive-ui'
-import { useOnboardingState } from '@providers/Onboarding'
+import {
+  Field,
+  GU,
+  Help,
+  Info,
+  Link,
+  TextInput,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
+import CovenantModal from './CovenantModal'
 import {
   DurationFields,
   Header,
@@ -9,7 +18,7 @@ import {
   AmountField,
 } from '@components/Onboarding/kit'
 import Navigation from '@components/Onboarding/Navigation'
-import CovenantModal from './CovenantModal'
+import { useOnboardingState } from '@providers/Onboarding'
 
 const MAX_TITLE_LENGTH = 50
 
@@ -44,6 +53,7 @@ const validateAgreementSettings = (title, covenantFile, challengePeriod) => {
 }
 
 function AgreementSettings() {
+  const theme = useTheme()
   const {
     config,
     onBack,
@@ -58,6 +68,9 @@ function AgreementSettings() {
     updateField,
   ] = useReducer(reduceFields, config.agreement)
   const [covenantOpened, setCovenantOpened] = useState(false)
+  const [formatValidationColor, setFormatValidationColor] = useState(
+    theme.contentSecondary
+  )
 
   const handleActionAmount = useCallback(
     value => {
@@ -129,18 +142,27 @@ function AgreementSettings() {
     title,
   ])
 
+  const handleOnDragAccepted = useCallback(() => {
+    setFormatValidationColor(theme.contentSecondary)
+  }, [theme])
+
+  const handleOnDragRejected = useCallback(() => {
+    setFormatValidationColor(theme.error)
+  }, [theme])
+
   return (
     <div>
       <Header
-        title="Configure Community Covenant"
-        subtitle="Encode the social contract of your DAO"
+        title="Configure Governance"
+        subtitle="Community covenant"
+        thirdtitle="Encode your garden's social contract"
       />
       <div
         css={`
           margin-bottom: ${4 * GU}px;
         `}
       >
-        <Field label="Title" required>
+        <Field label="Title">
           <TextInput
             value={title}
             onChange={handleTitleChange}
@@ -148,18 +170,61 @@ function AgreementSettings() {
             wide
           />
         </Field>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            margin-bottom: ${1 * GU}px;
+          `}
+        >
+          <span
+            css={`
+              ${textStyle('label2')};
+              color: ${theme.surfaceContentSecondary};
+              margin-right: ${0.5 * GU}px;
+            `}
+          >
+            Covenant
+          </span>
+          <Help>
+            A covenant is a document, stored on IPFS, which explains what the
+            Garden is about in plain English. It establishes values, rules, and
+            customs. And is used to protect the Garden from malicious actors
+            without sacrificing the agency of its members. Take{' '}
+            <Link href="https://1hive.org/#/covenant">1Hive’s Covenant</Link> as
+            an example.
+          </Help>
+        </div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            ${textStyle('body2')};
+            color: ${theme.contentSecondary};
+          `}
+        >
+          <span>
+            Drag and drop a document here or <TextFileUploader /> to upload your
+            community covenant. By uploading a file, you agree to Gardens
+            uploading this file to IPFS.
+          </span>
+          <span
+            css={`
+              color: ${formatValidationColor};
+              font-weight: 600;
+              margin-top: ${1 * GU}px;
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            Valid file formats are: MD and TXT
+          </span>
+        </div>
         <FileUploaderField
           allowedMIMETypes={['text/markdown', 'text/plain']}
           file={covenantFile}
+          onDragAccepted={handleOnDragAccepted}
+          onDragRejected={handleOnDragRejected}
           onFileUpdated={handleCovenantFileChange}
-          description={
-            <>
-              Drag and drop a document here or <TextFileUploader /> to upload
-              your community covenant. By uploading a file, you agree to Gardens
-              uploading this file to IPFS.
-            </>
-          }
-          label="Covenant"
           previewLabel={
             <div
               css={`
@@ -175,16 +240,47 @@ function AgreementSettings() {
               </Link>
             </div>
           }
-          required
+        />
+        <AmountField
+          label={
+            <Fragment>
+              Action Deposit
+              <Help hint="What is Action Deposit?">
+                <strong>Action Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal and decision vote) is submitted.
+              </Help>
+            </Fragment>
+          }
+          value={actionAmount}
+          onChange={handleActionAmount}
+          unitSymbol={config.tokens.symbol}
+          wide
+        />
+        <AmountField
+          label={
+            <Fragment>
+              Challenge Deposit
+              <Help hint="What is Challenge Deposit?">
+                <strong>Challenge Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal or decision vote) is challenged.
+              </Help>
+            </Fragment>
+          }
+          value={challengeAmount}
+          onChange={handleChallengeAmount}
+          unitSymbol={config.tokens.symbol}
+          wide
         />
         <DurationFields
           label={
             <Fragment>
               Settlement Period
-              <Help hint="What is Settlement Period?">
-                <strong>Settlement Period</strong> is the amount of time the
-                proposal's creator has to either accept a settlement or raise
-                the dispute to{' '}
+              <Help hint="What is the Settlement Period?">
+                The <strong>Settlement Period</strong> is the amount of time the
+                proposal author has to either accept a settlement or raise the
+                dispute to{' '}
                 <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{' '}
                 after a proposal has been challenged.
               </Help>
@@ -192,41 +288,7 @@ function AgreementSettings() {
           }
           duration={challengePeriod}
           onUpdate={handleChallengePeriod}
-          required
         />
-        <AmountField
-          label={
-            <Fragment>
-              Challenge Fee
-              <Help hint="What is Challenge Fee?">
-                <strong>Challenge Fee</strong> is the amount of collateral
-                tokens that will be locked every time an action is challenged.
-              </Help>
-            </Fragment>
-          }
-          value={challengeAmount}
-          onChange={handleChallengeAmount}
-          required
-          unitSymbol={config.tokens.symbol}
-          wide
-        />
-        <AmountField
-          label={
-            <Fragment>
-              Action Fee
-              <Help hint="What is Action Fee?">
-                <strong>The Action Fee</strong> is the amount of collateral
-                tokens that will be locked every time an action is submitted.
-              </Help>
-            </Fragment>
-          }
-          value={actionAmount}
-          onChange={handleActionAmount}
-          required
-          unitSymbol={config.tokens.symbol}
-          wide
-        />
-        <Info>We recommend sticking with the default values.</Info>
         {formError && (
           <Info
             mode="error"

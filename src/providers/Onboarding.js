@@ -1,13 +1,33 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Screens as steps } from '@components/Onboarding/Screens/config'
-import { DAY_IN_SECONDS } from '../utils/kit-utils'
+import { Screens } from '@components/Onboarding/Screens/config'
+import usePinataUploader from '@hooks/usePinata'
+import { useGardens } from './Gardens'
+import { useWallet } from './Wallet'
+import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import {
   calculateDecay,
   calculateWeight,
-} from '../utils/conviction-modelling-helpers'
+} from '@utils/conviction-modelling-helpers'
+import {
+  createGardenTxOne,
+  createGardenTxThree,
+  createGardenTxTwo,
+  createPreTransactions,
+  createTokenHoldersTx,
+  extractGardenAddress,
+} from '@components/Onboarding/transaction-logic'
+import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+import {
+  STATUS_GARDEN_CREATED,
+  STATUS_GARDEN_DEPLOYMENT,
+  STATUS_GARDEN_SETUP,
+} from '@components/Onboarding/statuses'
+import { publishNewDao } from '@/services/github'
 
 const OnboardingContext = React.createContext()
+
+const SKIPPED_SCREENS = ['Issuance policy']
 
 const DEFAULT_CONFIG = {
   garden: {
@@ -18,8 +38,8 @@ const DEFAULT_CONFIG = {
     token_logo: null,
     forum: '',
     links: {
-      documentation: [{}],
       community: [{}],
+      documentation: [{}],
     },
     type: -1,
   },
@@ -36,6 +56,7 @@ const DEFAULT_CONFIG = {
     maxRatio: 10,
     minThreshold: 2,
     minThresholdStakePct: 5,
+    requestToken: '',
     weight: calculateWeight(2, 10),
   },
   issuance: {
@@ -44,15 +65,18 @@ const DEFAULT_CONFIG = {
     initialRatio: 10,
   },
   liquidity: {
-    honeyTokenLiquidityStable: 0,
-    tokenLiquidity: 0,
+    denomination: 0,
+    honeyTokenLiquidity: '',
+    honeyTokenLiquidityStable: '',
+    tokenLiquidity: '',
   },
   tokens: {
     address: '', // Only used in BYOT
+    existingTokenSymbol: '', // Only used in BYOT
     name: '',
+    decimals: 18,
     symbol: '',
     holders: [], // Only used in NATIVE
-    commonPool: 0, // Only used in NATIVE
   },
   voting: {
     voteDuration: DAY_IN_SECONDS * 5,
@@ -60,14 +84,27 @@ const DEFAULT_CONFIG = {
     voteMinAcceptanceQuorum: 10,
     voteDelegatedVotingPeriod: DAY_IN_SECONDS * 2,
     voteQuietEndingPeriod: DAY_IN_SECONDS * 1,
-    voteQuietEndingExtension: DAY_IN_SECONDS * 0.5,
+    voteQuietEndingExtension: DAY_IN_SECONDS * 1,
     voteExecutionDelay: DAY_IN_SECONDS * 1,
   },
 }
 
 function OnboardingProvider({ children }) {
+  const [status, setStatus] = useState(STATUS_GARDEN_SETUP)
   const [step, setStep] = useState(0)
+  const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [deployTransactions, setDeployTransactions] = useState([])
+  const [gardenAddress, setGardenAddress] = useState('')
+
+  const { reload } = useGardens()
+  const { account, ethers } = useWallet()
+
+  // Upload covenant content to ipfs when ready (starting deployment txs)
+  const [covenantIpfs] = usePinataUploader(
+    config.agreement.covenantFile?.blob,
+    status === STATUS_GARDEN_DEPLOYMENT
+  )
 
   const handleConfigChange = useCallback(
     (key, data) =>
@@ -81,6 +118,50 @@ function OnboardingProvider({ children }) {
     []
   )
 
+  const handleStartDeployment = useCallback(() => {
+    setStatus(STATUS_GARDEN_DEPLOYMENT)
+  }, [])
+
+  const publishGardenMetadata = useCallback(
+    async txHash => {
+      try {
+        // Fetch garden address
+        const gardenAddress = await extractGardenAddress(ethers, txHash)
+        setGardenAddress(gardenAddress)
+
+        // Publish metadata to github
+        await publishNewDao(gardenAddress, config.garden)
+      } catch (err) {
+        console.error(`Error publishing garden metadata ${err}`)
+      }
+    },
+    [config, ethers]
+  )
+
+  const getTransactions = useCallback(
+    async (covenantIpfsHash, account) => {
+      // Token approvals
+      const txs = [...(await createPreTransactions(config, account))]
+
+      // Tx one
+      txs.push(createGardenTxOne(config))
+
+      if (config.garden.type === NATIVE_TYPE) {
+        // Mint seeds balances
+        txs.push(createTokenHoldersTx(config))
+      }
+
+      // Tx two, tx three
+      txs.push(createGardenTxTwo(config), {
+        ...createGardenTxThree(config, covenantIpfsHash),
+        onDone: publishGardenMetadata,
+      })
+
+      return txs
+    },
+    [config, publishGardenMetadata]
+  )
+
   // Navigation
   const handleBack = useCallback(() => {
     setStep(index => Math.max(0, index - 1))
@@ -88,15 +169,59 @@ function OnboardingProvider({ children }) {
 
   const handleNext = useCallback(() => {
     setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [])
+  }, [steps.length])
+
+  useEffect(() => {
+    if (config.garden.type !== -1) {
+      config.garden.type === BYOT_TYPE
+        ? setSteps(
+            Screens.filter(screen => !SKIPPED_SCREENS.includes(screen.title))
+          )
+        : setSteps(Screens)
+    }
+  }, [config.garden.type])
+
+  useEffect(() => {
+    if (!account || !covenantIpfs) {
+      return
+    }
+
+    const buildDeployTransactions = async () => {
+      try {
+        const deployTxs = await getTransactions(covenantIpfs, account)
+        setDeployTransactions(deployTxs)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    buildDeployTransactions()
+  }, [account, covenantIpfs, getTransactions])
+
+  useEffect(() => {
+    let timer
+    if (gardenAddress) {
+      // Wait a few seconds to refetch gardens list so that we make sure new garden is picked up by subgraph
+      timer = setTimeout(() => {
+        reload()
+        setStatus(STATUS_GARDEN_CREATED)
+      }, 3000)
+    }
+
+    return () => clearTimeout(timer)
+  }, [gardenAddress, reload])
 
   return (
     <OnboardingContext.Provider
       value={{
         config,
+        deployTransactions,
+        gardenAddress,
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
+        onStartDeployment: handleStartDeployment,
+        status,
         step,
         steps,
       }}
@@ -114,4 +239,4 @@ function useOnboardingState() {
   return useContext(OnboardingContext)
 }
 
-export { OnboardingProvider, useOnboardingState }
+export { OnboardingProvider, useOnboardingState, DEFAULT_CONFIG }
