@@ -78,25 +78,32 @@ export function useGardens() {
   return useContext(DAOContext)
 }
 
-function useFilteredGardens(gardens, filters) {
+function useFilteredGardens(gardens, gardensMetadata, filters) {
   const debouncedNameFilter = useDebounce(filters.name.filter, 300)
 
   return useMemo(() => {
+    const mergedGardens = gardens.map(garden =>
+      mergeGardenMetadata(garden, gardensMetadata)
+    )
     if (!debouncedNameFilter) {
-      return gardens
+      return mergedGardens
     }
-    return gardens.filter(garden => testNameFilter(debouncedNameFilter, garden))
-  }, [debouncedNameFilter, gardens])
+    return mergedGardens.filter(garden =>
+      testNameFilter(debouncedNameFilter, garden)
+    )
+  }, [debouncedNameFilter, gardens, gardensMetadata])
 }
 
 function useGardensList(queryFilters, filters) {
   const [gardens, setGardens] = useState([])
-  const filteredGardens = useFilteredGardens(gardens, filters)
   const [loading, setLoading] = useState(true)
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loadingMetadata, setLoadingMetadata] = useState(true)
-  const { sorting } = queryFilters
   const [refetchTriger, setRefetchTriger] = useState(false)
+
+  const { sorting } = queryFilters
+
+  const filteredGardens = useFilteredGardens(gardens, gardensMetadata, filters)
 
   const reload = useCallback(() => {
     setRefetchTriger(triger => setRefetchTriger(!triger))
@@ -142,17 +149,7 @@ function useGardensList(queryFilters, filters) {
     fetchGardenMetadata()
   }, [refetchTriger])
 
-  return [
-    useMemo(
-      () =>
-        filteredGardens.map(garden =>
-          mergeGardenMetadata(garden, gardensMetadata)
-        ),
-      [filteredGardens, gardensMetadata]
-    ),
-    loading || loadingMetadata,
-    reload,
-  ]
+  return [filteredGardens, loading || loadingMetadata, reload]
 }
 
 function mergeGardenMetadata(garden, gardensMetadata) {

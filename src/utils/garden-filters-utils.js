@@ -24,5 +24,7 @@ export const filterArgsMapping = {
 }
 
 export const testNameFilter = (filterName, garden) => {
-  return garden.name && garden.name.includes(filterName)
+  return (
+    garden.name && garden.name.toLowerCase().includes(filterName.toLowerCase())
+  )
 }
