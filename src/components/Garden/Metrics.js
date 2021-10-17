@@ -201,8 +201,8 @@ function TokenPrice({
   const [convertedAmount, loading, canUpdate] = usePriceOracle(
     true,
     1,
-    stableToken.id,
-    token.id
+    token.id,
+    stableToken.id
   )
 
   const price = useMemo(() => {
@@ -297,11 +297,12 @@ function Dot({ isActive, onChange }) {
   return (
     <span
       onClick={
-        !isActive &&
-        (e => {
-          e.preventDefault()
-          onChange()
-        })
+        !isActive
+          ? e => {
+              e.preventDefault()
+              onChange()
+            }
+          : undefined
       }
       css={`
         height: 10px;

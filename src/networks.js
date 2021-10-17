@@ -34,11 +34,7 @@ const networks = {
       organizations:
         'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
     },
-    celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     legacyNetworkType: 'rinkeby',
-    explorer: 'etherscan',
-
-    stableToken: '0x531eab8bb6a2359fe52ca5d308d85776549a0af9',
   },
   xdai: {
     chainId: 100,
