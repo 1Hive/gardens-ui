@@ -142,7 +142,7 @@
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.4.tgz#355db696b301de0a8f1f3d34fcf193b77a43c950"
   integrity sha512-cWsR1ntF1ilCT2lK/a7A8k3GjFaeLsWtpH+ebeOgurn37CCp4m6tVa/KLbQ1Ocwqm3vXLs+6LFH2BaDDkV9tVg==
-  dependencies:
+ dependencies:
     "@aragon/connect-core" "0.7.0"
     "@aragon/connect-thegraph" "0.7.0"
     graphql-tag "^2.10.3"

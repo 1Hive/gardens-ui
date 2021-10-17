@@ -5,6 +5,7 @@ import { toHex } from 'web3-utils'
 import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
+import { getNetwork } from '@/networks'
 import { useWallet } from '@providers/Wallet'
 
 import { getAppByName } from '@utils/data-utils'
@@ -18,6 +19,7 @@ import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
 
+import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
@@ -32,14 +34,19 @@ export default function useActions() {
   const mounted = useMounted()
 
   const {
-    connectedGarden: { unipool },
+    connectedGarden: { incentivisedPriceOracle, unipool },
   } = useGardens()
-  const { installedApps, wrappableToken } = useGardenState()
+  const { installedApps, wrappableToken, mainToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+  const { stableToken } = getNetwork()
 
+  const priceOracleContract = useContract(
+    incentivisedPriceOracle,
+    priceOracleAbi
+  )
   const unipoolContract = useContract(unipool, unipoolAbi)
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
@@ -537,6 +544,34 @@ export default function useActions() {
     [account, hookedTokenManagerApp, mounted]
   )
 
+  // Price Oracle Actions
+  const updatePriceOracle = useCallback(
+    async (onDone = noop) => {
+      const updatePriceOracleData = encodeFunctionData(
+        priceOracleContract,
+        'update',
+        [stableToken, mainToken.data.id]
+      )
+
+      let transactions = [
+        {
+          data: updatePriceOracleData,
+          from: account,
+          to: priceOracleContract.address,
+        },
+      ]
+
+      const description = radspec[actions.UPDATE_PRICE_ORACLE]()
+      const type = actions.UPDATE_PRICE_ORACLE
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, priceOracleContract, mainToken, stableToken]
+  )
   // Unipool actions
   const claimRewards = useCallback(
     (onDone = noop) => {
@@ -587,6 +622,7 @@ export default function useActions() {
         unwrap,
       },
       issuanceActions: { executeIssuance },
+      priceOracleActions: { updatePriceOracle },
       unipoolActions: { claimRewards },
       votingActions: {
         executeDecision,
@@ -595,26 +631,27 @@ export default function useActions() {
     }),
     [
       approveTokenAmount,
-      approveWrappableTokenAmount,
-      cancelProposal,
       challengeAction,
-      claimRewards,
       disputeAction,
-      executeDecision,
-      executeIssuance,
-      executeProposal,
       getAgreementTokenAllowance,
-      getHookedTokenManagerAllowance,
-      newProposal,
-      newSignalingProposal,
       resolveAction,
       settleAction,
       signAgreement,
+      executeProposal,
+      cancelProposal,
+      newProposal,
+      newSignalingProposal,
       stakeToProposal,
-      voteOnDecision,
       withdrawFromProposal,
+      approveWrappableTokenAmount,
+      getHookedTokenManagerAllowance,
       wrap,
       unwrap,
+      executeIssuance,
+      updatePriceOracle,
+      claimRewards,
+      executeDecision,
+      voteOnDecision,
     ]
   )
 }
