@@ -10,7 +10,7 @@ import {
   useProposalSubscription,
   useProposalsSubscription,
 } from './useSubscriptions'
-import useRequestAmount from './useRequestAmount'
+import { usePriceOracle } from './usePriceOracle'
 import { useWallet } from '@providers/Wallet'
 
 import {
@@ -149,7 +149,7 @@ export function useProposalWithThreshold(proposal) {
   } = config.conviction
   const { requestedAmount, totalTokensStaked, stable, type } = proposal
 
-  const [requestAmount, loadingRequestAmount] = useRequestAmount(
+  const [requestAmount, loadingRequestAmount] = usePriceOracle(
     stable,
     requestedAmount,
     stableToken.id,

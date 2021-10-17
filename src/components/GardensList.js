@@ -1,28 +1,73 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
-import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
-
-import { useGardens } from '@providers/Gardens'
-
+import {
+  GU,
+  Pagination,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import defaultTokenLogo from '@assets/defaultTokenLogo.png'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import EmptyResults from './EmptyResults'
 
-function GardensList() {
-  // TODO :  add loading component
-  const { gardens } = useGardens()
+const GARDENS_PER_PAGE = 8
+
+const computeCurrentGardens = (gardens, currentPage) => {
+  const currentGardens = gardens.slice(
+    currentPage * GARDENS_PER_PAGE,
+    GARDENS_PER_PAGE * (currentPage + 1)
+  )
+
+  return currentGardens
+}
+
+function GardensList({ gardens }) {
+  const [selectedPage, setSelectedPage] = useState(0)
+  const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
+  const currentGardens = useMemo(
+    () => computeCurrentGardens(gardens, selectedPage),
+    [gardens, selectedPage]
+  )
+
+  const handlePageChange = useCallback(page => {
+    setSelectedPage(page)
+  }, [])
+
+  useEffect(() => {
+    if (gardens.length) {
+      setSelectedPage(0)
+    }
+  }, [gardens])
 
   return (
-    <div
-      css={`
-        padding: ${3 * GU}px;
-        display: grid;
-        grid-gap: ${2 * GU}px;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      `}
-    >
-      {gardens.map(garden => (
-        <GardenCard key={garden.id} garden={garden} />
-      ))}
+    <div>
+      {currentGardens.length ? (
+        <div>
+          <div
+            css={`
+              display: grid;
+              grid-gap: ${4 * GU}px;
+              grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+              grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            {currentGardens.map(garden => (
+              <GardenCard key={garden.id} garden={garden} />
+            ))}
+          </div>
+          {pages > 1 && (
+            <Pagination
+              pages={pages}
+              selected={selectedPage}
+              onChange={handlePageChange}
+            />
+          )}
+        </div>
+      ) : (
+        <EmptyResults title="No gardens found" />
+      )}
     </div>
   )
 }
@@ -46,9 +91,8 @@ function GardenCard({ garden }) {
         border-radius: ${2.5 * GU}px;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
         cursor: pointer;
-
         display: grid;
-        grid-template-rows: 72px 32px 72px auto auto;
+        grid-template-rows: 72px 32px 92px auto auto;
         grid-gap: ${2 * GU}px;
         text-align: center;
       `}
@@ -74,7 +118,7 @@ function GardenCard({ garden }) {
         css={`
           color: ${theme.contentSecondary};
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
           overflow: hidden;
         `}

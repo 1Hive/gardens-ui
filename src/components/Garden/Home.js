@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
+import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import Filters from './Filters/Filters'
 import Loader from '../Loader'
 import Metrics from './Metrics'
@@ -62,6 +64,10 @@ const Home = React.memo(function Home() {
     }
   }, [history])
 
+  const handleClaimRewards = useCallback(() => {
+    handleShowModal('claim')
+  }, [handleShowModal])
+
   const handleRequestNewProposal = useCallback(() => {
     handleShowModal('createProposal')
   }, [handleShowModal])
@@ -73,6 +79,13 @@ const Home = React.memo(function Home() {
   const handleUnwrapToken = useCallback(() => {
     handleShowModal('unwrap')
   }, [handleShowModal])
+
+  const handleUpdatePriceOracle = useCallback(() => {
+    handleShowModal('updatePriceOracle')
+  }, [handleShowModal])
+  const handleProposalCreated = useCallback(() => {
+    filters.ranking.onChange(1)
+  }, [filters])
 
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
@@ -92,17 +105,25 @@ const Home = React.memo(function Home() {
           z-index: 2;
         `}
       >
-        <BackButton
-          onClick={handleBack}
-          css={`
-            background: transparent;
-            border: 0;
-          `}
-        />
+        {below('medium') && (
+          <BackButton
+            onClick={handleBack}
+            css={`
+              background: transparent;
+              border: 0;
+            `}
+          />
+        )}
       </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
-        <Loader />
+        <div
+          css={`
+            margin-top: ${20 * GU}px;
+          `}
+        >
+          <Loader />
+        </div>
       ) : (
         <div>
           <div
@@ -121,9 +142,10 @@ const Home = React.memo(function Home() {
                   margin: ${(below('medium') ? 0 : 3) * GU}px;
                 `}
               >
-                {!compactMode && (
+                {layoutName !== 'small' && (
                   <Metrics
                     commonPool={commonPool}
+                    onRequestUpdatePriceOracle={handleUpdatePriceOracle}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
                     token={mainToken.data}
                     totalActiveTokens={config.conviction.totalStaked}
@@ -171,6 +193,7 @@ const Home = React.memo(function Home() {
                       `}
                     >
                       <RightPanel
+                        onClaimRewards={handleClaimRewards}
                         onRequestNewProposal={handleRequestNewProposal}
                         onWrapToken={handleWrapToken}
                         onUnwrapToken={handleUnwrapToken}
@@ -182,6 +205,7 @@ const Home = React.memo(function Home() {
             </div>
             {!largeMode && (
               <RightPanel
+                onClaimRewards={handleClaimRewards}
                 onRequestNewProposal={handleRequestNewProposal}
                 onWrapToken={handleWrapToken}
                 onUnwrapToken={handleUnwrapToken}
@@ -193,9 +217,14 @@ const Home = React.memo(function Home() {
             onClose={handleHideModal}
             onClosed={() => setModalMode(null)}
           >
-            {modalMode === 'createProposal' && <CreateProposalScreens />}
-            {modalMode === 'wrap' && <WrapTokenScreens mode="wrap" />}
-            {modalMode === 'unwrap' && <WrapTokenScreens mode="unwrap" />}
+            {modalMode === 'updatePriceOracle' && <PriceOracleScreens />}
+            {modalMode === 'createProposal' && (
+              <CreateProposalScreens onComplete={handleProposalCreated} />
+            )}
+            {(modalMode === 'wrap' || modalMode === 'unwrap') && (
+              <WrapTokenScreens mode={modalMode} />
+            )}
+            {modalMode === 'claim' && <ClaimRewardsScreens />}
           </MultiModal>
         </div>
       )}

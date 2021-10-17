@@ -32,7 +32,7 @@ function GardenTypeSelector() {
   return (
     <div>
       <Header
-        title="Garden Type"
+        title="Select Type"
         subtitle="Choose the type of garden you'd like to launch."
       />
       <div
