@@ -7,7 +7,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import EmptyResults from './EmptyResults'
+import EmptyResults from '../../EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
 
