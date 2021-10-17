@@ -68,6 +68,10 @@ const ACTIVITY_TYPES = {
     title: 'Unwrap token',
     icon: GARDEN_LOGO,
   },
+  [actions.UPDATE_PRICE_ORACLE]: {
+    icon: GARDEN_LOGO,
+    title: 'Update Price Oracle',
+  },
   [actions.VOTE_ON_DECISION]: {
     icon: GARDEN_LOGO,
     title: 'Vote on decision',
