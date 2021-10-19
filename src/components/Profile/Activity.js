@@ -19,7 +19,7 @@ import { getGardenLabel } from '@utils/garden-utils'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
-  const user = useUser(account)
+  const [user] = useUser(account)
   const { gardens } = useGardens()
 
   const dedupedStakes = useMemo(() => {
