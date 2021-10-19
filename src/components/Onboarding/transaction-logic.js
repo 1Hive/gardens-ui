@@ -177,8 +177,7 @@ export function createGardenTxTwo({ conviction, garden, issuance }) {
   if (garden.type === NATIVE_TYPE) {
     // See https://github.com/1Hive/issuance-dynamic/blob/master/contracts/Issuance.sol#L35
     maxAdjustmentRatioPerSec = Math.floor(
-      (issuance.maxAdjustmentRatioPerYear / 100 / YEARS_IN_SECONDS) *
-        ONE_HUNDRED_PCT
+      issuance.maxAdjustmentRatioPerYear / 100 / YEARS_IN_SECONDS
     )
     targetRatio = issuance.targetRatio / 100
   } else {
@@ -188,7 +187,9 @@ export function createGardenTxTwo({ conviction, garden, issuance }) {
   }
 
   // Adjust issuance params
-  const adjustedMaxAdjustmentRatioPerSec = maxAdjustmentRatioPerSec.toString(10)
+  const adjustedMaxAdjustmentRatioPerSec = (
+    maxAdjustmentRatioPerSec * ONE_HUNDRED_PCT
+  ).toString(10)
   const adjustedTargetRatio = (
     targetRatio * ISSUANCE_ONE_HUNDRED_PERCENT
   ).toString(10)
