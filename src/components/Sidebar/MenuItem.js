@@ -8,7 +8,7 @@ function MenuItem({ active, path, name, src }) {
     <li
       css={`
         position: relative;
-        background: ${active ? 'rgb(249, 249, 248)' : theme.surface};
+        background: ${active ? 'rgb(227, 240, 213)' : theme.surface};
         height: ${8.5 * GU}px;
         ${name &&
           ` &:hover:after {
@@ -33,7 +33,7 @@ function MenuItem({ active, path, name, src }) {
             bottom: 0;
             left: 0;
             width: 4px;
-            background: rgb(141, 233, 149);
+            background: rgb(62, 207, 75);
           `}
         />
       )}
@@ -41,6 +41,10 @@ function MenuItem({ active, path, name, src }) {
         css={`
           display: flex;
           padding: ${1.5 * GU}px;
+          ${!active &&
+            `&:hover {
+            background: rgb(246, 246, 247);
+          }`}
         `}
       >
         <Link
