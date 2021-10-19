@@ -4,6 +4,7 @@ import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import Filters from './Filters/Filters'
 import Loader from '../Loader'
 import Metrics from './Metrics'
@@ -79,6 +80,9 @@ const Home = React.memo(function Home() {
     handleShowModal('unwrap')
   }, [handleShowModal])
 
+  const handleUpdatePriceOracle = useCallback(() => {
+    handleShowModal('updatePriceOracle')
+  }, [handleShowModal])
   const handleProposalCreated = useCallback(() => {
     filters.ranking.onChange(1)
   }, [filters])
@@ -141,6 +145,7 @@ const Home = React.memo(function Home() {
                 {layoutName !== 'small' && (
                   <Metrics
                     commonPool={commonPool}
+                    onRequestUpdatePriceOracle={handleUpdatePriceOracle}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
                     token={mainToken.data}
                     totalActiveTokens={config.conviction.totalStaked}
@@ -212,6 +217,7 @@ const Home = React.memo(function Home() {
             onClose={handleHideModal}
             onClosed={() => setModalMode(null)}
           >
+            {modalMode === 'updatePriceOracle' && <PriceOracleScreens />}
             {modalMode === 'createProposal' && (
               <CreateProposalScreens onComplete={handleProposalCreated} />
             )}

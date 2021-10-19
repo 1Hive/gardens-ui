@@ -61,4 +61,7 @@ export default {
   [actions.WRAP_TOKEN]: () => {
     return `Wrap token`
   },
+  [actions.UPDATE_PRICE_ORACLE]: () => {
+    return `Update price oracle`
+  },
 }

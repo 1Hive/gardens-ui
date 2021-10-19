@@ -34,6 +34,7 @@ const networks = {
       organizations:
         'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
     },
+    legacyNetworkType: 'rinkeby',
   },
   xdai: {
     chainId: 100,
