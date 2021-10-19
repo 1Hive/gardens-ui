@@ -31,11 +31,11 @@ const ENV_VARS = {
   ETHERSCAN_API_KEY() {
     return process.env.REACT_APP_ETHERSCAN_API_KEY || null
   },
-  INTERCOM_APP_ID() {
-    return process.env.REACT_APP_INTERCOM_APP_ID || ''
-  },
   FORTMATIC_API_KEY() {
     return process.env.REACT_APP_FORTMATIC_API_KEY || ''
+  },
+  GITHUB_API_TOKEN() {
+    return process.env.REACT_APP_GITHUB_API_TOKEN || ''
   },
   HOOKED_TOKEN_MANAGER_APP_NAME() {
     return (
@@ -49,8 +49,14 @@ const ENV_VARS = {
   INSTANCE() {
     return process.env.REACT_APP_APP_INSTANCE || ''
   },
+  INTERCOM_APP_ID() {
+    return process.env.REACT_APP_INTERCOM_APP_ID || ''
+  },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
+  },
+  PINATA_API_TOKEN() {
+    return process.env.REACT_APP_PINATA_API_TOKEN || ''
   },
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null

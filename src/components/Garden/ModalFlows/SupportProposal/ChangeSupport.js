@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Button,
-  ButtonBase,
-  GU,
-  Field,
-  Info,
-  TextInput,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { Button, ButtonBase, GU, Field, Info, TextInput } from '@1hive/1hive-ui'
 
 import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
 import { useGardenState } from '@providers/GardenState'
@@ -26,8 +17,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
   proposal,
   getTransactions,
 }) {
-  const theme = useTheme()
-
   const { account } = useWallet()
   const { config, token } = useGardenState()
   const { stakeToken } = config.conviction
@@ -41,7 +30,6 @@ const ChangeSupport = React.memo(function ChangeSupport({
   const { stakes } = proposal
 
   const totalStaked = useAccountTotalStaked(account)
-  const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const myStake = useMemo(
     () =>
@@ -57,6 +45,8 @@ const ChangeSupport = React.memo(function ChangeSupport({
     () => token.accountBalance.minus(totalStaked).plus(myStake.amount),
     [myStake.amount, token.accountBalance, totalStaked]
   )
+
+  const totalStakedOnOthers = totalStaked - myStake.amount
 
   useEffect(() => {
     if (myStake.amount) {
@@ -145,20 +135,11 @@ const ChangeSupport = React.memo(function ChangeSupport({
   }, [amount, maxAvailable])
 
   // Calculate percentages
-  const nonStakedPct = round(pct(nonStakedTokens, token.accountBalance))
-  const stakedPct = round(100 - nonStakedPct)
+  const maxStakedPct = round(pct(maxAvailable, token.accountBalance))
+  const stakedOthersPct = round(pct(totalStakedOnOthers, token.accountBalance))
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3
-        css={`
-          ${textStyle('body3')}
-        `}
-      >
-        This action will modify the amount of tokens locked with this proposal.
-        The token weight backing the proposal will increase over time from 0 up
-        to the max amount specified.
-      </h3>
       <Field
         label="amount"
         css={`
@@ -167,14 +148,13 @@ const ChangeSupport = React.memo(function ChangeSupport({
       >
         <TextInput
           value={amount.value}
-          type="number"
           onChange={handleAmountChange}
           wide
           adornment={
             <ButtonBase
               css={`
                 margin-right: ${1 * GU}px;
-                color: ${theme.accent};
+                color: #30db9e;
               `}
               onClick={handleMaxSelected}
             >
@@ -199,21 +179,25 @@ const ChangeSupport = React.memo(function ChangeSupport({
           margin-top: ${2 * GU}px;
         `}
       >
-        You have{' '}
+        You are currently supporting this proposal with{' '}
         <strong>
-          {formatTokenAmount(nonStakedTokens, stakeToken.decimals)}{' '}
+          {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
+          {stakeToken.symbol}
+        </strong>
+        . You have up to{' '}
+        <strong>
+          {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
           {stakeToken.symbol}
         </strong>{' '}
-        ({nonStakedPct}% of your balance) available to support this proposal.{' '}
-        {totalStaked.gt(0) === false && (
-          <span>
-            You are supporting other proposals with{' '}
-            <strong>
-              {formatTokenAmount(totalStaked, stakeToken.decimals)} locked
-            </strong>{' '}
-            ({stakedPct}% of your balance).
-          </span>
-        )}
+        ({maxStakedPct}% of your balance) available to support this proposal.{' '}
+        <span>
+          You are supporting other proposals with{' '}
+          <strong>
+            {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
+            {stakeToken.symbol}
+          </strong>{' '}
+          ({stakedOthersPct}% of your balance).
+        </span>
       </Info>
       <Button
         css={`

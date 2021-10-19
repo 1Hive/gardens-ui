@@ -1,21 +1,27 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
+import { useGardens } from '@providers/Gardens'
 import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-import { getAppByName } from '@utils/data-utils'
 import { useMounted } from './useMounted'
+import { getNetwork } from '@/networks'
+import { useWallet } from '@providers/Wallet'
 
+import { getAppByName } from '@utils/data-utils'
 import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
+import actions from '../actions/garden-action-types'
 import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
+import radspec from '../radspec'
+
+import priceOracleAbi from '@abis/priceOracle.json'
+import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
-import agreementAbi from '@abis/agreement.json'
 
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
@@ -27,23 +33,30 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { installedApps, wrappableToken } = useGardenState()
+  const {
+    connectedGarden: { incentivisedPriceOracle, unipool },
+  } = useGardens()
+  const { installedApps, wrappableToken, mainToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
+  const { stableToken } = getNetwork()
 
+  const priceOracleContract = useContract(
+    incentivisedPriceOracle,
+    priceOracleAbi
+  )
+  const unipoolContract = useContract(unipool, unipoolAbi)
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
-  const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
+  const votingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
   const hookedTokenManagerApp = getAppByName(
     installedApps,
     env('HOOKED_TOKEN_MANAGER_APP_NAME')
   )
-
-  const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
   // Conviction voting actions
   const newProposal = useCallback(
@@ -64,8 +77,18 @@ export default function useActions() {
           actAs: account,
         }
       )
+
+      const description = radspec[actions.NEW_PROPOSAL]()
+      const type = actions.NEW_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, convictionVotingApp, mounted]
@@ -81,23 +104,45 @@ export default function useActions() {
         }
       )
 
+      const description = radspec[actions.NEW_SIGNALING_PROPOSAL]()
+      const type = actions.NEW_SIGNALING_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, convictionVotingApp, mounted]
   )
 
   const cancelProposal = useCallback(
-    async proposalId => {
-      sendIntent(convictionVotingApp, 'cancelProposal', [proposalId], {
-        ethers,
-        from: account,
-      })
+    async (proposalId, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'cancelProposal',
+        [proposalId],
+        {
+          actAs: account,
+        }
+      )
 
-      // onDone()
+      const description = radspec[actions.CANCEL_PROPOSAL]({
+        proposalId,
+      })
+      const type = actions.CANCEL_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
     },
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp]
   )
 
   const stakeToProposal = useCallback(
@@ -112,8 +157,18 @@ export default function useActions() {
 
       intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
 
+      const description = radspec[actions.STAKE_TO_PROPOSAL]({
+        proposalId,
+      })
+      const type = actions.STAKE_TO_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, convictionVotingApp, mounted]
@@ -126,34 +181,63 @@ export default function useActions() {
         params.push(amount)
       }
 
-      sendIntent(
-        convictionVotingApp,
+      let intent = await convictionVotingApp.intent(
         amount ? 'withdrawFromProposal' : 'withdrawAllFromProposal',
         params,
         {
-          ethers,
-          from: account,
-          gasLimit: STAKE_GAS_LIMIT,
+          actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, STAKE_GAS_LIMIT)
+
+      const description = radspec[actions.WITHDRAW_FROM_PROPOSAL]({
+        proposalId,
+      })
+      const type = actions.WITHDRAW_FROM_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      if (mounted()) {
+        onDone(transactions)
+      }
     },
 
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp, mounted]
   )
 
   const executeProposal = useCallback(
-    proposalId => {
-      sendIntent(convictionVotingApp, 'executeProposal', [proposalId], {
-        ethers,
-        from: account,
-      })
+    async (proposalId, onDone = noop) => {
+      const intent = await convictionVotingApp.intent(
+        'executeProposal',
+        [proposalId],
+        {
+          actAs: account,
+        }
+      )
 
-      // onDone()
+      const description = radspec[actions.EXECUTE_PROPOSAL]({
+        proposalId,
+      })
+      const type = actions.EXECUTE_PROPOSAL
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
     },
-    [account, convictionVotingApp, ethers]
+    [account, convictionVotingApp]
   )
 
   // Issuance actions
+  // TODO- we need to start using modal flow for all the transactions
   const executeIssuance = useCallback(() => {
     sendIntent(issuanceApp, 'executeAdjustment', [], {
       ethers,
@@ -162,24 +246,25 @@ export default function useActions() {
   }, [account, ethers, issuanceApp])
 
   // Vote actions
+  // TODO- we need to start using modal flow for all the transactions
   const voteOnDecision = useCallback(
     (voteId, voteType) => {
-      sendIntent(dandelionVotingApp, 'vote', [voteId, voteType === VOTE_YEA], {
+      sendIntent(votingApp, 'vote', [voteId, voteType === VOTE_YEA], {
         ethers,
         from: account,
       })
     },
-    [account, ethers, dandelionVotingApp]
+    [account, ethers, votingApp]
   )
-
+  // TODO- we need to start using modal flow for all the transactions
   const executeDecision = useCallback(
-    voteId => {
-      sendIntent(dandelionVotingApp, 'executeVote', [voteId], {
+    (voteId, script) => {
+      sendIntent(votingApp, 'executeVote', [voteId, script], {
         ethers,
         from: account,
       })
     },
-    [account, dandelionVotingApp, ethers]
+    [account, ethers, votingApp]
   )
 
   // Agreement actions
@@ -190,9 +275,17 @@ export default function useActions() {
       })
 
       intent = imposeGasLimit(intent, SIGN_GAS_LIMIT)
+      const description = radspec[actions.SIGN_AGREEMENT]()
+      const type = actions.SIGN_AGREEMENT
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
 
       // if (mounted()) {
-      onDone(intent)
+      onDone(transactions)
     },
     [account, agreementApp]
   )
@@ -210,15 +303,26 @@ export default function useActions() {
         }
       )
 
+      const description = radspec[actions.CHALLENGE_ACTION]({
+        actionId,
+      })
+      const type = actions.CHALLENGE_ACTION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, agreementApp, mounted]
   )
 
   const approve = useCallback(
-    (amount, tokenContract, appAddress, trxDescription) => {
+    (amount, tokenContract, appAddress) => {
       if (!tokenContract || !appAddress) {
         return
       }
@@ -231,7 +335,6 @@ export default function useActions() {
           data: approveData,
           from: account,
           to: tokenContract.address,
-          description: trxDescription,
         },
       ]
 
@@ -249,15 +352,17 @@ export default function useActions() {
 
       const tokenSymbol = await tokenContract.symbol()
 
-      const intent = approve(
-        depositAmount,
-        tokenContract,
-        agreementApp.address,
-        `Approve ${tokenSymbol}`
-      )
+      const trxs = approve(depositAmount, tokenContract, agreementApp.address)
+
+      const description = radspec[actions.APPROVE_TOKEN]({
+        tokenSymbol,
+      })
+      const type = actions.APPROVE_TOKEN
+
+      const transactions = attachTrxMetadata(trxs, description, type)
 
       if (mounted()) {
-        onDone(intent)
+        onDone(transactions)
       }
     },
     [agreementApp, approve, mounted]
@@ -287,6 +392,7 @@ export default function useActions() {
     [agreementApp, getAllowance]
   )
 
+  // TODO- we need to start using modal flow for all the transactions
   const resolveAction = useCallback(
     disputeId => {
       sendIntent(agreementApp, 'resolve', [disputeId], {
@@ -303,8 +409,20 @@ export default function useActions() {
       const intent = await agreementApp.intent('settleAction', [actionId], {
         actAs: account,
       })
+
+      const description = radspec[actions.SETTLE_ACTION]({
+        actionId,
+      })
+      const type = actions.SETTLE_ACTION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, agreementApp, mounted]
@@ -320,24 +438,22 @@ export default function useActions() {
         }
       )
 
+      const description = radspec[actions.DISPUTE_ACTION]({
+        actionId,
+      })
+      const type = actions.DISPUTE_ACTION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, agreementApp, mounted]
-  )
-
-  const getChallenge = useCallback(
-    async challengeId => {
-      if (!agreementContract) {
-        return
-      }
-
-      const challengeData = await agreementContract.getChallenge(challengeId)
-
-      return challengeData
-    },
-    [agreementContract]
   )
 
   // Hoked token manager actions
@@ -347,15 +463,21 @@ export default function useActions() {
         return
       }
 
-      const intent = approve(
+      const trxs = approve(
         amount,
         wrappableTokenContract,
-        hookedTokenManagerApp.address,
-        `Approve ${wrappableToken.data.symbol}`
+        hookedTokenManagerApp.address
       )
 
+      const description = radspec[actions.APPROVE_TOKEN]({
+        tokenSymbol: wrappableToken.data.symbol,
+      })
+      const type = actions.APPROVE_TOKEN
+
+      const transactions = attachTrxMetadata(trxs, description, type)
+
       if (mounted()) {
-        onDone(intent)
+        onDone(transactions)
       }
     },
     [
@@ -382,8 +504,17 @@ export default function useActions() {
 
       intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
 
+      const description = radspec[actions.WRAP_TOKEN]()
+      const type = actions.WRAP_TOKEN
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, hookedTokenManagerApp, mounted]
@@ -397,45 +528,132 @@ export default function useActions() {
 
       intent = imposeGasLimit(intent, WRAP_GAS_LIMIT)
 
+      const description = radspec[actions.UNWRAP_TOKEN]()
+      const type = actions.UNWRAP_TOKEN
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
       if (mounted()) {
-        onDone(intent.transactions)
+        onDone(transactions)
       }
     },
     [account, hookedTokenManagerApp, mounted]
   )
 
-  // TODO: Memoize objects
-  return {
-    agreementActions: {
+  // Price Oracle Actions
+  const updatePriceOracle = useCallback(
+    async (onDone = noop) => {
+      const updatePriceOracleData = encodeFunctionData(
+        priceOracleContract,
+        'update',
+        [stableToken, mainToken.data.id]
+      )
+
+      let transactions = [
+        {
+          data: updatePriceOracleData,
+          from: account,
+          to: priceOracleContract.address,
+        },
+      ]
+
+      const description = radspec[actions.UPDATE_PRICE_ORACLE]()
+      const type = actions.UPDATE_PRICE_ORACLE
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, priceOracleContract, mainToken, stableToken]
+  )
+  // Unipool actions
+  const claimRewards = useCallback(
+    (onDone = noop) => {
+      const getRewardData = encodeFunctionData(unipoolContract, 'getReward', [])
+      let transactions = [
+        {
+          data: getRewardData,
+          from: account,
+          to: unipoolContract.address,
+        },
+      ]
+
+      const description = radspec[actions.CLAIM_REWARDS]()
+      const type = actions.CLAIM_REWARDS
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, unipoolContract]
+  )
+
+  return useMemo(
+    () => ({
+      agreementActions: {
+        approveTokenAmount,
+        challengeAction,
+        disputeAction,
+        getAllowance: getAgreementTokenAllowance,
+        resolveAction,
+        settleAction,
+        signAgreement,
+      },
+      convictionActions: {
+        executeProposal,
+        cancelProposal,
+        newProposal,
+        newSignalingProposal,
+        stakeToProposal,
+        withdrawFromProposal,
+      },
+      hookedTokenManagerActions: {
+        approveWrappableTokenAmount,
+        getAllowance: getHookedTokenManagerAllowance,
+        wrap,
+        unwrap,
+      },
+      issuanceActions: { executeIssuance },
+      priceOracleActions: { updatePriceOracle },
+      unipoolActions: { claimRewards },
+      votingActions: {
+        executeDecision,
+        voteOnDecision,
+      },
+    }),
+    [
       approveTokenAmount,
       challengeAction,
       disputeAction,
-      getAllowance: getAgreementTokenAllowance,
-      getChallenge,
+      getAgreementTokenAllowance,
       resolveAction,
       settleAction,
       signAgreement,
-    },
-    convictionActions: {
       executeProposal,
       cancelProposal,
       newProposal,
       newSignalingProposal,
       stakeToProposal,
       withdrawFromProposal,
-    },
-    hookedTokenManagerActions: {
       approveWrappableTokenAmount,
-      getAllowance: getHookedTokenManagerAllowance,
+      getHookedTokenManagerAllowance,
       wrap,
       unwrap,
-    },
-    issuanceActions: { executeIssuance },
-    votingActions: {
+      executeIssuance,
+      updatePriceOracle,
+      claimRewards,
       executeDecision,
       voteOnDecision,
-    },
-  }
+    ]
+  )
 }
 
 async function sendIntent(
@@ -459,4 +677,8 @@ function imposeGasLimit(intent, gasLimit) {
     ...intent,
     transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
   }
+}
+
+function attachTrxMetadata(transactions, description, type) {
+  return transactions.map(tx => ({ ...tx, description, type }))
 }

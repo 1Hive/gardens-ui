@@ -1,42 +1,45 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
-import { IntercomProvider } from 'react-use-intercom'
 import { Main } from '@1hive/1hive-ui'
+
+import GlobalErrorHandler from './GlobalErrorHandler'
 import MainView from '@components/MainView'
 import Routes from './routes/Routes'
-import GlobalErrorHandler from './GlobalErrorHandler'
+import WelcomeLoader from '@components/Welcome/WelcomeLoader'
+
+import { ActivityProvider } from './providers/ActivityProvider'
 import { GardensProvider } from './providers/Gardens'
-import { WalletProvider } from './providers/Wallet'
 import { ProfileProvider } from './providers/Profile'
 import { useAppTheme } from './providers/AppTheme'
 import theme from './theme'
-import env from './environment'
+import { WalletProvider } from './providers/Wallet'
 
 function App() {
   const { appearance } = useAppTheme()
 
   return (
     <HashRouter>
-      <IntercomProvider appId={env('INTERCOM_APP_ID')} autoBoot>
-        <Main
-          assetsUrl="/aragon-ui/"
-          layout={false}
-          scrollView={false}
-          theme={theme[appearance]}
-        >
-          <GlobalErrorHandler>
-            <WalletProvider>
+      <Main
+        assetsUrl="/aragon-ui/"
+        layout={false}
+        scrollView={false}
+        theme={theme[appearance]}
+      >
+        <GlobalErrorHandler>
+          <WalletProvider>
+            <ActivityProvider>
               <ProfileProvider>
                 <GardensProvider>
+                  <WelcomeLoader />
                   <MainView>
                     <Routes />
                   </MainView>
                 </GardensProvider>
               </ProfileProvider>
-            </WalletProvider>
-          </GlobalErrorHandler>
-        </Main>
-      </IntercomProvider>
+            </ActivityProvider>
+          </WalletProvider>
+        </GlobalErrorHandler>
+      </Main>
     </HashRouter>
   )
 }

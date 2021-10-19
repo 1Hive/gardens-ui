@@ -11,8 +11,14 @@ function ProposalDescription({ proposal, onSelectProposal }) {
       onClick={onSelectProposal}
       css={`
         cursor: pointer;
-        ${textStyle('body1')};
         margin-bottom: ${3 * GU}px;
+        ${textStyle('body1')};
+        text-decoration: underline;
+        overflow-wrap: anywhere;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       `}
     >
       {proposal.type === ProposalTypes.Decision ? (
@@ -44,6 +50,7 @@ function DecisionDescription({ proposal }) {
           css={`
             -webkit-line-clamp: 2;
             overflow: hidden;
+            max-width: 750px;
             -webkit-box-orient: vertical;
             display: -webkit-box;
           `}

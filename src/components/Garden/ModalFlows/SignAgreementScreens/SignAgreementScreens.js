@@ -19,7 +19,7 @@ function SignAgreementScreens({ versionId }) {
     history.push(path)
   }, [history])
 
-  const renderOnCompleteActions = useCallback(() => {
+  const onCompleteActions = useMemo(() => {
     return (
       <Button
         label="Create proposal"
@@ -32,10 +32,13 @@ function SignAgreementScreens({ versionId }) {
 
   const getTransactions = useCallback(
     async onComplete => {
-      await actions.agreementActions.signAgreement({ versionId }, intent => {
-        setTransactions(intent.transactions)
-        onComplete()
-      })
+      await actions.agreementActions.signAgreement(
+        { versionId },
+        transactions => {
+          setTransactions(transactions)
+          onComplete()
+        }
+      )
     },
     [actions, versionId]
   )
@@ -57,7 +60,7 @@ function SignAgreementScreens({ versionId }) {
       transactions={transactions}
       transactionTitle="Sign Covenant"
       screens={screens}
-      onCompleteActions={renderOnCompleteActions}
+      onCompleteActions={onCompleteActions}
     />
   )
 }

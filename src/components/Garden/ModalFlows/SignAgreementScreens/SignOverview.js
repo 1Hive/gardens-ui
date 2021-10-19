@@ -72,11 +72,10 @@ function SignOverview({ getTransactions }) {
         {`By signing this Covenant, you agree to the ${connectedGarden.name} Community manifesto, by
         laws and community code of behavior.`}
       </label>
-      <Field label="Covenant action collateral">
+      <Field label="Covenant deposit manager">
         <p>
-          {`In order to perform or challenge actions bound by this Covenant, you
-          must deposit some ${mainToken.data.symbol} as the action collateral first. Different apps
-          might require different tokens and amounts as the action collateral.`}
+          {`In order to create or challenge proposals bound by this Covenant, you
+          will need to add some funds (${mainToken.data.symbol}) to the deposit manager.`}
         </p>
       </Field>
 

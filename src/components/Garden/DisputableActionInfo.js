@@ -38,11 +38,11 @@ function getInfoActionContent(proposal, account, actions) {
       return {
         info:
           proposal.type === ProposalTypes.Suggestion
-            ? 'The suggestion will exist until it is successfully challenged or removed.'
-            : `The proposed action will be executed if nobody challenges it ${
+            ? 'This suggestion will remain open until it is either successfully challenged or removed by the original author.'
+            : `This proposal is currently open. It will pass if nobody successfully challenges it ${
                 proposal.type === ProposalTypes.Decision
                   ? 'during the voting period and the result of the vote is cast with majority support'
-                  : 'and the proposal accrues sufficient conviction'
+                  : 'and it receives enough support'
               }.`,
         actions: isSubmitter
           ? []

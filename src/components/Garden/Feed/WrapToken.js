@@ -13,6 +13,7 @@ import {
 
 import { useGardenState } from '@providers/GardenState'
 import { useAppTheme } from '@providers/AppTheme'
+import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
@@ -21,7 +22,7 @@ import wrappedIconDark from '@assets/dark-mode/wrappedIconDark.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import unwrappedIconDark from '@assets/dark-mode/unwrappedIconDark.svg'
 
-function WrapToken({ onUnwrapToken, onWrapToken }) {
+function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
   const AppTheme = useAppTheme()
   const { token, wrappableToken } = useGardenState()
@@ -30,6 +31,8 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
 
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
+
+  const earnedRewards = useUnipoolRewards()
 
   return (
     <Box
@@ -53,14 +56,44 @@ function WrapToken({ onUnwrapToken, onWrapToken }) {
           darkTheme={AppTheme.appearance === 'dark'}
         />
         <LineSeparator border={theme.border} />
-        <Token
-          balance={token.accountBalance}
-          loading={loading}
-          mode="unwrap"
-          onClick={onUnwrapToken}
-          token={token.data}
-          darkTheme={AppTheme.appearance === 'dark'}
-        />
+        <div>
+          <Token
+            balance={token.accountBalance}
+            loading={loading}
+            mode="unwrap"
+            onClick={onUnwrapToken}
+            token={token.data}
+            darkTheme={AppTheme.appearance === 'dark'}
+          />
+          {earnedRewards.gt('0') && (
+            <div
+              css={`
+                margin-top: ${3 * GU}px;
+                padding-top: ${2 * GU}px;
+                border-top: 1px solid ${theme.border};
+              `}
+            >
+              Earned rewards:{' '}
+              <span
+                css={`
+                  color: ${theme.positive};
+                `}
+              >
+                {formatTokenAmount(earnedRewards, wrappableToken.data.decimals)}{' '}
+                {wrappableToken.data.symbol}
+              </span>{' '}
+              <Button
+                label="Claim"
+                mode="strong"
+                wide
+                onClick={onClaimRewards}
+                css={`
+                  margin-top: ${1.5 * GU}px;
+                `}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </Box>
   )

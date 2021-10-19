@@ -6,13 +6,19 @@ import { getNetwork } from '../networks'
 
 function ConnectProvider({ children }) {
   const { connectedGarden } = useGardens()
+  const { chainId, subgraphs } = getNetwork()
 
   return (
     <Connect
       location={connectedGarden.address}
-      connector="thegraph"
+      connector={[
+        'thegraph',
+        {
+          orgSubgraphUrl: subgraphs.organizations,
+        },
+      ]}
       options={{
-        network: getNetwork().chainId,
+        network: chainId,
         ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
       }}
     >

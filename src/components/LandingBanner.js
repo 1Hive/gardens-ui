@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, useLayout, useTheme, useViewport } from '@1hive/1hive-ui'
+import { useWallet } from '@providers/Wallet'
 
 import { useAppTheme } from '@providers/AppTheme'
 
@@ -41,10 +42,12 @@ const BANNERS = {
   },
 }
 
-const LandingBanner = React.forwardRef((props, ref) => {
+const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
   const theme = useTheme()
   const AppTheme = useAppTheme()
 
+  const { account } = useWallet()
+  const { above } = useViewport()
   const { layoutName } = useLayout()
 
   const { aspectRatio, hFontSize, image, imageDark, pFontSize } = BANNERS[
@@ -115,6 +118,7 @@ const LandingBanner = React.forwardRef((props, ref) => {
               css={`
                 display: flex;
                 align-items: center;
+                justify-content: center;
               `}
             >
               <Button
@@ -126,12 +130,14 @@ const LandingBanner = React.forwardRef((props, ref) => {
                   margin-right: ${2 * GU}px;
                 `}
               />
-              <Button
-                label="Overview"
-                href="https://gardens.substack.com/p/introducing-gardens"
-                mode="strong"
-                wide
-              />
+              {above('medium') && account && (
+                <Button
+                  label="Create a Garden"
+                  mode="strong"
+                  onClick={onCreateGarden}
+                  wide
+                />
+              )}
             </div>
           </div>
         </div>

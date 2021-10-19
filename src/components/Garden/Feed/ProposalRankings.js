@@ -17,10 +17,12 @@ const iconsMapping = {
   top: {
     icon: iconTopSvg,
     iconSelected: iconTopSelectedSvg,
+    label: 'Most supported',
   },
   new: {
     icon: iconNewSvg,
     iconSelected: iconNewSelectedSvg,
+    label: 'Newest',
   },
 }
 
@@ -37,6 +39,10 @@ const iconsMappingDarkMode = {
 
 function getRankingIcon(key, selected, mappingType) {
   return mappingType[key][selected ? 'iconSelected' : 'icon']
+}
+
+function getRankingLabel(key) {
+  return iconsMapping[key].label
 }
 
 function ProposalRankings({ items, onChange, selected }) {
@@ -58,7 +64,7 @@ function ProposalRankings({ items, onChange, selected }) {
           key={index}
           icon={getRankingIcon(item, selected === index, mappingType)}
           index={index}
-          label={item}
+          label={getRankingLabel(item)}
           onSelect={onChange}
           selected={selected === index}
         />

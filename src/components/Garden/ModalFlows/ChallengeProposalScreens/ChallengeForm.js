@@ -141,13 +141,13 @@ function ChallengeRequirements({ getTransactions, proposal }) {
             ${textStyle('body3')};
           `}
         >
-          This amount cannot be greater than the stake locked for the action
-          submmission: {maxChallengeAmount} {tokenSymbol}.
+          This amount cannot be greater than the proposal creation deposit
+          amount : {maxChallengeAmount} {tokenSymbol}.
         </p>
       </Field>
 
       <Field
-        label="Argument in favour of cancelling action"
+        label="Argument in favour of your challenge"
         css={`
           margin-bottom: 0px;
         `}
