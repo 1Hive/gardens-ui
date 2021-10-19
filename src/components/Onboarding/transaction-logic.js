@@ -169,20 +169,28 @@ export function createTokenHoldersTx({ tokens }) {
   }
 }
 
-export function createGardenTxTwo({ conviction, issuance }) {
+export function createGardenTxTwo({ conviction, garden, issuance }) {
   const requestToken = conviction.requestToken || ZERO_ADDR
+  let targetRatio, maxAdjustmentRatioPerSec
+
+  // New token
+  if (garden.type === NATIVE_TYPE) {
+    // See https://github.com/1Hive/issuance-dynamic/blob/master/contracts/Issuance.sol#L35
+    maxAdjustmentRatioPerSec = Math.floor(
+      (issuance.maxAdjustmentRatioPerYear / 100 / YEARS_IN_SECONDS) *
+        ONE_HUNDRED_PCT
+    )
+    targetRatio = issuance.targetRatio / 100
+  } else {
+    // No issuance
+    maxAdjustmentRatioPerSec = 0
+    targetRatio = 0
+  }
 
   // Adjust issuance params
-  const { maxAdjustmentRatioPerYear, targetRatio } = issuance
-
-  // See https://github.com/1Hive/issuance-dynamic/blob/master/contracts/Issuance.sol#L35
-  const maxAdjustmentRatioPerSec =
-    (maxAdjustmentRatioPerYear / 100 / YEARS_IN_SECONDS) * ONE_HUNDRED_PCT
   const adjustedMaxAdjustmentRatioPerSec = maxAdjustmentRatioPerSec.toString(10)
-
   const adjustedTargetRatio = (
-    (targetRatio / 100) *
-    ISSUANCE_ONE_HUNDRED_PERCENT
+    targetRatio * ISSUANCE_ONE_HUNDRED_PERCENT
   ).toString(10)
 
   // Adjust conviction voting params
