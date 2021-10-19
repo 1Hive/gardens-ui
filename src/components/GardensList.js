@@ -48,8 +48,7 @@ function GardensList({ gardens }) {
             css={`
               display: grid;
               grid-gap: ${4 * GU}px;
-              grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-              grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+              grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
               margin-bottom: ${2 * GU}px;
             `}
           >
