@@ -11,7 +11,7 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 import EmptyResults from './EmptyResults'
 
-const GARDENS_PER_PAGE = 8
+const GARDENS_PER_PAGE = 10
 
 const computeCurrentGardens = (gardens, currentPage) => {
   const currentGardens = gardens.slice(
@@ -47,7 +47,7 @@ function GardensList({ gardens }) {
           <div
             css={`
               display: grid;
-              grid-gap: ${4 * GU}px;
+              grid-gap: ${2 * GU}px;
               grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
               margin-bottom: ${2 * GU}px;
             `}
