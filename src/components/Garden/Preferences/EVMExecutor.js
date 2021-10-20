@@ -1,20 +1,37 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Box, DropDown, Field, GU, TextInput } from '@1hive/1hive-ui'
+import {
+  Box,
+  Button,
+  DropDown,
+  Field,
+  GU,
+  Info,
+  TextInput,
+} from '@1hive/1hive-ui'
 import { EVMcrispr } from '@1hive/evmcrispr'
+
+import MultiModal from '@components/MultiModal/MultiModal'
+import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 
 import { useGardens } from '@/providers/Gardens'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
+import actions from '../../../actions/garden-action-types'
+import radspec from '../../../radspec'
+
 function EVMExecutor() {
-  const { ethers } = useWallet()
+  const { account, ethers } = useWallet()
   const { connectedGarden } = useGardens()
+  const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
+    false
+  )
   const [evmcrispr, setEvmcrispr] = useState(null)
   const [installedApps, setInstalledApps] = useState([])
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
-  // const [parameters, setParameters] = useState([])
+  const [parameters, setParameters] = useState([])
 
   useEffect(() => {
     async function getEvmCrispr() {
@@ -70,18 +87,42 @@ function EVMExecutor() {
       installedApps[selectedApp]
     )[functionList[selectedFunction]]
 
-    console.log('param types ', paramTypes)
-
     return paramNames.map((parameter, index) => {
       return [parameter, paramTypes[index]]
     })
   }, [evmcrispr, installedApps, functionList, selectedApp, selectedFunction])
 
-  console.log('required parameters ', requiredParameters)
-
-  const handleOnChangeParameters = useCallback((index, e) => {
-    console.log('index!! ', index)
+  const handleOnChangeParameters = useCallback((index, event) => {
+    const newValue = event.target.value
+    setParameters(prevState => {
+      const newArray = [...prevState]
+      newArray[index] = newValue
+      return newArray
+    })
   }, [])
+
+  const handleOnCreateIntent = useCallback(async () => {
+    const description = radspec[actions.NEW_DECISION]()
+    const type = actions.NEW_DECISION
+    const intent = await evmcrispr.encode(
+      [
+        evmcrispr
+          .call(installedApps[selectedApp])
+          [functionList[selectedFunction]](...parameters),
+      ],
+      ['disputable-voting'],
+      { context: 'hello' }
+    )
+
+    return [{ ...intent.action, description: description, type: type }]
+  }, [
+    evmcrispr,
+    installedApps,
+    selectedApp,
+    functionList,
+    selectedFunction,
+    parameters,
+  ])
 
   if (!connectedGarden || !ethers) {
     return null
@@ -113,7 +154,7 @@ function EVMExecutor() {
             return (
               <TextInput
                 key={index}
-                handleOnChange={() => handleOnChangeParameters(index)}
+                onChange={event => handleOnChangeParameters(index, event)}
                 placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
                 wide
                 css={`
@@ -124,6 +165,33 @@ function EVMExecutor() {
           })}
         </Field>
       )}
+      {!account && (
+        <Info
+          mode="warning"
+          css={`
+            margin-top: ${2 * GU}px;
+            margin-bottom: ${2 * GU}px;
+          `}
+        >
+          You must connect your account in order to create a decision.
+        </Info>
+      )}
+      {selectedFunction && (
+        <Button
+          disabled={!account}
+          mode="strong"
+          wide
+          onClick={() => setCreateDecisionModalVisible(true)}
+        >
+          Execute
+        </Button>
+      )}
+      <MultiModal
+        visible={createDecisionModalVisible}
+        onClose={() => setCreateDecisionModalVisible(false)}
+      >
+        <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
+      </MultiModal>
     </Box>
   )
 }
