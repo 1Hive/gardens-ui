@@ -27,7 +27,6 @@ function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
   const getTransactions = useCallback(
     async onComplete => {
       const intent = await onCreateTransaction()
-      console.log('intent!!!! ', intent)
       setTransactions(intent)
       onComplete()
     },
