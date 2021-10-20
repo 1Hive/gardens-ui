@@ -17,6 +17,7 @@ import { useGardens } from '@/providers/Gardens'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
+// import { asciiToHex } from '@utils/web3-utils'
 
 import actions from '../../../actions/garden-action-types'
 import radspec from '../../../radspec'
@@ -104,6 +105,10 @@ function EVMExecutor() {
   const handleOnCreateIntent = useCallback(async () => {
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
+    console.log(
+      'functionList[selectedFunction] ',
+      functionList[selectedFunction]
+    )
     const intent = await evmcrispr.encode(
       [
         evmcrispr
@@ -111,6 +116,9 @@ function EVMExecutor() {
           [functionList[selectedFunction]](...parameters),
       ],
       ['disputable-voting'],
+      // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+      // { context: asciiToHex(functionList[selectedFunction]) }
+      // having some issue on the lib when passing the function that need to check with david
       { context: 'hello' }
     )
 
