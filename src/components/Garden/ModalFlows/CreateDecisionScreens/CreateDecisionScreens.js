@@ -4,7 +4,6 @@ import ActionFees from './ActionFees'
 import CreateDecisionRequirements from './CreateDecisionRequirements'
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
-// import useActions from '@hooks/useActions'
 import { useStakingState } from '@providers/Staking'
 
 function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
@@ -13,7 +12,6 @@ function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
   const { account } = useWallet()
   const [agreement, agreementLoading] = useAgreement()
   const { stakeManagement, loading: stakingLoading } = useStakingState()
-  // const { convictionActions } = useActions()
 
   useEffect(() => {
     setLoading(true)
