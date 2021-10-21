@@ -83,10 +83,10 @@ function AppsAddresses() {
                 text-align: center;
               `}
             >
-              {gardenState.config?.conviction.vault && (
+              {gardenState.config?.conviction.fundsManager && (
                 <AppField
-                  name="vault"
-                  address={gardenState.config.conviction.vault}
+                  name="Funds Manager"
+                  address={gardenState.config.conviction.fundsManager}
                 />
               )}
               {gardenState.installedApps.map((app, index) => {
