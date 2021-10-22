@@ -4,6 +4,7 @@ import {
   EthIdenticon,
   Field,
   GU,
+  Info,
   isAddress,
   Link,
   RADIUS,
@@ -38,96 +39,117 @@ function GnosisSafeField({
   )
 
   return (
-    <Field label="Common Pool">
-      {({ id }) => (
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            height: ${5 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              width: 145px;
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <Checkbox
-              checked={gnosisSafeChecked}
-              onChange={hanleGnosisSafeCheckChanged}
-              css={`
-                border-color: ${theme.accent};
-                background: ${theme.surface};
-              `}
-            />
+    <div>
+      <Field label="Common Pool">
+        {({ id }) => (
+          <div>
             <div
               css={`
-                margin-left: ${0.5 * GU}px;
+                display: flex;
+                align-items: center;
+                height: ${5 * GU}px;
               `}
             >
-              <span
-                css={`
-                  white-space: nowrap;
-                `}
-              >
-                Use{' '}
-                <Link
-                  href="https://gnosis-safe.io/"
-                  css={`
-                    text-decoration: none;
-                  `}
-                >
-                  Gnosis Safe
-                </Link>{' '}
-              </span>
-            </div>
-          </div>
-
-          {gnosisSafeChecked && (
-            <div
-              css={`
-                position: relative;
-                margin-left: ${1 * GU}px;
-                width: 100%;
-              `}
-            >
-              <TextInput
-                id={id}
-                onChange={handleGnosisSafeAddressChange}
-                placeholder="Gnosis Safe address"
-                value={gnosisSafeAddress}
-                wide
-                css={`
-                  padding-left: ${4.5 * GU}px;
-                `}
-              />
               <div
                 css={`
-                  position: absolute;
-                  top: ${1 * GU}px;
-                  left: ${1 * GU}px;
+                  width: 145px;
+                  display: flex;
+                  align-items: center;
                 `}
               >
-                {isAddress(gnosisSafeAddress) ? (
-                  <EthIdenticon address={gnosisSafeAddress} radius={RADIUS} />
-                ) : (
-                  <div
+                <Checkbox
+                  checked={gnosisSafeChecked}
+                  onChange={hanleGnosisSafeCheckChanged}
+                  css={`
+                    border-color: ${theme.accent};
+                    background: ${theme.surface};
+                  `}
+                />
+                <div
+                  css={`
+                    margin-left: ${0.5 * GU}px;
+                  `}
+                >
+                  <span
                     css={`
-                      width: ${3 * GU}px;
-                      height: ${3 * GU}px;
-                      background: ${theme.disabled};
-                      border-radius: ${RADIUS}px;
+                      white-space: nowrap;
+                    `}
+                  >
+                    Use{' '}
+                    <Link
+                      href="https://gnosis-safe.io/"
+                      css={`
+                        text-decoration: none;
+                      `}
+                    >
+                      Gnosis Safe
+                    </Link>{' '}
+                  </span>
+                </div>
+              </div>
+
+              {gnosisSafeChecked && (
+                <div
+                  css={`
+                    position: relative;
+                    margin-left: ${1 * GU}px;
+                    width: 100%;
+                  `}
+                >
+                  <TextInput
+                    id={id}
+                    onChange={handleGnosisSafeAddressChange}
+                    placeholder="Gnosis Safe address"
+                    value={gnosisSafeAddress}
+                    wide
+                    css={`
+                      padding-left: ${4.5 * GU}px;
                     `}
                   />
-                )}
-              </div>
+                  <div
+                    css={`
+                      position: absolute;
+                      top: ${1 * GU}px;
+                      left: ${1 * GU}px;
+                    `}
+                  >
+                    {isAddress(gnosisSafeAddress) ? (
+                      <EthIdenticon
+                        address={gnosisSafeAddress}
+                        radius={RADIUS}
+                      />
+                    ) : (
+                      <div
+                        css={`
+                          width: ${3 * GU}px;
+                          height: ${3 * GU}px;
+                          background: ${theme.disabled};
+                          border-radius: ${RADIUS}px;
+                        `}
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
-    </Field>
+            {gnosisSafeChecked && (
+              <Info
+                mode="warning"
+                css={`
+                  margin-top: ${3 * GU}px;
+                `}
+              >
+                Using a Gnosis Safe will require for you to set the FundsManager
+                contract as a module on your Safe so that it allows it to
+                transfer funds after execution of Conviction Voting proposals.
+                You can find the FundsManager address in the settings page of
+                your garden.
+              </Info>
+            )}
+          </div>
+        )}
+      </Field>
+    </div>
   )
 }
 
