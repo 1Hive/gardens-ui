@@ -150,6 +150,9 @@ function AgreementSettings() {
     setFormatValidationColor(theme.error)
   }, [theme])
 
+  const collateralTokenSymbol =
+    config.tokens.existingTokenSymbol || config.tokens.symbol
+
   return (
     <div>
       <Header
@@ -254,7 +257,7 @@ function AgreementSettings() {
           }
           value={actionAmount}
           onChange={handleActionAmount}
-          unitSymbol={config.tokens.symbol}
+          unitSymbol={collateralTokenSymbol}
           wide
         />
         <AmountField
@@ -270,7 +273,7 @@ function AgreementSettings() {
           }
           value={challengeAmount}
           onChange={handleChallengeAmount}
-          unitSymbol={config.tokens.symbol}
+          unitSymbol={collateralTokenSymbol}
           wide
         />
         <DurationFields
