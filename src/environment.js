@@ -49,9 +49,6 @@ const ENV_VARS = {
   INSTANCE() {
     return process.env.REACT_APP_APP_INSTANCE || ''
   },
-  INTERCOM_APP_ID() {
-    return process.env.REACT_APP_INTERCOM_APP_ID || ''
-  },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
   },

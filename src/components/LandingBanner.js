@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, GU, useLayout, useTheme, useViewport } from '@1hive/1hive-ui'
-import { useWallet } from '@providers/Wallet'
 
 import desktopBanner from '@assets/landingBanner.png'
 import mobileBanner from '@assets/landingBanner-mobile.png'
@@ -35,7 +34,6 @@ const BANNERS = {
 
 const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
   const theme = useTheme()
-  const { account } = useWallet()
   const { above } = useViewport()
   const { layoutName } = useLayout()
 
@@ -116,7 +114,7 @@ const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
                   margin-right: ${2 * GU}px;
                 `}
               />
-              {above('medium') && account && (
+              {above('medium') && (
                 <Button
                   label="Create a Garden"
                   mode="strong"
