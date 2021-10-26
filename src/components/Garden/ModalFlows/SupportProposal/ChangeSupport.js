@@ -51,7 +51,7 @@ const ChangeSupport = React.memo(function ChangeSupport({
   useEffect(() => {
     if (myStake.amount) {
       setAmount({
-        value: fromDecimals(myStake.amount.toString(), stakeToken.decimals),
+        value: fromDecimals(myStake.amount.toString(10), stakeToken.decimals),
         valueBN: myStake.amount,
       })
     }
@@ -174,31 +174,33 @@ const ChangeSupport = React.memo(function ChangeSupport({
           {errorMessage}
         </Info>
       )}
-      <Info
-        css={`
-          margin-top: ${2 * GU}px;
-        `}
-      >
-        You are currently supporting this proposal with{' '}
-        <strong>
-          {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
-          {stakeToken.symbol}
-        </strong>
-        . You have up to{' '}
-        <strong>
-          {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
-          {stakeToken.symbol}
-        </strong>{' '}
-        ({maxStakedPct}% of your balance) available to support this proposal.{' '}
-        <span>
-          You are supporting other proposals with{' '}
+      {!proposal.hasEnded && (
+        <Info
+          css={`
+            margin-top: ${2 * GU}px;
+          `}
+        >
+          You are currently supporting this proposal with{' '}
           <strong>
-            {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
+            {formatTokenAmount(myStake.amount, stakeToken.decimals)}{' '}
+            {stakeToken.symbol}
+          </strong>
+          . You have up to{' '}
+          <strong>
+            {formatTokenAmount(maxAvailable, stakeToken.decimals)}{' '}
             {stakeToken.symbol}
           </strong>{' '}
-          ({stakedOthersPct}% of your balance).
-        </span>
-      </Info>
+          ({maxStakedPct}% of your balance) available to support this proposal.{' '}
+          <span>
+            You are supporting other proposals with{' '}
+            <strong>
+              {formatTokenAmount(totalStakedOnOthers, stakeToken.decimals)}{' '}
+              {stakeToken.symbol}
+            </strong>{' '}
+            ({stakedOthersPct}% of your balance).
+          </span>
+        </Info>
+      )}
       <Button
         css={`
           margin-top: ${GU * 3}px;
