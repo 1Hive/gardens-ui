@@ -273,7 +273,7 @@ function Dispute({ onResolveAction, proposal }) {
                 margin-right: ${0.5 * GU}px;
               `}
             >
-              Celeste Q#{proposal.disputeId}
+              Celeste D#{proposal.disputeId}
             </Link>
             <span
               css={`
