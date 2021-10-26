@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, GU, useTheme } from '@1hive/1hive-ui'
 
-function MenuItem({ active, path, name, src }) {
+function MenuItem({ active, path, label, src }) {
   const theme = useTheme()
 
   return (
@@ -10,9 +10,11 @@ function MenuItem({ active, path, name, src }) {
         position: relative;
         background: ${active ? 'rgb(227, 240, 213)' : theme.surface};
         height: ${8.5 * GU}px;
-        ${name &&
+        width: 100%;
+        ${label &&
           ` &:hover:after {
-              content: "${name}";
+              position: fixed;
+              content: "${label}";
               background: rgba(44, 52, 55, 0.8);
               border-radius: 12px;
               color: white;
@@ -20,7 +22,6 @@ function MenuItem({ active, path, name, src }) {
               position: absolute;
               top: calc(50% - 16px);
               left: 80px;
-              z-index: 2;
           }
         `}
       `}

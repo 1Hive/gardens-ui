@@ -34,16 +34,21 @@ function Sidebar() {
   }, [gardens, connectedUser])
   const startTrail = sidebarGardens.length > 0
   const trail = useTrail(sidebarGardens.length, {
-    config: { mass: 5, tension: 2300, friction: 150 },
+    config: { mass: 5, tension: 1500, friction: 150 },
+    delay: 700,
     opacity: startTrail ? 1 : 0,
-    left: startTrail ? '0' : '-40px',
-    from: { left: '-40px', opacity: 0 },
+    marginLeft: startTrail ? '0' : '-40px',
+    from: { marginLeft: '-40px', opacity: 0 },
   })
 
   return (
     <div
       css={`
-        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 2;
         width: ${9 * GU}px;
         flex-shrink: 0;
         background: ${theme.surface};
@@ -58,7 +63,6 @@ function Sidebar() {
       >
         <div
           css={`
-            display: flex;
             padding-bottom: ${1.5 * GU}px;
             border-bottom: 1px solid ${theme.border};
           `}
@@ -83,8 +87,11 @@ function Sidebar() {
       </div>
       <nav
         css={`
+          position: fixed;
           height: 100vh;
           overflow-y: scroll;
+          width: 100%;
+          pointer-events: none;
           -ms-overflow-style: none; /* IE and Edge */
           scrollbar-width: none; /* Firefox */
           &::-webkit-scrollbar {
@@ -92,29 +99,32 @@ function Sidebar() {
           }
         `}
       >
-        {userLoading ? (
-          <div
-            css={`
-              display: flex;
-              justify-content: center;
-              margin-top: ${6 * GU}px;
-            `}
-          >
-            <LoadingRing mode="half-circle" />
-          </div>
-        ) : (
-          <div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            pointer-events: auto;
+          `}
+        >
+          {userLoading ? (
+            <div
+              css={`
+                margin-top: ${6 * GU}px;
+                margin-left: ${2 * GU}px;
+              `}
+            >
+              <LoadingRing mode="half-circle" />
+            </div>
+          ) : (
             <ul>
               {trail.map((style, index) => {
                 const { address, name, path, src } = sidebarGardens[index]
                 return (
-                  <animated.div
-                    key={sidebarGardens[index].address}
-                    style={{ position: 'relative', ...style }}
-                  >
+                  <animated.div key={address} style={style}>
                     <MenuItem
                       active={addressesEqual(address, connectedGarden?.address)}
-                      name={name}
+                      label={name || address}
                       path={path}
                       src={src}
                     />
@@ -122,8 +132,8 @@ function Sidebar() {
                 )
               })}
             </ul>
-          </div>
-        )}
+          )}
+        </div>
       </nav>
     </div>
   )
