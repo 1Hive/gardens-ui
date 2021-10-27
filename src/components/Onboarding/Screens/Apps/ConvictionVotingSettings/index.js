@@ -1,5 +1,13 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Button, GU, Help, textStyle, useTheme } from '@1hive/1hive-ui'
+import {
+  Button,
+  GU,
+  Help,
+  Info,
+  isAddress,
+  textStyle,
+  useTheme,
+} from '@1hive/1hive-ui'
 import AdvancedSettingsModal from './AdvancedSettingsModal'
 import ConvictionVotingCharts from './ConvictionVotingCharts'
 import Navigation from '@components/Onboarding/Navigation'
@@ -94,6 +102,8 @@ function ConvictionVotingSettings() {
 
   const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
 
+  const requestTokenInvalid = Boolean(requestToken) && !isAddress(requestToken)
+
   const handleHalflifeDaysChange = useCallback(
     value => {
       updateField(['halflifeDays', value])
@@ -122,6 +132,13 @@ function ConvictionVotingSettings() {
   const handleMinThresholdStakePctChange = useCallback(
     value => {
       updateField(['minThresholdStakePct', value])
+    },
+    [updateField]
+  )
+
+  const handleRequestTokenChange = useCallback(
+    value => {
+      updateField(['requestToken', value])
     },
     [updateField]
   )
@@ -235,7 +252,9 @@ function ConvictionVotingSettings() {
             `}
           />
           <AdvancedSettingsModal
+            requestToken={requestToken}
             minThresholdStakePct={minThresholdStakePct}
+            handleRequestTokenChange={handleRequestTokenChange}
             handleMinThresholdStakePctChange={handleMinThresholdStakePctChange}
             visible={modalVisible}
             onClose={handleCloseModal}
@@ -298,9 +317,20 @@ function ConvictionVotingSettings() {
         </div>
       </div>
 
+      {requestTokenInvalid && (
+        <Info
+          mode="error"
+          css={`
+            margin-bottom: ${3 * GU}px;
+          `}
+        >
+          The request token address should be a valid address.
+        </Info>
+      )}
+
       <Navigation
         backEnabled
-        nextEnabled
+        nextEnabled={!requestTokenInvalid}
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}
