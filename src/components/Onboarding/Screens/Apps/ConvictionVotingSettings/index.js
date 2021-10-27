@@ -137,8 +137,8 @@ function ConvictionVotingSettings() {
   )
 
   const handleRequestTokenChange = useCallback(
-    value => {
-      updateField(['requestToken', value])
+    event => {
+      updateField(['requestToken', event.target.value])
     },
     [updateField]
   )
