@@ -35,7 +35,7 @@ function Sidebar() {
   const startTrail = sidebarGardens.length > 0
   const trail = useTrail(sidebarGardens.length, {
     config: { mass: 5, tension: 1500, friction: 150 },
-    delay: 700,
+    delay: 300,
     opacity: startTrail ? 1 : 0,
     marginLeft: startTrail ? '0' : '-40px',
     from: { marginLeft: '-40px', opacity: 0 },
