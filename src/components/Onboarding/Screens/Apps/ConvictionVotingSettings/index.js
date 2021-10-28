@@ -283,7 +283,7 @@ function ConvictionVotingSettings() {
                   Requested Amount
                   <Help hint="What is Requested Amount?">
                     <strong>Requested Amount</strong> is the percentage of the
-                    total supply being requested.
+                    common pool being requested.
                   </Help>
                 </Fragment>
               }
