@@ -291,6 +291,14 @@ const ReviewTokens = () => {
           </>
         )}
       </TwoCols>
+      {config.tokens.gnosisSafe && (
+        <Field
+          label="Gnosis safe"
+          value={
+            <AddressBadge address={config.tokens.gnosisSafe} shorten={false} />
+          }
+        />
+      )}
     </div>
   )
 }

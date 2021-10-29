@@ -133,7 +133,7 @@ export function createGardenTxOne({
     transaction: createTemplateTx(
       'createGardenTxOne',
       [
-        existingToken,
+        [existingToken, tokens.gnosisSafe || ZERO_ADDR],
         tokens.name,
         tokens.symbol,
         [

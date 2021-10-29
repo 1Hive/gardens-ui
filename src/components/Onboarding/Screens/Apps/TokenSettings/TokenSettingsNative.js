@@ -14,6 +14,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
+import GnosisSafeField from './GnosisSafeField'
 import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
@@ -34,12 +35,18 @@ function validateDuplicateAddresses(members) {
   return validAddresses.length === new Set(validAddresses).size
 }
 
-function validationError(tokenName, tokenSymbol, members) {
+function validationError(
+  tokenName,
+  tokenSymbol,
+  members,
+  gnosisSafeAddress,
+  gnosisSafeChecked
+) {
   if (members.some(([address]) => !isAddress(address))) {
-    return 'Every address you provide should be a valid address.'
+    return 'Holders: Every address you provide should be a valid address.'
   }
   if (members.some(([account, stake]) => !(stake > 0))) {
-    return 'Every account has to have a positive balance.'
+    return 'Holders: Every account has to have a positive balance.'
   }
   if (!validateDuplicateAddresses(members)) {
     return 'One of your members is using the same address than another member. Please ensure every member address is unique.'
@@ -49,6 +56,9 @@ function validationError(tokenName, tokenSymbol, members) {
   }
   if (!tokenSymbol) {
     return 'Please add a token symbol.'
+  }
+  if (gnosisSafeChecked && !isAddress(gnosisSafeAddress)) {
+    return 'The Gnosis safe address you provided is invalid.'
   }
   return null
 }
@@ -67,12 +77,16 @@ function TokenSettingsNative() {
   } = useOnboardingState()
 
   const [formError, setFormError] = useState()
-
   const [tokenName, setTokenName] = useState(config.tokens.name)
   const [tokenSymbol, setTokenSymbol] = useState(config.tokens.symbol)
-
   const [members, setMembers] = useState(
     config.tokens.holders.length === 0 ? [['', 0]] : config.tokens.holders
+  )
+  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(
+    config.tokens.gnosisSafe
+  )
+  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(
+    Boolean(config.tokens.gnosisSafe)
   )
 
   const handleTokenNameChange = useCallback(event => {
@@ -142,11 +156,26 @@ function TokenSettingsNative() {
     )
   }, [])
 
+  const handleGnosisSafeAddressChange = useCallback(newAddress => {
+    setFormError(null)
+    setGnosisSafeAddress(newAddress)
+  }, [])
+
+  const handleGnosisSafeCheckChange = useCallback(checked => {
+    setGnosisSafeChecked(checked)
+  }, [])
+
   const handleNext = useCallback(
     event => {
       event.preventDefault()
 
-      const error = validationError(tokenName, tokenSymbol, members)
+      const error = validationError(
+        tokenName,
+        tokenSymbol,
+        members,
+        gnosisSafeAddress,
+        gnosisSafeChecked
+      )
       setFormError(error)
 
       if (!error) {
@@ -154,11 +183,20 @@ function TokenSettingsNative() {
           name: tokenName,
           symbol: tokenSymbol,
           holders: members,
+          gnosisSafe: gnosisSafeAddress,
         })
         onNext()
       }
     },
-    [members, onNext, tokenName, tokenSymbol, onConfigChange]
+    [
+      gnosisSafeAddress,
+      gnosisSafeChecked,
+      members,
+      onConfigChange,
+      onNext,
+      tokenName,
+      tokenSymbol,
+    ]
   )
 
   const hideRemoveButton = members.length < 2 && !members[0]
@@ -265,6 +303,12 @@ function TokenSettingsNative() {
           onClick={addMember}
         />
       </Field>
+      <GnosisSafeField
+        gnosisSafeAddress={gnosisSafeAddress}
+        gnosisSafeChecked={gnosisSafeChecked}
+        onGnosisSafeAddressChange={handleGnosisSafeAddressChange}
+        onGnosisSafeCheckChange={handleGnosisSafeCheckChange}
+      />
       {formError && (
         <Info
           mode="error"
