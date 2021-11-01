@@ -26,7 +26,6 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
@@ -55,6 +54,7 @@ import { ZERO_ADDR } from '@/constants'
 
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
+import ProposalComments from './ProposalComments'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -89,9 +89,6 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
-
-  // We take the last section of the link that includes the topicId
-  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -386,44 +383,7 @@ function ProposalDetail({
             </div>
           }
         />
-        <Split
-          primary={
-            link && (
-              <div
-                css={`
-                  padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
-                `}
-              >
-                <div
-                  css={`
-                    ${textStyle('title3')};
-                  `}
-                >
-                  Comments
-                  <Button
-                    css={`
-                      margin-left: ${1.5 * GU}px;
-                    `}
-                    href={link}
-                    target="_blank"
-                  >
-                    Read proposal ↗
-                  </Button>
-                </div>
-                <DiscourseComments topicId={discourseTopicId} />
-                <Button
-                  href={link}
-                  target="_blank"
-                  css={`
-                    margin-bottom: ${1.5 * GU}px;
-                  `}
-                >
-                  Continue discussion ↗
-                </Button>
-              </div>
-            )
-          }
-        />
+        <ProposalComments link={link} />
       </div>
       <MultiModal
         visible={modalVisible}
