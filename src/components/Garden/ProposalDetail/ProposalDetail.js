@@ -28,6 +28,7 @@ import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
 import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
+import LoadingRing from '@/components/LoadingRing'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalHeader from './ProposalHeader'
@@ -462,7 +463,7 @@ function ArgumentBox({ proposal, connectedAccount }) {
   const theme = useTheme()
 
   const { challenge } = useChallenge(proposal)
-  const [showArgument, setShowArgument] = useState(false)
+  const [showArgument, setShowArgument] = useState(true)
 
   return (
     <>
@@ -508,77 +509,80 @@ function ArgumentBox({ proposal, connectedAccount }) {
           {showArgument ? <IconUp /> : <IconDown />}
         </div>
       </div>
-      {showArgument && (
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-start;
-            margin: ${4.5 * GU}px ${4.5 * GU}px 0 0;
-          `}
-        >
+      {showArgument &&
+        (challenge && challenge.challenger ? (
           <div
             css={`
-              width: ${5 * GU}px;
-              margin-right: ${5 * GU}px;
-            `}
-          >
-            {challenge.challenger.image ? (
-              <img
-                src={challenge.challenger.image}
-                height={43}
-                width={43}
-                css={`
-                  border-radius: 50%;
-                `}
-              />
-            ) : (
-              <EthIdenticon
-                address={challenge.challenger.address}
-                radius={50}
-                scale={1.8}
-              />
-            )}
-          </div>
-          <div
-            css={`
-              flex-direction: column;
+              display: flex;
+              justify-content: flex-start;
+              margin: ${4.5 * GU}px ${4.5 * GU}px 0 0;
             `}
           >
             <div
               css={`
-                display: flex;
-                justify-content: flex-start;
-                width: ${30 * GU}px;
+                width: ${5 * GU}px;
+                margin-right: ${5 * GU}px;
               `}
             >
-              <h2
-                css={`
-                  font-weight: 600;
-                  margin-right: ${1 * GU}px;
-                `}
-              >
-                {challenge.challenger.name
-                  ? challenge.challenger.name
-                  : shortenAddress(challenge.challenger.address)}
-              </h2>
-              <Tag
-                background={theme.warningSurface.toString()}
-                color={theme.warningSurfaceContent.toString()}
-              >
-                challenger
-              </Tag>
+              {challenge.challenger.image ? (
+                <img
+                  src={challenge.challenger.image}
+                  height={43}
+                  width={43}
+                  css={`
+                    border-radius: 50%;
+                  `}
+                />
+              ) : (
+                <EthIdenticon
+                  address={challenge.challenger.address}
+                  radius={50}
+                  scale={1.8}
+                />
+              )}
             </div>
             <div
               css={`
-                margin-top: ${1.5 * GU}px;
-                color: ${theme.contentSecondary};
+                flex-direction: column;
               `}
             >
-              {challenge.context}
+              <div
+                css={`
+                  display: flex;
+                  justify-content: flex-start;
+                  width: ${30 * GU}px;
+                `}
+              >
+                <h2
+                  css={`
+                    font-weight: 600;
+                    margin-right: ${1 * GU}px;
+                  `}
+                >
+                  {challenge.challenger.name
+                    ? challenge.challenger.name
+                    : shortenAddress(challenge.challenger.address)}
+                </h2>
+                <Tag
+                  background={theme.warningSurface.toString()}
+                  color={theme.warningSurfaceContent.toString()}
+                >
+                  challenger
+                </Tag>
+              </div>
+              <div
+                css={`
+                  margin-top: ${1.5 * GU}px;
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                {challenge.context}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <LoadingRing />
+        ))}
     </>
   )
 }
