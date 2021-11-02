@@ -10,7 +10,7 @@ import {
 
 import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
 import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import trxBeingMinedIllustration from '@assets/honey.svg'
+import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
 
 const illustrations = {
   [STEP_WORKING]: trxBeingMinedIllustration,
