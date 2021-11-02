@@ -510,7 +510,7 @@ function ArgumentBox({ proposal, connectedAccount }) {
         </div>
       </div>
       {showArgument &&
-        (challenge && challenge.challenger ? (
+        (challenge?.challenger ? (
           <div
             css={`
               display: flex;
