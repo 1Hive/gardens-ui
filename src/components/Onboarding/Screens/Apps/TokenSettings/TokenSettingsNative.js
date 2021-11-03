@@ -165,36 +165,40 @@ function TokenSettingsNative() {
     setGnosisSafeChecked(checked)
   }, [])
 
-  const handleNext = useCallback(() => {
-    const error = validationError(
+  const handleNext = useCallback(
+    event => {
+      event.preventDefault()
+
+      const error = validationError(
+        tokenName,
+        tokenSymbol,
+        members,
+        gnosisSafeAddress,
+        gnosisSafeChecked
+      )
+      if (error) {
+        setFormError(error)
+        return
+      }
+
+      onConfigChange('tokens', {
+        name: tokenName,
+        symbol: tokenSymbol,
+        holders: members,
+        gnosisSafe: gnosisSafeAddress,
+      })
+      onNext()
+    },
+    [
+      gnosisSafeAddress,
+      gnosisSafeChecked,
+      members,
+      onConfigChange,
+      onNext,
       tokenName,
       tokenSymbol,
-      members,
-      gnosisSafeAddress,
-      gnosisSafeChecked
-    )
-
-    if (error) {
-      setFormError(error)
-      return
-    }
-
-    onConfigChange('tokens', {
-      name: tokenName,
-      symbol: tokenSymbol,
-      holders: members,
-      gnosisSafe: gnosisSafeAddress,
-    })
-    onNext()
-  }, [
-    gnosisSafeAddress,
-    gnosisSafeChecked,
-    members,
-    onConfigChange,
-    onNext,
-    tokenName,
-    tokenSymbol,
-  ])
+    ]
+  )
 
   const hideRemoveButton = members.length < 2 && !members[0]
 

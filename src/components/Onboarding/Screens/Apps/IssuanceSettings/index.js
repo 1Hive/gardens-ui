@@ -9,10 +9,10 @@ const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '100%'
 
 function validationError(targetRatio, maxAdjustmentRatioPerYear) {
-  if (targetRatio === 0) {
+  if (targetRatio === '0') {
     return 'Target ratio cannot be zero.'
   }
-  if (maxAdjustmentRatioPerYear === 0) {
+  if (maxAdjustmentRatioPerYear === '0') {
     return 'Issuance throttle cannot be zero.'
   }
   return null
@@ -80,9 +80,10 @@ function IssuanceSettings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateField])
 
-  const handleNext = () => {
-    const error = validationError(targetRatio, maxAdjustmentRatioPerYear)
+  const handleNext = event => {
+    event.preventDefault()
 
+    const error = validationError(targetRatio, maxAdjustmentRatioPerYear)
     if (error) {
       setFormError(error)
       return

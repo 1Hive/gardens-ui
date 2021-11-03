@@ -99,42 +99,46 @@ function TokenSettingsBYOT() {
     setGnosisSafeChecked(checked)
   }, [])
 
-  const handleNext = useCallback(() => {
-    const error = validationError(
-      tokenAddress,
+  const handleNext = useCallback(
+    event => {
+      event.preventDefault()
+
+      const error = validationError(
+        tokenAddress,
+        gardenTokenName,
+        gardenTokenSymbol,
+        gnosisSafeAddress,
+        gnosisSafeChecked
+      )
+      if (error) {
+        setFormError(error)
+        return
+      }
+
+      onConfigChange('tokens', {
+        address: tokenAddress,
+        name: gardenTokenName,
+        symbol: gardenTokenSymbol,
+        decimals: tokenData.decimals,
+        existingTokenSymbol: tokenData.symbol,
+        gnosisSafe: gnosisSafeAddress,
+      })
+      onConfigChange('conviction', {
+        requestToken: tokenAddress,
+      })
+      onNext()
+    },
+    [
       gardenTokenName,
       gardenTokenSymbol,
       gnosisSafeAddress,
-      gnosisSafeChecked
-    )
-
-    if (error) {
-      setFormError(error)
-      return
-    }
-
-    onConfigChange('tokens', {
-      address: tokenAddress,
-      name: gardenTokenName,
-      symbol: gardenTokenSymbol,
-      decimals: tokenData.decimals,
-      existingTokenSymbol: tokenData.symbol,
-      gnosisSafe: gnosisSafeAddress,
-    })
-    onConfigChange('conviction', {
-      requestToken: tokenAddress,
-    })
-    onNext()
-  }, [
-    gardenTokenName,
-    gardenTokenSymbol,
-    gnosisSafeAddress,
-    gnosisSafeChecked,
-    onConfigChange,
-    onNext,
-    tokenAddress,
-    tokenData,
-  ])
+      gnosisSafeChecked,
+      onConfigChange,
+      onNext,
+      tokenAddress,
+      tokenData,
+    ]
+  )
   useEffect(() => {
     if (
       isAddress(tokenAddress) &&
