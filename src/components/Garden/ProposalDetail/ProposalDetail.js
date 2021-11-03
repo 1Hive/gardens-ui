@@ -26,13 +26,14 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
+import ProposalComments from './ProposalComments'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
-import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
@@ -54,7 +55,6 @@ import { ZERO_ADDR } from '@/constants'
 
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
-import ProposalComments from './ProposalComments'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
