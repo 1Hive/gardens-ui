@@ -22,9 +22,10 @@ const Metrics = React.memo(function Metrics({
   commonPool,
   onExecuteIssuance,
   onRequestUpdatePriceOracle,
-  token,
+  priceToken,
   totalActiveTokens,
   totalSupply,
+  totalWrappedSupply,
 }) {
   const currency = {
     name: 'USD',
@@ -43,13 +44,13 @@ const Metrics = React.memo(function Metrics({
           onExecuteIssuance={onExecuteIssuance}
           onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
           currency={currency}
-          token={token}
+          token={priceToken}
         />
         <div>
           <TokenBalance
             label="Common Pool"
-            value={commonPool}
-            token={token}
+            value={commonPool.value}
+            token={commonPool.token}
             currency={currency}
             helptip="common-pool"
           />
@@ -57,17 +58,28 @@ const Metrics = React.memo(function Metrics({
         <div>
           <TokenBalance
             label="Total Supply"
-            value={totalSupply}
-            token={token}
+            value={totalSupply.value}
+            token={totalSupply.token}
             currency={currency}
             helptip="total-supply"
           />
         </div>
+        {totalWrappedSupply && (
+          <div>
+            <TokenBalance
+              label="Total Wrapped Supply"
+              value={totalWrappedSupply.value}
+              token={totalWrappedSupply.token}
+              currency={currency}
+              helptip="total-wrapped-supply"
+            />
+          </div>
+        )}
         <div>
           <TokenBalance
             label="Total Support"
-            value={totalActiveTokens}
-            token={token}
+            value={totalActiveTokens.value}
+            token={totalActiveTokens.token}
             currency={currency}
             helptip="total-support"
           />
@@ -122,7 +134,7 @@ function PriceSection({
   )
 }
 
-function Metric({ label, value, color, helptip }) {
+function Metric({ label, value, symbol, color, helptip }) {
   const theme = useTheme()
 
   return (
@@ -149,7 +161,14 @@ function Metric({ label, value, color, helptip }) {
           color: ${color || theme.content};
         `}
       >
-        {value}
+        {value}{' '}
+        <span
+          css={`
+            ${textStyle('body3')}
+          `}
+        >
+          {symbol}
+        </span>
       </span>
     </>
   )
@@ -165,6 +184,7 @@ function TokenBalance({ label, token, value, currency, helptip }) {
       <Metric
         label={label}
         value={formatTokenAmount(value, token.decimals)}
+        symbol={token.symbol}
         helptip={helptip}
       />
       <div
@@ -216,7 +236,7 @@ function TokenPrice({
   return (
     <div
       css={`
-        width: ${30 * GU}px;
+        width: ${25 * GU}px;
       `}
     >
       <div

@@ -68,6 +68,13 @@ const KNOWN_HELP_DESCRIPTIONS = {
       circulation, including the common pool.
     </>,
   ],
+  'total-wrapped-supply': [
+    'Total Wrapped Supply',
+    <>
+      The <strong>Total Wrapped Supply</strong> is the the total amount of
+      wrapped tokens in circulation.
+    </>,
+  ],
   'total-support': [
     'Total Support',
     <>
