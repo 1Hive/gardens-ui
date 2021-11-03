@@ -26,15 +26,15 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import DiscourseComments from '@/components/DiscourseComments'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
 import LoadingRing from '@/components/LoadingRing'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
+import ProposalComments from './ProposalComments'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
-import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
@@ -90,9 +90,6 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
-
-  // We take the last section of the link that includes the topicId
-  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -387,44 +384,7 @@ function ProposalDetail({
             </div>
           }
         />
-        <Split
-          primary={
-            link && (
-              <div
-                css={`
-                  padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
-                `}
-              >
-                <div
-                  css={`
-                    ${textStyle('title3')};
-                  `}
-                >
-                  Comments
-                  <Button
-                    css={`
-                      margin-left: ${1.5 * GU}px;
-                    `}
-                    href={link}
-                    target="_blank"
-                  >
-                    Read proposal ↗
-                  </Button>
-                </div>
-                <DiscourseComments topicId={discourseTopicId} />
-                <Button
-                  href={link}
-                  target="_blank"
-                  css={`
-                    margin-bottom: ${1.5 * GU}px;
-                  `}
-                >
-                  Continue discussion ↗
-                </Button>
-              </div>
-            )
-          }
-        />
+        <ProposalComments link={link} />
       </div>
       <MultiModal
         visible={modalVisible}
