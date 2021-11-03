@@ -211,6 +211,7 @@ function ConvictionVotingSettings() {
             minValue={1}
             maxValue={MAX_HALF_LIFE_DAYS}
             value={halflifeDays}
+            precision={2}
             onChange={handleHalflifeDaysChange}
           />
           <PercentageField
@@ -226,6 +227,7 @@ function ConvictionVotingSettings() {
             }
             minValue={1}
             value={maxRatio}
+            precision={2}
             onChange={handleMaxRatioChange}
           />
           <PercentageField
@@ -241,6 +243,7 @@ function ConvictionVotingSettings() {
             }
             minValue={1}
             value={minThreshold}
+            precision={2}
             onChange={handleMinThresholdChange}
           />
           <Button
