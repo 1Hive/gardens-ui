@@ -28,6 +28,31 @@ const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
 const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
 
+function validationError(
+  halflifeDays,
+  maxRatio,
+  minThreshold,
+  requestToken,
+  minThresholdStakePct
+) {
+  if (halflifeDays === '0') {
+    return 'Conviction Growth cannot be zero.'
+  }
+  if (maxRatio === '0') {
+    return 'Spending Limit cannot be zero.'
+  }
+  if (minThreshold === '0') {
+    return 'Minimum Conviction cannot be zero.'
+  }
+  if (minThresholdStakePct === '0') {
+    return 'Minimum Active Stake cannot be zero.'
+  }
+  if (Boolean(requestToken) && !isAddress(requestToken)) {
+    return 'The request token address should be a valid address.'
+  }
+  return null
+}
+
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
     case 'halflifeDays':
@@ -78,6 +103,8 @@ function ConvictionVotingSettings() {
     step,
     steps,
   } = useOnboardingState()
+
+  const [formError, setFormError] = useState(null)
   const [
     {
       decay,
@@ -102,21 +129,22 @@ function ConvictionVotingSettings() {
 
   const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
 
-  const requestTokenInvalid = Boolean(requestToken) && !isAddress(requestToken)
-
   const handleHalflifeDaysChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['halflifeDays', value])
     },
     [updateField]
   )
 
   const handleMaxRatioChange = useCallback(value => {
+    setFormError(null)
     updateField(['maxRatio', value])
   }, [])
 
   const handleMinThresholdChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['minThreshold', value])
     },
     [updateField]
@@ -131,6 +159,7 @@ function ConvictionVotingSettings() {
 
   const handleMinThresholdStakePctChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['minThresholdStakePct', value])
     },
     [updateField]
@@ -159,7 +188,20 @@ function ConvictionVotingSettings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.tokens.address, updateField])
 
-  const handleNextClick = () => {
+  const handleNextClick = event => {
+    event.preventDefault()
+    const error = validationError(
+      halflifeDays,
+      maxRatio,
+      minThreshold,
+      requestToken,
+      minThresholdStakePct
+    )
+    if (error) {
+      setFormError(error)
+      return
+    }
+
     onConfigChange('conviction', {
       decay,
       halflifeDays,
@@ -316,21 +358,20 @@ function ConvictionVotingSettings() {
           />
         </div>
       </div>
-
-      {requestTokenInvalid && (
+      {formError && (
         <Info
           mode="error"
           css={`
             margin-bottom: ${3 * GU}px;
           `}
         >
-          The request token address should be a valid address.
+          {formError}
         </Info>
       )}
 
       <Navigation
         backEnabled
-        nextEnabled={!requestTokenInvalid}
+        nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}
