@@ -53,10 +53,10 @@ const validateAgreementSettings = (
     return 'File content empty. Please upload your Covenant.'
   }
   if (!actionAmount) {
-    return 'Please add an action amount.'
+    return 'Please add an action deposit.'
   }
   if (!challengeAmount) {
-    return 'Please add a challenge amount.'
+    return 'Please add a challenge deposit.'
   }
   if (!challengePeriod) {
     return 'Please add a settlement period.'
