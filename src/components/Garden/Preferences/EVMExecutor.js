@@ -22,13 +22,20 @@ import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 import actions from '../../../actions/garden-action-types'
 import radspec from '../../../radspec'
 
+const INTERACTION_TYPES = ['Internal', 'External']
+
+const INTERNAL_INDEX = 0
+const EXTERNAL_INDEX = 1
+
 function EVMExecutor() {
   const { account, ethers } = useWallet()
   const { connectedGarden } = useGardens()
   const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
     false
   )
+  const [abi, setAbi] = useState()
   const [evmcrispr, setEvmcrispr] = useState(null)
+  const [interactionType, setInteractionType] = useState(0)
   const [installedApps, setInstalledApps] = useState([])
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
@@ -132,20 +139,48 @@ function EVMExecutor() {
     parameters,
   ])
 
+  const handleOnAbiChange = useCallback(event => {
+    const value = event.target.value
+    setAbi(value)
+  }, [])
+
   if (!connectedGarden || !ethers) {
     return null
   }
 
   return (
     <Box heading="App selector">
-      <Field label="Select App">
+      <Field label="Interaction type">
         <DropDown
-          items={shortenedAppsNames}
-          onChange={setSelectedApp}
-          selected={selectedApp}
+          items={INTERACTION_TYPES}
+          onChange={setInteractionType}
+          selected={interactionType}
           wide
         />
       </Field>
+      {interactionType === INTERNAL_INDEX && (
+        <Field label="Select App">
+          <DropDown
+            items={shortenedAppsNames}
+            onChange={setSelectedApp}
+            selected={selectedApp}
+            wide
+          />
+        </Field>
+      )}
+      {interactionType === EXTERNAL_INDEX && (
+        <Field label="ABI">
+          <TextInput
+            multiline
+            value={abi}
+            wide
+            onChange={handleOnAbiChange}
+            // css={`
+            //   min-height: ${15 * GU}px;
+            // `}
+          />
+        </Field>
+      )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
           <DropDown
