@@ -16,14 +16,22 @@ import {
 } from '@1hive/1hive-ui'
 
 const SliderField = React.forwardRef(function SliderField(
-  { label, value, minValue = 0, maxValue = 100, valueSymbol = ' ', onChange },
+  {
+    label,
+    value,
+    minValue = 0,
+    maxValue = 100,
+    precision = 0,
+    valueSymbol = ' ',
+    onChange,
+  },
   ref
 ) {
   const theme = useTheme()
   const inputRef = useRef()
   const [textFieldValue, setTextFieldValue] = useState(value)
   const textInputWidth =
-    (5 + valueSymbol.length + maxValue.toString().length) * GU
+    (5 + valueSymbol.length + maxValue.toString().length + precision + 1) * GU
 
   useImperativeHandle(
     ref,
@@ -44,15 +52,15 @@ const SliderField = React.forwardRef(function SliderField(
 
   const handleSliderChange = useCallback(
     v => {
-      const value = Math.round(v * maxValue)
+      const value = (v * maxValue).toFixed(precision)
       onChange(value < minValue ? minValue : value)
     },
-    [minValue, maxValue, onChange]
+    [minValue, maxValue, onChange, precision]
   )
 
   const handleInputChange = useCallback(
     event => {
-      const value = parseInt(event.target.value, 10)
+      const value = event.target.value
 
       // Allow empty values so it can be easier to update input
       if (!event.target.value) {
@@ -66,14 +74,14 @@ const SliderField = React.forwardRef(function SliderField(
 
   const handleInputBlur = useCallback(() => {
     // It can be an empty value so we need to parse it again
-    const value = parseInt(textFieldValue, 10)
+    const value = parseFloat(textFieldValue).toFixed(precision)
 
     if (!isNaN(value)) {
       onChange(value)
     } else {
       onChange(minValue)
     }
-  }, [minValue, onChange, textFieldValue])
+  }, [minValue, onChange, precision, textFieldValue])
 
   return (
     <Field label={label}>

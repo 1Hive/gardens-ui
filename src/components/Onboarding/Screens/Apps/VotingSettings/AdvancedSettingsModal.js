@@ -6,8 +6,6 @@ import { DurationFields, Modal } from '@components/Onboarding//kit'
 const AdvancedSettingsModal = ({
   voteQuietEndingExtension,
   handleQuiteEndingExtensionPeriodChange,
-  voteDelegatedVotingPeriod,
-  handleDelegatedVotingPeriodChange,
   visible,
   onClose,
 }) => {
@@ -40,21 +38,6 @@ const AdvancedSettingsModal = ({
         }
         duration={voteQuietEndingExtension}
         onUpdate={handleQuiteEndingExtensionPeriodChange}
-      />
-      <DurationFields
-        label={
-          <Fragment>
-            Delegated Voting Period
-            <Help hint="What is Delegated Voting Period?">
-              <strong>Delegated Voting Period</strong> is the period of time,
-              within the Vote Duration, when stewards can cast votes that have
-              been delegated to them. When this period ends stewards can no
-              longer vote.
-            </Help>
-          </Fragment>
-        }
-        duration={voteDelegatedVotingPeriod}
-        onUpdate={handleDelegatedVotingPeriodChange}
       />
     </Modal>
   )

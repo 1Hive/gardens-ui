@@ -57,6 +57,7 @@ const AdvancedSettingsModal = ({
           </Fragment>
         }
         value={minThresholdStakePct}
+        precision={2}
         onChange={handleMinThresholdStakePctChange}
       />
     </Modal>

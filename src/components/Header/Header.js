@@ -38,9 +38,9 @@ function Header({ onOpenPreferences }) {
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
-  const logoLink = `#${
-    connectedGarden ? buildGardenPath(history.location, '') : '/home'
-  }`
+  const logoLink = connectedGarden
+    ? `#${buildGardenPath(history.location, '')}`
+    : 'https://gardens.1hive.org'
 
   const showBalance = connectedGarden && account && !layoutSmall
 
@@ -71,7 +71,7 @@ function Header({ onOpenPreferences }) {
           >
             <Link
               href={logoLink}
-              external={false}
+              external={!connectedGarden}
               css={`
                 display: flex;
               `}

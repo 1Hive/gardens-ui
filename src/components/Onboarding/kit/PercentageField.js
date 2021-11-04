@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import SliderField from './SliderField'
 
 const PercentageField = React.forwardRef(
-  ({ label = 'Percentage', value, minValue, onChange }, ref) => (
+  ({ label = 'Percentage', value, minValue, onChange, precision }, ref) => (
     <SliderField
       ref={ref}
       label={label}
@@ -12,6 +12,7 @@ const PercentageField = React.forwardRef(
       maxValue={100}
       valueSymbol="%"
       onChange={onChange}
+      precision={precision}
     />
   )
 )

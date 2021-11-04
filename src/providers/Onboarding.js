@@ -73,6 +73,7 @@ const DEFAULT_CONFIG = {
   tokens: {
     address: '', // Only used in BYOT
     existingTokenSymbol: '', // Only used in BYOT
+    gnosisSafe: '',
     name: '',
     decimals: 18,
     symbol: '',
