@@ -14,6 +14,16 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import { splitDecimalNumber } from '@utils/math-utils'
+
+function removeTrailingZeros(num) {
+  const [whole, dec] = splitDecimalNumber(num)
+  if (!dec) {
+    return whole || '0'
+  }
+
+  return `${whole}.${dec}`
+}
 
 const SliderField = React.forwardRef(function SliderField(
   {
@@ -53,7 +63,7 @@ const SliderField = React.forwardRef(function SliderField(
   const handleSliderChange = useCallback(
     v => {
       const value = (v * maxValue).toFixed(precision)
-      onChange(value < minValue ? minValue : value)
+      onChange(value < minValue ? minValue : removeTrailingZeros(value))
     },
     [minValue, maxValue, onChange, precision]
   )
@@ -77,7 +87,7 @@ const SliderField = React.forwardRef(function SliderField(
     const value = parseFloat(textFieldValue).toFixed(precision)
 
     if (!isNaN(value)) {
-      onChange(value)
+      onChange(removeTrailingZeros(value))
     } else {
       onChange(minValue)
     }

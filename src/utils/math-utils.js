@@ -23,7 +23,7 @@ export function round(num, places = 2) {
  * @param {string} num the number
  * @returns {Array<string>} array with the [<whole>, <decimal>] parts of the number
  */
-function splitDecimalNumber(num) {
+export function splitDecimalNumber(num) {
   const [whole = '', dec = ''] = num.split('.')
   return [
     whole.replace(/^0*/, ''), // trim leading zeroes
