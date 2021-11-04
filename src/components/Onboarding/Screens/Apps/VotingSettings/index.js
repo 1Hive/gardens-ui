@@ -18,6 +18,8 @@ import { useOnboardingState } from '@providers/Onboarding'
 
 const validateVotingSettings = (
   voteDuration,
+  voteSupportRequired,
+  voteMinAcceptanceQuorum,
   voteDelegatedVotingPeriod,
   voteQuietEndingPeriod,
   voteQuietEndingExtension,
@@ -26,11 +28,21 @@ const validateVotingSettings = (
   if (!voteDuration) {
     return 'Please add a vote duration.'
   }
+  if (!voteSupportRequired) {
+    return 'Support cannot be zero.'
+  }
+  if (!voteMinAcceptanceQuorum) {
+    return 'Minimum approval cannot be zero.'
+  }
   if (!voteDelegatedVotingPeriod) {
     return 'Please add a delegated voting period.'
+  } else if (voteDelegatedVotingPeriod > voteDuration) {
+    return 'Delegated voting period cannot be grater than vote duration.'
   }
   if (!voteQuietEndingPeriod) {
     return 'Please add a vote quite ending period.'
+  } else if (voteQuietEndingPeriod > voteDuration) {
+    return 'Quiet ending period cannot be greater than vote duration.'
   }
   if (!voteQuietEndingExtension) {
     return 'Please add a vote quite ending extension period.'
@@ -181,6 +193,8 @@ function VotingSettings() {
   const handleNextClick = () => {
     const error = validateVotingSettings(
       voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
       voteDelegatedVotingPeriod,
       voteQuietEndingPeriod,
       voteQuietEndingExtension,

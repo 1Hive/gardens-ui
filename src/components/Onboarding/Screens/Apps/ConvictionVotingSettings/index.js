@@ -36,16 +36,16 @@ function validationError(
   minThresholdStakePct
 ) {
   if (halflifeDays === '0') {
-    return 'Conviction Growth cannot be zero.'
+    return 'Conviction growth cannot be zero.'
   }
   if (maxRatio === '0') {
-    return 'Spending Limit cannot be zero.'
+    return 'Spending limit cannot be zero.'
   }
   if (minThreshold === '0') {
-    return 'Minimum Conviction cannot be zero.'
+    return 'Minimum conviction cannot be zero.'
   }
   if (minThresholdStakePct === '0') {
-    return 'Minimum Active Stake cannot be zero.'
+    return 'Minimum active stake cannot be zero.'
   }
   if (Boolean(requestToken) && !isAddress(requestToken)) {
     return 'The request token address should be a valid address.'
