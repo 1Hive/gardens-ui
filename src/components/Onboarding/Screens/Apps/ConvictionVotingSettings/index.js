@@ -208,7 +208,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             maxValue={MAX_HALF_LIFE_DAYS}
             value={halflifeDays}
             precision={2}
@@ -225,7 +224,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             value={maxRatio}
             precision={2}
             onChange={handleMaxRatioChange}
@@ -241,7 +239,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             value={minThreshold}
             precision={2}
             onChange={handleMinThresholdChange}
