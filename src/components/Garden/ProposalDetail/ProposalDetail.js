@@ -26,14 +26,15 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import DiscourseComments from '@/components/DiscourseComments'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
+import LoadingRing from '@/components/LoadingRing'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
+import ProposalComments from './ProposalComments'
 import ProposalHeader from './ProposalHeader'
 import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
-import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
 import SupportersDistribution from '../SupportersDistribution'
@@ -89,9 +90,6 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
-
-  // We take the last section of the link that includes the topicId
-  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -386,44 +384,7 @@ function ProposalDetail({
             </div>
           }
         />
-        <Split
-          primary={
-            link && (
-              <div
-                css={`
-                  padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
-                `}
-              >
-                <div
-                  css={`
-                    ${textStyle('title3')};
-                  `}
-                >
-                  Comments
-                  <Button
-                    css={`
-                      margin-left: ${1.5 * GU}px;
-                    `}
-                    href={link}
-                    target="_blank"
-                  >
-                    Read proposal ↗
-                  </Button>
-                </div>
-                <DiscourseComments topicId={discourseTopicId} />
-                <Button
-                  href={link}
-                  target="_blank"
-                  css={`
-                    margin-bottom: ${1.5 * GU}px;
-                  `}
-                >
-                  Continue discussion ↗
-                </Button>
-              </div>
-            )
-          }
-        />
+        <ProposalComments link={link} />
       </div>
       <MultiModal
         visible={modalVisible}
@@ -462,7 +423,7 @@ function ArgumentBox({ proposal, connectedAccount }) {
   const theme = useTheme()
 
   const { challenge } = useChallenge(proposal)
-  const [showArgument, setShowArgument] = useState(false)
+  const [showArgument, setShowArgument] = useState(true)
 
   return (
     <>
@@ -508,77 +469,80 @@ function ArgumentBox({ proposal, connectedAccount }) {
           {showArgument ? <IconUp /> : <IconDown />}
         </div>
       </div>
-      {showArgument && (
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-start;
-            margin: ${4.5 * GU}px ${4.5 * GU}px 0 0;
-          `}
-        >
+      {showArgument &&
+        (challenge?.challenger ? (
           <div
             css={`
-              width: ${5 * GU}px;
-              margin-right: ${5 * GU}px;
-            `}
-          >
-            {challenge.challenger.image ? (
-              <img
-                src={challenge.challenger.image}
-                height={43}
-                width={43}
-                css={`
-                  border-radius: 50%;
-                `}
-              />
-            ) : (
-              <EthIdenticon
-                address={challenge.challenger.address}
-                radius={50}
-                scale={1.8}
-              />
-            )}
-          </div>
-          <div
-            css={`
-              flex-direction: column;
+              display: flex;
+              justify-content: flex-start;
+              margin: ${4.5 * GU}px ${4.5 * GU}px 0 0;
             `}
           >
             <div
               css={`
-                display: flex;
-                justify-content: flex-start;
-                width: ${30 * GU}px;
+                width: ${5 * GU}px;
+                margin-right: ${5 * GU}px;
               `}
             >
-              <h2
-                css={`
-                  font-weight: 600;
-                  margin-right: ${1 * GU}px;
-                `}
-              >
-                {challenge.challenger.name
-                  ? challenge.challenger.name
-                  : shortenAddress(challenge.challenger.address)}
-              </h2>
-              <Tag
-                background={theme.warningSurface.toString()}
-                color={theme.warningSurfaceContent.toString()}
-              >
-                challenger
-              </Tag>
+              {challenge.challenger.image ? (
+                <img
+                  src={challenge.challenger.image}
+                  height={43}
+                  width={43}
+                  css={`
+                    border-radius: 50%;
+                  `}
+                />
+              ) : (
+                <EthIdenticon
+                  address={challenge.challenger.address}
+                  radius={50}
+                  scale={1.8}
+                />
+              )}
             </div>
             <div
               css={`
-                margin-top: ${1.5 * GU}px;
-                color: ${theme.contentSecondary};
+                flex-direction: column;
               `}
             >
-              {challenge.context}
+              <div
+                css={`
+                  display: flex;
+                  justify-content: flex-start;
+                  width: ${30 * GU}px;
+                `}
+              >
+                <h2
+                  css={`
+                    font-weight: 600;
+                    margin-right: ${1 * GU}px;
+                  `}
+                >
+                  {challenge.challenger.name
+                    ? challenge.challenger.name
+                    : shortenAddress(challenge.challenger.address)}
+                </h2>
+                <Tag
+                  background={theme.warningSurface.toString()}
+                  color={theme.warningSurfaceContent.toString()}
+                >
+                  challenger
+                </Tag>
+              </div>
+              <div
+                css={`
+                  margin-top: ${1.5 * GU}px;
+                  color: ${theme.contentSecondary};
+                `}
+              >
+                {challenge.context}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <LoadingRing />
+        ))}
     </>
   )
 }

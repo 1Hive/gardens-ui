@@ -212,13 +212,15 @@ export default function useActions() {
 
   const executeProposal = useCallback(
     async (proposalId, onDone = noop) => {
-      const intent = await convictionVotingApp.intent(
+      let intent = await convictionVotingApp.intent(
         'executeProposal',
         [proposalId],
         {
           actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
 
       const description = radspec[actions.EXECUTE_PROPOSAL]({
         proposalId,

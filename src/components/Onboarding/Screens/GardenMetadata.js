@@ -258,7 +258,7 @@ function GardenMetadata() {
       >
         <MetadataField label="GARDEN NAME">
           <TextInput
-            maxLength="15"
+            maxLength="50"
             onChange={handleGardenNameChange}
             value={formData.name}
             css="width: 100%;"
