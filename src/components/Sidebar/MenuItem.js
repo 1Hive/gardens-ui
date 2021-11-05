@@ -8,7 +8,7 @@ function MenuItem({ active, path, label, src }) {
     <li
       css={`
         position: relative;
-        background: ${active ? 'rgb(227, 240, 213)' : theme.surface};
+        background: ${active ? 'rgb(212 251 216)' : theme.surface};
         height: ${8.5 * GU}px;
         width: 100%;
         ${label &&
@@ -19,7 +19,6 @@ function MenuItem({ active, path, label, src }) {
               border-radius: 12px;
               color: white;
               padding: ${0.5 * GU}px ${2 * GU}px;
-              position: absolute;
               top: calc(50% - 16px);
               left: 80px;
           }

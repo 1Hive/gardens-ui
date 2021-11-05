@@ -21,21 +21,20 @@ export default function useUser(address) {
     }
 
     const fetchUser = async () => {
+      setLoading(true)
       try {
-        setLoading(true)
         const user = await getUser(
           { network: getNetwork().chainId },
           { id: address.toLowerCase() }
         )
-        setLoading(false)
         if (mounted()) {
           setUser(transformUserData(user))
         }
       } catch (err) {
-        setLoading(false)
         setUser(null)
         console.error(`Failed to fetch user: ${err}`)
       }
+      setLoading(false)
     }
     fetchUser()
   }, [address, mounted])
