@@ -10,8 +10,8 @@ import {
 } from '@1hive/1hive-ui'
 
 import ProposalIcon from '../ProposalIcon'
-import useUser from '@hooks/useUser'
 import { useGardens } from '@/providers/Gardens'
+import useUser from '@hooks/useUser'
 
 import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
