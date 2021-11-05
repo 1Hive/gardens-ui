@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { getUser } from '@1hive/connect-gardens'
 import { useMounted } from './useMounted'
 import { getNetwork } from '../networks'
@@ -7,7 +7,12 @@ import { transformUserData } from '@utils/data-utils'
 export default function useUser(address) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState()
+  const [refetchTriger, setRefetchTriger] = useState(false)
   const mounted = useMounted()
+
+  const reload = useCallback(() => {
+    setRefetchTriger(triger => setRefetchTriger(!triger))
+  }, [])
 
   useEffect(() => {
     if (!address && user) {
@@ -37,7 +42,7 @@ export default function useUser(address) {
       setLoading(false)
     }
     fetchUser()
-  }, [address, mounted])
+  }, [address, mounted, refetchTriger])
 
-  return [user, loading]
+  return [user, loading, reload]
 }
