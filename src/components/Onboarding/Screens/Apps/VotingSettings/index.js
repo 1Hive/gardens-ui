@@ -274,6 +274,21 @@ function VotingSettings() {
       <DurationFields
         label={
           <Fragment>
+            Delegated Voting Period
+            <Help hint="What is Delegated Voting Period?">
+              <strong>Delegated Voting Period</strong> is the period of time,
+              within the Vote Duration, when stewards can cast votes that have
+              been delegated to them. When this period ends stewards can no
+              longer vote.
+            </Help>
+          </Fragment>
+        }
+        duration={voteDelegatedVotingPeriod}
+        onUpdate={handleDelegatedVotingPeriodChange}
+      />
+      <DurationFields
+        label={
+          <Fragment>
             Quite Ending Period
             <Help hint="What is Quite Ending Period?">
               <strong>Quite Ending Period</strong> is the duration before the
@@ -299,8 +314,6 @@ function VotingSettings() {
         handleQuiteEndingExtensionPeriodChange={
           handleQuiteEndingExtensionPeriodChange
         }
-        voteDelegatedVotingPeriod={voteDelegatedVotingPeriod}
-        handleDelegatedVotingPeriodChange={handleDelegatedVotingPeriodChange}
         visible={openSettingsModal}
         onClose={handleCloseModal}
       />

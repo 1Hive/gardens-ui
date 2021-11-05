@@ -58,6 +58,16 @@ function ProposalActions({
     if (!mode) {
       return null
     }
+
+    if (mode === 'withdraw') {
+      return {
+        text: 'Withdraw',
+        action: onChangeSupport,
+        mode: 'normal',
+        disabled: false,
+      }
+    }
+
     if (mode === 'execute') {
       return {
         text: 'Execute proposal',

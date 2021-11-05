@@ -8,6 +8,7 @@ import {
   LoadingRing,
   TextInput,
 } from '@1hive/1hive-ui'
+import GnosisSafeField from './GnosisSafeField'
 import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useTokenData } from '@hooks/useToken'
@@ -23,7 +24,13 @@ function useFieldsLayout() {
     grid-column-gap: ${1.5 * GU}px;
   `
 }
-function validationError(tokenAddress, tokenName, tokenSymbol) {
+function validationError(
+  tokenAddress,
+  tokenName,
+  tokenSymbol,
+  gnosisSafeAddress,
+  gnosisSafeChecked
+) {
   if (!tokenAddress) {
     return 'Please, provide a token address'
   }
@@ -35,6 +42,9 @@ function validationError(tokenAddress, tokenName, tokenSymbol) {
   }
   if (!tokenSymbol) {
     return 'Please add a token symbol.'
+  }
+  if (gnosisSafeChecked && !isAddress(gnosisSafeAddress)) {
+    return 'The Gnosis safe address you provided is invalid.'
   }
   return null
 }
@@ -60,6 +70,12 @@ function TokenSettingsBYOT() {
   const [gardenTokenSymbol, setGardenTokenSymbol] = useState(
     config.tokens.symbol
   )
+  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(
+    config.tokens.gnosisSafe
+  )
+  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(
+    Boolean(config.tokens.gnosisSafe)
+  )
 
   const handleTokenAddressChange = useCallback(event => {
     setFormError(null)
@@ -74,6 +90,15 @@ function TokenSettingsBYOT() {
     setGardenTokenSymbol(event.target.value.trim().toUpperCase())
   }, [])
 
+  const handleGnosisSafeAddressChange = useCallback(newAddress => {
+    setFormError(null)
+    setGnosisSafeAddress(newAddress)
+  }, [])
+
+  const handleGnosisSafeCheckChange = useCallback(checked => {
+    setGnosisSafeChecked(checked)
+  }, [])
+
   const handleNext = useCallback(
     event => {
       event.preventDefault()
@@ -81,7 +106,9 @@ function TokenSettingsBYOT() {
       const error = validationError(
         tokenAddress,
         gardenTokenName,
-        gardenTokenSymbol
+        gardenTokenSymbol,
+        gnosisSafeAddress,
+        gnosisSafeChecked
       )
       setFormError(error)
 
@@ -92,6 +119,7 @@ function TokenSettingsBYOT() {
           symbol: gardenTokenSymbol,
           decimals: tokenData.decimals,
           existingTokenSymbol: tokenData.symbol,
+          gnosisSafe: gnosisSafeAddress,
         })
         onConfigChange('conviction', {
           requestToken: tokenAddress,
@@ -102,6 +130,8 @@ function TokenSettingsBYOT() {
     [
       gardenTokenName,
       gardenTokenSymbol,
+      gnosisSafeAddress,
+      gnosisSafeChecked,
       onConfigChange,
       onNext,
       tokenAddress,
@@ -240,6 +270,12 @@ function TokenSettingsBYOT() {
               />
             )}
           </Field>
+          <GnosisSafeField
+            gnosisSafeAddress={gnosisSafeAddress}
+            gnosisSafeChecked={gnosisSafeChecked}
+            onGnosisSafeAddressChange={handleGnosisSafeAddressChange}
+            onGnosisSafeCheckChange={handleGnosisSafeCheckChange}
+          />
         </div>
       </div>
 

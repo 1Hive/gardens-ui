@@ -19,7 +19,7 @@ const networks = {
     defaultEthNode: ETH_NODE,
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
-    template: '0x2427F0f1B842665d9FB9f0d8Ca347E044Ef5F15a',
+    template: '0xa8e6c20e8ad85836c8ee7b6c8decae75967b580e',
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     explorer: 'etherscan',
 
