@@ -2,6 +2,7 @@ import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
 import env from '@/environment'
 import { getDefaultChain } from '@/local-settings'
+import { getEthersNetwork, getNetwork } from '@/networks'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
@@ -15,29 +16,15 @@ function getBackendServicesKeys() {
 }
 
 export function getDefaultProvider() {
-  const type = getNetworkType()
-  const defaultEthNode = env('ETH_NODE')
+  const { defaultEthNode } = getNetwork()
 
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)
-    : ethers.getDefaultProvider(type, getBackendServicesKeys())
+    : ethers.getDefaultProvider(getEthersNetwork(), getBackendServicesKeys())
 }
 
 export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
-}
-
-export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
-
-  if (env('FORTMATIC_API_KEY')) {
-    providers.push({
-      id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
-    })
-  }
-
-  return providers
 }
 
 export function getNetworkType(chainId = getDefaultChain()) {
@@ -64,15 +51,6 @@ export function getNetworkName(chainId = getDefaultChain()) {
 
 export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
   return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
-}
-
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
-    if (provider.useWalletConf) {
-      connectors[provider.id] = provider.useWalletConf
-    }
-    return connectors
-  }, {})
 }
 
 // Check address equality with checksums
