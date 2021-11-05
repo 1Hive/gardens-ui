@@ -112,10 +112,6 @@ function EVMExecutor() {
   const handleOnCreateIntent = useCallback(async () => {
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
-    console.log(
-      'functionList[selectedFunction] ',
-      functionList[selectedFunction]
-    )
     const intent = await evmcrispr.encode(
       [
         evmcrispr
@@ -175,9 +171,9 @@ function EVMExecutor() {
             value={abi}
             wide
             onChange={handleOnAbiChange}
-            // css={`
-            //   min-height: ${15 * GU}px;
-            // `}
+            css={`
+              min-height: ${30 * GU}px;
+            `}
           />
         </Field>
       )}
