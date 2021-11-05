@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   ButtonBase,
   GU,
@@ -8,16 +9,17 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
-import { getUseWalletProviders } from '../../utils/web3-utils'
-
-const PROVIDERS_INFO = getUseWalletProviders().map(provider => [
-  provider.id,
-  getProviderFromUseWalletId(provider.id),
-])
+import { connectors } from '@/ethereum-providers/connectors'
 
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
+
+  const providersInfo = useMemo(() => {
+    return connectors.map(provider => [
+      provider.id,
+      getProviderFromUseWalletId(provider.id),
+    ])
+  }, [])
 
   return (
     <div>
@@ -49,7 +51,7 @@ function ScreenProviders({ onActivate }) {
             grid-template-columns: repeat(2, 1fr);
           `}
         >
-          {PROVIDERS_INFO.map(([id, provider]) => (
+          {providersInfo.map(([id, provider]) => (
             <ProviderButton
               key={id}
               id={id}
@@ -69,7 +71,7 @@ function ScreenProviders({ onActivate }) {
             href="https://ethereum.org/wallets/"
             css="text-decoration: none"
           >
-            What is an Ethereum provider?
+            Don’t have an account?
           </Link>
         </div>
       </div>

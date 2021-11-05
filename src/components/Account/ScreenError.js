@@ -1,16 +1,17 @@
 import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
-import { UnsupportedChainError } from 'use-wallet'
+
 import { getNetworkName } from '../../utils/web3-utils'
 import connectionError from './assets/connection-error.png'
+import { ChainUnsupportedError } from '@/providers/Wallet'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
 
   const [title, secondary] = useMemo(() => {
-    if (error instanceof UnsupportedChainError) {
+    if (error instanceof ChainUnsupportedError) {
       return [
         'Wrong network',
         `Please select the ${getNetworkName()} network in your wallet and try again.`,

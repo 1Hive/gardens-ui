@@ -16,7 +16,6 @@ import { useGardens } from '../../providers/Gardens'
 
 import { buildGardenPath } from '../../utils/routing-utils'
 import { getNetworkName } from '../../utils/web3-utils'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
 import stakeButtonSvg from '../../assets/stakeButton.svg'
@@ -28,7 +27,6 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
   const { connectedGarden } = useGardens()
 
   const networkName = getNetworkName()
-  const providerInfo = getProviderFromUseWalletId(wallet.activated)
 
   const goToProfile = useCallback(() => {
     history.push(`/profile`)
@@ -46,7 +44,9 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
     wallet,
   ])
 
-  const handleDeactivate = useCallback(() => wallet.deactivate(), [wallet])
+  const handleResetConnection = useCallback(() => {
+    wallet.reset()
+  }, [wallet])
 
   return (
     <div
@@ -128,7 +128,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
             `}
           >
             <img
-              src={providerInfo.image}
+              src={wallet.providerInfo.image}
               alt=""
               css={`
                 width: ${2.5 * GU}px;
@@ -138,7 +138,9 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
               `}
             />
             <span>
-              {providerInfo.id === 'unknown' ? 'Wallet' : providerInfo.name}
+              {wallet.providerInfo.id === 'unknown'
+                ? 'Wallet'
+                : wallet.providerInfo.name}
             </span>
           </div>
           <div
@@ -202,7 +204,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
       </div>
 
       <Button
-        onClick={handleDeactivate}
+        onClick={handleResetConnection}
         wide
         css={`
           margin-top: ${2 * GU}px;
