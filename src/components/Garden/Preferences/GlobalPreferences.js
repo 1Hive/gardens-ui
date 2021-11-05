@@ -5,8 +5,8 @@ import {
   Header,
   IconClose,
   Layout,
-  Tabs,
   Root,
+  Tabs,
   springs,
   useTheme,
   useViewport,
@@ -24,7 +24,7 @@ const SECTIONS = new Map([
 const PATHS = Array.from(SECTIONS.keys())
 const VALUES = Array.from(SECTIONS.values())
 
-const NETWORK_INDEX = 0
+const GENERAL_INFO_INDEX = 0
 const EVM_EXECUTOR_INDEX = 1
 
 const AnimatedDiv = animated.div
@@ -57,7 +57,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
               selected={sectionIndex}
             />
 
-            {sectionIndex === NETWORK_INDEX && <AppsAddresses />}
+            {sectionIndex === GENERAL_INFO_INDEX && <AppsAddresses />}
             {sectionIndex === EVM_EXECUTOR_INDEX && <EVMExecutor />}
           </React.Fragment>
         </Root.Provider>

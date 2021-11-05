@@ -10,17 +10,16 @@ import {
 } from '@1hive/1hive-ui'
 import { EVMcrispr } from '@1hive/evmcrispr'
 
-import MultiModal from '@components/MultiModal/MultiModal'
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
+import MultiModal from '@components/MultiModal/MultiModal'
 
 import { useGardens } from '@/providers/Gardens'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
-// import { asciiToHex } from '@utils/web3-utils'
 
-import actions from '../../../actions/garden-action-types'
-import radspec from '../../../radspec'
+import actions from '@/actions/garden-action-types'
+import radspec from '@/radspec'
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
@@ -29,14 +28,14 @@ function EVMExecutor() {
     false
   )
   const [evmcrispr, setEvmcrispr] = useState(null)
-  const [installedApps, setInstalledApps] = useState([])
+  // const [installedApps, setInstalledApps] = useState([])
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
 
   useEffect(() => {
     async function getEvmCrispr() {
-      if (!connectedGarden) {
+      if (!connectedGarden || !account) {
         return
       }
       const crispr = await EVMcrispr.create(
@@ -47,30 +46,35 @@ function EVMExecutor() {
       setEvmcrispr(crispr)
     }
     getEvmCrispr()
-  }, [connectedGarden, ethers])
+  }, [account, connectedGarden, ethers])
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (!evmcrispr) {
+  //     return
+  //   }
+  //   const apps = evmcrispr.apps()
+  //   setInstalledApps(apps)
+  // }, [evmcrispr])
+
+  const installedApps = useMemo(() => {
     if (!evmcrispr) {
-      return
+      return []
     }
-    const apps = evmcrispr.apps()
-    setInstalledApps(apps)
+    return evmcrispr.apps()
   }, [evmcrispr])
 
   const shortenedAppsNames = installedApps.map(appName => {
     const dotIndex = appName.indexOf('.')
     return (
       SHORTENED_APPS_NAMES.get(
-        dotIndex > 0
-          ? appName.substr(0, appName.indexOf('.'))
-          : appName.slice(0, -2)
+        dotIndex > 0 ? appName.substr(0, dotIndex) : appName.slice(0, -2)
       ) || appName.slice(0, -2)
     )
   })
 
   const functionList = useMemo(() => {
     if (!evmcrispr || shortenedAppsNames?.length === 0 || !selectedApp) {
-      return
+      return []
     }
 
     const appName = installedApps[selectedApp]
@@ -81,7 +85,7 @@ function EVMExecutor() {
 
   const requiredParameters = useMemo(() => {
     if (!evmcrispr || !selectedApp || !selectedFunction) {
-      return
+      return []
     }
 
     const { paramNames, paramTypes } = evmcrispr.call(
@@ -127,6 +131,14 @@ function EVMExecutor() {
     selectedFunction,
     parameters,
   ])
+
+  const handleOnShowModal = useCallback(() => {
+    setCreateDecisionModalVisible(true)
+  }, [])
+
+  const handleOnHideModal = useCallback(() => {
+    setCreateDecisionModalVisible(false)
+  }, [])
 
   if (!connectedGarden || !ethers) {
     return null
@@ -185,14 +197,14 @@ function EVMExecutor() {
           disabled={!account}
           mode="strong"
           wide
-          onClick={() => setCreateDecisionModalVisible(true)}
+          onClick={handleOnShowModal}
         >
           Execute
         </Button>
       )}
       <MultiModal
         visible={createDecisionModalVisible}
-        onClose={() => setCreateDecisionModalVisible(false)}
+        onClose={handleOnHideModal}
       >
         <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
       </MultiModal>
