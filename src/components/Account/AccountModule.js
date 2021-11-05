@@ -7,9 +7,11 @@ import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
+import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { useProfile } from '../../providers/Profile'
+import { addEthereumChain } from '@/networks'
 
 const SCREENS = [
   {
@@ -17,6 +19,9 @@ const SCREENS = [
   },
   {
     id: 'connecting',
+  },
+  {
+    id: 'networks',
   },
   {
     id: 'connected',
@@ -32,6 +37,7 @@ function AccountModule({ compact }) {
   const wallet = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
+  const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
   const { account, activating, error } = wallet
@@ -45,6 +51,9 @@ function AccountModule({ compact }) {
   const activate = useCallback(
     async providerId => {
       try {
+        setCreatingNetwork(true)
+        await addEthereumChain()
+        setCreatingNetwork(false)
         await wallet.connect(providerId)
       } catch (error) {
         console.log('error ', error)
@@ -85,6 +94,7 @@ function AccountModule({ compact }) {
     const screenId = (() => {
       if (error) return 'error'
       if (activatingDelayed) return 'connecting'
+      if (creatingNetwork) return 'networks'
       if (account) return 'connected'
       return 'providers'
     })()
@@ -95,7 +105,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [account, error, activatingDelayed])
+  }, [error, activatingDelayed, creatingNetwork, account])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
@@ -156,6 +166,9 @@ function AccountModule({ compact }) {
         width={(screen.id === 'connected' ? 41 : 51) * GU}
       >
         {({ activating, activationError, screenId }) => {
+          if (screen.id === 'networks') {
+            return <ScreenPromptingAction />
+          }
           if (screenId === 'connecting') {
             return (
               <ScreenConnecting

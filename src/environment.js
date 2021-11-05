@@ -25,9 +25,6 @@ const ENV_VARS = {
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
-  RINKEBY_ETH_NODE() {
-    return process.env.REACT_APP_RINKEBY_ETH_NODE || ''
-  },
   XDAI_ETH_NODE() {
     return process.env.REACT_APP_XDAI_ETH_NODE || ''
   },
@@ -48,12 +45,6 @@ const ENV_VARS = {
   },
   INFURA_API_KEY() {
     return process.env.REACT_APP_INFURA_API_KEY || null
-  },
-  INSTANCE() {
-    return process.env.REACT_APP_APP_INSTANCE || ''
-  },
-  INTERCOM_APP_ID() {
-    return process.env.REACT_APP_INTERCOM_APP_ID || ''
   },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME

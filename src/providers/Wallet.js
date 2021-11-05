@@ -9,7 +9,13 @@ import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from '@1hive/use-wallet'
 
 import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
-import { getNetwork, isSupportedChain, SUPPORTED_CHAINS } from '@/networks'
+import {
+  addEthereumChain,
+  getEthersNetwork,
+  isSupportedChain,
+  SUPPORTED_CHAINS,
+  switchNetwork,
+} from '@/networks'
 import { getPreferredChain, setPreferredChain } from '@/local-settings'
 
 const WalletAugmentedContext = React.createContext()
@@ -35,13 +41,8 @@ function WalletAugmented({ children }) {
       return getDefaultProvider()
     }
 
-    const ensRegistry = getNetwork(wallet.chainId)?.ensRegistry
-    return new EthersProviders.Web3Provider(ethereum, {
-      name: '',
-      chainId: preferredNetwork,
-      ensAddress: ensRegistry,
-    })
-  }, [ethereum, preferredNetwork]) //eslint-disable-line
+    return new EthersProviders.Web3Provider(ethereum, getEthersNetwork())
+  }, [ethereum])
 
   const isSupportedNetwork = useMemo(() => {
     return isSupportedChain(wallet.chainId)
@@ -53,6 +54,7 @@ function WalletAugmented({ children }) {
     })
     if (connectedAddresses.length > 0) {
       try {
+        await addEthereumChain()
         await wallet.connect('injected')
       } catch (e) {
         console.error(e)
@@ -100,10 +102,12 @@ function WalletAugmented({ children }) {
     wallet,
   ])
 
-  const handleOnPreferredNetworkChange = useCallback(index => {
+  const handleOnPreferredNetworkChange = useCallback(async index => {
     const chainId = SUPPORTED_CHAINS[index]
     setPreferredNetwork(chainId)
     setPreferredChain(chainId)
+
+    await switchNetwork(chainId)
   }, [])
 
   const contextValue = useMemo(

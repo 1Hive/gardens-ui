@@ -2,6 +2,7 @@ import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
 import env from '@/environment'
 import { getPreferredChain } from '@/local-settings'
+import { getEthersNetwork, getNetwork } from '@/networks'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
@@ -15,12 +16,11 @@ function getBackendServicesKeys() {
 }
 
 export function getDefaultProvider() {
-  const type = getNetworkType(getPreferredChain()).toUpperCase()
-  const defaultEthNode = env(`${type}_ETH_NODE`)
+  const { defaultEthNode } = getNetwork(getPreferredChain())
 
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)
-    : ethers.getDefaultProvider(type, getBackendServicesKeys())
+    : ethers.getDefaultProvider(getEthersNetwork(), getBackendServicesKeys())
 }
 
 export function encodeFunctionData(contract, functionName, params) {

@@ -10,13 +10,11 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useProfile } from '@providers/Profile'
-import { useWallet } from '@providers/Wallet'
 import HeaderModule from '../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
 
 function AccountButton({ onClick }) {
-  const { chainId } = useWallet()
   const theme = useTheme()
   const { account, image, name } = useProfile()
 
@@ -78,7 +76,7 @@ function AccountButton({ onClick }) {
               color: ${theme.positive};
             `}
           >
-            Connected to {getNetworkName(chainId)}
+            Connected to {getNetworkName()}
           </div>
         </>
       }
