@@ -18,7 +18,12 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const tokenIcon = getTokenIconBySymbol(primaryToken.symbol)
 
   return (
-    <div>
+    <div
+      onClick={onSelectProposal}
+      css={`
+        cursor: pointer;
+      `}
+    >
       <ProposalDescription
         proposal={proposal}
         onSelectProposal={onSelectProposal}

@@ -65,10 +65,18 @@ function ProposalCreator({ proposal }) {
               border-radius: 50%;
               display: block;
               object-fit: cover;
+              cursor: pointer;
             `}
           />
         ) : (
-          <EthIdenticon address={proposal.creator} radius={50} scale={1.8} />
+          <EthIdenticon
+            address={proposal.creator}
+            radius={50}
+            scale={1.8}
+            css={`
+              cursor: pointer;
+            `}
+          />
         )}
       </div>
       <div
@@ -89,6 +97,7 @@ function ProposalCreator({ proposal }) {
               <strong
                 css={`
                   margin-right: ${1 * GU}px;
+                  cursor: pointer;
                 `}
               >
                 {profile?.name
