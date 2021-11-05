@@ -1,27 +1,35 @@
 import React, { useMemo } from 'react'
 import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
-import gardensLogo from '@assets/gardensLogoMark.svg'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import useUser from '@/hooks/useUser'
-import { useGardens } from '@/providers/Gardens'
-import { useWallet } from '@/providers/Wallet'
-import { addressesEqual } from '@/utils/web3-utils'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
+import { useGardens } from '@providers/Gardens'
+import useUser from '@hooks/useUser'
+import { useWallet } from '@providers/Wallet'
+
+import { addressesEqual } from '@utils/web3-utils'
+import gardensLogo from '@assets/gardensLogoMark.svg'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+
+const CACHE = new Map([])
 
 function Sidebar() {
   const theme = useTheme()
   const { account } = useWallet()
   const [connectedUser, userLoading] = useUser(account)
-  const { connectedGarden, gardens } = useGardens()
+  const { connectedGarden, gardensMetadata } = useGardens()
+
   const sidebarGardens = useMemo(() => {
-    if (!gardens || !connectedUser?.gardensSigned) {
+    if (CACHE.has(account)) {
+      return CACHE.get(account)
+    }
+
+    if (!connectedUser?.gardensSigned || !gardensMetadata) {
       return []
     }
 
-    return connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { address, name, logo } = gardens.find(g =>
+    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
+      const { address, name, logo } = gardensMetadata.find(g =>
         addressesEqual(g.address, gardenSignedAddress)
       )
       return {
@@ -31,7 +39,11 @@ function Sidebar() {
         src: logo || defaultGardenLogo,
       }
     })
-  }, [gardens, connectedUser])
+
+    CACHE.set(account, result)
+    return result
+  }, [account, connectedUser, gardensMetadata])
+
   const startTrail = sidebarGardens.length > 0
   const trail = useTrail(sidebarGardens.length, {
     config: { mass: 5, tension: 1500, friction: 150 },
@@ -85,6 +97,7 @@ function Sidebar() {
           </Link>
         </div>
       </div>
+
       <nav
         css={`
           position: fixed;
@@ -107,16 +120,7 @@ function Sidebar() {
             pointer-events: auto;
           `}
         >
-          {userLoading ? (
-            <div
-              css={`
-                margin-top: ${6 * GU}px;
-                margin-left: ${2 * GU}px;
-              `}
-            >
-              <LoadingRing mode="half-circle" />
-            </div>
-          ) : (
+          {sidebarGardens.length > 0 ? (
             <ul>
               {trail.map((style, index) => {
                 const { address, name, path, src } = sidebarGardens[index]
@@ -132,6 +136,17 @@ function Sidebar() {
                 )
               })}
             </ul>
+          ) : (
+            userLoading && (
+              <div
+                css={`
+                  margin-top: ${6 * GU}px;
+                  margin-left: ${2 * GU}px;
+                `}
+              >
+                <LoadingRing mode="half-circle" />
+              </div>
+            )
           )}
         </div>
       </nav>
