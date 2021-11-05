@@ -4,26 +4,18 @@ import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
 import { useGardens } from '@providers/Gardens'
-import useUser from '@hooks/useUser'
-import { useWallet } from '@providers/Wallet'
+import { useUserState } from '@providers/User'
 
 import { addressesEqual } from '@utils/web3-utils'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
-const CACHE = new Map([])
-
 function Sidebar() {
   const theme = useTheme()
-  const { account } = useWallet()
-  const [connectedUser, userLoading] = useUser(account)
+  const { user: connectedUser, loading: userLoading } = useUserState()
   const { connectedGarden, gardensMetadata } = useGardens()
 
   const sidebarGardens = useMemo(() => {
-    if (CACHE.has(account)) {
-      return CACHE.get(account)
-    }
-
     if (!connectedUser?.gardensSigned || !gardensMetadata) {
       return []
     }
@@ -40,9 +32,8 @@ function Sidebar() {
       }
     })
 
-    CACHE.set(account, result)
     return result
-  }, [account, connectedUser, gardensMetadata])
+  }, [connectedUser, gardensMetadata])
 
   const startTrail = sidebarGardens.length > 0
   const trail = useTrail(sidebarGardens.length, {
@@ -120,7 +111,16 @@ function Sidebar() {
             pointer-events: auto;
           `}
         >
-          {sidebarGardens.length > 0 ? (
+          {userLoading ? (
+            <div
+              css={`
+                margin-top: ${6 * GU}px;
+                margin-left: ${2 * GU}px;
+              `}
+            >
+              <LoadingRing mode="half-circle" />
+            </div>
+          ) : (
             <ul>
               {trail.map((style, index) => {
                 const { address, name, path, src } = sidebarGardens[index]
@@ -136,17 +136,6 @@ function Sidebar() {
                 )
               })}
             </ul>
-          ) : (
-            userLoading && (
-              <div
-                css={`
-                  margin-top: ${6 * GU}px;
-                  margin-left: ${2 * GU}px;
-                `}
-              >
-                <LoadingRing mode="half-circle" />
-              </div>
-            )
           )}
         </div>
       </nav>
