@@ -17,7 +17,6 @@ import { StakingProvider } from './Staking'
 import { fetchFileContent } from '../services/github'
 
 import { DAONotFound } from '../errors'
-import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
 import useGardenFilters from '@/hooks/useGardenFilters'
 import { testNameFilter } from '@/utils/garden-filters-utils'

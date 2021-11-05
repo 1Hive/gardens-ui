@@ -202,10 +202,10 @@
     ethers "~4.0.4"
     lodash "^4.17.11"
 
-"@1hive/1hive-ui@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.10.tgz#ece483c69bcee6eb430dc79fef7b659d0e608512"
-  integrity sha512-6tmGMtxbWLEL24fe4dnNiy9psc63zdsxOmPIONPn++kr4QCP8yVHpUrfOBkFXfsfYwR/t6RsiwPa5JAtUmdiNg==
+"@1hive/1hive-ui@1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.11.tgz#057cc73fcea1df56e25fdb96c09e6f2ffb600d1a"
+  integrity sha512-ZiX/a7OIWgdA/OnxLiCS0kh69eJ+JgCb8MVh0t+OfW9XEvqZJ2k3SStJ9x7UQfXqtFShfUNvPJrS3keOwXrc+Q==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"
@@ -277,11 +277,6 @@
     "@1hive/connect-core" "^0.8.5"
     "@1hive/connect-ethereum" "^0.8.5"
     "@1hive/connect-thegraph" "^0.8.5"
-
-"@1hive/gardens-dao-list@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@1hive/gardens-dao-list/-/gardens-dao-list-1.0.14.tgz#fb991a4dab6e98ccf5089846164cea2d4a091064"
-  integrity sha512-nhoBgLoFhc2x8f2xlUDc8Nv11wYzk/h4VjQ7MYd7M9klsAsiOjOL+mZiSoMW56NvMoWHjM83xGqEbgw8EWA8qg==
 
 "@1hive/use-wallet@^1.0.0":
   version "1.0.0"

@@ -23,9 +23,8 @@ function ConnectProvider({ children }) {
       ]}
       options={{
         network: preferredNetwork,
-          orgSubgraphUrl: subgraphs.organizations,
-        },
-      ]}
+        ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
+      }}
     >
       {children}
     </Connect>

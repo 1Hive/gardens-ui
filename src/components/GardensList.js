@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
 import {
-  DropDown,
   GU,
   Pagination,
   shortenAddress,
@@ -12,9 +11,6 @@ import {
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 import EmptyResults from './EmptyResults'
-import { SUPPORTED_CHAINS } from '@/networks'
-import { getNetworkName } from '@utils/web3-utils'
-import { useWallet } from '@providers/Wallet'
 
 const GARDENS_PER_PAGE = 10
 
@@ -29,14 +25,6 @@ const computeCurrentGardens = (gardens, currentPage) => {
 
 function GardensList({ gardens }) {
   const [selectedPage, setSelectedPage] = useState(0)
-  const {
-    handleOnPreferredNetworkChange,
-    isSupportedNetwork,
-    preferredNetwork,
-  } = useWallet()
-
-  const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
-  const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
 
   const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
 
@@ -56,25 +44,7 @@ function GardensList({ gardens }) {
   }, [gardens])
 
   return (
-    <div
-      css={`
-        padding: ${3 * GU}px;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: ${10 * GU}px;
-      `}
-    >
-      {!isSupportedNetwork && (
-        <DropDown
-          onChange={handleOnPreferredNetworkChange}
-          selected={selectedIndex}
-          items={supportedChains}
-          css={`
-            width: ${40 * GU}px;
-            margin-bottom: ${2 * GU}px;
-          `}
-        />
-      )}
+    <div>
       {currentGardens.length ? (
         <div>
           <div
