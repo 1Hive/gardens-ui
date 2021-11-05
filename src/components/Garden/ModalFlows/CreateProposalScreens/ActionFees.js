@@ -46,11 +46,12 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          A deposit is required for your proposal to be submitted which will be
-          held until the proposal is finalised. If the proposal is withdrawn by
-          you or completed successfully the deposit will be unlocked, available
-          through the collateral manager. If the proposal is disputed and
-          cancelled by Celeste the deposit will be lost.
+          A small deposit is required for your proposal to be submitted. This
+          will be held until the proposal is finalised. If the proposal is
+          withdrawn by you or completed successfully your deposit will be
+          unlocked, and made available to you through the deposit manager. If
+          your proposal is disputed and cancelled by Celeste, your deposit will
+          be lost.
         </span>
       </Field>
 
@@ -103,7 +104,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         </div>
       </div>
       <Button
-        label="Create transaction"
+        label="Deposit and create proposal"
         mode="strong"
         onClick={handleOnCreateTransaction}
         css={`

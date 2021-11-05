@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,
   GU,
@@ -7,7 +8,6 @@ import {
   RootPortal,
   textStyle,
 } from '@1hive/1hive-ui'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 const MINIMUM_SCROLL_TOP = 150
 

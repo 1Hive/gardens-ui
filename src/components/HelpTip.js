@@ -3,7 +3,7 @@ import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {
   'support-percentage': [
-    'Action Collateral',
+    'Support Percentage',
     <>
       <strong>Support</strong> is the relative percentage of tokens that are
       required to vote “Yes” for a proposal to be approved. For example, if
@@ -14,55 +14,97 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'minimum-approval': [
     'Minimum Approval',
     <>
-      <strong>Minimum Approval</strong> is the percentage of the total token
-      supply that is required to vote “Yes” on a proposal before it can be
-      approved. For example, if the “Minimum Approval” is set to 20%, then more
-      than 20% of the outstanding token supply must vote “Yes” on a proposal for
-      it to pass.
+      The <strong>Minimum Approval</strong> is the percentage of the total token
+      supply that is required to vote “Yes” on this type of proposal before it
+      can be approved. For example, if the “Minimum Approval” is set to 20%,
+      then more than 20% of the outstanding token supply must vote “Yes” for it
+      to pass.
     </>,
   ],
-  'challenge-collateral': [
-    'Challenge Collateral',
+  'challenge-deposit': [
+    'Challenge Deposit',
     <>
-      <strong>Challenge Collateral</strong> is the amount of tokens locked every
-      time an action is challenged. This will be submitted at the time of
-      challenge as opposed to being locked in the collateral manager.
+      The <strong>Challenge Deposit</strong> is the amount of tokens locked
+      every time a proposal is challenged. This deposit is submitted at the time
+      of the challenge.
     </>,
   ],
-  'action-collateral': [
-    'Action Collateral',
+  'proposal-deposit': [
+    'Proposal Deposit',
     <>
-      <strong>Action Collateral</strong> is the amount of collateral tokens
-      required to be locked every time an action is created. This amount will be
-      automatically locked from the staking pool balance given that access is
-      granted to the Covenant's app as the Lock Manager.
+      The <strong>Proposal Deposit</strong> is the amount of tokens locked every
+      time a proposal is created. They will be automatically locked from the
+      funds available in your deposit manager.
     </>,
   ],
   'settlement-period': [
-    'Minimum Approval',
+    'Settlement Period',
     <>
-      The <strong>Settlement Period</strong> is the interval of time that starts
-      when a disputable action is challenged and lasts until it’s resolved
-      between the parties (submitter and challenger), by accepting the
-      settlement offer or by raising the dispute to Celeste.
+      The <strong>Settlement Period</strong> is the amount of time the proposal
+      author has to either accept the settlement offer or raise the dispute to
+      Celeste.
     </>,
   ],
   'settlement-offer': [
     'Settlement Offer',
     <>
-      The <strong>Settlement Offer</strong> is the amount of tokens that you
-      would accept from the proposal submitter in order to cancel the action
-      without raising it to Celeste. This amount, if settled, will be slashed
-      from the proposal submitter's collateral and sent to you so it cannot be
-      greater than the collateral locked for the action but it can be zero.
+      The <strong>Settlement Offer</strong> (denominated in your Garden's token)
+      is the amount of tokens you stand to receive from the proposal author, if
+      he or she chooses to withdraw their proposal before it is raised to
+      Celeste.
+    </>,
+  ],
+  'common-pool': [
+    'Common Pool',
+    <>
+      The <strong>Common Pool</strong> is the amount of tokens available for
+      funding proposals.
+    </>,
+  ],
+  'total-supply': [
+    'Total Supply',
+    <>
+      The <strong>Total Supply</strong> is the the total amount of tokens in
+      circulation, including the common pool.
+    </>,
+  ],
+  'total-support': [
+    'Total Support',
+    <>
+      The <strong>Total Support</strong> is the amount of tokens currently being
+      used to support proposals.
+    </>,
+  ],
+  all: [
+    'All proposals',
+    <>View all proposals (suggestion, funding, and decision).</>,
+  ],
+  suggestion: [
+    'Suggestion Proposals',
+    <>
+      Suggestion proposals are used to gather community sentiment for ideas or
+      future funding proposals.
+    </>,
+  ],
+  decision: [
+    'Decision proposals',
+    <>
+      Decisions are proposals which seek to update the DAO's DNA (i.e. the
+      metagovernance parameters)
+    </>,
+  ],
+  funding: [
+    'Funding proposals',
+    <>
+      Funding proposals ask for an amount of funds. These funds are granted if
+      the proposal in question receives enough support (conviction).
     </>,
   ],
 }
 
 function HelpTip({ type }) {
   const [name, description] = KNOWN_HELP_DESCRIPTIONS[type]
-
-  return <Help hint={`What is ${name}?`}>{description}</Help>
+  return <Help hint={`${name}`}>{description}</Help>
 }
 
 export default HelpTip

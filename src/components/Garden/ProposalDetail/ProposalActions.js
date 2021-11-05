@@ -13,7 +13,6 @@ function ProposalActions({
   onChangeSupport,
   onExecuteProposal,
   onRequestSupportProposal,
-  onWithdrawFromProposal,
 }) {
   const { account: connectedAccount } = useWallet()
   const { config, token } = useGardenState()
@@ -55,14 +54,20 @@ function ProposalActions({
     onExecuteProposal(id)
   }, [id, onExecuteProposal])
 
-  const handleWithdrawAllFromProposal = useCallback(() => {
-    onWithdrawFromProposal({ proposalId: id })
-  }, [id, onWithdrawFromProposal])
-
   const buttonProps = useMemo(() => {
     if (!mode) {
       return null
     }
+
+    if (mode === 'withdraw') {
+      return {
+        text: 'Withdraw',
+        action: onChangeSupport,
+        mode: 'normal',
+        disabled: false,
+      }
+    }
+
     if (mode === 'execute') {
       return {
         text: 'Execute proposal',
@@ -79,13 +84,6 @@ function ProposalActions({
         mode: 'normal',
       }
     }
-    if (mode === 'withdraw') {
-      return {
-        text: 'Withdraw stake',
-        action: handleWithdrawAllFromProposal,
-        mode: 'strong',
-      }
-    }
     if (mode === 'support') {
       return {
         text: 'Support this proposal',
@@ -96,7 +94,6 @@ function ProposalActions({
     }
   }, [
     handleExecute,
-    handleWithdrawAllFromProposal,
     mode,
     onChangeSupport,
     onRequestSupportProposal,

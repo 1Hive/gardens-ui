@@ -9,6 +9,9 @@ export function useTokenBalanceOf(tokenAddress, account) {
   const tokenContract = useContractReadOnly(tokenAddress, tokenAbi)
 
   useEffect(() => {
+    if (!tokenContract) {
+      return
+    }
     const fetchTokenBalanceOf = async () => {
       const result = await tokenContract.balanceOf(account)
 

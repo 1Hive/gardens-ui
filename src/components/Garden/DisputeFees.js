@@ -47,13 +47,15 @@ function DisputeFees({ proposal }) {
                 margin-right: ${0.5 * GU}px;
               `}
             />
-            <div>
-              {formatTokenAmount(
-                fees.amount,
-                proposal.challengerArbitratorFee.tokenDecimals
-              )}{' '}
-              {proposal.challengerArbitratorFee.tokenSymbol}
-            </div>
+            {proposal.challengerArbitratorFee && (
+              <div>
+                {formatTokenAmount(
+                  fees.amount,
+                  proposal.challengerArbitratorFee.tokenDecimals
+                )}{' '}
+                {proposal.challengerArbitratorFee.tokenSymbol}
+              </div>
+            )}
           </div>
         </div>
       )}

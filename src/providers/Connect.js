@@ -11,6 +11,7 @@ function ConnectProvider({ children }) {
   const { preferredNetwork } = useWallet()
 
   const { subgraphs } = getNetwork(preferredNetwork)
+
   return (
     <Connect
       location={connectedGarden.address}
@@ -22,8 +23,9 @@ function ConnectProvider({ children }) {
       ]}
       options={{
         network: preferredNetwork,
-        ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
-      }}
+          orgSubgraphUrl: subgraphs.organizations,
+        },
+      ]}
     >
       {children}
     </Connect>

@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
@@ -7,16 +13,24 @@ import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
-import { useWallet } from './Wallet'
 
 import { fetchFileContent } from '../services/github'
+
 import { DAONotFound } from '../errors'
+import { getNetwork } from '../networks'
 import { getGardenForumUrl } from '../utils/garden-utils'
+import useGardenFilters from '@/hooks/useGardenFilters'
+import { testNameFilter } from '@/utils/garden-filters-utils'
+import { useDebounce } from '@/hooks/useDebounce'
+
+import { getVoidedGardensByNetwork } from '../voided-gardens'
+import { useWallet } from './Wallet'
 
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
-  const [gardens, loading] = useGardensList()
+  const [queryFilters, filters] = useGardenFilters()
+  const [gardens, loading, reload] = useGardensList(queryFilters, filters)
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -34,7 +48,16 @@ export function GardensProvider({ children }) {
   }
 
   return (
-    <DAOContext.Provider value={{ connectedGarden, gardens, loading }}>
+    <DAOContext.Provider
+      value={{
+        connectedGarden,
+        internalFilters: filters,
+        externalFilters: queryFilters,
+        gardens,
+        loading,
+        reload,
+      }}
+    >
       {connectedGarden ? (
         <Connect>
           <GardenStateProvider>
@@ -56,22 +79,62 @@ export function useGardens() {
   return useContext(DAOContext)
 }
 
-function useGardensList() {
-  const [gardens, setGardens] = useState([])
-  const [gardensMetadata, setGardensMetadata] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { chainId, preferredNetwork, isSupportedNetwork } = useWallet()
+function useFilteredGardens(gardens, gardensMetadata, filters, chainId) {
+  const debouncedNameFilter = useDebounce(filters.name.filter, 300)
 
-  const networkId = isSupportedNetwork ? chainId : preferredNetwork
+  return useMemo(() => {
+    const mergedGardens = gardens.map(garden =>
+      mergeGardenMetadata(garden, gardensMetadata, chainId)
+    )
+    if (!debouncedNameFilter) {
+      return mergedGardens
+    }
+    return mergedGardens.filter(garden =>
+      testNameFilter(debouncedNameFilter, garden)
+    )
+  }, [chainId, debouncedNameFilter, gardens, gardensMetadata])
+}
+
+function useGardensList(queryFilters, filters) {
+  const [gardens, setGardens] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [gardensMetadata, setGardensMetadata] = useState([])
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const [refetchTriger, setRefetchTriger] = useState(false)
+  const { preferredNetwork } = useWallet()
+
+  const { sorting } = queryFilters
+
+  const filteredGardens = useFilteredGardens(
+    gardens,
+    gardensMetadata,
+    filters,
+    preferredNetwork
+  )
+
+  const reload = useCallback(() => {
+    setRefetchTriger(triger => setRefetchTriger(!triger))
+  }, [])
 
   useEffect(() => {
+    setLoading(true)
+    setLoadingMetadata(true)
+  }, [preferredNetwork])
+
+  useEffect(() => {
+    setLoading(true)
     const fetchGardens = async () => {
       try {
+        setLoading(true)
+
         const result = await getGardens(
-          { network: networkId },
-          { orderBy: 'honeyLiquidity' }
+          { network: preferredNetwork },
+          { ...sorting.queryArgs }
         )
-        setGardens(result)
+
+        setGardens(
+          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+        )
       } catch (err) {
         setGardens([])
         console.error(`Error fetching gardens ${err}`)
@@ -80,34 +143,28 @@ function useGardensList() {
     }
 
     fetchGardens()
-  }, [networkId, isSupportedNetwork, preferredNetwork])
+  }, [preferredNetwork, refetchTriger, sorting.queryArgs])
 
   useEffect(() => {
+    setLoadingMetadata(true)
     const fetchGardenMetadata = async () => {
       try {
-        const result = await fetchFileContent(networkId)
+        const result = await fetchFileContent(preferredNetwork)
         setGardensMetadata(result.data)
       } catch (err) {
         setGardensMetadata([])
         console.error(`Error fetching gardens metadata ${err}`)
       }
+      setLoadingMetadata(false)
     }
-    fetchGardenMetadata()
-  }, [networkId, isSupportedNetwork, preferredNetwork])
 
-  return [
-    useMemo(
-      () =>
-        gardens.map(garden =>
-          mergeGardenMetadata(garden, gardensMetadata, networkId)
-        ),
-      [gardens, gardensMetadata, networkId]
-    ),
-    loading,
-  ]
+    fetchGardenMetadata()
+  }, [preferredNetwork, refetchTriger])
+
+  return [filteredGardens, loading || loadingMetadata, reload]
 }
 
-function mergeGardenMetadata(garden, gardensMetadata, networkId) {
+function mergeGardenMetadata(garden, gardensMetadata, chainId) {
   const metadata =
     gardensMetadata.gardens?.find(dao =>
       addressesEqual(dao.address, garden.id)
@@ -115,7 +172,7 @@ function mergeGardenMetadata(garden, gardensMetadata, networkId) {
 
   const token = {
     ...garden.token,
-    ...metadata.token,
+    logo: metadata.token_logo,
   }
   const wrappableToken = garden.wrappableToken
     ? {
@@ -130,9 +187,9 @@ function mergeGardenMetadata(garden, gardensMetadata, networkId) {
     ...garden,
     ...metadata,
     address: garden.id,
+    chainId,
     forumURL,
     token,
     wrappableToken,
-    chainId: networkId,
   }
 }

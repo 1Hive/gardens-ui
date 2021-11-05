@@ -1,10 +1,57 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
+const ASSETS_FOLDER_BASE =
+  'https://raw.githubusercontent.com/1Hive/dao-list/master/assets'
+const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
-const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list-test'
 
-export const fetchLatestCommitSha = async () => {
+// This step must be called after the dao is published and we have the dao address
+export async function publishNewDao(daoAddress, daoMetadata) {
+  try {
+    const { data: fileContent } = await fetchFileContent()
+    await publishDaoAssets(daoMetadata)
+
+    const newDaoList = fileContent.gardens
+    newDaoList.push({
+      address: daoAddress,
+      name: daoMetadata.name,
+      description: daoMetadata.description,
+      forum: daoMetadata.forum,
+      links: daoMetadata.links,
+      logo:
+        daoMetadata.logo &&
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo.${daoMetadata.logo.imageExtension}`,
+      logo_type:
+        daoMetadata.logo_type &&
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/logo_type.${daoMetadata.logo_type.imageExtension}`,
+      token_logo:
+        daoMetadata.token_logo &&
+        `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/token_logo.${daoMetadata.token_logo.imageExtension}`,
+    })
+    const newContent = {
+      ...fileContent,
+      gardens: newDaoList,
+    }
+
+    const { data: latestCommitSha } = await fetchLatestCommitSha()
+    const { data: baseTreSha } = await fetchBaseTreeSha(latestCommitSha)
+
+    const { data: newTreeSha } = await createTree(baseTreSha, newContent)
+
+    const { data: commitSha } = await createCommit(
+      latestCommitSha,
+      newTreeSha,
+      daoMetadata.name
+    )
+
+    await changeHeadsCommitSha(commitSha)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const fetchLatestCommitSha = async () => {
   const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
   try {
     const result = await fetch(endpoint, {
@@ -24,7 +71,7 @@ export const fetchLatestCommitSha = async () => {
   }
 }
 
-export const fetchBaseTreeSha = async commitSha => {
+const fetchBaseTreeSha = async commitSha => {
   const endpoint = `${ENDPOINT_BASE}/git/commits/${commitSha}`
   try {
     const result = await fetch(endpoint, {
@@ -77,7 +124,7 @@ export const createTree = async (baseTreSha, chainId, fileContent) => {
   }
 }
 
-export const createCommit = async (latestCommitSha, newTreeSha, daoName) => {
+const createCommit = async (latestCommitSha, newTreeSha, daoName) => {
   const endpoint = `${ENDPOINT_BASE}/git/commits`
   const bodyData = {
     parents: [latestCommitSha],
@@ -102,17 +149,12 @@ export const createCommit = async (latestCommitSha, newTreeSha, daoName) => {
   }
 }
 
-export const createFileContent = async (
-  folderName,
-  fileName,
-  base64,
-  commitMsg
-) => {
+const createFileContent = async (folderName, fileName, base64, commitMsg) => {
   const endpoint = `${ENDPOINT_BASE}/contents/assets/${folderName}/${fileName}`
 
   const bodyData = {
     owner: '1Hive',
-    repo: 'dao-list-test',
+    repo: 'dao-list',
     path: fileName,
     message: commitMsg,
     content: base64,
@@ -135,7 +177,7 @@ export const createFileContent = async (
   }
 }
 
-export const changeHeadsCommitSha = async commitSha => {
+const changeHeadsCommitSha = async commitSha => {
   const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
   const bodyData = {
     sha: commitSha,
@@ -155,51 +197,6 @@ export const changeHeadsCommitSha = async commitSha => {
   } catch (err) {
     console.error(`Error requesting tree sha`, err)
     return { error: true }
-  }
-}
-
-// This step must be called after the dao is published and we have the dao address
-export const publishNewDao = async daoMetaData => {
-  try {
-    const { data: fileContent } = await fetchFileContent()
-    await publishDaoAssets(daoMetaData)
-
-    const newDaoList = fileContent
-    newDaoList.push({
-      // address once we have it
-      name: daoMetaData.name,
-      description: daoMetaData.description,
-      forum: daoMetaData.forum,
-      links: daoMetaData.links,
-      logo:
-        daoMetaData.logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/logo.${daoMetaData.logoExtension}`,
-      logo_type:
-        daoMetaData.logo_type &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/logo_type.${daoMetaData.logo_typeExtension}`,
-      token_logo:
-        daoMetaData.token_logo &&
-        `https://raw.githubusercontent.com/1Hive/dao-list-test/master/assets/${daoMetaData.name}/token_logo.${daoMetaData.token_logoExtension}`,
-    })
-    const newContent = {
-      ...fileContent,
-      daos: newDaoList,
-    }
-
-    const { data: latestCommitSha } = await fetchLatestCommitSha()
-    const { data: baseTreSha } = await fetchBaseTreeSha(latestCommitSha)
-
-    const { data: newTreeSha } = await createTree(baseTreSha, newContent)
-
-    const { data: commitSha } = await createCommit(
-      latestCommitSha,
-      newTreeSha,
-      daoMetaData.name
-    )
-
-    await changeHeadsCommitSha(commitSha)
-  } catch (error) {
-    console.error(error)
   }
 }
 
@@ -231,30 +228,30 @@ export const fetchFileContent = async chainId => {
   }
 }
 
-const publishDaoAssets = async daoMetaData => {
+const publishDaoAssets = async daoMetadata => {
   try {
-    if (daoMetaData.logo) {
+    if (daoMetadata.logo) {
       await createFileContent(
-        daoMetaData.name,
-        `logo.${daoMetaData.logoExtension}`,
-        daoMetaData.logo,
-        `Assets:${daoMetaData.name}-logo`
+        daoMetadata.name,
+        `logo.${daoMetadata.logo.imageExtension}`,
+        daoMetadata.logo.base64,
+        `Assets:${daoMetadata.name}-logo`
       )
     }
-    if (daoMetaData.logo_type) {
+    if (daoMetadata.logo_type) {
       await createFileContent(
-        daoMetaData.name,
-        `logo_type.${daoMetaData.logo_typeExtension}`,
-        daoMetaData.logo_type,
-        `Assets:${daoMetaData.name}-logotype`
+        daoMetadata.name,
+        `logo_type.${daoMetadata.logo_type.imageExtension}`,
+        daoMetadata.logo_type.base64,
+        `Assets:${daoMetadata.name}-logotype`
       )
     }
-    if (daoMetaData.token_logo) {
+    if (daoMetadata.token_logo) {
       await createFileContent(
-        daoMetaData.name,
-        `token_logo.${daoMetaData.token_logoExtension}`,
-        daoMetaData.token_logo,
-        `Assets:${daoMetaData.name}-token_logo`
+        daoMetadata.name,
+        `token_logo.${daoMetadata.token_logo.imageExtension}`,
+        daoMetadata.token_logo.base64,
+        `Assets:${daoMetadata.name}-token_logo`
       )
     }
   } catch (error) {

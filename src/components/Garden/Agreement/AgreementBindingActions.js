@@ -49,8 +49,8 @@ function AgreementBindingActions({ apps }) {
         <InfoField
           label={
             <>
-              Action Collateral
-              <HelpTip type="action-collateral" />
+              Proposal Deposit
+              <HelpTip type="proposal-deposit" />
             </>
           }
         >
@@ -60,8 +60,8 @@ function AgreementBindingActions({ apps }) {
         <InfoField
           label={
             <>
-              Challenge Collateral
-              <HelpTip type="challenge-collateral" />
+              Challenge Deposit
+              <HelpTip type="challenge-deposit" />
             </>
           }
         >

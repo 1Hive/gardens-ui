@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { GU, noop, springs, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
+
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import { useMounted } from '@hooks/useMounted'
+import { useMultiModal } from '../MultiModal/MultiModalProvider'
+import useStepperLayout from './useStepperLayout'
+
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -11,9 +17,6 @@ import {
   STEP_WORKING,
 } from './stepper-statuses'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
-import { useMounted } from '@hooks/useMounted'
-import useStepperLayout from './useStepperLayout'
 
 const AnimatedDiv = animated.div
 
@@ -45,6 +48,7 @@ function reduceSteps(steps, [action, stepIndex, value]) {
 function Stepper({ steps, onComplete, onCompleteActions }) {
   const theme = useTheme()
   const mounted = useMounted()
+  const { close } = useMultiModal()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const [stepperStage, setStepperStage] = useState(0)
   const [stepState, updateStep] = useReducer(
@@ -159,11 +163,22 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     stepperStage === stepsCount &&
     stepState[stepperStage].status === STEP_SUCCESS
 
+  // Commented just in case we want to add again the auto close
+
+  // useEffect(() => {
+  //   let timeout
+  //   if (completed && !onCompleteActions) {
+  //     timeout = setTimeout(() => close(), 2000)
+  //   }
+  //   return () => {
+  //     clearTimeout(timeout)
+  //   }
+  // }, [close, completed, onCompleteActions])
+
   return (
     <div
       css={`
         margin-top: ${3.25 * GU}px;
-        margin-bottom: ${(completed && onCompleteActions ? 0 : 5.5) * GU}px;
       `}
     >
       <div
@@ -238,13 +253,34 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
-      {completed && onCompleteActions && (
-        <div
-          css={`
-            margin-top: ${5 * GU}px;
-          `}
-        >
-          {onCompleteActions()}
+      {completed && (
+        <div>
+          <Info
+            css={`
+              margin-top: ${5 * GU}px;
+            `}
+          >
+            You might need to wait a few seconds for the UI to update
+          </Info>
+          {onCompleteActions ? (
+            <div
+              css={`
+                margin-top: ${3 * GU}px;
+              `}
+            >
+              {onCompleteActions}
+            </div>
+          ) : (
+            <Button
+              label="Close"
+              mode="strong"
+              onClick={close}
+              wide
+              css={`
+                margin-top: ${5 * GU}px;
+              `}
+            />
+          )}
         </div>
       )}
     </div>
@@ -266,7 +302,7 @@ Stepper.propTypes = {
     })
   ).isRequired,
   onComplete: PropTypes.func,
-  onCompleteActions: PropTypes.func,
+  onCompleteActions: PropTypes.node,
 }
 
 Stepper.defaultProps = {

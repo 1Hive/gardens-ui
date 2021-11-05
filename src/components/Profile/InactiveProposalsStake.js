@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
@@ -9,8 +8,6 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const compact = below('large')
   const history = useHistory()
-  const { config } = useGardenState()
-  const { stakeToken } = config.conviction
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
@@ -29,7 +26,6 @@ function InactiveProposalsStake({ myInactiveStakes }) {
             proposalId={stake.proposal.id}
             proposalName={stake.proposal.metadata}
             selectProposal={handleSelectProposal}
-            stakeToken={stakeToken}
           />
         )
       })}
@@ -44,7 +40,6 @@ const ProposalItem = ({
   proposalId,
   proposalName,
   selectProposal,
-  stakeToken,
 }) => {
   const theme = useTheme()
 
@@ -103,7 +98,7 @@ const ProposalItem = ({
             margin-left: ${1 * GU}px;
           `}
         >
-          {formatTokenAmount(amount, stakeToken.decimals)}
+          {formatTokenAmount(amount, 18)}
         </span>
       </div>
     </div>

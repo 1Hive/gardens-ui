@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Button,
   GU,
   Info,
+  Link,
   LoadingRing,
   textStyle,
   useTheme,
@@ -16,6 +18,7 @@ import { useWallet } from '@providers/Wallet'
 import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
+import { buildGardenPath } from '@utils/routing-utils'
 
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
@@ -28,6 +31,7 @@ function ChallengeRequirements({
   const { account } = useWallet()
   const { next } = useMultiModal()
   const { disputableAppsWithRequirements } = agreement
+  const history = useHistory()
 
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
@@ -57,9 +61,40 @@ function ChallengeRequirements({
 
   return (
     <div>
-      <InfoField label="Action collateral">
-        You must stake {formatTokenAmount(challengeAmount, token.decimals)}{' '}
-        {token.symbol} as the collateral required to challenge this action.
+      <Info
+        title="Challenge guidelines"
+        css={`
+          margin-bottom: ${2 * GU}px;
+        `}
+      >
+        Challenging a proposal gives the proposal author a chance to settle the
+        dispute by accepting your settlement offer (and withdrawing their
+        proposal). If they refuse, the dispute is raised to{' '}
+        <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link> (a{' '}
+        <Link href="https://www.brightid.org/">BrightID</Link> integrated fork
+        of{' '}
+        <Link href="https://github.com/aragon/aragon-court/tree/master/docs">
+          Aragon Court
+        </Link>
+        ).
+        <br />
+        <br />
+        Once Celeste is invoked, a decentralised (and randomly selected) group
+        of BrightID verified humans – called keepers – is drafted to rule on the
+        dispute (they are tasked with deciding whether or not the disputed
+        action is compatible with this community’s{' '}
+        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
+          Covenant.
+        </Link>{' '}
+        <br />
+        <br />
+        If the keepers decide the proposal is compatible, on-chain execution
+        continues. If they decide it is not, the proposal is blocked and
+        removed.
+      </Info>
+      <InfoField label="Challenge deposit">
+        You must deposit {formatTokenAmount(challengeAmount, token.decimals)}{' '}
+        {token.symbol} in order to challenge a proposal.
       </InfoField>
       <CollateralStatus
         accountBalance={collateralTokenAccountBalance}
@@ -78,7 +113,7 @@ function ChallengeRequirements({
           <span>
             You must deposit{' '}
             {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{' '}
-            {feeToken.symbol} as the dispute fees.
+            {feeToken.symbol} to cover the initial dispute fees.
           </span>
         )}
       </InfoField>
@@ -89,6 +124,15 @@ function ChallengeRequirements({
           token={feeToken}
         />
       )}
+      <Info
+        css={`
+          margin-top: ${2 * GU}px;
+        `}
+      >
+        The challenge deposit and dispute fees will be returned to your account
+        should the submitter accept your settlement offer, or should you win the
+        dispute.
+      </Info>
       <ModalButton
         mode="strong"
         loading={false}
@@ -97,17 +141,6 @@ function ChallengeRequirements({
       >
         Continue
       </ModalButton>
-      <Info
-        css={`
-          margin-top: ${2 * GU}px;
-        `}
-      >
-        The action collateral and dispute fees will be returned to your account
-        if the submitter accepts your settlement offer or if you win the dispute
-        raised to Celeste. Your wallet balance is{' '}
-        {formatTokenAmount(collateralTokenAccountBalance, token.decimals)}{' '}
-        {token.symbol}.
-      </Info>
     </div>
   )
 }
@@ -124,7 +157,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           challengeAmount,
           token.decimals
-        )} ${token.symbol} as the challenge collateral.`,
+        )} ${token.symbol} as the challenge deposit.`,
       }
     }
 
@@ -135,7 +168,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         challengeAmount,
         token.decimals
-      )} ${token.symbol} as the challenge collateral.`,
+      )} ${token.symbol} as the challenge deposit.`,
     }
   }, [accountBalance, challengeAmount, token, theme])
 
@@ -166,6 +199,10 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
         feesAmount,
         token.decimals
       )} ${token.symbol} as the dispute fees.`,
+      actionButton: 'Get HNY ↗',
+      buttonOnClick: () =>
+        // TODO : remove once we have swap integration
+        window.open('https://app.honeyswap.org/#/swap', '_blank'),
     }
   }, [accountBalance, feesAmount, token, theme])
 

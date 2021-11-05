@@ -67,7 +67,8 @@ function DecisionDetail({ proposal, actions }) {
   const youVoted =
     connectedAccountVote === VOTE_YEA || connectedAccountVote === VOTE_NAY
 
-  const { creator, minAcceptQuorum, nay, number, yea } = proposal || {}
+  const { creator, minAcceptQuorum, nay, number, statusData, yea } =
+    proposal || {}
 
   const totalVotes = parseFloat(yea) + parseFloat(nay)
   const yeasPct = safeDiv(parseFloat(yea), totalVotes)
@@ -87,8 +88,8 @@ function DecisionDetail({ proposal, actions }) {
   }, [actions, proposal.number])
 
   const handleExecute = useCallback(() => {
-    actions.executeDecision(proposal.number)
-  }, [actions, proposal.number])
+    actions.executeDecision(proposal.number, proposal.script)
+  }, [actions, proposal.number, proposal.script])
 
   const handleResolveAction = useCallback(() => {
     actions.resolveAction(proposal.disputeId)
@@ -162,7 +163,21 @@ function DecisionDetail({ proposal, actions }) {
                         emptyScript ? (
                           proposal.metadata || 'No description'
                         ) : (
-                          <Description path={description} />
+                          <div>
+                            {proposal.metadata && (
+                              <div>
+                                <div
+                                  css={`
+                                    margin-bottom: ${1 * GU}px;
+                                  `}
+                                >
+                                  {proposal.metadata}
+                                </div>
+                                <b>Actions</b>
+                              </div>
+                            )}
+                            <Description path={description} />
+                          </div>
                         )
                       }
                       loading={descriptionLoading}
@@ -178,7 +193,7 @@ function DecisionDetail({ proposal, actions }) {
                     cols={proposal.pausedAt > 0 ? 3 : 2}
                   >
                     <DataField
-                      label="Action collateral"
+                      label="Deposit Amount"
                       value={<ActionCollateral proposal={proposal} />}
                     />
                     {proposal.pausedAt > 0 && (
@@ -215,7 +230,7 @@ function DecisionDetail({ proposal, actions }) {
                 )}
               </div>
               <DisputableInfo proposal={proposal} />
-              {proposal.statusData.open && (
+              {(statusData.open || statusData.pendingExecution) && (
                 <VoteActions
                   onExecute={handleExecute}
                   onVoteNo={handleVoteNo}

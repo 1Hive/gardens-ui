@@ -15,8 +15,8 @@ function SupportProposalScreens({ proposal, mode }) {
     async (onComplete, amount) => {
       await convictionActions.stakeToProposal(
         { proposalId, amount },
-        intent => {
-          setTransactions(intent)
+        trxData => {
+          setTransactions(trxData)
           onComplete()
         }
       )

@@ -4,16 +4,13 @@ import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { formatTokenAmount } from '@utils/token-utils'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import useChallenge from '@hooks/useChallenge'
 
-function SettlementDetails({
-  challengeContext,
-  getTransactions,
-  isChallenger,
-  proposal,
-}) {
-  const { id, challenger, settlementOffer } = proposal
+function SettlementDetails({ getTransactions, isChallenger, proposal }) {
+  const { id, challenger, collateralRequirement, settlementOffer } = proposal
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
+  const { challenge, loading } = useChallenge(proposal)
 
   const handleOnContinue = useCallback(() => {
     getTransactions(() => {
@@ -29,11 +26,9 @@ function SettlementDetails({
     >
       <span>
         {isChallenger
-          ? `This proposal has been cancelled as the submitter never responded the settlement offer. 
-          Claiming your collateral will transfer your settlement offer amount from the submitter to you. You'll also get a refund for your action deposit and dispute fees.`
-          : `By accepting this settlement offer you agree to cancel Proposal ${id} and
-        part of your action collateral will be slashed from your total staking
-        balance.`}
+          ? `This proposal has been cancelled as the submitter never responded to your settlement offer. 
+          Claiming your deposit will transfer your settlement offer amount from the proposal submitter to you; your challenge deposit will be returned, and your dispute fees refunded.`
+          : `By accepting this settlement offer you agree to cancel Proposal ${id}; you will forfeit your proposal deposit and the settlement will be taken from the available funds in your deposit manager.`}
       </span>
 
       <div
@@ -53,7 +48,8 @@ function SettlementDetails({
               : 'Amount that will be slashed'
           }
         >
-          {formatTokenAmount(settlementOffer, 18)} HNY
+          {formatTokenAmount(settlementOffer, 18)}{' '}
+          {collateralRequirement.tokenSymbol}
         </InfoField>
 
         <div
@@ -74,10 +70,10 @@ function SettlementDetails({
           margin-top: ${3 * GU}px;
         `}
       >
-        {challengeContext}
+        {!loading && challenge.context}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
-        {isChallenger ? 'Claim collateral' : 'Accept settlement'}
+        {isChallenger ? 'Claim deposit' : 'Accept settlement'}
       </ModalButton>
     </div>
   )

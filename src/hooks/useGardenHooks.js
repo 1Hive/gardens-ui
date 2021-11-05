@@ -21,7 +21,7 @@ import { getAgreementConnectorConfig } from '@/networks'
 
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
-import vaultAbi from '@abis/vault-balance.json'
+import fundsManagerAbi from '@abis/FundsManager.json'
 
 const INITIAL_TIMER = 2000
 
@@ -113,21 +113,24 @@ export function useGardenData() {
   }
 }
 
-export function useCommonPool(vaultAddress, token, timeout = 8000) {
-  const vaultContract = useContractReadOnly(vaultAddress, vaultAbi)
+export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
+  const fundsManagerContract = useContractReadOnly(
+    fundsManagerAddress,
+    fundsManagerAbi
+  )
   const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   useEffect(() => {
     let cancelled = false
     let timeoutId
 
-    if (!vaultContract || !token?.id) {
+    if (!fundsManagerContract || !token?.id) {
       return
     }
 
     const pollCommonPool = async () => {
       try {
-        const commonPoolResult = await vaultContract.balance(token.id)
+        const commonPoolResult = await fundsManagerContract.balance(token.id)
         // Contract value is bn.js so we need to convert it to bignumber.js
         const newValue = new BigNumber(commonPoolResult.toString())
         if (!cancelled) {
@@ -136,7 +139,7 @@ export function useCommonPool(vaultAddress, token, timeout = 8000) {
           }
         }
       } catch (err) {
-        console.error(`Error fetching vault balance: ${err} retrying...`)
+        console.error(`Error fetching common pool balance: ${err} retrying...`)
       }
 
       if (!cancelled) {
@@ -150,7 +153,7 @@ export function useCommonPool(vaultAddress, token, timeout = 8000) {
       cancelled = true
       clearTimeout(timeoutId)
     }
-  }, [commonPool, timeout, token, vaultContract])
+  }, [commonPool, fundsManagerContract, timeout, token])
 
   return commonPool
 }
