@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react'
 import { providers as EthersProviders } from 'ethers'
-import { UseWalletProvider, useWallet } from '@1hive/use-wallet'
+import { UseWalletProvider, useWallet } from 'use-wallet'
 
 import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
 import {
@@ -79,6 +79,7 @@ function WalletAugmented({ children }) {
   useEffect(() => {
     if (wallet.account != null && chainId !== wallet.chainId) {
       setChainId(wallet.chainId)
+      setPreferredNetwork(wallet.chainId)
       setPreferredChain(wallet.chainId)
     }
   }, [wallet.account, wallet.chainId, chainId])
@@ -141,10 +142,7 @@ function WalletAugmented({ children }) {
 function WalletProvider({ children }) {
   const connectors = getUseWalletConnectors()
   return (
-    <UseWalletProvider
-      supportedChains={SUPPORTED_CHAINS}
-      connectors={connectors}
-    >
+    <UseWalletProvider autoConnect connectors={connectors}>
       <WalletAugmented>{children}</WalletAugmented>
     </UseWalletProvider>
   )

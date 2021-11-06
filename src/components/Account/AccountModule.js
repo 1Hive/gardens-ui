@@ -166,9 +166,6 @@ function AccountModule({ compact }) {
         width={(screen.id === 'connected' ? 41 : 51) * GU}
       >
         {({ activating, activationError, screenId }) => {
-          if (screen.id === 'networks') {
-            return <ScreenPromptingAction />
-          }
           if (screenId === 'connecting') {
             return (
               <ScreenConnecting
@@ -192,6 +189,9 @@ function AccountModule({ compact }) {
                 onBack={handleCancelConnection}
               />
             )
+          }
+          if (screen.id === 'networks') {
+            return <ScreenPromptingAction />
           }
           return <ScreenProviders onActivate={activate} />
         }}
