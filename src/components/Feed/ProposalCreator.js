@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   EthIdenticon,
   GU,
@@ -54,31 +55,33 @@ function ProposalCreator({ proposal }) {
         display: flex;
       `}
     >
-      <div>
-        {profile?.image ? (
-          <img
-            src={profile.image}
-            height="43"
-            width="43"
-            alt=""
-            css={`
-              border-radius: 50%;
-              display: block;
-              object-fit: cover;
-              cursor: pointer;
-            `}
-          />
-        ) : (
-          <EthIdenticon
-            address={proposal.creator}
-            radius={50}
-            scale={1.8}
-            css={`
-              cursor: pointer;
-            `}
-          />
-        )}
-      </div>
+      <Link to={`/profile?account=${proposal.creator}`}>
+        <div>
+          {profile?.image ? (
+            <img
+              src={profile.image}
+              height="43"
+              width="43"
+              alt=""
+              css={`
+                border-radius: 50%;
+                display: block;
+                object-fit: cover;
+                cursor: pointer;
+              `}
+            />
+          ) : (
+            <EthIdenticon
+              address={proposal.creator}
+              radius={50}
+              scale={1.8}
+              css={`
+                cursor: pointer;
+              `}
+            />
+          )}
+        </div>
+      </Link>
       <div
         css={`
           margin-left: ${1 * GU}px;
@@ -94,16 +97,18 @@ function ProposalCreator({ proposal }) {
             ProposalType
           ) : (
             <>
-              <strong
-                css={`
-                  margin-right: ${1 * GU}px;
-                  cursor: pointer;
-                `}
-              >
-                {profile?.name
-                  ? profile.name
-                  : shortenAddress(proposal.creator)}
-              </strong>
+              <Link to={`/profile?account=${proposal.creator}`}>
+                <strong
+                  css={`
+                    margin-right: ${1 * GU}px;
+                    cursor: pointer;
+                  `}
+                >
+                  {profile?.name
+                    ? profile.name
+                    : shortenAddress(proposal.creator)}
+                </strong>
+              </Link>
               <span
                 css={`
                   margin-right: ${0.5 * GU}px;
