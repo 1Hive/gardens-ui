@@ -79,8 +79,10 @@ function WalletAugmented({ children }) {
   useEffect(() => {
     if (wallet.account != null && chainId !== wallet.chainId) {
       setChainId(wallet.chainId)
-      setPreferredNetwork(wallet.chainId)
       setPreferredChain(wallet.chainId)
+      if (SUPPORTED_CHAINS.includes(wallet.chainId)) {
+        setPreferredNetwork(wallet.chainId)
+      }
     }
   }, [wallet.account, wallet.chainId, chainId])
 
