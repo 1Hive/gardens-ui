@@ -1,33 +1,57 @@
 import React, { useMemo } from 'react'
-import { GU, useTheme, Link } from '@1hive/1hive-ui'
+import { useTrail, animated } from 'react-spring'
+import { GU, Link, useTheme } from '@1hive/1hive-ui'
+import LoadingRing from '../LoadingRing'
+import MenuItem from './MenuItem'
+import { useGardens } from '@providers/Gardens'
+import { useUserState } from '@providers/User'
+
+import { addressesEqual } from '@utils/web3-utils'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import MenuItem from './MenuItem'
-import { useGardens } from '@/providers/Gardens'
 
 function Sidebar() {
   const theme = useTheme()
-  const { connectedGarden, gardens } = useGardens()
+  const { user: connectedUser, loading: userLoading } = useUserState()
+  const { connectedGarden, gardensMetadata } = useGardens()
 
-  const gardenData = useMemo(
-    () =>
-      gardens
-        .map(garden => {
-          return {
-            name: garden.name,
-            address: garden.address,
-            path: `#/garden/${garden.address}`,
-            src: garden.logo || defaultGardenLogo,
-          }
-        })
-        .filter(garden => garden.address === connectedGarden.address),
-    [connectedGarden, gardens]
-  )
+  const sidebarGardens = useMemo(() => {
+    if (!connectedUser?.gardensSigned || !gardensMetadata) {
+      return []
+    }
+
+    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
+      const { address, name, logo } = gardensMetadata.find(g =>
+        addressesEqual(g.address, gardenSignedAddress)
+      )
+      return {
+        address,
+        name,
+        path: `#/garden/${address}`,
+        src: logo || defaultGardenLogo,
+      }
+    })
+
+    return result
+  }, [connectedUser, gardensMetadata])
+
+  const startTrail = sidebarGardens.length > 0
+  const trail = useTrail(sidebarGardens.length, {
+    config: { mass: 5, tension: 1500, friction: 150 },
+    delay: 300,
+    opacity: startTrail ? 1 : 0,
+    marginLeft: startTrail ? '0' : '-40px',
+    from: { marginLeft: '-40px', opacity: 0 },
+  })
 
   return (
     <div
       css={`
-        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 2;
         width: ${9 * GU}px;
         flex-shrink: 0;
         background: ${theme.surface};
@@ -42,7 +66,6 @@ function Sidebar() {
       >
         <div
           css={`
-            display: flex;
             padding-bottom: ${1.5 * GU}px;
             border-bottom: 1px solid ${theme.border};
           `}
@@ -65,18 +88,56 @@ function Sidebar() {
           </Link>
         </div>
       </div>
-      <nav>
-        <ul>
-          {gardenData.map((garden, i) => (
-            <MenuItem
-              key={garden.address}
-              active={garden.address === connectedGarden.address}
-              path={garden.path}
-              name={garden.name}
-              src={garden.src}
-            />
-          ))}
-        </ul>
+
+      <nav
+        css={`
+          position: fixed;
+          height: 100vh;
+          overflow-y: scroll;
+          width: 100%;
+          pointer-events: none;
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            pointer-events: auto;
+          `}
+        >
+          {userLoading ? (
+            <div
+              css={`
+                margin-top: ${6 * GU}px;
+                margin-left: ${2 * GU}px;
+              `}
+            >
+              <LoadingRing mode="half-circle" />
+            </div>
+          ) : (
+            <ul>
+              {trail.map((style, index) => {
+                const { address, name, path, src } = sidebarGardens[index]
+                return (
+                  <animated.div key={address} style={style}>
+                    <MenuItem
+                      active={addressesEqual(address, connectedGarden?.address)}
+                      label={name || address}
+                      path={path}
+                      src={src}
+                    />
+                  </animated.div>
+                )
+              })}
+            </ul>
+          )}
+        </div>
       </nav>
     </div>
   )

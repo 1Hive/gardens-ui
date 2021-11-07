@@ -10,6 +10,7 @@ import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 import { ActivityProvider } from './providers/ActivityProvider'
 import { GardensProvider } from './providers/Gardens'
 import { ProfileProvider } from './providers/Profile'
+import { UserProvider } from './providers/User'
 import { WalletProvider } from './providers/Wallet'
 
 function App() {
@@ -20,12 +21,14 @@ function App() {
           <WalletProvider>
             <ActivityProvider>
               <ProfileProvider>
-                <GardensProvider>
-                  <WelcomeLoader />
-                  <MainView>
-                    <Routes />
-                  </MainView>
-                </GardensProvider>
+                <UserProvider>
+                  <GardensProvider>
+                    <WelcomeLoader />
+                    <MainView>
+                      <Routes />
+                    </MainView>
+                  </GardensProvider>
+                </UserProvider>
               </ProfileProvider>
             </ActivityProvider>
           </WalletProvider>
