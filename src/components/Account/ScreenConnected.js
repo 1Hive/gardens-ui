@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   Button,
   ButtonBase,
@@ -16,19 +17,18 @@ import { useGardens } from '../../providers/Gardens'
 
 import { buildGardenPath } from '../../utils/routing-utils'
 import { getNetworkName } from '../../utils/web3-utils'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
 import stakeButtonSvg from '../../assets/stakeButton.svg'
 
-function AccountScreenConnected({ onClosePopover, wallet }) {
+function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
   const { connectedGarden } = useGardens()
 
   const networkName = getNetworkName()
-  const providerInfo = getProviderFromUseWalletId(wallet.activated)
+  const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {
     history.push(`/profile`)

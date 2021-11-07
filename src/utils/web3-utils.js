@@ -27,19 +27,6 @@ export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
 }
 
-export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
-
-  if (env('FORTMATIC_API_KEY')) {
-    providers.push({
-      id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
-    })
-  }
-
-  return providers
-}
-
 export function getNetworkType(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
@@ -66,15 +53,6 @@ export function getNetworkName(chainId = getPreferredChain()) {
 
 export function isLocalOrUnknownNetwork(chainId = getPreferredChain()) {
   return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
-}
-
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
-    if (provider.useWalletConf) {
-      connectors[provider.id] = provider.useWalletConf
-    }
-    return connectors
-  }, {})
 }
 
 // Check address equality with checksums

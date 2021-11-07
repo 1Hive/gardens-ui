@@ -40,7 +40,7 @@ function AccountModule({ compact }) {
   const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
-  const { account, activating, error } = wallet
+  const { account, activating, error, connector } = wallet
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
@@ -169,7 +169,7 @@ function AccountModule({ compact }) {
           if (screenId === 'connecting') {
             return (
               <ScreenConnecting
-                providerId={activating}
+                providerId={connector}
                 onCancel={handleCancelConnection}
               />
             )
@@ -177,6 +177,7 @@ function AccountModule({ compact }) {
           if (screenId === 'connected') {
             return (
               <ScreenConnected
+                providerId={connector}
                 onClosePopover={handlePopoverClose}
                 wallet={wallet}
               />
