@@ -8,7 +8,7 @@ import React, {
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from 'use-wallet'
 
-import { getUseWalletConnectors, getDefaultProvider } from '@utils/web3-utils'
+import { getDefaultProvider } from '@utils/web3-utils'
 import {
   addEthereumChain,
   getEthersNetwork,
@@ -17,6 +17,7 @@ import {
   switchNetwork,
 } from '@/networks'
 import { getPreferredChain, setPreferredChain } from '@/local-settings'
+import { useWalletConnectors } from '@/ethereum-providers/connectors'
 
 const WalletAugmentedContext = React.createContext()
 
@@ -26,21 +27,20 @@ function useWalletAugmented() {
 
 // Adds Ethers.js to the useWallet() object
 function WalletAugmented({ children }) {
-  // This new state is neede to avoid showing the user the profile signature request on every network change
-  const [chainReseted, setChainReseted] = useState(false)
   const [chainId, setChainId] = useState(-1)
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
 
   const wallet = useWallet()
-  const { ethereum } = wallet
+  const { account, connector, ethereum, status } = wallet
+
+  const connected = useMemo(() => status === 'connected', [status])
 
   const ethers = useMemo(() => {
     if (!ethereum) {
       return getDefaultProvider()
     }
-
     return new EthersProviders.Web3Provider(ethereum, getEthersNetwork())
   }, [ethereum])
 
@@ -49,31 +49,37 @@ function WalletAugmented({ children }) {
   }, [wallet.chainId])
 
   const connect = useCallback(async () => {
-    const connectedAddresses = await window.ethereum.request({
-      method: 'eth_accounts',
-    })
-    if (connectedAddresses.length > 0) {
+    if (connector === 'injected') {
+      await addEthereumChain()
+    }
+
+    if (account) {
       try {
-        await addEthereumChain()
-        await wallet.connect('injected')
+        await wallet.connect(connector)
       } catch (e) {
         console.error(e)
       }
+    } else {
+      const connectedAddresses = await window?.ethereum?.request({
+        method: 'eth_accounts',
+      })
+      if (connectedAddresses?.length > 0) {
+        try {
+          await wallet.connect('injected')
+        } catch (e) {
+          console.error(e)
+        }
+      }
     }
-  }, [wallet])
+  }, [account, connector, wallet])
 
   const resetConnection = useCallback(async () => {
-    setChainReseted(true)
     setChainId(-1)
     await wallet.reset()
   }, [wallet])
 
-  // Handle connect automatically if windows.ethereum is available and we have some connected address on the wallet
-  useEffect(() => {
-    if (window.ethereum) {
-      connect()
-    }
-  }, []) //eslint-disable-line
+  // Handle connect automatically if an account is available and we have some connected address on the wallet
+  useEffect(() => connect(), []) // eslint-disable-line
 
   // This useEffect is needed because we don't have inmediatly available wallet.chainId  right after connecting in the previous hook
   useEffect(() => {
@@ -105,26 +111,36 @@ function WalletAugmented({ children }) {
     wallet,
   ])
 
-  const handleOnPreferredNetworkChange = useCallback(async index => {
-    const chainId = SUPPORTED_CHAINS[index]
-    setPreferredNetwork(chainId)
-    setPreferredChain(chainId)
+  const handleOnPreferredNetworkChange = useCallback(
+    async index => {
+      const chainId = SUPPORTED_CHAINS[index]
+      setPreferredNetwork(chainId)
+      setPreferredChain(chainId)
 
-    await switchNetwork(chainId)
-  }, [])
+      if (connector === 'injected') {
+        await switchNetwork(chainId)
+        if (!connected) {
+          await connect()
+        }
+      } else {
+        await resetConnection()
+      }
+    },
+    [connect, connected, connector, resetConnection]
+  )
 
   const contextValue = useMemo(
     () => ({
       ...wallet,
+      connected,
       handleOnPreferredNetworkChange,
       preferredNetwork,
       isSupportedNetwork,
       resetConnection,
-      chainReseted,
       ethers,
     }),
     [
-      chainReseted,
+      connected,
       ethers,
       handleOnPreferredNetworkChange,
       preferredNetwork,
@@ -142,9 +158,8 @@ function WalletAugmented({ children }) {
 }
 
 function WalletProvider({ children }) {
-  const connectors = getUseWalletConnectors()
   return (
-    <UseWalletProvider autoConnect connectors={connectors}>
+    <UseWalletProvider autoConnect connectors={useWalletConnectors}>
       <WalletAugmented>{children}</WalletAugmented>
     </UseWalletProvider>
   )

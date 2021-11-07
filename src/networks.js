@@ -109,14 +109,9 @@ export const switchNetwork = async chainId => {
   } catch (switchError) {
     // This error code indicates that the chain has not been added to Injected provider.
     if (switchError.code === 4902) {
-      try {
-        await addEthereumChain()
-      } catch (addError) {
-        // handle "add" error
-      }
+      await addEthereumChain()
     }
-    // handle other "switch" errors
-    // TODO: handle errors
+    console.error(switchError)
   }
 }
 
