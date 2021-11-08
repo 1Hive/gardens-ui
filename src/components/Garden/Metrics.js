@@ -4,6 +4,7 @@ import {
   Button,
   GU,
   Help,
+  Split,
   textStyle,
   useLayout,
   useTheme,
@@ -33,59 +34,56 @@ const Metrics = React.memo(function Metrics({
     rate: 1,
   }
   return (
-    <Box padding={3 * GU}>
-      <div
-        css={`
-          display: flex;
-          justify-content: space-between;
-        `}
-      >
-        <PriceSection
-          onExecuteIssuance={onExecuteIssuance}
-          onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
-          currency={currency}
-          token={priceToken}
-        />
-        <div>
-          <TokenBalance
-            label="Common Pool"
-            value={commonPool.value}
-            token={commonPool.token}
-            currency={currency}
-            helptip="common-pool"
-          />
-        </div>
-        <div>
-          <TokenBalance
-            label="Total Supply"
-            value={totalSupply.value}
-            token={totalSupply.token}
-            currency={currency}
-            helptip="total-supply"
-          />
-        </div>
-        {totalWrappedSupply && (
-          <div>
-            <TokenBalance
-              label="Total Wrapped Supply"
-              value={totalWrappedSupply.value}
-              token={totalWrappedSupply.token}
+    <Split
+      primary={
+        <Box padding={3 * GU}>
+          <div
+            css={`
+              display: grid;
+              grid-template-columns: 2fr 1.5fr 1fr;
+            `}
+          >
+            <PriceSection
+              onExecuteIssuance={onExecuteIssuance}
+              onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
               currency={currency}
-              helptip="total-wrapped-supply"
+              token={priceToken}
+            />
+            <SupplySection
+              currency={currency}
+              totalSupply={totalSupply}
+              totalWrappedSupply={totalWrappedSupply}
+            />
+            <div>
+              <TokenBalance
+                label="Total Support"
+                value={totalActiveTokens.value}
+                token={totalActiveTokens.token}
+                currency={currency}
+                helptip="total-support"
+              />
+            </div>
+          </div>
+        </Box>
+      }
+      secondary={
+        <Box padding={3 * GU}>
+          <div
+            css={`
+              text-align: center;
+            `}
+          >
+            <TokenBalance
+              label="Common Pool"
+              value={commonPool.value}
+              token={commonPool.token}
+              currency={currency}
+              helptip="common-pool"
             />
           </div>
-        )}
-        <div>
-          <TokenBalance
-            label="Total Support"
-            value={totalActiveTokens.value}
-            token={totalActiveTokens.token}
-            currency={currency}
-            helptip="total-support"
-          />
-        </div>
-      </div>
-    </Box>
+        </Box>
+      }
+    />
   )
 })
 
@@ -97,11 +95,12 @@ function PriceSection({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const [oracleMode, setOracleMode] = useState(false)
+  const [priceMode, setPriceMode] = useState(true)
 
-  const handleShowOracleMode = useCallback(() => {
-    setOracleMode(!oracleMode)
-  }, [oracleMode])
+  const handleTogglePriceMode = useCallback(() => {
+    setPriceMode(priceMode => !priceMode)
+  }, [])
+
   return (
     <div
       css={`
@@ -111,7 +110,7 @@ function PriceSection({
         margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
       `}
     >
-      <DotSwitch checked={oracleMode} onChange={handleShowOracleMode} />
+      <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
         src={token.logo || defaultTokenLogo}
         height="60"
@@ -120,16 +119,64 @@ function PriceSection({
         onClick={onExecuteIssuance}
         css={`
           margin-right: ${4 * GU}px;
-          margin-left: ${4 * GU}px;
+          margin-left: ${2 * GU}px;
           cursor: pointer;
         `}
       />
       <TokenPrice
         currency={currency}
         token={token}
-        oracleMode={oracleMode}
+        oracleMode={!priceMode}
         onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
       />
+    </div>
+  )
+}
+
+function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
+  const [supplyMode, setSupplyMode] = useState(true)
+
+  const handleToggleSupplyMode = useCallback(() => {
+    setSupplyMode(supplyMode => !supplyMode)
+  }, [])
+
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+      `}
+    >
+      {totalWrappedSupply && (
+        <div
+          css={`
+            margin-right: ${2 * GU}px;
+          `}
+        >
+          <DotSwitch first={supplyMode} onChange={handleToggleSupplyMode} />
+        </div>
+      )}
+      {supplyMode ? (
+        <div>
+          <TokenBalance
+            label="Total Supply"
+            value={totalSupply.value}
+            token={totalSupply.token}
+            currency={currency}
+            helptip="total-supply"
+          />
+        </div>
+      ) : (
+        <div>
+          <TokenBalance
+            label="Wrapped Supply"
+            value={totalWrappedSupply.value}
+            token={totalWrappedSupply.token}
+            currency={currency}
+            helptip="total-wrapped-supply"
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -251,7 +298,16 @@ function TokenPrice({
             margin-bottom: ${0.5 * GU}px;
           `}
         >
-          {`${oracleMode ? 'Oracle' : ''} ${token.symbol} Price`}
+          {token.symbol} Price{' '}
+          {oracleMode && (
+            <span
+              css={`
+                ${textStyle('body3')}
+              `}
+            >
+              (Oracle)
+            </span>
+          )}
         </p>
         {oracleMode && (
           <Help hint="What is Oracle Price?">
@@ -298,7 +354,7 @@ function TokenPrice({
   )
 }
 
-function DotSwitch({ checked, onChange }) {
+function DotSwitch({ first, onChange }) {
   return (
     <div
       css={`
@@ -307,8 +363,8 @@ function DotSwitch({ checked, onChange }) {
         justify-content: center;
       `}
     >
-      <Dot isActive={!checked} onChange={onChange} />
-      <Dot isActive={checked} onChange={onChange} />
+      <Dot isActive={first} onChange={onChange} />
+      <Dot isActive={!first} onChange={onChange} />
     </div>
   )
 }
