@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
-import { ChainUnsupportedError } from '@1hive/use-wallet'
+import { ChainUnsupportedError } from 'use-wallet'
 import { SUPPORTED_CHAINS } from '@/networks'
 import { getNetworkName } from '@utils/web3-utils'
 

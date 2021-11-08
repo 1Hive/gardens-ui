@@ -13,11 +13,7 @@ const GardensFilters = ({
   onSortingFilterChange,
 }) => {
   const { layoutName } = useLayout()
-  const {
-    handleOnPreferredNetworkChange,
-    isSupportedNetwork,
-    preferredNetwork,
-  } = useWallet()
+  const { handleOnPreferredNetworkChange, preferredNetwork } = useWallet()
 
   const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
   const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
@@ -31,16 +27,14 @@ const GardensFilters = ({
         flex-wrap: wrap;
       `}
     >
-      {isSupportedNetwork && (
-        <FilterItem>
-          <DropDown
-            items={supportedChains}
-            onChange={handleOnPreferredNetworkChange}
-            selected={selectedIndex}
-            wide
-          />
-        </FilterItem>
-      )}
+      <FilterItem>
+        <DropDown
+          items={supportedChains}
+          onChange={handleOnPreferredNetworkChange}
+          selected={selectedIndex}
+          wide
+        />
+      </FilterItem>
       <FilterItem>
         <DropDown
           header="Sort by"
