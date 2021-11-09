@@ -18,6 +18,7 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import { useCallback } from 'react/cjs/react.development'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
@@ -28,7 +29,16 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
-  const earnedRewards = useUnipoolRewards()
+  const [earnedRewards, rewardsLink] = useUnipoolRewards()
+
+  const handleClaimRewards = useCallback(() => {
+    if (rewardsLink) {
+      window.open(rewardsLink)
+      return
+    }
+
+    onClaimRewards()
+  }, [onClaimRewards, rewardsLink])
 
   return (
     <Box
@@ -80,7 +90,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
                 label="Claim"
                 mode="strong"
                 wide
-                onClick={onClaimRewards}
+                onClick={handleClaimRewards}
                 css={`
                   margin-top: ${1.5 * GU}px;
                 `}
