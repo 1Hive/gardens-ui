@@ -16,19 +16,6 @@ export const SHORTENED_APPS_NAMES = new Map([
   ['wrappable-hooked-token-manager', 'token-manager'],
 ])
 
-export const FULL_NAME_FROM_SHORTENED = new Map([
-  ['agent', 'agent'],
-  ['covenant', 'agreement-1hive'],
-  ['brightid-register', 'brightid-register'],
-  ['conviction-voting', 'disputable-conviction-voting'],
-  ['voting', 'disputable-voting'],
-  ['issuance', 'dynamic-issuance'],
-  ['token-manager', 'hooked-token-manager-no-controller'],
-  ['token-aggregator', 'vote-token-aggregator'],
-  ['common pool', 'vault'],
-  ['token-manager', 'wrappable-hooked-token-manager'],
-])
-
 // TODO: Replace with information supplied by connect when available
 // https://github.com/aragon/connect/pull/259
 export const KNOWN_SYSTEM_APPS = new Map([

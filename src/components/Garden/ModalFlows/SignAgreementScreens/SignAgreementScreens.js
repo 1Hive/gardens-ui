@@ -5,14 +5,18 @@ import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'
 import useActions from '@hooks/useActions'
+import { useUserState } from '@providers/User'
 
 import { buildGardenPath } from '@utils/routing-utils'
 
 function SignAgreementScreens({ versionId }) {
   const actions = useActions()
   const [transactions, setTransactions] = useState([])
+  const { reload } = useUserState()
 
   const history = useHistory()
+
+  const reloadUser = useCallback(() => setTimeout(reload, 4000), [reload])
 
   const handleCreateProposal = useCallback(() => {
     const path = buildGardenPath(history.location, 'create')
@@ -60,6 +64,7 @@ function SignAgreementScreens({ versionId }) {
       transactions={transactions}
       transactionTitle="Sign Covenant"
       screens={screens}
+      onComplete={reloadUser}
       onCompleteActions={onCompleteActions}
     />
   )

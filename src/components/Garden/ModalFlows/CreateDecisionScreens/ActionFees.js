@@ -46,12 +46,11 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          A small deposit is required for your decision to be submitted. This
-          will be held until the decision is finalised. If the decision is
-          withdrawn by you or completed successfully your deposit will be
-          unlocked, and made available to you through the deposit manager. If
-          your decision is disputed and cancelled by Celeste, your deposit will
-          be lost.
+          A small deposit is required for your decision to be submitted that
+          will be held until the decision is finalised, point at which your
+          deposit will be unlocked, and made available to you through the
+          deposit manager. If your decision is disputed and cancelled by
+          Celeste, your deposit will be lost.
         </span>
       </Field>
 

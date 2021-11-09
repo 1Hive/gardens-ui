@@ -9,6 +9,7 @@ import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
 import { getGardens } from '@1hive/connect-gardens'
 
+import { ActivityProvider } from './ActivityProvider'
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
@@ -29,7 +30,10 @@ const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
   const [queryFilters, filters] = useGardenFilters()
-  const [gardens, loading, reload] = useGardensList(queryFilters, filters)
+  const [gardens, gardensMetadata, loading, reload] = useGardensList(
+    queryFilters,
+    filters
+  )
 
   const match = useRouteMatch('/garden/:daoId')
 
@@ -53,19 +57,22 @@ export function GardensProvider({ children }) {
         internalFilters: filters,
         externalFilters: queryFilters,
         gardens,
+        gardensMetadata,
         loading,
         reload,
       }}
     >
       {connectedGarden ? (
         <Connect>
-          <GardenStateProvider>
-            <StakingProvider>
-              <AgreementSubscriptionProvider>
-                {children}
-              </AgreementSubscriptionProvider>
-            </StakingProvider>
-          </GardenStateProvider>
+          <ActivityProvider>
+            <GardenStateProvider>
+              <StakingProvider>
+                <AgreementSubscriptionProvider>
+                  {children}
+                </AgreementSubscriptionProvider>
+              </StakingProvider>
+            </GardenStateProvider>
+          </ActivityProvider>
         </Connect>
       ) : (
         children
@@ -94,15 +101,37 @@ function useFilteredGardens(gardens, gardensMetadata, filters) {
   }, [debouncedNameFilter, gardens, gardensMetadata])
 }
 
+function useGardensMetadata(refetchTriger) {
+  const [gardensMetadata, setGardensMetadata] = useState([])
+  const [loadingMetadata, setLoadingMetadata] = useState(true)
+
+  useEffect(() => {
+    setLoadingMetadata(true)
+    const fetchGardenMetadata = async () => {
+      try {
+        const result = await fetchFileContent(getNetwork().chainId)
+        setGardensMetadata(result.data.gardens)
+      } catch (err) {
+        setGardensMetadata([])
+        console.error(`Error fetching gardens metadata ${err}`)
+      }
+      setLoadingMetadata(false)
+    }
+
+    fetchGardenMetadata()
+  }, [refetchTriger])
+
+  return [gardensMetadata, loadingMetadata]
+}
+
 function useGardensList(queryFilters, filters) {
   const [gardens, setGardens] = useState([])
   const [loading, setLoading] = useState(true)
-  const [gardensMetadata, setGardensMetadata] = useState([])
-  const [loadingMetadata, setLoadingMetadata] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
 
   const { sorting } = queryFilters
 
+  const [gardensMetadata, loadingMetadata] = useGardensMetadata(refetchTriger)
   const filteredGardens = useFilteredGardens(gardens, gardensMetadata, filters)
 
   const reload = useCallback(() => {
@@ -131,32 +160,14 @@ function useGardensList(queryFilters, filters) {
     }
 
     fetchGardens()
-  }, [sorting.queryArgs])
+  }, [refetchTriger, sorting.queryArgs])
 
-  useEffect(() => {
-    setLoadingMetadata(true)
-    const fetchGardenMetadata = async () => {
-      try {
-        const result = await fetchFileContent(getNetwork().chainId)
-        setGardensMetadata(result.data)
-      } catch (err) {
-        setGardensMetadata([])
-        console.error(`Error fetching gardens metadata ${err}`)
-      }
-      setLoadingMetadata(false)
-    }
-
-    fetchGardenMetadata()
-  }, [refetchTriger])
-
-  return [filteredGardens, loading || loadingMetadata, reload]
+  return [filteredGardens, gardensMetadata, loading || loadingMetadata, reload]
 }
 
 function mergeGardenMetadata(garden, gardensMetadata) {
   const metadata =
-    gardensMetadata.gardens?.find(dao =>
-      addressesEqual(dao.address, garden.id)
-    ) || {}
+    gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
 
   const token = {
     ...garden.token,

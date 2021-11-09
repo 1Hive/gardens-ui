@@ -12,7 +12,7 @@ import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
 
 export function useAccountStakes(account) {
-  const user = useUser(account)
+  const [user] = useUser(account)
 
   return useMemo(() => {
     if (!user?.supports.length) {
@@ -76,7 +76,7 @@ export function useAccountStakesByGarden(account) {
 }
 
 export function useInactiveProposalsWithStake(account) {
-  const user = useUser(account)
+  const [user] = useUser(account)
 
   if (!user?.supports.length) {
     return []

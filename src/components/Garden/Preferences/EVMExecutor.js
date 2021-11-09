@@ -9,18 +9,18 @@ import {
   TextInput,
 } from '@1hive/1hive-ui'
 import { EVMcrispr } from '@1hive/evmcrispr'
+import { utils } from 'ethers'
 
-import MultiModal from '@components/MultiModal/MultiModal'
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
+import MultiModal from '@components/MultiModal/MultiModal'
 
 import { useGardens } from '@/providers/Gardens'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
-// import { asciiToHex } from '@utils/web3-utils'
 
-import actions from '../../../actions/garden-action-types'
-import radspec from '../../../radspec'
+import actions from '@/actions/garden-action-types'
+import radspec from '@/radspec'
 
 const INTERACTION_TYPES = ['Internal', 'External']
 
@@ -36,14 +36,13 @@ function EVMExecutor() {
   const [abi, setAbi] = useState()
   const [evmcrispr, setEvmcrispr] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
-  const [installedApps, setInstalledApps] = useState([])
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
 
   useEffect(() => {
     async function getEvmCrispr() {
-      if (!connectedGarden) {
+      if (!connectedGarden || !account) {
         return
       }
       const crispr = await EVMcrispr.create(
@@ -54,30 +53,27 @@ function EVMExecutor() {
       setEvmcrispr(crispr)
     }
     getEvmCrispr()
-  }, [connectedGarden, ethers])
+  }, [account, connectedGarden, ethers])
 
-  useEffect(() => {
+  const installedApps = useMemo(() => {
     if (!evmcrispr) {
-      return
+      return []
     }
-    const apps = evmcrispr.apps()
-    setInstalledApps(apps)
+    return evmcrispr.apps()
   }, [evmcrispr])
 
   const shortenedAppsNames = installedApps.map(appName => {
     const dotIndex = appName.indexOf('.')
     return (
       SHORTENED_APPS_NAMES.get(
-        dotIndex > 0
-          ? appName.substr(0, appName.indexOf('.'))
-          : appName.slice(0, -2)
+        dotIndex > 0 ? appName.substr(0, dotIndex) : appName.slice(0, -2)
       ) || appName.slice(0, -2)
     )
   })
 
   const functionList = useMemo(() => {
     if (!evmcrispr || shortenedAppsNames?.length === 0 || !selectedApp) {
-      return
+      return []
     }
 
     const appName = installedApps[selectedApp]
@@ -88,7 +84,7 @@ function EVMExecutor() {
 
   const requiredParameters = useMemo(() => {
     if (!evmcrispr || !selectedApp || !selectedFunction) {
-      return
+      return []
     }
 
     const { paramNames, paramTypes } = evmcrispr.call(
@@ -122,7 +118,7 @@ function EVMExecutor() {
       // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
       // { context: asciiToHex(functionList[selectedFunction]) }
       // having some issue on the lib when passing the function that need to check with david
-      { context: 'hello' }
+      { context: 'new decision' }
     )
 
     return [{ ...intent.action, description: description, type: type }]
@@ -138,6 +134,24 @@ function EVMExecutor() {
   const handleOnAbiChange = useCallback(event => {
     const value = event.target.value
     setAbi(value)
+    let iface
+    let formatted
+    try {
+      iface = new utils.Interface(value)
+      formatted = iface.format(utils.FormatTypes.json)
+    } catch (error) {
+      console.error(error)
+    }
+
+    console.log('FORMATED ', formatted)
+  }, [])
+
+  const handleOnShowModal = useCallback(() => {
+    setCreateDecisionModalVisible(true)
+  }, [])
+
+  const handleOnHideModal = useCallback(() => {
+    setCreateDecisionModalVisible(false)
   }, [])
 
   if (!connectedGarden || !ethers) {
@@ -220,14 +234,14 @@ function EVMExecutor() {
           disabled={!account}
           mode="strong"
           wide
-          onClick={() => setCreateDecisionModalVisible(true)}
+          onClick={handleOnShowModal}
         >
           Execute
         </Button>
       )}
       <MultiModal
         visible={createDecisionModalVisible}
-        onClose={() => setCreateDecisionModalVisible(false)}
+        onClose={handleOnHideModal}
       >
         <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
       </MultiModal>

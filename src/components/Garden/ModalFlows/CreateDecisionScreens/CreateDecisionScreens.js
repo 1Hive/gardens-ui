@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import CreateDecisionRequirements from './CreateDecisionRequirements'
+import ModalFlowBase from '../ModalFlowBase'
+
 import { useAgreement } from '@hooks/useAgreement'
-import { useWallet } from '@providers/Wallet'
 import { useStakingState } from '@providers/Staking'
+import { useWallet } from '@providers/Wallet'
 
 function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
   const [loading, setLoading] = useState(true)

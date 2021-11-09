@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Garden/Footer'
@@ -11,6 +12,7 @@ import { useGardens } from '@/providers/Gardens'
 import { useGardenState } from '@/providers/GardenState'
 
 function MainView({ children }) {
+  const { pathname } = useLocation()
   const { below } = useViewport()
   const { connectedGarden } = useGardens()
 
@@ -50,7 +52,7 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {connectedGarden && !below('medium') && <Sidebar />}
+        {pathname !== '/home' && !below('medium') && <Sidebar />}
         <div
           css={`
             display: flex;
