@@ -204,7 +204,7 @@ function Metric({ label, value, symbol, color, helptip }) {
       </div>
       <span
         css={`
-          ${textStyle('title2')};
+          ${textStyle('title3')};
           color: ${color || theme.content};
         `}
       >
@@ -294,7 +294,7 @@ function TokenPrice({
       >
         <p
           css={`
-            ${textStyle('title2')};
+            ${textStyle('title4')};
             margin-bottom: ${0.5 * GU}px;
           `}
         >
@@ -302,7 +302,7 @@ function TokenPrice({
           {oracleMode && (
             <span
               css={`
-                ${textStyle('body3')}
+                ${textStyle('body4')}
               `}
             >
               (Oracle)
