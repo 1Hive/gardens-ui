@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom'
 import { GU, Link } from '@1hive/1hive-ui'
 import AgreementStatus from '../Common/AgreementStatus'
 import CollateralStatus from '../Common/CollateralStatus'
-import ModalButton from '../ModalButton'
 import InfoField from '../../InfoField'
+import ModalButton from '../ModalButton'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import { buildGardenPath } from '@utils/routing-utils'
@@ -13,18 +14,18 @@ import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
 
-function CreateProposalRequirements({ agreement, staking }) {
+function CreateDecisionRequirements({ agreement, staking }) {
   const history = useHistory()
   const { next } = useMultiModal()
 
   const { disputableAppsWithRequirements, signedLatest } = agreement
   const { available: availableStaked, allowance } = staking || {}
 
-  const convictionAppRequirements = getDisputableAppByName(
+  const decisionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
-    env('CONVICTION_APP_NAME')
+    env('VOTING_APP_NAME')
   )
-  const { token, actionAmount } = convictionAppRequirements
+  const { token, actionAmount } = decisionAppRequirements
   const enoughCollateral = availableStaked.gte(actionAmount)
   const enoughAllowance = allowance.gt(0)
 
@@ -39,7 +40,7 @@ function CreateProposalRequirements({ agreement, staking }) {
   return (
     <div>
       <InfoField label="Covenant signature and version">
-        Since proposals are bound by this community's covenant, you must sign
+        Since decisions are bound by this community's covenant, you must sign
         the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'covenant')}`}
@@ -47,19 +48,19 @@ function CreateProposalRequirements({ agreement, staking }) {
         >
           Covenant
         </Link>{' '}
-        in order to create a proposal. The Covenant was last updated on{' '}
+        in order to create a decision. The Covenant was last updated on{' '}
         {dateFormat(agreement.effectiveFrom)}
       </InfoField>
       <AgreementStatus agreement={agreement} />
       <InfoField
-        label="Proposal deposit"
+        label="Decision deposit"
         css={`
           margin-top: ${5 * GU}px;
         `}
       >
-        In order to discourage spam proposals, you are required to deposit{' '}
+        In order to discourage spam decisions, you are required to deposit{' '}
         {formatTokenAmount(actionAmount, token.decimals)} {token.symbol} for
-        each proposal you create. You can manage your balance using the{' '}
+        each decision you create. You can manage your balance using the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'collateral')}`}
           external={false}
@@ -85,4 +86,4 @@ function CreateProposalRequirements({ agreement, staking }) {
   )
 }
 
-export default CreateProposalRequirements
+export default CreateDecisionRequirements

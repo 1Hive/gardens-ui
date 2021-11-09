@@ -110,6 +110,7 @@ export function addressesEqualNoSum(first, second) {
 
 // Re-export some web3-utils functions
 export {
+  asciiToHex,
   hexToUtf8,
   isAddress,
   toChecksumAddress,

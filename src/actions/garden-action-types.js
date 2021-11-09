@@ -1,5 +1,6 @@
 // Ordered by app actions -> conviction, dandelion voting, agreement, staking rather than alphabetically
 export default {
+  NEW_DECISION: Symbol('NEW_DECISION'),
   NEW_PROPOSAL: Symbol('NEW_PROPOSAL'),
   NEW_SIGNALING_PROPOSAL: Symbol('NEW_SIGNALING_PROPOSAL'),
   CANCEL_PROPOSAL: Symbol('CANCEL_PROPOSAL'),
