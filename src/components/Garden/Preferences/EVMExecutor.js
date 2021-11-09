@@ -28,7 +28,6 @@ function EVMExecutor() {
     false
   )
   const [evmcrispr, setEvmcrispr] = useState(null)
-  // const [installedApps, setInstalledApps] = useState([])
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
@@ -47,14 +46,6 @@ function EVMExecutor() {
     }
     getEvmCrispr()
   }, [account, connectedGarden, ethers])
-
-  // useEffect(() => {
-  //   if (!evmcrispr) {
-  //     return
-  //   }
-  //   const apps = evmcrispr.apps()
-  //   setInstalledApps(apps)
-  // }, [evmcrispr])
 
   const installedApps = useMemo(() => {
     if (!evmcrispr) {
