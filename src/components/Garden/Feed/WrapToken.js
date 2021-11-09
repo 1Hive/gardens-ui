@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import {
   Box,
@@ -18,7 +18,6 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import { useCallback } from 'react/cjs/react.development'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
