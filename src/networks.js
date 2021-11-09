@@ -19,7 +19,7 @@ const networks = {
     defaultEthNode: ETH_NODE,
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
-    template: '0xa8e6c20e8ad85836c8ee7b6c8decae75967b580e',
+    template: '0xA28c03923385e31E506e749e64Ce4CfC14d93459',
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     explorer: 'etherscan',
 
@@ -44,7 +44,7 @@ const networks = {
     defaultEthNode: ETH_NODE,
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0x5507A6365C47d5b201Af3c1CB18C7fD4a889321b',
+    template: '0x6D68156D6D75bAe0CDABfAFDdE2DD16a75e1eB8A',
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 
