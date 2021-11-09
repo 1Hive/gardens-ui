@@ -23,30 +23,26 @@ import { getGardenForumUrl } from '../utils/garden-utils'
 import useGardenFilters from '@/hooks/useGardenFilters'
 import { testNameFilter } from '@/utils/garden-filters-utils'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useMounted } from '@/hooks/useMounted'
 
 import { getVoidedGardensByNetwork } from '../voided-gardens'
+import { getGarden } from '@1hive/connect-gardens/dist/cjs/gardens'
 
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
   const [queryFilters, filters] = useGardenFilters()
-  const [gardens, gardensMetadata, loading, reload] = useGardensList(
+  const [gardens, gardensMetadata, gardensLoading, reload] = useGardensList(
     queryFilters,
     filters
   )
-
   const match = useRouteMatch('/garden/:daoId')
+  const [connectedGarden, connectedGardenLoading] = useGarden(
+    match?.params.daoId,
+    gardensMetadata
+  )
 
-  const connectedGarden = useMemo(() => {
-    if (match) {
-      const gardenAddress = match.params.daoId
-      return gardens.find(d => addressesEqual(gardenAddress, d.address))
-    }
-
-    return null
-  }, [gardens, match])
-
-  if (match && !connectedGarden && !loading) {
+  if (match && !connectedGarden && !connectedGardenLoading) {
     throw new DAONotFound(match.params.daoId)
   }
 
@@ -58,7 +54,7 @@ export function GardensProvider({ children }) {
         externalFilters: queryFilters,
         gardens,
         gardensMetadata,
-        loading,
+        loading: connectedGardenLoading || gardensLoading,
         reload,
       }}
     >
@@ -83,6 +79,37 @@ export function GardensProvider({ children }) {
 
 export function useGardens() {
   return useContext(DAOContext)
+}
+
+function useGarden(id, gardensMetadata) {
+  const [garden, setGarden] = useState()
+  const [loading, setLoading] = useState(true)
+  const mounted = useMounted()
+
+  useEffect(() => {
+    if (!id || !gardensMetadata?.length) {
+      return
+    }
+    const fetchGarden = async () => {
+      setLoading(true)
+      try {
+        const result = await getGarden({ network: getNetwork().chainId }, id)
+
+        setGarden(mergeGardenMetadata(result, gardensMetadata))
+      } catch (err) {
+        if (mounted()) {
+          setGarden()
+        }
+        console.error(err)
+      }
+
+      setLoading(false)
+    }
+
+    fetchGarden()
+  }, [id, gardensMetadata, mounted])
+
+  return [garden, loading]
 }
 
 function useFilteredGardens(gardens, gardensMetadata, filters) {
