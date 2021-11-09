@@ -21,13 +21,15 @@ function Sidebar() {
     }
 
     const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { address, name, logo } = gardensMetadata.find(g =>
-        addressesEqual(g.address, gardenSignedAddress)
-      )
+      const { name, logo } =
+        gardensMetadata.find(g =>
+          addressesEqual(g.address, gardenSignedAddress)
+        ) || {}
+
       return {
-        address,
+        address: gardenSignedAddress,
         name,
-        path: `#/garden/${address}`,
+        path: `#/garden/${gardenSignedAddress}`,
         src: logo || defaultGardenLogo,
       }
     })
