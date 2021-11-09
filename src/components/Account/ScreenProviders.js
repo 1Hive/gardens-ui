@@ -9,13 +9,13 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { connectors } from '@/ethereum-providers/connectors'
+import { CONNECTORS } from '@/ethereum-providers/connectors'
 
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
 
   const providersInfo = useMemo(() => {
-    return connectors.map(provider => [
+    return CONNECTORS.map(provider => [
       provider.id,
       getProviderFromUseWalletId(provider.id),
     ])

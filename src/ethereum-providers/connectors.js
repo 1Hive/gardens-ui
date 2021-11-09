@@ -5,7 +5,7 @@ const PORTIS_ID = env('PORTIS_ID')
 const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 
-export const connectors = [
+export const CONNECTORS = [
   {
     id: 'injected',
     properties: {
@@ -41,7 +41,7 @@ export const connectors = [
 ].filter(p => p)
 
 // the final data that we pass to use-wallet package.
-export const useWalletConnectors = connectors.reduce((current, connector) => {
+export const useWalletConnectors = CONNECTORS.reduce((current, connector) => {
   current[connector.id] = connector.properties || {}
   return current
 }, {})

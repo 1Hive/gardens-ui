@@ -40,7 +40,7 @@ function AccountModule({ compact }) {
   const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
-  const { account, activating, error, connector } = wallet
+  const { account, activating, connector, error } = wallet
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
