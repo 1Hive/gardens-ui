@@ -261,13 +261,14 @@
   dependencies:
     "@1hive/connect-core" "^0.9.1"
 
-"@1hive/connect-gardens@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.7.tgz#e9cc1c1ac11b29cdbf12b143a7bb0a06ac2f325b"
-  integrity sha512-gd87SAiRmzCxok6j89S4vp3O4FC4oFNY2zuTn8a4gc6/pFg2jFI11m3DWiojefOC4XIxNmpm/IGEYifbsflCUw==
+"@1hive/connect-gardens@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.8.tgz#3d28ba463920be8af73ed4fca9bb9b56813e49d4"
+  integrity sha512-/DwZAblEOZnxKRZYg2eLeJI9fVy1PaKhNEWcOcyrXtdqG//2QrleR0AJUW8lqCzSRSXbWPhTbeDql8+ZSGPycw==
   dependencies:
     "@aragon/connect-core" "0.7.0"
     "@aragon/connect-thegraph" "0.7.0"
+    ethers "^5.5.1"
     graphql-tag "^2.10.3"
 
 "@1hive/connect-react@^0.8.6":
@@ -9349,7 +9350,7 @@ ethers@^4.0.36, ethers@~4.0.4:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.0.0, ethers@^5.0.17, ethers@^5.0.7, ethers@^5.0.8:
+ethers@^5.0.0, ethers@^5.0.17, ethers@^5.0.7, ethers@^5.0.8, ethers@^5.5.1:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.1.tgz#d3259a95a42557844aa543906c537106c0406fbf"
   integrity sha512-RodEvUFZI+EmFcE6bwkuJqpCYHazdzeR1nMzg+YWQSmQEsNtfl1KHGfp/FWZYl48bI/g7cgBeP2IlPthjiVngw==
