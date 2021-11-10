@@ -20,14 +20,16 @@ import { getNetworkName } from '../../utils/web3-utils'
 
 import profileButtonSvg from '../../assets/profileButton.svg'
 import stakeButtonSvg from '../../assets/stakeButton.svg'
+import { useWallet } from '@/providers/Wallet'
 
 function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
   const { connectedGarden } = useGardens()
+  const { chainId } = useWallet()
 
-  const networkName = getNetworkName()
+  const networkName = getNetworkName(chainId)
   const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {

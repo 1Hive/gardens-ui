@@ -31,10 +31,8 @@ export function getNetworkType(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'mainnet'
-  if (chainId === '3') return 'ropsten'
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
-  if (chainId === '137') return 'polygon'
 
   return DEFAULT_LOCAL_CHAIN
 }
@@ -43,10 +41,8 @@ export function getNetworkName(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'Mainnet'
-  if (chainId === '3') return 'Ropsten'
   if (chainId === '4') return 'Rinkeby'
   if (chainId === '100') return 'xDai'
-  if (chainId === '137') return 'Polygon'
 
   return 'unknown'
 }

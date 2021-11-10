@@ -85,8 +85,8 @@ function WalletAugmented({ children }) {
   useEffect(() => {
     if (wallet.account != null && chainId !== wallet.chainId) {
       setChainId(wallet.chainId)
-      setPreferredChain(wallet.chainId)
       if (SUPPORTED_CHAINS.includes(wallet.chainId)) {
+        setPreferredChain(wallet.chainId)
         setPreferredNetwork(wallet.chainId)
       }
     }
@@ -119,14 +119,9 @@ function WalletAugmented({ children }) {
 
       if (connector === 'injected') {
         await switchNetwork(chainId)
-        if (!connected) {
-          await connect()
-        }
-      } else {
-        await resetConnection()
       }
     },
-    [connect, connected, connector, resetConnection]
+    [connector]
   )
 
   const contextValue = useMemo(

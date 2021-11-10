@@ -13,10 +13,12 @@ import { useProfile } from '@providers/Profile'
 import HeaderModule from '../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
+import { useWallet } from '@/providers/Wallet'
 
 function AccountButton({ onClick }) {
   const theme = useTheme()
   const { account, image, name } = useProfile()
+  const { chainId } = useWallet()
 
   return (
     <HeaderModule
@@ -76,7 +78,7 @@ function AccountButton({ onClick }) {
               color: ${theme.positive};
             `}
           >
-            Connected to {getNetworkName()}
+            Connected to {getNetworkName(chainId)}
           </div>
         </>
       }
