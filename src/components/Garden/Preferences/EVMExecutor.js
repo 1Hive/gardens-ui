@@ -34,6 +34,7 @@ function EVMExecutor() {
     false
   )
   const [abi, setAbi] = useState()
+  const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
   const [evmcrispr, setEvmcrispr] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
@@ -72,9 +73,6 @@ function EVMExecutor() {
     )
   })
 
-  console.log('installedApps ', installedApps)
-  console.log('shortenedAppsNames ', shortenedAppsNames)
-
   const functionList = useMemo(() => {
     let appFunctions
     if (interactionType === INTERNAL_INDEX) {
@@ -85,7 +83,6 @@ function EVMExecutor() {
       const appName = installedApps[selectedApp]
 
       appFunctions = Object.getOwnPropertyNames(evmcrispr.call(appName))
-      console.log('app Functions ', appFunctions)
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       appFunctions = formattedAbi.map(item => {
@@ -103,8 +100,6 @@ function EVMExecutor() {
     installedApps,
     shortenedAppsNames,
   ])
-
-  console.log('formattedAbi ', formattedAbi)
 
   const requiredParameters = useMemo(() => {
     if (!selectedFunction) {
@@ -138,6 +133,24 @@ function EVMExecutor() {
     selectedFunction,
   ])
 
+  const humanReadableSignature = useMemo(() => {
+    if (!formattedAbi || !selectedFunction) {
+      return ''
+    }
+    let signature = `${formattedAbi[selectedFunction].name}(`
+
+    formattedAbi[selectedFunction].inputs.forEach(
+      (element, index, array) => {
+        signature =
+          index < array.length - 1
+            ? `${signature}${element.type},`
+            : `${signature}${element.type})`
+      },
+      [signature]
+    )
+    return signature
+  }, [formattedAbi, selectedFunction])
+
   const handleOnChangeParameters = useCallback((index, event) => {
     const newValue = event.target.value
     setParameters(prevState => {
@@ -150,6 +163,7 @@ function EVMExecutor() {
   const handleOnCreateIntent = useCallback(async () => {
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
+
     const intent = await evmcrispr.encode(
       [
         evmcrispr
@@ -172,6 +186,20 @@ function EVMExecutor() {
     selectedFunction,
     parameters,
   ])
+
+  const handleExternalInteraction = useCallback(() => {
+    evmcrispr.act(
+      evmcrispr.app('agent'),
+      externalContractAddress,
+      humanReadableSignature,
+      [...parameters]
+    )
+  }, [evmcrispr, externalContractAddress, humanReadableSignature, parameters])
+
+  const handleOnContractAddressChange = useCallback(event => {
+    const value = event.target.value
+    setExternalContractAddress(value)
+  }, [])
 
   const handleOnAbiChange = useCallback(event => {
     const value = event.target.value
@@ -226,17 +254,26 @@ function EVMExecutor() {
         </Field>
       )}
       {interactionType === EXTERNAL_INDEX && (
-        <Field label="ABI">
-          <TextInput
-            multiline
-            value={abi}
-            wide
-            onChange={handleOnAbiChange}
-            css={`
-              min-height: ${30 * GU}px;
-            `}
-          />
-        </Field>
+        <>
+          <Field label="Contract address">
+            <TextInput
+              value={externalContractAddress}
+              wide
+              onChange={handleOnContractAddressChange}
+            />
+          </Field>
+          <Field label="ABI">
+            <TextInput
+              multiline
+              value={abi}
+              wide
+              onChange={handleOnAbiChange}
+              css={`
+                min-height: ${30 * GU}px;
+              `}
+            />
+          </Field>
+        </>
       )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
@@ -281,7 +318,11 @@ function EVMExecutor() {
           disabled={!account}
           mode="strong"
           wide
-          onClick={handleOnShowModal}
+          onClick={
+            interactionType === INTERNAL_INDEX
+              ? handleOnShowModal
+              : handleExternalInteraction
+          }
         >
           Execute
         </Button>
