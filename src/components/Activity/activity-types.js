@@ -40,6 +40,10 @@ const ACTIVITY_TYPES = {
     title: 'Execute proposal',
     icon: GARDEN_LOGO,
   },
+  [actions.NEW_DECISION]: {
+    title: 'New decision creation',
+    icon: GARDEN_LOGO,
+  },
   [actions.NEW_PROPOSAL]: {
     title: 'New proposal creation',
     icon: GARDEN_LOGO,

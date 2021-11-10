@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import {
   Box,
@@ -28,7 +28,16 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
-  const earnedRewards = useUnipoolRewards()
+  const [earnedRewards, rewardsLink] = useUnipoolRewards()
+
+  const handleClaimRewards = useCallback(() => {
+    if (rewardsLink) {
+      window.open(rewardsLink)
+      return
+    }
+
+    onClaimRewards()
+  }, [onClaimRewards, rewardsLink])
 
   return (
     <Box
@@ -80,7 +89,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
                 label="Claim"
                 mode="strong"
                 wide
-                onClick={onClaimRewards}
+                onClick={handleClaimRewards}
                 css={`
                   margin-top: ${1.5 * GU}px;
                 `}
