@@ -138,7 +138,8 @@ export function useProposalSubscription(proposalId, appAddress) {
   return [proposal, loading]
 }
 
-export function useSupporterSubscription(connector, account) {
+export function useSupporterSubscription(account) {
+  const { connector } = useGardenState()
   const [supporter, setSupporter] = useState(null)
 
   const rawSupporterRef = useRef(null)
