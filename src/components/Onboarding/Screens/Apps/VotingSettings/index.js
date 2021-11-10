@@ -134,6 +134,7 @@ function VotingSettings() {
 
   const handleSupportChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteSupportRequired', value])
     },
     [updateField]
@@ -141,6 +142,7 @@ function VotingSettings() {
 
   const handleQuorumChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteMinAcceptanceQuorum', value])
     },
     [updateField]
@@ -200,20 +202,22 @@ function VotingSettings() {
       voteQuietEndingExtension,
       voteExecutionDelay
     )
-    setFormError(error)
 
-    if (!error) {
-      onConfigChange('voting', {
-        voteDuration,
-        voteSupportRequired,
-        voteMinAcceptanceQuorum,
-        voteDelegatedVotingPeriod,
-        voteQuietEndingPeriod,
-        voteQuietEndingExtension,
-        voteExecutionDelay,
-      })
-      onNext()
+    if (error) {
+      setFormError(error)
+      return
     }
+
+    onConfigChange('voting', {
+      voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
+      voteDelegatedVotingPeriod,
+      voteQuietEndingPeriod,
+      voteQuietEndingExtension,
+      voteExecutionDelay,
+    })
+    onNext()
   }
 
   return (
