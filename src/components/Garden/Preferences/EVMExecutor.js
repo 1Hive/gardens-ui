@@ -104,19 +104,39 @@ function EVMExecutor() {
     shortenedAppsNames,
   ])
 
+  console.log('formattedAbi ', formattedAbi)
+
   const requiredParameters = useMemo(() => {
-    if (!evmcrispr || !selectedApp || !selectedFunction) {
+    if (!selectedFunction) {
       return []
     }
+    if (interactionType === INTERNAL_INDEX) {
+      if (!evmcrispr || !selectedApp) {
+        return []
+      }
 
-    const { paramNames, paramTypes } = evmcrispr.call(
-      installedApps[selectedApp]
-    )[functionList[selectedFunction]]
+      const { paramNames, paramTypes } = evmcrispr.call(
+        installedApps[selectedApp]
+      )[functionList[selectedFunction]]
 
-    return paramNames.map((parameter, index) => {
-      return [parameter, paramTypes[index]]
-    })
-  }, [evmcrispr, installedApps, functionList, selectedApp, selectedFunction])
+      return paramNames.map((parameter, index) => {
+        return [parameter, paramTypes[index]]
+      })
+    }
+    if (interactionType === EXTERNAL_INDEX) {
+      return formattedAbi[selectedFunction].inputs.map(parameter => {
+        return [parameter.name, parameter.type]
+      })
+    }
+  }, [
+    evmcrispr,
+    formattedAbi,
+    installedApps,
+    interactionType,
+    functionList,
+    selectedApp,
+    selectedFunction,
+  ])
 
   const handleOnChangeParameters = useCallback((index, event) => {
     const newValue = event.target.value
