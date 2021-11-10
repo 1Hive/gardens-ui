@@ -10,6 +10,7 @@ import { useWallet } from '@providers/Wallet'
 
 function RightPanel({
   onClaimRewards,
+  onDelegateVoting,
   onRequestNewProposal,
   onUnwrapToken,
   onWrapToken,
@@ -69,7 +70,7 @@ function RightPanel({
       )}
       {account && (
         <div>
-          <Delegation />
+          <Delegation onDelegateVoting={onDelegateVoting} />
         </div>
       )}
       <div>
