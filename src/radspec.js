@@ -1,4 +1,6 @@
+import { shortenAddress } from '@1hive/1hive-ui'
 import actions from './actions/garden-action-types'
+import { ZERO_ADDR } from './constants'
 
 export default {
   [actions.ADD_FUNDS]: () => {
@@ -15,6 +17,13 @@ export default {
   },
   [actions.CLAIM_REWARDS]: () => {
     return `Claim earned rewards`
+  },
+  [actions.DELEGATE_VOTING]: ({ representative }) => {
+    return `${
+      representative !== ZERO_ADDR
+        ? `Delegate votes to: ${shortenAddress(representative)}`
+        : `Remove representative`
+    }`
   },
   [actions.DISPUTE_ACTION]: ({ actionId }) => {
     return `Dispute proposal: ${actionId}`

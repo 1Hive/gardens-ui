@@ -24,6 +24,10 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
     title: 'Claim earned rewards',
   },
+  [actions.DELEGATE_VOTING]: {
+    icon: GARDEN_LOGO,
+    title: 'Update representative',
+  },
   [actions.DISPUTE_ACTION]: {
     icon: GARDEN_LOGO,
     title: 'Dispute proposal',
