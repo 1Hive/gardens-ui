@@ -34,6 +34,7 @@ function EVMExecutor() {
     false
   )
   const [abi, setAbi] = useState()
+  const [formattedAbi, setFormattedAbi] = useState(null)
   const [evmcrispr, setEvmcrispr] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
   const [selectedApp, setSelectedApp] = useState(null)
@@ -71,16 +72,37 @@ function EVMExecutor() {
     )
   })
 
+  console.log('installedApps ', installedApps)
+  console.log('shortenedAppsNames ', shortenedAppsNames)
+
   const functionList = useMemo(() => {
-    if (!evmcrispr || shortenedAppsNames?.length === 0 || !selectedApp) {
-      return []
+    let appFunctions
+    if (interactionType === INTERNAL_INDEX) {
+      if (!evmcrispr || shortenedAppsNames?.length === 0 || !selectedApp) {
+        return []
+      }
+
+      const appName = installedApps[selectedApp]
+
+      appFunctions = Object.getOwnPropertyNames(evmcrispr.call(appName))
+      console.log('app Functions ', appFunctions)
     }
-
-    const appName = installedApps[selectedApp]
-
-    const appFunctions = Object.getOwnPropertyNames(evmcrispr.call(appName))
+    if (interactionType === EXTERNAL_INDEX && formattedAbi) {
+      appFunctions = formattedAbi.map(item => {
+        if (item.type === 'function' && item.stateMutability !== 'view') {
+          return item.name
+        }
+      })
+    }
     return appFunctions
-  }, [evmcrispr, selectedApp, installedApps, shortenedAppsNames])
+  }, [
+    evmcrispr,
+    formattedAbi,
+    interactionType,
+    selectedApp,
+    installedApps,
+    shortenedAppsNames,
+  ])
 
   const requiredParameters = useMemo(() => {
     if (!evmcrispr || !selectedApp || !selectedFunction) {
@@ -135,15 +157,20 @@ function EVMExecutor() {
     const value = event.target.value
     setAbi(value)
     let iface
-    let formatted
+    let formattedAbi
     try {
       iface = new utils.Interface(value)
-      formatted = iface.format(utils.FormatTypes.json)
+      formattedAbi = iface.format(utils.FormatTypes.json)
+      setFormattedAbi(
+        JSON.parse(formattedAbi).filter(item => {
+          if (item.type === 'function' && item.stateMutability !== 'view') {
+            return item.name
+          }
+        })
+      )
     } catch (error) {
-      console.error(error)
+      console.error('Error parsing ABI ', error)
     }
-
-    console.log('FORMATED ', formatted)
   }, [])
 
   const handleOnShowModal = useCallback(() => {
