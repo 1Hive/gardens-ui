@@ -25,14 +25,17 @@ const ENV_VARS = {
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
-  ETH_NODE() {
-    return process.env.REACT_APP_ETH_NODE || ''
+  RINKEBY_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || ''
+  },
+  XDAI_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || ''
   },
   ETHERSCAN_API_KEY() {
     return process.env.REACT_APP_ETHERSCAN_API_KEY || null
   },
-  FORTMATIC_API_KEY() {
-    return process.env.REACT_APP_FORTMATIC_API_KEY || ''
+  PORTIS_ID() {
+    return process.env.REACT_APP_PORTIS_ID || ''
   },
   GITHUB_API_TOKEN() {
     return process.env.REACT_APP_GITHUB_API_TOKEN || ''
@@ -45,12 +48,6 @@ const ENV_VARS = {
   },
   INFURA_API_KEY() {
     return process.env.REACT_APP_INFURA_API_KEY || null
-  },
-  INSTANCE() {
-    return process.env.REACT_APP_APP_INSTANCE || ''
-  },
-  INTERCOM_APP_ID() {
-    return process.env.REACT_APP_INTERCOM_APP_ID || ''
   },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME

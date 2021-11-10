@@ -2,11 +2,15 @@ import React from 'react'
 import { Connect } from '@1hive/connect-react'
 
 import { useGardens } from './Gardens'
+import { useWallet } from './Wallet'
+
 import { getNetwork } from '../networks'
 
 function ConnectProvider({ children }) {
   const { connectedGarden } = useGardens()
-  const { chainId, subgraphs } = getNetwork()
+  const { preferredNetwork } = useWallet()
+
+  const { subgraphs } = getNetwork(preferredNetwork)
 
   return (
     <Connect
@@ -14,11 +18,11 @@ function ConnectProvider({ children }) {
       connector={[
         'thegraph',
         {
-          orgSubgraphUrl: subgraphs.organizations,
+          orgSubgraphUrl: subgraphs.aragon,
         },
       ]}
       options={{
-        network: chainId,
+        network: preferredNetwork,
         ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
       }}
     >

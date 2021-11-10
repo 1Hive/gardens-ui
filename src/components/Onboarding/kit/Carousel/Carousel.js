@@ -151,6 +151,7 @@ function Carousel({
       <AnimatedDiv
         {...bindDrag()}
         style={{
+          // es-lint skip next line
           transform: x.interpolate(x => `translate3d(${(0, x)}px, 0, 0)`),
         }}
         css={`

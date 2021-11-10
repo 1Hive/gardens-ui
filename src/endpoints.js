@@ -12,6 +12,9 @@ export const BRIGHT_ID_APP_DEEPLINK = `brightid://link-verification/${NODE_URL}/
 
 export const UTC_API_ENDPOINT = `http://worldclockapi.com/api/json/utc/now`
 
+export const WALLET_CONNECT_BRIDGE_ENDPOINT =
+  'https://walletconnect-relay.minerva.digital'
+
 // IPFS endpoint
 export const IPFS_ENDPOINT = {
   read: isLocalOrUnknownNetwork()

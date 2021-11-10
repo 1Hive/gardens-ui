@@ -8,15 +8,16 @@ import {
   useOrganization,
   usePermissions,
 } from '@1hive/connect-react'
+import { useWallet } from '@providers/Wallet'
+
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
-
 // utils
 import env from '@/environment'
 import BigNumber from '@lib/bigNumber'
 import { addressesEqual } from '@utils/web3-utils'
 import { getAppByName } from '@utils/data-utils'
-import { connectorConfig } from '@/networks'
+import { getAgreementConnectorConfig } from '@/networks'
 
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
@@ -24,15 +25,16 @@ import fundsManagerAbi from '@abis/FundsManager.json'
 
 const INITIAL_TIMER = 2000
 
-const useAgreementHook = createAppHook(
-  connectAgreement,
-  connectorConfig.agreement
-)
-
 export function useGardenData() {
+  const { chainId } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
+
+  const useAgreementHook = createAppHook(
+    connectAgreement,
+    getAgreementConnectorConfig(chainId).agreement
+  )
 
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
   const convictionApp = getAppByName(apps, env('CONVICTION_APP_NAME'))
