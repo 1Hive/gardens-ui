@@ -28,6 +28,9 @@ export default {
   [actions.EXECUTE_PROPOSAL]: ({ proposalId }) => {
     return `Execute proposal: ${proposalId}`
   },
+  [actions.NEW_DECISION]: () => {
+    return `Create new protocol decision`
+  },
   [actions.NEW_PROPOSAL]: () => {
     return `Create new funding proposal`
   },

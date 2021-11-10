@@ -7,6 +7,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 import EmptyResults from './EmptyResults'
@@ -24,7 +25,9 @@ const computeCurrentGardens = (gardens, currentPage) => {
 
 function GardensList({ gardens }) {
   const [selectedPage, setSelectedPage] = useState(0)
+
   const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
+
   const currentGardens = useMemo(
     () => computeCurrentGardens(gardens, selectedPage),
     [gardens, selectedPage]
