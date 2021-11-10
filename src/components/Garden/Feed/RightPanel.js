@@ -39,9 +39,9 @@ function RightPanel({
       return {
         display: 'grid',
         gridGap: `${3 * GU}px`,
-        gridTemplateColumns: '1fr 1fr',
-        marginTop: `${3 * GU}px`,
-        padding: `0px ${3 * GU}px`,
+        gridTemplateColumns: account ? '1fr 1fr' : '1fr',
+        marginTop: account ? `${3 * GU}px` : 0,
+        padding: account ? `0px ${3 * GU}px` : 0,
         width: '100%',
       }
     }
@@ -54,7 +54,7 @@ function RightPanel({
         width: '100%',
       }
     }
-  }, [largeMode, mobileMode, tabletMode])
+  }, [account, largeMode, mobileMode, tabletMode])
 
   return (
     <div style={styles}>
@@ -67,9 +67,11 @@ function RightPanel({
           />
         </div>
       )}
-      <div>
-        <Delegation />
-      </div>
+      {account && (
+        <div>
+          <Delegation />
+        </div>
+      )}
       <div>
         <HeroBanner onRequestNewProposal={onRequestNewProposal} />
       </div>

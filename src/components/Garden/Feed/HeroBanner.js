@@ -45,7 +45,7 @@ function HeroBanner({ onRequestNewProposal }) {
           padding-top: ${banner.aspectRatio};
           position: relative;
           ${tabletMode && `min-height: ${28.25 * GU}px;`}
-          ${!mobileMode && `border-radius: ${BIG_RADIUS}px;`}
+          ${!mobileMode && account && `border-radius: ${BIG_RADIUS}px;`}
         `}
       >
         <div
