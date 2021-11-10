@@ -187,12 +187,21 @@ function EVMExecutor() {
     parameters,
   ])
 
-  const handleExternalInteraction = useCallback(() => {
-    evmcrispr.act(
-      evmcrispr.app('agent'),
-      externalContractAddress,
-      humanReadableSignature,
-      [...parameters]
+  const handleExternalInteraction = useCallback(async () => {
+    await evmcrispr.forward(
+      [
+        evmcrispr.act(
+          evmcrispr.app('agent'),
+          externalContractAddress,
+          humanReadableSignature,
+          [...parameters]
+        ),
+      ],
+      ['disputable-voting'],
+      // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+      // { context: asciiToHex(functionList[selectedFunction]) }
+      // having some issue on the lib when passing the function that need to check with david
+      { context: 'new decision' }
     )
   }, [evmcrispr, externalContractAddress, humanReadableSignature, parameters])
 
