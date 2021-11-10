@@ -17,7 +17,7 @@ function ConectWalletScreens({ onSuccess }) {
     return [
       {
         graphicHeader: false,
-        content: <ConnectWallet />,
+        content: <ConnectWallet onDismiss={onSuccess} />,
         width: 550,
       },
       {
