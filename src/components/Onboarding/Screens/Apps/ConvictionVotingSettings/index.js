@@ -23,7 +23,7 @@ import {
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
 
-const MAX_HALF_LIFE_DAYS = 20
+const MAX_HALF_LIFE_DAYS = 60
 const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
 const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
