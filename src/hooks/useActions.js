@@ -268,6 +268,33 @@ export default function useActions() {
     },
     [account, ethers, votingApp]
   )
+  const delegateVoting = useCallback(
+    async (representative, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'setRepresentative',
+        [representative],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.DELEGATE_VOTING]({
+        representative,
+      })
+      const type = actions.DELEGATE_VOTING
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
+  )
 
   // Agreement actions
   const signAgreement = useCallback(
@@ -627,6 +654,7 @@ export default function useActions() {
       priceOracleActions: { updatePriceOracle },
       unipoolActions: { claimRewards },
       votingActions: {
+        delegateVoting,
         executeDecision,
         voteOnDecision,
       },
@@ -634,6 +662,7 @@ export default function useActions() {
     [
       approveTokenAmount,
       challengeAction,
+      delegateVoting,
       disputeAction,
       getAgreementTokenAllowance,
       resolveAction,
