@@ -1,5 +1,4 @@
 import { DEFAULT_CHAIN_ID } from '@/constants'
-import { SUPPORTED_CHAINS } from '@/networks'
 const APP_THEME = 'THEME'
 const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 
@@ -21,9 +20,7 @@ export function getPreferredChain() {
 }
 
 export function setPreferredChain(chainId = 100) {
-  if (SUPPORTED_CHAINS.includes(chainId)) {
-    return setLocalSetting(PREFERRED_CHAIN_ID_KEY, chainId)
-  }
+  return setLocalSetting(PREFERRED_CHAIN_ID_KEY, chainId)
 }
 
 export function getAppTheme() {
