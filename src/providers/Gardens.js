@@ -7,8 +7,7 @@ import React, {
 } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { addressesEqual } from '@1hive/1hive-ui'
-import { getGardens } from '@1hive/connect-gardens'
-import { getGarden } from '@1hive/connect-gardens/dist/cjs/gardens'
+import { getGardens, getGarden } from '@1hive/connect-gardens'
 
 import { ActivityProvider } from './ActivityProvider'
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
