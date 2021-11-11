@@ -71,7 +71,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'total-wrapped-supply': [
     'Total Wrapped Supply',
     <>
-      The <strong>Total Wrapped Supply</strong> is the amount of wrapped tokens
+      The <strong>Wrapped Supply</strong> is the amount of wrapped tokens
       in circulation.
     </>,
   ],
