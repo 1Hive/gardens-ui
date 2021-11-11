@@ -36,7 +36,7 @@ export default function useGardenLogic() {
       value: config?.conviction.totalStaked,
       token: config?.conviction.stakeToken,
     },
-    // mainToken: BYOT ? wrappableToken : token
+    // For BYOT gardens, mainToken will be `wrappableToken`, for native gardens will be `token`
     totalSupply: { value: mainToken.totalSupply, token: mainToken.data },
     // For BYOT we will also display the total suppply of the wrapped token
     totalWrappedSupply: wrappableToken
