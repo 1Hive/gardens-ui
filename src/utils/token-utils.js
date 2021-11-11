@@ -4,6 +4,8 @@ import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'
 import stableTokenSvg from '@assets/stable-token.svg'
 
+const LOCAL_STABLE_ICONS = ['DAI', 'XDAI', 'WXDAI', 'USDC', 'USDT', 'LUSD']
+
 const LOCAL_TOKEN_ICONS = new Map([
   ['HNY', honeyIconSvg],
   ['HNYT', honeyIconSvg],
@@ -25,6 +27,10 @@ export function getGardenTokenIcon(garden, token) {
 
   // Look up in the local mapping
   return getLocalTokenIconBySymbol(token.symbol)
+}
+
+export function isStableToken(token) {
+  return LOCAL_STABLE_ICONS.includes(token.symbol)
 }
 
 export function getLocalTokenIconBySymbol(symbol) {
