@@ -311,8 +311,8 @@ function TokenPrice({
         </p>
         {oracleMode && (
           <Help hint="What is Oracle Price?">
-            This is the price used for funding proposals defined in xDAI.
-            Calling update price could return a reward.
+            This is the price used for funding proposals defined in stable
+            asset. Calling update price could return a reward.
           </Help>
         )}
       </div>

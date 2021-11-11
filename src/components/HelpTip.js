@@ -64,15 +64,15 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'total-supply': [
     'Total Supply',
     <>
-      The <strong>Total Supply</strong> is the the total amount of tokens in
+      The <strong>Total Supply</strong> is the total amount of tokens in
       circulation, including the common pool.
     </>,
   ],
   'total-wrapped-supply': [
     'Total Wrapped Supply',
     <>
-      The <strong>Total Wrapped Supply</strong> is the the total amount of
-      wrapped tokens in circulation.
+      The <strong>Wrapped Supply</strong> is the amount of wrapped tokens
+      in circulation.
     </>,
   ],
   'total-support': [
