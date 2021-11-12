@@ -26,7 +26,7 @@ const ACTIVITY_TYPES = {
   },
   [actions.DELEGATE_VOTING]: {
     icon: GARDEN_LOGO,
-    title: 'Update representative',
+    title: 'Update delegate',
   },
   [actions.DISPUTE_ACTION]: {
     icon: GARDEN_LOGO,

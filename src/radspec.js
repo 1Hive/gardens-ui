@@ -22,7 +22,7 @@ export default {
     return `${
       representative !== ZERO_ADDR
         ? `Delegate votes to: ${shortenAddress(representative)}`
-        : `Remove representative`
+        : `Remove delegate`
     }`
   },
   [actions.DISPUTE_ACTION]: ({ actionId }) => {
