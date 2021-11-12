@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
 import {
   Box,
@@ -11,10 +11,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
-
-import { getProfileForAccount } from '@lib/profile'
 
 function Delegation({ onDelegateVoting }) {
   const { account } = useWallet()
@@ -88,7 +87,7 @@ function Delegation({ onDelegateVoting }) {
 }
 
 function Representative({ onDelegateVoting, representative }) {
-  const profile = useLocalProfile(representative.address)
+  const profile = useProfile(representative.address)
   const history = useHistory()
 
   const handleViewProfile = useCallback(() => {
@@ -135,30 +134,9 @@ function Representative({ onDelegateVoting, representative }) {
         </div>
       )}
       <div>{shortenAddress(representative.address)}</div>
-      <Link onClick={onDelegateVoting}>Change</Link>
+      <Link onClick={onDelegateVoting}>Manage</Link>
     </div>
   )
-}
-
-function useLocalProfile(account) {
-  const [profile, setProfile] = useState(null)
-
-  useEffect(() => {
-    let cancelled = false
-    async function fetchProfile() {
-      const profile = await getProfileForAccount(account)
-      if (profile && !cancelled) {
-        setProfile(profile)
-      }
-    }
-
-    fetchProfile()
-    return () => {
-      cancelled = true
-    }
-  }, [account])
-
-  return profile
 }
 
 export default Delegation
