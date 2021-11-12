@@ -1,38 +1,29 @@
 import React, { useCallback, useState } from 'react'
 import {
   Button,
-  isAddress,
-  EthIdenticon,
   Field,
   GU,
-  RADIUS,
-  TextInput,
-  useTheme,
+  isAddress,
   LoadingRing,
+  TextInput,
+  textStyle,
 } from '@1hive/1hive-ui'
+import IdentityBadge from '@components/IdentityBadge'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
-import { ZERO_ADDR } from '@/constants'
 
 const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
-  const theme = useTheme()
   const { account } = useWallet()
   const { next } = useMultiModal()
   const [representative, setRepresentative] = useState('')
-  const profile = useProfile(representative)
   const [supporter, loading] = useSupporterSubscription(account)
 
   const handleRepresentativeChange = useCallback(event => {
     setRepresentative(event.target.value)
   }, [])
-
-  const handleRemove = useCallback(() => {
-    getTransactions(() => {
-      next()
-    }, ZERO_ADDR)
-  }, [getTransactions, next])
 
   // Form submit handler
   const handleSubmit = useCallback(
@@ -41,7 +32,7 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
 
       getTransactions(() => {
         next()
-      }, representative || ZERO_ADDR)
+      }, representative)
     },
     [getTransactions, next, representative]
   )
@@ -55,10 +46,16 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
         <LoadingRing />
       ) : (
         <div>
+          {hasRepresentative && (
+            <CurrentDelegateProfile
+              address={supporter.representative.address}
+            />
+          )}
           <div
             css={`
               display: flex;
               align-items: center;
+              column-gap: 8px;
             `}
           >
             <Field
@@ -76,51 +73,9 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
                 wide
               />
             </Field>
-            {profile && (
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  margin-left: ${2 * GU}px;
-                `}
-              >
-                <div>
-                  {profile?.image ? (
-                    <img
-                      src={profile.image}
-                      height="36"
-                      width="36"
-                      alt=""
-                      css={`
-                        border-radius: ${RADIUS}px;
-                        display: block;
-                        object-fit: cover;
-                        margin: 0 auto;
-                      `}
-                    />
-                  ) : (
-                    <EthIdenticon
-                      address={representative}
-                      radius={50}
-                      scale={1.5}
-                    />
-                  )}
-                </div>
-                {profile?.name && (
-                  <div
-                    css={`
-                      background: ${theme.tagNew};
-                      border-top-right-radius: 4px;
-                      border-bottom-right-radius: 4px;
-                      padding: 6px;
-                    `}
-                  >
-                    {profile.name}
-                  </div>
-                )}
-              </div>
-            )}
+            <NewDelegateProfile address={representative} />
           </div>
+
           <div
             css={`
               display: flex;
@@ -128,9 +83,6 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
               column-gap: ${2 * GU}px;
             `}
           >
-            {hasRepresentative && (
-              <Button label="Remove" mode="negative" onClick={handleRemove} />
-            )}
             <Button
               label={hasRepresentative ? 'Update delegate' : 'Delegate'}
               wide
@@ -144,5 +96,44 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
     </form>
   )
 })
+
+function CurrentDelegateProfile({ address }) {
+  return (
+    <div
+      css={`
+        margin-bottom: ${3 * GU}px;
+      `}
+    >
+      <span
+        css={`
+          ${textStyle('label2')};
+        `}
+      >
+        Your current delegate
+      </span>
+      <div>
+        <IdentityBadge entity={address} />
+      </div>
+    </div>
+  )
+}
+
+function NewDelegateProfile({ address }) {
+  const profile = useProfile(address)
+
+  if (!profile) {
+    return null
+  }
+
+  return (
+    <div
+      css={`
+        flex-shrink: 0;
+      `}
+    >
+      <IdentityBadge entity={address} />
+    </div>
+  )
+}
 
 export default DelegateVoting

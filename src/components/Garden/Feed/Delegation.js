@@ -15,7 +15,7 @@ import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
 
-function Delegation({ onDelegateVoting }) {
+function Delegation({ onRemoveDelegate, onSetDelegate }) {
   const { account } = useWallet()
   const theme = useTheme()
   const [supporter, loading] = useSupporterSubscription(account)
@@ -44,7 +44,8 @@ function Delegation({ onDelegateVoting }) {
           >
             {supporter?.representative ? (
               <Representative
-                onDelegateVoting={onDelegateVoting}
+                onRemoveDelegate={onRemoveDelegate}
+                onSetDelegate={onSetDelegate}
                 representative={supporter.representative}
               />
             ) : (
@@ -72,7 +73,7 @@ function Delegation({ onDelegateVoting }) {
                   mode="strong"
                   label="Delegate voting"
                   wide
-                  onClick={onDelegateVoting}
+                  onClick={onSetDelegate}
                   css={`
                     margin-top: ${3 * GU}px;
                   `}
@@ -86,9 +87,10 @@ function Delegation({ onDelegateVoting }) {
   )
 }
 
-function Representative({ onDelegateVoting, representative }) {
-  const profile = useProfile(representative.address)
+function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
+  const theme = useTheme()
   const history = useHistory()
+  const profile = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${representative.address}`)
@@ -134,7 +136,23 @@ function Representative({ onDelegateVoting, representative }) {
         </div>
       )}
       <div>{shortenAddress(representative.address)}</div>
-      <Link onClick={onDelegateVoting}>Manage</Link>
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        `}
+      >
+        <Link onClick={onSetDelegate}>Change</Link>
+        <Link
+          onClick={onRemoveDelegate}
+          css={`
+            color: ${theme.negative};
+          `}
+        >
+          Remove
+        </Link>
+      </div>
     </div>
   )
 }

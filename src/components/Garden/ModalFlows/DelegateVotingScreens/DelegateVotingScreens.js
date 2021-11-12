@@ -2,8 +2,9 @@ import React, { useMemo, useState, useCallback } from 'react'
 import DelegateVoting from './DelegateVoting'
 import ModalFlowBase from '../ModalFlowBase'
 import useActions from '@hooks/useActions'
+import RemoveDelegate from './RemoveDelegate'
 
-function DelegateVotingScreens() {
+function DelegateVotingScreens({ mode }) {
   const [transactions, setTransactions] = useState([])
   const { votingActions } = useActions() // TODO: Move to parent or create and use the actions provider
 
@@ -19,19 +20,27 @@ function DelegateVotingScreens() {
 
   const screens = useMemo(() => {
     return [
-      {
-        title: 'Delegate votes',
-        graphicHeader: false,
-        content: <DelegateVoting getTransactions={getTransactions} />,
-      },
+      mode === 'delegate'
+        ? {
+            title: 'Delegate votes',
+            graphicHeader: false,
+            content: <DelegateVoting getTransactions={getTransactions} />,
+          }
+        : {
+            title: 'Remove delegate',
+            graphicHeader: false,
+            content: <RemoveDelegate getTransactions={getTransactions} />,
+          },
     ]
-  }, [getTransactions])
+  }, [getTransactions, mode])
 
   return (
     <ModalFlowBase
       frontLoad={false}
       transactions={transactions}
-      transactionTitle="Delegate votes"
+      transactionTitle={
+        mode === 'delegate' ? 'Delegate votes' : 'Remove delegate'
+      }
       screens={screens}
     />
   )

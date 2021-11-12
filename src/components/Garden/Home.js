@@ -69,8 +69,12 @@ const Home = React.memo(function Home() {
     handleShowModal('claim')
   }, [handleShowModal])
 
-  const handleDelegateVoting = useCallback(() => {
+  const handleSetDelegate = useCallback(() => {
     handleShowModal('delegate')
+  }, [handleShowModal])
+
+  const handleRemoveDelagate = useCallback(() => {
+    handleShowModal('removeDelegate')
   }, [handleShowModal])
 
   const handleRequestNewProposal = useCallback(() => {
@@ -199,7 +203,9 @@ const Home = React.memo(function Home() {
                     >
                       <RightPanel
                         onClaimRewards={handleClaimRewards}
+                        onRemoveDelegate={handleRemoveDelagate}
                         onRequestNewProposal={handleRequestNewProposal}
+                        onSetDelegate={handleSetDelegate}
                         onWrapToken={handleWrapToken}
                         onUnwrapToken={handleUnwrapToken}
                       />
@@ -211,8 +217,9 @@ const Home = React.memo(function Home() {
             {!largeMode && (
               <RightPanel
                 onClaimRewards={handleClaimRewards}
-                onDelegateVoting={handleDelegateVoting}
+                onRemoveDelegate={handleRemoveDelagate}
                 onRequestNewProposal={handleRequestNewProposal}
+                onSetDelegate={handleSetDelegate}
                 onWrapToken={handleWrapToken}
                 onUnwrapToken={handleUnwrapToken}
               />
@@ -231,7 +238,9 @@ const Home = React.memo(function Home() {
               <WrapTokenScreens mode={modalMode} />
             )}
             {modalMode === 'claim' && <ClaimRewardsScreens />}
-            {modalMode === 'delegate' && <DelegateVotingScreens />}
+            {(modalMode === 'delegate' || modalMode === 'removeDelegate') && (
+              <DelegateVotingScreens mode={modalMode} />
+            )}
           </MultiModal>
         </div>
       )}
