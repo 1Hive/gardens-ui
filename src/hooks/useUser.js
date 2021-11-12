@@ -6,7 +6,7 @@ import { transformUserData } from '@utils/data-utils'
 
 export default function useUser(address) {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
   const mounted = useMounted()
 
