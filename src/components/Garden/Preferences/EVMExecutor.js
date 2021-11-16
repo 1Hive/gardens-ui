@@ -102,7 +102,7 @@ function EVMExecutor() {
   ])
 
   const requiredParameters = useMemo(() => {
-    if (!selectedFunction) {
+    if (selectedFunction === null) {
       return []
     }
     if (interactionType === INTERNAL_INDEX) {
@@ -134,7 +134,7 @@ function EVMExecutor() {
   ])
 
   const humanReadableSignature = useMemo(() => {
-    if (!formattedAbi || !selectedFunction) {
+    if (!formattedAbi || selectedFunction === null) {
       return ''
     }
     let signature = `${formattedAbi[selectedFunction].name}(`
@@ -164,46 +164,52 @@ function EVMExecutor() {
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
 
-    const intent = await evmcrispr.encode(
-      [
-        evmcrispr
-          .call(installedApps[selectedApp])
-          [functionList[selectedFunction]](...parameters),
-      ],
-      ['disputable-voting'],
-      // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-      // { context: asciiToHex(functionList[selectedFunction]) }
-      // having some issue on the lib when passing the function that need to check with david
-      { context: 'new decision' }
-    )
+    let intent
+
+    if (interactionType === INTERNAL_INDEX) {
+      intent = await evmcrispr.encode(
+        [
+          evmcrispr
+            .call(installedApps[selectedApp])
+            [functionList[selectedFunction]](...parameters),
+        ],
+        ['disputable-voting'],
+        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+        // { context: asciiToHex(functionList[selectedFunction]) }
+        // having some issue on the lib when passing the function that need to check with david
+        { context: 'new decision' }
+      )
+    }
+    if (interactionType === EXTERNAL_INDEX) {
+      intent = await evmcrispr.encode(
+        [
+          evmcrispr.act(
+            evmcrispr.app('agent'),
+            externalContractAddress,
+            humanReadableSignature,
+            [...parameters]
+          ),
+        ],
+        ['disputable-voting'],
+        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+        // { context: asciiToHex(functionList[selectedFunction]) }
+        // having some issue on the lib when passing the function that need to check with david
+        { context: 'new decision' }
+      )
+    }
 
     return [{ ...intent.action, description: description, type: type }]
   }, [
     evmcrispr,
+    externalContractAddress,
+    humanReadableSignature,
+    interactionType,
     installedApps,
     selectedApp,
     functionList,
     selectedFunction,
     parameters,
   ])
-
-  const handleExternalInteraction = useCallback(async () => {
-    await evmcrispr.forward(
-      [
-        evmcrispr.act(
-          evmcrispr.app('agent'),
-          externalContractAddress,
-          humanReadableSignature,
-          [...parameters]
-        ),
-      ],
-      ['disputable-voting'],
-      // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-      // { context: asciiToHex(functionList[selectedFunction]) }
-      // having some issue on the lib when passing the function that need to check with david
-      { context: 'new decision' }
-    )
-  }, [evmcrispr, externalContractAddress, humanReadableSignature, parameters])
 
   const handleOnContractAddressChange = useCallback(event => {
     const value = event.target.value
@@ -322,19 +328,17 @@ function EVMExecutor() {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction && (
+      {selectedFunction !== null ? (
         <Button
           disabled={!account}
           mode="strong"
           wide
-          onClick={
-            interactionType === INTERNAL_INDEX
-              ? handleOnShowModal
-              : handleExternalInteraction
-          }
+          onClick={handleOnShowModal}
         >
           Execute
         </Button>
+      ) : (
+        <> </>
       )}
       <MultiModal
         visible={createDecisionModalVisible}
