@@ -6,7 +6,6 @@ import {
   textStyle,
   useLayout,
   useTheme,
-  useViewport,
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
 import Layout from './Layout'
@@ -23,85 +22,84 @@ import homeSvg from '../assets/home.svg'
 
 function Footer() {
   const theme = useTheme()
-  const { below } = useViewport()
-  const compactMode = below('large')
 
   return (
     <footer
       css={`
-        flex-shrink: 0;
         width: 100%;
-        padding: ${5 * GU}px ${3 * GU}px;
+        padding: ${1 * GU}px ${1.3 * GU}px;
         background: ${theme.surface};
       `}
     >
-      <Layout paddingBottom={0}>
-        {compactMode ? (
-          <FixedFooter />
-        ) : (
+      <Layout paddingBottom={70}>
+        <FixedFooter />
+        <div
+          css={`
+            display: grid;
+            padding: 0px 0px 30px 10px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 0.3fr));
+            grid-row-gap: ${2 * GU}px;
+            & a {
+              color: ${theme.contentSecondary};
+            }
+          `}
+        >
+          <div>
+            <img src={logoSvg} height="40" alt="" />
+          </div>
           <div
             css={`
-              display: grid;
-              grid-template-columns: ${40 * GU}px ${25 * GU}px ${25 * GU}px;
-              grid-row-gap: ${2 * GU}px;
-
-              & a {
-                color: ${theme.contentSecondary};
-              }
+              line-height: 0.5;
             `}
           >
-            <div>
-              <img src={logoSvg} height="40" alt="" />
-            </div>
-            <div>
-              <h5
-                css={`
-                  ${textStyle('body1')};
-                  margin-bottom: ${1.5 * GU}px;
-                `}
-              >
-                Community
-              </h5>
-              <Link href="https://discord.gg/4fm7pgB" external>
-                Discord
-              </Link>
-              <Link href="https://github.com/1Hive" external>
-                Github
-              </Link>
-              <Link href="https://twitter.com/1HiveOrg" external>
-                Twitter
-              </Link>
-              <Link href="https://t.me/honeyswapdex" external>
-                Telegram
-              </Link>
-              <Link href="https://forum.1hive.org/" external>
-                Forum
-              </Link>
-            </div>
-            <div>
-              <h5
-                css={`
-                  ${textStyle('body1')};
-                  margin-bottom: ${1.5 * GU}px;
-                `}
-              >
-                Documentation
-              </h5>
-              <Link href="https://1hive.gitbook.io/1hive/" external>
-                Wiki
-              </Link>
-              <Link
-                href="https://1hive.gitbook.io/1hive/community/security/bug-bounty"
-                external
-              >
-                Bug Bounty
-              </Link>
-              <Link href="https://1hive.gitbook.io/1hive/guides/faq" external>
-                FAQs
-              </Link>
-            </div>
+            <h5
+              css={`
+                ${textStyle('body1')};
+                margin-bottom: ${1.5 * GU}px;
+              `}
+            >
+              Community
+            </h5>
+            <Link href="https://discord.gg/4fm7pgB" external>
+              Discord
+            </Link>
+            <Link href="https://github.com/1Hive" external>
+              Github
+            </Link>
+            <Link href="https://twitter.com/1HiveOrg" external>
+              Twitter
+            </Link>
+            <Link href="https://t.me/honeyswapdex" external>
+              Telegram
+            </Link>
+            <Link href="https://forum.1hive.org/" external>
+              Forum
+            </Link>
           </div>
-        )}
+          <div>
+            <h5
+              css={`
+                ${textStyle('body1')};
+                margin-bottom: ${1.5 * GU}px;
+              `}
+            >
+              Documentation
+            </h5>
+            <Link href="https://1hive.gitbook.io/1hive/" external>
+              Wiki
+            </Link>
+            <Link
+              href="https://1hive.gitbook.io/1hive/community/security/bug-bounty"
+              external
+            >
+              Bug Bounty
+            </Link>
+            <Link href="https://1hive.gitbook.io/1hive/guides/faq" external>
+              FAQs
+            </Link>
+          </div>
+        </div>
+        )
       </Layout>
     </footer>
   )
