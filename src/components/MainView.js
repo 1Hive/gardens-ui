@@ -67,7 +67,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
-              ${!mobileMode && `margin-left: ${9 * GU}px;`}
+              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
             `}
           >
             <div
