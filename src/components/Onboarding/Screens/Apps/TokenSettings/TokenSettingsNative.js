@@ -176,17 +176,18 @@ function TokenSettingsNative() {
         gnosisSafeAddress,
         gnosisSafeChecked
       )
-      setFormError(error)
-
-      if (!error) {
-        onConfigChange('tokens', {
-          name: tokenName,
-          symbol: tokenSymbol,
-          holders: members,
-          gnosisSafe: gnosisSafeAddress,
-        })
-        onNext()
+      if (error) {
+        setFormError(error)
+        return
       }
+
+      onConfigChange('tokens', {
+        name: tokenName,
+        symbol: tokenSymbol,
+        holders: members,
+        gnosisSafe: gnosisSafeAddress,
+      })
+      onNext()
     },
     [
       gnosisSafeAddress,

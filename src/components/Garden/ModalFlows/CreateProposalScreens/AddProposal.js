@@ -19,7 +19,7 @@ import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
-import { formatTokenAmount } from '@utils/token-utils'
+import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 import { useHistory } from 'react-router-dom'
@@ -339,6 +339,8 @@ function RequestedAmount({
   const theme = useTheme()
   const { stable, value } = amount
 
+  const isRequestTokenStable = isStableToken(requestToken)
+
   return (
     <>
       <Field label="Requested Amount" onFocus={onFocus} onBlur={onBlur}>
@@ -363,34 +365,36 @@ function RequestedAmount({
           adornmentPosition="end"
           adornmentSettings={{ padding: 1 }}
         />
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: ${theme.contentSecondary};
-            margin-top: ${0.75 * GU}px;
-          `}
-        >
-          {stable ? (
-            <ConvertedAmount
-              amount={convertedAmount}
-              loading={loadingAmount}
-              requestToken={requestToken}
-            />
-          ) : (
-            <div />
-          )}
+        {!isRequestTokenStable && (
           <div
             css={`
               display: flex;
               align-items: center;
+              justify-content: space-between;
+              color: ${theme.contentSecondary};
+              margin-top: ${0.75 * GU}px;
             `}
           >
-            <Checkbox checked={stable} onChange={onIsStableChange} />
-            <span>Stable amount ({stableToken.symbol})</span>
+            {stable ? (
+              <ConvertedAmount
+                amount={convertedAmount}
+                loading={loadingAmount}
+                requestToken={requestToken}
+              />
+            ) : (
+              <div />
+            )}
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <Checkbox checked={stable} onChange={onIsStableChange} />
+              <span>Stable amount ({stableToken.symbol})</span>
+            </div>
           </div>
-        </div>
+        )}
       </Field>
       <Info
         css={`
@@ -398,9 +402,10 @@ function RequestedAmount({
         `}
       >
         The larger the requested amount, the more support required for the
-        proposal to pass. If you specify the proposal amount in {` `}
-        {stableToken.symbol} it will be converted to {requestToken.symbol}{' '}
-        if/when it is passed.{' '}
+        proposal to pass.{' '}
+        {isRequestTokenStable
+          ? ''
+          : `If you specify the proposal amount in ${stableToken.symbol} it will be converted to ${requestToken.symbol} if/when it is passed.`}{' '}
         {neededThreshold
           ? `The conviction
         required in order for the proposal to pass with the requested amount is
