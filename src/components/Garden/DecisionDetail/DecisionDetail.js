@@ -27,6 +27,7 @@ import SummaryBar from './SummaryBar'
 import SummaryRow from './SummaryRow'
 import VoteActions from './VoteActions'
 import VoteCasted from './VoteCasted'
+import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
 
 import { useDescribeVote } from '@hooks/useDescribeVote'
@@ -80,12 +81,14 @@ function DecisionDetail({ proposal, actions }) {
   }, [history])
 
   const handleVoteNo = useCallback(() => {
-    actions.voteOnDecision(proposal.number, VOTE_NAY)
-  }, [actions, proposal.number])
+    setModalVisible(true)
+    setModalMode('voteNo')
+  }, [])
 
   const handleVoteYes = useCallback(() => {
-    actions.voteOnDecision(proposal.number, VOTE_YEA)
-  }, [actions, proposal.number])
+    setModalVisible(true)
+    setModalMode('voteYes')
+  }, [])
 
   const handleExecute = useCallback(() => {
     actions.executeDecision(proposal.number, proposal.script)
@@ -327,6 +330,12 @@ function DecisionDetail({ proposal, actions }) {
           <SettleProposalScreens proposal={proposal} />
         )}
         {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+        {(modalMode === 'voteYes' || modalMode === 'voteNo') && (
+          <VoteOnDecisionScreens
+            proposal={proposal}
+            voteType={modalMode === 'voteYes' ? VOTE_YEA : VOTE_NAY}
+          />
+        )}
       </MultiModal>
     </div>
   )

@@ -248,15 +248,33 @@ export default function useActions() {
   }, [account, ethers, issuanceApp])
 
   // Vote actions
-  // TODO- we need to start using modal flow for all the transactions
   const voteOnDecision = useCallback(
-    (voteId, voteType) => {
-      sendIntent(votingApp, 'vote', [voteId, voteType === VOTE_YEA], {
-        ethers,
-        from: account,
+    async (voteId, voteType, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'vote',
+        [voteId, voteType === VOTE_YEA],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_DECISION]({
+        voteId,
+        supports: voteType === VOTE_YEA,
       })
+      const type = actions.VOTE_ON_DECISION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
     },
-    [account, ethers, votingApp]
+    [account, votingApp]
   )
   // TODO- we need to start using modal flow for all the transactions
   const executeDecision = useCallback(
