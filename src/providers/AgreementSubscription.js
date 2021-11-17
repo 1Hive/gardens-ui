@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
-import connectAgreement from '@aragon/connect-agreement'
+import connectAgreement from '@1hive/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
 import { getAgreementConnectorConfig } from '../networks'
 import { useWallet } from './Wallet'

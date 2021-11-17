@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { GU, textStyle, Button } from '@1hive/1hive-ui'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import ConnectImg from '../../../assets/connect.svg'
+import connectionError from '@/assets/connection-error.svg'
 
 function ConectWallet({ onDismiss }) {
   const { next } = useMultiModal()
@@ -37,7 +37,7 @@ function ConectWallet({ onDismiss }) {
         css={`
           margin-top: ${3 * GU}px;
         `}
-        src={ConnectImg}
+        src={connectionError}
       />
       <div
         css={`
