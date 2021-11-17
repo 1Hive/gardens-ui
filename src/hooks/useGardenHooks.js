@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { connectGarden } from '@1hive/connect-gardens'
-import connectAgreement from '@aragon/connect-agreement'
+import connectAgreement from '@1hive/connect-agreement'
 import {
   createAppHook,
   useApps,
