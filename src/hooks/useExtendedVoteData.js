@@ -7,11 +7,11 @@ import usePromise from './usePromise'
 import { useUserState } from '@providers/User'
 import { useWallet } from '@providers/Wallet'
 
+import { addressesEqual } from '@utils/web3-utils'
 import { getCanUserVote, getCanUserVoteOnBehalfOf } from '@utils/vote-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
 import minimeTokenAbi from '@abis/minimeToken.json'
 import votingAbi from '@abis/voting.json'
-import { addressesEqual } from '@/utils/web3-utils'
 
 const emptyPromise = defaultValue =>
   new Promise(resolve => resolve(defaultValue))
@@ -26,9 +26,11 @@ export default function useExtendedVoteData(vote) {
     canUserVoteOnBehalfOfPromise,
   } = useCanUserVoteOnBehalfOf(vote)
   // Princiapls balances
-  const { principalsBalance, principalsBalancePromise } = usePrincipalsBalance(
-    vote
-  )
+  const {
+    principals,
+    principalsBalance,
+    principalsBalancePromise,
+  } = usePrincipals(vote)
   // User balance
   const {
     userBalance,
@@ -46,6 +48,7 @@ export default function useExtendedVoteData(vote) {
     canUserVotePromise,
     canUserVoteOnBehalfOf,
     canUserVoteOnBehalfOfPromise,
+    principals,
     principalsBalance,
     principalsBalancePromise,
     startTimestamp,
@@ -93,7 +96,7 @@ function useCanUserVoteOnBehalfOf(vote) {
   const { config } = useGardenState()
   const { account: connectedAccount } = useWallet()
   const { id: votingAddress } = config?.voting || {}
-  const principals = useUserPrincipalsByGarden(config.id, vote.id)
+  const principals = useUserPrincipalsByGarden(config.id, vote)
   const votingContract = useContractReadOnly(votingAddress, votingAbi)
 
   const canUserVoteOnBehalfOfPromise = useMemo(() => {
@@ -114,10 +117,10 @@ function useCanUserVoteOnBehalfOf(vote) {
   return { canUserVoteOnBehalfOf, canUserVoteOnBehalfOfPromise }
 }
 
-function usePrincipalsBalance(vote) {
+function usePrincipals(vote) {
   const { config } = useGardenState()
   const { token } = config.voting
-  const principals = useUserPrincipalsByGarden(config.id, vote.id)
+  const principals = useUserPrincipalsByGarden(config.id, vote)
   const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
 
   // User balance
@@ -147,7 +150,7 @@ function usePrincipalsBalance(vote) {
     [principalsBalancesResult]
   )
 
-  return { principalsBalance, principalsBalancePromise }
+  return { principals, principalsBalance, principalsBalancePromise }
 }
 
 function useUserBalance(vote) {
@@ -191,7 +194,7 @@ function useUserBalance(vote) {
   }
 }
 
-function useUserPrincipalsByGarden(gardenAddress, voteId) {
+function useUserPrincipalsByGarden(gardenAddress, vote) {
   const { user } = useUserState()
 
   // We´ll get all the user principals for the given garden that haven´t already voted
@@ -201,12 +204,12 @@ function useUserPrincipalsByGarden(gardenAddress, voteId) {
         .filter(
           principal =>
             addressesEqual(principal.organization.id, gardenAddress) &&
-            principal.casts.findIndex(
-              cast => cast.proposal.number === voteId
+            vote.casts.findIndex(
+              cast => cast.caster === principal.user.address
             ) === -1
         )
         .map(principal => principal.user.address),
-    [gardenAddress, user, voteId]
+    [gardenAddress, user, vote]
   )
 
   return principals
