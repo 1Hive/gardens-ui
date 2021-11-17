@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Button,
@@ -18,7 +18,7 @@ import { noop, dateFormat } from '@utils/date-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { getConnectedAccountVote, isVoteAction } from '@utils/vote-utils'
 
-const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
+const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const [ready, setReady] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
@@ -32,6 +32,7 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     canExecute,
     canUserVote,
     canUserVoteOnBehalfOf,
+    principals,
     principalsBalance,
     userBalance,
     userBalanceNow,
@@ -80,14 +81,13 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     userBalanceNowPromise,
   ])
 
-  console.log(
-    'Promises',
-    canExecutePromise,
-    canUserVotePromise,
-    canUserVoteOnBehalfOfPromise,
-    principalsBalancePromise,
-    userBalancePromise,
-    userBalanceNowPromise
+  const handleVoteYes = useCallback(
+    () => onVote({ supports: true, principals, userBalance }),
+    [onVote, principals, userBalance]
+  )
+  const handleVoteNo = useCallback(
+    () => onVote({ supports: false, principals, userBalance }),
+    [onVote, principals, userBalance]
   )
 
   console.log(
@@ -137,13 +137,15 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
         {connectedAccount ? (
           <React.Fragment>
             <TokenReference
+              canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
+              principalsBalance={principalsBalance}
               snapshotBlock={snapshotBlock}
               startDate={new Date(startTimestamp)}
               tokenSymbol={token.symbol}
               userBalance={userBalance}
               userBalanceNow={userBalanceNow}
             />
-            <Buttons onClickYes={onVoteYes} onClickNo={onVoteNo} />
+            <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
           </React.Fragment>
         ) : (
           <div
@@ -245,13 +247,15 @@ const ButtonsContainer = styled.div`
 `
 
 const TokenReference = ({
+  canUserVoteOnBehalfOf,
+  principalsBalance,
   snapshotBlock,
   startDate,
   tokenSymbol,
   userBalance,
   userBalanceNow,
 }) => {
-  const votingWith = Math.min(userBalance, userBalanceNow)
+  const votingWith = Math.min(userBalance, userBalanceNow) + principalsBalance
 
   return (
     <Info
@@ -264,7 +268,10 @@ const TokenReference = ({
         {votingWith} {tokenSymbol}
       </strong>
       . Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
-      at <strong>{dateFormat(startDate)}</strong> is {userBalance} {tokenSymbol}
+      at <strong>{dateFormat(startDate)}</strong> is{' '}
+      <strong>
+        {userBalance} {tokenSymbol}
+      </strong>
       {userBalance !== userBalanceNow ? (
         <span>
           Your current balance is{' '}
@@ -275,6 +282,14 @@ const TokenReference = ({
         </span>
       ) : (
         ''
+      )}
+      {canUserVoteOnBehalfOf && principalsBalance > 0 && (
+        <div>
+          Delegated voting power:{' '}
+          <strong>
+            {principalsBalance} {tokenSymbol}
+          </strong>
+        </div>
       )}
     </Info>
   )
