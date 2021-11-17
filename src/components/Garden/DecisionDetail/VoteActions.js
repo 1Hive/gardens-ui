@@ -29,14 +29,18 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
 
   const { hasEnded, snapshotBlock } = vote
   const {
-    canUserVote,
     canExecute,
+    canUserVote,
+    canUserVoteOnBehalfOf,
+    principalsBalance,
     userBalance,
     userBalanceNow,
+    canExecutePromise,
     canUserVotePromise,
+    canUserVoteOnBehalfOfPromise,
+    principalsBalancePromise,
     userBalancePromise,
     userBalanceNowPromise,
-    canExecutePromise,
     startTimestamp,
   } = useExtendedVoteData(vote)
 
@@ -48,8 +52,10 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     const whenReady = async () => {
       try {
         await Promise.all([
-          canUserVotePromise,
           canExecutePromise,
+          canUserVotePromise,
+          canUserVoteOnBehalfOfPromise,
+          principalsBalancePromise,
           userBalancePromise,
           userBalanceNowPromise,
         ])
@@ -66,11 +72,30 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
       cancelled = true
     }
   }, [
-    userBalancePromise,
-    canUserVotePromise,
     canExecutePromise,
+    canUserVotePromise,
+    canUserVoteOnBehalfOfPromise,
+    principalsBalancePromise,
+    userBalancePromise,
     userBalanceNowPromise,
   ])
+
+  console.log(
+    'Promises',
+    canExecutePromise,
+    canUserVotePromise,
+    canUserVoteOnBehalfOfPromise,
+    principalsBalancePromise,
+    userBalancePromise,
+    userBalanceNowPromise
+  )
+
+  console.log(
+    'canUserVoteOnBehalfOf',
+    canUserVoteOnBehalfOf,
+    'principalsBalance',
+    principalsBalance
+  )
 
   if (!ready) {
     return null

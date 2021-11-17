@@ -146,3 +146,16 @@ export async function getCanUserVote(votingContract, voteId, account) {
 
   return votingContract.canVote(voteId, account)
 }
+
+export async function getCanUserVoteOnBehalfOf(
+  votingContract,
+  voteId,
+  voters,
+  representative
+) {
+  if (!votingContract || !voters.length || !representative) {
+    return false
+  }
+
+  return votingContract.canVoteOnBehalfOf(voteId, voters, representative)
+}
