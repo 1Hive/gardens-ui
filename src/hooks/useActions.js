@@ -14,7 +14,6 @@ import { getContract, useContract } from './useContract'
 import env from '@/environment'
 
 import actions from '../actions/garden-action-types'
-import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
@@ -249,10 +248,34 @@ export default function useActions() {
 
   // Vote actions
   const voteOnDecision = useCallback(
-    async (voteId, voteType, onDone = noop) => {
+    async (voteId, supports, onDone = noop) => {
+      let intent = await votingApp.intent('vote', [voteId, supports], {
+        actAs: account,
+      })
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_DECISION]({
+        voteId,
+        supports,
+      })
+      const type = actions.VOTE_ON_DECISION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
+  )
+  const voteOnBehalfOf = useCallback(
+    async (voteId, supports, voters, onDone = noop) => {
       let intent = await votingApp.intent(
-        'vote',
-        [voteId, voteType === VOTE_YEA],
+        'voteOnBehalfOf',
+        [voteId, supports, voters],
         {
           actAs: account,
         }
@@ -260,11 +283,11 @@ export default function useActions() {
 
       intent = imposeGasLimit(intent, GAS_LIMIT)
 
-      const description = radspec[actions.VOTE_ON_DECISION]({
+      const description = radspec[actions.VOTE_ON_BEHALF_OF]({
         voteId,
-        supports: voteType === VOTE_YEA,
+        supports,
       })
-      const type = actions.VOTE_ON_DECISION
+      const type = actions.VOTE_ON_BEHALF_OF
 
       const transactions = attachTrxMetadata(
         intent.transactions,
@@ -675,32 +698,34 @@ export default function useActions() {
         delegateVoting,
         executeDecision,
         voteOnDecision,
+        voteOnBehalfOf,
       },
     }),
     [
       approveTokenAmount,
+      approveWrappableTokenAmount,
+      cancelProposal,
       challengeAction,
+      claimRewards,
       delegateVoting,
       disputeAction,
+      executeDecision,
+      executeIssuance,
+      executeProposal,
       getAgreementTokenAllowance,
+      getHookedTokenManagerAllowance,
+      newProposal,
+      newSignalingProposal,
       resolveAction,
       settleAction,
       signAgreement,
-      executeProposal,
-      cancelProposal,
-      newProposal,
-      newSignalingProposal,
       stakeToProposal,
-      withdrawFromProposal,
-      approveWrappableTokenAmount,
-      getHookedTokenManagerAllowance,
-      wrap,
       unwrap,
-      executeIssuance,
       updatePriceOracle,
-      claimRewards,
-      executeDecision,
+      voteOnBehalfOf,
       voteOnDecision,
+      withdrawFromProposal,
+      wrap,
     ]
   )
 }

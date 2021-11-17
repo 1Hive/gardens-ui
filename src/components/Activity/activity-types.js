@@ -84,6 +84,10 @@ const ACTIVITY_TYPES = {
     icon: GARDEN_LOGO,
     title: 'Vote on decision',
   },
+  [actions.VOTE_ON_BEHALF_OF]: {
+    icon: GARDEN_LOGO,
+    title: 'Vote on decision on behalf of principals',
+  },
   [actions.WITHDRAW_FUNDS]: {
     icon: GARDEN_LOGO,
     title: 'Withdraw funds from deposit manager',

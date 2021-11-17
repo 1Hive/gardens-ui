@@ -64,6 +64,11 @@ export default {
   [actions.VOTE_ON_DECISION]: ({ voteId, supports }) => {
     return `Vote ${supports ? 'Yes' : 'No'} on decision: #${voteId}`
   },
+  [actions.VOTE_ON_BEHALF_OF]: ({ voteId, supports }) => {
+    return `Vote ${
+      supports ? 'Yes' : 'No'
+    } on behalf of principals on decision: #${voteId}`
+  },
   [actions.WITHDRAW_FUNDS]: () => {
     return `Withdraw funds from deposit manager`
   },
