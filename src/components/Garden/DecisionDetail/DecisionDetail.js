@@ -42,7 +42,7 @@ import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false)
-  const [modalMode, setModalMode] = useState(null)
+  const [modalData, setModalData] = useState({ mode: '' })
   const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
@@ -80,14 +80,9 @@ function DecisionDetail({ proposal, actions }) {
     history.goBack()
   }, [history])
 
-  const handleVoteNo = useCallback(() => {
+  const handleVote = useCallback(data => {
     setModalVisible(true)
-    setModalMode('voteNo')
-  }, [])
-
-  const handleVoteYes = useCallback(() => {
-    setModalVisible(true)
-    setModalMode('voteYes')
+    setModalData({ mode: 'vote', ...data })
   }, [])
 
   const handleExecute = useCallback(() => {
@@ -100,7 +95,7 @@ function DecisionDetail({ proposal, actions }) {
 
   const handleShowModal = useCallback(mode => {
     setModalVisible(true)
-    setModalMode(mode)
+    setModalData({ mode })
   }, [])
 
   return (
@@ -236,8 +231,7 @@ function DecisionDetail({ proposal, actions }) {
               {(statusData.open || statusData.pendingExecution) && (
                 <VoteActions
                   onExecute={handleExecute}
-                  onVoteNo={handleVoteNo}
-                  onVoteYes={handleVoteYes}
+                  onVote={handleVote}
                   vote={proposal}
                 />
               )}
@@ -314,9 +308,9 @@ function DecisionDetail({ proposal, actions }) {
       <MultiModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onClosed={() => setModalMode(null)}
+        onClosed={() => setModalData({ mode: '' })}
       >
-        {modalMode === 'challenge' && (
+        {modalData.mode === 'challenge' && (
           <ChallengeProposalScreens
             agreementActions={{
               challengeAction: actions.challengeAction,
@@ -326,15 +320,14 @@ function DecisionDetail({ proposal, actions }) {
             proposal={proposal}
           />
         )}
-        {modalMode === 'settle' && (
+        {modalData.mode === 'settle' && (
           <SettleProposalScreens proposal={proposal} />
         )}
-        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
-        {(modalMode === 'voteYes' || modalMode === 'voteNo') && (
-          <VoteOnDecisionScreens
-            proposal={proposal}
-            voteType={modalMode === 'voteYes' ? VOTE_YEA : VOTE_NAY}
-          />
+        {modalData.mode === 'dispute' && (
+          <RaiseDisputeScreens proposal={proposal} />
+        )}
+        {modalData.mode === 'vote' && (
+          <VoteOnDecisionScreens proposal={proposal} {...modalData} />
         )}
       </MultiModal>
     </div>
