@@ -5,6 +5,7 @@ import {
   Header,
   IconClose,
   Layout,
+  Root,
   Tabs,
   springs,
   useTheme,
@@ -14,12 +15,17 @@ import { Transition, animated } from 'react-spring/renderprops'
 import { useEsc } from '../../../hooks/useKeyboardArrows'
 
 import AppsAddresses from './AppsAddresses'
+import EVMExecutor from './EVMExecutor'
 
-const SECTIONS = new Map([['generalInfo', 'General Info']])
+const SECTIONS = new Map([
+  ['generalInfo', 'General Info'],
+  ['evmExecutor', 'EVM Executor'],
+])
 const PATHS = Array.from(SECTIONS.keys())
 const VALUES = Array.from(SECTIONS.values())
 
-const NETWORK_INDEX = 0
+const GENERAL_INFO_INDEX = 0
+const EVM_EXECUTOR_INDEX = 1
 
 const AnimatedDiv = animated.div
 
@@ -43,15 +49,18 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             padding-top: ${!compact ? 10 * GU : 0}px;
           `}
         />
-        <React.Fragment>
-          <Tabs
-            items={VALUES}
-            onChange={onNavigation}
-            selected={sectionIndex}
-          />
+        <Root.Provider>
+          <React.Fragment>
+            <Tabs
+              items={VALUES}
+              onChange={onNavigation}
+              selected={sectionIndex}
+            />
 
-          {sectionIndex === NETWORK_INDEX && <AppsAddresses />}
-        </React.Fragment>
+            {sectionIndex === GENERAL_INFO_INDEX && <AppsAddresses />}
+            {sectionIndex === EVM_EXECUTOR_INDEX && <EVMExecutor />}
+          </React.Fragment>
+        </Root.Provider>
       </Layout>
     </div>
   )

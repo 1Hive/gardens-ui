@@ -25,13 +25,15 @@ const Home = React.memo(function Home() {
   const {
     actions,
     commonPool,
-    config,
     errors,
     filters,
     loading,
-    mainToken,
+    priceToken,
     proposals,
     proposalsFetchedCount,
+    totalActiveTokens,
+    totalSupply,
+    totalWrappedSupply,
   } = useGardenLogic()
 
   const history = useHistory()
@@ -147,9 +149,10 @@ const Home = React.memo(function Home() {
                     commonPool={commonPool}
                     onRequestUpdatePriceOracle={handleUpdatePriceOracle}
                     onExecuteIssuance={actions.issuanceActions.executeIssuance}
-                    token={mainToken.data}
-                    totalActiveTokens={config.conviction.totalStaked}
-                    totalSupply={mainToken.totalSupply}
+                    priceToken={priceToken}
+                    totalActiveTokens={totalActiveTokens}
+                    totalSupply={totalSupply}
+                    totalWrappedSupply={totalWrappedSupply}
                   />
                 )}
                 <div

@@ -3,8 +3,16 @@ import { useGardenState } from '@providers/GardenState'
 import { useProposals } from '@hooks/useProposals'
 
 // Handles the main logic of the app.
-export default function useAppLogic() {
-  const { commonPool, config, errors, loading, mainToken } = useGardenState()
+export default function useGardenLogic() {
+  const {
+    commonPool,
+    config,
+    errors,
+    loading,
+    mainToken,
+    token,
+    wrappableToken,
+  } = useGardenState()
 
   const actions = useActions()
   const [
@@ -16,13 +24,23 @@ export default function useAppLogic() {
 
   return {
     actions,
-    commonPool,
+    commonPool: { value: commonPool, token: config?.conviction.requestToken },
     config,
     errors,
     filters,
     loading: loading || !blockHasLoaded,
-    mainToken,
+    priceToken: mainToken.data,
     proposals,
     proposalsFetchedCount,
+    totalActiveTokens: {
+      value: config?.conviction.totalStaked,
+      token: config?.conviction.stakeToken,
+    },
+    // For BYOT gardens, mainToken will be `wrappableToken`, for native gardens will be `token`
+    totalSupply: { value: mainToken.totalSupply, token: mainToken.data },
+    // For BYOT we will also display the total suppply of the wrapped token
+    totalWrappedSupply: wrappableToken
+      ? { value: token.totalSupply, token: token.data }
+      : null,
   }
 }

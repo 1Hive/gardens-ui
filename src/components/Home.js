@@ -7,6 +7,9 @@ import { useNodeHeight } from '@hooks/useNodeHeight'
 import GardensFilters from './GardensFilters'
 import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
+import { useWallet } from '@providers/Wallet'
+import MultiModal from './MultiModal/MultiModal'
+import ConnectWalletScreens from './ModalFlows/ConnectWallet/ConnectWalletScreens'
 import Loader from './Loader'
 import Onboarding from './Onboarding'
 
@@ -14,16 +17,27 @@ function Home() {
   const [height, ref] = useNodeHeight()
   const { externalFilters, internalFilters, gardens, loading } = useGardens()
   const [onboardingVisible, setOnboardingVisible] = useState(false)
+  const [connectModalVisible, setConnectModalVisible] = useState(false)
+
+  const { account } = useWallet()
   const toast = useToast()
 
   const handleOnboardingOpen = useCallback(() => {
+    if (!account) {
+      setConnectModalVisible(true)
+      return
+    }
     setOnboardingVisible(true)
-  }, [])
+  }, [account])
 
   const handleOnboardingClose = useCallback(() => {
     setOnboardingVisible(false)
     toast('Saved!')
   }, [toast])
+
+  const handleCloseModal = useCallback(() => {
+    setConnectModalVisible(false)
+  }, [])
 
   return (
     <div>
@@ -50,6 +64,9 @@ function Home() {
         </div>
       </DynamicDiv>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
+      <MultiModal visible={connectModalVisible} onClose={handleCloseModal}>
+        <ConnectWalletScreens onSuccess={handleCloseModal} />
+      </MultiModal>
     </div>
   )
 }

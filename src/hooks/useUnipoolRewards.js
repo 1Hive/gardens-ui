@@ -14,7 +14,7 @@ export default function useUnipoolRewards() {
   const { account } = useWallet()
 
   const {
-    connectedGarden: { unipool },
+    connectedGarden: { unipool, rewardsLink },
   } = useGardens()
 
   const unipoolContract = useContractReadOnly(unipool, unipoolAbi)
@@ -41,5 +41,5 @@ export default function useUnipoolRewards() {
     }
   }, [account, mounted, unipoolContract])
 
-  return earned
+  return [earned, rewardsLink]
 }

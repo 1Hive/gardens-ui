@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
-import { getProviderFromUseWalletId } from 'use-wallet'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 
+import { getNetwork } from '@/networks'
 import loadingRing from './assets/loading-ring.svg'
 
 const spin = keyframes`
@@ -15,12 +15,10 @@ const spin = keyframes`
   }
 `
 
-const AccountModuleConnectingScreen = React.memo(function({
-  onCancel,
-  providerId,
-}) {
+const AccountModuleActionScreen = React.memo(function({ onCancel }) {
   const theme = useTheme()
-  const provider = getProviderFromUseWalletId(providerId)
+  const { image, name } = getNetwork()
+
   return (
     <section
       css={`
@@ -72,8 +70,7 @@ const AccountModuleConnectingScreen = React.memo(function({
               left: 0;
               right: 0;
               bottom: 0;
-              background: 50% 50% / auto ${5 * GU}px no-repeat
-                url(${provider.image});
+              background: 50% 50% / auto ${5 * GU}px no-repeat url(${image});
             `}
           />
         </div>
@@ -84,7 +81,7 @@ const AccountModuleConnectingScreen = React.memo(function({
             font-weight: 600;
           `}
         >
-          Connecting to {provider.name}
+          {`Connecting to ${name} network`}
         </h1>
         <p
           css={`
@@ -92,8 +89,7 @@ const AccountModuleConnectingScreen = React.memo(function({
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          Log into {provider.name || 'Unknown'}. You may be temporarily
-          redirected to a new screen.
+          {`Create the ${name} network in your provider and switch to it. You may be temporarily redirected to a new screen.`}
         </p>
       </div>
       <div
@@ -101,15 +97,14 @@ const AccountModuleConnectingScreen = React.memo(function({
           flex-grow: 0;
         `}
       >
-        <Link onClick={onCancel}>Cancel</Link>
+        {onCancel && <Link onClick={onCancel}>Cancel</Link>}
       </div>
     </section>
   )
 })
 
-AccountModuleConnectingScreen.propTypes = {
-  providerId: PropTypes.string,
-  onCancel: PropTypes.func.isRequired,
+AccountModuleActionScreen.propTypes = {
+  onCancel: PropTypes.func,
 }
 
-export default AccountModuleConnectingScreen
+export default AccountModuleActionScreen
