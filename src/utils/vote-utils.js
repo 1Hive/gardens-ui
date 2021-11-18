@@ -10,6 +10,7 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../constants'
+import { bigNum } from '@lib/bigNumber'
 
 const EMPTY_SCRIPTS = ['0x00000001', '0x00']
 
@@ -18,11 +19,12 @@ export function isVoteAction(vote) {
 }
 
 export function getAccountCastStake(vote, account) {
-  const userCast = vote.casts.find(cast =>
-    addressesEqual(cast.supporter.user.address, account)
-  )
+  // Takes into account delegated cast stakes
+  const accountStake = vote.casts
+    .filter(cast => addressesEqual(cast.caster, account))
+    .reduce((acc, cast) => acc.plus(bigNum(cast.stake, 0)), bigNum(0))
 
-  return userCast?.stake || 0
+  return accountStake
 }
 
 export function getConnectedAccountCast(vote, account) {

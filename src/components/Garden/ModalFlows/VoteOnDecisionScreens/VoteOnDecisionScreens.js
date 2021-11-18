@@ -5,10 +5,11 @@ import VoteOnDecision from './VoteOnDecision'
 import useActions from '@hooks/useActions'
 
 function VoteOnDecisionScreens({
+  canUserVote,
+  canUserVoteOnBehalfOf,
   proposal,
   principals,
   supports,
-  userBalance,
 }) {
   const { votingActions } = useActions()
   const [transactions, setTransactions] = useState([])
@@ -34,18 +35,26 @@ function VoteOnDecisionScreens({
 
   const getTransactions = useCallback(
     async onComplete => {
-      if (userBalance > 0) {
+      if (canUserVote) {
         await vote(proposal.number, supports)
       }
 
-      if (principals?.length > 0) {
+      if (canUserVoteOnBehalfOf && principals?.length > 0) {
         await voteOnBehalfOf(proposal.number, supports, principals)
       }
 
       setTransactions(temporatyTrx.current)
       onComplete()
     },
-    [principals, proposal, supports, userBalance, vote, voteOnBehalfOf]
+    [
+      canUserVote,
+      canUserVoteOnBehalfOf,
+      principals,
+      proposal,
+      supports,
+      vote,
+      voteOnBehalfOf,
+    ]
   )
 
   const screens = useMemo(() => {

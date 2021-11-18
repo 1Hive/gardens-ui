@@ -83,7 +83,7 @@ function VoteCasted({ account, accountVote, caster, vote }) {
                 font-weight: 600;
               `}
             >
-              {accountStake === 0
+              {accountStake.eq(0)
                 ? '…'
                 : formatTokenAmount(accountStake, token.decimals)}{' '}
               {token.symbol}

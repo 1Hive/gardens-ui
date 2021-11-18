@@ -84,12 +84,24 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   ])
 
   const handleVoteYes = useCallback(
-    () => onVote({ supports: true, principals, userBalance }),
-    [onVote, principals, userBalance]
+    () =>
+      onVote({
+        canUserVote,
+        canUserVoteOnBehalfOf,
+        supports: true,
+        principals,
+      }),
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
   )
   const handleVoteNo = useCallback(
-    () => onVote({ supports: false, principals, userBalance }),
-    [onVote, principals, userBalance]
+    () =>
+      onVote({
+        canUserVote,
+        canUserVoteOnBehalfOf,
+        supports: false,
+        principals,
+      }),
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
   )
 
   if (!ready) {
