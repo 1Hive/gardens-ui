@@ -129,67 +129,27 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   if (canUserVote || canUserVoteOnBehalfOf) {
     return (
       <div>
-        {connectedAccount ? (
-          <React.Fragment>
-            <TokenReference
-              canUserVote={canUserVote}
-              canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
-              principalsBalance={principalsBalance}
-              snapshotBlock={snapshotBlock}
-              startDate={new Date(startTimestamp)}
-              tokenSymbol={token.symbol}
-              userBalance={userBalance}
-              userBalanceNow={userBalanceNow}
-            />
-            <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
-            {canUserVote && isAccountVoteCasted && (
-              <Info>
-                <strong>
-                  Although your delegate has voted on your behalf, you can
-                  always override their vote.
-                </strong>
-              </Info>
-            )}
-          </React.Fragment>
-        ) : (
-          <div
-            css={`
-              border-radius: ${RADIUS}px;
-              background: ${theme.background};
-              padding: ${3.5 * GU}px ${10 * GU}px;
-              text-align: center;
-            `}
-          >
-            <div
-              css={`
-                ${textStyle('body1')};
-              `}
-            >
-              You must enable your account to vote on this proposal
-            </div>
-            <div
-              css={`
-                ${textStyle('body2')};
-                color: ${theme.surfaceContentSecondary};
-                margin-top: ${2 * GU}px;
-              `}
-            >
-              Connect to your Ethereum provider by clicking on the{' '}
-              <strong
-                css={`
-                  display: inline-flex;
-                  align-items: center;
-                  position: relative;
-                  top: 7px;
-                `}
-              >
-                <IconConnect /> Enable account
-              </strong>{' '}
-              button on the header. You may be temporarily redirected to a new
-              screen.
-            </div>
-          </div>
-        )}
+        <React.Fragment>
+          <TokenReference
+            canUserVote={canUserVote}
+            canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
+            principalsBalance={principalsBalance}
+            snapshotBlock={snapshotBlock}
+            startDate={new Date(startTimestamp)}
+            tokenSymbol={token.symbol}
+            userBalance={userBalance}
+            userBalanceNow={userBalanceNow}
+          />
+          <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
+          {canUserVote && isAccountVoteCasted && (
+            <Info>
+              <strong>
+                Although your delegate has voted on your behalf, you can always
+                override their vote.
+              </strong>
+            </Info>
+          )}
+        </React.Fragment>
       </div>
     )
   }
@@ -207,17 +167,59 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
 
   return (
     <div>
-      <Buttons disabled />
-      <Info mode="warning">
-        {userBalanceNow > 0
-          ? 'Although the currently connected account holds tokens, it'
-          : 'The currently connected account'}{' '}
-        did not hold any <strong>{token.symbol}</strong> tokens when this vote
-        began ({dateFormat(new Date(startTimestamp))}) and therefore cannot
-        participate in this vote. Make sure your accounts are holding{' '}
-        <strong>{token.symbol}</strong> at the time a vote begins if you'd like
-        to vote using this Voting app.
-      </Info>
+      {connectedAccount ? (
+        <>
+          <Buttons disabled />
+          <Info mode="warning">
+            {userBalanceNow > 0
+              ? 'Although the currently connected account holds tokens, it'
+              : 'The currently connected account'}{' '}
+            did not hold any <strong>{token.symbol}</strong> tokens when this
+            vote began ({dateFormat(new Date(startTimestamp))}) and therefore
+            cannot participate in this vote. Make sure your accounts are holding{' '}
+            <strong>{token.symbol}</strong> at the time a vote begins if you'd
+            like to vote using this Voting app.
+          </Info>
+        </>
+      ) : (
+        <div
+          css={`
+            border-radius: ${RADIUS}px;
+            background: ${theme.background};
+            padding: ${3.5 * GU}px ${10 * GU}px;
+            text-align: center;
+          `}
+        >
+          <div
+            css={`
+              ${textStyle('body1')};
+            `}
+          >
+            You must enable your account to interact with this decision
+          </div>
+          <div
+            css={`
+              ${textStyle('body2')};
+              color: ${theme.surfaceContentSecondary};
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            Connect to your Ethereum provider by clicking on the{' '}
+            <strong
+              css={`
+                display: inline-flex;
+                align-items: center;
+                position: relative;
+                top: 7px;
+              `}
+            >
+              <IconConnect /> Enable account
+            </strong>{' '}
+            button on the header. You may be temporarily redirected to a new
+            screen.
+          </div>
+        </div>
+      )}
     </div>
   )
 })

@@ -208,7 +208,7 @@ function useUserPrincipalsByGarden(gardenAddress, vote) {
               cast => cast.caster === principal.user.address
             ) === -1
         )
-        .map(principal => principal.user.address),
+        .map(principal => principal.user.address) || [],
     [gardenAddress, user, vote]
   )
 
