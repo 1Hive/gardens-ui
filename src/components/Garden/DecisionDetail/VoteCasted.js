@@ -4,13 +4,18 @@ import { useGardenState } from '@providers/GardenState'
 
 import { addressesEqual } from '@utils/web3-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-import { getAccountCastStake } from '@utils/vote-utils'
+import {
+  getAccountCastDelegatedStake,
+  getAccountCastStake,
+} from '@utils/vote-utils'
 import { VOTE_YEA } from '@/constants'
 
 function VoteCasted({ account, accountVote, caster, vote }) {
   const { config } = useGardenState()
   const { token } = config.voting
   const accountStake = getAccountCastStake(vote, account)
+  const accountDelegatedStake = getAccountCastDelegatedStake(vote, account)
+  const totalStake = accountStake.plus(accountDelegatedStake)
 
   const theme = useTheme()
 
@@ -83,9 +88,9 @@ function VoteCasted({ account, accountVote, caster, vote }) {
                 font-weight: 600;
               `}
             >
-              {accountStake.eq(0)
+              {totalStake.eq(0)
                 ? '…'
-                : formatTokenAmount(accountStake, token.decimals)}{' '}
+                : formatTokenAmount(totalStake, token.decimals)}{' '}
               {token.symbol}
             </span>
             .

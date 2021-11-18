@@ -19,12 +19,24 @@ export function isVoteAction(vote) {
 }
 
 export function getAccountCastStake(vote, account) {
+  const userCast = vote.casts.find(cast =>
+    addressesEqual(cast.supporter.user.address, account)
+  )
+
+  return bigNum(userCast?.stake || 0, 0)
+}
+
+export function getAccountCastDelegatedStake(vote, account) {
   // Takes into account delegated cast stakes
-  const accountStake = vote.casts
-    .filter(cast => addressesEqual(cast.caster, account))
+  const totalDelegatedStake = vote.casts
+    .filter(
+      cast =>
+        addressesEqual(cast.caster, account) &&
+        !addressesEqual(cast.supporter.user.address, account)
+    )
     .reduce((acc, cast) => acc.plus(bigNum(cast.stake, 0)), bigNum(0))
 
-  return accountStake
+  return totalDelegatedStake
 }
 
 export function getConnectedAccountCast(vote, account) {
