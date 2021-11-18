@@ -67,6 +67,17 @@ export function getVoteEndDate(vote) {
   return lastComputedEndDate + vote.quietEndingExtension
 }
 
+export function getDelegatedVotingEndDate(vote) {
+  const baseDelegatedVotingEndDate = vote.startDate + vote.delegatedVotingPeriod
+
+  // If the vote was paused before the delegated voting period ended, we need to extend it
+  if (vote.pausedAt > 0 && vote.pausedAt > baseDelegatedVotingEndDate) {
+    return baseDelegatedVotingEndDate + vote.pauseDuration
+  }
+
+  return baseDelegatedVotingEndDate
+}
+
 function wasVoteFlipped(vote) {
   // If there was no snapshot taken, it means no one voted during the quiet ending period. Thus, it cannot have been flipped.
   if (vote.quietEndingSnapshotSupport === 'Absent') {
