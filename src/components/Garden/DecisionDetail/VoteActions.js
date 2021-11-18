@@ -16,7 +16,7 @@ import useExtendedVoteData from '@hooks/useExtendedVoteData'
 import { useWallet } from '@providers/Wallet'
 import { noop, dateFormat } from '@utils/date-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
-import { getConnectedAccountVote, isVoteAction } from '@utils/vote-utils'
+import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils'
 
 const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const [ready, setReady] = useState(false)
@@ -25,7 +25,7 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const { config } = useGardenState()
   const { token } = config.voting
 
-  const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
+  const connectedAccountCast = getConnectedAccountCast(vote, connectedAccount)
 
   const { hasEnded, snapshotBlock } = vote
   const {
@@ -45,7 +45,9 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     startTimestamp,
   } = useExtendedVoteData(vote)
 
-  const hasVoted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountVote)
+  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(
+    connectedAccountCast.vote
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -90,13 +92,6 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     [onVote, principals, userBalance]
   )
 
-  console.log(
-    'canUserVoteOnBehalfOf',
-    canUserVoteOnBehalfOf,
-    'principalsBalance',
-    principalsBalance
-  )
-
   if (!ready) {
     return null
   }
@@ -131,12 +126,13 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     )
   }
 
-  if (canUserVote) {
+  if (canUserVote || canUserVoteOnBehalfOf) {
     return (
       <div>
         {connectedAccount ? (
           <React.Fragment>
             <TokenReference
+              canUserVote={canUserVote}
               canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
               principalsBalance={principalsBalance}
               snapshotBlock={snapshotBlock}
@@ -146,6 +142,14 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
               userBalanceNow={userBalanceNow}
             />
             <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
+            {canUserVote && isAccountVoteCasted && (
+              <Info>
+                <strong>
+                  Although your delegate has voted on your behalf, you can
+                  always override their vote.
+                </strong>
+              </Info>
+            )}
           </React.Fragment>
         ) : (
           <div
@@ -190,7 +194,7 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     )
   }
 
-  if (hasVoted) {
+  if (isAccountVoteCasted) {
     return (
       <div>
         <Buttons disabled />
@@ -247,6 +251,7 @@ const ButtonsContainer = styled.div`
 `
 
 const TokenReference = ({
+  canUserVote,
   canUserVoteOnBehalfOf,
   principalsBalance,
   snapshotBlock,
@@ -255,7 +260,8 @@ const TokenReference = ({
   userBalance,
   userBalanceNow,
 }) => {
-  const votingWith = Math.min(userBalance, userBalanceNow) + principalsBalance
+  const votingWith =
+    Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance)
 
   return (
     <Info
@@ -267,21 +273,28 @@ const TokenReference = ({
       <strong>
         {votingWith} {tokenSymbol}
       </strong>
-      . Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
-      at <strong>{dateFormat(startDate)}</strong> is{' '}
-      <strong>
-        {userBalance} {tokenSymbol}
-      </strong>
-      {userBalance !== userBalanceNow ? (
-        <span>
-          Your current balance is{' '}
+      .
+      {canUserVote && (
+        <div>
+          {' '}
+          Your balance at snapshot taken at block{' '}
+          <strong>{snapshotBlock}</strong> at{' '}
+          <strong>{dateFormat(startDate)}</strong> is{' '}
           <strong>
-            {userBalanceNow} {tokenSymbol}
+            {userBalance} {tokenSymbol}
           </strong>
-          )
-        </span>
-      ) : (
-        ''
+          {userBalance !== userBalanceNow ? (
+            <span>
+              Your current balance is{' '}
+              <strong>
+                {userBalanceNow} {tokenSymbol}
+              </strong>
+              )
+            </span>
+          ) : (
+            ''
+          )}
+        </div>
       )}
       {canUserVoteOnBehalfOf && principalsBalance > 0 && (
         <div>

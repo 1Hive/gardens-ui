@@ -1,11 +1,13 @@
 import React from 'react'
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useGardenState } from '@providers/GardenState'
+
+import { addressesEqual } from '@utils/web3-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getAccountCastStake } from '@utils/vote-utils'
 import { VOTE_YEA } from '@/constants'
 
-function VoteCasted({ account, accountVote, vote }) {
+function VoteCasted({ account, accountVote, caster, vote }) {
   const { config } = useGardenState()
   const { token } = config.voting
   const accountStake = getAccountCastStake(vote, account)
@@ -54,7 +56,9 @@ function VoteCasted({ account, accountVote, vote }) {
             margin-bottom: ${0.5 * GU}px;
           `}
           >
-            Your vote was cast successfully
+            {`Your ${
+              addressesEqual(account, caster) ? '' : 'delegate´s'
+            } vote was cast successfully`}
           </div>
           <div
             css={`
@@ -62,7 +66,7 @@ function VoteCasted({ account, accountVote, vote }) {
             color: ${theme.surfaceContentSecondary};
           `}
           >
-            You voted{' '}
+            {addressesEqual(account, caster) ? 'You' : 'Your delegate'} voted{' '}
             <span
               css={`
                 color: ${theme.surfaceContent};

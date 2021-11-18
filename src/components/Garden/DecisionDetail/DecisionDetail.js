@@ -36,7 +36,7 @@ import { useWallet } from '@providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
-import { getConnectedAccountVote, getQuorumProgress } from '@utils/vote-utils'
+import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
@@ -58,7 +58,7 @@ function DecisionDetail({ proposal, actions }) {
   } = useDescribeVote(proposal.script, proposal.id)
 
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
-  const connectedAccountVote = getConnectedAccountVote(
+  const connectedAccountCast = getConnectedAccountCast(
     proposal,
     connectedAccount
   )
@@ -66,7 +66,8 @@ function DecisionDetail({ proposal, actions }) {
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const youVoted =
-    connectedAccountVote === VOTE_YEA || connectedAccountVote === VOTE_NAY
+    connectedAccountCast.vote === VOTE_YEA ||
+    connectedAccountCast.vote === VOTE_NAY
 
   const { creator, minAcceptQuorum, nay, number, statusData, yea } =
     proposal || {}
@@ -222,7 +223,8 @@ function DecisionDetail({ proposal, actions }) {
                 {youVoted && (
                   <VoteCasted
                     account={connectedAccount}
-                    accountVote={connectedAccountVote}
+                    accountVote={connectedAccountCast.vote}
+                    caster={connectedAccountCast.caster}
                     vote={proposal}
                   />
                 )}

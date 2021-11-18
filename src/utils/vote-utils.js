@@ -25,15 +25,18 @@ export function getAccountCastStake(vote, account) {
   return userCast?.stake || 0
 }
 
-export function getConnectedAccountVote(vote, account) {
+export function getConnectedAccountCast(vote, account) {
   const userCast = vote.casts.find(cast =>
     addressesEqual(cast.supporter.user.address, account)
   )
 
   if (userCast) {
-    return userCast.supports ? VOTE_YEA : VOTE_NAY
+    return {
+      vote: userCast.supports ? VOTE_YEA : VOTE_NAY,
+      caster: userCast.caster,
+    }
   }
-  return VOTE_ABSENT
+  return { vote: VOTE_ABSENT }
 }
 
 export function hasVoteEnded(status, endDate, challengeEndDate) {
