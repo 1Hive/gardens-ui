@@ -111,6 +111,9 @@ function Footer() {
           >
             <div>
               <img
+                css={`
+                  border-radius: 100%;
+                `}
                 src={logoSvg}
                 height={footerData.garden ? '60' : '40'}
                 alt=""
