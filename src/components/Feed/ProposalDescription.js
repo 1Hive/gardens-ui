@@ -13,6 +13,7 @@ function ProposalDescription({ proposal, onSelectProposal }) {
         cursor: pointer;
         ${textStyle('body1')};
         margin-bottom: ${3 * GU}px;
+        text-decoration: underline;
       `}
     >
       {proposal.type === ProposalTypes.Decision ? (

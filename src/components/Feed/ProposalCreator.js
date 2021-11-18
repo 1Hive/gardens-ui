@@ -97,7 +97,12 @@ function ProposalCreator({ proposal }) {
             ProposalType
           ) : (
             <>
-              <Link to={`/profile?account=${proposal.creator}`}>
+            <Link
+                to={`/profile?account=${proposal.creator}`}
+                css={`
+                  text-decoration: none;
+                `}
+              >
                 <strong
                   css={`
                     margin-right: ${1 * GU}px;
