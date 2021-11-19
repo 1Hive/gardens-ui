@@ -24,7 +24,6 @@ import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
-import gardensLogoType from '@assets/gardensLogoType.svg'
 
 const defaultFooterData = {
   links: {
@@ -53,7 +52,7 @@ const defaultFooterData = {
       },
     ],
   },
-  logo: gardensLogoType,
+  logo: gardenSvg,
   garden: false,
 }
 
@@ -115,7 +114,7 @@ function Footer() {
                   border-radius: 100%;
                 `}
                 src={logoSvg}
-                height={footerData.garden ? '60' : '40'}
+                height="60"
                 alt=""
               />
             </div>
