@@ -16,7 +16,7 @@ const networks = {
     type: 'rinkeby',
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
-    template: '0xA28c03923385e31E506e749e64Ce4CfC14d93459',
+    template: '0xF8A030177865356E2Be8fb5F95a19962E6b57E3e',
     celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     explorer: 'etherscan',
 
