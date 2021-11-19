@@ -24,15 +24,14 @@ import {
 } from './activity-statuses'
 import { getActivityData } from './activity-types'
 import { getNetwork } from '../../networks'
-
-import GARDEN_LOGO from '@assets/gardensLogoMark.svg'
+import { useAsset } from '@/hooks/useAsset'
 
 function ActivityItem({ activity }) {
   const theme = useTheme()
   const { removeActivity } = useActivity()
 
-  const { title } = getActivityData(activity.type)
-  const iconSrc = GARDEN_LOGO
+  const { title, icon } = getActivityData(activity.type)
+  const iconSrc = useAsset(icon)
 
   const handleOpen = useCallback(() => {
     if (activity.transactionHash) {
