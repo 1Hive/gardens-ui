@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "3box": "^1.19.1",
-    "@1hive/1hive-ui": "1.0.11",
+    "@1hive/1hive-ui": "^1.0.13",
     "@1hive/connect-agreement": "^0.9.4",
     "@1hive/connect-gardens": "^0.1.7",
     "@1hive/connect-react": "^0.9.3",
@@ -15,7 +15,7 @@
     "bignumber.js": "^9.0.0",
     "clipboard-polyfill": "^3.0.0-pre5",
     "dayjs": "^1.8.34",
-    "ethers": "5.0.8",
+    "ethers": "^5.5.1",
     "is-ipfs": "^2.0.0",
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",

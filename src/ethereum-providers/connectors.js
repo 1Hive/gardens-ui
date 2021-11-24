@@ -4,6 +4,7 @@ import env from '@/environment'
 const PORTIS_ID = env('PORTIS_ID')
 const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
+const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
 export const CONNECTORS = [
   {
@@ -22,6 +23,7 @@ export const CONNECTORS = [
     id: 'walletconnect',
     properties: {
       rpc: {
+        137: POLYGON_ETH_NODE,
         100: XDAI_ETH_NODE,
         4: RINKEBY_ETH_NODE,
       },
