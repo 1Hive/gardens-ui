@@ -23,3 +23,31 @@ export function getGardenForumUrl(metadata) {
 
   return DEFAULT_FORUM_URL
 }
+
+export function mergeGardenMetadata(garden, gardensMetadata, chainId) {
+  const metadata =
+    gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
+
+  const token = {
+    ...garden.token,
+    logo: metadata.token_logo,
+  }
+  const wrappableToken = garden.wrappableToken
+    ? {
+        ...garden.wrappableToken,
+        ...metadata.wrappableToken,
+      }
+    : null
+
+  const forumURL = getGardenForumUrl(metadata)
+
+  return {
+    ...garden,
+    ...metadata,
+    address: garden.id,
+    chainId,
+    forumURL,
+    token,
+    wrappableToken,
+  }
+}

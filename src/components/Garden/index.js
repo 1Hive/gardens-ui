@@ -1,10 +1,10 @@
 import React from 'react'
 import Routes from '../../routes/garden/Routes'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 function Garden() {
-  const { loading } = useGardens()
-  if (loading) {
+  const connectedGarden = useConnectedGarden()
+  if (!connectedGarden) {
     return null
   }
 

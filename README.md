@@ -25,6 +25,10 @@ yarn start:[network]
 # yarn start:xdai
 ```
 
+> **Tip:**
+> Make sure you provide the environment variable of the RPC node when running on xDai. e.g.
+> `REACT_APP_ETH_NODE=https://rpc.xdaichain.com/ yarn start:xdai`
+
 ### Environment variables
 
 

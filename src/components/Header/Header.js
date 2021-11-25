@@ -6,7 +6,7 @@ import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
 import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
 import Layout from '../Layout'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
@@ -24,7 +24,7 @@ function Header({ onOpenPreferences }) {
   const layoutSmall = below('medium')
   const network = getNetwork()
   const history = useHistory()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -160,7 +160,7 @@ function GardenNavItems({ garden }) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const forumURL = connectedGarden.forumURL
 
   const handleOnGoToCovenant = useCallback(() => {

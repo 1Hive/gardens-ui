@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, GU, textStyle, useTheme, useLayout } from '@1hive/1hive-ui'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 export default function EmptyResults({ title, paragraph }) {
@@ -9,7 +9,7 @@ export default function EmptyResults({ title, paragraph }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const logo = connectedGarden?.logo || defaultGardenLogo
 
   return (
