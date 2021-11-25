@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
@@ -11,7 +11,7 @@ import signGraphic from '@assets/smart-contract.svg'
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const { mainToken } = useGardenState()
   const { layoutName } = useLayout()
   const { next } = useMultiModal()

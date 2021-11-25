@@ -13,7 +13,7 @@ import { EVMcrispr } from '@1hive/evmcrispr'
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
 
-import { useGardens } from '@/providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
@@ -23,7 +23,7 @@ import radspec from '@/radspec'
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
     false
   )
