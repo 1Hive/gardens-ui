@@ -12,6 +12,7 @@ function CustomLayout({ children, paddingBottom = 0 }) {
       css={`
         ${vw < BREAKPOINTS.large && `width: auto;`}
         min-width: auto;
+        height: 100%;
       `}
     >
       {children}

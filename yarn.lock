@@ -225,10 +225,10 @@
     recursive-copy "^2.0.9"
     use-inside "^0.2.0"
 
-"@1hive/connect-agreement@^0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-agreement/-/connect-agreement-0.9.3.tgz#ddcd4546976636eda6722906eb5b3a6d8b3ac29d"
-  integrity sha512-RZVl1Lc+28B5/Eo3M39u0f9p1I/Nt9d3q5aHnKJiE8QOxhiC3qqy78POA7FwM8cXuSoG3Upy7/xrvDyHIoVhMw==
+"@1hive/connect-agreement@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-agreement/-/connect-agreement-0.9.4.tgz#2c01fabe255d55e72c29fba4694d8f8348b9c7b6"
+  integrity sha512-Nq+if1DoFqdc0mQkdibu8XkfB7h2LECP9ryoLCrxVx96Heppa4k3anIDlJYUWf4dv7NiIp3jRbFL5KBx5gz+gA==
   dependencies:
     "@1hive/connect-core" "^0.9.3"
     "@1hive/connect-thegraph" "^0.9.3"
