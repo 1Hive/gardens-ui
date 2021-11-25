@@ -24,7 +24,6 @@ import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
-import gardensLogoType from '@assets/gardensLogoType.svg'
 
 const defaultFooterData = {
   links: {
@@ -53,7 +52,7 @@ const defaultFooterData = {
       },
     ],
   },
-  logo: gardensLogoType,
+  logo: gardenSvg,
   garden: false,
 }
 
@@ -68,10 +67,10 @@ function Footer() {
   useEffect(() => {
     if (connectedGarden) {
       // eslint-disable-next-line camelcase
-      const { links, logo_type, token, wrappableToken } = connectedGarden
+      const { links, logo, token, wrappableToken } = connectedGarden
       setFooterData({
         links,
-        logo: logo_type,
+        logo,
         token,
         wrappableToken,
         garden: true,
@@ -111,8 +110,11 @@ function Footer() {
           >
             <div>
               <img
+                css={`
+                  border-radius: 100%;
+                `}
                 src={logoSvg}
-                height={footerData.garden ? '60' : '40'}
+                height="60"
                 alt=""
               />
             </div>

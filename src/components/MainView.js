@@ -26,6 +26,7 @@ function MainView({ children }) {
     loadingGardenState = loading
   }
 
+  const mobileMode = below('medium')
   const compactMode = below('large')
 
   if (preferenceOption) {
@@ -67,6 +68,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
+              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
             `}
           >
             <div
