@@ -17,7 +17,7 @@ import env from '@/environment'
 import BigNumber from '@lib/bigNumber'
 import { addressesEqual } from '@utils/web3-utils'
 import { getAppByName } from '@utils/data-utils'
-import { getAgreementConnectorConfig } from '@/networks'
+import { getAgreementConnectorConfig, getNetwork } from '@/networks'
 
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
@@ -26,14 +26,16 @@ import fundsManagerAbi from '@abis/FundsManager.json'
 const INITIAL_TIMER = 2000
 
 export function useGardenData() {
-  const { chainId } = useWallet()
+  const { preferredNetwork } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
+  const { subgraphs } = getNetwork(preferredNetwork)
+
   const useAgreementHook = createAppHook(
     connectAgreement,
-    getAgreementConnectorConfig(chainId).agreement
+    getAgreementConnectorConfig(preferredNetwork).agreement
   )
 
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
@@ -68,7 +70,9 @@ export function useGardenData() {
 
     const fetchGardenConnector = async () => {
       try {
-        const gardenConnector = await connectGarden(organization)
+        const gardenConnector = await connectGarden(organization, {
+          subgraphUrl: subgraphs.gardens,
+        })
 
         if (!cancelled) {
           setConnector(gardenConnector)
@@ -83,7 +87,7 @@ export function useGardenData() {
     return () => {
       cancelled = true
     }
-  }, [organization])
+  }, [organization, subgraphs.gardens])
 
   const config = useConfigSubscription(connector)
 
