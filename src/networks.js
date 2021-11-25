@@ -42,7 +42,7 @@ const networks = {
     defaultEthNode: XDAI_ETH_NODE,
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0x6D68156D6D75bAe0CDABfAFDdE2DD16a75e1eB8A',
+    template: '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844',
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 
