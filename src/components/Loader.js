@@ -9,11 +9,9 @@ import { HIVE_GARDEN_ADDRESS } from '@/constants'
 
 const Wrapper = styled.div`
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 550px;
-  width: 100%;
+  position: fixed;
+  top: 45%;
+  left: 45%;
 `
 
 function Loader() {
@@ -34,7 +32,10 @@ function Loader() {
         animationData={is1HiveGarden ? beeAnimation : gardensLoader}
         play
         loop
-        style={{ height: 100, width: 100 }}
+        style={{
+          height: is1HiveGarden ? 100 : 150,
+          width: is1HiveGarden ? 100 : 150,
+        }}
       />
     </Wrapper>
   )
