@@ -119,7 +119,13 @@ const Home = React.memo(function Home() {
       </div>
       <NetworkErrorModal visible={Boolean(errors)} />
       {loading ? (
-        <Loader />
+        <div
+          css={`
+            margin-top: ${35 * GU}px;
+          `}
+        >
+          <Loader />
+        </div>
       ) : (
         <div>
           <div

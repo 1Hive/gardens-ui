@@ -18,7 +18,10 @@ export const PCT_BASE = bigNum(1)
 
 export const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
-export const HIVE_GARDEN_ADDRESS = '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155'
+export const HIVE_GARDEN_ADDRESSES = [
+  '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
+  '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
+]
 
 export const VOTE_ABSENT = 'VOTE_ABSENT'
 export const VOTE_YEA = 'VOTE_YEA'
