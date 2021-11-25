@@ -14,17 +14,17 @@ import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
+import { useWallet } from './Wallet'
 
 import { fetchFileContent } from '../services/github'
 
 import { DAONotFound } from '../errors'
 import { getGardenForumUrl } from '../utils/garden-utils'
+import { getVoidedGardensByNetwork } from '../voided-gardens'
 import useGardenFilters from '@/hooks/useGardenFilters'
 import { testNameFilter } from '@/utils/garden-filters-utils'
 import { useDebounce } from '@/hooks/useDebounce'
-
-import { getVoidedGardensByNetwork } from '../voided-gardens'
-import { useWallet } from './Wallet'
+import { getNetwork } from '@/networks'
 
 const DAOContext = React.createContext()
 
@@ -130,6 +130,8 @@ function useGardensList(queryFilters, filters) {
   const [refetchTriger, setRefetchTriger] = useState(false)
   const { preferredNetwork } = useWallet()
 
+  const { subgraphs } = getNetwork(preferredNetwork)
+
   const { sorting } = queryFilters
 
   const [gardensMetadata, loadingMetadata] = useGardensMetadata(
@@ -152,7 +154,7 @@ function useGardensList(queryFilters, filters) {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: preferredNetwork },
+          { network: preferredNetwork, subgraphUrl: subgraphs.gardens },
           { ...sorting.queryArgs }
         )
 
@@ -167,7 +169,7 @@ function useGardensList(queryFilters, filters) {
     }
 
     fetchGardens()
-  }, [preferredNetwork, refetchTriger, sorting.queryArgs])
+  }, [preferredNetwork, refetchTriger, sorting.queryArgs, subgraphs.gardens])
 
   return [filteredGardens, gardensMetadata, loading || loadingMetadata, reload]
 }

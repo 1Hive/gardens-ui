@@ -116,12 +116,11 @@ export function getNetwork(chainId = getPreferredChain()) {
 }
 
 export function getEthersNetwork() {
-  const { type, chainId, ensRegistry, defaultEthNode } = getNetwork()
+  const { type, chainId, ensRegistry } = getNetwork()
   return {
     name: type,
     chainId: chainId,
     ensAddress: ensRegistry,
-    _defaultProvider: defaultEthNode,
   }
 }
 
