@@ -262,7 +262,7 @@ export function createGardenTxThree(
         [actionAmountStable, actionAmountStable],
         [challengeAmountStable, challengeAmountStable],
       ],
-      { gasLimit: 7000000 }
+      { gasLimit: 8000000 }
     ),
   }
 }
