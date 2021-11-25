@@ -12,21 +12,21 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
-import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
-import { useGardens } from '../../providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
+import { useWallet } from '@providers/Wallet'
 
-import { buildGardenPath } from '../../utils/routing-utils'
-import { getNetworkName } from '../../utils/web3-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+import { getNetworkName } from '@utils/web3-utils'
 
-import profileButtonSvg from '../../assets/profileButton.svg'
-import stakeButtonSvg from '../../assets/stakeButton.svg'
-import { useWallet } from '@/providers/Wallet'
+import profileButtonSvg from '@assets/profileButton.svg'
+import stakeButtonSvg from '@assets/stakeButton.svg'
 
 function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const { chainId } = useWallet()
 
   const networkName = getNetworkName(chainId)

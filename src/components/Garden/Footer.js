@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import Layout from '../Layout'
 import MultiModal from '../MultiModal/MultiModal'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
@@ -62,7 +62,7 @@ function Footer() {
   const compactMode = below('medium')
   const [footerData, setFooterData] = useState(defaultFooterData)
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   useEffect(() => {
     if (connectedGarden) {

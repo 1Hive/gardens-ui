@@ -13,7 +13,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { usePriceOracle } from '@hooks/usePriceOracle'
@@ -55,7 +55,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     weight,
   } = config.conviction
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL

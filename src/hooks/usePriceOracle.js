@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
-import { useGardens } from '@providers/Gardens'
 import { useMounted } from './useMounted'
 
 import BigNumber from '@lib/bigNumber'
@@ -13,7 +13,7 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const [loading, setLoading] = useState(true)
   const [canUpdate, setCanUpdate] = useState(false)
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const { incentivisedPriceOracle: priceOracleAddress } = connectedGarden
 
   const priceOracleContract = useContractReadOnly(
