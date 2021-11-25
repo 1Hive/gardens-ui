@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from '@hooks/useContract'
-import { useGardens } from '@providers/Gardens'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
@@ -12,11 +12,7 @@ export default function useUnipoolRewards() {
   const mounted = useMounted()
 
   const { account } = useWallet()
-
-  const {
-    connectedGarden: { unipool, rewardsLink },
-  } = useGardens()
-
+  const { unipool, rewardsLink } = useConnectedGarden()
   const unipoolContract = useContractReadOnly(unipool, unipoolAbi)
 
   useEffect(() => {

@@ -1,13 +1,13 @@
 import React from 'react'
 import { Connect } from '@1hive/connect-react'
 
-import { useGardens } from './Gardens'
+import { useConnectedGarden } from './ConnectedGarden'
 import { useWallet } from './Wallet'
 
 import { getNetwork } from '../networks'
 
 function ConnectProvider({ children }) {
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const { preferredNetwork } = useWallet()
 
   const { subgraphs } = getNetwork(preferredNetwork)

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
 import { getNetwork } from '@/networks'
@@ -33,9 +33,7 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const {
-    connectedGarden: { incentivisedPriceOracle, unipool },
-  } = useGardens()
+  const { incentivisedPriceOracle, unipool } = useConnectedGarden()
   const { installedApps, wrappableToken, mainToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,

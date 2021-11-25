@@ -5,27 +5,17 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { useRouteMatch } from 'react-router-dom'
-import { addressesEqual } from '@1hive/1hive-ui'
-import { getGardens, getGarden } from '@1hive/connect-gardens'
+import { getGardens } from '@1hive/connect-gardens'
 
-import { ActivityProvider } from './ActivityProvider'
-import { AgreementSubscriptionProvider } from './AgreementSubscription'
-import { ConnectProvider as Connect } from './Connect'
-import { GardenStateProvider } from './GardenState'
-import { StakingProvider } from './Staking'
+import { ConnectedGardenProvider } from './ConnectedGarden'
+import { useDebounce } from '@hooks/useDebounce'
+import useGardenFilters from '@hooks/useGardenFilters'
+import { useWallet } from './Wallet'
 
 import { fetchFileContent } from '../services/github'
-
-import { DAONotFound } from '../errors'
-import { getGardenForumUrl } from '../utils/garden-utils'
-import useGardenFilters from '@/hooks/useGardenFilters'
-import { testNameFilter } from '@/utils/garden-filters-utils'
-import { useDebounce } from '@/hooks/useDebounce'
-import { useMounted } from '@/hooks/useMounted'
-
 import { getVoidedGardensByNetwork } from '../voided-gardens'
-import { useWallet } from './Wallet'
+import { mergeGardenMetadata } from '@utils/garden-utils'
+import { testNameFilter } from '@utils/garden-filters-utils'
 
 const DAOContext = React.createContext()
 
@@ -37,81 +27,25 @@ export function GardensProvider({ children }) {
     filters,
     preferredNetwork
   )
-  const match = useRouteMatch('/garden/:daoId')
-  const [connectedGarden, connectedGardenLoading] = useGarden(
-    match?.params.daoId,
-    gardensMetadata,
-    preferredNetwork
-  )
-
-  if (match && !connectedGarden && !connectedGardenLoading) {
-    throw new DAONotFound(match.params.daoId)
-  }
 
   return (
     <DAOContext.Provider
       value={{
-        connectedGarden,
         internalFilters: filters,
         externalFilters: queryFilters,
         gardens,
         gardensMetadata,
-        loading: connectedGardenLoading || gardensLoading,
+        loading: gardensLoading,
         reload,
       }}
     >
-      {connectedGarden ? (
-        <Connect>
-          <ActivityProvider>
-            <GardenStateProvider>
-              <StakingProvider>
-                <AgreementSubscriptionProvider>
-                  {children}
-                </AgreementSubscriptionProvider>
-              </StakingProvider>
-            </GardenStateProvider>
-          </ActivityProvider>
-        </Connect>
-      ) : (
-        children
-      )}
+      <ConnectedGardenProvider>{children}</ConnectedGardenProvider>
     </DAOContext.Provider>
   )
 }
 
 export function useGardens() {
   return useContext(DAOContext)
-}
-
-function useGarden(id, gardensMetadata, chainId) {
-  const [garden, setGarden] = useState()
-  const [loading, setLoading] = useState(true)
-  const mounted = useMounted()
-
-  useEffect(() => {
-    if (!id || !gardensMetadata?.length) {
-      return
-    }
-    const fetchGarden = async () => {
-      setLoading(true)
-      try {
-        const result = await getGarden({ network: chainId }, id)
-
-        setGarden(mergeGardenMetadata(result, gardensMetadata))
-      } catch (err) {
-        if (mounted()) {
-          setGarden()
-        }
-        console.error(err)
-      }
-
-      setLoading(false)
-    }
-
-    fetchGarden()
-  }, [chainId, id, gardensMetadata, mounted])
-
-  return [garden, loading]
 }
 
 function useFilteredGardens(gardens, gardensMetadata, filters, chainId) {
@@ -198,32 +132,4 @@ function useGardensList(queryFilters, filters, chainId) {
   }, [chainId, refetchTriger, sorting.queryArgs])
 
   return [filteredGardens, gardensMetadata, loading || loadingMetadata, reload]
-}
-
-function mergeGardenMetadata(garden, gardensMetadata, chainId) {
-  const metadata =
-    gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
-
-  const token = {
-    ...garden.token,
-    logo: metadata.token_logo,
-  }
-  const wrappableToken = garden.wrappableToken
-    ? {
-        ...garden.wrappableToken,
-        ...metadata.wrappableToken,
-      }
-    : null
-
-  const forumURL = getGardenForumUrl(metadata)
-
-  return {
-    ...garden,
-    ...metadata,
-    address: garden.id,
-    chainId,
-    forumURL,
-    token,
-    wrappableToken,
-  }
 }

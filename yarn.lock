@@ -262,6 +262,20 @@
     "@ethersproject/solidity" "^5.1.0"
     radspec "^2.0.0-rc.2"
 
+"@1hive/connect-core@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.9.4.tgz#115e760a3bb7491b6f70c7daacc83a7413b560ca"
+  integrity sha512-Ojadyd7uYueaJCQ9T96CBmuOjDUR+9myyTr4ohOdXVtOCLppvpMrg6H+iWXNHyqNms/e6FP6YoraoyxPwJ9GMw==
+  dependencies:
+    "@ethersproject/abi" "^5.1.2"
+    "@ethersproject/address" "^5.1.0"
+    "@ethersproject/bignumber" "^5.1.1"
+    "@ethersproject/contracts" "^5.1.1"
+    "@ethersproject/hash" "^5.1.0"
+    "@ethersproject/providers" "^5.1.2"
+    "@ethersproject/solidity" "^5.1.0"
+    radspec "^2.0.0-rc.2"
+
 "@1hive/connect-ethereum@^0.9.1":
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.1.tgz#306857bdddcc1622975ee76bd9e948c824abb3d1"
@@ -276,13 +290,14 @@
   dependencies:
     "@1hive/connect-core" "^0.9.3"
 
-"@1hive/connect-gardens@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.7.tgz#e9cc1c1ac11b29cdbf12b143a7bb0a06ac2f325b"
-  integrity sha512-gd87SAiRmzCxok6j89S4vp3O4FC4oFNY2zuTn8a4gc6/pFg2jFI11m3DWiojefOC4XIxNmpm/IGEYifbsflCUw==
+"@1hive/connect-gardens@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.11.tgz#796c988aa5147357439591d9723c458f1c2e2948"
+  integrity sha512-6JUoONfptYaAjSxG+yRgpP7/QFlCk+nh2qsdgaWqK/tzjqB7VVtgLH0W1wevDZjYCf/qLoaB9R/05i5d2iKcTQ==
   dependencies:
-    "@aragon/connect-core" "0.7.0"
-    "@aragon/connect-thegraph" "0.7.0"
+    "@1hive/connect-core" "^0.9.4"
+    "@1hive/connect-thegraph" "^0.9.4"
+    ethers "^5.5.1"
     graphql-tag "^2.10.3"
 
 "@1hive/connect-react@^0.9.3":
@@ -318,6 +333,19 @@
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
 
+"@1hive/connect-thegraph@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.9.4.tgz#1b9248ec65cafb16521eaaec2e0d48ae2a0be2cc"
+  integrity sha512-yVxa6zquM6gSzyjBW97S0HzNvMGKd+OinYnI+F/nI6JERTHMBeFgrufiUjmZ2YEd8fQ9snsM3+vNVAn83nftyQ==
+  dependencies:
+    "@1hive/connect-core" "^0.9.4"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
+
 "@1hive/connect@^0.9.1":
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.1.tgz#4bc4c6bb95b89d32bcd8baa79edf5550e5169adb"
@@ -345,27 +373,6 @@
     ethers "^5.0.17"
     graphql-tag "^2.12.4"
     node-fetch "^3.0.0"
-
-"@aragon/connect-core@0.7.0", "@aragon/connect-core@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect-core/-/connect-core-0.7.0.tgz#2464a1ce136fb1166d0de32fcada5a8c5da6e2dc"
-  integrity sha512-Edt42nVzuuQ1weVIVILIZts8k8//40AYzmikROH9WtWxGQyR41PPf3rLTkVtFnuekfVk/3qr1NSeRXuEJBXzXQ==
-  dependencies:
-    ethers "^5.0.7"
-    radspec "^2.0.0-rc.2"
-
-"@aragon/connect-thegraph@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@aragon/connect-thegraph/-/connect-thegraph-0.7.0.tgz#f4331d19ab78f33047b852adbd970efd6cd547b1"
-  integrity sha512-2s7uqMdoMEqr3M4r6tAoNAlOo3+yQRoRwxRy0i8r3mBhmo5kjU/jkfnLQO1SpS3HRHZrMZcc9Tkrj0zlijurDw==
-  dependencies:
-    "@aragon/connect-core" "^0.7.0"
-    "@urql/core" "^1.11.7"
-    graphql "^15.0.0"
-    graphql-tag "^2.10.3"
-    isomorphic-unfetch "^3.0.0"
-    isomorphic-ws "^4.0.1"
-    subscriptions-transport-ws "^0.9.16"
 
 "@aragon/provided-connector@^6.0.8":
   version "6.0.8"
@@ -9334,7 +9341,7 @@ ethers@^4.0.36, ethers@~4.0.4:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.0.0, ethers@^5.0.17, ethers@^5.0.7, ethers@^5.0.8:
+ethers@^5.0.0, ethers@^5.0.17, ethers@^5.0.8, ethers@^5.5.1:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.1.tgz#d3259a95a42557844aa543906c537106c0406fbf"
   integrity sha512-RodEvUFZI+EmFcE6bwkuJqpCYHazdzeR1nMzg+YWQSmQEsNtfl1KHGfp/FWZYl48bI/g7cgBeP2IlPthjiVngw==
