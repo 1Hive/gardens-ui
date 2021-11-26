@@ -111,7 +111,7 @@ function useGarden(id, gardensMetadata, chainId) {
     }
 
     fetchGarden()
-  }, [chainId, id, gardensMetadata, mounted])
+  }, [chainId, id, gardensMetadata, mounted, subgraphs.gardens])
 
   return [garden, loading]
 }
