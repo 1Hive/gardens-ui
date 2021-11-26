@@ -15,6 +15,8 @@ const networks = {
     ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
     name: 'Rinkeby',
     type: 'rinkeby',
+
+    hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
     template: '0xF8A030177865356E2Be8fb5F95a19962E6b57E3e',
@@ -41,6 +43,8 @@ const networks = {
     name: 'xDai',
     type: 'xdai',
     defaultEthNode: XDAI_ETH_NODE,
+
+    hiveGarden: '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
     template: '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844',
