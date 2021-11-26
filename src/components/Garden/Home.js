@@ -97,14 +97,14 @@ const Home = React.memo(function Home() {
   }, [account, handleRequestNewProposal, history])
 
   // TODO: Refactor components positioning with a grid layout
-  const megaLoader = loading || true
+
   return (
     <div
       css={`
         height: 100%;
       `}
     >
-      {megaLoader ? (
+      {loading ? (
         <GardenLoader />
       ) : (
         <>
