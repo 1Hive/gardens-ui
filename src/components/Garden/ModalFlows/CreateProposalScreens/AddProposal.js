@@ -393,24 +393,22 @@ function RequestedAmount({
             >
               <Checkbox checked={stable} onChange={onIsStableChange} />
               <span>Stable amount ({stableToken.symbol})</span>
-              {stable && (
-                <div
-                  css={`
-                    margin-left: ${1 * GU}px;
-                  `}
-                >
-                  <Help hint="">
-                    For funding proposals denominated in {stableToken.symbol} to
-                    be made successfully, this Garden's{' '}
-                    <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
-                      price oracle
-                    </Link>{' '}
-                    must be called consistently. Contact your Garden
-                    administrator or development team if the requested stable
-                    amount is not accurate.
-                  </Help>
-                </div>
-              )}
+              <div
+                css={`
+                  margin-left: ${1 * GU}px;
+                `}
+              >
+                <Help hint="">
+                  For funding proposals denominated in {stableToken.symbol} to
+                  be made successfully, this Garden's{' '}
+                  <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                    price oracle
+                  </Link>{' '}
+                  must be called consistently. Contact your Garden administrator
+                  or development team if the requested stable amount is not
+                  accurate.
+                </Help>
+              </div>
             </div>
           </div>
         )}
