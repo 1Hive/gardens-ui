@@ -14,6 +14,7 @@ import { useWallet } from './Wallet'
 
 import { DAONotFound } from '../errors'
 import { mergeGardenMetadata } from '@utils/garden-utils'
+import { getNetwork } from '@/networks'
 
 const ConnectedGardenContext = React.createContext()
 
@@ -75,6 +76,8 @@ function useGarden(id, gardensMetadata, chainId) {
   const [loading, setLoading] = useState(true)
   const mounted = useMounted()
 
+  const { subgraphs } = getNetwork(chainId)
+
   useEffect(() => {
     if (!id) {
       if (mounted()) {
@@ -87,7 +90,10 @@ function useGarden(id, gardensMetadata, chainId) {
         setLoading(true)
       }
       try {
-        const result = await getGarden({ network: chainId }, id)
+        const result = await getGarden(
+          { network: chainId, subgraphUrl: subgraphs.gardens },
+          id
+        )
 
         if (mounted()) {
           setGarden(mergeGardenMetadata(result, gardensMetadata))

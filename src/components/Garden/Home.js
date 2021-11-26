@@ -6,7 +6,7 @@ import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsSc
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import Filters from './Filters/Filters'
-import Loader from '../Loader'
+import { GardenLoader } from '../Loader'
 import Metrics from './Metrics'
 import MultiModal from '../MultiModal/MultiModal'
 import NetworkErrorModal from '../NetworkErrorModal'
@@ -97,6 +97,7 @@ const Home = React.memo(function Home() {
   }, [account, handleRequestNewProposal, history])
 
   // TODO: Refactor components positioning with a grid layout
+
   return (
     <div
       css={`
@@ -104,7 +105,7 @@ const Home = React.memo(function Home() {
       `}
     >
       {loading ? (
-        <Loader />
+        <GardenLoader />
       ) : (
         <>
           <div
