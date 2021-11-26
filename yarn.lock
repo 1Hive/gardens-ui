@@ -202,10 +202,10 @@
     ethers "~4.0.4"
     lodash "^4.17.11"
 
-"@1hive/1hive-ui@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.14.tgz#5d028868ee7766767dd48922d977e86cd94b37b9"
-  integrity sha512-1XU0JqlFPhmadAmskrwVzd85f84B/bZyvvMn+L4EbweG8f0T8g3456eopeSD2u+FwRKJ2iuvaycXmK4hoKdqmg==
+"@1hive/1hive-ui@1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.11.tgz#057cc73fcea1df56e25fdb96c09e6f2ffb600d1a"
+  integrity sha512-ZiX/a7OIWgdA/OnxLiCS0kh69eJ+JgCb8MVh0t+OfW9XEvqZJ2k3SStJ9x7UQfXqtFShfUNvPJrS3keOwXrc+Q==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"
