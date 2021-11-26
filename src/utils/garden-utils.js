@@ -1,3 +1,4 @@
+import { getNetwork } from '@/networks'
 import { addressesEqual } from './web3-utils'
 
 const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
@@ -50,4 +51,13 @@ export function mergeGardenMetadata(garden, gardensMetadata, chainId) {
     token,
     wrappableToken,
   }
+}
+
+export function is1HiveGarden(gardenAddress) {
+  if (!gardenAddress) {
+    return false
+  }
+
+  const network = getNetwork()
+  return addressesEqual(gardenAddress, network.hiveGarden)
 }

@@ -4,11 +4,11 @@ import AgreementBindingActions from './AgreementBindingActions'
 import AgreementDetails from './AgreementDetails'
 import AgreementDocument from './AgreementDocument'
 import AgreementHeader from './AgreementHeader'
+import { GardenLoader } from '@components/Loader'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import LayoutBox from '../Layout/LayoutBox'
 import LayoutColumns from '../Layout/LayoutColumns'
-import Loader from '@components/Loader'
 import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
 import { useAgreement } from '@hooks/useAgreement'
@@ -31,7 +31,7 @@ function Agreement() {
   }, [])
 
   if (loading) {
-    return <Loader />
+    return <GardenLoader />
   }
 
   return (
