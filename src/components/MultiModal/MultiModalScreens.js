@@ -110,11 +110,11 @@ function MultiModalFrame({ visible, onClosed }) {
                         onClick={handleModalClose}
                       >
                         <IconCross
-                          css={`
-                            color: ${graphicHeader
+                          color={
+                            graphicHeader
                               ? theme.overlay
-                              : theme.surfaceContentSecondary};
-                          `}
+                              : theme.surfaceContentSecondary
+                          }
                         />
                       </ButtonIcon>
                     )}

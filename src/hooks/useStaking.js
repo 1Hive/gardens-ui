@@ -52,15 +52,20 @@ export function useStaking() {
     setReFetchTotalBalance(true)
   }, [])
 
-  const handleStakingMovementsData = useCallback((error, data = []) => {
-    if (error || !data) {
-      return
-    }
-    setStakeManagement(stakeManagement => ({
-      ...stakeManagement,
-      stakingMovements: data,
-    }))
-  }, [])
+  const handleStakingMovementsData = useCallback(
+    (error, data = []) => {
+      if (error || !data) {
+        return
+      }
+      if (mounted()) {
+        setStakeManagement(stakeManagement => ({
+          ...stakeManagement,
+          stakingMovements: data,
+        }))
+      }
+    },
+    [mounted]
+  )
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)
@@ -122,11 +127,9 @@ export function useStaking() {
               stakingFactory: stakingFactory,
               stakingInstance: null,
             }))
-            setLoading(false)
           }
         } else {
           setStakeManagement(null)
-          setLoading(false)
         }
       } catch (err) {
         setStakeManagement({
@@ -134,9 +137,9 @@ export function useStaking() {
           stakingMovements: null,
           stakingInstance: null,
         })
-        setLoading(false)
         console.error(err)
       }
+      setLoading(false)
     }
 
     if (connectedAgreementApp && account) {
