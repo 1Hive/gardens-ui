@@ -43,12 +43,7 @@ function HeaderModule({ content, hasPopover = true, icon, onClick }) {
                 {content}
               </div>
               {hasPopover && (
-                <IconDown
-                  size="small"
-                  css={`
-                    color: ${theme.surfaceIcon};
-                  `}
-                />
+                <IconDown size="small" color={theme.surfaceIcon} />
               )}
             </React.Fragment>
           )}

@@ -172,11 +172,7 @@ function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
                 badgeOnly
                 css="cursor: pointer"
               />
-              <IconCopy
-                css={`
-                  color: ${theme.hint};
-                `}
-              />
+              <IconCopy color={theme.hint} />
             </ButtonBase>
           </div>
         </div>
