@@ -21,115 +21,98 @@ import WithdrawFromProposalLight from '@assets/activity/light/withdrawFromPropos
 import WithdrawFundsLight from '@assets/activity/light/withdrawFunds.svg'
 import WrapTokenLigh from '@assets/activity/light/wrapToken.svg'
 
-export const ADD_FUNDS = Symbol('ADD_FUNDS')
-export const APPROVE_TOKEN = Symbol('APPROVE_TOKEN')
-export const CANCEL_PROPOSAL = Symbol('CANCEL_PROPOSAL')
-export const CHALLENGE_ACTION = Symbol('CHALLENGE_ACTION')
-export const CLAIM_REWARDS = Symbol('CLAIM_REWARDS')
-export const DISPUTE_ACTION = Symbol('DISPUTE_ACTION')
-export const EXECUTE_ADJUSTMENT = Symbol('EXECUTE_ADJUSTMENT')
-export const EXECUTE_DECISION = Symbol('EXECUTE_DECISION')
-export const EXECUTE_PROPOSAL = Symbol('EXECUTE_PROPOSAL')
-export const NEW_DECISION = Symbol('NEW_DECISION')
-export const NEW_PROPOSAL = Symbol('NEW_PROPOSAL')
-export const NEW_SIGNALING_PROPOSAL = Symbol('NEW_SIGNALING_PROPOSAL')
-export const RESOLVE_ACTION = Symbol('RESOLVE_ACTION')
-export const SETTLE_ACTION = Symbol('SETTLE_ACTION')
-export const SIGN_AGREEMENT = Symbol('SIGN_AGREEMENT')
-export const STAKE_TO_PROPOSAL = Symbol('STAKE_TO_PROPOSAL')
-export const UNWRAP_TOKEN = Symbol('UNWRAP_TOKEN')
-export const UPDATE_PRICE_ORACLE = Symbol('UPDATE_PRICE_ORACLE')
-export const VOTE_ON_DECISION = Symbol('VOTE_ON_DECISION')
-export const WITHDRAW_FROM_PROPOSAL = Symbol('WITHDRAW_FROM_PROPOSAL')
-export const WITHDRAW_FUNDS = Symbol('WITHDRAW_FUNDS')
-export const WRAP_TOKEN = Symbol('WRAP_TOKEN')
+import actions from '@/actions/garden-action-types'
 
 export default {
-  [ADD_FUNDS]: {
+  [actions.ADD_FUNDS]: {
     light: AddFundsLight,
     dark: null,
   },
-  [APPROVE_TOKEN]: {
+  [actions.ALLOW_MANAGER]: {
     light: ApproveTokenLight,
     dark: null,
   },
-  [CANCEL_PROPOSAL]: {
+  [actions.APPROVE_TOKEN]: {
+    light: ApproveTokenLight,
+    dark: null,
+  },
+  [actions.CANCEL_PROPOSAL]: {
     light: CancelProposalLight,
     dark: null,
   },
-  [CHALLENGE_ACTION]: {
+  [actions.CHALLENGE_ACTION]: {
     light: ChallengeActionLight,
     dark: null,
   },
-  [CLAIM_REWARDS]: {
+  [actions.CLAIM_REWARDS]: {
     light: ClaimRewardsLight,
     dark: null,
   },
-  [DISPUTE_ACTION]: {
+  [actions.DISPUTE_ACTION]: {
     light: DisputeActionLight,
     dark: null,
   },
-  [EXECUTE_ADJUSTMENT]: {
+  [actions.EXECUTE_ADJUSTMENT]: {
     light: ExecuteAdjustmentLight,
     dark: null,
   },
-  [EXECUTE_DECISION]: {
+  [actions.EXECUTE_DECISION]: {
     light: ExecuteDecisionLight,
     dark: null,
   },
-  [EXECUTE_PROPOSAL]: {
+  [actions.EXECUTE_PROPOSAL]: {
     light: ExecuteProposalLight,
     dark: null,
   },
-  [NEW_DECISION]: {
+  [actions.NEW_DECISION]: {
     light: NewDecisionLight,
     dark: null,
   },
-  [NEW_PROPOSAL]: {
+  [actions.NEW_PROPOSAL]: {
     light: NewProposalLight,
     dark: null,
   },
-  [NEW_SIGNALING_PROPOSAL]: {
+  [actions.NEW_SIGNALING_PROPOSAL]: {
     light: NewSignalingProposalLight,
     dark: null,
   },
-  [RESOLVE_ACTION]: {
+  [actions.RESOLVE_ACTION]: {
     light: ResolveActionLight,
     dark: null,
   },
-  [SETTLE_ACTION]: {
+  [actions.SETTLE_ACTION]: {
     light: SettleActionLight,
     dark: null,
   },
-  [SIGN_AGREEMENT]: {
+  [actions.SIGN_AGREEMENT]: {
     light: SignAgreementLight,
     dark: null,
   },
-  [STAKE_TO_PROPOSAL]: {
+  [actions.STAKE_TO_PROPOSAL]: {
     light: StakeToProposalLight,
     dark: null,
   },
-  [UNWRAP_TOKEN]: {
+  [actions.UNWRAP_TOKEN]: {
     light: UnwrapTokenLigh,
     dark: null,
   },
-  [UPDATE_PRICE_ORACLE]: {
+  [actions.UPDATE_PRICE_ORACLE]: {
     light: UpdateOracleLight,
     dark: null,
   },
-  [VOTE_ON_DECISION]: {
+  [actions.VOTE_ON_DECISION]: {
     light: VoteOnDecisionLight,
     dark: null,
   },
-  [WITHDRAW_FROM_PROPOSAL]: {
+  [actions.WITHDRAW_FROM_PROPOSAL]: {
     light: WithdrawFromProposalLight,
     dark: null,
   },
-  [WITHDRAW_FUNDS]: {
+  [actions.WITHDRAW_FUNDS]: {
     light: WithdrawFundsLight,
     dark: null,
   },
-  [WRAP_TOKEN]: {
+  [actions.WRAP_TOKEN]: {
     light: WrapTokenLigh,
     dark: null,
   },
