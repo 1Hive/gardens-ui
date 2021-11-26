@@ -5,6 +5,7 @@ const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
 const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
+const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -25,6 +26,12 @@ const ENV_VARS = {
   },
   XDAI_ETH_NODE() {
     return process.env.REACT_APP_XDAI_ETH_NODE || DEFAULT_XDAI_ETH_NODE_ENDPOINT
+  },
+  POLYGON_ETH_NODE() {
+    return (
+      process.env.REACT_APP_POLYGON_ETH_NODE ||
+      DEFAULT_POLYGON_ETH_NODE_ENDPOINT
+    )
   },
   ETHERSCAN_API_KEY() {
     return process.env.REACT_APP_ETHERSCAN_API_KEY || null
