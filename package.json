@@ -6,7 +6,7 @@
     "3box": "^1.19.1",
     "@1hive/1hive-ui": "^1.0.14",
     "@1hive/connect-agreement": "^0.9.5",
-    "@1hive/connect-gardens": "^0.1.11",
+    "@1hive/connect-gardens": "^0.1.12",
     "@1hive/connect-react": "^0.9.6",
     "@1hive/evmcrispr": "^0.2.1",
     "@juggle/resize-observer": "^3.2.0",
