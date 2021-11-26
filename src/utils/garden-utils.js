@@ -25,7 +25,7 @@ export function getGardenForumUrl(metadata) {
   return DEFAULT_FORUM_URL
 }
 
-export function mergeGardenMetadata(garden, gardensMetadata, chainId) {
+export function mergeGardenMetadata(garden, gardensMetadata) {
   const metadata =
     gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
 
@@ -46,7 +46,6 @@ export function mergeGardenMetadata(garden, gardensMetadata, chainId) {
     ...garden,
     ...metadata,
     address: garden.id,
-    chainId,
     forumURL,
     token,
     wrappableToken,
