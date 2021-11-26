@@ -371,12 +371,16 @@ export function useStaking() {
           [connectedAgreementApp.address, MAX_INT.toString(10), '0x']
         )
 
+        const description = radspec[actions.ALLOW_MANAGER]()
+        const type = actions.ALLOW_MANAGER
+
         const intent = [
           {
             data: allowManagerData,
             from: account,
             to: stakeManagement.stakingInstance,
-            description: 'Give Permission',
+            description,
+            type,
           },
         ]
         if (mounted()) {
