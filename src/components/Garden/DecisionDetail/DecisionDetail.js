@@ -34,10 +34,7 @@ import { useDescribeVote } from '@hooks/useDescribeVote'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import {
-  addressesEqualNoSum as addressesEqual,
-  getNetworkType,
-} from '@utils/web3-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
 import { getNetwork } from '@/networks'
 import { getConnectedAccountVote, getQuorumProgress } from '@utils/vote-utils'
@@ -60,6 +57,8 @@ function DecisionDetail({ proposal, actions }) {
     emptyScript,
     loading: descriptionLoading,
   } = useDescribeVote(proposal.script, proposal.id)
+
+  const network = getNetwork()
 
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const connectedAccountVote = getConnectedAccountVote(
@@ -157,8 +156,8 @@ function DecisionDetail({ proposal, actions }) {
                   >
                     <TransactionBadge
                       transaction={proposal.txHash}
-                      networkType={getNetworkType()}
-                      explorerProvider={getNetwork().explorer}
+                      networkType={network.type}
+                      explorerProvider={network.explorer}
                     />
                   </div>
                 </div>

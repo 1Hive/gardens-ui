@@ -290,10 +290,10 @@
   dependencies:
     "@1hive/connect-core" "^0.9.3"
 
-"@1hive/connect-gardens@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.11.tgz#796c988aa5147357439591d9723c458f1c2e2948"
-  integrity sha512-6JUoONfptYaAjSxG+yRgpP7/QFlCk+nh2qsdgaWqK/tzjqB7VVtgLH0W1wevDZjYCf/qLoaB9R/05i5d2iKcTQ==
+"@1hive/connect-gardens@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.12.tgz#7c591acdd64a7e2d5173a819c30d6a99a652f79c"
+  integrity sha512-lhPje/c+s7MFfMN1heJ8a0AhrduIjbD4lHRVeRp/O7Z8w7XJyS+BoH8EGmrLv3lI8xFI8a2VFx0wg25f4FIXcQ==
   dependencies:
     "@1hive/connect-core" "^0.9.4"
     "@1hive/connect-thegraph" "^0.9.4"

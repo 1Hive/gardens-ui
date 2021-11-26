@@ -50,7 +50,6 @@ import BigNumber from '@lib/bigNumber'
 import { formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
-  getNetworkType,
   soliditySha3,
 } from '@utils/web3-utils'
 import { getNetwork } from '@/networks'
@@ -78,6 +77,7 @@ function ProposalDetail({
   const [modalMode, setModalMode] = useState(null)
 
   const { account: connectedAccount } = useWallet()
+  const network = getNetwork()
 
   const {
     name,
@@ -188,8 +188,8 @@ function ProposalDetail({
                     >
                       <TransactionBadge
                         transaction={txHash}
-                        networkType={getNetworkType()}
-                        explorerProvider={getNetwork().explorer}
+                        networkType={network.type}
+                        explorerProvider={network.explorer}
                       />
                     </div>
                     <div
