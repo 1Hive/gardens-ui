@@ -14,6 +14,7 @@ import {
   Split,
   Tag,
   textStyle,
+  TransactionBadge,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -51,6 +52,7 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '@utils/web3-utils'
+import { getNetwork } from '@/networks'
 import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
 
@@ -75,6 +77,7 @@ function ProposalDetail({
   const [modalMode, setModalMode] = useState(null)
 
   const { account: connectedAccount } = useWallet()
+  const network = getNetwork()
 
   const {
     name,
@@ -87,6 +90,7 @@ function ProposalDetail({
     stakes = [],
     statusData,
     totalTokensStaked,
+    txHash,
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
@@ -177,6 +181,17 @@ function ProposalDetail({
                     >
                       {name}
                     </h1>
+                    <div
+                      css={`
+                        margin-top: ${1 * GU}px;
+                      `}
+                    >
+                      <TransactionBadge
+                        transaction={txHash}
+                        networkType={network.type}
+                        explorerProvider={network.explorer}
+                      />
+                    </div>
                     <div
                       css={`
                         margin-top: ${2 * GU}px;
