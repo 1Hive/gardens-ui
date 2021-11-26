@@ -8,6 +8,7 @@ import {
   LoadingRing,
   Split,
   textStyle,
+  TransactionBadge,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -33,8 +34,12 @@ import { useDescribeVote } from '@hooks/useDescribeVote'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+import {
+  addressesEqualNoSum as addressesEqual,
+  getNetworkType,
+} from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
+import { getNetwork } from '@/networks'
 import { getConnectedAccountVote, getQuorumProgress } from '@utils/vote-utils'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
@@ -145,6 +150,17 @@ function DecisionDetail({ proposal, actions }) {
                   >
                     {`Vote #${number}`}
                   </h1>
+                  <div
+                    css={`
+                      margin-top: ${1 * GU}px;
+                    `}
+                  >
+                    <TransactionBadge
+                      transaction={proposal.txHash}
+                      networkType={getNetworkType()}
+                      explorerProvider={getNetwork().explorer}
+                    />
+                  </div>
                 </div>
                 <div
                   css={`
