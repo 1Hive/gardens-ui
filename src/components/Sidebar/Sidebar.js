@@ -19,13 +19,13 @@ function Sidebar() {
   const match = useRouteMatch('/garden/:daoId')
 
   const sidebarGardens = useMemo(() => {
-    if (!connectedUser?.gardensSigned || !gardensMetadata) {
+    if (!connectedUser?.gardensSigned) {
       return []
     }
 
     const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
       const { name, logo } =
-        gardensMetadata.find(g =>
+        gardensMetadata?.find(g =>
           addressesEqual(g.address, gardenSignedAddress)
         ) || {}
 
