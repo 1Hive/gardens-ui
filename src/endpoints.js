@@ -28,6 +28,8 @@ export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
 export const getDexTradeTokenUrl = (chainId, tokenAddress) => {
   switch (chainId) {
+    case 4:
+      return `https://app.uniswap.org/#/swap?outputCurrency=${tokenAddress}`
     case 100:
       return `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`
     case 137:
