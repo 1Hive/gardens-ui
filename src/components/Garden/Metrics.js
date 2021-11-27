@@ -280,6 +280,13 @@ function TokenPrice({
     return oracleMode ? convertedAmount.valueOf() : honeyswapPrice
   }, [oracleMode, convertedAmount, honeyswapPrice, loading])
 
+  const oraclePrice =
+    price > 0
+      ? `${currency.symbol} ${formatDecimals(price * currency.rate, 2)}`
+      : '-'
+
+  const oracleText = `${token.symbol} Price ${oracleMode ? 'Oracle' : ''}`
+
   return (
     <div
       css={`
@@ -289,67 +296,47 @@ function TokenPrice({
       <div
         css={`
           display: flex;
-          justify-content: space-between;
+          align-items: center;
+          ${textStyle('title4')};
+          margin-bottom: ${0.5 * GU}px;
         `}
       >
-        <p
-          css={`
-            ${textStyle('title4')};
-            margin-bottom: ${0.5 * GU}px;
-          `}
-        >
-          {token.symbol} Price{' '}
-          {oracleMode && (
-            <span
-              css={`
-                ${textStyle('body4')}
-              `}
-            >
-              (Oracle)
-            </span>
-          )}
-        </p>
+        {oracleText}
         {oracleMode && (
-          <Help hint="What is Oracle Price?">
-            This is the price used for funding proposals defined in stable
-            asset. Calling update price could return a reward.
-          </Help>
+          <span
+            css={`
+              padding-left: ${1 * GU}px;
+              display: inline-block;
+            `}
+          >
+            <Help hint="What is Oracle Price?">
+              This is the price used for funding proposals defined in stable
+              asset. Calling update price could return a reward.
+            </Help>
+          </span>
         )}
       </div>
-      <span
+      <div
         css={`
           display: flex;
+          align-items: center;
           ${textStyle('title2')};
           color: ${theme.green};
         `}
       >
-        {price > 0 ? (
-          <span
-            css={`
-              width: ${17 * GU}px;
-            `}
-          >
-            {currency.symbol}
-            {formatDecimals(price * currency.rate, 2)}
-          </span>
-        ) : (
-          <span
-            css={`
-              width: ${17 * GU}px;
-            `}
-          >
-            -
-          </span>
-        )}
+        {oraclePrice}
         {oracleMode && (
           <Button
-            size="small"
+            css={`
+              margin-left: ${2 * GU}px;
+            `}
+            size="mini"
             disabled={!canUpdate || !account}
             label="Update"
             onClick={onRequestUpdatePriceOracle}
           />
         )}
-      </span>
+      </div>
     </div>
   )
 }
