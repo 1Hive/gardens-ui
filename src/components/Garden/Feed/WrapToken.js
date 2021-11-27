@@ -87,7 +87,7 @@ function WrapToken({
     >
       <div>
         <Carousel
-          itemWidth={20 * GU}
+          itemWidth={18 * GU}
           itemHeight={tabletMode ? 24 * GU : 22 * GU}
           itemSpacing={3 * GU}
           items={carouselItems}
