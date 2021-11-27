@@ -26,5 +26,11 @@ export const IPFS_ENDPOINT = {
 export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
-export const getHoneyswapTradeTokenUrl = tokenAddress =>
-  `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`
+export const getDexTradeTokenUrl = (chainId, tokenAddress) => {
+  switch (chainId) {
+    case 100:
+      return `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`
+    case 137:
+      return `https://app.sushi.com/swap?outputCurrency=${tokenAddress}`
+  }
+}
