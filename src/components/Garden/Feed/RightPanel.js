@@ -36,7 +36,7 @@ function RightPanel({
         {showWrapComponent && (
           <div
             css={`
-              width: 50%;
+              width: 25%;
             `}
           >
             <WrapToken
@@ -48,7 +48,7 @@ function RightPanel({
         )}
         <div
           css={`
-            width: ${showWrapComponent ? '50%' : '100%'};
+            width: ${showWrapComponent ? '75%' : '100%'};
             ${showWrapComponent && `margin-left: ${2 * GU}px;`}
           `}
         >
@@ -60,6 +60,26 @@ function RightPanel({
       </div>
     )
   }
+
+  if (mobileMode) {
+    return (
+      <div
+        css={`
+          width: 100%;
+        `}
+      >
+        <HeroBanner onRequestNewProposal={onRequestNewProposal} />
+        {showWrapComponent && (
+          <WrapToken
+            onClaimRewards={onClaimRewards}
+            onUnwrapToken={onUnwrapToken}
+            onWrapToken={onWrapToken}
+          />
+        )}
+      </div>
+    )
+  }
+
   return (
     <div
       css={`

@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import styled from 'styled-components'
 import {
   Box,
   Button,
@@ -11,6 +10,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import Carousel from '@/components/Carousel/Carousel'
 import { useGardenState } from '@providers/GardenState'
 import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
@@ -18,15 +18,23 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import claimRewardsIcon from '@assets/activity/light/claimRewards.svg'
 
-function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
+function WrapToken({
+  onClaimRewards,
+  onUnwrapToken,
+  onWrapToken,
+  itemWidth,
+  itemHeight,
+}) {
   const { layoutName } = useLayout()
   const { token, wrappableToken } = useGardenState()
+
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
-  const theme = useTheme()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const tabletMode = layoutName === 'medium'
 
   const [earnedRewards, rewardsLink] = useUnipoolRewards()
 
@@ -39,74 +47,71 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     onClaimRewards()
   }, [onClaimRewards, rewardsLink])
 
+  const carouselItems = [
+    <Token
+      balance={wrappableToken.accountBalance}
+      loading={loading}
+      mode="wrap"
+      onClick={onWrapToken}
+      token={wrappableToken.data}
+    />,
+    <Token
+      balance={token.accountBalance}
+      loading={loading}
+      mode="unwrap"
+      onClick={onUnwrapToken}
+      token={token.data}
+    />,
+    <Token
+      balance={earnedRewards}
+      loading={!earnedRewards}
+      mode="claim"
+      onClick={handleClaimRewards}
+      token={wrappableToken.data}
+    />,
+  ]
+
+  const handleItemSelected = useCallback(
+    index => {
+      if (index === carouselItems.length - 1) {
+      }
+    },
+    [carouselItems.length]
+  )
+
   return (
     <Box
       css={`
         ${!compactMode && `margin-bottom: ${3 * GU}px;`}
       `}
     >
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        `}
-      >
-        <Token
-          balance={wrappableToken.accountBalance}
-          loading={loading}
-          mode="wrap"
-          onClick={onWrapToken}
-          token={wrappableToken.data}
+      <div>
+        <Carousel
+          itemWidth={20 * GU}
+          itemHeight={tabletMode ? 24 * GU : 22 * GU}
+          itemSpacing={3 * GU}
+          items={carouselItems}
+          onItemSelected={handleItemSelected}
         />
-        <LineSeparator border={theme.border} />
-        <div>
-          <Token
-            balance={token.accountBalance}
-            loading={loading}
-            mode="unwrap"
-            onClick={onUnwrapToken}
-            token={token.data}
-          />
-          {earnedRewards.gt('0') && (
-            <div
-              css={`
-                margin-top: ${3 * GU}px;
-                padding-top: ${2 * GU}px;
-                border-top: 1px solid ${theme.border};
-              `}
-            >
-              Earned rewards:{' '}
-              <span
-                css={`
-                  color: ${theme.positive};
-                `}
-              >
-                {formatTokenAmount(earnedRewards, wrappableToken.data.decimals)}{' '}
-                {wrappableToken.data.symbol}
-              </span>{' '}
-              <Button
-                label="Claim"
-                mode="strong"
-                wide
-                onClick={handleClaimRewards}
-                css={`
-                  margin-top: ${1.5 * GU}px;
-                `}
-              />
-            </div>
-          )}
-        </div>
       </div>
     </Box>
   )
 }
 
 function Token({ balance, loading, mode, onClick, token }) {
+  const theme = useTheme()
+
   const wrapMode = mode === 'wrap'
-  const icon = wrapMode ? unwrappedIcon : wrappedIcon
+  const claimMode = mode === 'claim'
+  const icon = wrapMode
+    ? unwrappedIcon
+    : claimMode
+    ? claimRewardsIcon
+    : wrappedIcon
   const button = wrapMode
     ? { mode: 'strong', label: 'Wrap' }
+    : claimMode
+    ? { mode: 'strong', label: 'Claim' }
     : { mode: 'normal', label: 'Unwrap' }
 
   return (
@@ -138,6 +143,7 @@ function Token({ balance, loading, mode, onClick, token }) {
           css={`
             font-weight: 600;
             margin: ${1 * GU}px 0;
+            color: ${claimMode ? theme.positive : null};
           `}
         >
           {formatTokenAmount(balance, token.decimals)}
@@ -149,8 +155,8 @@ function Token({ balance, loading, mode, onClick, token }) {
           align-items: center;
         `}
       >
-        <span>{token.symbol}</span>
-        {!wrapMode && (
+        <span>{`${claimMode ? 'Earned ' : ''}${token.symbol}`}</span>
+        {!wrapMode && !claimMode && (
           <div
             css={`
               margin-left: ${1 * GU}px;
@@ -170,16 +176,11 @@ function Token({ balance, loading, mode, onClick, token }) {
         onClick={onClick}
         disabled={balance.lte(0)}
         css={`
-          margin-top: ${3 * GU}px;
+          margin-top: ${2 * GU}px;
         `}
       />
     </div>
   )
 }
-
-const LineSeparator = styled.div`
-  border-left: 1px solid ${({ border }) => border};
-  margin: 0 ${3 * GU}px;
-`
 
 export default WrapToken

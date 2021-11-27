@@ -63,46 +63,44 @@ function MainView({ children }) {
             width: 100%;
           `}
         >
-          <Root.Provider>
+          <Root.Provider
+            css={`
+              flex-grow: 1;
+              height: 100%;
+              position: relative;
+              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
+            `}
+          >
             <div
               css={`
-                flex-grow: 1;
-                height: 100%;
-                position: relative;
-                ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
+                flex-shrink: 0;
               `}
             >
+              <Header onOpenPreferences={openPreferences} />
+            </div>
+            <ScrollView>
               <div
                 css={`
-                  flex-shrink: 0;
+                  min-height: 100vh;
+                  margin: 0;
+                  display: grid;
+                  grid-template-rows: 1fr auto;
                 `}
               >
-                <Header onOpenPreferences={openPreferences} />
-              </div>
-              <ScrollView>
                 <div
                   css={`
-                    min-height: 100vh;
-                    margin: 0;
-                    display: grid;
-                    grid-template-rows: 1fr auto;
+                    margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
                   `}
                 >
-                  <div
-                    css={`
-                      margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
-                    `}
-                  >
-                    <Layout paddingBottom={3 * GU}>{children}</Layout>
-                  </div>
-                  {connectedGarden ? (
-                    !loadingGardenState && <Footer />
-                  ) : (
-                    <Footer />
-                  )}
+                  <Layout paddingBottom={3 * GU}>{children}</Layout>
                 </div>
-              </ScrollView>
-            </div>
+                {connectedGarden ? (
+                  !loadingGardenState && <Footer />
+                ) : (
+                  <Footer />
+                )}
+              </div>
+            </ScrollView>
           </Root.Provider>
         </div>
       </div>
