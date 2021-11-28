@@ -10,7 +10,6 @@ import { UseWalletProvider, useWallet } from 'use-wallet'
 
 import { getDefaultProvider } from '@utils/web3-utils'
 import {
-  addEthereumChain,
   getEthersNetwork,
   isSupportedChain,
   SUPPORTED_CHAINS,
@@ -38,27 +37,33 @@ function WalletAugmented({ children }) {
   }, [ethereum])
 
   const {
+    connect,
     onPreferredNetworkChange,
     preferredNetwork,
     resetConnection,
+    switchingNetworks,
   } = useConnection()
 
   const contextValue = useMemo(
     () => ({
       ...wallet,
+      connect,
       connected: isConnected(),
+      ethers,
       onPreferredNetworkChange,
       preferredNetwork,
       isSupportedNetwork: isSupportedChain(wallet.chainId),
       resetConnection,
-      ethers,
+      switchingNetworks,
     }),
     [
+      connect,
       ethers,
       isConnected,
       onPreferredNetworkChange,
       preferredNetwork,
       resetConnection,
+      switchingNetworks,
       wallet,
     ]
   )
@@ -84,31 +89,31 @@ function useConnection() {
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
+  const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
-  const connect = useCallback(async () => {
-    if (connector === 'injected') {
-      await addEthereumChain()
-    }
-
-    if (account) {
-      try {
-        await wallet.connect(connector)
-      } catch (e) {
-        console.error(e)
-      }
-    } else {
-      const connectedAddresses = await window?.ethereum?.request({
-        method: 'eth_accounts',
-      })
-      if (connectedAddresses?.length > 0) {
+  const connect = useCallback(
+    async connector => {
+      if (account) {
         try {
-          await wallet.connect('injected')
+          await wallet.connect(connector)
         } catch (e) {
           console.error(e)
         }
+      } else {
+        const connectedAddresses = await window?.ethereum?.request({
+          method: 'eth_accounts',
+        })
+        if (connectedAddresses?.length > 0) {
+          try {
+            await wallet.connect('injected')
+          } catch (e) {
+            console.error(e)
+          }
+        }
       }
-    }
-  }, [account, connector, wallet])
+    },
+    [account, wallet]
+  )
 
   const resetConnection = useCallback(async () => {
     await wallet.reset()
@@ -121,19 +126,13 @@ function useConnection() {
       setPreferredChain(chainId)
 
       if (connector === 'injected') {
+        setSwitchingNetworks(true)
         await switchNetwork(chainId)
+        setSwitchingNetworks(false)
       }
     },
     [connector]
   )
-
-  // Handle connect automatically if an account is available and we have some connected address on the wallet
-  useEffect(() => {
-    const connectWallet = async () => {
-      connect()
-    }
-    connectWallet()
-  }, []) // eslint-disable-line
 
   // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
   // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies
@@ -147,9 +146,11 @@ function useConnection() {
   }, [wallet.account, wallet.chainId]) // eslint-disable-line 
 
   return {
+    connect,
     onPreferredNetworkChange: handleOnPreferredNetworkChange,
     preferredNetwork,
     resetConnection,
+    switchingNetworks,
   }
 }
 

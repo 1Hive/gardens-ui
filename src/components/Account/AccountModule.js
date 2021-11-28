@@ -11,7 +11,6 @@ import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { useProfile } from '../../providers/Profile'
-import { addEthereumChain } from '@/networks'
 
 const SCREENS = [
   {
@@ -41,10 +40,10 @@ function AccountModule({ compact }) {
     connector,
     error,
     resetConnection,
+    switchingNetworks,
   } = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
 
@@ -53,9 +52,6 @@ function AccountModule({ compact }) {
   const activate = useCallback(
     async providerId => {
       try {
-        setCreatingNetwork(true)
-        await addEthereumChain()
-        setCreatingNetwork(false)
         await connect(providerId)
       } catch (error) {
         console.log('error ', error)
@@ -96,7 +92,7 @@ function AccountModule({ compact }) {
     const screenId = (() => {
       if (error) return 'error'
       if (activatingDelayed) return 'connecting'
-      if (creatingNetwork) return 'networks'
+      if (switchingNetworks) return 'networks'
       if (account) return 'connected'
       return 'providers'
     })()
@@ -107,7 +103,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [error, activatingDelayed, creatingNetwork, account])
+  }, [activatingDelayed, account, error, switchingNetworks])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
