@@ -1,1 +1,0 @@
-{"version":3,"file":"proposals.d.ts","sourceRoot":"","sources":["../../../../src/thegraph/parsers/proposals.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,0BAA0B,CAAA;AACtD,OAAO,QAAQ,MAAM,uBAAuB,CAAA;AAI5C,wBAAgB,cAAc,CAC5B,MAAM,EAAE,WAAW,EACnB,SAAS,EAAE,GAAG,GACb,QAAQ,EAAE,CAkCZ;AAED,wBAAgB,aAAa,CAAC,MAAM,EAAE,WAAW,EAAE,SAAS,EAAE,GAAG,GAAG,QAAQ,CAgC3E"}

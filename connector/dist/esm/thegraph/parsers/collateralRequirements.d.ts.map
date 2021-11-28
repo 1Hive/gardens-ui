@@ -1,1 +1,0 @@
-{"version":3,"file":"collateralRequirements.d.ts","sourceRoot":"","sources":["../../../../src/thegraph/parsers/collateralRequirements.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,0BAA0B,CAAA;AAEtD,OAAO,qBAAqB,MAAM,oCAAoC,CAAA;AAEtE,wBAAgB,0BAA0B,CACxC,MAAM,EAAE,WAAW,EACnB,SAAS,EAAE,GAAG,GACb,qBAAqB,GAAG,IAAI,CAyB9B"}
