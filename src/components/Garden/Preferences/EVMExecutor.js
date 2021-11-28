@@ -1,4 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import AceEditor from 'react-ace'
+import { utils } from 'ethers'
+import 'ace-builds/src-noconflict/mode-jade'
+import 'ace-builds/src-noconflict/theme-vibrant_ink'
+
 import {
   Box,
   Button,
@@ -8,8 +13,7 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-import { EVMcrispr } from '@1hive/evmcrispr'
-import { utils } from 'ethers'
+import { evmcl, EVMcrispr } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -22,10 +26,11 @@ import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
 
-const INTERACTION_TYPES = ['Internal', 'External']
+const INTERACTION_TYPES = ['Internal', 'External', 'Terminal']
 
 const INTERNAL_INDEX = 0
 const EXTERNAL_INDEX = 1
+const TERMINAL_INDEX = 2
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
@@ -41,6 +46,24 @@ function EVMExecutor() {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
+  const [code, setCode] = useState(
+    `# Available commands:
+
+install <repo> [...initParams]
+grant <entity> <app> <role> [permissionManager]
+revoke <entity> <app> <role>
+exec <app> <methodName> [...params]
+act <agent> <targetAddr> <methodSignature> [...params]
+
+# Example (unwrap wxDAI):
+
+install agent:new-agent
+grant voting agent:new-agent TRANSFER_ROLE voting
+exec vault transfer -token:tokens.honeyswap.org:WXDAI agent:new-agent 100e18
+act agent:new-agent -token:tokens.honeyswap.org:WXDAI withdraw(uint256) 100e18
+exec agent:new-agent transfer -token:XDAI vault 100e18
+`
+  )
 
   useEffect(() => {
     async function getEvmCrispr() {
@@ -197,9 +220,20 @@ function EVMExecutor() {
         { context: 'new decision' }
       )
     }
+    if (interactionType === TERMINAL_INDEX) {
+      intent = await evmcrispr.encode(
+        evmcl`${code}`,
+        ['disputable-voting'],
+        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+        // { context: asciiToHex(functionList[selectedFunction]) }
+        // having some issue on the lib when passing the function that need to check with david
+        { context: 'new decision' }
+      )
+    }
 
     return [{ ...intent.action, description: description, type: type }]
   }, [
+    code,
     evmcrispr,
     externalContractAddress,
     humanReadableSignature,
@@ -288,6 +322,41 @@ function EVMExecutor() {
               `}
             />
           </Field>
+        </>
+      )}
+      {interactionType === TERMINAL_INDEX && (
+        <>
+          <Box>
+            <AceEditor
+              width="100%"
+              mode="jade"
+              theme="github"
+              value={code}
+              onChange={setCode}
+              fontSize={14}
+              showPrintMargin={false}
+              showGutter={false}
+              highlightActiveLine
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+                showLineNumbers: false,
+                tabSize: 2,
+              }}
+            />
+          </Box>
+          <Button
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+            disabled={!account}
+            mode="strong"
+            wide
+            onClick={handleOnShowModal}
+          >
+            Execute
+          </Button>
         </>
       )}
       {functionList?.length > 0 && (
