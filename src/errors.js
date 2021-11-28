@@ -9,7 +9,7 @@ export const extendError = (name, { defaultMessage }) =>
 export class DAONotFound extends Error {
   name = 'DAONotFound'
   constructor(dao) {
-    super('Thes address of this dao could not be resolved')
+    super('The address of this garden could not be resolved')
     this.dao = dao
   }
 }

@@ -13,7 +13,7 @@ const GardensFilters = ({
   onSortingFilterChange,
 }) => {
   const { layoutName } = useLayout()
-  const { handleOnPreferredNetworkChange, preferredNetwork } = useWallet()
+  const { onPreferredNetworkChange, preferredNetwork } = useWallet()
 
   const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
   const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
@@ -30,7 +30,7 @@ const GardensFilters = ({
       <FilterItem>
         <DropDown
           items={supportedChains}
-          onChange={handleOnPreferredNetworkChange}
+          onChange={onPreferredNetworkChange}
           selected={selectedIndex}
           wide
         />
