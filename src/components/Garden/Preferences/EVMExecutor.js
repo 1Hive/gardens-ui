@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import AceEditor from 'react-ace'
 import { utils } from 'ethers'
 import 'ace-builds/src-noconflict/mode-jade'
-import 'ace-builds/src-noconflict/theme-vibrant_ink'
+import 'ace-builds/src-noconflict/theme-github'
 
 import {
   Box,
