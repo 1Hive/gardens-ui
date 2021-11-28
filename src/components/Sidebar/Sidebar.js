@@ -56,7 +56,7 @@ function Sidebar() {
         top: 0;
         left: 0;
         height: 100vh;
-        z-index: 2;
+        z-index: 1;
         width: ${9 * GU}px;
         flex-shrink: 0;
         background: ${theme.surface};

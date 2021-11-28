@@ -128,7 +128,12 @@ function useConnection() {
   )
 
   // Handle connect automatically if an account is available and we have some connected address on the wallet
-  useEffect(() => connect(), []) // eslint-disable-line
+  useEffect(() => {
+    const connectWallet = async () => {
+      connect()
+    }
+    connectWallet()
+  }, []) // eslint-disable-line
 
   // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
   // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies

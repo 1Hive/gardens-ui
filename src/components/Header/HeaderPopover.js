@@ -58,14 +58,14 @@ function HeaderPopover({
             <AnimatedDiv
               ref={popoverFocusElement}
               tabIndex="0"
-              style={{ height: measuredHeight ? height : 'auto' }}
-              css={`
-                position: relative;
-                flex-grow: 1;
-                width: 100%;
-                overflow: hidden;
-                outline: 0;
-              `}
+              style={{
+                height: measuredHeight ? height : 'auto',
+                position: 'relative',
+                flexGrow: 1,
+                width: '100%',
+                overflow: 'hidden',
+                outline: 0,
+              }}
             >
               <Transition
                 native
@@ -98,13 +98,14 @@ function HeaderPopover({
                         setHeight(elt.clientHeight)
                       }
                     }}
-                    style={{ opacity, transform }}
-                    css={`
-                      position: ${measuredHeight ? 'absolute' : 'static'};
-                      top: 0;
-                      left: 0;
-                      right: 0;
-                    `}
+                    style={{
+                      opacity,
+                      transform,
+                      position: measuredHeight ? 'absolute' : 'static',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    }}
                   >
                     {children(screenData)}
                   </AnimatedDiv>

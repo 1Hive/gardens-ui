@@ -67,25 +67,11 @@ function getCollateralAttributes(status, theme) {
   const collateralAttributes = {
     [COLLATERAL_LOCKED]: {
       color: theme.surfaceOpened,
-      icon: (
-        <IconLock
-          size="small"
-          css={`
-            margin-right: ${1 * GU}px;
-          `}
-        />
-      ),
+      icon: <IconLock size="small" />,
     },
     [COLLATERAL_CHALLENGED]: {
       color: theme.surfaceOpened,
-      icon: (
-        <IconLock
-          size="small"
-          css={`
-            margin-right: ${1 * GU}px;
-          `}
-        />
-      ),
+      icon: <IconLock size="small" />,
     },
     [COLLATERAL_AVAILABLE]: {
       color: theme.content,
@@ -179,7 +165,7 @@ function StakingMovements({ stakingMovements, token }) {
             </Link>
           </div>,
           <div>{collateralState}</div>,
-          <span
+          <div
             css={`
               font-weight: 600;
               color: ${amountAttributes.color};
@@ -188,8 +174,16 @@ function StakingMovements({ stakingMovements, token }) {
             `}
           >
             {amountAttributes.icon}
-            {formatTokenAmount(amount, tokenDecimals, { symbol: token.symbol })}
-          </span>,
+            <span
+              css={`
+                margin-left: ${1 * GU}px;
+              `}
+            >
+              {formatTokenAmount(amount, tokenDecimals, {
+                symbol: token.symbol,
+              })}
+            </span>
+          </div>,
         ]
       }}
     />

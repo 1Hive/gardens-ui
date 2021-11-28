@@ -32,8 +32,7 @@ const networks = {
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
-      organizations:
-        'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby',
     },
     legacyNetworkType: 'rinkeby',
   },
@@ -59,8 +58,7 @@ const networks = {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
-      organizations:
-        'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai',
     },
 
     eip3085: {
