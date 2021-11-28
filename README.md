@@ -1,10 +1,10 @@
 # Gardens UI  <a href="https://gardens.1hive.org/"><img align="right" src=".github/assets/gardens.svg" height="80px" /></a>
 
-### Gardens are secure digital economies run by the community members that make them valuable.
+## Gardens are secure digital economies run by the community members that make them valuable.
 
 <a href="https://gardens.1hive.org/#/"><img src=".github/assets/screenshot.png" /></a>
 
-How to run locally:
+## How to run locally
 
 #### Clone the repository
 ```
