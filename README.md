@@ -13,7 +13,7 @@ git clone https://github.com/1Hive/gardens-ui.git
 
 #### Install dependencies
 ```
-cd honey-pot
+cd gardens-ui
 yarn
 ```
 
