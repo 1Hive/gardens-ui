@@ -27,15 +27,8 @@ function useWalletAugmented() {
 
 // Adds Ethers.js to the useWallet() object
 function WalletAugmented({ children }) {
-  const [chainId, setChainId] = useState(-1)
-  /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
-  or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
-  const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
-
   const wallet = useWallet()
-  const { account, connector, ethereum, status } = wallet
-
-  const connected = useMemo(() => status === 'connected', [status])
+  const { ethereum, isConnected } = wallet
 
   const ethers = useMemo(() => {
     if (!ethereum) {
@@ -44,9 +37,53 @@ function WalletAugmented({ children }) {
     return new EthersProviders.Web3Provider(ethereum, getEthersNetwork())
   }, [ethereum])
 
-  const isSupportedNetwork = useMemo(() => {
-    return isSupportedChain(wallet.chainId)
-  }, [wallet.chainId])
+  const {
+    onPreferredNetworkChange,
+    preferredNetwork,
+    resetConnection,
+  } = useConnection()
+
+  const contextValue = useMemo(
+    () => ({
+      ...wallet,
+      connected: isConnected(),
+      onPreferredNetworkChange,
+      preferredNetwork,
+      isSupportedNetwork: isSupportedChain(wallet.chainId),
+      resetConnection,
+      ethers,
+    }),
+    [
+      ethers,
+      isConnected,
+      onPreferredNetworkChange,
+      preferredNetwork,
+      resetConnection,
+      wallet,
+    ]
+  )
+
+  return (
+    <WalletAugmentedContext.Provider value={contextValue}>
+      {children}
+    </WalletAugmentedContext.Provider>
+  )
+}
+
+function WalletProvider({ children }) {
+  return (
+    <UseWalletProvider autoConnect connectors={useWalletConnectors}>
+      <WalletAugmented>{children}</WalletAugmented>
+    </UseWalletProvider>
+  )
+}
+
+function useConnection() {
+  const wallet = useWallet()
+  const { account, connector } = wallet
+  /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
+  or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
+  const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
 
   const connect = useCallback(async () => {
     if (connector === 'injected') {
@@ -74,42 +111,8 @@ function WalletAugmented({ children }) {
   }, [account, connector, wallet])
 
   const resetConnection = useCallback(async () => {
-    setChainId(-1)
     await wallet.reset()
   }, [wallet])
-
-  // Handle connect automatically if an account is available and we have some connected address on the wallet
-  useEffect(() => connect(), []) // eslint-disable-line
-
-  // This useEffect is needed because we don't have inmediatly available wallet.chainId  right after connecting in the previous hook
-  useEffect(() => {
-    if (wallet.account != null && chainId !== wallet.chainId) {
-      setChainId(wallet.chainId)
-      if (SUPPORTED_CHAINS.includes(wallet.chainId)) {
-        setPreferredChain(wallet.chainId)
-        setPreferredNetwork(wallet.chainId)
-      }
-    }
-  }, [wallet.account, wallet.chainId, chainId])
-
-  /* Note that with this hook and the previous one we are manually reseting the connection on chain changed detected.
-  Here i noticed that is better to always depend on the data that comes from the use-wallet library instead  of just subscribing to window.ethereum.on('chainChanged', handleChainChanged) 
-  because for some reason the reconnect action is way faster and the windows event subscription was triggering many re renders */
-  useEffect(() => {
-    async function reset() {
-      await resetConnection()
-      await connect()
-    }
-    if (chainId !== -1 && wallet._web3ReactContext.chainId !== chainId) {
-      reset()
-    }
-  }, [
-    wallet._web3ReactContext.chainId,
-    chainId,
-    connect,
-    resetConnection,
-    wallet,
-  ])
 
   const handleOnPreferredNetworkChange = useCallback(
     async index => {
@@ -124,40 +127,25 @@ function WalletAugmented({ children }) {
     [connector]
   )
 
-  const contextValue = useMemo(
-    () => ({
-      ...wallet,
-      connected,
-      handleOnPreferredNetworkChange,
-      preferredNetwork,
-      isSupportedNetwork,
-      resetConnection,
-      ethers,
-    }),
-    [
-      connected,
-      ethers,
-      handleOnPreferredNetworkChange,
-      preferredNetwork,
-      isSupportedNetwork,
-      resetConnection,
-      wallet,
-    ]
-  )
+  // Handle connect automatically if an account is available and we have some connected address on the wallet
+  useEffect(() => connect(), []) // eslint-disable-line
 
-  return (
-    <WalletAugmentedContext.Provider value={contextValue}>
-      {children}
-    </WalletAugmentedContext.Provider>
-  )
-}
+  // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
+  // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies
+  useEffect(() => {
+    if (wallet.account && preferredNetwork !== wallet.chainId) {
+      if (SUPPORTED_CHAINS.includes(wallet.chainId)) {
+        setPreferredChain(wallet.chainId)
+        setPreferredNetwork(wallet.chainId)
+      }
+    }
+  }, [wallet.account, wallet.chainId]) // eslint-disable-line 
 
-function WalletProvider({ children }) {
-  return (
-    <UseWalletProvider autoConnect connectors={useWalletConnectors}>
-      <WalletAugmented>{children}</WalletAugmented>
-    </UseWalletProvider>
-  )
+  return {
+    onPreferredNetworkChange: handleOnPreferredNetworkChange,
+    preferredNetwork,
+    resetConnection,
+  }
 }
 
 export { useWalletAugmented as useWallet, WalletProvider }

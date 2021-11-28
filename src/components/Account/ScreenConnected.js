@@ -22,12 +22,12 @@ import { getNetworkName } from '@utils/web3-utils'
 import profileButtonSvg from '@assets/profileButton.svg'
 import stakeButtonSvg from '@assets/stakeButton.svg'
 
-function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
+function AccountScreenConnected({ providerId, onClosePopover }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
-  const { chainId } = useWallet()
+  const { account, chainId, resetConnection } = useWallet()
 
   const networkName = getNetworkName(chainId)
   const providerInfo = getProviderFromUseWalletId(providerId)
@@ -43,14 +43,7 @@ function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
     onClosePopover()
   }, [history, onClosePopover])
 
-  const handleCopyAddress = useCallback(() => copy(wallet.account), [
-    copy,
-    wallet,
-  ])
-
-  const handleDeactivate = useCallback(() => {
-    wallet.resetConnection()
-  }, [wallet])
+  const handleCopyAddress = useCallback(() => copy(account), [account, copy])
 
   return (
     <div
@@ -167,7 +160,7 @@ function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
               `}
             >
               <IdentityBadge
-                entity={wallet.account}
+                entity={account}
                 compact
                 badgeOnly
                 css="cursor: pointer"
@@ -206,7 +199,7 @@ function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
       </div>
 
       <Button
-        onClick={handleDeactivate}
+        onClick={resetConnection}
         wide
         css={`
           margin-top: ${2 * GU}px;
