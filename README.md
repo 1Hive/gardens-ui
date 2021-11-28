@@ -1,10 +1,10 @@
-# Honey pot :honey_pot:
+# Gardens UI  <a href="https://gardens.1hive.org/"><img align="right" src=".github/assets/gardens.svg" height="80px" /></a>
 
-### Karma template frontend using @aragon/connect.
+## Gardens are secure digital economies run by the community members that make them valuable.
 
-<a href="https://1hive.org/#/"><img src="docs/assets/screenshot.png" /></a>
+<a href="https://gardens.1hive.org/#/"><img src=".github/assets/screenshot.png" /></a>
 
-How to run locally:
+## How to run locally
 
 #### Clone the repository
 ```
@@ -14,25 +14,24 @@ git clone https://github.com/1Hive/honey-pot.git
 #### Install dependencies
 ```
 cd honey-pot
-yarn --ignore-engines
+yarn
 ```
 
 #### Start UI
 ```
-yarn start:[network]
-
-# yarn start:rinkeby
-# yarn start:xdai
+yarn start
 ```
-
-> **Tip:**
-> Make sure you provide the environment variable of the RPC node when running on xDai. e.g.
-> `REACT_APP_ETH_NODE=https://rpc.xdaichain.com/ yarn start:xdai`
 
 ### Environment variables
-
-
 ```
-REACT_APP_APP_NAME # Name of the app (if empty, defaults to conviction-voting)
-REACT_APP_ORG_ADDRESS # Address of the organization (if empty, defaults to address specified in netowrks.js file)
+REACT_APP_GITHUB_API_TOKEN # API token for GitHub used to fetch Gardens metadata.
+REACT_APP_PINATA_API_TOKEN # API token for Pinata used to pin IPFS content.
+REACT_APP_POLYGON_ETH_NODE # Env to set a custom node on Polygon.
+REACT_APP_XDAI_ETH_NODE # Env to set a custom node on xDai.
+REACT_APP_RINKEBY_ETH_NODE # Env to set a custom node on Rinkeby.
+REACT_APP_PORTIS_ID # App ID to setup Portis provider.
+REACT_APP_POCKET_API_KEY # API key for Pocket to setup a ethers default provider connected to multiple nodes.
+REACT_APP_ALCHEMY_API_KEY # API key for Alchemy to setup a ethers default provider connected to multiple nodes.
+REACT_APP_ETHERSCAN_API_KEY # API key for Etherscan to setup a ethers default provider connected to multiple nodes.
+REACT_APP_INFURA_API_KEY # API key for Infura to setup a ethers default provider connected to multiple nodes.
 ```
