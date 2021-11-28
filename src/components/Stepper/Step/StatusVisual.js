@@ -150,17 +150,10 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${
-              status === STEP_WAITING ? 'transparent' : color
-            };
-
+            background-color: ${theme.background};
+            border: 2px solid ${status === STEP_WAITING ? 'transparent' : color};
             ${status === STEP_PROMPTING ? pulseAnimation : ''}
             ${status === STEP_WORKING ? spinAnimation : ''}
-            ${
-              status === STEP_PROMPTING
-                ? `background-color: ${theme.background};`
-                : ''
-            }
           `}
         />
       </div>
@@ -182,8 +175,6 @@ StatusVisual.propTypes = {
 
 /* eslint-disable react/prop-types */
 function StepIllustration({ number, status, withoutFirstStep }) {
-  const theme = useTheme()
-
   const renderIllustration =
     status === STEP_WORKING ||
     status === STEP_ERROR ||
@@ -208,12 +199,9 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.surfaceIcon};
             height: 100%;
             width: 100%;
             border-radius: 100%;
-            color: ${theme.positiveContent};
-
             ${textStyle('title3')};
             font-weight: 600;
           `}
