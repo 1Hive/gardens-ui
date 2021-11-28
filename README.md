@@ -8,7 +8,7 @@
 
 #### Clone the repository
 ```
-git clone https://github.com/1Hive/honey-pot.git
+git clone https://github.com/1Hive/gardens-ui.git
 ```
 
 #### Install dependencies
