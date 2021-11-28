@@ -1,5 +1,6 @@
 import React from 'react'
-import { IconEthereum } from '@1hive/1hive-ui'
+import { useTheme, IconBlock } from '@1hive/1hive-ui'
+
 import {
   STEP_ERROR,
   STEP_SUCCESS,
@@ -18,6 +19,7 @@ const illustrations = {
 }
 
 function Illustration({ status, index }) {
+  const theme = useTheme()
   return (
     <>
       {status === STEP_PROMPTING ? (
@@ -29,9 +31,11 @@ function Illustration({ status, index }) {
             height: 100%;
             width: 100%;
             border-radius: 100%;
+            background-color: ${theme.contentSecondary};
+            color: ${theme.positiveContent};
           `}
         >
-          <IconEthereum size="large" />
+          <IconBlock size="large" />
         </div>
       ) : (
         <img src={illustrations[status]} height={96} width={96} />

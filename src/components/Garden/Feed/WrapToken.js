@@ -18,7 +18,7 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import claimRewardsIcon from '@assets/activity/light/claimRewards.svg'
+import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 
 function WrapToken({
   onClaimRewards,
