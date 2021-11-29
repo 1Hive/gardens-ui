@@ -121,7 +121,7 @@ function CurrentDelegateProfile({ address }) {
 function NewDelegateProfile({ address }) {
   const profile = useProfile(address)
 
-  if (!profile) {
+  if (!address || !profile) {
     return null
   }
 
