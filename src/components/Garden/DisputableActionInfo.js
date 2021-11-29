@@ -140,8 +140,32 @@ function DisputableActionInfo({
 }
 
 function VotingPeriod({ proposal }) {
+  const voteEndPeriodNode = usePeriod(proposal, proposal.endDate)
+  const delegatedVotingEndPeriodNode = usePeriod(
+    proposal,
+    proposal.delegatedVotingEndDate
+  )
+
+  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
+
+  return (
+    <>
+      <DataField
+        label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
+        value={voteEndPeriodNode}
+      />
+      <DataField
+        label="Delegated voting period"
+        value={delegatedVotingEndPeriodNode}
+      />
+    </>
+  )
+}
+
+function usePeriod(proposal, periodEndDate) {
   const theme = useTheme()
-  const periodNode = useMemo(() => {
+
+  return useMemo(() => {
     if (
       proposal.statusData.challenged ||
       proposal.statusData.disputed ||
@@ -161,7 +185,7 @@ function VotingPeriod({ proposal }) {
       )
     }
 
-    return proposal.endDate < Date.now() ? (
+    return periodEndDate < Date.now() ? (
       <span>
         Ended{' '}
         <span
@@ -169,22 +193,13 @@ function VotingPeriod({ proposal }) {
             color: ${theme.contentSecondary};
           `}
         >
-          ({dateFormat(proposal.endDate, DATE_FORMAT)})
+          ({dateFormat(periodEndDate, DATE_FORMAT)})
         </span>
       </span>
     ) : (
-      <Timer end={proposal.endDate} />
+      <Timer end={periodEndDate} />
     )
-  }, [proposal.endDate, proposal.pausedAt, proposal.statusData, theme])
-
-  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
-
-  return (
-    <DataField
-      label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
-      value={periodNode}
-    />
-  )
+  }, [periodEndDate, proposal.pausedAt, proposal.statusData, theme])
 }
 
 function Conviction({ proposal }) {

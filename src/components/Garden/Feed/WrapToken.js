@@ -5,7 +5,6 @@ import {
   GU,
   Help,
   LoadingRing,
-  useLayout,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -21,13 +20,10 @@ import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
-  const { layoutName } = useLayout()
   const { token, wrappableToken } = useGardenState()
 
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
-
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   const [earnedRewards, rewardsLink] = useUnipoolRewards()
 
@@ -73,11 +69,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   )
 
   return (
-    <Box
-      css={`
-        ${!compactMode && `margin-bottom: ${3 * GU}px;`}
-      `}
-    >
+    <Box>
       <div>
         <Carousel
           itemWidth={18 * GU}

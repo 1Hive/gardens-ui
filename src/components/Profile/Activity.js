@@ -20,7 +20,7 @@ import { getGardenLabel } from '@utils/garden-utils'
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
   const [user] = useUser(account)
-  const { gardens } = useGardens()
+  const { gardensMetadata } = useGardens()
 
   const dedupedStakes = useMemo(() => {
     if (!user?.supports.length) {
@@ -59,7 +59,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
               const gardenAddress = proposal.organization.id
               const gardenPath = `/#/garden/${gardenAddress}`
               // TODO: evaluate a more efficient way to handle this
-              const gardenLabel = getGardenLabel(gardenAddress, gardens)
+              const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata)
 
               return (
                 <div

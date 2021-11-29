@@ -18,7 +18,7 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import { getHoneyswapTradeTokenUrl } from '@/endpoints'
+import { getDexTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
@@ -168,6 +168,7 @@ function FixedFooter({ token }) {
   const history = useHistory()
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  const { preferredNetwork } = useWallet()
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
@@ -238,7 +239,7 @@ function FixedFooter({ token }) {
               onClick={() => setCreateProposalModalVisible(true)}
             />
             <FooterItem
-              href={getHoneyswapTradeTokenUrl(token.id)}
+              href={getDexTradeTokenUrl(preferredNetwork, token.id)}
               icon={<img src={getHoneySvg} alt="" />}
               label={`Get ${token.name}`}
               external

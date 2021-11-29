@@ -10,6 +10,7 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../constants'
+import { bigNum } from '@lib/bigNumber'
 
 const EMPTY_SCRIPTS = ['0x00000001', '0x00']
 
@@ -22,18 +23,34 @@ export function getAccountCastStake(vote, account) {
     addressesEqual(cast.supporter.user.address, account)
   )
 
-  return userCast?.stake || 0
+  return bigNum(userCast?.stake || 0, 0)
 }
 
-export function getConnectedAccountVote(vote, account) {
+export function getAccountCastDelegatedStake(vote, account) {
+  // Takes into account delegated cast stakes (casts done by account where account === caster !== supporter, supporter being caster´s principal)
+  const totalDelegatedStake = vote.casts
+    .filter(
+      cast =>
+        addressesEqual(cast.caster, account) &&
+        !addressesEqual(cast.supporter.user.address, account)
+    )
+    .reduce((acc, cast) => acc.plus(bigNum(cast.stake, 0)), bigNum(0))
+
+  return totalDelegatedStake
+}
+
+export function getConnectedAccountCast(vote, account) {
   const userCast = vote.casts.find(cast =>
     addressesEqual(cast.supporter.user.address, account)
   )
 
   if (userCast) {
-    return userCast.supports ? VOTE_YEA : VOTE_NAY
+    return {
+      vote: userCast.supports ? VOTE_YEA : VOTE_NAY,
+      caster: userCast.caster,
+    }
   }
-  return VOTE_ABSENT
+  return { vote: VOTE_ABSENT }
 }
 
 export function hasVoteEnded(status, endDate, challengeEndDate) {
@@ -62,6 +79,17 @@ export function getVoteEndDate(vote) {
 
   // Otherwise, since the last computed end date was reached and included a flip, we need to extend the end date by one more period
   return lastComputedEndDate + vote.quietEndingExtension
+}
+
+export function getDelegatedVotingEndDate(vote) {
+  const baseDelegatedVotingEndDate = vote.startDate + vote.delegatedVotingPeriod
+
+  // If the vote was paused before the delegated voting period ended, we need to extend it
+  if (vote.pausedAt > 0 && vote.pausedAt > baseDelegatedVotingEndDate) {
+    return baseDelegatedVotingEndDate + vote.pauseDuration
+  }
+
+  return baseDelegatedVotingEndDate
 }
 
 function wasVoteFlipped(vote) {
@@ -145,4 +173,17 @@ export async function getCanUserVote(votingContract, voteId, account) {
   }
 
   return votingContract.canVote(voteId, account)
+}
+
+export async function getCanUserVoteOnBehalfOf(
+  votingContract,
+  voteId,
+  voters,
+  representative
+) {
+  if (!votingContract || !voters.length || !representative) {
+    return false
+  }
+
+  return votingContract.canVoteOnBehalfOf(voteId, voters, representative)
 }

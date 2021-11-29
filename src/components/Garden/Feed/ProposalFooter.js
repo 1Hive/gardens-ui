@@ -10,7 +10,7 @@ import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
 import { formatTokenAmount } from '@utils/token-utils'
-import { getConnectedAccountVote } from '../../../utils/vote-utils'
+import { getConnectedAccountCast } from '../../../utils/vote-utils'
 
 function ProposalCardFooter({ proposal }) {
   if (proposal.type === ProposalTypes.Decision) {
@@ -105,11 +105,11 @@ function DecisionFooter({ proposal }) {
 }
 
 function SupportIndicator({ account, vote }) {
-  const accountVote = getConnectedAccountVote(vote, account)
+  const accountCast = getConnectedAccountCast(vote, account)
 
-  if (accountVote === VOTE_YEA) {
+  if (accountCast.vote === VOTE_YEA) {
     return <ThumbsUpIcon />
-  } else if (accountVote === VOTE_NAY) {
+  } else if (accountCast.vote === VOTE_NAY) {
     return <ThumbsDownIcon />
   }
 

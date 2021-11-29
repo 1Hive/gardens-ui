@@ -4,12 +4,13 @@ import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
+import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens'
 import Filters from './Filters/Filters'
 import { GardenLoader } from '../Loader'
 import Metrics from './Metrics'
 import MultiModal from '../MultiModal/MultiModal'
 import NetworkErrorModal from '../NetworkErrorModal'
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import ProposalsList from './Feed/ProposalsList'
 import RightPanel from './Feed/RightPanel'
 import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
@@ -68,6 +69,14 @@ const Home = React.memo(function Home() {
 
   const handleClaimRewards = useCallback(() => {
     handleShowModal('claim')
+  }, [handleShowModal])
+
+  const handleSetDelegate = useCallback(() => {
+    handleShowModal('delegate')
+  }, [handleShowModal])
+
+  const handleRemoveDelagate = useCallback(() => {
+    handleShowModal('removeDelegate')
   }, [handleShowModal])
 
   const handleRequestNewProposal = useCallback(() => {
@@ -210,7 +219,9 @@ const Home = React.memo(function Home() {
               {!largeMode && (
                 <RightPanel
                   onClaimRewards={handleClaimRewards}
+                  onRemoveDelegate={handleRemoveDelagate}
                   onRequestNewProposal={handleRequestNewProposal}
+                  onSetDelegate={handleSetDelegate}
                   onWrapToken={handleWrapToken}
                   onUnwrapToken={handleUnwrapToken}
                 />
@@ -229,6 +240,9 @@ const Home = React.memo(function Home() {
                 <WrapTokenScreens mode={modalMode} />
               )}
               {modalMode === 'claim' && <ClaimRewardsScreens />}
+              {(modalMode === 'delegate' || modalMode === 'removeDelegate') && (
+                <DelegateVotingScreens mode={modalMode} />
+              )}
             </MultiModal>
           </div>
         </>

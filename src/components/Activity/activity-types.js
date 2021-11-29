@@ -26,6 +26,10 @@ const ACTIVITY_TYPES = {
     icon: actions.CLAIM_REWARDS,
     title: 'Claim earned rewards',
   },
+  [actions.DELEGATE_VOTING]: {
+    icon: actions.VOTE_ON_DECISION, // TODO: Update when available
+    title: 'Update delegate',
+  },
   [actions.DISPUTE_ACTION]: {
     icon: actions.DISPUTE_ACTION,
     title: 'Dispute proposal',
@@ -81,6 +85,10 @@ const ACTIVITY_TYPES = {
   [actions.VOTE_ON_DECISION]: {
     icon: actions.VOTE_ON_DECISION,
     title: 'Vote on decision',
+  },
+  [actions.VOTE_ON_BEHALF_OF]: {
+    icon: actions.VOTE_ON_DECISION,
+    title: 'Vote on decision on behalf of principals',
   },
   [actions.WITHDRAW_FUNDS]: {
     icon: actions.WITHDRAW_FUNDS,

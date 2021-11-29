@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-const ClaimRewards = React.memo(function ClaimRewards({ getTransactions }) {
+const VoteOnDecision = React.memo(function VoteOnDecision({ getTransactions }) {
   const { next } = useMultiModal()
 
   useEffect(() => {
@@ -13,4 +13,4 @@ const ClaimRewards = React.memo(function ClaimRewards({ getTransactions }) {
   return <div />
 })
 
-export default ClaimRewards
+export default VoteOnDecision
