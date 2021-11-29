@@ -1,16 +1,16 @@
 import React from 'react'
 import { Box, GU, textStyle, useTheme, useLayout } from '@1hive/1hive-ui'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
-export default function EmptyResults({ title, paragraph }) {
+export default function EmptyResults({
+  image = defaultGardenLogo,
+  title,
+  paragraph,
+}) {
   const theme = useTheme()
 
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-
-  const connectedGarden = useConnectedGarden()
-  const logo = connectedGarden?.logo || defaultGardenLogo
 
   return (
     <Box>
@@ -23,7 +23,7 @@ export default function EmptyResults({ title, paragraph }) {
         `}
       >
         <img
-          src={logo}
+          src={image}
           alt=""
           css={`
             display: block;

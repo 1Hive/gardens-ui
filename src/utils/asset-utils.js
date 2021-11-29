@@ -3,6 +3,7 @@ import ApproveTokenLight from '@assets/activity/light/approveToken.svg'
 import CancelProposalLight from '@assets/activity/light/cancelProposal.svg'
 import ChallengeActionLight from '@assets/activity/light/challengeAction.svg'
 import ClaimRewardsLight from '@assets/activity/light/claimRewards.svg'
+import DelegateVotingLight from '@assets/activity/light/delegateVoting.svg'
 import DisputeActionLight from '@assets/activity/light/disputeAction.svg'
 import ExecuteAdjustmentLight from '@assets/activity/light/executeAdjustment.svg'
 import ExecuteDecisionLight from '@assets/activity/light/executeDecision.svg'
@@ -17,6 +18,7 @@ import StakeToProposalLight from '@assets/activity/light/stakeToProposal.svg'
 import UnwrapTokenLigh from '@assets/activity/light/unwrapToken.svg'
 import UpdateOracleLight from '@assets/activity/light/updateOracle.svg'
 import VoteOnDecisionLight from '@assets/activity/light/voteOnDecision.svg'
+import VoteOnBehalfOfLight from '@assets/activity/light/voteOnBehalfOf.svg'
 import WithdrawFromProposalLight from '@assets/activity/light/withdrawFromProposal.svg'
 import WithdrawFundsLight from '@assets/activity/light/withdrawFunds.svg'
 import WrapTokenLigh from '@assets/activity/light/wrapToken.svg'
@@ -46,6 +48,10 @@ export default {
   },
   [actions.CLAIM_REWARDS]: {
     light: ClaimRewardsLight,
+    dark: null,
+  },
+  [actions.DELEGATE_VOTING]: {
+    light: DelegateVotingLight,
     dark: null,
   },
   [actions.DISPUTE_ACTION]: {
@@ -98,6 +104,10 @@ export default {
   },
   [actions.UPDATE_PRICE_ORACLE]: {
     light: UpdateOracleLight,
+    dark: null,
+  },
+  [actions.VOTE_ON_BEHALF_OF]: {
+    light: VoteOnBehalfOfLight,
     dark: null,
   },
   [actions.VOTE_ON_DECISION]: {
