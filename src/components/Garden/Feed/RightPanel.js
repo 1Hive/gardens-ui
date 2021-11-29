@@ -52,7 +52,6 @@ function RightPanel({
         display: 'grid',
         gridRowGap: `${3 * GU}px`,
         gridTemplateColumns: '1fr',
-        marginTop: `${3 * GU}px`,
         width: '100%',
       }
     }
@@ -69,6 +68,9 @@ function RightPanel({
           />
         </div>
       )}
+      <div css={mobileMode ? 'grid-row: 1' : ''}>
+        <HeroBanner onRequestNewProposal={onRequestNewProposal} />
+      </div>
       {account && (
         <div>
           <Delegation
@@ -77,9 +79,6 @@ function RightPanel({
           />
         </div>
       )}
-      <div>
-        <HeroBanner onRequestNewProposal={onRequestNewProposal} />
-      </div>
     </div>
   )
 }
