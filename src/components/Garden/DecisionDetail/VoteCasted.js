@@ -62,7 +62,7 @@ function VoteCasted({ account, accountVote, caster, vote }) {
           `}
           >
             {`Your ${
-              addressesEqual(account, caster) ? '' : 'delegate´s'
+              addressesEqual(account, caster) ? '' : 'delegate's'
             } vote was cast successfully`}
           </div>
           <div

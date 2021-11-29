@@ -61,7 +61,7 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
             <Field
               label={`Your ${
                 hasRepresentative ? 'new' : ''
-              } delegate´s address`}
+              } delegate's address`}
               css={`
                 width: 100%;
               `}
