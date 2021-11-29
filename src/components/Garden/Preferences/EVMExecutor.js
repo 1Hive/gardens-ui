@@ -15,10 +15,13 @@ import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDec
 import MultiModal from '@components/MultiModal/MultiModal'
 
 import { useGardens } from '@/providers/Gardens'
+import { useGardenState } from '@/providers/GardenState'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
+import env from '@/environment'
+import { getAppByName } from '@utils/data-utils'
 import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
 
@@ -30,6 +33,8 @@ const EXTERNAL_INDEX = 1
 function EVMExecutor() {
   const { account, ethers } = useWallet()
   const { connectedGarden } = useGardens()
+  const gardenState = useGardenState()
+
   const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
     false
   )
@@ -56,6 +61,14 @@ function EVMExecutor() {
     }
     getEvmCrispr()
   }, [account, connectedGarden, ethers])
+
+  const forwarderName = useMemo(() => {
+    if (!gardenState || !gardenState.installedApps) {
+      return null
+    }
+    return getAppByName(gardenState.installedApps, env('VOTING_APP_NAME'))
+      .artifact.appName
+  }, [gardenState])
 
   const installedApps = useMemo(() => {
     if (!evmcrispr) {
@@ -118,7 +131,7 @@ function EVMExecutor() {
         return [parameter, paramTypes[index]]
       })
     }
-    if (interactionType === EXTERNAL_INDEX) {
+    if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       return formattedAbi[selectedFunction].inputs.map(parameter => {
         return [parameter.name, parameter.type]
       })
@@ -161,6 +174,9 @@ function EVMExecutor() {
   }, [])
 
   const handleOnCreateIntent = useCallback(async () => {
+    if (!forwarderName) {
+      return []
+    }
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
 
@@ -173,7 +189,7 @@ function EVMExecutor() {
             .call(installedApps[selectedApp])
             [functionList[selectedFunction]](...parameters),
         ],
-        ['disputable-voting'],
+        [forwarderName],
         // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
         // { context: asciiToHex(functionList[selectedFunction]) }
         // having some issue on the lib when passing the function that need to check with david
@@ -190,7 +206,7 @@ function EVMExecutor() {
             [...parameters]
           ),
         ],
-        ['disputable-voting'],
+        [forwarderName],
         // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
         // { context: asciiToHex(functionList[selectedFunction]) }
         // having some issue on the lib when passing the function that need to check with david
@@ -202,6 +218,7 @@ function EVMExecutor() {
   }, [
     evmcrispr,
     externalContractAddress,
+    forwarderName,
     humanReadableSignature,
     interactionType,
     installedApps,
