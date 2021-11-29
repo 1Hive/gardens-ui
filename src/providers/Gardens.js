@@ -16,6 +16,7 @@ import { fetchFileContent } from '../services/github'
 import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { mergeGardenMetadata } from '@utils/garden-utils'
 import { testNameFilter } from '@utils/garden-filters-utils'
+import { getNetwork } from '@/networks'
 
 const DAOContext = React.createContext()
 
@@ -92,6 +93,8 @@ function useGardensList(queryFilters, filters, chainId) {
   const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
 
+  const { subgraphs } = getNetwork(chainId)
+
   const { sorting } = queryFilters
 
   const [gardensMetadata, loadingMetadata] = useGardensMetadata(
@@ -109,7 +112,7 @@ function useGardensList(queryFilters, filters, chainId) {
     const fetchGardens = async () => {
       try {
         const result = await getGardens(
-          { network: chainId },
+          { network: chainId, subgraphUrl: subgraphs.gardens },
           { ...sorting.queryArgs }
         )
 
@@ -124,7 +127,7 @@ function useGardensList(queryFilters, filters, chainId) {
     }
 
     fetchGardens()
-  }, [chainId, refetchTriger, sorting.queryArgs])
+  }, [chainId, refetchTriger, sorting.queryArgs, subgraphs.gardens])
 
   return [filteredGardens, gardensMetadata, loading || loadingMetadata, reload]
 }
