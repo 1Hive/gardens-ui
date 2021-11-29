@@ -10,6 +10,7 @@ const addressCache = new Map()
 const IdentityBadge = React.memo(function IdentityBadge({
   entity,
   iconSize = '24',
+  withProfile = true,
   ...props
 }) {
   const [profile, setProfile] = useState(null)
@@ -23,6 +24,11 @@ const IdentityBadge = React.memo(function IdentityBadge({
 
   useEffect(() => {
     let cancelled = false
+
+    if (!withProfile) {
+      return
+    }
+
     async function fetchProfile() {
       if (addressCache.get(entity)) {
         setProfile(addressCache.get(entity))
@@ -39,14 +45,16 @@ const IdentityBadge = React.memo(function IdentityBadge({
     return () => {
       cancelled = true
     }
-  }, [entity])
+  }, [entity, withProfile])
 
   const badgeProps = {
     label: profile?.name,
     entity,
     explorerProvider: explorer,
     networkType: type,
-    popoverAction: { label: 'View profile', onClick: handleViewProfile },
+    popoverAction: withProfile
+      ? { label: 'View profile', onClick: handleViewProfile }
+      : null,
   }
 
   if (profile?.image) {

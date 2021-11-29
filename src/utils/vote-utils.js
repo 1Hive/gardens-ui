@@ -27,7 +27,7 @@ export function getAccountCastStake(vote, account) {
 }
 
 export function getAccountCastDelegatedStake(vote, account) {
-  // Takes into account delegated cast stakes
+  // Takes into account delegated cast stakes (casts done by account where account === caster !== supporter, supporter being caster´s principal)
   const totalDelegatedStake = vote.casts
     .filter(
       cast =>

@@ -138,6 +138,8 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     )
   }
 
+  const startDate = new Date(startTimestamp)
+
   if (canUserVote || canUserVoteOnBehalfOf) {
     return (
       <div>
@@ -147,14 +149,14 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
             canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
             principalsBalance={principalsBalance}
             snapshotBlock={snapshotBlock}
-            startDate={new Date(startTimestamp)}
+            startDate={startDate}
             tokenSymbol={token.symbol}
             userBalance={userBalance}
             userBalanceNow={userBalanceNow}
           />
           <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
           {canUserVote && isAccountVoteCasted && (
-            <Info>
+            <Info mode="warning">
               <strong>
                 Although your delegate has voted on your behalf, you can always
                 override their vote.
@@ -187,8 +189,8 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
               ? 'Although the currently connected account holds tokens, it'
               : 'The currently connected account'}{' '}
             did not hold any <strong>{token.symbol}</strong> tokens when this
-            vote began ({dateFormat(new Date(startTimestamp))}) and therefore
-            cannot participate in this vote. Make sure your accounts are holding{' '}
+            vote began ({dateFormat(startDate)}) and therefore cannot
+            participate in this vote. Make sure your accounts are holding{' '}
             <strong>{token.symbol}</strong> at the time a vote begins if you'd
             like to vote using this Voting app.
           </Info>

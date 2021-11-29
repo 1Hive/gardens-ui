@@ -7,10 +7,10 @@ import {
   GU,
   Link,
   LoadingRing,
-  shortenAddress,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import IdentityBadge from '@components/IdentityBadge'
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
@@ -135,7 +135,7 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
           {profile.name}
         </div>
       )}
-      <div>{shortenAddress(representative.address)}</div>
+      <IdentityBadge entity={representative.address} withProfile={false} />
       <div
         css={`
           display: flex;

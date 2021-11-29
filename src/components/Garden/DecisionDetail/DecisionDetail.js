@@ -99,6 +99,14 @@ function DecisionDetail({ proposal, actions }) {
     setModalData({ mode })
   }, [])
 
+  const handleCloseModal = useCallback(() => {
+    setModalVisible(false)
+  }, [])
+
+  const handleModalClosed = useCallback(() => {
+    setModalData({ mode: '' })
+  }, [])
+
   return (
     <div
       css={`
@@ -309,8 +317,8 @@ function DecisionDetail({ proposal, actions }) {
       </div>
       <MultiModal
         visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onClosed={() => setModalData({ mode: '' })}
+        onClose={handleCloseModal}
+        onClosed={handleModalClosed}
       >
         {modalData.mode === 'challenge' && (
           <ChallengeProposalScreens

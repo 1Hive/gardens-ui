@@ -102,7 +102,7 @@ function DelegateFor({ user }) {
           margin-bottom: ${1 * GU}px;
         `}
       >
-        Delegate for
+        Delegate For
       </h3>
       {user?.representativeFor && user.representativeFor.length > 0 ? (
         user.representativeFor.map((principal, index) => {

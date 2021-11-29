@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { isAddress } from '@1hive/1hive-ui'
 import { getProfileForAccount } from '@lib/profile'
 
+const CACHE = new Map()
+
 export default function useProfile(account) {
   const [profile, setProfile] = useState(null)
 
@@ -10,11 +12,17 @@ export default function useProfile(account) {
       return
     }
 
+    if (CACHE.get(account)) {
+      setProfile(CACHE.get(account))
+      return
+    }
+
     let cancelled = false
     async function fetchProfile() {
       const profile = await getProfileForAccount(account)
       if (profile && !cancelled) {
         setProfile(profile)
+        CACHE.set(account, profile)
       }
     }
 
