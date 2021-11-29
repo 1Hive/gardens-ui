@@ -19,6 +19,20 @@ import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 
+const modeAttributes = {
+  wrap: { icon: unwrappedIcon, button: { mode: 'strong', label: 'Wrap' } },
+  unwrap: {
+    icon: wrappedIcon,
+    button: { mode: 'strong', label: 'Unwrap' },
+    hint:
+      'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+  },
+  claim: {
+    button: { mode: 'normal', label: 'Claim' },
+    icon: claimRewardsIcon,
+  },
+}
+
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
 
@@ -85,19 +99,8 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme()
-
-  const wrapMode = mode === 'wrap'
+  const { button, icon, hint } = modeAttributes[mode]
   const claimMode = mode === 'claim'
-  const icon = wrapMode
-    ? unwrappedIcon
-    : claimMode
-    ? claimRewardsIcon
-    : wrappedIcon
-  const button = wrapMode
-    ? { mode: 'strong', label: 'Wrap' }
-    : claimMode
-    ? { mode: 'strong', label: 'Claim' }
-    : { mode: 'normal', label: 'Unwrap' }
 
   return (
     <div
@@ -141,16 +144,13 @@ function Token({ balance, loading, mode, onClick, token }) {
         `}
       >
         <span>{`${claimMode ? 'Earned ' : ''}${token.symbol}`}</span>
-        {!wrapMode && !claimMode && (
+        {hint && (
           <div
             css={`
               margin-left: ${1 * GU}px;
             `}
           >
-            <Help>
-              This amount can be used to vote on proposals. It can be unwrapped
-              at any time.
-            </Help>
+            <Help>{hint}</Help>
           </div>
         )}
       </div>
