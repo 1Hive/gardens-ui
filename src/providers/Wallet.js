@@ -85,7 +85,7 @@ function WalletProvider({ children }) {
 
 function useConnection() {
   const wallet = useWallet()
-  const { account, connector } = wallet
+  const { connector } = wallet
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
@@ -93,13 +93,11 @@ function useConnection() {
 
   const connect = useCallback(
     async connector => {
-      if (account) {
-        try {
-          await wallet.connect(connector)
-        } catch (e) {
-          console.error(e)
-        }
-      } else {
+      try {
+        await wallet.connect(connector)
+      } catch (e) {
+        console.error(e)
+
         const connectedAddresses = await window?.ethereum?.request({
           method: 'eth_accounts',
         })
@@ -112,7 +110,7 @@ function useConnection() {
         }
       }
     },
-    [account, wallet]
+    [wallet]
   )
 
   const resetConnection = useCallback(async () => {
