@@ -14,7 +14,6 @@ import { getContract, useContract } from './useContract'
 import env from '@/environment'
 
 import actions from '../actions/garden-action-types'
-import { VOTE_YEA } from '@/constants'
 import { encodeFunctionData } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
@@ -246,15 +245,57 @@ export default function useActions() {
   }, [account, ethers, issuanceApp])
 
   // Vote actions
-  // TODO- we need to start using modal flow for all the transactions
   const voteOnDecision = useCallback(
-    (voteId, voteType) => {
-      sendIntent(votingApp, 'vote', [voteId, voteType === VOTE_YEA], {
-        ethers,
-        from: account,
+    async (voteId, supports, onDone = noop) => {
+      let intent = await votingApp.intent('vote', [voteId, supports], {
+        actAs: account,
       })
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_DECISION]({
+        voteId,
+        supports,
+      })
+      const type = actions.VOTE_ON_DECISION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
     },
-    [account, ethers, votingApp]
+    [account, votingApp]
+  )
+  const voteOnBehalfOf = useCallback(
+    async (voteId, supports, voters, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'voteOnBehalfOf',
+        [voteId, supports, voters],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_BEHALF_OF]({
+        voteId,
+        supports,
+      })
+      const type = actions.VOTE_ON_BEHALF_OF
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
   )
   // TODO- we need to start using modal flow for all the transactions
   const executeDecision = useCallback(
@@ -265,6 +306,33 @@ export default function useActions() {
       })
     },
     [account, ethers, votingApp]
+  )
+  const delegateVoting = useCallback(
+    async (representative, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'setRepresentative',
+        [representative],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.DELEGATE_VOTING]({
+        representative,
+      })
+      const type = actions.DELEGATE_VOTING
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
   )
 
   // Agreement actions
@@ -625,33 +693,37 @@ export default function useActions() {
       priceOracleActions: { updatePriceOracle },
       unipoolActions: { claimRewards },
       votingActions: {
+        delegateVoting,
         executeDecision,
         voteOnDecision,
+        voteOnBehalfOf,
       },
     }),
     [
       approveTokenAmount,
+      approveWrappableTokenAmount,
+      cancelProposal,
       challengeAction,
+      claimRewards,
+      delegateVoting,
       disputeAction,
+      executeDecision,
+      executeIssuance,
+      executeProposal,
       getAgreementTokenAllowance,
+      getHookedTokenManagerAllowance,
+      newProposal,
+      newSignalingProposal,
       resolveAction,
       settleAction,
       signAgreement,
-      executeProposal,
-      cancelProposal,
-      newProposal,
-      newSignalingProposal,
       stakeToProposal,
-      withdrawFromProposal,
-      approveWrappableTokenAmount,
-      getHookedTokenManagerAllowance,
-      wrap,
       unwrap,
-      executeIssuance,
       updatePriceOracle,
-      claimRewards,
-      executeDecision,
+      voteOnBehalfOf,
       voteOnDecision,
+      withdrawFromProposal,
+      wrap,
     ]
   )
 }

@@ -277,7 +277,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
               onClick={close}
               wide
               css={`
-                margin-top: ${5 * GU}px;
+                margin-top: ${3 * GU}px;
               `}
             />
           )}

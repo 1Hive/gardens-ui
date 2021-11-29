@@ -6,7 +6,6 @@ import {
   GU,
   Help,
   LoadingRing,
-  useLayout,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -20,13 +19,11 @@ import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
-  const { layoutName } = useLayout()
   const { token, wrappableToken } = useGardenState()
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
   const theme = useTheme()
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   const [earnedRewards, rewardsLink] = useUnipoolRewards()
 
@@ -40,11 +37,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   }, [onClaimRewards, rewardsLink])
 
   return (
-    <Box
-      css={`
-        ${!compactMode && `margin-bottom: ${3 * GU}px;`}
-      `}
-    >
+    <Box>
       <div
         css={`
           display: flex;
@@ -52,15 +45,25 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
           justify-content: center;
         `}
       >
-        <Token
-          balance={wrappableToken.accountBalance}
-          loading={loading}
-          mode="wrap"
-          onClick={onWrapToken}
-          token={wrappableToken.data}
-        />
+        <div
+          css={`
+            width: 100%;
+          `}
+        >
+          <Token
+            balance={wrappableToken.accountBalance}
+            loading={loading}
+            mode="wrap"
+            onClick={onWrapToken}
+            token={wrappableToken.data}
+          />
+        </div>
         <LineSeparator border={theme.border} />
-        <div>
+        <div
+          css={`
+            width: 100%;
+          `}
+        >
           <Token
             balance={token.accountBalance}
             loading={loading}

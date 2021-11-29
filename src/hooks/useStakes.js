@@ -7,7 +7,6 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
-import { useGardenState } from '@providers/GardenState'
 import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
 
@@ -45,8 +44,7 @@ export function useAccountStakes(account) {
 }
 
 export function useAccountStakesByGarden(account) {
-  const { connector } = useGardenState()
-  const supporter = useSupporterSubscription(connector, account)
+  const [supporter] = useSupporterSubscription(account)
 
   return useMemo(() => {
     if (!supporter) {
