@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import Carousel from '@/components/Carousel/Carousel'
+import Carousel from '@components/Carousel/Carousel'
 import { useGardenState } from '@providers/GardenState'
 import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
