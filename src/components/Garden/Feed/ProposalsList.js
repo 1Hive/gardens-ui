@@ -7,6 +7,8 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+
+import noProposalsYetLogo from '@assets/noProposalsYet.svg'
 import EmptyResults from '../../EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
@@ -102,6 +104,7 @@ function ProposalsList({
           </>
         ) : (
           <EmptyResults
+            image={noProposalsYetLogo}
             title={activeFilters ? 'No results found' : 'No proposals yet!'}
             paragraph={
               activeFilters

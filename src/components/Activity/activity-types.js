@@ -27,7 +27,7 @@ const ACTIVITY_TYPES = {
     title: 'Claim earned rewards',
   },
   [actions.DELEGATE_VOTING]: {
-    icon: actions.VOTE_ON_DECISION, // TODO: Update when available
+    icon: actions.DELEGATE_VOTING,
     title: 'Update delegate',
   },
   [actions.DISPUTE_ACTION]: {
@@ -87,7 +87,7 @@ const ACTIVITY_TYPES = {
     title: 'Vote on decision',
   },
   [actions.VOTE_ON_BEHALF_OF]: {
-    icon: actions.VOTE_ON_DECISION,
+    icon: actions.VOTE_ON_BEHALF_OF,
     title: 'Vote on decision on behalf of principals',
   },
   [actions.WITHDRAW_FUNDS]: {
