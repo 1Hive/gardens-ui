@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { useGardens } from '@/providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 export default function DiscourseComments({ topicId }) {
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   useEffect(() => {
     window.DiscourseEmbed = {

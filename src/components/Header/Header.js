@@ -6,11 +6,11 @@ import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
 import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
 import Layout from '../Layout'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import { getHoneyswapTradeTokenUrl } from '@/endpoints'
+import { getDexTradeTokenUrl } from '@/endpoints'
 import { getNetwork } from '@/networks'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
@@ -24,7 +24,7 @@ function Header({ onOpenPreferences }) {
   const layoutSmall = below('medium')
   const network = getNetwork()
   const history = useHistory()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -38,9 +38,9 @@ function Header({ onOpenPreferences }) {
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
-  const logoLink = connectedGarden
-    ? `#${buildGardenPath(history.location, '')}`
-    : 'https://gardens.1hive.org'
+  const logoLink = `#${
+    connectedGarden ? buildGardenPath(history.location, '') : '/home'
+  }`
 
   const showBalance = connectedGarden && account && !layoutSmall
 
@@ -71,7 +71,7 @@ function Header({ onOpenPreferences }) {
           >
             <Link
               href={logoLink}
-              external={!connectedGarden}
+              external={false}
               css={`
                 display: flex;
               `}
@@ -160,8 +160,9 @@ function GardenNavItems({ garden }) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const forumURL = connectedGarden.forumURL
+  const { preferredNetwork } = useWallet()
 
   const handleOnGoToCovenant = useCallback(() => {
     const path = buildGardenPath(history.location, 'covenant')
@@ -182,7 +183,7 @@ function GardenNavItems({ garden }) {
         Forum
       </Link>
       <Link
-        href={getHoneyswapTradeTokenUrl(token.id)}
+        href={getDexTradeTokenUrl(preferredNetwork, token.id)}
         css={`
           text-decoration: none;
           color: ${theme.contentSecondary};

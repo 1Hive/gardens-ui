@@ -8,6 +8,7 @@ import {
   LoadingRing,
   Split,
   textStyle,
+  TransactionBadge,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -37,6 +38,7 @@ import { useWallet } from '@providers/Wallet'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
+import { getNetwork } from '@/networks'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
@@ -56,6 +58,8 @@ function DecisionDetail({ proposal, actions }) {
     emptyScript,
     loading: descriptionLoading,
   } = useDescribeVote(proposal.script, proposal.id)
+
+  const network = getNetwork()
 
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const connectedAccountCast = getConnectedAccountCast(
@@ -152,6 +156,17 @@ function DecisionDetail({ proposal, actions }) {
                   >
                     {`Vote #${number}`}
                   </h1>
+                  <div
+                    css={`
+                      margin-top: ${1 * GU}px;
+                    `}
+                  >
+                    <TransactionBadge
+                      transaction={proposal.txHash}
+                      networkType={network.type}
+                      explorerProvider={network.explorer}
+                    />
+                  </div>
                 </div>
                 <div
                   css={`

@@ -8,6 +8,7 @@ import {
   LoadingRing,
   useLayout,
 } from '@1hive/1hive-ui'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
 import { getNetwork } from '@/networks'
@@ -17,7 +18,8 @@ import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 function AppsAddresses() {
   const { layoutName } = useLayout()
 
-  const { connectedGarden, loading: loadingGarden } = useGardens()
+  const { loading } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   const gardenState = useGardenState()
 
@@ -32,7 +34,7 @@ function AppsAddresses() {
     <div>
       <React.Fragment>
         <Box heading="Garden address">
-          {!connectedGarden || loadingGarden ? (
+          {!connectedGarden || loading ? (
             <div
               css={`
                 display: flex;

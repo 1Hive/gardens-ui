@@ -1,6 +1,6 @@
 import React from 'react'
 import DecisionDetail from './DecisionDetail/DecisionDetail'
-import Loader from '../Loader'
+import { GardenLoader } from '../Loader'
 import useProposalLogic from '../../logic/proposal-logic'
 
 function DecisionLoader({ match }) {
@@ -11,7 +11,7 @@ function DecisionLoader({ match }) {
   } = useProposalLogic(match)
 
   if (!proposal || loading) {
-    return <Loader />
+    return <GardenLoader />
   }
 
   return (

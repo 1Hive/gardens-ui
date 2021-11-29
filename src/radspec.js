@@ -6,6 +6,9 @@ export default {
   [actions.ADD_FUNDS]: () => {
     return `Add funds to deposit manager`
   },
+  [actions.ALLOW_MANAGER]: () => {
+    return `Allow manager to lock funds`
+  },
   [actions.APPROVE_TOKEN]: ({ tokenSymbol }) => {
     return `Approve ${tokenSymbol}`
   },

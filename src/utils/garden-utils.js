@@ -1,3 +1,4 @@
+import { getNetwork } from '@/networks'
 import { addressesEqual } from './web3-utils'
 
 const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
@@ -22,4 +23,40 @@ export function getGardenForumUrl(metadata) {
   }
 
   return DEFAULT_FORUM_URL
+}
+
+export function mergeGardenMetadata(garden, gardensMetadata) {
+  const metadata =
+    gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
+
+  const token = {
+    ...garden.token,
+    logo: metadata.token_logo,
+  }
+  const wrappableToken = garden.wrappableToken
+    ? {
+        ...garden.wrappableToken,
+        ...metadata.wrappableToken,
+      }
+    : null
+
+  const forumURL = getGardenForumUrl(metadata)
+
+  return {
+    ...garden,
+    ...metadata,
+    address: garden.id,
+    forumURL,
+    token,
+    wrappableToken,
+  }
+}
+
+export function is1HiveGarden(gardenAddress) {
+  if (!gardenAddress) {
+    return false
+  }
+
+  const network = getNetwork()
+  return addressesEqual(gardenAddress, network.hiveGarden)
 }

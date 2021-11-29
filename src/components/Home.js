@@ -9,7 +9,7 @@ import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
 import { useWallet } from '@providers/Wallet'
 import MultiModal from './MultiModal/MultiModal'
-import ConnectWalletScreens from './ModalFlows/ConnectWallet/ConnectWalletScreens'
+import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreens'
 import Loader from './Loader'
 import Onboarding from './Onboarding'
 
@@ -65,7 +65,10 @@ function Home() {
       </DynamicDiv>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
       <MultiModal visible={connectModalVisible} onClose={handleCloseModal}>
-        <ConnectWalletScreens onSuccess={handleCloseModal} />
+        <ConnectWalletScreens
+          onClose={handleCloseModal}
+          onSuccess={handleOnboardingOpen}
+        />
       </MultiModal>
     </div>
   )
