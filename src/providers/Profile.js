@@ -107,7 +107,6 @@ function ProfileProvider({ children }) {
     if (!account || boxCache.has(account)) {
       return
     }
-
     setBox(null)
     auth()
   }, [account, auth])

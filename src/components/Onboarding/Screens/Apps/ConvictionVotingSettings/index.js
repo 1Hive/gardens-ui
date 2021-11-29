@@ -23,10 +23,35 @@ import {
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
 
-const MAX_HALF_LIFE_DAYS = 20
+const MAX_HALF_LIFE_DAYS = 60
 const DEFAULT_REQUESTED_AMOUNT = 2
 const DEFAULT_STAKE_ON_PROPOSAL = 5
 const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0
+
+function validationError(
+  halflifeDays,
+  maxRatio,
+  minThreshold,
+  requestToken,
+  minThresholdStakePct
+) {
+  if (halflifeDays === '0') {
+    return 'Conviction growth cannot be zero.'
+  }
+  if (maxRatio === '0') {
+    return 'Spending limit cannot be zero.'
+  }
+  if (minThreshold === '0') {
+    return 'Minimum conviction cannot be zero.'
+  }
+  if (minThresholdStakePct === '0') {
+    return 'Minimum active stake cannot be zero.'
+  }
+  if (Boolean(requestToken) && !isAddress(requestToken)) {
+    return 'The request token address should be a valid address.'
+  }
+  return null
+}
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
@@ -78,6 +103,8 @@ function ConvictionVotingSettings() {
     step,
     steps,
   } = useOnboardingState()
+
+  const [formError, setFormError] = useState(null)
   const [
     {
       decay,
@@ -102,21 +129,22 @@ function ConvictionVotingSettings() {
 
   const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
 
-  const requestTokenInvalid = Boolean(requestToken) && !isAddress(requestToken)
-
   const handleHalflifeDaysChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['halflifeDays', value])
     },
     [updateField]
   )
 
   const handleMaxRatioChange = useCallback(value => {
+    setFormError(null)
     updateField(['maxRatio', value])
   }, [])
 
   const handleMinThresholdChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['minThreshold', value])
     },
     [updateField]
@@ -131,14 +159,15 @@ function ConvictionVotingSettings() {
 
   const handleMinThresholdStakePctChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['minThresholdStakePct', value])
     },
     [updateField]
   )
 
   const handleRequestTokenChange = useCallback(
-    value => {
-      updateField(['requestToken', value])
+    event => {
+      updateField(['requestToken', event.target.value])
     },
     [updateField]
   )
@@ -159,7 +188,20 @@ function ConvictionVotingSettings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.tokens.address, updateField])
 
-  const handleNextClick = () => {
+  const handleNextClick = event => {
+    event.preventDefault()
+    const error = validationError(
+      halflifeDays,
+      maxRatio,
+      minThreshold,
+      requestToken,
+      minThresholdStakePct
+    )
+    if (error) {
+      setFormError(error)
+      return
+    }
+
     onConfigChange('conviction', {
       decay,
       halflifeDays,
@@ -208,7 +250,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             maxValue={MAX_HALF_LIFE_DAYS}
             value={halflifeDays}
             precision={2}
@@ -225,7 +266,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             value={maxRatio}
             precision={2}
             onChange={handleMaxRatioChange}
@@ -241,7 +281,6 @@ function ConvictionVotingSettings() {
                 </Help>
               </Fragment>
             }
-            minValue={1}
             value={minThreshold}
             precision={2}
             onChange={handleMinThresholdChange}
@@ -319,21 +358,20 @@ function ConvictionVotingSettings() {
           />
         </div>
       </div>
-
-      {requestTokenInvalid && (
+      {formError && (
         <Info
           mode="error"
           css={`
             margin-bottom: ${3 * GU}px;
           `}
         >
-          The request token address should be a valid address.
+          {formError}
         </Info>
       )}
 
       <Navigation
         backEnabled
-        nextEnabled={!requestTokenInvalid}
+        nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}

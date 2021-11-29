@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useWallet } from 'use-wallet'
 import { Button, GU, IconConnect } from '@1hive/1hive-ui'
+import { useWallet } from '@providers/Wallet'
 
 import ScreenError from './ScreenError'
 import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
+import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { useProfile } from '../../providers/Profile'
+import { addEthereumChain } from '@/networks'
 
 const SCREENS = [
   {
@@ -17,6 +19,9 @@ const SCREENS = [
   },
   {
     id: 'connecting',
+  },
+  {
+    id: 'networks',
   },
   {
     id: 'connected',
@@ -32,24 +37,26 @@ function AccountModule({ compact }) {
   const wallet = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  const [activationError, setActivationError] = useState(null)
+  const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
-  const { account, activating } = wallet
+  const { account, activating, connector, error } = wallet
 
-  const clearError = useCallback(() => setActivationError(null), [])
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const handleCancelConnection = useCallback(() => {
-    wallet.deactivate()
+    wallet.reset()
   }, [wallet])
 
   const activate = useCallback(
     async providerId => {
       try {
-        await wallet.activate(providerId)
+        setCreatingNetwork(true)
+        await addEthereumChain()
+        setCreatingNetwork(false)
+        await wallet.connect(providerId)
       } catch (error) {
-        setActivationError(error)
+        console.log('error ', error)
       }
     },
     [wallet]
@@ -63,7 +70,7 @@ function AccountModule({ compact }) {
 
   // Always show the “connecting…” screen, even if there are no delay
   useEffect(() => {
-    if (activationError) {
+    if (error) {
       setActivatingDelayed(null)
     }
 
@@ -79,14 +86,15 @@ function AccountModule({ compact }) {
     return () => {
       clearTimeout(timer)
     }
-  }, [activating, activationError])
+  }, [activating, error])
 
   const previousScreenIndex = useRef(-1)
 
   const { direction, screenIndex } = useMemo(() => {
     const screenId = (() => {
-      if (activationError) return 'error'
+      if (error) return 'error'
       if (activatingDelayed) return 'connecting'
+      if (creatingNetwork) return 'networks'
       if (account) return 'connected'
       return 'providers'
     })()
@@ -97,7 +105,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [account, activationError, activatingDelayed])
+  }, [error, activatingDelayed, creatingNetwork, account])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
@@ -109,7 +117,6 @@ function AccountModule({ compact }) {
         return false
       }
       setOpened(false)
-      setActivationError(null)
     },
     [screenId]
   )
@@ -145,7 +152,7 @@ function AccountModule({ compact }) {
         screenData={{
           account,
           activating: activatingDelayed,
-          activationError,
+          activationError: error,
           status,
           screenId,
         }}
@@ -162,7 +169,7 @@ function AccountModule({ compact }) {
           if (screenId === 'connecting') {
             return (
               <ScreenConnecting
-                providerId={activating}
+                providerId={connector}
                 onCancel={handleCancelConnection}
               />
             )
@@ -170,13 +177,22 @@ function AccountModule({ compact }) {
           if (screenId === 'connected') {
             return (
               <ScreenConnected
+                providerId={connector}
                 onClosePopover={handlePopoverClose}
                 wallet={wallet}
               />
             )
           }
           if (screenId === 'error') {
-            return <ScreenError error={activationError} onBack={clearError} />
+            return (
+              <ScreenError
+                error={activationError}
+                onBack={handleCancelConnection}
+              />
+            )
+          }
+          if (screen.id === 'networks') {
+            return <ScreenPromptingAction />
           }
           return <ScreenProviders onActivate={activate} />
         }}

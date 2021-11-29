@@ -7,24 +7,26 @@ import Header from './Header/Header'
 import Layout from './Layout'
 import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
 import Sidebar from './Sidebar/Sidebar'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
 import usePreferences from '@hooks/usePreferences'
-import { useGardens } from '@/providers/Gardens'
-import { useGardenState } from '@/providers/GardenState'
 
 function MainView({ children }) {
   const { pathname } = useLocation()
   const { below } = useViewport()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
 
   let loadingGardenState = true
   if (connectedGarden) {
+    // TODO: Refactor
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { loading } = useGardenState()
     loadingGardenState = loading
   }
 
+  const mobileMode = below('medium')
   const compactMode = below('large')
 
   if (preferenceOption) {
@@ -66,6 +68,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
+              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
             `}
           >
             <div

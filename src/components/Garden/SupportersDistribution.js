@@ -182,6 +182,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
         entity={entity}
         connectedAccount={isCurrentUser}
         compact
+        iconSize="18"
         labelStyle={`${textStyle('body3')}`}
         css={`
           width: ${compactMode ? 'auto' : '110px'};

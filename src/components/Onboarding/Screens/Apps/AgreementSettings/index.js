@@ -39,15 +39,27 @@ const reduceFields = (fields, [field, value]) => {
   }
 }
 
-const validateAgreementSettings = (title, covenantFile, challengePeriod) => {
+const validateAgreementSettings = (
+  title,
+  covenantFile,
+  actionAmount,
+  challengeAmount,
+  challengePeriod
+) => {
   if (!title.trim()) {
     return 'Please add a title.'
   }
-  if (!covenantFile || !covenantFile.content) {
+  if (!covenantFile?.content) {
     return 'File content empty. Please upload your Covenant.'
   }
+  if (!actionAmount) {
+    return 'Please add an action deposit.'
+  }
+  if (!challengeAmount) {
+    return 'Please add a challenge deposit.'
+  }
   if (!challengePeriod) {
-    return 'Please add a challenge period.'
+    return 'Please add a settlement period.'
   }
   return null
 }
@@ -118,6 +130,8 @@ function AgreementSettings() {
     const error = validateAgreementSettings(
       title,
       covenantFile,
+      actionAmount,
+      challengeAmount,
       challengePeriod
     )
     setFormError(error)
@@ -310,13 +324,7 @@ function AgreementSettings() {
       />
       <Navigation
         backEnabled
-        nextEnabled={Boolean(
-          actionAmount &&
-            challengeAmount &&
-            challengePeriod &&
-            !!covenantFile &&
-            title
-        )}
+        nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
         onNext={handleNextClick}

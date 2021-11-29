@@ -31,11 +31,9 @@ function GlobalErrorScreen({ children }) {
           <img
             src={flowerError}
             alt=""
-            width="147"
-            height="144"
             css={`
               display: block;
-              margin: ${5 * GU}px auto ${1.5 * GU}px;
+              margin: 0px auto 0px;
             `}
           />
           {children}

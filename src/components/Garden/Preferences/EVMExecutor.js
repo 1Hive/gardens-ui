@@ -18,11 +18,14 @@ import { evmcl, EVMcrispr } from '@1hive/evmcrispr'
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
 
-import { useGardens } from '@/providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@/providers/GardenState'
 import { useWallet } from '@/providers/Wallet'
 
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
+import env from '@/environment'
+import { getAppByName } from '@utils/data-utils'
 import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
 
@@ -34,7 +37,9 @@ const TERMINAL_INDEX = 2
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
-  const { connectedGarden } = useGardens()
+  const gardenState = useGardenState()
+
+  const connectedGarden = useConnectedGarden()
   const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
     false
   )
@@ -80,6 +85,17 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
     getEvmCrispr()
   }, [account, connectedGarden, ethers])
 
+  const forwarderName = useMemo(() => {
+    if (!gardenState || !gardenState.installedApps) {
+      return null
+    }
+
+    return getAppByName(
+      gardenState.installedApps,
+      env('VOTING_APP_NAME')
+    ).artifact.appName.split('.aragonpm.eth')[0]
+  }, [gardenState])
+
   const installedApps = useMemo(() => {
     if (!evmcrispr) {
       return []
@@ -105,7 +121,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
 
       const appName = installedApps[selectedApp]
 
-      appFunctions = Object.getOwnPropertyNames(evmcrispr.call(appName))
+      appFunctions = Object.getOwnPropertyNames(evmcrispr.exec(appName))
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       appFunctions = formattedAbi.map(item => {
@@ -133,7 +149,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
         return []
       }
 
-      const { paramNames, paramTypes } = evmcrispr.call(
+      const { paramNames, paramTypes } = evmcrispr.exec(
         installedApps[selectedApp]
       )[functionList[selectedFunction]]
 
@@ -141,7 +157,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
         return [parameter, paramTypes[index]]
       })
     }
-    if (interactionType === EXTERNAL_INDEX) {
+    if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       return formattedAbi[selectedFunction].inputs.map(parameter => {
         return [parameter.name, parameter.type]
       })
@@ -184,6 +200,9 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
   }, [])
 
   const handleOnCreateIntent = useCallback(async () => {
+    if (!forwarderName) {
+      return []
+    }
     const description = radspec[actions.NEW_DECISION]()
     const type = actions.NEW_DECISION
 
@@ -193,10 +212,10 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
       intent = await evmcrispr.encode(
         [
           evmcrispr
-            .call(installedApps[selectedApp])
+            .exec(installedApps[selectedApp])
             [functionList[selectedFunction]](...parameters),
         ],
-        ['disputable-voting'],
+        [forwarderName],
         // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
         // { context: asciiToHex(functionList[selectedFunction]) }
         // having some issue on the lib when passing the function that need to check with david
@@ -213,7 +232,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
             [...parameters]
           ),
         ],
-        ['disputable-voting'],
+        [forwarderName],
         // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
         // { context: asciiToHex(functionList[selectedFunction]) }
         // having some issue on the lib when passing the function that need to check with david
@@ -236,6 +255,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
     code,
     evmcrispr,
     externalContractAddress,
+    forwarderName,
     humanReadableSignature,
     interactionType,
     installedApps,

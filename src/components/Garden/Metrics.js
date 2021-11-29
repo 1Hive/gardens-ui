@@ -4,6 +4,7 @@ import {
   Button,
   GU,
   Help,
+  Split,
   textStyle,
   useLayout,
   useTheme,
@@ -22,9 +23,10 @@ const Metrics = React.memo(function Metrics({
   commonPool,
   onExecuteIssuance,
   onRequestUpdatePriceOracle,
-  token,
+  priceToken,
   totalActiveTokens,
   totalSupply,
+  totalWrappedSupply,
 }) {
   const currency = {
     name: 'USD',
@@ -32,48 +34,56 @@ const Metrics = React.memo(function Metrics({
     rate: 1,
   }
   return (
-    <Box padding={3 * GU}>
-      <div
-        css={`
-          display: flex;
-          justify-content: space-between;
-        `}
-      >
-        <PriceSection
-          onExecuteIssuance={onExecuteIssuance}
-          onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
-          currency={currency}
-          token={token}
-        />
-        <div>
-          <TokenBalance
-            label="Common Pool"
-            value={commonPool}
-            token={token}
-            currency={currency}
-            helptip="common-pool"
-          />
-        </div>
-        <div>
-          <TokenBalance
-            label="Total Supply"
-            value={totalSupply}
-            token={token}
-            currency={currency}
-            helptip="total-supply"
-          />
-        </div>
-        <div>
-          <TokenBalance
-            label="Total Support"
-            value={totalActiveTokens}
-            token={token}
-            currency={currency}
-            helptip="total-support"
-          />
-        </div>
-      </div>
-    </Box>
+    <Split
+      primary={
+        <Box padding={3 * GU}>
+          <div
+            css={`
+              display: grid;
+              grid-template-columns: 2fr 1.5fr 1fr;
+            `}
+          >
+            <PriceSection
+              onExecuteIssuance={onExecuteIssuance}
+              onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
+              currency={currency}
+              token={priceToken}
+            />
+            <SupplySection
+              currency={currency}
+              totalSupply={totalSupply}
+              totalWrappedSupply={totalWrappedSupply}
+            />
+            <div>
+              <TokenBalance
+                label="Total Support"
+                value={totalActiveTokens.value}
+                token={totalActiveTokens.token}
+                currency={currency}
+                helptip="total-support"
+              />
+            </div>
+          </div>
+        </Box>
+      }
+      secondary={
+        <Box padding={3 * GU}>
+          <div
+            css={`
+              text-align: center;
+            `}
+          >
+            <TokenBalance
+              label="Common Pool"
+              value={commonPool.value}
+              token={commonPool.token}
+              currency={currency}
+              helptip="common-pool"
+            />
+          </div>
+        </Box>
+      }
+    />
   )
 })
 
@@ -85,11 +95,12 @@ function PriceSection({
 }) {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  const [oracleMode, setOracleMode] = useState(false)
+  const [priceMode, setPriceMode] = useState(true)
 
-  const handleShowOracleMode = useCallback(() => {
-    setOracleMode(!oracleMode)
-  }, [oracleMode])
+  const handleTogglePriceMode = useCallback(() => {
+    setPriceMode(priceMode => !priceMode)
+  }, [])
+
   return (
     <div
       css={`
@@ -99,7 +110,7 @@ function PriceSection({
         margin-bottom: ${(compactMode ? 2 : 0) * GU}px;
       `}
     >
-      <DotSwitch checked={oracleMode} onChange={handleShowOracleMode} />
+      <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
         src={token.logo || defaultTokenLogo}
         height="60"
@@ -108,21 +119,69 @@ function PriceSection({
         onClick={onExecuteIssuance}
         css={`
           margin-right: ${4 * GU}px;
-          margin-left: ${4 * GU}px;
+          margin-left: ${2 * GU}px;
           cursor: pointer;
         `}
       />
       <TokenPrice
         currency={currency}
         token={token}
-        oracleMode={oracleMode}
+        oracleMode={!priceMode}
         onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
       />
     </div>
   )
 }
 
-function Metric({ label, value, color, helptip }) {
+function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
+  const [supplyMode, setSupplyMode] = useState(true)
+
+  const handleToggleSupplyMode = useCallback(() => {
+    setSupplyMode(supplyMode => !supplyMode)
+  }, [])
+
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+      `}
+    >
+      {totalWrappedSupply && (
+        <div
+          css={`
+            margin-right: ${2 * GU}px;
+          `}
+        >
+          <DotSwitch first={supplyMode} onChange={handleToggleSupplyMode} />
+        </div>
+      )}
+      {supplyMode ? (
+        <div>
+          <TokenBalance
+            label="Total Supply"
+            value={totalSupply.value}
+            token={totalSupply.token}
+            currency={currency}
+            helptip="total-supply"
+          />
+        </div>
+      ) : (
+        <div>
+          <TokenBalance
+            label="Wrapped Supply"
+            value={totalWrappedSupply.value}
+            token={totalWrappedSupply.token}
+            currency={currency}
+            helptip="total-wrapped-supply"
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Metric({ label, value, symbol, color, helptip }) {
   const theme = useTheme()
 
   return (
@@ -145,11 +204,18 @@ function Metric({ label, value, color, helptip }) {
       </div>
       <span
         css={`
-          ${textStyle('title2')};
+          ${textStyle('title3')};
           color: ${color || theme.content};
         `}
       >
-        {value}
+        {value}{' '}
+        <span
+          css={`
+            ${textStyle('body3')}
+          `}
+        >
+          {symbol}
+        </span>
       </span>
     </>
   )
@@ -165,6 +231,7 @@ function TokenBalance({ label, token, value, currency, helptip }) {
       <Metric
         label={label}
         value={formatTokenAmount(value, token.decimals)}
+        symbol={token.symbol}
         helptip={helptip}
       />
       <div
@@ -213,72 +280,88 @@ function TokenPrice({
     return oracleMode ? convertedAmount.valueOf() : honeyswapPrice
   }, [oracleMode, convertedAmount, honeyswapPrice, loading])
 
+  const oraclePrice =
+    price > 0
+      ? `${currency.symbol} ${formatDecimals(price * currency.rate, 2)}`
+      : '-'
+
   return (
     <div
       css={`
-        width: ${30 * GU}px;
+        width: ${25 * GU}px;
       `}
     >
       <div
         css={`
           display: flex;
-          justify-content: space-between;
+          align-items: center;
         `}
       >
-        <p
+        <div
           css={`
-            ${textStyle('title2')};
+            display: flex;
+            flex-direction: column;
+            ${textStyle('title4')};
             margin-bottom: ${0.5 * GU}px;
           `}
         >
-          {`${oracleMode ? 'Oracle' : ''} ${token.symbol} Price`}
-        </p>
+          {/* <p
+            css={`
+              ${textStyle('title4')};
+              margin-bottom: ${0.5 * GU}px;
+            `}
+          > */}
+          {token.symbol} Price
+          {oracleMode && (
+            <span
+              css={`
+                ${textStyle('body4')}
+              `}
+            >
+              (Oracle)
+            </span>
+          )}
+          {/* </p> */}
+        </div>
         {oracleMode && (
-          <Help hint="What is Oracle Price?">
-            This is the price used for funding proposals defined in xDAI.
-            Calling update price could return a reward.
-          </Help>
+          <span
+            css={`
+              margin-left: ${1 * GU}px;
+            `}
+          >
+            <Help hint="What is Oracle Price?">
+              This is the price used for funding proposals defined in stable
+              asset. Calling update price could return a reward.
+            </Help>
+          </span>
         )}
       </div>
-      <span
+      <div
         css={`
           display: flex;
+          align-items: center;
           ${textStyle('title2')};
           color: ${theme.green};
         `}
       >
-        {price > 0 ? (
-          <span
-            css={`
-              width: ${17 * GU}px;
-            `}
-          >
-            {currency.symbol}
-            {formatDecimals(price * currency.rate, 2)}
-          </span>
-        ) : (
-          <span
-            css={`
-              width: ${17 * GU}px;
-            `}
-          >
-            -
-          </span>
-        )}
+        {oraclePrice}
         {oracleMode && (
           <Button
-            size="small"
+            size="mini"
             disabled={!canUpdate || !account}
             label="Update"
             onClick={onRequestUpdatePriceOracle}
+            css={`
+              margin-left: ${2 * GU}px;
+            `}
           />
         )}
-      </span>
+      </div>
     </div>
   )
 }
 
-function DotSwitch({ checked, onChange }) {
+function DotSwitch({ first, onChange }) {
   return (
     <div
       css={`
@@ -287,8 +370,8 @@ function DotSwitch({ checked, onChange }) {
         justify-content: center;
       `}
     >
-      <Dot isActive={!checked} onChange={onChange} />
-      <Dot isActive={checked} onChange={onChange} />
+      <Dot isActive={first} onChange={onChange} />
+      <Dot isActive={!first} onChange={onChange} />
     </div>
   )
 }

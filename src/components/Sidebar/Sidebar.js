@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { useRouteMatch } from 'react-router'
 import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
@@ -13,21 +14,25 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 function Sidebar() {
   const theme = useTheme()
   const { user: connectedUser, loading: userLoading } = useUserState()
-  const { connectedGarden, gardensMetadata } = useGardens()
+  const { gardensMetadata } = useGardens()
+
+  const match = useRouteMatch('/garden/:daoId')
 
   const sidebarGardens = useMemo(() => {
-    if (!connectedUser?.gardensSigned || !gardensMetadata) {
+    if (!connectedUser?.gardensSigned) {
       return []
     }
 
     const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { address, name, logo } = gardensMetadata.find(g =>
-        addressesEqual(g.address, gardenSignedAddress)
-      )
+      const { name, logo } =
+        gardensMetadata?.find(g =>
+          addressesEqual(g.address, gardenSignedAddress)
+        ) || {}
+
       return {
-        address,
+        address: gardenSignedAddress,
         name,
-        path: `#/garden/${address}`,
+        path: `#/garden/${gardenSignedAddress}`,
         src: logo || defaultGardenLogo,
       }
     })
@@ -51,7 +56,7 @@ function Sidebar() {
         top: 0;
         left: 0;
         height: 100vh;
-        z-index: 2;
+        z-index: 1;
         width: ${9 * GU}px;
         flex-shrink: 0;
         background: ${theme.surface};
@@ -127,7 +132,7 @@ function Sidebar() {
                 return (
                   <animated.div key={address} style={style}>
                     <MenuItem
-                      active={addressesEqual(address, connectedGarden?.address)}
+                      active={addressesEqual(address, match?.params.daoId)}
                       label={name || address}
                       path={path}
                       src={src}

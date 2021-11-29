@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   Button,
   ButtonBase,
@@ -11,24 +12,25 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '../IdentityBadge'
-import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
-import { useGardens } from '../../providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
+import { useWallet } from '@providers/Wallet'
 
-import { buildGardenPath } from '../../utils/routing-utils'
-import { getNetworkName } from '../../utils/web3-utils'
-import { getProviderFromUseWalletId } from '../../ethereum-providers'
+import { buildGardenPath } from '@utils/routing-utils'
+import { getNetworkName } from '@utils/web3-utils'
 
-import profileButtonSvg from '../../assets/profileButton.svg'
-import stakeButtonSvg from '../../assets/stakeButton.svg'
+import profileButtonSvg from '@assets/profileButton.svg'
+import stakeButtonSvg from '@assets/stakeButton.svg'
 
-function AccountScreenConnected({ onClosePopover, wallet }) {
+function AccountScreenConnected({ providerId, onClosePopover, wallet }) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
+  const { chainId } = useWallet()
 
-  const networkName = getNetworkName()
-  const providerInfo = getProviderFromUseWalletId(wallet.activated)
+  const networkName = getNetworkName(chainId)
+  const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {
     history.push(`/profile`)
@@ -46,7 +48,9 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
     wallet,
   ])
 
-  const handleDeactivate = useCallback(() => wallet.deactivate(), [wallet])
+  const handleDeactivate = useCallback(() => {
+    wallet.resetConnection()
+  }, [wallet])
 
   return (
     <div
@@ -168,11 +172,7 @@ function AccountScreenConnected({ onClosePopover, wallet }) {
                 badgeOnly
                 css="cursor: pointer"
               />
-              <IconCopy
-                css={`
-                  color: ${theme.hint};
-                `}
-              />
+              <IconCopy color={theme.hint} />
             </ButtonBase>
           </div>
         </div>

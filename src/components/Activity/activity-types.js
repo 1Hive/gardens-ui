@@ -1,95 +1,105 @@
 import actions from '../../actions/garden-action-types'
 
-import GARDEN_LOGO from '@assets/gardensLogo.svg' // WE NEED SOME ICONS FOR DIFERENT ACTIONS
-
 // The different types of activity
 const ACTIVITY_TYPES = {
   [actions.ADD_FUNDS]: {
-    icon: GARDEN_LOGO,
+    icon: actions.ADD_FUNDS,
     title: 'Add funds to deposit manager',
   },
+  [actions.ALLOW_MANAGER]: {
+    icon: actions.ALLOW_MANAGER,
+    title: 'Allow manager to lock funds',
+  },
   [actions.APPROVE_TOKEN]: {
-    icon: GARDEN_LOGO,
+    icon: actions.APPROVE_TOKEN,
     title: 'Approve token amount',
   },
   [actions.CANCEL_PROPOSAL]: {
-    icon: GARDEN_LOGO,
+    icon: actions.CANCEL_PROPOSAL,
     title: 'Cancel proposal',
   },
   [actions.CHALLENGE_ACTION]: {
-    icon: GARDEN_LOGO,
+    icon: actions.CHALLENGE_ACTION,
     title: 'Challenge proposal',
   },
   [actions.CLAIM_REWARDS]: {
-    icon: GARDEN_LOGO,
+    icon: actions.CLAIM_REWARDS,
     title: 'Claim earned rewards',
   },
+  [actions.DELEGATE_VOTING]: {
+    icon: actions.VOTE_ON_DECISION, // TODO: Update when available
+    title: 'Update delegate',
+  },
   [actions.DISPUTE_ACTION]: {
-    icon: GARDEN_LOGO,
+    icon: actions.DISPUTE_ACTION,
     title: 'Dispute proposal',
   },
   [actions.EXECUTE_ADJUSTMENT]: {
+    icon: actions.EXECUTE_ADJUSTMENT,
     title: 'Execute issuance',
-    icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_DECISION]: {
+    icon: actions.EXECUTE_DECISION,
     title: 'Execute decision',
-    icon: GARDEN_LOGO,
   },
   [actions.EXECUTE_PROPOSAL]: {
+    icon: actions.EXECUTE_PROPOSAL,
     title: 'Execute proposal',
-    icon: GARDEN_LOGO,
   },
   [actions.NEW_DECISION]: {
+    icon: actions.NEW_DECISION,
     title: 'New decision creation',
-    icon: GARDEN_LOGO,
   },
   [actions.NEW_PROPOSAL]: {
+    icon: actions.NEW_PROPOSAL,
     title: 'New proposal creation',
-    icon: GARDEN_LOGO,
   },
   [actions.NEW_SIGNALING_PROPOSAL]: {
-    icon: GARDEN_LOGO,
+    icon: actions.NEW_SIGNALING_PROPOSAL,
     title: 'New signaling proposal creation',
   },
   [actions.RESOLVE_ACTION]: {
+    icon: actions.RESOLVE_ACTION,
     title: 'Resolve dispute',
-    icon: GARDEN_LOGO,
   },
   [actions.SETTLE_ACTION]: {
+    icon: actions.SETTLE_ACTION,
     title: 'Settle challenge',
-    icon: GARDEN_LOGO,
   },
   [actions.SIGN_AGREEMENT]: {
+    icon: actions.SIGN_AGREEMENT,
     title: 'Sign covenant',
-    icon: GARDEN_LOGO,
   },
   [actions.STAKE_TO_PROPOSAL]: {
+    icon: actions.STAKE_TO_PROPOSAL,
     title: 'Support proposal',
-    icon: GARDEN_LOGO,
   },
   [actions.UNWRAP_TOKEN]: {
+    icon: actions.UNWRAP_TOKEN,
     title: 'Unwrap token',
-    icon: GARDEN_LOGO,
   },
   [actions.UPDATE_PRICE_ORACLE]: {
-    icon: GARDEN_LOGO,
+    icon: actions.UPDATE_PRICE_ORACLE,
     title: 'Update Price Oracle',
   },
   [actions.VOTE_ON_DECISION]: {
-    icon: GARDEN_LOGO,
+    icon: actions.VOTE_ON_DECISION,
     title: 'Vote on decision',
   },
+  [actions.VOTE_ON_BEHALF_OF]: {
+    icon: actions.VOTE_ON_DECISION,
+    title: 'Vote on decision on behalf of principals',
+  },
   [actions.WITHDRAW_FUNDS]: {
-    icon: GARDEN_LOGO,
+    icon: actions.WITHDRAW_FUNDS,
     title: 'Withdraw funds from deposit manager',
   },
   [actions.WITHDRAW_FROM_PROPOSAL]: {
-    icon: GARDEN_LOGO,
+    icon: actions.WITHDRAW_FROM_PROPOSAL,
     title: 'Withdraw support from proposal',
   },
   [actions.WRAP_TOKEN]: {
-    icon: GARDEN_LOGO,
+    icon: actions.WRAP_TOKEN,
     title: 'Wrap token',
   },
 }

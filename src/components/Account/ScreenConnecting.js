@@ -1,11 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
+import { getProviderFromUseWalletId } from 'use-wallet'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
-import {
-  getProviderFromUseWalletId,
-  getProviderString,
-} from '../../ethereum-providers'
 
 import loadingRing from './assets/loading-ring.svg'
 
@@ -95,8 +92,8 @@ const AccountModuleConnectingScreen = React.memo(function({
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          Log into {getProviderString('your Ethereum provider', provider.id)}.
-          You may be temporarily redirected to a new screen.
+          Log into {provider.name || 'Unknown'}. You may be temporarily
+          redirected to a new screen.
         </p>
       </div>
       <div

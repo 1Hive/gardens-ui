@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react'
-import { GU, IconInfo, useTheme } from '@1hive/1hive-ui'
+import { GU } from '@1hive/1hive-ui'
 import WelcomeModal from './WelcomeModal'
+import InfoButton from '@assets/InfoButton.svg'
 
 function WelcomeLoader() {
-  const theme = useTheme()
   const [welcomeClosed, setWelcomeClosed] = useState(
     localStorage.getItem('welcomeClosed') === 'true'
   )
@@ -20,29 +20,19 @@ function WelcomeLoader() {
   return (
     <React.Fragment>
       <WelcomeModal onClose={handleOnClose} visible={!welcomeClosed} />
-      <div
-        onClick={handleOnOpen}
+      <img
         css={`
           display: flex;
           position: absolute;
           bottom: 0;
           right: 0;
           z-index: 2;
-          margin: ${2 * GU}px;
-          padding: ${1 * GU}px;
-          background: ${theme.surface};
-          box-shadow: 0 1px 4px 0 rgb(0 0 0 / 6%), 0 2px 12px 0 rgb(0 0 0 / 16%);
-          border: 1px solid ${theme.border};
-          border-radius: 50%;
+          margin: ${3 * GU}px;
           cursor: pointer;
-
-          &:hover {
-            background: ${theme.background};
-          }
         `}
-      >
-        <IconInfo size="large" color="#185629" />
-      </div>
+        src={InfoButton}
+        onClick={handleOnOpen}
+      />
     </React.Fragment>
   )
 }
