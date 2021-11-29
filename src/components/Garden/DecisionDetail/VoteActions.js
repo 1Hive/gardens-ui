@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Button,
@@ -16,31 +16,38 @@ import useExtendedVoteData from '@hooks/useExtendedVoteData'
 import { useWallet } from '@providers/Wallet'
 import { noop, dateFormat } from '@utils/date-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
-import { getConnectedAccountVote, isVoteAction } from '@utils/vote-utils'
+import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils'
 
-const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
+const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const [ready, setReady] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
   const { config } = useGardenState()
   const { token } = config.voting
 
-  const connectedAccountVote = getConnectedAccountVote(vote, connectedAccount)
+  const connectedAccountCast = getConnectedAccountCast(vote, connectedAccount)
 
   const { hasEnded, snapshotBlock } = vote
   const {
-    canUserVote,
     canExecute,
+    canUserVote,
+    canUserVoteOnBehalfOf,
+    principals,
+    principalsBalance,
     userBalance,
     userBalanceNow,
+    canExecutePromise,
     canUserVotePromise,
+    canUserVoteOnBehalfOfPromise,
+    principalsBalancePromise,
     userBalancePromise,
     userBalanceNowPromise,
-    canExecutePromise,
     startTimestamp,
   } = useExtendedVoteData(vote)
 
-  const hasVoted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountVote)
+  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(
+    connectedAccountCast.vote
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -48,8 +55,10 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     const whenReady = async () => {
       try {
         await Promise.all([
-          canUserVotePromise,
           canExecutePromise,
+          canUserVotePromise,
+          canUserVoteOnBehalfOfPromise,
+          principalsBalancePromise,
           userBalancePromise,
           userBalanceNowPromise,
         ])
@@ -66,11 +75,34 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
       cancelled = true
     }
   }, [
-    userBalancePromise,
-    canUserVotePromise,
     canExecutePromise,
+    canUserVotePromise,
+    canUserVoteOnBehalfOfPromise,
+    principalsBalancePromise,
+    userBalancePromise,
     userBalanceNowPromise,
   ])
+
+  const handleVoteYes = useCallback(
+    () =>
+      onVote({
+        canUserVote,
+        canUserVoteOnBehalfOf,
+        supports: true,
+        principals,
+      }),
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
+  )
+  const handleVoteNo = useCallback(
+    () =>
+      onVote({
+        canUserVote,
+        canUserVoteOnBehalfOf,
+        supports: false,
+        principals,
+      }),
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
+  )
 
   if (!ready) {
     return null
@@ -106,64 +138,37 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
     )
   }
 
-  if (canUserVote) {
+  const startDate = new Date(startTimestamp)
+
+  if (canUserVote || canUserVoteOnBehalfOf) {
     return (
       <div>
-        {connectedAccount ? (
-          <React.Fragment>
-            <TokenReference
-              snapshotBlock={snapshotBlock}
-              startDate={new Date(startTimestamp)}
-              tokenSymbol={token.symbol}
-              userBalance={userBalance}
-              userBalanceNow={userBalanceNow}
-            />
-            <Buttons onClickYes={onVoteYes} onClickNo={onVoteNo} />
-          </React.Fragment>
-        ) : (
-          <div
-            css={`
-              border-radius: ${RADIUS}px;
-              background: ${theme.background};
-              padding: ${3.5 * GU}px ${10 * GU}px;
-              text-align: center;
-            `}
-          >
-            <div
-              css={`
-                ${textStyle('body1')};
-              `}
-            >
-              You must enable your account to vote on this proposal
-            </div>
-            <div
-              css={`
-                ${textStyle('body2')};
-                color: ${theme.surfaceContentSecondary};
-                margin-top: ${2 * GU}px;
-              `}
-            >
-              Connect to your Ethereum provider by clicking on the{' '}
-              <strong
-                css={`
-                  display: inline-flex;
-                  align-items: center;
-                  position: relative;
-                  top: 7px;
-                `}
-              >
-                <IconConnect /> Enable account
-              </strong>{' '}
-              button on the header. You may be temporarily redirected to a new
-              screen.
-            </div>
-          </div>
-        )}
+        <React.Fragment>
+          <TokenReference
+            canUserVote={canUserVote}
+            canUserVoteOnBehalfOf={canUserVoteOnBehalfOf}
+            principalsBalance={principalsBalance}
+            snapshotBlock={snapshotBlock}
+            startDate={startDate}
+            tokenSymbol={token.symbol}
+            userBalance={userBalance}
+            userBalanceNow={userBalanceNow}
+          />
+          <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
+          {canUserVote && isAccountVoteCasted && (
+            <Info mode="warning">
+              <strong>
+                Although your delegate has voted on your behalf, you can always
+                override their vote.
+              </strong>
+            </Info>
+          )}
+        </React.Fragment>
       </div>
     )
   }
 
-  if (hasVoted) {
+  if (isAccountVoteCasted) {
     return (
       <div>
         <Buttons disabled />
@@ -176,17 +181,59 @@ const VoteActions = React.memo(({ vote, onVoteYes, onVoteNo, onExecute }) => {
 
   return (
     <div>
-      <Buttons disabled />
-      <Info mode="warning">
-        {userBalanceNow > 0
-          ? 'Although the currently connected account holds tokens, it'
-          : 'The currently connected account'}{' '}
-        did not hold any <strong>{token.symbol}</strong> tokens when this vote
-        began ({dateFormat(new Date(startTimestamp))}) and therefore cannot
-        participate in this vote. Make sure your accounts are holding{' '}
-        <strong>{token.symbol}</strong> at the time a vote begins if you'd like
-        to vote using this Voting app.
-      </Info>
+      {connectedAccount ? (
+        <>
+          <Buttons disabled />
+          <Info mode="warning">
+            {userBalanceNow > 0
+              ? 'Although the currently connected account holds tokens, it'
+              : 'The currently connected account'}{' '}
+            did not hold any <strong>{token.symbol}</strong> tokens when this
+            vote began ({dateFormat(startDate)}) and therefore cannot
+            participate in this vote. Make sure your accounts are holding{' '}
+            <strong>{token.symbol}</strong> at the time a vote begins if you'd
+            like to vote using this Voting app.
+          </Info>
+        </>
+      ) : (
+        <div
+          css={`
+            border-radius: ${RADIUS}px;
+            background: ${theme.background};
+            padding: ${3.5 * GU}px ${10 * GU}px;
+            text-align: center;
+          `}
+        >
+          <div
+            css={`
+              ${textStyle('body1')};
+            `}
+          >
+            You must enable your account to interact with this decision
+          </div>
+          <div
+            css={`
+              ${textStyle('body2')};
+              color: ${theme.surfaceContentSecondary};
+              margin-top: ${2 * GU}px;
+            `}
+          >
+            Connect to your Ethereum provider by clicking on the{' '}
+            <strong
+              css={`
+                display: inline-flex;
+                align-items: center;
+                position: relative;
+                top: 7px;
+              `}
+            >
+              <IconConnect /> Enable account
+            </strong>{' '}
+            button on the header. You may be temporarily redirected to a new
+            screen.
+          </div>
+        </div>
+      )}
     </div>
   )
 })
@@ -220,13 +267,17 @@ const ButtonsContainer = styled.div`
 `
 
 const TokenReference = ({
+  canUserVote,
+  canUserVoteOnBehalfOf,
+  principalsBalance,
   snapshotBlock,
   startDate,
   tokenSymbol,
   userBalance,
   userBalanceNow,
 }) => {
-  const votingWith = Math.min(userBalance, userBalanceNow)
+  const votingWith =
+    Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance)
 
   return (
     <Info
@@ -238,18 +289,36 @@ const TokenReference = ({
       <strong>
         {votingWith} {tokenSymbol}
       </strong>
-      . Your balance at snapshot taken at block <strong>{snapshotBlock}</strong>{' '}
-      at <strong>{dateFormat(startDate)}</strong> is {userBalance} {tokenSymbol}
-      {userBalance !== userBalanceNow ? (
-        <span>
-          Your current balance is{' '}
+      .
+      {canUserVote && (
+        <div>
+          {' '}
+          Your balance at snapshot taken at block{' '}
+          <strong>{snapshotBlock}</strong> at{' '}
+          <strong>{dateFormat(startDate)}</strong> is{' '}
           <strong>
-            {userBalanceNow} {tokenSymbol}
+            {userBalance} {tokenSymbol}
           </strong>
-          )
-        </span>
-      ) : (
-        ''
+          {userBalance !== userBalanceNow ? (
+            <span>
+              Your current balance is{' '}
+              <strong>
+                {userBalanceNow} {tokenSymbol}
+              </strong>
+              )
+            </span>
+          ) : (
+            ''
+          )}
+        </div>
+      )}
+      {canUserVoteOnBehalfOf && principalsBalance > 0 && (
+        <div>
+          Delegated voting power:{' '}
+          <strong>
+            {principalsBalance} {tokenSymbol}
+          </strong>
+        </div>
       )}
     </Info>
   )

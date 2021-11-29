@@ -23,9 +23,12 @@ function AgreementDetails({
 }) {
   const theme = useTheme()
   const { layoutName } = useLayout()
+  const mobileMode = layoutName === 'small'
   const multiColumnsMode = layoutName === 'max' || layoutName === 'medium'
 
   const celesteUrl = getNetwork().celesteUrl
+
+  const ipfsCID = getIpfsCidFromUri(ipfsUri)
 
   return (
     <>
@@ -49,7 +52,9 @@ function AgreementDetails({
                 text-align: left;
               `}
             >
-              {getIpfsCidFromUri(ipfsUri)}
+              {mobileMode
+                ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}`
+                : ipfsCID}
             </span>
           </Link>
         </InfoField>

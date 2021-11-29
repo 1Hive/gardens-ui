@@ -45,7 +45,7 @@ function Step({
         descColor: theme.contentSecondary,
       },
       [STEP_PROMPTING]: {
-        visualColor: '#FFE862',
+        visualColor: '#7CE0D6',
         descColor: theme.contentSecondary,
       },
       [STEP_WORKING]: {

@@ -1,22 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { connectGarden } from '@1hive/connect-gardens'
-import connectAgreement from '@aragon/connect-agreement'
+import connectAgreement from '@1hive/connect-agreement'
 import {
   createAppHook,
   useApps,
   useOrganization,
   usePermissions,
 } from '@1hive/connect-react'
+import { useWallet } from '@providers/Wallet'
+
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
-
 // utils
 import env from '@/environment'
 import BigNumber from '@lib/bigNumber'
 import { addressesEqual } from '@utils/web3-utils'
 import { getAppByName } from '@utils/data-utils'
-import { connectorConfig } from '@/networks'
+import { getAgreementConnectorConfig, getNetwork } from '@/networks'
 
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
@@ -24,15 +25,18 @@ import fundsManagerAbi from '@abis/FundsManager.json'
 
 const INITIAL_TIMER = 2000
 
-const useAgreementHook = createAppHook(
-  connectAgreement,
-  connectorConfig.agreement
-)
-
 export function useGardenData() {
+  const { preferredNetwork } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
+
+  const { subgraphs } = getNetwork(preferredNetwork)
+
+  const useAgreementHook = createAppHook(
+    connectAgreement,
+    getAgreementConnectorConfig(preferredNetwork).agreement
+  )
 
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
   const convictionApp = getAppByName(apps, env('CONVICTION_APP_NAME'))
@@ -66,7 +70,9 @@ export function useGardenData() {
 
     const fetchGardenConnector = async () => {
       try {
-        const gardenConnector = await connectGarden(organization)
+        const gardenConnector = await connectGarden(organization, {
+          subgraphUrl: subgraphs.gardens,
+        })
 
         if (!cancelled) {
           setConnector(gardenConnector)
@@ -81,7 +87,7 @@ export function useGardenData() {
     return () => {
       cancelled = true
     }
-  }, [organization])
+  }, [organization, subgraphs.gardens])
 
   const config = useConfigSubscription(connector)
 

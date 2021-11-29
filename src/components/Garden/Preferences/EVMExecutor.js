@@ -14,7 +14,7 @@ import { utils } from 'ethers'
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
 
-import { useGardens } from '@/providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@/providers/GardenState'
 import { useWallet } from '@/providers/Wallet'
 
@@ -32,9 +32,9 @@ const EXTERNAL_INDEX = 1
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
-  const { connectedGarden } = useGardens()
   const gardenState = useGardenState()
 
+  const connectedGarden = useConnectedGarden()
   const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
     false
   )
@@ -66,8 +66,11 @@ function EVMExecutor() {
     if (!gardenState || !gardenState.installedApps) {
       return null
     }
-    return getAppByName(gardenState.installedApps, env('VOTING_APP_NAME'))
-      .artifact.appName
+
+    return getAppByName(
+      gardenState.installedApps,
+      env('VOTING_APP_NAME')
+    ).artifact.appName.split('.aragonpm.eth')[0]
   }, [gardenState])
 
   const installedApps = useMemo(() => {
@@ -95,7 +98,7 @@ function EVMExecutor() {
 
       const appName = installedApps[selectedApp]
 
-      appFunctions = Object.getOwnPropertyNames(evmcrispr.call(appName))
+      appFunctions = Object.getOwnPropertyNames(evmcrispr.exec(appName))
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       appFunctions = formattedAbi.map(item => {
@@ -123,7 +126,7 @@ function EVMExecutor() {
         return []
       }
 
-      const { paramNames, paramTypes } = evmcrispr.call(
+      const { paramNames, paramTypes } = evmcrispr.exec(
         installedApps[selectedApp]
       )[functionList[selectedFunction]]
 
@@ -186,7 +189,7 @@ function EVMExecutor() {
       intent = await evmcrispr.encode(
         [
           evmcrispr
-            .call(installedApps[selectedApp])
+            .exec(installedApps[selectedApp])
             [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],

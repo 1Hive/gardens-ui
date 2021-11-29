@@ -12,6 +12,9 @@ export const BRIGHT_ID_APP_DEEPLINK = `brightid://link-verification/${NODE_URL}/
 
 export const UTC_API_ENDPOINT = `http://worldclockapi.com/api/json/utc/now`
 
+export const WALLET_CONNECT_BRIDGE_ENDPOINT =
+  'https://walletconnect-relay.minerva.digital'
+
 // IPFS endpoint
 export const IPFS_ENDPOINT = {
   read: isLocalOrUnknownNetwork()
@@ -23,5 +26,13 @@ export const IPFS_ENDPOINT = {
 export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
-export const getHoneyswapTradeTokenUrl = tokenAddress =>
-  `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`
+export const getDexTradeTokenUrl = (chainId, tokenAddress) => {
+  switch (chainId) {
+    case 4:
+      return `https://app.uniswap.org/#/swap?outputCurrency=${tokenAddress}`
+    case 100:
+      return `https://app.honeyswap.org/#/swap?outputCurrency=${tokenAddress}`
+    case 137:
+      return `https://app.sushi.com/swap?outputCurrency=${tokenAddress}`
+  }
+}

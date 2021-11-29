@@ -1,7 +1,8 @@
 import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
 import env from '@/environment'
-import { getDefaultChain } from '@/local-settings'
+import { getPreferredChain } from '@/local-settings'
+import { getNetwork } from '@/networks'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
@@ -15,8 +16,7 @@ function getBackendServicesKeys() {
 }
 
 export function getDefaultProvider() {
-  const type = getNetworkType()
-  const defaultEthNode = env('ETH_NODE')
+  const { defaultEthNode, type } = getNetwork(getPreferredChain())
 
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)
@@ -27,52 +27,30 @@ export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
 }
 
-export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
-
-  if (env('FORTMATIC_API_KEY')) {
-    providers.push({
-      id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
-    })
-  }
-
-  return providers
-}
-
-export function getNetworkType(chainId = getDefaultChain()) {
+export function getNetworkType(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'mainnet'
-  if (chainId === '3') return 'ropsten'
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
+  if (chainId === '137') return 'polygon'
 
   return DEFAULT_LOCAL_CHAIN
 }
 
-export function getNetworkName(chainId = getDefaultChain()) {
+export function getNetworkName(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'Mainnet'
-  if (chainId === '3') return 'Ropsten'
   if (chainId === '4') return 'Rinkeby'
   if (chainId === '100') return 'xDai'
+  if (chainId === '137') return 'Polygon'
 
   return 'unknown'
 }
 
-export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
+export function isLocalOrUnknownNetwork(chainId = getPreferredChain()) {
   return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
-}
-
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
-    if (provider.useWalletConf) {
-      connectors[provider.id] = provider.useWalletConf
-    }
-    return connectors
-  }, {})
 }
 
 // Check address equality with checksums

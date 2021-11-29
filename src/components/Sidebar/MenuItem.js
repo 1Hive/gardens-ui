@@ -13,7 +13,7 @@ function MenuItem({ active, path, label, src }) {
         width: 100%;
         ${label &&
           ` &:hover:after {
-              position: fixed;
+              position: absolute;
               content: "${label}";
               background: rgba(44, 52, 55, 0.8);
               border-radius: 12px;

@@ -1,8 +1,13 @@
+import { shortenAddress } from '@1hive/1hive-ui'
 import actions from './actions/garden-action-types'
+import { ZERO_ADDR } from './constants'
 
 export default {
   [actions.ADD_FUNDS]: () => {
     return `Add funds to deposit manager`
+  },
+  [actions.ALLOW_MANAGER]: () => {
+    return `Allow manager to lock funds`
   },
   [actions.APPROVE_TOKEN]: ({ tokenSymbol }) => {
     return `Approve ${tokenSymbol}`
@@ -15,6 +20,13 @@ export default {
   },
   [actions.CLAIM_REWARDS]: () => {
     return `Claim earned rewards`
+  },
+  [actions.DELEGATE_VOTING]: ({ representative }) => {
+    return `${
+      representative !== ZERO_ADDR
+        ? `Delegate votes to: ${shortenAddress(representative)}`
+        : `Remove delegate`
+    }`
   },
   [actions.DISPUTE_ACTION]: ({ actionId }) => {
     return `Dispute proposal: ${actionId}`
@@ -52,8 +64,13 @@ export default {
   [actions.UNWRAP_TOKEN]: () => {
     return `Unwrap token`
   },
-  [actions.VOTE_ON_DECISION]: ({ voteId }) => {
-    return `Vote on decision: ${voteId}`
+  [actions.VOTE_ON_DECISION]: ({ voteId, supports }) => {
+    return `Vote ${supports ? 'Yes' : 'No'} on decision: #${voteId}`
+  },
+  [actions.VOTE_ON_BEHALF_OF]: ({ voteId, supports }) => {
+    return `Vote ${
+      supports ? 'Yes' : 'No'
+    } on behalf of principals on decision: #${voteId}`
   },
   [actions.WITHDRAW_FUNDS]: () => {
     return `Withdraw funds from deposit manager`
