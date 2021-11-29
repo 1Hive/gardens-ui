@@ -345,7 +345,11 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
       )}
       {interactionType === TERMINAL_INDEX && (
         <>
-          <Box>
+          <Box
+            css={`
+              z-index: 1;
+            `}
+          >
             <AceEditor
               width="100%"
               mode="jade"
@@ -359,7 +363,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
                 enableBasicAutocompletion: true,
                 enableLiveAutocompletion: true,
                 enableSnippets: true,
-                showLineNumbers: false,
+                showLineNumbers: true,
                 tabSize: 2,
               }}
             />
