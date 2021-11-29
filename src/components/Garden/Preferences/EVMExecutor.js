@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import AceEditor from 'react-ace'
 import { utils } from 'ethers'
 import 'ace-builds/src-noconflict/mode-jade'
-import 'ace-builds/src-noconflict/theme-github'
 
 import {
   Box,
@@ -350,7 +349,6 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
             <AceEditor
               width="100%"
               mode="jade"
-              theme="github"
               value={code}
               onChange={setCode}
               fontSize={14}
