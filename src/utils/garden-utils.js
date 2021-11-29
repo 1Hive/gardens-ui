@@ -4,8 +4,10 @@ import { addressesEqual } from './web3-utils'
 const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
 
 export function getGardenLabel(address, gardens) {
-  const dao = gardens.find(dao => addressesEqual(dao.address, address))
-  return dao?.name || address
+  const garden = gardens?.find(garden =>
+    addressesEqual(garden.address, address)
+  )
+  return garden?.name || address
 }
 
 export function getGardenForumUrl(metadata) {
