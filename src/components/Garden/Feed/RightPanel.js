@@ -36,7 +36,7 @@ function RightPanel({
         {showWrapComponent && (
           <div
             css={`
-              width: 25%;
+              width: 50%;
             `}
           >
             <WrapToken
@@ -48,7 +48,7 @@ function RightPanel({
         )}
         <div
           css={`
-            width: ${showWrapComponent ? '75%' : '100%'};
+            width: ${showWrapComponent ? '50%' : '100%'};
             ${showWrapComponent && `margin-left: ${2 * GU}px;`}
           `}
         >

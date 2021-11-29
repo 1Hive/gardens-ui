@@ -285,8 +285,6 @@ function TokenPrice({
       ? `${currency.symbol} ${formatDecimals(price * currency.rate, 2)}`
       : '-'
 
-  const oracleText = `${token.symbol} Price ${oracleMode ? 'Oracle' : ''}`
-
   return (
     <div
       css={`
@@ -297,16 +295,38 @@ function TokenPrice({
         css={`
           display: flex;
           align-items: center;
-          ${textStyle('title4')};
-          margin-bottom: ${0.5 * GU}px;
         `}
       >
-        {oracleText}
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            ${textStyle('title4')};
+            margin-bottom: ${0.5 * GU}px;
+          `}
+        >
+          {/* <p
+            css={`
+              ${textStyle('title4')};
+              margin-bottom: ${0.5 * GU}px;
+            `}
+          > */}
+          {token.symbol} Price
+          {oracleMode && (
+            <span
+              css={`
+                ${textStyle('body4')}
+              `}
+            >
+              (Oracle)
+            </span>
+          )}
+          {/* </p> */}
+        </div>
         {oracleMode && (
           <span
             css={`
-              padding-left: ${1 * GU}px;
-              display: inline-block;
+              margin-left: ${1 * GU}px;
             `}
           >
             <Help hint="What is Oracle Price?">
@@ -327,13 +347,13 @@ function TokenPrice({
         {oraclePrice}
         {oracleMode && (
           <Button
-            css={`
-              margin-left: ${2 * GU}px;
-            `}
             size="mini"
             disabled={!canUpdate || !account}
             label="Update"
             onClick={onRequestUpdatePriceOracle}
+            css={`
+              margin-left: ${2 * GU}px;
+            `}
           />
         )}
       </div>

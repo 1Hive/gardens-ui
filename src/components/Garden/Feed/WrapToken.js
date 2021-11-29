@@ -20,13 +20,7 @@ import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 
-function WrapToken({
-  onClaimRewards,
-  onUnwrapToken,
-  onWrapToken,
-  itemWidth,
-  itemHeight,
-}) {
+function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { layoutName } = useLayout()
   const { token, wrappableToken } = useGardenState()
 
@@ -34,7 +28,6 @@ function WrapToken({
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
   const compactMode = layoutName === 'small' || layoutName === 'medium'
-  const tabletMode = layoutName === 'medium'
 
   const [earnedRewards, rewardsLink] = useUnipoolRewards()
 
@@ -88,8 +81,8 @@ function WrapToken({
       <div>
         <Carousel
           itemWidth={18 * GU}
-          itemHeight={tabletMode ? 24 * GU : 22 * GU}
-          itemSpacing={3 * GU}
+          itemHeight={22 * GU}
+          itemSpacing={4 * GU}
           items={carouselItems}
           onItemSelected={handleItemSelected}
         />
