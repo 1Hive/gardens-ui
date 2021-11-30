@@ -22,7 +22,7 @@ function Description({ disableBadgeInteraction, path, ...props }) {
               step={step}
             />
           ))
-        : ''}
+        : 'No description'}
     </span>
   )
 }
