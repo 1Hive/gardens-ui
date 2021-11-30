@@ -30,7 +30,7 @@ export default function useGardenPoll(gardenAddress, onResult = noop) {
     }
 
     if (gardenAddress) {
-      pollGarden(gardenAddress)
+      pollGarden()
     }
 
     return () => clearTimeout(timer)
