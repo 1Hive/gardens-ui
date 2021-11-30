@@ -17,6 +17,7 @@ import {
   createTokenHoldersTx,
   extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
+import { getNetworkType } from '@/utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 import {
   STATUS_GARDEN_CREATED,
@@ -107,16 +108,31 @@ function OnboardingProvider({ children }) {
     status === STATUS_GARDEN_DEPLOYMENT
   )
 
+  const handleSaveConfig = useCallback(
+    config => {
+      window.localStorage.setItem(
+        `onboarding:${getNetworkType()}:${account}`,
+        JSON.stringify({ config, step })
+      )
+    },
+    [account, step]
+  )
+
   const handleConfigChange = useCallback(
     (key, data) =>
-      setConfig(config => ({
-        ...config,
-        [key]: {
-          ...config[key],
-          ...data,
-        },
-      })),
-    []
+      setConfig(config => {
+        const newConfig = {
+          ...config,
+          [key]: {
+            ...config[key],
+            ...data,
+          },
+        }
+
+        handleSaveConfig(newConfig)
+        return newConfig
+      }),
+    [handleSaveConfig]
   )
 
   const handleStartDeployment = useCallback(() => {
@@ -211,6 +227,18 @@ function OnboardingProvider({ children }) {
 
     return () => clearTimeout(timer)
   }, [gardenAddress, reload])
+
+  useEffect(() => {
+    const savedOnboardingProgress = window.localStorage.getItem(
+      `onboarding:${getNetworkType()}:${account}`
+    )
+
+    if (savedOnboardingProgress) {
+      const onboardingProgress = JSON.parse(savedOnboardingProgress)
+      setConfig(onboardingProgress.config)
+      setStep(onboardingProgress.step)
+    }
+  }, [account])
 
   return (
     <OnboardingContext.Provider
