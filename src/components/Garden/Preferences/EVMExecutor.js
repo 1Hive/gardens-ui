@@ -27,6 +27,7 @@ import env from '@/environment'
 import { getAppByName } from '@utils/data-utils'
 import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
+import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'
 
 const INTERACTION_TYPES = ['Internal', 'External', 'Terminal']
 
@@ -50,24 +51,9 @@ function EVMExecutor() {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
-  const [code, setCode] = useState(
-    `# Available commands:
+  const [code, setCode] = useState(TERMINAL_EXECUTOR_MESSAGE)
 
-install <repo> [...initParams]
-grant <entity> <app> <role> [permissionManager]
-revoke <entity> <app> <role>
-exec <app> <methodName> [...params]
-act <agent> <targetAddr> <methodSignature> [...params]
-
-# Example (unwrap wxDAI):
-
-install agent:new-agent
-grant voting agent:new-agent TRANSFER_ROLE voting
-exec vault transfer -token:tokens.honeyswap.org:WXDAI agent:new-agent 100e18
-act agent:new-agent -token:tokens.honeyswap.org:WXDAI withdraw(uint256) 100e18
-exec agent:new-agent transfer -token:XDAI vault 100e18
-`
-  )
+  const terminalMode = interactionType === TERMINAL_INDEX
 
   useEffect(() => {
     async function getEvmCrispr() {
@@ -206,7 +192,9 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
     const type = actions.NEW_DECISION
 
     let intent
-
+    // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+    // { context: asciiToHex(functionList[selectedFunction]) }
+    // having some issue on the lib when passing the function that need to check with david
     if (interactionType === INTERNAL_INDEX) {
       intent = await evmcrispr.encode(
         [
@@ -215,9 +203,6 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
             [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],
-        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-        // { context: asciiToHex(functionList[selectedFunction]) }
-        // having some issue on the lib when passing the function that need to check with david
         { context: 'new decision' }
       )
     }
@@ -232,36 +217,29 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
           ),
         ],
         [forwarderName],
-        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-        // { context: asciiToHex(functionList[selectedFunction]) }
-        // having some issue on the lib when passing the function that need to check with david
         { context: 'new decision' }
       )
     }
-    if (interactionType === TERMINAL_INDEX) {
-      intent = await evmcrispr.encode(
-        evmcl`${code}`,
-        [forwarderName],
-        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-        // { context: asciiToHex(functionList[selectedFunction]) }
-        // having some issue on the lib when passing the function that need to check with david
-        { context: 'new decision' }
-      )
+    if (terminalMode) {
+      intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
+        context: 'new decision',
+      })
     }
 
     return [{ ...intent.action, description: description, type: type }]
   }, [
-    code,
-    evmcrispr,
-    externalContractAddress,
     forwarderName,
-    humanReadableSignature,
     interactionType,
+    terminalMode,
+    evmcrispr,
     installedApps,
     selectedApp,
     functionList,
     selectedFunction,
     parameters,
+    externalContractAddress,
+    humanReadableSignature,
+    code,
   ])
 
   const handleOnContractAddressChange = useCallback(event => {
@@ -343,7 +321,7 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
           </Field>
         </>
       )}
-      {interactionType === TERMINAL_INDEX && (
+      {terminalMode && (
         <>
           <Box
             css={`
@@ -368,17 +346,6 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
               }}
             />
           </Box>
-          <Button
-            css={`
-              margin-top: ${2 * GU}px;
-            `}
-            disabled={!account}
-            mode="strong"
-            wide
-            onClick={handleOnShowModal}
-          >
-            Execute
-          </Button>
         </>
       )}
       {functionList?.length > 0 && (
@@ -419,8 +386,12 @@ exec agent:new-agent transfer -token:XDAI vault 100e18
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null ? (
+      {selectedFunction !== null ||
+      (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
         <Button
+          css={`
+            margin-top: ${terminalMode ? 2 * GU : 0}px;
+          `}
           disabled={!account}
           mode="strong"
           wide
