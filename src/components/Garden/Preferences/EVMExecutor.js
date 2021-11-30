@@ -1,4 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import AceEditor from 'react-ace'
+import { utils } from 'ethers'
+import 'ace-builds/src-noconflict/mode-jade'
+
 import {
   Box,
   Button,
@@ -8,8 +12,7 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-import { EVMcrispr } from '@1hive/evmcrispr'
-import { utils } from 'ethers'
+import { evmcl, EVMcrispr } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -24,11 +27,13 @@ import env from '@/environment'
 import { getAppByName } from '@utils/data-utils'
 import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
+import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'
 
-const INTERACTION_TYPES = ['Internal', 'External']
+const INTERACTION_TYPES = ['Internal', 'External', 'Terminal']
 
 const INTERNAL_INDEX = 0
 const EXTERNAL_INDEX = 1
+const TERMINAL_INDEX = 2
 
 function EVMExecutor() {
   const { account, ethers } = useWallet()
@@ -46,6 +51,9 @@ function EVMExecutor() {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
+  const [code, setCode] = useState(TERMINAL_EXECUTOR_MESSAGE)
+
+  const terminalMode = interactionType === TERMINAL_INDEX
 
   useEffect(() => {
     async function getEvmCrispr() {
@@ -184,7 +192,9 @@ function EVMExecutor() {
     const type = actions.NEW_DECISION
 
     let intent
-
+    // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
+    // { context: asciiToHex(functionList[selectedFunction]) }
+    // having some issue on the lib when passing the function that need to check with david
     if (interactionType === INTERNAL_INDEX) {
       intent = await evmcrispr.encode(
         [
@@ -193,9 +203,6 @@ function EVMExecutor() {
             [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],
-        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-        // { context: asciiToHex(functionList[selectedFunction]) }
-        // having some issue on the lib when passing the function that need to check with david
         { context: 'new decision' }
       )
     }
@@ -210,25 +217,29 @@ function EVMExecutor() {
           ),
         ],
         [forwarderName],
-        // TODO: just for now that for some reason the radspec description on the card is not working, after fixed we can ask the user for enter some forum post related to why the decision is being created
-        // { context: asciiToHex(functionList[selectedFunction]) }
-        // having some issue on the lib when passing the function that need to check with david
         { context: 'new decision' }
       )
+    }
+    if (terminalMode) {
+      intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
+        context: 'new decision',
+      })
     }
 
     return [{ ...intent.action, description: description, type: type }]
   }, [
-    evmcrispr,
-    externalContractAddress,
     forwarderName,
-    humanReadableSignature,
     interactionType,
+    terminalMode,
+    evmcrispr,
     installedApps,
     selectedApp,
     functionList,
     selectedFunction,
     parameters,
+    externalContractAddress,
+    humanReadableSignature,
+    code,
   ])
 
   const handleOnContractAddressChange = useCallback(event => {
@@ -310,6 +321,33 @@ function EVMExecutor() {
           </Field>
         </>
       )}
+      {terminalMode && (
+        <>
+          <Box
+            css={`
+              z-index: 1;
+            `}
+          >
+            <AceEditor
+              width="100%"
+              mode="jade"
+              value={code}
+              onChange={setCode}
+              fontSize={14}
+              showPrintMargin={false}
+              showGutter={false}
+              highlightActiveLine
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+            />
+          </Box>
+        </>
+      )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
           <DropDown
@@ -348,8 +386,12 @@ function EVMExecutor() {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null ? (
+      {selectedFunction !== null ||
+      (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
         <Button
+          css={`
+            margin-top: ${terminalMode ? 2 * GU : 0}px;
+          `}
           disabled={!account}
           mode="strong"
           wide

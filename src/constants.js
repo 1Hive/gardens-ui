@@ -18,6 +18,11 @@ export const PCT_BASE = bigNum(1)
 
 export const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
+export const HIVE_GARDEN_ADDRESSES = [
+  '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
+  '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
+]
+
 export const VOTE_ABSENT = 'VOTE_ABSENT'
 export const VOTE_YEA = 'VOTE_YEA'
 export const VOTE_NAY = 'VOTE_NAY'
@@ -35,3 +40,20 @@ export const VOTE_STATUS_DISPUTED = Symbol('VOTE_STATUS_DISPUTED')
 export const VOTE_STATUS_SETTLED = Symbol('VOTE_STATUS_SETTLED')
 
 export const DEFAULT_CHAIN_ID = 100
+
+export const TERMINAL_EXECUTOR_MESSAGE = `# Available commands:
+
+install <repo> [...initParams]
+grant <entity> <app> <role> [permissionManager]
+revoke <entity> <app> <role>
+exec <app> <methodName> [...params]
+act <agent> <targetAddr> <methodSignature> [...params]
+
+# Example (unwrap wxDAI):
+
+install agent:new-agent
+grant voting agent:new-agent TRANSFER_ROLE voting
+exec vault transfer -token:tokens.honeyswap.org:WXDAI agent:new-agent 100e18
+act agent:new-agent -token:tokens.honeyswap.org:WXDAI withdraw(uint256) 100e18
+exec agent:new-agent transfer -token:XDAI vault 100e18
+`
