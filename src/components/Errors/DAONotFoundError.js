@@ -30,7 +30,7 @@ function DAONotFoundError({ daoId }) {
         `}
       >
         It looks like there’s no garden associated with{' '}
-        {<span css="font-weight: bold;">“{daoId}”</span>} on the Ethereum{' '}
+        {<span css="font-weight: bold;">“{daoId}”</span>} on the{' '}
         {getNetworkName(chainId)} network
       </div>
       <Button
