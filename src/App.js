@@ -17,8 +17,8 @@ function App() {
   return (
     <HashRouter>
       <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-        <GlobalErrorHandler>
-          <WalletProvider>
+        <WalletProvider>
+          <GlobalErrorHandler>
             <ActivityProvider>
               <ProfileProvider>
                 <UserProvider>
@@ -31,8 +31,8 @@ function App() {
                 </UserProvider>
               </ProfileProvider>
             </ActivityProvider>
-          </WalletProvider>
-        </GlobalErrorHandler>
+          </GlobalErrorHandler>
+        </WalletProvider>
       </Main>
     </HashRouter>
   )

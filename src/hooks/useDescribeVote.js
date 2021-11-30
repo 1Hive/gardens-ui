@@ -48,7 +48,6 @@ export function useDescribeVote(script, voteId) {
 
         if (mounted()) {
           setDescription(describedSteps)
-          setLoading(false)
 
           // Cache vote description to avoid unnecessary future call
           cachedDescriptions.set(voteId, describedSteps)
@@ -56,6 +55,7 @@ export function useDescribeVote(script, voteId) {
       } catch (err) {
         console.error(err)
       }
+      setLoading(false)
     }
 
     describe()

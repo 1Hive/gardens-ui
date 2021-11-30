@@ -1,5 +1,5 @@
 import { getNetwork } from '@/networks'
-import { addressesEqual } from './web3-utils'
+import { addressesEqual, isAddress } from './web3-utils'
 
 const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
 
@@ -55,7 +55,7 @@ export function mergeGardenMetadata(garden, gardensMetadata) {
 }
 
 export function is1HiveGarden(gardenAddress) {
-  if (!gardenAddress) {
+  if (!gardenAddress || !isAddress(gardenAddress)) {
     return false
   }
 
