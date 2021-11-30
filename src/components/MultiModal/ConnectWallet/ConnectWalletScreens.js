@@ -4,20 +4,20 @@ import ConnectWallet from './ConnectWallet'
 import ScreenProvidersWrapper from './ScreenProvidersWrapper'
 import MultiModalScreens from '@/components/MultiModal/MultiModalScreens'
 import ScreenErrorWrapper from './ScreenErrorWrapper'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@providers/Wallet'
 
 function ConectWalletScreens({ onSuccess, onClose }) {
   const [error, setError] = useState(null)
-  const wallet = useWallet()
+  const { resetConnection } = useWallet()
 
   const handleOnError = useCallback(e => {
     setError(e)
   }, [])
 
   const handleTryAgain = useCallback(() => {
-    wallet.reset()
+    resetConnection()
     setError(null)
-  }, [wallet])
+  }, [resetConnection])
 
   const screens = useMemo(() => {
     return [

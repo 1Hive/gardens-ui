@@ -5,19 +5,18 @@ import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import ScreenProviders from '@components/Account/ScreenProviders'
 
 function ScreenProvidersWrapper({ onError, onSuccess }) {
-  const wallet = useWallet()
+  const { account, connect, error } = useWallet()
   const { next } = useMultiModal()
-  const { error } = wallet
 
   const activate = useCallback(
     async providerId => {
       try {
-        await wallet.connect(providerId)
+        await connect(providerId)
       } catch (error) {
         console.log('error ', error)
       }
     },
-    [wallet]
+    [connect]
   )
 
   useEffect(() => {
@@ -25,10 +24,10 @@ function ScreenProvidersWrapper({ onError, onSuccess }) {
       onError(error)
       return next()
     }
-    if (wallet.account) {
+    if (account) {
       return onSuccess()
     }
-  }, [error, next, onError, onSuccess, wallet])
+  }, [account, error, next, onError, onSuccess])
 
   return <ScreenProviders onActivate={activate} />
 }

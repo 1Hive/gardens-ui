@@ -11,7 +11,6 @@ import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
 import { useProfile } from '../../providers/Profile'
-import { addEthereumChain } from '@/networks'
 
 const SCREENS = [
   {
@@ -34,32 +33,31 @@ const SCREENS = [
 function AccountModule({ compact }) {
   const buttonRef = useRef()
 
-  const wallet = useWallet()
+  const {
+    account,
+    activating,
+    connect,
+    connector,
+    error,
+    resetConnection,
+    switchingNetworks,
+  } = useWallet()
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  const [creatingNetwork, setCreatingNetwork] = useState(false)
 
   const { boxOpened } = useProfile()
-  const { account, activating, connector, error } = wallet
 
   const toggle = useCallback(() => setOpened(opened => !opened), [])
-
-  const handleCancelConnection = useCallback(() => {
-    wallet.reset()
-  }, [wallet])
 
   const activate = useCallback(
     async providerId => {
       try {
-        setCreatingNetwork(true)
-        await addEthereumChain()
-        setCreatingNetwork(false)
-        await wallet.connect(providerId)
+        await connect(providerId)
       } catch (error) {
         console.log('error ', error)
       }
     },
-    [wallet]
+    [connect]
   )
 
   useEffect(() => {
@@ -94,7 +92,7 @@ function AccountModule({ compact }) {
     const screenId = (() => {
       if (error) return 'error'
       if (activatingDelayed) return 'connecting'
-      if (creatingNetwork) return 'networks'
+      if (switchingNetworks) return 'networks'
       if (account) return 'connected'
       return 'providers'
     })()
@@ -105,7 +103,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [error, activatingDelayed, creatingNetwork, account])
+  }, [activatingDelayed, account, error, switchingNetworks])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
@@ -140,7 +138,6 @@ function AccountModule({ compact }) {
           label="Enable account"
           onClick={toggle}
           display={compact ? 'icon' : 'all'}
-          // disabled={isLoading}
         />
       )}
       <HeaderPopover
@@ -153,7 +150,6 @@ function AccountModule({ compact }) {
           account,
           activating: activatingDelayed,
           activationError: error,
-          status,
           screenId,
         }}
         screenKey={({ account, activating, activationError, screenId }) =>
@@ -170,7 +166,7 @@ function AccountModule({ compact }) {
             return (
               <ScreenConnecting
                 providerId={connector}
-                onCancel={handleCancelConnection}
+                onCancel={resetConnection}
               />
             )
           }
@@ -179,16 +175,12 @@ function AccountModule({ compact }) {
               <ScreenConnected
                 providerId={connector}
                 onClosePopover={handlePopoverClose}
-                wallet={wallet}
               />
             )
           }
           if (screenId === 'error') {
             return (
-              <ScreenError
-                error={activationError}
-                onBack={handleCancelConnection}
-              />
+              <ScreenError error={activationError} onBack={resetConnection} />
             )
           }
           if (screen.id === 'networks') {

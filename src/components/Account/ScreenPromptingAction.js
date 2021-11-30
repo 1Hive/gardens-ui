@@ -89,7 +89,7 @@ const AccountModuleActionScreen = React.memo(function({ onCancel }) {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          {`Create the ${name} network in your provider and switch to it. You may be temporarily redirected to a new screen.`}
+          {`Create and/or switch to the ${name} network in your provider. You may be temporarily redirected to a new screen.`}
         </p>
       </div>
       <div

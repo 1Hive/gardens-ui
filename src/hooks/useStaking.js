@@ -5,7 +5,7 @@ import { useWallet } from '@providers/Wallet'
 
 import { useGardenState } from '@providers/GardenState'
 import BigNumber from '@lib/bigNumber'
-import { useContract, useContractReadOnly } from './useContract'
+import { useContractReadOnly } from './useContract'
 
 import actions from '../actions/garden-action-types'
 import radspec from '../radspec'
@@ -38,12 +38,12 @@ export function useStaking() {
     stakingFactoryAbi
   )
 
-  const stakingContract = useContract(
+  const stakingContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingInstance,
     stakingAbi
   )
 
-  const tokenContract = useContract(
+  const tokenContract = useContractReadOnly(
     stakeManagement && stakeManagement.token && stakeManagement.token.id,
     minimeTokenAbi
   )
