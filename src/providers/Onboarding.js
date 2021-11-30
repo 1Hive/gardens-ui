@@ -135,6 +135,15 @@ function OnboardingProvider({ children }) {
     [handleSaveConfig]
   )
 
+  const handleReset = useCallback(() => {
+    setStatus(STATUS_GARDEN_SETUP)
+    setStep(0)
+    setSteps(Screens)
+    setConfig(DEFAULT_CONFIG)
+    setDeployTransactions([])
+    setGardenAddress('')
+  }, [])
+
   const handleStartDeployment = useCallback(() => {
     setStatus(STATUS_GARDEN_DEPLOYMENT)
   }, [])
@@ -242,6 +251,7 @@ function OnboardingProvider({ children }) {
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
+        onReset: handleReset,
         onStartDeployment: handleStartDeployment,
         status,
         step,
