@@ -171,7 +171,7 @@ export function getAgreementConnectorConfig(chainId) {
   }
 }
 
-export const SUPPORTED_CHAINS = [4, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
+export const SUPPORTED_CHAINS = [100] // Add  arbitrum  chains id + fill the network json with the data
 
 export function isSupportedChain(chainId) {
   return SUPPORTED_CHAINS.includes(chainId)
