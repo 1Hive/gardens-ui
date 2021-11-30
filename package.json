@@ -38,7 +38,8 @@
     "start": "yarn run sync-assets && react-app-rewired start",
     "build": "yarn run sync-assets && react-app-rewired build",
     "lint": "eslint ./src",
-    "sync-assets": "copy-aragon-ui-assets ./public"
+    "sync-assets": "copy-aragon-ui-assets ./public",
+    "bundlewatch": "bundlewatch"
   },
   "browserslist": {
     "production": [
@@ -59,6 +60,7 @@
     "@babel/preset-react": "^7.7.4",
     "babel-eslint": "^10.0.3",
     "babel-plugin-styled-components": "^1.10.6",
+    "bundlewatch": "^0.3.2",
     "cross-env": "^7.0.2",
     "customize-cra": "^1.0.0",
     "eslint": "^6.7.2",
@@ -78,5 +80,14 @@
     "react-app-rewired": "^2.1.6",
     "react-dev-utils": "^10.2.1",
     "rimraf": "^2.6.2"
+  },
+  "bundlewatch": {
+    "files": [
+      {
+        "path": "build/static/**/*.js",
+        "maxSize": "1MB",
+        "compression": "gzip"
+      }
+    ]
   }
 }
