@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { animated, Transition } from 'react-spring/renderprops'
 import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import Deployment from './Deployment/Deployment'
@@ -9,12 +9,7 @@ import Setup from './Setup'
 import { STATUS_GARDEN_SETUP } from './statuses'
 
 function Onboarding({ onClose, visible }) {
-  const { onReset, status } = useOnboardingState()
-
-  const handleOnClose = useCallback(() => {
-    onClose()
-    onReset()
-  }, [onClose, onReset])
+  const { status } = useOnboardingState()
 
   return (
     <AnimatedSlider visible={visible}>
@@ -25,7 +20,7 @@ function Onboarding({ onClose, visible }) {
         `}
       >
         {status === STATUS_GARDEN_SETUP ? (
-          <Setup onClose={handleOnClose} />
+          <Setup onClose={onClose} />
         ) : (
           <Deployment />
         )}

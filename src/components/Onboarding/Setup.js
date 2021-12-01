@@ -1,5 +1,6 @@
 import React from 'react'
 import { GU, IconCross, useTheme } from '@1hive/1hive-ui'
+import SavedProgress from './SavedProgress'
 import Screens from './Screens'
 import StepsPanel from './Steps/StepsPanel'
 
@@ -59,6 +60,8 @@ function Setup({ onClose }) {
           css={`
             overflow-y: auto;
             height: calc(100vh - 127px);
+
+            position: relative;
           `}
         >
           <section
@@ -77,6 +80,7 @@ function Setup({ onClose }) {
               <Screens />
             </div>
           </section>
+          <SavedProgress />
         </div>
       </div>
     </>
