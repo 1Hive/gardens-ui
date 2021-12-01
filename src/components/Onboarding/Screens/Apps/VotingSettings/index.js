@@ -224,7 +224,7 @@ function VotingSettings() {
     <div>
       <Header
         title="Configure Governance"
-        subtitle="Tao voting"
+        subtitle="Decision voting"
         thirdtitle="Set parameters to take decisions as a community"
       />
       <PercentageField
