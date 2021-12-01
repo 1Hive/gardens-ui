@@ -60,7 +60,6 @@ function Setup({ onClose }) {
           css={`
             overflow-y: auto;
             height: calc(100vh - 127px);
-
             position: relative;
           `}
         >
