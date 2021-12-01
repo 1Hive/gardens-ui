@@ -39,7 +39,9 @@ const StakeManagement = React.memo(function StakeManagement() {
 
     return stakeManagement.stakingMovements.sort(
       (movement1, movement2) =>
-        movement1.disputableActionId - movement2.disputableActionId
+        movement2.disputableActionId +
+        movement2.createdAt -
+        (movement1.disputableActionId + movement1.createdAt)
     )
   }, [stakeManagement])
 
