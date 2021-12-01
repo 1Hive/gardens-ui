@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
 import useGardenPoll from '@components/Onboarding/hooks/useGardenPoll'
 import usePinataUploader from '@hooks/usePinata'
+import useProgressSaver from '@components/Onboarding/hooks/useProgressSaver'
 import { useWallet } from './Wallet'
 
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
@@ -18,7 +19,6 @@ import {
   createTokenHoldersTx,
   extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
-import { getNetworkType } from '@/utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 import {
   STATUS_GARDEN_CREATED,
@@ -101,21 +101,19 @@ function OnboardingProvider({ children }) {
   const [gardenAddress, setGardenAddress] = useState('')
 
   const { account, ethers } = useWallet()
+  const {
+    hasSavedProgress,
+    onClearProgress,
+    onResume,
+    onSaveConfig,
+    onSaveStep,
+    resumed,
+  } = useProgressSaver(setConfig, setStep)
 
   // Upload covenant content to ipfs when ready (starting deployment txs)
   const [covenantIpfs] = usePinataUploader(
     config.agreement.covenantFile?.blob,
     status === STATUS_GARDEN_DEPLOYMENT
-  )
-
-  const handleSaveConfig = useCallback(
-    config => {
-      window.localStorage.setItem(
-        `onboarding:${getNetworkType()}:${account}`,
-        JSON.stringify({ config, step })
-      )
-    },
-    [account, step]
   )
 
   const handleConfigChange = useCallback(
@@ -128,11 +126,10 @@ function OnboardingProvider({ children }) {
             ...data,
           },
         }
-
-        handleSaveConfig(newConfig)
+        onSaveConfig(newConfig)
         return newConfig
       }),
-    [handleSaveConfig]
+    [onSaveConfig]
   )
 
   const handleReset = useCallback(() => {
@@ -142,14 +139,15 @@ function OnboardingProvider({ children }) {
     setConfig(DEFAULT_CONFIG)
     setDeployTransactions([])
     setGardenAddress('')
+    onClearProgress()
+  }, [onClearProgress])
+
+  const handleGardenCreated = useCallback(() => {
+    setStatus(STATUS_GARDEN_CREATED)
   }, [])
 
   const handleStartDeployment = useCallback(() => {
     setStatus(STATUS_GARDEN_DEPLOYMENT)
-  }, [])
-
-  const handleGardenCreated = useCallback(() => {
-    setStatus(STATUS_GARDEN_CREATED)
   }, [])
 
   const publishGardenMetadata = useCallback(
@@ -198,8 +196,12 @@ function OnboardingProvider({ children }) {
   }, [])
 
   const handleNext = useCallback(() => {
-    setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [steps.length])
+    setStep(index => {
+      const nextStep = Math.min(steps.length - 1, index + 1)
+      onSaveStep(nextStep)
+      return nextStep
+    })
+  }, [onSaveStep, steps.length])
 
   useEffect(() => {
     if (config.garden.type !== -1) {
@@ -230,18 +232,6 @@ function OnboardingProvider({ children }) {
 
   useGardenPoll(gardenAddress, handleGardenCreated)
 
-  useEffect(() => {
-    const savedOnboardingProgress = window.localStorage.getItem(
-      `onboarding:${getNetworkType()}:${account}`
-    )
-
-    if (savedOnboardingProgress) {
-      const onboardingProgress = JSON.parse(savedOnboardingProgress)
-      setConfig(onboardingProgress.config)
-      setStep(onboardingProgress.step)
-    }
-  }, [account])
-
   return (
     <OnboardingContext.Provider
       value={{
@@ -253,6 +243,7 @@ function OnboardingProvider({ children }) {
         onNext: handleNext,
         onReset: handleReset,
         onStartDeployment: handleStartDeployment,
+        progress: { hasSavedProgress, onResume, resumed },
         status,
         step,
         steps,
