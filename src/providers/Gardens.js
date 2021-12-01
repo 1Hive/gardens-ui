@@ -8,6 +8,7 @@ import React, {
 import { getGardens } from '@1hive/connect-gardens'
 
 import { ConnectedGardenProvider } from './ConnectedGarden'
+import { useMounted } from '@hooks/useMounted'
 import { useDebounce } from '@hooks/useDebounce'
 import useGardenFilters from '@hooks/useGardenFilters'
 import { useWallet } from './Wallet'
@@ -17,6 +18,9 @@ import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { mergeGardenMetadata } from '@utils/garden-utils'
 import { testNameFilter } from '@utils/garden-filters-utils'
 import { getNetwork } from '@/networks'
+import { addressesEqual } from '@utils/web3-utils'
+
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 const DAOContext = React.createContext()
 
@@ -68,22 +72,25 @@ function useFilteredGardens(gardens, gardensMetadata, filters) {
 function useGardensMetadata(refetchTriger, chainId) {
   const [gardensMetadata, setGardensMetadata] = useState([])
   const [loadingMetadata, setLoadingMetadata] = useState(true)
+  const mounted = useMounted()
 
   useEffect(() => {
     setLoadingMetadata(true)
     const fetchGardenMetadata = async () => {
-      try {
-        const result = await fetchFileContent(chainId)
-        setGardensMetadata(result.data.gardens)
-      } catch (err) {
-        setGardensMetadata([])
-        console.error(`Error fetching gardens metadata ${err}`)
+      if (mounted()) {
+        try {
+          const result = await fetchFileContent(chainId)
+          setGardensMetadata(result.data.gardens)
+        } catch (err) {
+          setGardensMetadata([])
+          console.error(`Error fetching gardens metadata ${err}`)
+        }
+        setLoadingMetadata(false)
       }
-      setLoadingMetadata(false)
     }
 
     fetchGardenMetadata()
-  }, [chainId, refetchTriger])
+  }, [chainId, mounted, refetchTriger])
 
   return [gardensMetadata, loadingMetadata]
 }
@@ -130,4 +137,32 @@ function useGardensList(queryFilters, filters, chainId) {
   }, [chainId, refetchTriger, sorting.queryArgs, subgraphs.gardens])
 
   return [filteredGardens, gardensMetadata, loading || loadingMetadata, reload]
+}
+
+export function useUserGardensSigned(user) {
+  const { gardensMetadata } = useGardens()
+
+  const signedGardensWithMetadata = useMemo(() => {
+    if (!user?.gardensSigned) {
+      return []
+    }
+
+    const result = user.gardensSigned.map(gardenSignedAddress => {
+      const { name, logo } =
+        gardensMetadata?.find(g =>
+          addressesEqual(g.address, gardenSignedAddress)
+        ) || {}
+
+      return {
+        address: gardenSignedAddress,
+        name,
+        path: `#/garden/${gardenSignedAddress}`,
+        src: logo || defaultGardenLogo,
+      }
+    })
+
+    return result
+  }, [user, gardensMetadata])
+
+  return signedGardensWithMetadata
 }

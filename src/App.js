@@ -21,14 +21,14 @@ function App() {
           <GlobalErrorHandler>
             <ActivityProvider>
               <ProfileProvider>
-                <UserProvider>
-                  <GardensProvider>
+                <GardensProvider>
+                  <UserProvider>
                     <WelcomeLoader />
                     <MainView>
                       <Routes />
                     </MainView>
-                  </GardensProvider>
-                </UserProvider>
+                  </UserProvider>
+                </GardensProvider>
               </ProfileProvider>
             </ActivityProvider>
           </GlobalErrorHandler>

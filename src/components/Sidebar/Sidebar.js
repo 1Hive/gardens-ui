@@ -1,47 +1,23 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useRouteMatch } from 'react-router'
 import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
-import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
 import { addressesEqual } from '@utils/web3-utils'
 import gardensLogo from '@assets/gardensLogoMark.svg'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 function Sidebar() {
   const theme = useTheme()
   const { user: connectedUser, loading: userLoading } = useUserState()
-  const { gardensMetadata } = useGardens()
+  const { gardensSigned } = connectedUser
 
   const match = useRouteMatch('/garden/:daoId')
 
-  const sidebarGardens = useMemo(() => {
-    if (!connectedUser?.gardensSigned) {
-      return []
-    }
-
-    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { name, logo } =
-        gardensMetadata?.find(g =>
-          addressesEqual(g.address, gardenSignedAddress)
-        ) || {}
-
-      return {
-        address: gardenSignedAddress,
-        name,
-        path: `#/garden/${gardenSignedAddress}`,
-        src: logo || defaultGardenLogo,
-      }
-    })
-
-    return result
-  }, [connectedUser, gardensMetadata])
-
-  const startTrail = sidebarGardens.length > 0
-  const trail = useTrail(sidebarGardens.length, {
+  const startTrail = gardensSigned?.length > 0
+  const trail = useTrail(gardensSigned?.length, {
     config: { mass: 5, tension: 1500, friction: 150 },
     delay: 300,
     opacity: startTrail ? 1 : 0,
@@ -128,7 +104,7 @@ function Sidebar() {
           ) : (
             <ul>
               {trail.map((style, index) => {
-                const { address, name, path, src } = sidebarGardens[index]
+                const { address, name, path, src } = gardensSigned[index]
                 return (
                   <animated.div key={address} style={style}>
                     <MenuItem
