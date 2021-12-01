@@ -46,7 +46,7 @@ const networks = {
     hiveGarden: '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844',
+    template: '0x82a127b5Be3E04cd06AA034c1616b4d098616E9D',
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 
