@@ -80,7 +80,7 @@ const networks = {
     defaultEthNode: POLYGON_ETH_NODE,
     arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
-    template: '0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9z',
+    template: '0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9',
     celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'polygonscan',
 
