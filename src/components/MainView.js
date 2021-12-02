@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { useLocation } from 'react-router'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
@@ -15,19 +15,22 @@ function MainView({ children }) {
   const { pathname } = useLocation()
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
-
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
-
+  const mobileMode = below('medium')
+  const compactMode = below('large')
+  const [showSidebar, setShowSidebar] = useState(!mobileMode)
   let loadingGardenState = true
+
+  const handleToggleSidebar = useCallback(() => {
+    setShowSidebar(prevShowSidebar => (!mobileMode ? true : !prevShowSidebar))
+  }, [mobileMode])
+
   if (connectedGarden) {
     // TODO: Refactor
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { loading } = useGardenState()
     loadingGardenState = loading
   }
-
-  const mobileMode = below('medium')
-  const compactMode = below('large')
 
   if (preferenceOption) {
     return (
@@ -54,7 +57,9 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {pathname !== '/home' && !below('medium') && <Sidebar />}
+        {pathname !== '/home' && (
+          <Sidebar show={showSidebar} onToggle={handleToggleSidebar} />
+        )}
         <div
           css={`
             display: flex;
@@ -68,7 +73,9 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
-              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
+              ${connectedGarden && !mobileMode
+                ? `margin-left: ${9 * GU}px;`
+                : ''}
             `}
           >
             <div
@@ -76,7 +83,10 @@ function MainView({ children }) {
                 flex-shrink: 0;
               `}
             >
-              <Header onOpenPreferences={openPreferences} />
+              <Header
+                onOpenPreferences={openPreferences}
+                onToggleSidebar={handleToggleSidebar}
+              />
             </div>
             <ScrollView>
               <div

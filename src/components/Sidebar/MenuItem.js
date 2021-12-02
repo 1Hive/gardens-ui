@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Link, GU, useTheme } from '@1hive/1hive-ui'
+import { useHistory } from 'react-router'
 
-function MenuItem({ active, path, label, src }) {
+function MenuItem({ active, path, label, src, onClick = () => {} }) {
+  const history = useHistory()
   const theme = useTheme()
 
+  const handleClickItem = useCallback(
+    path => {
+      history.push(path)
+      onClick()
+    },
+    [history, onClick]
+  )
   return (
     <li
       css={`
@@ -49,10 +58,10 @@ function MenuItem({ active, path, label, src }) {
       >
         <Link
           external={false}
-          href={path}
           css={`
             display: block;
           `}
+          onClick={() => handleClickItem(path)}
         >
           <img
             src={src}

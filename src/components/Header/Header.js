@@ -25,7 +25,7 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
-function Header({ onOpenPreferences }) {
+function Header({ onOpenPreferences, onToggleSidebar }) {
   const theme = useTheme()
   const { account } = useWallet()
   const { below } = useViewport()
@@ -73,7 +73,7 @@ function Header({ onOpenPreferences }) {
           {layoutSmall && (
             <div
               css={`
-                width: ${12 * GU}px;
+                width: ${13 * GU}px;
                 border-right: 1px solid ${theme.border};
                 display: flex;
                 align-self: stretch;
@@ -82,6 +82,7 @@ function Header({ onOpenPreferences }) {
               `}
             >
               <ButtonBase
+                onClick={onToggleSidebar}
                 css={`
                   display: flex;
                   align-items: center;
