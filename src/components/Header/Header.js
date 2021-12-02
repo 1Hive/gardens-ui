@@ -1,6 +1,14 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
-import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import {
+  Button,
+  ButtonBase,
+  GU,
+  IconMenu,
+  Link,
+  useTheme,
+  useViewport,
+} from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
@@ -57,98 +65,139 @@ function Header({ onOpenPreferences }) {
         <div
           css={`
             height: ${8 * GU}px;
-            margin: 0 ${3 * GU}px;
+
             display: flex;
             align-items: center;
-            justify-content: space-between;
           `}
         >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <Link
-              href={logoLink}
-              external={false}
+          {layoutSmall && (
+            <div
               css={`
+                width: ${12 * GU}px;
+                border-right: 1px solid ${theme.border};
                 display: flex;
+                align-self: stretch;
+                justify-content: center;
+                align-items: center;
               `}
             >
-              {layoutSmall ? (
-                Logo
-              ) : (
-                <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
-              )}
-            </Link>
-            {!below('medium') && (
-              <nav
+              <ButtonBase
                 css={`
                   display: flex;
                   align-items: center;
-                  height: 100%;
-                  margin-left: ${6.5 * GU}px;
                 `}
               >
-                {connectedGarden && <GardenNavItems garden={connectedGarden} />}
-                {!connectedGarden && (
-                  <Link
-                    href={network.celesteUrl}
-                    css={`
-                      text-decoration: none;
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    Become a Keeper
-                  </Link>
-                )}
-              </nav>
-            )}
-          </div>
-
-          <div
-            css={`
-              height: 100%;
-              display: flex;
-              align-items: center;
-              ${showBalance && `min-width: ${42.5 * GU}px`};
-            `}
-          >
-            <AccountModule compact={layoutSmall} />
-            {showBalance && (
-              <>
-                <div
+                <IconMenu
                   css={`
-                    width: 0.5px;
-                    height: ${3.5 * GU}px;
-                    border-left: 0.5px solid ${theme.border};
+                    width: ${4 * GU}px;
+                    height: ${4 * GU}px;
+                    color: grey;
                   `}
                 />
-                <BalanceModule />
-              </>
-            )}
-            {connectedGarden && (
-              <div
+              </ButtonBase>
+            </div>
+          )}
+          <div
+            css={`
+              width: 100%;
+              margin: 0 ${3 * GU}px;
+              display: flex;
+              justify-content: space-between;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <Link
+                href={logoLink}
+                external={false}
                 css={`
                   display: flex;
-                  height: 100%;
-                  margin-left: ${2 * GU}px;
                 `}
               >
-                <GlobalPreferencesButton onOpen={onOpenPreferences} />
-              </div>
-            )}
-            {account && (
-              <div
-                css={`
-                  display: flex;
-                  height: 100%;
-                `}
-              >
-                <ActivityButton />
-              </div>
-            )}
+                {layoutSmall ? (
+                  Logo
+                ) : (
+                  <img
+                    src={logotype}
+                    height={connectedGarden ? 40 : 38}
+                    alt=""
+                  />
+                )}
+              </Link>
+              {!layoutSmall && (
+                <nav
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    margin-left: ${6.5 * GU}px;
+                  `}
+                >
+                  {connectedGarden && (
+                    <GardenNavItems garden={connectedGarden} />
+                  )}
+                  {!connectedGarden && (
+                    <Link
+                      href={network.celesteUrl}
+                      css={`
+                        text-decoration: none;
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      Become a Keeper
+                    </Link>
+                  )}
+                </nav>
+              )}
+            </div>
+
+            <div
+              css={`
+                height: 100%;
+                display: flex;
+                align-items: center;
+                ${showBalance && `min-width: ${42.5 * GU}px`};
+              `}
+            >
+              <AccountModule compact={layoutSmall} />
+              {showBalance && (
+                <>
+                  <div
+                    css={`
+                      width: 0.5px;
+                      height: ${3.5 * GU}px;
+                      border-left: 0.5px solid ${theme.border};
+                    `}
+                  />
+                  <BalanceModule />
+                </>
+              )}
+              {connectedGarden && (
+                <div
+                  css={`
+                    display: flex;
+                    height: 100%;
+                    margin-left: ${2 * GU}px;
+                  `}
+                >
+                  <GlobalPreferencesButton onOpen={onOpenPreferences} />
+                </div>
+              )}
+              {account && (
+                <div
+                  css={`
+                    display: flex;
+                    height: 100%;
+                  `}
+                >
+                  <ActivityButton />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Layout>
