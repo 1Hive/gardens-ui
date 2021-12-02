@@ -46,7 +46,6 @@ function EVMExecutor({ evmcrispr }) {
   const [abi, setAbi] = useState()
   const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
-  // const [evmcrispr, setEvmcrispr] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
@@ -54,21 +53,6 @@ function EVMExecutor({ evmcrispr }) {
   const [code, setCode] = useState(TERMINAL_EXECUTOR_MESSAGE)
 
   const terminalMode = interactionType === TERMINAL_INDEX
-
-  // useEffect(() => {
-  //   async function getEvmCrispr() {
-  //     if (!connectedGarden || !account) {
-  //       return
-  //     }
-  //     const crispr = await EVMcrispr.create(
-  //       connectedGarden.address,
-  //       ethers.getSigner()
-  //     )
-
-  //     setEvmcrispr(crispr)
-  //   }
-  //   getEvmCrispr()
-  // }, [account, connectedGarden, ethers])
 
   const forwarderName = useMemo(() => {
     if (!gardenState || !gardenState.installedApps) {
