@@ -47,8 +47,9 @@ function DecisionDescription({ proposal }) {
       ) : (
         <Description
           path={description}
+          dotIndicator={false}
           css={`
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             overflow: hidden;
             max-width: 750px;
             -webkit-box-orient: vertical;

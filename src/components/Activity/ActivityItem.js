@@ -9,8 +9,8 @@ import {
   GU,
   textStyle,
   useTheme,
-  IdentityBadge,
 } from '@1hive/1hive-ui'
+import IdentityBadge from '@components/IdentityBadge'
 import TimeTag from './TimeTag'
 import TransactionProgress from './TransactionProgress'
 import { useActivity } from '@providers/ActivityProvider'

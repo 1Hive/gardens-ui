@@ -26,7 +26,7 @@ function AgreementDetails({
   const mobileMode = layoutName === 'small'
   const multiColumnsMode = layoutName === 'max' || layoutName === 'medium'
 
-  const celesteUrl = getNetwork().celesteUrl
+  const network = getNetwork()
 
   const ipfsCID = getIpfsCidFromUri(ipfsUri)
 
@@ -67,13 +67,21 @@ function AgreementDetails({
         `}
       >
         <InfoField label="Arbitrator">
-          <Link href={celesteUrl}>Celeste</Link>
+          <Link href={network.celesteUrl}>Celeste</Link>
         </InfoField>
         <InfoField label="Staking Pool">
-          <IdentityBadge entity={stakingAddress} />
+          <IdentityBadge
+            entity={stakingAddress}
+            explorerProvider={network.explorer}
+            networkType={network.type}
+          />
         </InfoField>
         <InfoField label="Covenant Contract">
-          <IdentityBadge entity={contractAddress} />
+          <IdentityBadge
+            entity={contractAddress}
+            explorerProvider={network.explorer}
+            networkType={network.type}
+          />
         </InfoField>
         <InfoField label="Creation Date">{dateFormat(creationDate)}</InfoField>
       </div>

@@ -16,16 +16,13 @@ import { getNetwork } from '@/networks'
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 function AppsAddresses() {
+  const { loading } = useGardens()
+  const gardenState = useGardenState()
+  const connectedGarden = useConnectedGarden()
   const { layoutName } = useLayout()
 
-  const { loading } = useGardens()
-  const connectedGarden = useConnectedGarden()
-
-  const gardenState = useGardenState()
-
-  const { explorer, type } = getNetwork()
-
   const shortAddresses = layoutName === 'small'
+  const { explorer, type } = getNetwork()
 
   if (!gardenState || !connectedGarden) {
     return null
