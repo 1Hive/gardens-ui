@@ -90,13 +90,7 @@ function Footer() {
       `}
     >
       <Layout paddingBottom={40}>
-        {compactMode ? (
-          footerData.garden && (
-            <FixedFooter
-              token={footerData.wrappableToken || footerData.token}
-            />
-          )
-        ) : (
+        {!compactMode ? (
           <div
             css={`
               display: grid;
@@ -157,13 +151,13 @@ function Footer() {
               </div>
             )}
           </div>
-        )}
+        ) : null}
       </Layout>
     </footer>
   )
 }
 
-function FixedFooter({ token }) {
+export function FixedFooter({ token }) {
   const theme = useTheme()
   const history = useHistory()
   const { account } = useWallet()
