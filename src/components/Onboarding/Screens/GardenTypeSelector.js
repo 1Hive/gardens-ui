@@ -47,14 +47,14 @@ function GardenTypeSelector() {
           onSelect={handleSelectNative}
           selected={selectedType === NATIVE_TYPE}
           animationData={nativeAnimation}
-          title="Native Token"
+          title="Veneto Garden"
         />
         <Card
           paragraph="Use an existing ERC-20 token to within your garden."
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
           animationData={byotAnimation}
-          title="Pre-existing Token"
+          title="Boboli Garden"
         />
       </div>
     </div>
