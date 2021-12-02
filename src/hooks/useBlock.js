@@ -13,21 +13,24 @@ const NETWORK_TIMES = new Map([
   ['xdai', 5],
 ])
 
+function useProvider(chainId) {
+  return useMemo(() => getDefaultProvider(chainId), [chainId])
+}
+
 export function useLatestBlock(chainId) {
   const mounted = useMounted()
   const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
   const blockTime = useBlockTime(chainId)
   const blockNumberRef = useRef(block.number)
+  const provider = useProvider(chainId)
 
   useEffect(() => {
     let timeoutId
 
     const pollBlock = async () => {
       try {
-        const { number, timestamp } = await getDefaultProvider(
-          chainId
-        ).getBlock('latest')
+        const { number, timestamp } = await provider.getBlock('latest')
 
         if (number !== blockNumberRef.current) {
           setBlock({ number, timestamp })
@@ -46,18 +49,19 @@ export function useLatestBlock(chainId) {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [blockTime, chainId, mounted])
+  }, [blockTime, provider, mounted])
 
   return block
 }
 
 export function useBlockTimeStamp(blockNumber, chainId) {
   const [timestamp, setTimestamp] = useState(0)
+  const provider = useProvider(chainId)
 
   useEffect(() => {
     let cancelled = false
     const fetchBlock = async () => {
-      const block = await getDefaultProvider(chainId).getBlock(blockNumber)
+      const block = await provider.getBlock(blockNumber)
 
       if (block && !cancelled) {
         setTimestamp(block.timestamp * 1000)
@@ -69,7 +73,7 @@ export function useBlockTimeStamp(blockNumber, chainId) {
     return () => {
       cancelled = true
     }
-  }, [blockNumber, chainId])
+  }, [blockNumber, provider])
 
   return timestamp
 }
