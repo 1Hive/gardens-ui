@@ -4,6 +4,8 @@ import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
+
+import { useUserGardensSigned } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
 import { addressesEqual } from '@utils/web3-utils'
@@ -12,7 +14,8 @@ import gardensLogo from '@assets/gardensLogoMark.svg'
 function Sidebar() {
   const theme = useTheme()
   const { user: connectedUser, loading: userLoading } = useUserState()
-  const { gardensSigned } = connectedUser
+
+  const gardensSigned = useUserGardensSigned(connectedUser)
 
   const match = useRouteMatch('/garden/:daoId')
 
