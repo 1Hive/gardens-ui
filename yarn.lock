@@ -146,12 +146,33 @@
     "@ethersproject/solidity" "^5.1.0"
     radspec "^2.0.0-rc.2"
 
+"@1hive/connect-core@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.9.8.tgz#4478773a401049710f3e93efd8a4d87e938db5d3"
+  integrity sha512-NyWVG537pW3BoNO3yxJImA5HFXNSvZ1yv4LBM+px6+aQnul6gXq/QEZIsURJfcHrTtxjq0AkB9i5h7bPWmDBgA==
+  dependencies:
+    "@1hive/radspec" "^2.0.0"
+    "@ethersproject/abi" "^5.1.2"
+    "@ethersproject/address" "^5.1.0"
+    "@ethersproject/bignumber" "^5.1.1"
+    "@ethersproject/contracts" "^5.1.1"
+    "@ethersproject/hash" "^5.1.0"
+    "@ethersproject/providers" "^5.1.2"
+    "@ethersproject/solidity" "^5.1.0"
+
 "@1hive/connect-ethereum@^0.9.6":
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.6.tgz#b41c95dc4f14030229c0a4955f534c8d6aa1accf"
   integrity sha512-LuSbPRFZsETb5rDuOm/k+c4vIueUPX6dowADkig10XNokVC8cnHFGpiGm6OXWFboKgZ3RxzzYU0ZChQiP1JrdA==
   dependencies:
     "@1hive/connect-core" "^0.9.6"
+
+"@1hive/connect-ethereum@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.8.tgz#f71ac325d4c69969358e2c21df9bb41e253ac9c1"
+  integrity sha512-ML/TEfW6aZ7ZcxAbrBRPHzD7s+9OdRkLxx3t/0LQ3/C3sB7RruBQlfGYwo/JWlnQqLMauvoAD3IKpZ80ihwSiA==
+  dependencies:
+    "@1hive/connect-core" "^0.9.8"
 
 "@1hive/connect-gardens@^0.1.12":
   version "0.1.12"
@@ -163,12 +184,12 @@
     ethers "^5.5.1"
     graphql-tag "^2.10.3"
 
-"@1hive/connect-react@^0.9.6":
-  version "0.9.6"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.6.tgz#0e1202f788d634701294f1dda0e9a609c6eb3416"
-  integrity sha512-Hpse49TQPR1hPlMXboX/zEYQ9QN/8i/nOJd2aOJy0pKXf/4iA/9rN8veUQIue09tLoqQMGrhOg32cifXvn2lLw==
+"@1hive/connect-react@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.8.tgz#d1ee67e06ce90b686ea284d88f80cb93d4f2c8b2"
+  integrity sha512-tNRtl1SHJ1kjk+CyO1ZbX3dqh2M7sHEIrucLbPYP7RibSMkM5taEqzP7IzSgOMhXIzCY4IzS6SNuHcBvup9a1g==
   dependencies:
-    "@1hive/connect" "^0.9.6"
+    "@1hive/connect" "^0.9.8"
 
 "@1hive/connect-thegraph@^0.9.3", "@1hive/connect-thegraph@^0.9.4", "@1hive/connect-thegraph@^0.9.6":
   version "0.9.6"
@@ -183,7 +204,20 @@
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
 
-"@1hive/connect@^0.9.1", "@1hive/connect@^0.9.6":
+"@1hive/connect-thegraph@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.9.8.tgz#270dc5bfcfadec332e4934d351563e3c145693cc"
+  integrity sha512-APH95HQjfdumea5GGCbwNK9z9vrw0JIOz75eYEnLXGiDVeqEc2tpCMtykltgDfO4M4W5GW4z60JoqpNKTBpjWA==
+  dependencies:
+    "@1hive/connect-core" "^0.9.8"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
+
+"@1hive/connect@^0.9.1":
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.6.tgz#f24292186c89af7a173d1dc60d0c6bc935992341"
   integrity sha512-P0AfpBTZXIwoQqnE4za4xqAJLyo17PXvE4q3DMMWeSxgESrNDPiolhV4rlVDTj0l5VMcukhMevQNt9g/r+n7jA==
@@ -191,6 +225,15 @@
     "@1hive/connect-core" "^0.9.6"
     "@1hive/connect-ethereum" "^0.9.6"
     "@1hive/connect-thegraph" "^0.9.6"
+
+"@1hive/connect@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.8.tgz#537b94fff8dbccc53a4b0bf651ad397d0da9575e"
+  integrity sha512-CpjGQw0CR98Ut6mqdI1a+gwAtr9ssntdif5/g8KV+zoBdUvY1LeoxVApvN7HSqIfJzT5lRqGclI0hXyjmtIFvA==
+  dependencies:
+    "@1hive/connect-core" "^0.9.8"
+    "@1hive/connect-ethereum" "^0.9.8"
+    "@1hive/connect-thegraph" "^0.9.8"
 
 "@1hive/evmcrispr@^0.3.0":
   version "0.3.0"
@@ -201,6 +244,15 @@
     ethers "^5.0.17"
     graphql-tag "^2.12.4"
     node-fetch "^3.0.0"
+
+"@1hive/radspec@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@1hive/radspec/-/radspec-2.0.0.tgz#add8e83aaf4e0de0ff2ffbd2428dfeb024a98762"
+  integrity sha512-OwYb0K7MNgda1310D6vRG9XyuupoAKrKHApBktT2N4c5VYnEBBhSQLYeGzwBXqHJ/WrTXvWJAkLPwrQHbqbxOg==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
+    date-fns "^2.26.0"
+    ethers "^5.0.0"
 
 "@aragon/provided-connector@^6.0.8":
   version "6.0.8"
@@ -6901,6 +6953,11 @@ date-fns@2.0.0-alpha.22:
   version "2.0.0-alpha.22"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.22.tgz#c65f5dd7e959c59f8ea5591e458afc76a2a0d8d0"
   integrity sha512-ovlz0I0OFhyn9bgTfqFAUvJvo8VS9mUuOxZ6cwKwBjSx42lMpXPGolcINYZoTNAG2M4YJ3QoApiQQljQEuy/Uw==
+
+date-fns@^2.26.0:
+  version "2.27.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.27.0.tgz#e1ff3c3ddbbab8a2eaadbb6106be2929a5a2d92b"
+  integrity sha512-sj+J0Mo2p2X1e306MHq282WS4/A8Pz/95GIFcsPNMPMZVI3EUrAdSv90al1k+p74WGLCruMXk23bfEDZa71X9Q==
 
 dateformat@^3.0.3:
   version "3.0.3"
