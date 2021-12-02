@@ -33,7 +33,7 @@ export default function useActions() {
   const mounted = useMounted()
 
   const { incentivisedPriceOracle, unipool } = useConnectedGarden()
-  const { installedApps, wrappableToken, mainToken } = useGardenState()
+  const { installedApps, mainToken, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')

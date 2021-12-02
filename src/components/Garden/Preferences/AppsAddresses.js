@@ -16,22 +16,22 @@ import { getNetwork } from '@/networks'
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 function AppsAddresses() {
-  const { loading } = useGardens()
-  const gardenState = useGardenState()
   const connectedGarden = useConnectedGarden()
+  const { loading: loadingGardens } = useGardens()
+  const { config, installedApps, loading } = useGardenState()
   const { layoutName } = useLayout()
 
   const shortAddresses = layoutName === 'small'
   const { explorer, type } = getNetwork()
 
-  if (!gardenState || !connectedGarden) {
+  if (loading) {
     return null
   }
   return (
     <div>
       <React.Fragment>
         <Box heading="Garden address">
-          {!connectedGarden || loading ? (
+          {loadingGardens ? (
             <div
               css={`
                 display: flex;
@@ -63,7 +63,7 @@ function AppsAddresses() {
           )}
         </Box>
         <Box heading="Apps">
-          {!gardenState || gardenState.loading ? (
+          {loading ? (
             <div
               css={`
                 display: flex;
@@ -82,13 +82,13 @@ function AppsAddresses() {
                 text-align: center;
               `}
             >
-              {gardenState.config?.conviction.fundsManager && (
+              {config?.conviction.fundsManager && (
                 <AppField
                   name="Funds Manager"
-                  address={gardenState.config.conviction.fundsManager}
+                  address={config.conviction.fundsManager}
                 />
               )}
-              {gardenState.installedApps.map((app, index) => {
+              {installedApps.map((app, index) => {
                 if (app.appId) {
                   return (
                     <AppField

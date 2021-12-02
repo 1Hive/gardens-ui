@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
-import { useGardenState } from '@providers/GardenState'
+
 import BigNumber from '@lib/bigNumber'
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
 import { getNetwork } from '@/networks'
@@ -12,7 +13,7 @@ export function useDisputeState(disputeId) {
   const [disputeState, setDisputeState] = useState(null)
   const [roundState, setRoundState] = useState(null)
 
-  const { chainId } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const disputeManagerAddress = getNetwork(chainId).disputeManager
   const disputeManagerContract = useContractReadOnly(
     disputeManagerAddress,
@@ -77,7 +78,7 @@ export function useDisputeFees() {
     loading: true,
   })
 
-  const { chainId } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const arbitratorAddress = getNetwork(chainId).arbitrator
   const arbitratorContract = useContractReadOnly(
     arbitratorAddress,

@@ -106,7 +106,6 @@ export function useGardenData() {
       !config)
 
   return {
-    chainId,
     config,
     connectedAgreementApp,
     connector,
