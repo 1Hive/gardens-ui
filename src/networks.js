@@ -131,8 +131,8 @@ export function getEthersNetwork() {
   }
 }
 
-export const addEthereumChain = () => {
-  const { eip3085 } = getNetwork()
+export const addEthereumChain = chainId => {
+  const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
   }
@@ -149,12 +149,13 @@ export const switchNetwork = async chainId => {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: chainIdHex }],
     })
-  } catch (switchError) {
-    // This error code indicates that the chain has not been added to Injected provider.
-    if (switchError.code === 4902) {
-      await addEthereumChain()
+  } catch (error) {
+    if (error.code === 4902) {
+      await addEthereumChain(chainId)
+      return
     }
-    console.error(switchError)
+
+    throw new Error(error.message)
   }
 }
 
