@@ -106,7 +106,7 @@ function EVMExecutor() {
 
       const appName = installedApps[selectedApp]
 
-      appFunctions = Object.getOwnPropertyNames(evmcrispr.exec(appName))
+      appFunctions = evmcrispr.appMethods(appName)
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
       appFunctions = formattedAbi.map(item => {
