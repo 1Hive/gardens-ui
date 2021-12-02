@@ -1,8 +1,7 @@
 import { getNetworkType } from '@utils/web3-utils'
 import { dataURLtoFile, textToFile } from '@utils/kit-utils'
 
-export const getStorageKey = account =>
-  `onboarding:${getNetworkType()}:${account}`
+const getStorageKey = account => `onboarding:${getNetworkType()}:${account}`
 
 export const getItem = account => {
   const item = window.localStorage.getItem(getStorageKey(account))
