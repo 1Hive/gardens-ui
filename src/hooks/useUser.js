@@ -26,6 +26,7 @@ export default function useUser(address) {
 
   useEffect(() => {
     if (!address) {
+      setLoading(false)
       return
     }
 
