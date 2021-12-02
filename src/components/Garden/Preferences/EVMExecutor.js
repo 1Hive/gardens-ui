@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import AceEditor from 'react-ace'
 import { utils } from 'ethers'
 import 'ace-builds/src-noconflict/mode-jade'
@@ -12,7 +12,7 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-import { evmcl, EVMcrispr } from '@1hive/evmcrispr'
+import { evmcl } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -35,7 +35,7 @@ const INTERNAL_INDEX = 0
 const EXTERNAL_INDEX = 1
 const TERMINAL_INDEX = 2
 
-function EVMExecutor() {
+function EVMExecutor({ evmcrispr }) {
   const { account, ethers } = useWallet()
   const gardenState = useGardenState()
 
@@ -46,7 +46,7 @@ function EVMExecutor() {
   const [abi, setAbi] = useState()
   const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
-  const [evmcrispr, setEvmcrispr] = useState(null)
+  // const [evmcrispr, setEvmcrispr] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
@@ -55,20 +55,20 @@ function EVMExecutor() {
 
   const terminalMode = interactionType === TERMINAL_INDEX
 
-  useEffect(() => {
-    async function getEvmCrispr() {
-      if (!connectedGarden || !account) {
-        return
-      }
-      const crispr = await EVMcrispr.create(
-        connectedGarden.address,
-        ethers.getSigner()
-      )
+  // useEffect(() => {
+  //   async function getEvmCrispr() {
+  //     if (!connectedGarden || !account) {
+  //       return
+  //     }
+  //     const crispr = await EVMcrispr.create(
+  //       connectedGarden.address,
+  //       ethers.getSigner()
+  //     )
 
-      setEvmcrispr(crispr)
-    }
-    getEvmCrispr()
-  }, [account, connectedGarden, ethers])
+  //     setEvmcrispr(crispr)
+  //   }
+  //   getEvmCrispr()
+  // }, [account, connectedGarden, ethers])
 
   const forwarderName = useMemo(() => {
     if (!gardenState || !gardenState.installedApps) {
