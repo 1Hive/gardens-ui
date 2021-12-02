@@ -43,7 +43,7 @@ function SavedProgress() {
             margin-top: ${2 * GU}px;
           `}
         >
-          You have a saved progress! Would you like to pick up from where you
+          You have saved progress! Would you like to pick up from where you
           left of?
         </p>
         <div
