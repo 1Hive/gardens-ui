@@ -10,6 +10,7 @@ import {
 } from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
+import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
 import { useWallet } from '@providers/Wallet'
@@ -27,9 +28,10 @@ function RaiseDisputeRequirements({
 }) {
   const { account } = useWallet()
   const { next } = useMultiModal()
+  const { chainId } = useGardenState()
   // Dispute fee token data
-  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
-  const accountBalance = useTokenBalanceOf(disputeFees.token, account)
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token, chainId)
+  const accountBalance = useTokenBalanceOf(disputeFees.token, account, chainId)
 
   const handleOnCreateDispute = useCallback(() => {
     getTransactions(() => {

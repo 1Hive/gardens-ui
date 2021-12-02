@@ -21,7 +21,7 @@ const STAKE_GAS_LIMIT = 500000
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
-  const { connectedAgreementApp } = useGardenState()
+  const { chainId, connectedAgreementApp } = useGardenState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -35,17 +35,20 @@ export function useStaking() {
 
   const stakingFactoryContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingFactory,
-    stakingFactoryAbi
+    stakingFactoryAbi,
+    chainId
   )
 
   const stakingContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingInstance,
-    stakingAbi
+    stakingAbi,
+    chainId
   )
 
   const tokenContract = useContractReadOnly(
     stakeManagement && stakeManagement.token && stakeManagement.token.id,
-    minimeTokenAbi
+    minimeTokenAbi,
+    chainId
   )
 
   const handleReFetchTotalBalance = useCallback(() => {

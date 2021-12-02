@@ -4,9 +4,9 @@ import { useMounted } from './useMounted'
 import tokenAbi from '@abis/minimeToken.json'
 import BigNumber from '@lib/bigNumber'
 
-export function useTokenBalanceOf(tokenAddress, account) {
+export function useTokenBalanceOf(tokenAddress, account, chainId) {
   const [balance, setBalance] = useState(new BigNumber(-1))
-  const tokenContract = useContractReadOnly(tokenAddress, tokenAbi)
+  const tokenContract = useContractReadOnly(tokenAddress, tokenAbi, chainId)
 
   useEffect(() => {
     if (!tokenContract) {
@@ -24,7 +24,7 @@ export function useTokenBalanceOf(tokenAddress, account) {
   return balance
 }
 
-export function useTokenData(tokenAddress) {
+export function useTokenData(tokenAddress, chainId) {
   const [tokenData, setTokenData] = useState({
     name: '',
     decimals: 18,
@@ -34,7 +34,7 @@ export function useTokenData(tokenAddress) {
   const [error, setError] = useState(null)
 
   const mounted = useMounted()
-  const tokenContract = useContractReadOnly(tokenAddress, tokenAbi)
+  const tokenContract = useContractReadOnly(tokenAddress, tokenAbi, chainId)
 
   useEffect(() => {
     const fetchTokenData = async () => {

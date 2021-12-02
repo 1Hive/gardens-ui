@@ -38,6 +38,7 @@ function WalletAugmented({ children }) {
 
   const {
     connect,
+    onNetworkSwitch,
     onPreferredNetworkChange,
     preferredNetwork,
     resetConnection,
@@ -51,6 +52,7 @@ function WalletAugmented({ children }) {
       connected: isConnected(),
       ethers,
       isSupportedNetwork: isSupportedChain(wallet.chainId),
+      onNetworkSwitch,
       onPreferredNetworkChange,
       preferredNetwork,
       resetConnection,
@@ -60,6 +62,7 @@ function WalletAugmented({ children }) {
       connect,
       ethers,
       isConnected,
+      onNetworkSwitch,
       onPreferredNetworkChange,
       preferredNetwork,
       resetConnection,
@@ -117,12 +120,13 @@ function useConnection() {
     await wallet.reset()
   }, [wallet])
 
-  const handleOnPreferredNetworkChange = useCallback(
-    async index => {
-      const chainId = SUPPORTED_CHAINS[index]
-      setPreferredNetwork(chainId)
-      setPreferredChain(chainId)
+  const handlePreferredNetworkChange = useCallback(chainId => {
+    setPreferredNetwork(chainId)
+    setPreferredChain(chainId)
+  }, [])
 
+  const handleNetworkSwtich = useCallback(
+    async chainId => {
       if (connector === 'injected') {
         setSwitchingNetworks(true)
         await switchNetwork(chainId)
@@ -145,7 +149,8 @@ function useConnection() {
 
   return {
     connect,
-    onPreferredNetworkChange: handleOnPreferredNetworkChange,
+    onNetworkSwitch: handleNetworkSwtich,
+    onPreferredNetworkChange: handlePreferredNetworkChange,
     preferredNetwork,
     resetConnection,
     switchingNetworks,

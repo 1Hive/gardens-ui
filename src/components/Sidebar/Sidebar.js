@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import { useRouteMatch } from 'react-router'
 import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
+import { useGardenRoute } from '@hooks/useRouting'
 import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
@@ -16,7 +16,7 @@ function Sidebar() {
   const { user: connectedUser, loading: userLoading } = useUserState()
   const { gardensMetadata } = useGardens()
 
-  const match = useRouteMatch('/garden/:daoId')
+  const [networkType, gardenAddress] = useGardenRoute()
 
   const sidebarGardens = useMemo(() => {
     if (!connectedUser?.gardensSigned) {
@@ -32,13 +32,13 @@ function Sidebar() {
       return {
         address: gardenSignedAddress,
         name,
-        path: `#/garden/${gardenSignedAddress}`,
+        path: `#/${networkType}/garden/${gardenSignedAddress}`,
         src: logo || defaultGardenLogo,
       }
     })
 
     return result
-  }, [connectedUser, gardensMetadata])
+  }, [connectedUser, gardensMetadata, networkType])
 
   const startTrail = sidebarGardens.length > 0
   const trail = useTrail(sidebarGardens.length, {
@@ -132,7 +132,7 @@ function Sidebar() {
                 return (
                   <animated.div key={address} style={style}>
                     <MenuItem
-                      active={addressesEqual(address, match?.params.daoId)}
+                      active={addressesEqual(address, gardenAddress)}
                       label={name || address}
                       path={path}
                       src={src}

@@ -13,12 +13,15 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const [loading, setLoading] = useState(true)
   const [canUpdate, setCanUpdate] = useState(false)
 
-  const connectedGarden = useConnectedGarden()
-  const { incentivisedPriceOracle: priceOracleAddress } = connectedGarden
+  const {
+    chainId,
+    incentivisedPriceOracle: priceOracleAddress,
+  } = useConnectedGarden()
 
   const priceOracleContract = useContractReadOnly(
     priceOracleAddress,
-    priceOracleAbi
+    priceOracleAbi,
+    chainId
   )
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import {
   useOrganization,
   usePermissions,
 } from '@1hive/connect-react'
-import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
@@ -26,16 +26,16 @@ import fundsManagerAbi from '@abis/FundsManager.json'
 const INITIAL_TIMER = 2000
 
 export function useGardenData() {
-  const { preferredNetwork } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
-  const { subgraphs } = getNetwork(preferredNetwork)
+  const { chainId } = useConnectedGarden()
+  const { subgraphs } = getNetwork(chainId)
 
   const useAgreementHook = createAppHook(
     connectAgreement,
-    getAgreementConnectorConfig(preferredNetwork).agreement
+    getAgreementConnectorConfig(chainId).agreement
   )
 
   const agreementApp = getAppByName(apps, env('AGREEMENT_APP_NAME'))
@@ -106,6 +106,7 @@ export function useGardenData() {
       !config)
 
   return {
+    chainId,
     config,
     connectedAgreementApp,
     connector,
@@ -118,11 +119,14 @@ export function useGardenData() {
 }
 
 export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
+  const [commonPool, setCommonPool] = useState(new BigNumber(-1))
+
+  const { chainId } = useConnectedGarden()
   const fundsManagerContract = useContractReadOnly(
     fundsManagerAddress,
-    fundsManagerAbi
+    fundsManagerAbi,
+    chainId
   )
-  const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   useEffect(() => {
     let cancelled = false
@@ -168,7 +172,8 @@ export function useTokenBalances(account, token, timeout = 5000) {
     totalSupply: new BigNumber(-1),
   })
 
-  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
+  const { chainId } = useConnectedGarden()
+  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi, chainId)
 
   useEffect(() => {
     if (!token?.id || !tokenContract) {

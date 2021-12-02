@@ -117,6 +117,11 @@ export function getNetwork(chainId = getPreferredChain()) {
   return networks[getNetworkInternalName(chainId)]
 }
 
+export function getNetworkChainIdByType(networkType) {
+  const networks = getAvailableNetworks()
+  return networks.find(network => network.type === networkType)?.chainId || null
+}
+
 export function getEthersNetwork() {
   const { type, chainId, ensRegistry } = getNetwork()
   return {

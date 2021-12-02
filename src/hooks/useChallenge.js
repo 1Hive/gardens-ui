@@ -10,12 +10,13 @@ import { hexToUtf8 } from '@utils/web3-utils'
 import agreementAbi from '../abi/agreement.json'
 
 export default function useChallenge(proposal) {
-  const { connectedAgreementApp } = useGardenState()
+  const { chainId, connectedAgreementApp } = useGardenState()
   const mounted = useMounted()
 
   const agreementContract = useContractReadOnly(
     connectedAgreementApp.address,
-    agreementAbi
+    agreementAbi,
+    chainId
   )
 
   const [challenge, setChallenge] = useState()

@@ -7,8 +7,8 @@ const noop = () => {}
 
 // Onboarding local hook to poll for the new created garden
 export default function useGardenPoll(gardenAddress, onResult = noop) {
-  const { preferredNetwork } = useWallet()
-  const { subgraphs } = getNetwork(preferredNetwork)
+  const { preferredChain } = useWallet()
+  const { subgraphs } = getNetwork(preferredChain)
 
   // Poll garden until we can confirm it was picked up by the subgraph.
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function useGardenPoll(gardenAddress, onResult = noop) {
       try {
         // Note that getGarden throws an error if it can't find the garden for the given address
         await getGarden(
-          { network: preferredNetwork, subgraphUrl: subgraphs.gardens },
+          { network: preferredChain, subgraphUrl: subgraphs.gardens },
           gardenAddress
         )
 
@@ -34,5 +34,5 @@ export default function useGardenPoll(gardenAddress, onResult = noop) {
     }
 
     return () => clearTimeout(timer)
-  }, [gardenAddress, onResult, preferredNetwork, subgraphs])
+  }, [gardenAddress, onResult, preferredChain, subgraphs])
 }

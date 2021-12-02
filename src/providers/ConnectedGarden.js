@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useRouteMatch } from 'react-router-dom'
 import { getGarden } from '@1hive/connect-gardens'
 
 import { ActivityProvider } from './ActivityProvider'
@@ -9,21 +8,26 @@ import { GardenStateProvider } from './GardenState'
 import { StakingProvider } from './Staking'
 
 import { useGardens } from './Gardens'
+import { useGardenRoute } from '@hooks/useRouting'
 import { useMounted } from '@hooks/useMounted'
 import { useWallet } from './Wallet'
 
 import { DAONotFound } from '../errors'
 import { mergeGardenMetadata } from '@utils/garden-utils'
-import { getNetwork } from '@/networks'
+import { getNetwork, getNetworkChainIdByType } from '@/networks'
 
 const ConnectedGardenContext = React.createContext()
 
 export function ConnectedGardenProvider({ children }) {
-  const match = useRouteMatch('/garden/:daoId')
-  const gardenAddress = match?.params.daoId
+  const [networkType, gardenAddress] = useGardenRoute()
+  const chainId = getNetworkChainIdByType(networkType)
 
-  if (gardenAddress) {
-    return <WithGarden gardenAddress={gardenAddress}>{children}</WithGarden>
+  if (gardenAddress && chainId) {
+    return (
+      <WithGarden gardenAddress={gardenAddress} chainId={chainId}>
+        {children}
+      </WithGarden>
+    )
   }
 
   return (
@@ -33,17 +37,21 @@ export function ConnectedGardenProvider({ children }) {
   )
 }
 
-function WithGarden({ children, gardenAddress }) {
-  const { preferredNetwork } = useWallet()
+function WithGarden({ children, gardenAddress, chainId }) {
   const { gardensMetadata } = useGardens()
+  const { onPreferredNetworkChange } = useWallet()
   const [connectedGarden, connectedGardenLoading] = useGarden(
     gardenAddress,
     gardensMetadata,
-    preferredNetwork
+    chainId
   )
 
+  useEffect(() => {
+    onPreferredNetworkChange(chainId)
+  }, [chainId, onPreferredNetworkChange])
+
   if (!connectedGarden && !connectedGardenLoading) {
-    throw new DAONotFound(gardenAddress)
+    throw new DAONotFound(gardenAddress, chainId)
   }
 
   return (
@@ -96,7 +104,10 @@ function useGarden(id, gardensMetadata, chainId) {
         )
 
         if (mounted()) {
-          setGarden(mergeGardenMetadata(result, gardensMetadata))
+          setGarden({
+            ...mergeGardenMetadata(result, gardensMetadata),
+            chainId,
+          })
         }
       } catch (err) {
         if (mounted()) {

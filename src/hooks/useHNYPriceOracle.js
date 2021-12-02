@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
+import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '../networks'
 import { fromDecimals } from '@utils/math-utils'
 
@@ -11,12 +12,14 @@ const { stableToken, honeyToken, honeyPriceOracle } = getNetwork()
 export default function useHNYPriceOracle(amount) {
   const [convertedAmount, setConvertedAmount] = useState(-1)
   const [loading, setLoading] = useState(true)
+  const { chainId } = useWallet()
 
   const mounted = useMounted()
 
   const priceOracleContract = useContractReadOnly(
     honeyPriceOracle,
-    priceOracleAbi
+    priceOracleAbi,
+    chainId
   )
 
   useEffect(() => {
