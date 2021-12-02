@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import {
   Button,
   ButtonBase,
@@ -27,9 +27,10 @@ import gardensLogoType from '@assets/gardensLogoType.svg'
 
 function Header({ onOpenPreferences, onToggleSidebar }) {
   const theme = useTheme()
+  const { pathname } = useLocation()
   const { account } = useWallet()
   const { below } = useViewport()
-  const layoutSmall = below('medium')
+  const mobileMode = below('medium')
   const network = getNetwork()
   const history = useHistory()
   const connectedGarden = useConnectedGarden()
@@ -45,12 +46,12 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
     }
   }, [connectedGarden])
 
-  const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
+  const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
   const logoLink = `#${
     connectedGarden ? buildGardenPath(history.location, '') : '/home'
   }`
 
-  const showBalance = connectedGarden && account && !layoutSmall
+  const showBalance = connectedGarden && account && !mobileMode
 
   return (
     <header
@@ -70,7 +71,7 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
             align-items: center;
           `}
         >
-          {layoutSmall && (
+          {mobileMode && pathname !== '/home' && (
             <div
               css={`
                 width: ${13 * GU}px;
@@ -119,7 +120,7 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
                   display: flex;
                 `}
               >
-                {layoutSmall ? (
+                {mobileMode ? (
                   Logo
                 ) : (
                   <img
@@ -129,7 +130,7 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
                   />
                 )}
               </Link>
-              {!layoutSmall && (
+              {!mobileMode && (
                 <nav
                   css={`
                     display: flex;
@@ -164,7 +165,7 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
                 ${showBalance && `min-width: ${42.5 * GU}px`};
               `}
             >
-              <AccountModule compact={layoutSmall} />
+              <AccountModule compact={mobileMode} />
               {showBalance && (
                 <>
                   <div
