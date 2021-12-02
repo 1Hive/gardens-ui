@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   GU,
@@ -88,6 +88,12 @@ function StakingMovements({ stakingMovements, token }) {
   const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
+
+  const [selectedPage, setSelectedPage] = useState(0)
+
+  const handlePageChange = useCallback(page => {
+    setSelectedPage(page)
+  }, [])
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
@@ -186,6 +192,8 @@ function StakingMovements({ stakingMovements, token }) {
           </div>,
         ]
       }}
+      onPageChange={handlePageChange}
+      page={selectedPage}
     />
   )
 }

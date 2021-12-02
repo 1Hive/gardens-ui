@@ -244,10 +244,12 @@ export function createGardenTxThree(
   // Get action and challenge amount in stable value
   const { honeyTokenLiquidityStable, tokenLiquidity } = liquidity
   const tokenPrice = honeyTokenLiquidityStable / tokenLiquidity
-  const actionAmountStable = bigNum(tokenPrice * actionAmount).toString(10)
-  const challengeAmountStable = bigNum(tokenPrice * challengeAmount).toString(
-    10
-  )
+  const actionAmountStable = bigNum(tokenPrice * actionAmount)
+    .toFixed(0)
+    .toString(10)
+  const challengeAmountStable = bigNum(tokenPrice * challengeAmount)
+    .toFixed(0)
+    .toString(10)
 
   return {
     name: 'Install apps',

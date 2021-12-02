@@ -17,9 +17,10 @@ function HeaderModule({ content, hasPopover = true, icon, onClick }) {
         height: 100%;
         padding: ${1 * GU}px;
         background: ${theme.surface};
-        &:active {
-          background: ${theme.surfacePressed};
-        }
+
+        ${onClick
+          ? `&:active { background: ${theme.surfacePressed}; }`
+          : `cursor: auto;`}
       `}
     >
       <div

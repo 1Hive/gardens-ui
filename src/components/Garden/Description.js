@@ -1,25 +1,18 @@
 import React from 'react'
-import { GU, IdentityBadge, useTheme } from '@1hive/1hive-ui'
+import { GU, Tag, useTheme } from '@1hive/1hive-ui'
+import GardenAppBadge from './GardenAppBadge'
+import IdentityBadge from '@components/IdentityBadge'
 
 function Description({ disableBadgeInteraction, path, ...props }) {
   return (
-    <span
-      css={`
-        // overflow-wrap:anywhere and hyphens:auto are not supported yet by
-        // the latest versions of Safari (as of June 2020), which
-        // is why word-break:break-word has been added here.
-        hyphens: auto;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-      `}
-      {...props}
-    >
+    <span>
       {path
         ? path.map((step, index) => (
             <DescriptionStep
               disableBadgeInteraction={disableBadgeInteraction}
               key={index}
               step={step}
+              {...props}
             />
           ))
         : 'No description'}
@@ -28,7 +21,12 @@ function Description({ disableBadgeInteraction, path, ...props }) {
 }
 
 /* eslint-disable react/prop-types */
-function DescriptionStep({ step, disableBadgeInteraction }) {
+function DescriptionStep({
+  step,
+  disableBadgeInteraction,
+  dotIndicator = true,
+  ...props
+}) {
   const theme = useTheme()
 
   const description = []
@@ -41,7 +39,6 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
         if (type === 'address' || type === 'any-account') {
           return (
             <span key={key}>
-              {' '}
               <IdentityBadge
                 badgeOnly={disableBadgeInteraction}
                 compact
@@ -51,15 +48,36 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
           )
         }
 
-        if (type === 'role' || type === 'kernelNamespace' || type === 'app') {
-          return <span key={key}> “{value.name}”</span>
+        if (type === 'app') {
+          return (
+            <span key={key}>
+              <GardenAppBadge app={value} />
+            </span>
+          )
+        }
+
+        if (type === 'role' || type === 'kernelNamespace') {
+          return (
+            <Tag key={key} color="#000">
+              {value.name}
+            </Tag>
+          )
         }
 
         if (type === 'apmPackage') {
           return <span key={key}> “{value.artifact.appName}”</span>
         }
 
-        return <span key={key}> {value.description || value}</span>
+        return (
+          <span
+            key={key}
+            css={`
+              margin-right: ${0.5 * GU}px;
+            `}
+          >
+            {value.description || value}
+          </span>
+        )
       })
     )
   } else {
@@ -77,39 +95,61 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
   })
 
   return (
-    <>
-      <span>{description}</span>
-      {childrenDescriptions.length > 0 && (
-        <ul
+    <div
+      {...props}
+      css={`
+        margin-bottom: ${1 * GU}px;
+        display: flex;
+        align-items: flex-start;
+      `}
+    >
+      {dotIndicator && (
+        <div
           css={`
-            list-style-type: none;
-            margin-left: 0;
-            padding-left: ${0.5 * GU}px;
-            text-indent: -${0.5 * GU}px;
+            height: 6px;
+            flex-basis: 6px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            background-color: ${theme.accent};
+            margin-top: ${1 * GU}px;
+            margin-right: ${1 * GU}px;
           `}
-        >
-          <li
+        />
+      )}
+      <div>
+        <span>{description}</span>
+        {childrenDescriptions.length > 0 && (
+          <ul
             css={`
-              padding-left: ${2 * GU}px;
-              &:before {
-                content: '';
-                width: ${0.5 * GU}px;
-                height: ${0.5 * GU}px;
-                background: ${theme.accent};
-                border-radius: 50%;
-                display: inline-block;
-              }
-              span {
-                display: inline;
-                color: ${theme.surfaceContentSecondary};
-              }
+              list-style-type: none;
+              margin-left: 0;
+              padding-left: ${0.5 * GU}px;
+              text-indent: -${0.5 * GU}px;
             `}
           >
-            {childrenDescriptions}
-          </li>
-        </ul>
-      )}
-    </>
+            <li
+              css={`
+                padding-left: ${2 * GU}px;
+                &:before {
+                  content: '';
+                  width: ${0.5 * GU}px;
+                  height: ${0.5 * GU}px;
+                  background: ${theme.accent};
+                  border-radius: 50%;
+                  display: inline-block;
+                }
+                span {
+                  display: inline;
+                  color: ${theme.surfaceContentSecondary};
+                }
+              `}
+            >
+              {childrenDescriptions}
+            </li>
+          </ul>
+        )}
+      </div>
+    </div>
   )
 }
 
