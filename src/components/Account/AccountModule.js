@@ -1,61 +1,64 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useWallet } from 'use-wallet'
-import { Button, GU, IconConnect, springs } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Button, GU, IconConnect } from '@1hive/1hive-ui'
+import { useWallet } from '@providers/Wallet'
 
 import ScreenError from './ScreenError'
 import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
+import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
-import { useAppState } from '../../providers/AppState'
 import { useProfile } from '../../providers/Profile'
-
-import { getUseWalletProviders } from '../../utils/web3-utils'
-
-const AnimatedDiv = animated.div
 
 const SCREENS = [
   {
     id: 'providers',
-    height:
-      6 * GU + // header
-      (12 + 1.5) * GU * Math.ceil(getUseWalletProviders().length / 2) + // buttons
-      7 * GU, // footer
   },
   {
     id: 'connecting',
-    height: 38 * GU,
+  },
+  {
+    id: 'networks',
   },
   {
     id: 'connected',
-    height: 40 * GU,
   },
   {
     id: 'error',
-    height: 50 * GU,
   },
 ]
 
 function AccountModule({ compact }) {
   const buttonRef = useRef()
-  const wallet = useWallet()
+
+  const {
+    account,
+    activating,
+    connect,
+    connector,
+    error,
+    resetConnection,
+    switchingNetworks,
+  } = useWallet()
   const [opened, setOpened] = useState(false)
-  const [animate, setAnimate] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
-  const [activationError, setActivationError] = useState(null)
-  const popoverFocusElement = useRef()
 
   const { boxOpened } = useProfile()
 
-  const { account, activating } = wallet
-  const { isLoading } = useAppState()
-
-  const clearError = useCallback(() => setActivationError(null), [])
-
   const toggle = useCallback(() => setOpened(opened => !opened), [])
+
+  const activate = useCallback(
+    async providerId => {
+      try {
+        await connect(providerId)
+      } catch (error) {
+        console.log('error ', error)
+      }
+    },
+    [connect]
+  )
 
   useEffect(() => {
     if (account && boxOpened) {
@@ -63,36 +66,9 @@ function AccountModule({ compact }) {
     }
   }, [account, boxOpened])
 
-  const handleCancelConnection = useCallback(() => {
-    wallet.deactivate()
-  }, [wallet])
-
-  const activate = useCallback(
-    async providerId => {
-      try {
-        await wallet.activate(providerId)
-      } catch (error) {
-        setActivationError(error)
-      }
-    },
-    [wallet]
-  )
-
-  // Don’t animate the slider until the popover has opened
-  useEffect(() => {
-    if (!opened) {
-      return
-    }
-    setAnimate(false)
-    const timer = setTimeout(() => {
-      setAnimate(true)
-    }, 0)
-    return () => clearTimeout(timer)
-  }, [opened])
-
   // Always show the “connecting…” screen, even if there are no delay
   useEffect(() => {
-    if (activationError) {
+    if (error) {
       setActivatingDelayed(null)
     }
 
@@ -108,14 +84,15 @@ function AccountModule({ compact }) {
     return () => {
       clearTimeout(timer)
     }
-  }, [activating, activationError])
+  }, [activating, error])
 
   const previousScreenIndex = useRef(-1)
 
-  const { screenIndex, direction } = useMemo(() => {
+  const { direction, screenIndex } = useMemo(() => {
     const screenId = (() => {
-      if (activationError) return 'error'
+      if (error) return 'error'
       if (activatingDelayed) return 'connecting'
+      if (switchingNetworks) return 'networks'
       if (account) return 'connected'
       return 'providers'
     })()
@@ -126,7 +103,7 @@ function AccountModule({ compact }) {
     previousScreenIndex.current = screenIndex
 
     return { direction, screenIndex }
-  }, [account, activationError, activatingDelayed])
+  }, [activatingDelayed, account, error, switchingNetworks])
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
@@ -138,18 +115,9 @@ function AccountModule({ compact }) {
         return false
       }
       setOpened(false)
-      setActivationError(null)
     },
     [screenId]
   )
-
-  // Prevents to lose the focus on the popover when a screen leaves while an
-  // element inside is focused (e.g. when clicking on the “disconnect” button).
-  useEffect(() => {
-    if (popoverFocusElement.current) {
-      popoverFocusElement.current.focus()
-    }
-  }, [screenId])
 
   return (
     <div
@@ -170,86 +138,56 @@ function AccountModule({ compact }) {
           label="Enable account"
           onClick={toggle}
           display={compact ? 'icon' : 'all'}
-          disabled={isLoading}
         />
       )}
-
       <HeaderPopover
-        animateHeight={animate}
+        direction={direction}
         heading={screen.title}
-        height={screen.height}
-        width={(screen.id === 'connected' ? 41 : 51) * GU}
         onClose={handlePopoverClose}
         opener={buttonRef.current}
+        screenId={screenId}
+        screenData={{
+          account,
+          activating: activatingDelayed,
+          activationError: error,
+          screenId,
+        }}
+        screenKey={({ account, activating, activationError, screenId }) =>
+          (activationError ? activationError.name : '') +
+          account +
+          activating +
+          screenId
+        }
         visible={opened}
+        width={(screen.id === 'connected' ? 41 : 51) * GU}
       >
-        <div ref={popoverFocusElement} tabIndex="0" css="outline: 0">
-          <Transition
-            native
-            immediate={!animate}
-            config={springs.smooth}
-            items={{
-              screen,
-              // This is needed because use-wallet throws an error when the
-              // activation fails before React updates the state of `activating`.
-              // A future version of use-wallet might return an
-              // `activationError` object instead, making this unnecessary.
-              activating: screen.id === 'error' ? null : activatingDelayed,
-              wallet,
-            }}
-            keys={({ screen }) => screen.id + activatingDelayed}
-            from={{
-              opacity: 0,
-              transform: `translate3d(${3 * GU * direction}px, 0, 0)`,
-            }}
-            enter={{ opacity: 1, transform: `translate3d(0, 0, 0)` }}
-            leave={{
-              opacity: 0,
-              transform: `translate3d(${3 * GU * -direction}px, 0, 0)`,
-            }}
-          >
-            {({ screen, activating, wallet }) => ({ opacity, transform }) => (
-              <AnimatedDiv
-                style={{ opacity, transform }}
-                css={`
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                `}
-              >
-                {(() => {
-                  if (screen.id === 'connecting') {
-                    return (
-                      <ScreenConnecting
-                        providerId={activating}
-                        onCancel={handleCancelConnection}
-                      />
-                    )
-                  }
-                  if (screen.id === 'connected') {
-                    return (
-                      <ScreenConnected
-                        onClosePopover={toggle}
-                        wallet={wallet}
-                      />
-                    )
-                  }
-                  if (screen.id === 'error') {
-                    return (
-                      <ScreenError
-                        error={activationError}
-                        onBack={clearError}
-                      />
-                    )
-                  }
-                  return <ScreenProviders onActivate={activate} />
-                })()}
-              </AnimatedDiv>
-            )}
-          </Transition>
-        </div>
+        {({ activating, activationError, screenId }) => {
+          if (screenId === 'connecting') {
+            return (
+              <ScreenConnecting
+                providerId={connector}
+                onCancel={resetConnection}
+              />
+            )
+          }
+          if (screenId === 'connected') {
+            return (
+              <ScreenConnected
+                providerId={connector}
+                onClosePopover={handlePopoverClose}
+              />
+            )
+          }
+          if (screenId === 'error') {
+            return (
+              <ScreenError error={activationError} onBack={resetConnection} />
+            )
+          }
+          if (screen.id === 'networks') {
+            return <ScreenPromptingAction />
+          }
+          return <ScreenProviders onActivate={activate} />
+        }}
       </HeaderPopover>
     </div>
   )

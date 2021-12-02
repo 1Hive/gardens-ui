@@ -15,7 +15,7 @@ import {
   STATUS_ITEMS,
   SUPPORT_ITEMS,
   TYPE_ITEMS,
-} from '../utils/filter-utils'
+} from '@utils/filter-utils'
 
 export const INITIAL_PROPOSAL_COUNT = 10
 const PROPOSAL_COUNT_STEP = 5

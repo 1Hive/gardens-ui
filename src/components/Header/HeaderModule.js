@@ -17,9 +17,10 @@ function HeaderModule({ content, hasPopover = true, icon, onClick }) {
         height: 100%;
         padding: ${1 * GU}px;
         background: ${theme.surface};
-        &:active {
-          background: ${theme.surfacePressed};
-        }
+
+        ${onClick
+          ? `&:active { background: ${theme.surfacePressed}; }`
+          : `cursor: auto;`}
       `}
     >
       <div
@@ -43,12 +44,7 @@ function HeaderModule({ content, hasPopover = true, icon, onClick }) {
                 {content}
               </div>
               {hasPopover && (
-                <IconDown
-                  size="small"
-                  css={`
-                    color: ${theme.surfaceIcon};
-                  `}
-                />
+                <IconDown size="small" color={theme.surfaceIcon} />
               )}
             </React.Fragment>
           )}

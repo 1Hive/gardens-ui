@@ -1,18 +1,28 @@
 import React from 'react'
 import { Connect } from '@1hive/connect-react'
 
-import { getDefaultChain } from '../local-settings'
+import { useConnectedGarden } from './ConnectedGarden'
+import { useWallet } from './Wallet'
+
 import { getNetwork } from '../networks'
 
 function ConnectProvider({ children }) {
-  const orgAddress = getNetwork().honeypot
+  const connectedGarden = useConnectedGarden()
+  const { preferredNetwork } = useWallet()
+
+  const { subgraphs } = getNetwork(preferredNetwork)
 
   return (
     <Connect
-      location={orgAddress}
-      connector="thegraph"
+      location={connectedGarden.address}
+      connector={[
+        'thegraph',
+        {
+          orgSubgraphUrl: subgraphs.aragon,
+        },
+      ]}
       options={{
-        network: getDefaultChain(),
+        network: preferredNetwork,
         ipfs: 'https://ipfs.io/ipfs/{cid}{path}',
       }}
     >

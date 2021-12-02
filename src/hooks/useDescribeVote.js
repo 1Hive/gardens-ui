@@ -1,16 +1,16 @@
 import { useEffect, useState, useMemo } from 'react'
 
-import { getAppPresentationByAddress } from '../utils/app-utils'
-import { addressesEqual } from '../utils/web3-utils'
-import { useMounted } from '../hooks/useMounted'
-import { useAppState } from '../providers/AppState'
+import { getAppPresentationByAddress } from '@utils/app-utils'
+import { addressesEqual } from '@utils/web3-utils'
+import { useMounted } from '@hooks/useMounted'
+import { useGardenState } from '@providers/GardenState'
 
 const cachedDescriptions = new Map([])
 
 export function useDescribeVote(script, voteId) {
   const mounted = useMounted()
 
-  const { organization, installedApps } = useAppState()
+  const { organization, installedApps } = useGardenState()
 
   const [description, setDescription] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -48,7 +48,6 @@ export function useDescribeVote(script, voteId) {
 
         if (mounted()) {
           setDescription(describedSteps)
-          setLoading(false)
 
           // Cache vote description to avoid unnecessary future call
           cachedDescriptions.set(voteId, describedSteps)
@@ -56,6 +55,7 @@ export function useDescribeVote(script, voteId) {
       } catch (err) {
         console.error(err)
       }
+      setLoading(false)
     }
 
     describe()

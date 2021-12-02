@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
-import BigNumber from '../../lib/bigNumber'
-import { stakesPercentages } from '../../utils/math-utils'
+import BigNumber from '@lib/bigNumber'
+import { stakesPercentages } from '@utils/math-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -16,6 +16,7 @@ function displayedStakes(stakes, total) {
     }
   ).map((stake, index) => ({
     item: {
+      gardenId: stake.index === -1 ? null : stakes[stake.index].gardenId,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
       proposalName:
         stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
@@ -31,8 +32,8 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
   const history = useHistory()
   const handleSelectProposal = useCallback(
-    id => {
-      history.push(`/proposal/${id}`)
+    (gardenId, proposalId) => {
+      history.push(`/garden/${gardenId}/proposal/${proposalId}`)
     },
     [history]
   )
@@ -76,6 +77,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
             return (
               <DistributionItem
                 compact={compact}
+                gardenId={item.gardenId}
                 proposalName={item.proposalName}
                 proposalId={item.proposalId}
                 selectProposal={handleSelectProposal}
@@ -90,6 +92,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
 const DistributionItem = ({
   compact,
+  gardenId,
   proposalId,
   proposalName,
   selectProposal,
@@ -97,8 +100,8 @@ const DistributionItem = ({
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
-    selectProposal(proposalId)
-  }, [proposalId, selectProposal])
+    selectProposal(gardenId, proposalId)
+  }, [gardenId, proposalId, selectProposal])
 
   return (
     <div

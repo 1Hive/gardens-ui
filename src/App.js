@@ -1,37 +1,40 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import { Main } from '@1hive/1hive-ui'
-import MainView from './components/MainView'
-import Routes from './Routes'
 
-import { AgreementSubscriptionProvider } from './providers/AgreementSubscription'
-import { AppStateProvider } from './providers/AppState'
+import GlobalErrorHandler from './GlobalErrorHandler'
+import MainView from '@components/MainView'
+import Routes from './routes/Routes'
+import WelcomeLoader from '@components/Welcome/WelcomeLoader'
+
+import { ActivityProvider } from './providers/ActivityProvider'
+import { GardensProvider } from './providers/Gardens'
 import { ProfileProvider } from './providers/Profile'
-import { StakingProvider } from './providers/Staking'
+import { UserProvider } from './providers/User'
 import { WalletProvider } from './providers/Wallet'
-import { ConnectProvider as Connect } from './providers/Connect'
 
 function App() {
   return (
-    <WalletProvider>
-      <Connect>
-        <ProfileProvider>
-          <AppStateProvider>
-            <StakingProvider>
-              <AgreementSubscriptionProvider>
-                <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-                  <HashRouter>
+    <HashRouter>
+      <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+        <WalletProvider>
+          <GlobalErrorHandler>
+            <ActivityProvider>
+              <ProfileProvider>
+                <UserProvider>
+                  <GardensProvider>
+                    <WelcomeLoader />
                     <MainView>
                       <Routes />
                     </MainView>
-                  </HashRouter>
-                </Main>
-              </AgreementSubscriptionProvider>
-            </StakingProvider>
-          </AppStateProvider>
-        </ProfileProvider>
-      </Connect>
-    </WalletProvider>
+                  </GardensProvider>
+                </UserProvider>
+              </ProfileProvider>
+            </ActivityProvider>
+          </GlobalErrorHandler>
+        </WalletProvider>
+      </Main>
+    </HashRouter>
   )
 }
 

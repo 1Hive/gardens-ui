@@ -9,7 +9,7 @@ import {
   GU,
 } from '@1hive/1hive-ui'
 import Divider from './Divider'
-import { getNetwork } from '../../../networks'
+import { getNetwork } from '@/networks'
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -19,8 +19,8 @@ import {
 } from '../stepper-statuses'
 import StatusVisual from './StatusVisual'
 
-import { springs } from '../../../style/springs'
-import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
+import { springs } from '@/style/springs'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const AnimatedSpan = animated.span
 
@@ -45,7 +45,7 @@ function Step({
         descColor: theme.contentSecondary,
       },
       [STEP_PROMPTING]: {
-        visualColor: '#FFE862',
+        visualColor: '#7CE0D6',
         descColor: theme.contentSecondary,
       },
       [STEP_WORKING]: {
@@ -94,7 +94,7 @@ function Step({
         <h2
           css={`
             ${textStyle('title4')}
-
+            height:${6 * GU}px;
             line-height: 1.2;
             text-align: center;
             margin-bottom: ${1 * GU}px;

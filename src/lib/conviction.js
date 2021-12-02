@@ -1,5 +1,6 @@
 import BigNumber from './bigNumber'
-import { addressesEqual } from '../utils/web3-utils'
+import { addressesEqual } from '@utils/web3-utils'
+import { safeDivBN } from '@utils/math-utils'
 
 const oneBN = new BigNumber('1')
 /**
@@ -235,7 +236,7 @@ export function getConvictionTrend(
 ) {
   const currentConviction = getCurrentConviction(stakes, time, alpha)
   const futureConviction = getCurrentConviction(stakes, time + timeUnit, alpha)
-  return futureConviction.minus(currentConviction).div(maxConviction)
+  return safeDivBN(futureConviction.minus(currentConviction), maxConviction)
 }
 
 /**
@@ -314,7 +315,9 @@ function convictionFromStakes(stakes, alpha) {
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ entity: { id } }) => addressesEqual(entity, id))
+    .filter(({ supporter: { user: { address } } }) =>
+      addressesEqual(entity, address)
+    )
     .map(({ time, tokensStaked, conviction }) => ({
       time,
       totalTokensStaked: tokensStaked,
@@ -327,8 +330,12 @@ export function isEntitySupporting(proposal, entity) {
     return false
   }
 
-  const entityStake = proposal.stakes.find(({ entity: { id } }) =>
-    addressesEqual(entity, id)
+  const entityStake = proposal.stakes.find(
+    ({
+      supporter: {
+        user: { address },
+      },
+    }) => addressesEqual(entity, address)
   )
 
   if (!entityStake) {

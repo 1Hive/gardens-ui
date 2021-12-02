@@ -1,4 +1,4 @@
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 
 /**
  * Generic round function, see:
@@ -23,7 +23,7 @@ export function round(num, places = 2) {
  * @param {string} num the number
  * @returns {Array<string>} array with the [<whole>, <decimal>] parts of the number
  */
-function splitDecimalNumber(num) {
+export function splitDecimalNumber(num) {
   const [whole = '', dec = ''] = num.split('.')
   return [
     whole.replace(/^0*/, ''), // trim leading zeroes
@@ -198,4 +198,26 @@ export function pct(a, b) {
 // Return 0 if denominator is 0 to avoid NaNs
 export function safeDiv(num, denom) {
   return denom ? num / denom : 0
+}
+
+export function safeDivBN(num, denom) {
+  return denom.gt(0) ? num.div(denom) : new BigNumber(0)
+}
+
+/**
+ * Normalizes a number from another range into a value between 0 and 1.
+ *
+ * Identical to map(value, low, high, 0, 1)
+ * Numbers outside the range are not clamped to 0 and 1, because out-of-range
+ * values are often intentional and useful.
+ *
+ * From Processing.js
+ *
+ * @param {Number} aNumber The incoming value to be converted
+ * @param {Number} low Lower bound of the value's current range
+ * @param {Number} high Upper bound of the value's current range
+ * @returns {Number} Normalized number
+ */
+export function norm(aNumber, low, high) {
+  return (aNumber - low) / (high - low)
 }

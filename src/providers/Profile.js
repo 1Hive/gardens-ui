@@ -13,7 +13,7 @@ import {
   getAccountPrivateData,
   getProfileForAccount,
   openBoxForAccount,
-} from '../lib/profile'
+} from '@lib/profile'
 
 const ProfileContext = React.createContext()
 
@@ -104,11 +104,10 @@ function ProfileProvider({ children }) {
 
   // Users private data is not accesible unless the user has authenticated
   useEffect(() => {
-    setBox(null)
-    if (!account) {
+    if (!account || boxCache.has(account)) {
       return
     }
-
+    setBox(null)
     auth()
   }, [account, auth])
 

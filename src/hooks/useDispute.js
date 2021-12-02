@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getNetwork } from '../networks'
-import arbitratorAbi from '../abi/arbitrator.json'
-import disputeManagerAbi from '../abi/DisputeManager.json'
+import { getNetwork } from '@/networks'
+import arbitratorAbi from '@abis/arbitrator.json'
+import disputeManagerAbi from '@abis/DisputeManager.json'
 import { useContractReadOnly } from './useContract'
-import { DISPUTE_STATE_ADJUDICATING } from '../utils/dispute-utils'
+import BigNumber from '@lib/bigNumber'
+import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
 
 export function useDisputeState(disputeId) {
   const [disputeState, setDisputeState] = useState(null)
@@ -90,7 +91,7 @@ export function useDisputeFees() {
 
       if (!cancelled) {
         setFees({
-          amount: result.feeAmount,
+          amount: new BigNumber(result.feeAmount.toString()),
           token: result.feeToken,
           loading: false,
         })

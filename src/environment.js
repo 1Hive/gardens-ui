@@ -1,9 +1,11 @@
-// rinkeby
-const DEFAULT_CHAIN_ID = 100
-const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
-const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
-const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement'
+const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
+const DEFAULT_HOOKED_TOKEN_MANAGER = 'wrappable-hooked-token-manager'
+const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
+const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
+
+const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
+const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -11,26 +13,52 @@ const ENV_VARS = {
       process.env.REACT_APP_AGREEMENT_APP_NAME || DEFAULT_AGREEMENT_APP_NAME
     )
   },
-  CHAIN_ID() {
-    const chainId = parseInt(process.env.REACT_APP_CHAIN_ID)
-    return isNaN(chainId) ? DEFAULT_CHAIN_ID : chainId
+  ALCHEMY_API_KEY() {
+    return process.env.REACT_APP_ALCHEMY_API_KEY || null
   },
   CONVICTION_APP_NAME() {
     return (
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
-  ETH_NODE() {
-    return process.env.REACT_APP_ETH_NODE || ''
+  RINKEBY_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || ''
   },
-  FORTMATIC_API_KEY() {
-    return process.env.REACT_APP_FORTMATIC_API_KEY || ''
+  XDAI_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || DEFAULT_XDAI_ETH_NODE_ENDPOINT
   },
-  INSTANCE() {
-    return process.env.REACT_APP_APP_INSTANCE || ''
+  POLYGON_ETH_NODE() {
+    return (
+      process.env.REACT_APP_POLYGON_ETH_NODE ||
+      DEFAULT_POLYGON_ETH_NODE_ENDPOINT
+    )
+  },
+  ETHERSCAN_API_KEY() {
+    return process.env.REACT_APP_ETHERSCAN_API_KEY || null
+  },
+  PORTIS_ID() {
+    return process.env.REACT_APP_PORTIS_ID || ''
+  },
+  GITHUB_API_TOKEN() {
+    return process.env.REACT_APP_GITHUB_API_TOKEN || ''
+  },
+  HOOKED_TOKEN_MANAGER_APP_NAME() {
+    return (
+      process.env.REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME ||
+      DEFAULT_HOOKED_TOKEN_MANAGER
+    )
+  },
+  INFURA_API_KEY() {
+    return process.env.REACT_APP_INFURA_API_KEY || null
   },
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
+  },
+  PINATA_API_TOKEN() {
+    return process.env.REACT_APP_PINATA_API_TOKEN || ''
+  },
+  POCKET_API_KEY() {
+    return process.env.REACT_APP_POCKET_API_KEY || null
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME

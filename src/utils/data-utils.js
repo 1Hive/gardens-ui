@@ -1,5 +1,5 @@
 import { convertFromString, ProposalTypes } from '../types'
-import BigNumber from '../lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {
@@ -119,6 +119,22 @@ export function transformSupporterData(supporter) {
   }
 }
 
+function transformCastData(cast) {
+  return {
+    ...cast,
+    stake: new BigNumber(cast.stake),
+    createdAt: parseInt(cast.createdAt, 10) * 1000,
+    proposal: cast.proposal
+      ? {
+          ...cast.proposal,
+          name: cast.proposal.metadata,
+          id: cast.proposal.number,
+          type: convertFromString(cast.proposal.type),
+        }
+      : null,
+  }
+}
+
 function transformStakeData(stake) {
   return {
     ...stake,
@@ -153,10 +169,23 @@ function transformStakeHistoryData(stake) {
   }
 }
 
+export function transformUserData(user) {
+  return {
+    ...user,
+    supports: user.supports.map(support => ({
+      ...support,
+      casts: support.casts.map(transformCastData),
+      stakes: support.stakes.map(transformStakeData),
+      stakesHistory: support.stakesHistory.map(transformStakeHistoryData),
+    })),
+  }
+}
+
 export function getAppAddressByName(apps, appName) {
   return apps?.find(app => app.name === appName)?.address || ''
 }
 
 export function getAppByName(apps, appName) {
-  return apps?.find(app => app.name === appName)
+  const regex = new RegExp(`^${appName}.*$`)
+  return apps?.find(app => app?.name?.match(regex))
 }

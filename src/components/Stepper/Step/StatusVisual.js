@@ -11,8 +11,8 @@ import {
   STEP_WAITING,
   STEP_WORKING,
 } from '../stepper-statuses'
-import { springs } from '../../../style/springs'
-import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
+import { springs } from '@/style/springs'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const STATUS_ICONS = {
   [STEP_ERROR]: IconCross,
@@ -153,12 +153,11 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             border: 2px solid ${
               status === STEP_WAITING ? 'transparent' : color
             };
-
             ${status === STEP_PROMPTING ? pulseAnimation : ''}
             ${status === STEP_WORKING ? spinAnimation : ''}
             ${
               status === STEP_PROMPTING
-                ? `background-color: ${theme.background};`
+                ? `background-color: ${theme.contentSecondary};`
                 : ''
             }
           `}
@@ -183,7 +182,6 @@ StatusVisual.propTypes = {
 /* eslint-disable react/prop-types */
 function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme()
-
   const renderIllustration =
     status === STEP_WORKING ||
     status === STEP_ERROR ||
@@ -208,13 +206,12 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.surfaceIcon};
+            background-color: ${theme.contentSecondary};
             height: 100%;
             width: 100%;
             border-radius: 100%;
             color: ${theme.positiveContent};
-
-            ${textStyle('title3')};
+            ${textStyle('title1')};
             font-weight: 600;
           `}
         >

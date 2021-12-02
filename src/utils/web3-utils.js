@@ -1,59 +1,56 @@
+import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
-import env from '../environment'
-import { getDefaultChain } from '../local-settings'
+import env from '@/environment'
+import { getPreferredChain } from '@/local-settings'
+import { getNetwork } from '@/networks'
 
 const DEFAULT_LOCAL_CHAIN = ''
+
+function getBackendServicesKeys() {
+  return {
+    alchemy: env('ALCHEMY_API_KEY'),
+    etherscan: env('ETHERSCAN_API_KEY'),
+    infura: env('INFURA_API_KEY'),
+    pocket: env('POCKET_API_KEY'),
+  }
+}
+
+export function getDefaultProvider() {
+  const { defaultEthNode, type } = getNetwork(getPreferredChain())
+
+  return defaultEthNode
+    ? new Providers.StaticJsonRpcProvider(defaultEthNode)
+    : ethers.getDefaultProvider(type, getBackendServicesKeys())
+}
 
 export function encodeFunctionData(contract, functionName, params) {
   return contract.interface.encodeFunctionData(functionName, params)
 }
 
-export function getUseWalletProviders() {
-  const providers = [{ id: 'injected' }, { id: 'frame' }]
-
-  if (env('FORTMATIC_API_KEY')) {
-    providers.push({
-      id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
-    })
-  }
-
-  return providers
-}
-
-export function isLocalOrUnknownNetwork(chainId = getDefaultChain()) {
-  return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
-}
-
-export function getUseWalletConnectors() {
-  return getUseWalletProviders().reduce((connectors, provider) => {
-    if (provider.useWalletConf) {
-      connectors[provider.id] = provider.useWalletConf
-    }
-    return connectors
-  }, {})
-}
-
-export function getNetworkType(chainId = getDefaultChain()) {
+export function getNetworkType(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'mainnet'
-  if (chainId === '3') return 'ropsten'
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
+  if (chainId === '137') return 'polygon'
 
   return DEFAULT_LOCAL_CHAIN
 }
 
-export function getNetworkName(chainId = getDefaultChain()) {
+export function getNetworkName(chainId = getPreferredChain()) {
   chainId = String(chainId)
 
   if (chainId === '1') return 'Mainnet'
-  if (chainId === '3') return 'Ropsten'
   if (chainId === '4') return 'Rinkeby'
   if (chainId === '100') return 'xDai'
+  if (chainId === '137') return 'Polygon'
 
   return 'unknown'
+}
+
+export function isLocalOrUnknownNetwork(chainId = getPreferredChain()) {
+  return getNetworkType(chainId) === DEFAULT_LOCAL_CHAIN
 }
 
 // Check address equality with checksums
@@ -90,4 +87,11 @@ export function addressesEqualNoSum(first, second) {
 }
 
 // Re-export some web3-utils functions
-export { isAddress, toChecksumAddress, toUtf8, soliditySha3 } from 'web3-utils'
+export {
+  asciiToHex,
+  hexToUtf8,
+  isAddress,
+  toChecksumAddress,
+  toHex,
+  soliditySha3,
+} from 'web3-utils'

@@ -1,0 +1,4 @@
+[
+  "function approve(address _spender, uint256 _amount) public returns (bool success)",
+  "function allowance(address owner, address spender) public view returns (uint256 remaining)"
+]

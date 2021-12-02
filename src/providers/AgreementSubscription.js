@@ -1,19 +1,22 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
-import connectAgreement from '@aragon/connect-agreement'
+import connectAgreement from '@1hive/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
-import { connectorConfig } from '../networks'
+import { getAgreementConnectorConfig } from '../networks'
 import { useWallet } from './Wallet'
-import { useMounted } from '../hooks/useMounted'
-import { useAppState } from './AppState'
-import { getAppByName } from '../utils/data-utils'
+import { useMounted } from '@hooks/useMounted'
+import { useGardenState } from './GardenState'
+import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
-const useAgreement = createAppHook(connectAgreement, connectorConfig.agreement)
 const AgreementSubscriptionContext = React.createContext()
 
 function AgreementSubscriptionProvider({ children }) {
-  const { account } = useWallet()
-  const { installedApps } = useAppState()
+  const { account, chainId } = useWallet()
+  const { installedApps } = useGardenState()
+  const useAgreement = createAppHook(
+    connectAgreement,
+    getAgreementConnectorConfig(chainId).agreement
+  )
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
 
   const [currentVersion, currentVersionStatus] = useAgreement(

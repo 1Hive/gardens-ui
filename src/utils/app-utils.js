@@ -1,7 +1,20 @@
 import { getIpfsUrlFromUri } from './ipfs-utils'
-import iconAcl from '../assets/icon-acl.svg'
-import iconKernel from '../assets/icon-kernel.svg'
-import iconRegistry from '../assets/icon-registry.svg'
+import iconAcl from '@assets/icon-acl.svg'
+import iconKernel from '@assets/icon-kernel.svg'
+import iconRegistry from '@assets/icon-registry.svg'
+
+export const SHORTENED_APPS_NAMES = new Map([
+  ['agent', 'agent'],
+  ['agreement-1hive', 'covenant'],
+  ['brightid-register', 'brightid-register'],
+  ['disputable-conviction-voting', 'conviction-voting'],
+  ['disputable-voting', 'voting'],
+  ['dynamic-issuance', 'issuance'],
+  ['hooked-token-manager-no-controller', 'token-manager'],
+  ['vote-token-aggregator', 'token-aggregator'],
+  ['vault', 'common pool'],
+  ['wrappable-hooked-token-manager', 'token-manager'],
+])
 
 // TODO: Replace with information supplied by connect when available
 // https://github.com/aragon/connect/pull/259

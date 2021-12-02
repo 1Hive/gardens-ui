@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { useMounted } from './useMounted'
-import { useWallet } from '../providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
-import { useAppState } from '../providers/AppState'
-import BigNumber from '../lib/bigNumber'
-import { useContract, useContractReadOnly } from './useContract'
+import { useGardenState } from '@providers/GardenState'
+import BigNumber from '@lib/bigNumber'
+import { useContractReadOnly } from './useContract'
 
-import { encodeFunctionData } from '../utils/web3-utils'
+import actions from '../actions/garden-action-types'
+import radspec from '../radspec'
+import { encodeFunctionData } from '@utils/web3-utils'
 
-import stakingFactoryAbi from '../abi/StakingFactory.json'
-import stakingAbi from '../abi/Staking.json'
-import minimeTokenAbi from '../abi/minimeToken.json'
+import stakingFactoryAbi from '@abis/StakingFactory.json'
+import stakingAbi from '@abis/Staking.json'
+import minimeTokenAbi from '@abis/minimeToken.json'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
@@ -19,7 +21,7 @@ const STAKE_GAS_LIMIT = 500000
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
-  const { connectedAgreementApp } = useAppState()
+  const { connectedAgreementApp } = useGardenState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -36,12 +38,12 @@ export function useStaking() {
     stakingFactoryAbi
   )
 
-  const stakingContract = useContract(
+  const stakingContract = useContractReadOnly(
     stakeManagement && stakeManagement.stakingInstance,
     stakingAbi
   )
 
-  const tokenContract = useContract(
+  const tokenContract = useContractReadOnly(
     stakeManagement && stakeManagement.token && stakeManagement.token.id,
     minimeTokenAbi
   )
@@ -50,15 +52,20 @@ export function useStaking() {
     setReFetchTotalBalance(true)
   }, [])
 
-  const handleStakingMovementsData = useCallback((error, data = []) => {
-    if (error || !data) {
-      return
-    }
-    setStakeManagement(stakeManagement => ({
-      ...stakeManagement,
-      stakingMovements: data,
-    }))
-  }, [])
+  const handleStakingMovementsData = useCallback(
+    (error, data = []) => {
+      if (error || !data) {
+        return
+      }
+      if (mounted()) {
+        setStakeManagement(stakeManagement => ({
+          ...stakeManagement,
+          stakingMovements: data,
+        }))
+      }
+    },
+    [mounted]
+  )
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)
@@ -101,10 +108,13 @@ export function useStaking() {
             handleStakingMovementsData
           )
 
+          const accountBalance = await tokenContract?.balanceOf(account)
+
           if (mounted()) {
             setStakeManagement(stakeManagement => ({
               ...stakeManagement,
               token: allTokens[1],
+              accountBalance,
               staking: staking
                 ? {
                     ...staking,
@@ -117,11 +127,9 @@ export function useStaking() {
               stakingFactory: stakingFactory,
               stakingInstance: null,
             }))
-            setLoading(false)
           }
         } else {
           setStakeManagement(null)
-          setLoading(false)
         }
       } catch (err) {
         setStakeManagement({
@@ -129,16 +137,22 @@ export function useStaking() {
           stakingMovements: null,
           stakingInstance: null,
         })
-        setLoading(false)
         console.error(err)
       }
+      setLoading(false)
     }
 
     if (connectedAgreementApp && account) {
       getStakingInformation()
     }
     return () => stakingMovementsSubscription.current?.unsubscribe()
-  }, [connectedAgreementApp, handleStakingMovementsData, mounted, account])
+  }, [
+    connectedAgreementApp,
+    handleStakingMovementsData,
+    mounted,
+    account,
+    tokenContract,
+  ])
 
   useEffect(() => {
     async function fetchStakingAddress() {
@@ -239,12 +253,16 @@ export function useStaking() {
         '0x',
       ])
 
+      const description = radspec[actions.ADD_FUNDS]()
+      const type = actions.ADD_FUNDS
+
       const intent = [
         {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: 'Deposit HNY',
+          description,
+          type,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -267,12 +285,16 @@ export function useStaking() {
         '0x',
       ])
 
+      const description = radspec[actions.WITHDRAW_FUNDS]()
+      const type = actions.WITHDRAW_FUNDS
+
       const intent = [
         {
           data: stakeData,
           from: account,
           to: stakeManagement.stakingInstance,
-          description: 'Withdraw HNY',
+          description,
+          type,
           gasLimit: STAKE_GAS_LIMIT,
         },
       ]
@@ -295,12 +317,18 @@ export function useStaking() {
         amount.toString(10),
       ])
 
+      const description = radspec[actions.APPROVE_TOKEN]({
+        tokenSymbol: stakeManagement.token.symbol,
+      })
+      const type = actions.APPROVE_TOKEN
+
       const intent = [
         {
           data: approveData,
           from: account,
           to: stakeManagement.token.id,
-          description: 'Approve HNY',
+          description,
+          type,
         },
       ]
 
@@ -346,12 +374,16 @@ export function useStaking() {
           [connectedAgreementApp.address, MAX_INT.toString(10), '0x']
         )
 
+        const description = radspec[actions.ALLOW_MANAGER]()
+        const type = actions.ALLOW_MANAGER
+
         const intent = [
           {
             data: allowManagerData,
             from: account,
             to: stakeManagement.stakingInstance,
-            description: 'Allow 1Hive Protocol',
+            description,
+            type,
           },
         ]
         if (mounted()) {

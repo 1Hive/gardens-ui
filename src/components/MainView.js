@@ -1,57 +1,110 @@
 import React from 'react'
-import { GU, Root, ScrollView, useViewport } from '@1hive/1hive-ui'
+import { useLocation } from 'react-router'
+import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
-import Footer from './Footer'
+import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
+import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
+import Sidebar from './Sidebar/Sidebar'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import usePreferences from '@hooks/usePreferences'
 
 function MainView({ children }) {
+  const { pathname } = useLocation()
   const { below } = useViewport()
+  const connectedGarden = useConnectedGarden()
+
+  const [openPreferences, closePreferences, preferenceOption] = usePreferences()
+
+  let loadingGardenState = true
+  if (connectedGarden) {
+    // TODO: Refactor
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { loading } = useGardenState()
+    loadingGardenState = loading
+  }
+
+  const mobileMode = below('medium')
   const compactMode = below('large')
 
+  if (preferenceOption) {
+    return (
+      <GlobalPreferences
+        path={preferenceOption}
+        onScreenChange={openPreferences}
+        onClose={closePreferences}
+      />
+    )
+  }
+
   return (
-    <div
+    <ToastHub
+      threshold={1}
+      timeout={1500}
       css={`
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-      `}
+      & > div {
+        width: auto;
+        & > div {
+          rgba(33, 43, 54, 0.9);
+          border-radius: 16px;
+        }
+      }
+    `}
     >
-      <Root.Provider
-        css={`
-          flex-grow: 1;
-          height: 100%;
-          position: relative;
-        `}
-      >
+      <div css="display: flex">
+        {pathname !== '/home' && !below('medium') && <Sidebar />}
         <div
           css={`
-            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
           `}
         >
-          <Header />
-        </div>
-        <ScrollView>
-          <div
+          <Root.Provider
             css={`
-              min-height: 100vh;
-              margin: 0;
-              display: grid;
-              grid-template-rows: 1fr ${compactMode ? 'auto' : `${40 * GU}px`};
+              flex-grow: 1;
+              height: 100%;
+              position: relative;
+              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
             `}
           >
             <div
               css={`
-                margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
+                flex-shrink: 0;
               `}
             >
-              <Layout paddingBottom={3 * GU}>{children}</Layout>
+              <Header onOpenPreferences={openPreferences} />
             </div>
-            <Footer />
-          </div>
-        </ScrollView>
-      </Root.Provider>
-    </div>
+            <ScrollView>
+              <div
+                css={`
+                  min-height: 100vh;
+                  margin: 0;
+                  display: grid;
+                  grid-template-rows: 1fr auto;
+                `}
+              >
+                <div
+                  css={`
+                    margin-bottom: ${(compactMode ? 3 : 0) * GU}px;
+                  `}
+                >
+                  <Layout paddingBottom={3 * GU}>{children}</Layout>
+                </div>
+                {connectedGarden ? (
+                  !loadingGardenState && <Footer />
+                ) : (
+                  <Footer />
+                )}
+              </div>
+            </ScrollView>
+          </Root.Provider>
+        </div>
+      </div>
+    </ToastHub>
   )
 }
 
