@@ -19,12 +19,13 @@ import gardensLogoType from '@assets/gardensLogoType.svg'
 
 function Header({ onOpenPreferences }) {
   const theme = useTheme()
-  const { account } = useWallet()
+  const connectedGarden = useConnectedGarden()
+  const history = useHistory()
   const { below } = useViewport()
+  const { account } = useWallet()
+
   const layoutSmall = below('medium')
   const network = getNetwork()
-  const history = useHistory()
-  const connectedGarden = useConnectedGarden()
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -139,7 +140,7 @@ function Header({ onOpenPreferences }) {
                 <GlobalPreferencesButton onOpen={onOpenPreferences} />
               </div>
             )}
-            {account && (
+            {connectedGarden && account && (
               <div
                 css={`
                   display: flex;

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import { getProfileForAccount } from '@lib/profile'
 
@@ -13,10 +14,11 @@ const IdentityBadge = React.memo(function IdentityBadge({
   withProfile = true,
   ...props
 }) {
-  const [profile, setProfile] = useState(null)
   const history = useHistory()
+  const connectedGarden = useConnectedGarden()
+  const [profile, setProfile] = useState(null)
 
-  const { explorer, type } = getNetwork()
+  const { explorer, type } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network
 
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${entity}`)

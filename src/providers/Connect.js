@@ -2,10 +2,12 @@ import React from 'react'
 import { Connect } from '@1hive/connect-react'
 
 import { useConnectedGarden } from './ConnectedGarden'
+import useGardenNetworkEnsurance from '@hooks/useGardenNetworkEnsurance'
 
 import { getNetwork } from '../networks'
 
 function ConnectProvider({ children }) {
+  useGardenNetworkEnsurance()
   const connectedGarden = useConnectedGarden()
   const { subgraphs } = getNetwork(connectedGarden.chainId)
 

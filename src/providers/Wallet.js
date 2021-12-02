@@ -88,7 +88,7 @@ function WalletProvider({ children }) {
 
 function useConnection() {
   const wallet = useWallet()
-  const { connector } = wallet
+  const { connect: connectWallet, connector, reset } = wallet
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
@@ -97,28 +97,28 @@ function useConnection() {
   const connect = useCallback(
     async connector => {
       try {
-        await wallet.connect(connector)
-      } catch (e) {
-        console.error(e)
+        await connectWallet(connector)
+      } catch (err) {
+        console.error(err)
 
         const connectedAddresses = await window?.ethereum?.request({
           method: 'eth_accounts',
         })
         if (connectedAddresses?.length > 0) {
           try {
-            await wallet.connect('injected')
-          } catch (e) {
-            console.error(e)
+            await connectWallet('injected')
+          } catch (err) {
+            console.error(err)
           }
         }
       }
     },
-    [wallet]
+    [connectWallet]
   )
 
   const resetConnection = useCallback(async () => {
-    await wallet.reset()
-  }, [wallet])
+    await reset()
+  }, [reset])
 
   const handlePreferredNetworkChange = useCallback(chainId => {
     setPreferredNetwork(chainId)
@@ -128,9 +128,14 @@ function useConnection() {
   const handleNetworkSwtich = useCallback(
     async chainId => {
       if (connector === 'injected') {
-        setSwitchingNetworks(true)
-        await switchNetwork(chainId)
-        setSwitchingNetworks(false)
+        try {
+          setSwitchingNetworks(true)
+          await switchNetwork(chainId)
+          setSwitchingNetworks(false)
+        } catch (err) {
+          setSwitchingNetworks(false)
+          throw new Error(err.message)
+        }
       }
     },
     [connector]
