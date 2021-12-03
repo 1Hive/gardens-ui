@@ -1,17 +1,21 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
 import connectAgreement from '@1hive/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
-import { getAgreementConnectorConfig } from '../networks'
-import { useWallet } from './Wallet'
-import { useMounted } from '@hooks/useMounted'
+
+import { useConnectedGarden } from './ConnectedGarden'
 import { useGardenState } from './GardenState'
+import { useMounted } from '@hooks/useMounted'
+import { useWallet } from './Wallet'
+
+import { getAgreementConnectorConfig } from '../networks'
 import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
 const AgreementSubscriptionContext = React.createContext()
 
 function AgreementSubscriptionProvider({ children }) {
-  const { account, chainId } = useWallet()
+  const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
   const { installedApps } = useGardenState()
   const useAgreement = createAppHook(
     connectAgreement,

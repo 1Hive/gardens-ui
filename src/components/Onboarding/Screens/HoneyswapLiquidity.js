@@ -29,7 +29,7 @@ const HNY_DENOMINATION = 0
 
 function HoneyswapLiquidity() {
   const theme = useTheme()
-  const { account } = useWallet()
+  const { account, chainId } = useWallet()
   const {
     config,
     onBack,
@@ -53,8 +53,16 @@ function HoneyswapLiquidity() {
   )
   const [tokenAmount, setTokenAmount] = useState(tokenLiquidity)
 
-  const hnyTokenBalance = useTokenBalanceOf(getNetwork().honeyToken, account)
-  const existingTokenBalance = useTokenBalanceOf(config.tokens.address, account)
+  const hnyTokenBalance = useTokenBalanceOf(
+    getNetwork(chainId).honeyToken,
+    account,
+    chainId
+  )
+  const existingTokenBalance = useTokenBalanceOf(
+    config.tokens.address,
+    account,
+    chainId
+  )
 
   // Callback functions
   const handleDenominatedAmountChange = useCallback(event => {

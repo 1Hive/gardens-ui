@@ -10,8 +10,6 @@ import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 
-import { useProfile } from '../../providers/Profile'
-
 const SCREENS = [
   {
     id: 'providers',
@@ -45,8 +43,6 @@ function AccountModule({ compact }) {
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
 
-  const { boxOpened } = useProfile()
-
   const toggle = useCallback(() => setOpened(opened => !opened), [])
 
   const activate = useCallback(
@@ -59,12 +55,6 @@ function AccountModule({ compact }) {
     },
     [connect]
   )
-
-  useEffect(() => {
-    if (account && boxOpened) {
-      setOpened(false)
-    }
-  }, [account, boxOpened])
 
   // Always show the “connecting…” screen, even if there are no delay
   useEffect(() => {
@@ -110,7 +100,11 @@ function AccountModule({ compact }) {
 
   const handlePopoverClose = useCallback(
     reject => {
-      if (screenId === 'connecting' || screenId === 'error') {
+      if (
+        screenId === 'connecting' ||
+        screenId === 'error' ||
+        screenId === 'networks'
+      ) {
         // reject closing the popover
         return false
       }
@@ -118,6 +112,12 @@ function AccountModule({ compact }) {
     },
     [screenId]
   )
+
+  useEffect(() => {
+    if (screenId === 'networks') {
+      setOpened(true)
+    }
+  }, [screenId])
 
   return (
     <div

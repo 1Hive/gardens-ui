@@ -12,8 +12,9 @@ import { Header } from '../kit'
 
 import Navigation from '../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
-import { getNetwork } from '@/networks'
+import { useWallet } from '@providers/Wallet'
 import { addressesEqual } from '@utils/web3-utils'
+import { getNetwork } from '@/networks'
 import {
   DAY_IN_SECONDS,
   HOUR_IN_SECONDS,
@@ -565,7 +566,8 @@ const LineBreak = () => {
 }
 
 const AddressBadge = ({ address, shorten = true }) => {
-  const { explorer, type } = getNetwork()
+  const { chainId } = useWallet()
+  const { explorer, type } = getNetwork(chainId)
   return (
     <IdentityBadge
       entity={address}
