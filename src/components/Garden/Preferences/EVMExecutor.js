@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import AceEditor from 'react-ace'
 import { utils } from 'ethers'
-import 'ace-builds/src-noconflict/mode-jade'
 
 import {
   Box,
@@ -50,7 +48,7 @@ function EVMExecutor({ evmcrispr }) {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
-  const [code, setCode] = useState(TERMINAL_EXECUTOR_MESSAGE)
+  const [code, setCode] = useState(null)
 
   const terminalMode = interactionType === TERMINAL_INDEX
 
@@ -307,31 +305,15 @@ function EVMExecutor({ evmcrispr }) {
         </>
       )}
       {terminalMode && (
-        <>
-          <Box
-            css={`
-              z-index: 1;
-            `}
-          >
-            <AceEditor
-              width="100%"
-              mode="jade"
-              value={code}
-              onChange={setCode}
-              fontSize={14}
-              showPrintMargin={false}
-              showGutter={false}
-              highlightActiveLine
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: true,
-                showLineNumbers: true,
-                tabSize: 2,
-              }}
-            />
-          </Box>
-        </>
+        <TextInput
+          onChange={setCode}
+          placeholder={TERMINAL_EXECUTOR_MESSAGE}
+          wide
+          multiline
+          css={`
+            min-height: ${50 * GU}px;
+          `}
+        />
       )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
