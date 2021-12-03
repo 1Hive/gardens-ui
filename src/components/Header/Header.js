@@ -10,8 +10,7 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import { getDexTradeTokenUrl } from '@/endpoints'
-import { getNetwork } from '@/networks'
+import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
@@ -25,7 +24,6 @@ function Header({ onOpenPreferences }) {
   const { account } = useWallet()
 
   const layoutSmall = below('medium')
-  const network = getNetwork()
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -95,7 +93,7 @@ function Header({ onOpenPreferences }) {
                 {connectedGarden && <GardenNavItems garden={connectedGarden} />}
                 {!connectedGarden && (
                   <Link
-                    href={network.celesteUrl}
+                    href={CELESTE_URL}
                     css={`
                       text-decoration: none;
                       color: ${theme.contentSecondary};

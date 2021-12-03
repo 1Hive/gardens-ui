@@ -10,7 +10,6 @@ import { StakingProvider } from './Staking'
 import { useGardens } from './Gardens'
 import { useGardenRoute } from '@hooks/useRouting'
 import { useMounted } from '@hooks/useMounted'
-import { useWallet } from './Wallet'
 
 import { DAONotFound } from '../errors'
 import { mergeGardenMetadata } from '@utils/garden-utils'
@@ -39,16 +38,11 @@ export function ConnectedGardenProvider({ children }) {
 
 function WithGarden({ children, gardenAddress, chainId }) {
   const { gardensMetadata } = useGardens()
-  const { onPreferredNetworkChange } = useWallet()
   const [connectedGarden, connectedGardenLoading] = useGarden(
     gardenAddress,
     gardensMetadata,
     chainId
   )
-
-  useEffect(() => {
-    onPreferredNetworkChange(chainId)
-  }, [chainId, onPreferredNetworkChange])
 
   if (!connectedGarden && !connectedGardenLoading) {
     throw new DAONotFound(gardenAddress, chainId)

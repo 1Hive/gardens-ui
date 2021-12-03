@@ -9,8 +9,10 @@ import {
   GU,
   RADIUS,
 } from '@1hive/1hive-ui'
-import { dateFormat } from '@utils/date-utils'
 import InfoField from '../InfoField'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { CELESTE_URL } from '@/endpoints'
+import { dateFormat } from '@utils/date-utils'
 import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
 import { getNetwork } from '@/networks'
 
@@ -26,7 +28,8 @@ function AgreementDetails({
   const mobileMode = layoutName === 'small'
   const multiColumnsMode = layoutName === 'max' || layoutName === 'medium'
 
-  const network = getNetwork()
+  const { chainId } = useConnectedGarden()
+  const network = getNetwork(chainId)
 
   const ipfsCID = getIpfsCidFromUri(ipfsUri)
 
@@ -67,7 +70,7 @@ function AgreementDetails({
         `}
       >
         <InfoField label="Arbitrator">
-          <Link href={network.celesteUrl}>Celeste</Link>
+          <Link href={CELESTE_URL}>Celeste</Link>
         </InfoField>
         <InfoField label="Staking Pool">
           <IdentityBadge

@@ -1,6 +1,7 @@
 import React from 'react'
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDisputeFees } from '@hooks/useDispute'
 
 import honeyIconSvg from '@assets/honey.svg'
@@ -9,7 +10,8 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 function DisputeFees({ proposal }) {
   const theme = useTheme()
-  const fees = useDisputeFees()
+  const { chainId } = useConnectedGarden()
+  const fees = useDisputeFees(chainId)
 
   return (
     <div>

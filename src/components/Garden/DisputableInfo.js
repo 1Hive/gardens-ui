@@ -4,15 +4,14 @@ import { Box, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+import { CELESTE_URL } from '@/endpoints'
 import { dateFormat } from '@utils/date-utils'
-
-import warningIconSvg from '@assets/icon-warning.svg'
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalTypes } from '@/types'
 
 import celesteStarIconSvg from '@assets/icon-celeste-star.svg'
 import coinsIconSvg from '@assets/icon-coins.svg'
-import { ProposalTypes } from '@/types'
-import { getNetwork } from '@/networks'
+import warningIconSvg from '@assets/icon-warning.svg'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -97,7 +96,6 @@ function ProposalChallengedInfo({ proposal }) {
 function ProposalDisputedInfo({ proposal }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const celesteUrl = getNetwork().celesteUrl
 
   const isSubmitter = addressesEqual(proposal.creator, account)
   const isChallenger = addressesEqual(proposal.challenger, account)
@@ -123,7 +121,7 @@ function ProposalDisputedInfo({ proposal }) {
               >
                 You can follow the process in{' '}
               </span>
-              <Link href={`${celesteUrl}/disputes/${proposal.disputeId}`}>
+              <Link href={`${CELESTE_URL}/disputes/${proposal.disputeId}`}>
                 Celeste Dashboard
               </Link>
               .

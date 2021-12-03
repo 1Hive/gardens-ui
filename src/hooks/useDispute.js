@@ -71,14 +71,13 @@ export function useDisputeState(disputeId) {
   return [disputeState, roundState]
 }
 
-export function useDisputeFees() {
+export function useDisputeFees(chainId) {
   const [fees, setFees] = useState({
     token: null,
     amount: null,
     loading: true,
   })
 
-  const { chainId } = useConnectedGarden()
   const arbitratorAddress = getNetwork(chainId).arbitrator
   const arbitratorContract = useContractReadOnly(
     arbitratorAddress,

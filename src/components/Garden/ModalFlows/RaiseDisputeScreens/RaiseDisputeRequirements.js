@@ -19,7 +19,7 @@ import { formatTokenAmount } from '@utils/token-utils'
 
 import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
-import { getNetwork } from '@/networks'
+import { CELESTE_URL } from '@/endpoints'
 
 function RaiseDisputeRequirements({
   celesteSynced,
@@ -115,7 +115,6 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
 
 function CelesteSyncedStatus({ synced }) {
   const theme = useTheme()
-  const celesteUrl = getNetwork().celesteUrl
 
   const infoData = useMemo(() => {
     if (synced) {
@@ -134,11 +133,11 @@ function CelesteSyncedStatus({ synced }) {
       text: (
         <div>
           Celeste is not synced, head over to the{' '}
-          <Link href={celesteUrl}>dashboard</Link> and update the term.
+          <Link href={CELESTE_URL}>dashboard</Link> and update the term.
         </div>
       ),
     }
-  }, [celesteUrl, synced, theme])
+  }, [synced, theme])
 
   return <InfoBox data={infoData} />
 }

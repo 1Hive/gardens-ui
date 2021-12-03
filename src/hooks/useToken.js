@@ -9,10 +9,11 @@ export function useTokenBalanceOf(tokenAddress, account, chainId) {
   const tokenContract = useContractReadOnly(tokenAddress, tokenAbi, chainId)
 
   useEffect(() => {
-    if (!tokenContract) {
+    if (!tokenContract || !account) {
       return
     }
     const fetchTokenBalanceOf = async () => {
+      console.log('Consulting balance', account)
       const result = await tokenContract.balanceOf(account)
 
       setBalance(new BigNumber(result.toString()))

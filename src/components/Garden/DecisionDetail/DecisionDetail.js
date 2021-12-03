@@ -31,6 +31,7 @@ import VoteCasted from './VoteCasted'
 import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDescribeVote } from '@hooks/useDescribeVote'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
@@ -49,6 +50,7 @@ function DecisionDetail({ proposal, actions }) {
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account: connectedAccount } = useWallet()
+  const { chainId } = useConnectedGarden()
   const {
     config: { voting: votingConfig },
   } = useGardenState()
@@ -59,7 +61,7 @@ function DecisionDetail({ proposal, actions }) {
     loading: descriptionLoading,
   } = useDescribeVote(proposal.script, proposal.id)
 
-  const network = getNetwork()
+  const network = getNetwork(chainId)
 
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const connectedAccountCast = getConnectedAccountCast(

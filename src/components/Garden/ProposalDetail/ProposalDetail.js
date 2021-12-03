@@ -42,8 +42,9 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
-import { useWallet } from '@providers/Wallet'
 import useChallenge from '@hooks/useChallenge'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
@@ -76,8 +77,9 @@ function ProposalDetail({
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
 
+  const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
-  const network = getNetwork()
+  const network = getNetwork(chainId)
 
   const {
     name,

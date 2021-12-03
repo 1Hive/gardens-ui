@@ -36,19 +36,19 @@ export function useStaking() {
   const stakingMovementsSubscription = useRef(null)
 
   const stakingFactoryContract = useContractReadOnly(
-    stakeManagement && stakeManagement.stakingFactory,
+    stakeManagement?.stakingFactory,
     stakingFactoryAbi,
     chainId
   )
 
   const stakingContract = useContractReadOnly(
-    stakeManagement && stakeManagement.stakingInstance,
+    stakeManagement?.stakingInstance,
     stakingAbi,
     chainId
   )
 
   const tokenContract = useContractReadOnly(
-    stakeManagement && stakeManagement.token && stakeManagement.token.id,
+    stakeManagement?.token?.id,
     minimeTokenAbi,
     chainId
   )
@@ -230,6 +230,7 @@ export function useStaking() {
       setLoadingStakingDataFromContract(false)
     }
     if (
+      account &&
       stakingContract &&
       stakeManagement &&
       connectedAgreementApp &&

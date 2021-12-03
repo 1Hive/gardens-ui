@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
-import { useWallet } from '@providers/Wallet'
 import { getGarden } from '@1hive/connect-gardens'
 import { getNetwork } from '@/networks'
 
 const noop = () => {}
 
 // Onboarding local hook to poll for the new created garden
-export default function useGardenPoll(gardenAddress, onResult = noop) {
-  const { preferredChain } = useWallet()
-  const { subgraphs } = getNetwork(preferredChain)
+export default function useGardenPoll(gardenAddress, chainId, onResult = noop) {
+  const { subgraphs } = getNetwork(chainId)
 
   // Poll garden until we can confirm it was picked up by the subgraph.
   useEffect(() => {
@@ -18,7 +16,7 @@ export default function useGardenPoll(gardenAddress, onResult = noop) {
       try {
         // Note that getGarden throws an error if it can't find the garden for the given address
         await getGarden(
-          { network: preferredChain, subgraphUrl: subgraphs.gardens },
+          { network: chainId, subgraphUrl: subgraphs.gardens },
           gardenAddress
         )
 
@@ -34,5 +32,5 @@ export default function useGardenPoll(gardenAddress, onResult = noop) {
     }
 
     return () => clearTimeout(timer)
-  }, [gardenAddress, onResult, preferredChain, subgraphs])
+  }, [chainId, gardenAddress, onResult, subgraphs])
 }

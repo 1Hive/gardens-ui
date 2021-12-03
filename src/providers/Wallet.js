@@ -87,8 +87,13 @@ function WalletProvider({ children }) {
 }
 
 function useConnection() {
-  const wallet = useWallet()
-  const { connect: connectWallet, connector, reset } = wallet
+  const {
+    chainId,
+    connect: connectWallet,
+    connector,
+    isConnected,
+    reset,
+  } = useWallet()
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
@@ -144,13 +149,13 @@ function useConnection() {
   // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
   // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies
   useEffect(() => {
-    if (wallet.account && preferredNetwork !== wallet.chainId) {
-      if (SUPPORTED_CHAINS.includes(wallet.chainId)) {
-        setPreferredChain(wallet.chainId)
-        setPreferredNetwork(wallet.chainId)
+    if (isConnected() && preferredNetwork !== chainId) {
+      if (SUPPORTED_CHAINS.includes(chainId)) {
+        setPreferredChain(chainId)
+        setPreferredNetwork(chainId)
       }
     }
-  }, [wallet.account, wallet.chainId]) // eslint-disable-line 
+  }, [chainId, isConnected]) // eslint-disable-line 
 
   return {
     connect,

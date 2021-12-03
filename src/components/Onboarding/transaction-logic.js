@@ -4,7 +4,11 @@ import { getNetwork } from '@/networks'
 import { ZERO_ADDR } from '@/constants'
 import { getContract } from '@hooks/useContract'
 import { YEARS_IN_SECONDS } from '@utils/kit-utils'
-import { encodeFunctionData, toHex } from '@utils/web3-utils'
+import {
+  encodeFunctionData,
+  getDefaultProvider,
+  toHex,
+} from '@utils/web3-utils'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
 import tokenAbi from '@abis/erc20.json'
@@ -16,10 +20,11 @@ const ONE_HUNDRED_PCT = 1e18
 
 export async function createPreTransactions(
   { garden, liquidity, tokens },
-  account
+  account,
+  { chainId }
 ) {
   const txs = []
-  const network = getNetwork()
+  const network = getNetwork(chainId)
   const templateAddress = network.template
   const honeyTokenAddress = network.honeyToken
 
@@ -29,7 +34,8 @@ export async function createPreTransactions(
       account,
       templateAddress,
       bigNum(liquidity.honeyTokenLiquidity).toString(10),
-      'HNY'
+      'HNY',
+      { chainId }
     ))
   )
 
@@ -40,7 +46,8 @@ export async function createPreTransactions(
         account,
         templateAddress,
         bigNum(liquidity.tokenLiquidity).toString(10),
-        tokens.existingTokenSymbol
+        tokens.existingTokenSymbol,
+        { chainId }
       ))
     )
   }
@@ -53,16 +60,20 @@ async function createTokenApproveTxs(
   owner,
   spender,
   amount,
-  tokenSymbol
+  tokenSymbol,
+  { chainId }
 ) {
   const txs = []
-  const allowance = await getTokenAllowance(tokenAddress, owner, spender)
+  const allowance = await getTokenAllowance(tokenAddress, owner, spender, {
+    chainId,
+  })
 
   if (allowance.lt(amount)) {
     if (!allowance.eq(0)) {
       txs.push({
         name: `Reset ${tokenSymbol} allowance`,
         transaction: createTokenTx(tokenAddress, 'approve', [spender, '0'], {
+          chainId,
           gasLimit: 150000,
         }),
       })
@@ -70,6 +81,7 @@ async function createTokenApproveTxs(
     txs.push({
       name: `Approve ${tokenSymbol}`,
       transaction: createTokenTx(tokenAddress, 'approve', [spender, amount], {
+        chainId,
         gasLimit: 150000,
       }),
     })
@@ -78,13 +90,10 @@ async function createTokenApproveTxs(
   return txs
 }
 
-export function createGardenTxOne({
-  garden,
-  issuance,
-  liquidity,
-  tokens,
-  voting,
-}) {
+export function createGardenTxOne(
+  { garden, issuance, liquidity, tokens, voting },
+  { chainId }
+) {
   let existingToken, commonPool, gardenTokenLiquidity, existingTokenLiquidity
 
   // New token
@@ -152,24 +161,28 @@ export function createGardenTxOne({
           voting.voteExecutionDelay,
         ],
       ],
-      { gasLimit: 12000000 }
+      { chainId, gasLimit: 12000000 }
     ),
   }
 }
 
-export function createTokenHoldersTx({ tokens }) {
+export function createTokenHoldersTx({ tokens }, { chainId }) {
   const accounts = tokens.holders.map(([account]) => account)
   const stakes = tokens.holders.map(([_, stake]) => bigNum(stake).toString(10))
 
   return {
     name: 'Mint new tokens',
     transaction: createTemplateTx('createTokenHolders', [accounts, stakes], {
+      chainId,
       gasLimit: 5000000,
     }),
   }
 }
 
-export function createGardenTxTwo({ conviction, garden, issuance }) {
+export function createGardenTxTwo(
+  { conviction, garden, issuance },
+  { chainId }
+) {
   const requestToken = conviction.requestToken || ZERO_ADDR
   let targetRatio, maxAdjustmentRatioPerSec
 
@@ -220,14 +233,15 @@ export function createGardenTxTwo({ conviction, garden, issuance }) {
         ],
         requestToken,
       ],
-      { gasLimit: 8000000 }
+      { chainId, gasLimit: 8000000 }
     ),
   }
 }
 
 export function createGardenTxThree(
   { agreement, garden, liquidity, tokens },
-  agreementContent
+  agreementContent,
+  { chainId }
 ) {
   const daoId = garden.name // TODO: Remember to do a check for the garden.name on the garden metadata screen, otherwise tx might fail if garden name already taken
 
@@ -262,7 +276,7 @@ export function createGardenTxThree(
         [actionAmountStable, actionAmountStable],
         [challengeAmountStable, challengeAmountStable],
       ],
-      { gasLimit: 8000000 }
+      { chainId, gasLimit: 8000000 }
     ),
   }
 }
@@ -281,10 +295,14 @@ export async function extractGardenAddress(ethers, txHash) {
   return gardenAddress
 }
 
-function createTemplateTx(fn, params, { gasLimit }) {
-  const network = getNetwork()
+function createTemplateTx(fn, params, { chainId, gasLimit }) {
+  const network = getNetwork(chainId)
   const templateAddress = network.template
-  const templateContract = getContract(templateAddress, templateAbi)
+  const templateContract = getContract(
+    templateAddress,
+    templateAbi,
+    getDefaultProvider(chainId)
+  )
 
   const data = encodeFunctionData(templateContract, fn, params)
 
@@ -295,8 +313,17 @@ function createTemplateTx(fn, params, { gasLimit }) {
   }
 }
 
-function createTokenTx(tokenAddress, fn, params, { gasLimit = 100000 }) {
-  const tokenContract = getContract(tokenAddress, tokenAbi)
+function createTokenTx(
+  tokenAddress,
+  fn,
+  params,
+  { chainId, gasLimit = 100000 }
+) {
+  const tokenContract = getContract(
+    tokenAddress,
+    tokenAbi,
+    getDefaultProvider(chainId)
+  )
   const data = encodeFunctionData(tokenContract, fn, params)
 
   return {
@@ -306,8 +333,12 @@ function createTokenTx(tokenAddress, fn, params, { gasLimit = 100000 }) {
   }
 }
 
-async function getTokenAllowance(tokenAddress, owner, spender) {
-  const tokenContract = getContract(tokenAddress, tokenAbi)
+async function getTokenAllowance(tokenAddress, owner, spender, { chainId }) {
+  const tokenContract = getContract(
+    tokenAddress,
+    tokenAbi,
+    getDefaultProvider(chainId)
+  )
   const allowance = await tokenContract.allowance(owner, spender)
 
   return bigNum(allowance.toString(), 0)

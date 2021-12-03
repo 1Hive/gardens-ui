@@ -11,6 +11,7 @@ export default function useGardenNetworkEnsurance() {
     connect,
     connected,
     onNetworkSwitch,
+    onPreferredNetworkChange,
     resetConnection,
     switchingNetworks,
   } = useWallet()
@@ -47,4 +48,8 @@ export default function useGardenNetworkEnsurance() {
     resetConnection,
     walletChainId,
   ])
+
+  useEffect(() => {
+    onPreferredNetworkChange(gardenChainId)
+  }, [gardenChainId, onPreferredNetworkChange])
 }

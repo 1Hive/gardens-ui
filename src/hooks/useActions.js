@@ -14,7 +14,7 @@ import { getContract, useContract } from './useContract'
 import env from '@/environment'
 
 import actions from '../actions/garden-action-types'
-import { encodeFunctionData } from '@utils/web3-utils'
+import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
 
@@ -32,13 +32,13 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { incentivisedPriceOracle, unipool } = useConnectedGarden()
+  const { chainId, incentivisedPriceOracle, unipool } = useConnectedGarden()
   const { installedApps, mainToken, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
-  const { stableToken } = getNetwork()
+  const { stableToken } = getNetwork(chainId)
 
   const priceOracleContract = useContract(
     incentivisedPriceOracle,
@@ -413,7 +413,11 @@ export default function useActions() {
 
   const approveTokenAmount = useCallback(
     async (tokenAddress, depositAmount, onDone = noop) => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!tokenContract || !agreementApp) {
         return
       }
@@ -433,7 +437,7 @@ export default function useActions() {
         onDone(transactions)
       }
     },
-    [agreementApp, approve, mounted]
+    [agreementApp, approve, chainId, mounted]
   )
 
   const getAllowance = useCallback(
@@ -451,13 +455,17 @@ export default function useActions() {
 
   const getAgreementTokenAllowance = useCallback(
     tokenAddress => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!agreementApp || !tokenContract) {
         return
       }
       return getAllowance(tokenContract, agreementApp.address)
     },
-    [agreementApp, getAllowance]
+    [agreementApp, chainId, getAllowance]
   )
 
   // TODO- we need to start using modal flow for all the transactions

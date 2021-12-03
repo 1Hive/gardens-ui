@@ -16,13 +16,13 @@ import { getNetwork } from '@/networks'
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 function AppsAddresses() {
-  const connectedGarden = useConnectedGarden()
+  const { address, chainId } = useConnectedGarden()
   const { loading: loadingGardens } = useGardens()
   const { config, installedApps, loading } = useGardenState()
   const { layoutName } = useLayout()
 
   const shortAddresses = layoutName === 'small'
-  const { explorer, type } = getNetwork()
+  const { explorer, type } = getNetwork(chainId)
 
   if (loading) {
     return null
@@ -44,7 +44,7 @@ function AppsAddresses() {
           ) : (
             <>
               <IdentityBadge
-                entity={connectedGarden.address}
+                entity={address}
                 shorten={shortAddresses}
                 explorerProvider={explorer}
                 networkType={type}
@@ -84,19 +84,21 @@ function AppsAddresses() {
             >
               {config?.conviction.fundsManager && (
                 <AppField
-                  name="Funds Manager"
                   address={config.conviction.fundsManager}
+                  chainId={chainId}
+                  name="Funds Manager"
                 />
               )}
               {installedApps.map((app, index) => {
                 if (app.appId) {
                   return (
                     <AppField
+                      key={index}
+                      address={app.address}
+                      chainId={chainId}
                       name={
                         app?.name || KNOWN_SYSTEM_APPS.get(app.appId).humanName
                       }
-                      address={app.address}
-                      key={index}
                     />
                   )
                 }
@@ -109,14 +111,13 @@ function AppsAddresses() {
   )
 }
 
-function AppField({ name, address, index }) {
+function AppField({ address, chainId, name }) {
   const { layoutName } = useLayout()
-  const { explorer, type } = getNetwork()
+  const { explorer, type } = getNetwork(chainId)
   const shortAddresses = layoutName === 'small'
 
   return (
     <div
-      key={index}
       css={`
         display: flex;
       `}
