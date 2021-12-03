@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
-import { getNetwork } from '@/networks'
-import arbitratorAbi from '@abis/arbitrator.json'
-import disputeManagerAbi from '@abis/DisputeManager.json'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
+
 import BigNumber from '@lib/bigNumber'
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
+import { getNetwork } from '@/networks'
+
+import arbitratorAbi from '@abis/arbitrator.json'
+import disputeManagerAbi from '@abis/DisputeManager.json'
 
 export function useDisputeState(disputeId) {
   const [disputeState, setDisputeState] = useState(null)
   const [roundState, setRoundState] = useState(null)
 
-  const disputeManagerAddress = getNetwork().disputeManager
+  const { chainId } = useConnectedGarden()
+  const disputeManagerAddress = getNetwork(chainId).disputeManager
   const disputeManagerContract = useContractReadOnly(
     disputeManagerAddress,
-    disputeManagerAbi
+    disputeManagerAbi,
+    chainId
   )
 
   const timer = 5000
@@ -66,16 +71,18 @@ export function useDisputeState(disputeId) {
   return [disputeState, roundState]
 }
 
-export function useDisputeFees() {
+export function useDisputeFees(chainId) {
   const [fees, setFees] = useState({
     token: null,
     amount: null,
     loading: true,
   })
-  const arbitratorAddress = getNetwork().arbitrator
+
+  const arbitratorAddress = getNetwork(chainId).arbitrator
   const arbitratorContract = useContractReadOnly(
     arbitratorAddress,
-    arbitratorAbi
+    arbitratorAbi,
+    chainId
   )
 
   useEffect(() => {

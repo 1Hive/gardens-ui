@@ -2,12 +2,10 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { Button, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { getNetworkName } from '../../utils/web3-utils'
-import { useWallet } from '@/providers/Wallet'
 
-function DAONotFoundError({ daoId }) {
+function DAONotFoundError({ chainId, daoId }) {
   const theme = useTheme()
   const history = useHistory()
-  const { chainId } = useWallet()
 
   return (
     <React.Fragment>

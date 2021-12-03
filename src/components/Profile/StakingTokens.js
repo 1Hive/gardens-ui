@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '@lib/bigNumber'
+import { useWallet } from '@providers/Wallet'
 import { stakesPercentages } from '@utils/math-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
@@ -28,14 +29,17 @@ function displayedStakes(stakes, total) {
 const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   const theme = useTheme()
   const { below } = useViewport()
+  const { preferredNetwork } = useWallet()
   const compact = below('large')
 
   const history = useHistory()
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(`/garden/${gardenId}/proposal/${proposalId}`)
+      history.push(
+        `/${preferredNetwork}/garden/${gardenId}/proposal/${proposalId}`
+      )
     },
-    [history]
+    [history, preferredNetwork]
   )
 
   const myActiveTokens = useMemo(() => {

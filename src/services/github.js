@@ -7,9 +7,9 @@ const ENDPOINT_BASE = 'https://api.github.com/repos/1Hive/dao-list'
 const GITHUB_API_TOKEN = env('GITHUB_API_TOKEN')
 
 // This step must be called after the dao is published and we have the dao address
-export async function publishNewDao(daoAddress, daoMetadata) {
+export async function publishNewDao(daoAddress, daoMetadata, chainId) {
   try {
-    const { data: fileContent } = await fetchFileContent()
+    const { data: fileContent } = await fetchFileContent(chainId)
     await publishDaoAssets(daoMetadata)
 
     const newDaoList = fileContent.gardens
@@ -37,7 +37,11 @@ export async function publishNewDao(daoAddress, daoMetadata) {
     const { data: latestCommitSha } = await fetchLatestCommitSha()
     const { data: baseTreSha } = await fetchBaseTreeSha(latestCommitSha)
 
-    const { data: newTreeSha } = await createTree(baseTreSha, newContent)
+    const { data: newTreeSha } = await createTree(
+      baseTreSha,
+      newContent,
+      chainId
+    )
 
     const { data: commitSha } = await createCommit(
       latestCommitSha,
@@ -91,7 +95,7 @@ const fetchBaseTreeSha = async commitSha => {
   }
 }
 
-export const createTree = async (baseTreSha, chainId, fileContent) => {
+export const createTree = async (baseTreSha, fileContent, chainId) => {
   const endpoint = `${ENDPOINT_BASE}/git/trees`
   const network = getNetworkName(chainId).toLowerCase()
 

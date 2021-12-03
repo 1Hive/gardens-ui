@@ -14,7 +14,7 @@ import { useGardens } from '@providers/Gardens'
 import useUser from '@hooks/useUser'
 import { useWallet } from '@providers/Wallet'
 
-import { addressesEqual } from '@utils/web3-utils'
+import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 
 function Delegates({ account }) {
@@ -129,8 +129,11 @@ function DelegateFor({ user }) {
 }
 
 const DelegateItem = ({ address, gardenAddress }) => {
+  const { preferredNetwork } = useWallet()
   const { gardensMetadata } = useGardens()
-  const gardenPath = `/#/garden/${gardenAddress}`
+  const networkType = getNetworkType(preferredNetwork)
+
+  const gardenPath = `/#/${networkType}/garden/${gardenAddress}`
   const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata)
   return (
     <div

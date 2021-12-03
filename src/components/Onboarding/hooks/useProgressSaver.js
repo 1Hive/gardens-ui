@@ -9,12 +9,12 @@ import {
 } from '../utils/progress-utils'
 
 export default function useProgressSaver(onConfigChange, onStepChange) {
-  const { account } = useWallet()
+  const { account, chainId } = useWallet()
   const [resumed, setResumed] = useState(false)
 
   const handleClearProgress = useCallback(() => {
-    removeItem(account)
-  }, [account])
+    removeItem(account, chainId)
+  }, [account, chainId])
 
   const handleResume = useCallback(() => {
     setResumed(true)
@@ -22,18 +22,18 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
 
   const handleSaveConfig = useCallback(
     config => {
-      const progress = getItem(account)
-      setItem(account, { ...progress, config })
+      const progress = getItem(account, chainId)
+      setItem(account, chainId, { ...progress, config })
     },
-    [account]
+    [account, chainId]
   )
 
   const handleSaveStep = useCallback(
     step => {
-      const progress = getItem(account)
-      setItem(account, { ...progress, step })
+      const progress = getItem(account, chainId)
+      setItem(account, chainId, { ...progress, step })
     },
-    [account]
+    [account, chainId]
   )
 
   useEffect(() => {
@@ -41,15 +41,15 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
       return
     }
 
-    const progress = getItem(account)
+    const progress = getItem(account, chainId)
     if (progress) {
       onConfigChange(recoverAssets(progress.config))
       onStepChange(progress.step)
     }
-  }, [account, onConfigChange, onStepChange, resumed])
+  }, [account, chainId, onConfigChange, onStepChange, resumed])
 
   return {
-    hasSavedProgress: Boolean(getItem(account)),
+    hasSavedProgress: Boolean(getItem(account, chainId)),
     onClearProgress: handleClearProgress,
     onResume: handleResume,
     onSaveConfig: handleSaveConfig,

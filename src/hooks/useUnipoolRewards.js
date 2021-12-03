@@ -12,10 +12,14 @@ export default function useUnipoolRewards() {
   const mounted = useMounted()
 
   const { account } = useWallet()
-  const { unipool, rewardsLink } = useConnectedGarden()
-  const unipoolContract = useContractReadOnly(unipool, unipoolAbi)
+  const { chainId, rewardsLink, unipool } = useConnectedGarden()
+  const unipoolContract = useContractReadOnly(unipool, unipoolAbi, chainId)
 
   useEffect(() => {
+    if (!unipoolContract || !account) {
+      return
+    }
+
     let timer
     const fetchEarned = async () => {
       try {

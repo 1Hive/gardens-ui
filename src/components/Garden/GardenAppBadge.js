@@ -1,10 +1,12 @@
 import React from 'react'
 import { AppBadge } from '@1hive/1hive-ui'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getAppPresentation } from '@utils/app-utils'
 import { getNetwork } from '@/networks'
 
 function GardenAppBadge({ app }) {
-  const network = getNetwork()
+  const { chainId } = useConnectedGarden()
+  const network = getNetwork(chainId)
 
   if (!app) {
     return null

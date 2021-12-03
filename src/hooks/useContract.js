@@ -3,13 +3,13 @@ import { Contract as EthersContract } from 'ethers'
 import { useWallet } from '@providers/Wallet'
 import { getDefaultProvider } from '@utils/web3-utils'
 
-export function useContractReadOnly(address, abi) {
+export function useContractReadOnly(address, abi, chainId) {
   return useMemo(() => {
     if (!address) {
       return null
     }
-    return getContract(address, abi)
-  }, [abi, address])
+    return getContract(address, abi, getDefaultProvider(chainId))
+  }, [abi, address, chainId])
 }
 
 export function useContract(address, abi, signer = true) {
