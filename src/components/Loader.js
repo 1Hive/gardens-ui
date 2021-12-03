@@ -1,11 +1,12 @@
 import React from 'react'
-import { useRouteMatch } from 'react-router'
 import Lottie from 'react-lottie-player'
 import styled from 'styled-components'
+import { useGardenRoute } from '@hooks/useRouting'
+import { getNetworkChainIdByType } from '@/networks'
+import { is1HiveGarden } from '@utils/garden-utils'
 
 import beeAnimation from '@assets/lotties/bee-animation.json'
 import gardensLoader from '@assets/lotties/gardens-loader.json'
-import { is1HiveGarden } from '@/utils/garden-utils'
 
 const Wrapper = styled.div`
   pointer-events: none;
@@ -33,8 +34,9 @@ export function GardenLoader() {
 }
 
 function Loader() {
-  const match = useRouteMatch('/garden/:daoId')
-  const is1Hive = is1HiveGarden(match?.params.daoId)
+  const [networkType, gardenAddress] = useGardenRoute()
+  const chainId = getNetworkChainIdByType(networkType)
+  const is1Hive = is1HiveGarden(gardenAddress, chainId)
 
   return (
     <Wrapper>

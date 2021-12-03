@@ -13,18 +13,18 @@ import {
 } from '@1hive/1hive-ui'
 import { ConvictionCountdown } from './ConvictionVisuals'
 
-import { useWallet } from '@providers/Wallet'
 import { useDisputeState } from '@hooks/useDispute'
+import { useWallet } from '@providers/Wallet'
 
-import { ProposalTypes } from '@/types'
+import { CELESTE_URL } from '@/endpoints'
 import { dateFormat } from '@utils/date-utils'
-import { formatTokenAmount } from '@utils/token-utils'
 import {
   DisputeStates,
   DISPUTE_STATE_RULED,
   RoundStates,
 } from '@utils/dispute-utils'
-import { getNetwork } from '@/networks'
+import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalTypes } from '@/types'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -268,7 +268,6 @@ function Settlement({ proposal }) {
 function Dispute({ onResolveAction, proposal }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const celesteUrl = getNetwork().celesteUrl
   const [disputeState, roundState] = useDisputeState(proposal.disputeId)
 
   return (
@@ -283,7 +282,7 @@ function Dispute({ onResolveAction, proposal }) {
             `}
           >
             <Link
-              href={`${celesteUrl}/disputes/${proposal.disputeId}`}
+              href={`${CELESTE_URL}/disputes/${proposal.disputeId}`}
               css={`
                 margin-right: ${0.5 * GU}px;
               `}

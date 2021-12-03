@@ -54,11 +54,11 @@ export function mergeGardenMetadata(garden, gardensMetadata) {
   }
 }
 
-export function is1HiveGarden(gardenAddress) {
-  if (!gardenAddress || !isAddress(gardenAddress)) {
+export function is1HiveGarden(gardenAddress, chainId) {
+  if (!gardenAddress || !isAddress(gardenAddress) || !chainId) {
     return false
   }
 
-  const network = getNetwork()
+  const network = getNetwork(chainId)
   return addressesEqual(gardenAddress, network.hiveGarden)
 }

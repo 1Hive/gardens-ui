@@ -44,7 +44,7 @@ class GlobalErrorHandler extends React.Component {
     return error ? (
       <GlobalErrorScreen>
         {error instanceof DAONotFound ? (
-          <DAONotFoundError daoId={error.dao} />
+          <DAONotFoundError chainId={error.chainId} daoId={error.dao} />
         ) : (
           <GenericError
             detailsTitle={error.message}

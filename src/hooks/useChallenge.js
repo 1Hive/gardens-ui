@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
@@ -10,12 +11,14 @@ import { hexToUtf8 } from '@utils/web3-utils'
 import agreementAbi from '../abi/agreement.json'
 
 export default function useChallenge(proposal) {
+  const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
   const mounted = useMounted()
 
   const agreementContract = useContractReadOnly(
     connectedAgreementApp.address,
-    agreementAbi
+    agreementAbi,
+    chainId
   )
 
   const [challenge, setChallenge] = useState()

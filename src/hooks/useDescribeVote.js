@@ -10,7 +10,7 @@ const cachedDescriptions = new Map([])
 export function useDescribeVote(script, voteId) {
   const mounted = useMounted()
 
-  const { organization, installedApps } = useGardenState()
+  const { installedApps, organization } = useGardenState()
 
   const [description, setDescription] = useState(null)
   const [loading, setLoading] = useState(true)

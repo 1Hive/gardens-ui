@@ -9,8 +9,6 @@ import Setup from './Setup'
 import { STATUS_GARDEN_SETUP } from './statuses'
 
 function Onboarding({ onClose, visible }) {
-  const { status } = useOnboardingState()
-
   return (
     <AnimatedSlider visible={visible}>
       <div
@@ -19,13 +17,23 @@ function Onboarding({ onClose, visible }) {
           height: 100%;
         `}
       >
-        {status === STATUS_GARDEN_SETUP ? (
-          <Setup onClose={onClose} />
-        ) : (
-          <Deployment />
-        )}
+        <OnboardingProvider>
+          <ChartsProvider>
+            <OnboardingPhases onClose={onClose} />
+          </ChartsProvider>
+        </OnboardingProvider>
       </div>
     </AnimatedSlider>
+  )
+}
+
+function OnboardingPhases({ onClose }) {
+  const { status } = useOnboardingState()
+
+  return status === STATUS_GARDEN_SETUP ? (
+    <Setup onClose={onClose} />
+  ) : (
+    <Deployment />
   )
 }
 
@@ -86,10 +94,4 @@ function AnimatedSlider({ children, visible }) {
   )
 }
 
-export default ({ ...props }) => (
-  <OnboardingProvider>
-    <ChartsProvider>
-      <Onboarding {...props} />
-    </ChartsProvider>
-  </OnboardingProvider>
-)
+export default Onboarding
