@@ -262,6 +262,11 @@ function EVMExecutor({ evmcrispr }) {
     setCreateDecisionModalVisible(false)
   }, [])
 
+  const handleOnSetCode = useCallback(event => {
+    const value = event.target.value
+    setCode(value)
+  }, [])
+
   if (!connectedGarden || !ethers) {
     return null
   }
@@ -311,7 +316,7 @@ function EVMExecutor({ evmcrispr }) {
       )}
       {terminalMode && (
         <TextInput
-          onChange={setCode}
+          onChange={handleOnSetCode}
           placeholder={TERMINAL_EXECUTOR_MESSAGE}
           wide
           multiline
@@ -359,13 +364,12 @@ function EVMExecutor({ evmcrispr }) {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null ||
-      (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
+      {selectedFunction !== null ? (
         <Button
           css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={isSafari || !account}
+          disabled={isSafari || !code || !account}
           mode="strong"
           wide
           onClick={handleOnShowModal}
