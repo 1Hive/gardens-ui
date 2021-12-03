@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import AceEditor from 'react-ace'
 import { utils } from 'ethers'
-import 'ace-builds/src-noconflict/mode-jade'
 
 import {
   Box,
@@ -12,7 +10,6 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-import { evmcl } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -50,7 +47,9 @@ function EVMExecutor({ evmcrispr }) {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
-  const [code, setCode] = useState(TERMINAL_EXECUTOR_MESSAGE)
+  const [code, setCode] = useState(null)
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
   const terminalMode = interactionType === TERMINAL_INDEX
 
@@ -205,9 +204,12 @@ function EVMExecutor({ evmcrispr }) {
       )
     }
     if (terminalMode) {
-      intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-        context: 'new decision',
-      })
+      if (!isSafari) {
+        const { evmcl } = await import('@1hive/evmcrispr')
+        intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
+          context: 'new decision',
+        })
+      }
     }
 
     return [{ ...intent.action, description: description, type: type }]
@@ -223,6 +225,7 @@ function EVMExecutor({ evmcrispr }) {
     parameters,
     externalContractAddress,
     humanReadableSignature,
+    isSafari,
     code,
   ])
 
@@ -257,6 +260,11 @@ function EVMExecutor({ evmcrispr }) {
 
   const handleOnHideModal = useCallback(() => {
     setCreateDecisionModalVisible(false)
+  }, [])
+
+  const handleOnSetCode = useCallback(event => {
+    const value = event.target.value
+    setCode(value)
   }, [])
 
   if (!connectedGarden || !ethers) {
@@ -307,31 +315,15 @@ function EVMExecutor({ evmcrispr }) {
         </>
       )}
       {terminalMode && (
-        <>
-          <Box
-            css={`
-              z-index: 1;
-            `}
-          >
-            <AceEditor
-              width="100%"
-              mode="jade"
-              value={code}
-              onChange={setCode}
-              fontSize={14}
-              showPrintMargin={false}
-              showGutter={false}
-              highlightActiveLine
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: true,
-                showLineNumbers: true,
-                tabSize: 2,
-              }}
-            />
-          </Box>
-        </>
+        <TextInput
+          onChange={handleOnSetCode}
+          placeholder={TERMINAL_EXECUTOR_MESSAGE}
+          wide
+          multiline
+          css={`
+            min-height: ${50 * GU}px;
+          `}
+        />
       )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
@@ -372,13 +364,12 @@ function EVMExecutor({ evmcrispr }) {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null ||
-      (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
+      {selectedFunction !== null || terminalMode ? (
         <Button
           css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={!account}
+          disabled={isSafari || !code || !account}
           mode="strong"
           wide
           onClick={handleOnShowModal}
