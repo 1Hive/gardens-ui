@@ -10,7 +10,6 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-import { evmcl } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -49,6 +48,8 @@ function EVMExecutor({ evmcrispr }) {
   const [selectedFunction, setSelectedFunction] = useState(null)
   const [parameters, setParameters] = useState([])
   const [code, setCode] = useState(null)
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
   const terminalMode = interactionType === TERMINAL_INDEX
 
@@ -203,9 +204,12 @@ function EVMExecutor({ evmcrispr }) {
       )
     }
     if (terminalMode) {
-      intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-        context: 'new decision',
-      })
+      if (!isSafari) {
+        const { evmcl } = await import('@1hive/evmcrispr')
+        intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
+          context: 'new decision',
+        })
+      }
     }
 
     return [{ ...intent.action, description: description, type: type }]
@@ -221,6 +225,7 @@ function EVMExecutor({ evmcrispr }) {
     parameters,
     externalContractAddress,
     humanReadableSignature,
+    isSafari,
     code,
   ])
 
@@ -360,7 +365,7 @@ function EVMExecutor({ evmcrispr }) {
           css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={!account}
+          disabled={isSafari || !account}
           mode="strong"
           wide
           onClick={handleOnShowModal}
