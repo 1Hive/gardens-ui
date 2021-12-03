@@ -364,7 +364,7 @@ function EVMExecutor({ evmcrispr }) {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null ? (
+      {selectedFunction !== null || terminalMode ? (
         <Button
           css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
