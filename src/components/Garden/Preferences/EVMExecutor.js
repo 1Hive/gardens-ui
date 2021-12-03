@@ -338,6 +338,7 @@ function EVMExecutor({ evmcrispr }) {
             items={functionList}
             onChange={setSelectedFunction}
             selected={selectedFunction}
+            disabled={!functionList.length > 0}
             wide
           />
         </Field>
