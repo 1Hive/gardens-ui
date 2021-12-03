@@ -3,20 +3,25 @@ import { useTrail, animated } from 'react-spring'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import LoadingRing from '../LoadingRing'
 import MenuItem from './MenuItem'
-import { useGardenRoute } from '@hooks/useRouting'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
+import { useWallet } from '@providers/Wallet'
 
-import { addressesEqual } from '@utils/web3-utils'
+import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 
 function Sidebar() {
   const theme = useTheme()
+  const { preferredNetwork } = useWallet()
   const { user: connectedUser, loading: userLoading } = useUserState()
   const { gardensMetadata } = useGardens()
 
-  const [networkType, gardenAddress] = useGardenRoute()
+  const connectedGarden = useConnectedGarden()
+  const networkType = getNetworkType(
+    connectedGarden?.chainId || preferredNetwork
+  )
 
   const sidebarGardens = useMemo(() => {
     if (!connectedUser?.gardensSigned) {
@@ -132,7 +137,10 @@ function Sidebar() {
                 return (
                   <animated.div key={address} style={style}>
                     <MenuItem
-                      active={addressesEqual(address, gardenAddress)}
+                      active={
+                        Boolean(connectedGarden) &&
+                        addressesEqual(address, connectedGarden.address)
+                      }
                       label={name || address}
                       path={path}
                       src={src}
