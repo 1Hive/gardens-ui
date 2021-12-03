@@ -12,6 +12,9 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
+import { EVMcrispr } from '@1hive/evmcrispr'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@/providers/Wallet'
 import { useEsc } from '../../../hooks/useKeyboardArrows'
 
 import AppsAddresses from './AppsAddresses'
@@ -30,6 +33,9 @@ const EVM_EXECUTOR_INDEX = 1
 const AnimatedDiv = animated.div
 
 function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
+  const [evmcrispr, setEvmcrispr] = useState(null)
+  const connectedGarden = useConnectedGarden()
+  const { account, ethers } = useWallet()
   useEsc(onClose)
 
   const container = useRef()
@@ -38,6 +44,21 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
       container.current.focus()
     }
   }, [])
+
+  useEffect(() => {
+    async function getEvmCrispr() {
+      if (!connectedGarden || !account) {
+        return
+      }
+      const crispr = await EVMcrispr.create(
+        connectedGarden.address,
+        ethers.getSigner()
+      )
+
+      setEvmcrispr(crispr)
+    }
+    getEvmCrispr()
+  }, [account, connectedGarden, ethers])
 
   return (
     <div ref={container} tabIndex="0" css="outline: 0">
@@ -58,7 +79,9 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             />
 
             {sectionIndex === GENERAL_INFO_INDEX && <AppsAddresses />}
-            {sectionIndex === EVM_EXECUTOR_INDEX && <EVMExecutor />}
+            {sectionIndex === EVM_EXECUTOR_INDEX && (
+              <EVMExecutor evmcrispr={evmcrispr} />
+            )}
           </React.Fragment>
         </Root.Provider>
       </Layout>
