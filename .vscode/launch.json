@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+          "type": "chrome",
+          "request": "launch",
+          "name": "Brave",
+          "runtimeExecutable": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+          "runtimeArgs": [
+            "--preserve-symlinks"
+          ],
+          "userDataDir": true,
+          "url": "http://localhost:3000",
+          "webRoot": "${workspaceFolder}",
+          "sourceMaps": true,
+      }
+    ]
+  }

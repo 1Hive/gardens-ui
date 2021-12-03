@@ -26,6 +26,8 @@ export const IPFS_ENDPOINT = {
 export const GITHUB_ENDPOINT = 'https://github.com/'
 export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
+export const CELESTE_URL = 'https://celeste.1hive.org/#'
+
 export const getDexTradeTokenUrl = (chainId, tokenAddress) => {
   switch (chainId) {
     case 4:

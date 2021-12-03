@@ -168,7 +168,7 @@ function FixedFooter({ token }) {
   const history = useHistory()
   const { account } = useWallet()
   const { layoutName } = useLayout()
-  const { preferredNetwork } = useWallet()
+  const { chainId } = useConnectedGarden()
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
@@ -239,7 +239,7 @@ function FixedFooter({ token }) {
               onClick={() => setCreateProposalModalVisible(true)}
             />
             <FooterItem
-              href={getDexTradeTokenUrl(preferredNetwork, token.id)}
+              href={getDexTradeTokenUrl(chainId, token.id)}
               icon={<img src={getHoneySvg} alt="" />}
               label={`Get ${token.name}`}
               external

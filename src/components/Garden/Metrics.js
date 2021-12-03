@@ -305,12 +305,6 @@ function TokenPrice({
             margin-bottom: ${0.5 * GU}px;
           `}
         >
-          {/* <p
-            css={`
-              ${textStyle('title4')};
-              margin-bottom: ${0.5 * GU}px;
-            `}
-          > */}
           {token.symbol} Price
           {oracleMode && (
             <span
@@ -321,7 +315,6 @@ function TokenPrice({
               (Oracle)
             </span>
           )}
-          {/* </p> */}
         </div>
         {oracleMode && (
           <span

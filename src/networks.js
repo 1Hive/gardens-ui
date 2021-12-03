@@ -20,7 +20,6 @@ const networks = {
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
     template: '0xF8A030177865356E2Be8fb5F95a19962E6b57E3e',
-    celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
     explorer: 'etherscan',
 
     honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
@@ -47,7 +46,6 @@ const networks = {
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
     template: '0x82a127b5Be3E04cd06AA034c1616b4d098616E9D',
-    celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'blockscout',
 
     honeyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
@@ -82,7 +80,6 @@ const networks = {
     arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
     template: '0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9',
-    celesteUrl: 'https://celeste.1hive.org/#',
     explorer: 'polygonscan',
 
     honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
@@ -118,6 +115,11 @@ export function getNetwork(chainId = getPreferredChain()) {
   return networks[getNetworkInternalName(chainId)]
 }
 
+export function getNetworkChainIdByType(networkType) {
+  const networks = getAvailableNetworks()
+  return networks.find(network => network.type === networkType)?.chainId || null
+}
+
 export function getEthersNetwork() {
   const { type, chainId, ensRegistry } = getNetwork()
   return {
@@ -127,8 +129,8 @@ export function getEthersNetwork() {
   }
 }
 
-export const addEthereumChain = () => {
-  const { eip3085 } = getNetwork()
+export const addEthereumChain = chainId => {
+  const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
   }
@@ -145,12 +147,13 @@ export const switchNetwork = async chainId => {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: chainIdHex }],
     })
-  } catch (switchError) {
-    // This error code indicates that the chain has not been added to Injected provider.
-    if (switchError.code === 4902) {
-      await addEthereumChain()
+  } catch (error) {
+    if (error.code === 4902) {
+      await addEthereumChain(chainId)
+      return
     }
-    console.error(switchError)
+
+    throw new Error(error.message)
   }
 }
 

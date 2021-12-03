@@ -10,7 +10,7 @@ export default function Routes() {
       <Redirect exact from="/" to="/home" />
       <Route path="/home" component={Home} />
       <Route exact path="/profile" component={Profile} />
-      <Route path="/garden/:daoId" component={Garden} />
+      <Route path="/:networkType/garden/:gardenAddress" component={Garden} />
       <Redirect to="/home" />
     </Switch>
   )

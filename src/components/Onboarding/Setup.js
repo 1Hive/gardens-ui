@@ -1,13 +1,16 @@
 import React from 'react'
-import { GU, IconCross, useTheme } from '@1hive/1hive-ui'
+import { GU, IconCross, Tag, useTheme } from '@1hive/1hive-ui'
 import SavedProgress from './SavedProgress'
 import Screens from './Screens'
 import StepsPanel from './Steps/StepsPanel'
+import { useWallet } from '@providers/Wallet'
+import { getNetworkName } from '@utils/web3-utils'
 
 import gardensLogo from '@assets/gardensLogoMark.svg'
 
 function Setup({ onClose }) {
   const theme = useTheme()
+  const { chainId } = useWallet()
 
   return (
     <>
@@ -46,7 +49,9 @@ function Setup({ onClose }) {
             justify-content: space-between;
           `}
         >
-          <div />
+          <div>
+            <Tag mode="new">Connected to {getNetworkName(chainId)}</Tag>
+          </div>
           <div
             css={`
               cursor: pointer;
