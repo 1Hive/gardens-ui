@@ -10,7 +10,7 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-// import { evmcl } from '@1hive/evmcrispr'
+import { evmcl } from '@1hive/evmcrispr'
 
 import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
@@ -202,16 +202,17 @@ function EVMExecutor({ evmcrispr }) {
         { context: 'new decision' }
       )
     }
-    // if (terminalMode) {
-    //   intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-    //     context: 'new decision',
-    //   })
-    // }
+    if (terminalMode) {
+      intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
+        context: 'new decision',
+      })
+    }
 
     return [{ ...intent.action, description: description, type: type }]
   }, [
     forwarderName,
     interactionType,
+    terminalMode,
     evmcrispr,
     installedApps,
     selectedApp,
@@ -220,6 +221,7 @@ function EVMExecutor({ evmcrispr }) {
     parameters,
     externalContractAddress,
     humanReadableSignature,
+    code,
   ])
 
   const handleOnContractAddressChange = useCallback(event => {
