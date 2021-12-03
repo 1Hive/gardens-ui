@@ -33,7 +33,7 @@ const BaseItem = ({
         border-right: 1px solid ${theme.border};
         ${label &&
           ` &:hover:after {
-            width: ${27 * GU}px;
+            max-width: ${27 * GU}px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
