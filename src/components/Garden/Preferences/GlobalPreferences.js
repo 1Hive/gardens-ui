@@ -12,7 +12,6 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import { EVMcrispr } from '@1hive/evmcrispr'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@/providers/Wallet'
 import { useEsc } from '../../../hooks/useKeyboardArrows'
@@ -38,6 +37,8 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
   const { account, ethers } = useWallet()
   useEsc(onClose)
 
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
   const container = useRef()
   useEffect(() => {
     if (container.current) {
@@ -50,15 +51,19 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
       if (!connectedGarden || !account) {
         return
       }
-      const crispr = await EVMcrispr.create(
-        connectedGarden.address,
-        ethers.getSigner()
-      )
 
-      setEvmcrispr(crispr)
+      if (!isSafari) {
+        const { EVMcrispr } = await import('@1hive/evmcrispr')
+        const crispr = await EVMcrispr.create(
+          connectedGarden.address,
+          ethers.getSigner()
+        )
+
+        setEvmcrispr(crispr)
+      }
     }
     getEvmCrispr()
-  }, [account, connectedGarden, ethers])
+  }, [account, connectedGarden, ethers, isSafari])
 
   return (
     <div ref={container} tabIndex="0" css="outline: 0">
