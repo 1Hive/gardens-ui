@@ -228,7 +228,7 @@ BoxProgress.propTypes = {
   ).isRequired,
 }
 
-export function BoxReady({ isFinalized, onOpenGarden, opacity, boxTransform }) {
+export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
   const { below } = useViewport()
   const fullWidth = below('large')
   const small = below('medium')
@@ -266,7 +266,7 @@ export function BoxReady({ isFinalized, onOpenGarden, opacity, boxTransform }) {
               <Button
                 label="Get started"
                 mode="strong"
-                onClick={onOpenGarden}
+                onClick={onGetStarted}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}
@@ -288,7 +288,7 @@ export function BoxReady({ isFinalized, onOpenGarden, opacity, boxTransform }) {
 }
 
 BoxReady.propTypes = {
-  onOpenGarden: PropTypes.func.isRequired,
+  onGetStarted: PropTypes.func.isRequired,
   opacity: PropTypes.object.isRequired,
   boxTransform: PropTypes.object.isRequired,
 }
