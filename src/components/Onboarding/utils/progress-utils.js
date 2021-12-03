@@ -1,10 +1,11 @@
 import { getNetworkType } from '@utils/web3-utils'
 import { dataURLtoFile, textToFile } from '@utils/kit-utils'
 
-const getStorageKey = account => `onboarding:${getNetworkType()}:${account}`
+const getStorageKey = (account, chainId) =>
+  `onboarding:${getNetworkType(chainId)}:${account}`
 
-export const getItem = account => {
-  const item = window.localStorage.getItem(getStorageKey(account))
+export const getItem = (account, chainId) => {
+  const item = window.localStorage.getItem(getStorageKey(account, chainId))
   return item ? JSON.parse(item) : null
 }
 
@@ -12,8 +13,11 @@ export const removeItem = account => {
   window.localStorage.removeItem(getStorageKey(account))
 }
 
-export const setItem = (account, item) => {
-  window.localStorage.setItem(getStorageKey(account), JSON.stringify(item))
+export const setItem = (account, chainId, item) => {
+  window.localStorage.setItem(
+    getStorageKey(account, chainId),
+    JSON.stringify(item)
+  )
 }
 
 const GARDEN_ASSETS = ['logo_type', 'logo', 'token_logo']
