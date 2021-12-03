@@ -279,6 +279,7 @@ function EVMExecutor({ evmcrispr }) {
             items={shortenedAppsNames}
             onChange={setSelectedApp}
             selected={selectedApp}
+            disabled={!shortenedAppsNames.length > 0}
             wide
           />
         </Field>
