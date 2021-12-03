@@ -26,15 +26,17 @@ const Deployment = React.memo(function Deployment() {
     gardenAddress,
     isFinalized,
     onNextAttempt,
+    onReset,
     readyToStart,
     transactionsStatus,
   } = useDeploymentState()
 
-  const handleOpenGarden = useCallback(() => {
+  const handleGetStarted = useCallback(() => {
     if (gardenAddress && isFinalized) {
       history.push(`/garden/${gardenAddress}`)
+      onReset()
     }
-  }, [gardenAddress, history, isFinalized])
+  }, [gardenAddress, history, isFinalized, onReset])
 
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
@@ -130,7 +132,7 @@ const Deployment = React.memo(function Deployment() {
                 allSuccess ? (
                   <BoxReady
                     isFinalized={isFinalized}
-                    onOpenGarden={handleOpenGarden}
+                    onGetStarted={handleGetStarted}
                     opacity={opacity}
                     boxTransform={transform}
                   />
