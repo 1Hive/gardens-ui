@@ -6,10 +6,12 @@ import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
 import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
-import Sidebar from './Sidebar/Sidebar'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import usePreferences from '@hooks/usePreferences'
+import MultiModal from './MultiModal/MultiModal'
+import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
   const { pathname } = useLocation()
@@ -19,6 +21,9 @@ function MainView({ children }) {
   const mobileMode = below('medium')
   const compactMode = below('large')
   const [showSidebar, setShowSidebar] = useState(!mobileMode)
+  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
+    false
+  )
   let loadingGardenState = true
 
   const handleToggleSidebar = useCallback(() => {
@@ -57,9 +62,17 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {pathname !== '/home' && (
-          <Sidebar show={showSidebar} onToggle={handleToggleSidebar} />
-        )}
+        {pathname !== '/home' ? (
+          mobileMode ? (
+            <MobileSidebar
+              show={showSidebar}
+              onToggle={handleToggleSidebar}
+              onOpenCreateProposal={() => setCreateProposalModalVisible(true)}
+            />
+          ) : (
+            <Sidebar />
+          )
+        ) : null}
         <div
           css={`
             display: flex;
@@ -111,6 +124,12 @@ function MainView({ children }) {
                 )}
               </div>
             </ScrollView>
+            <MultiModal
+              visible={createProposalModalVisible}
+              onClose={() => setCreateProposalModalVisible(false)}
+            >
+              <CreateProposalScreens />
+            </MultiModal>
           </Root.Provider>
         </div>
       </div>

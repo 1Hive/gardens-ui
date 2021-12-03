@@ -1,37 +1,52 @@
+import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import React, { useCallback } from 'react'
-import { Link, GU, useTheme } from '@1hive/1hive-ui'
 import { useHistory } from 'react-router'
 
-function MenuItem({ active, path, label, src, onClick = () => {} }) {
-  const history = useHistory()
+const BaseItem = ({
+  active,
+  children,
+  height,
+  path,
+  label,
+  onClick = () => {},
+}) => {
   const theme = useTheme()
+  const history = useHistory()
 
   const handleClickItem = useCallback(
     path => {
-      history.push(path)
+      if (path) {
+        history.push(path)
+      }
       onClick()
     },
     [history, onClick]
   )
+
   return (
     <li
       css={`
         position: relative;
         background: ${active ? 'rgb(212 251 216)' : theme.surface};
-        height: ${8.5 * GU}px;
+        height: ${height}px;
         width: 100%;
+        border-right: 1px solid ${theme.border};
         ${label &&
           ` &:hover:after {
-              position: absolute;
-              content: "${label}";
-              background: rgba(44, 52, 55, 0.8);
-              border-radius: 12px;
-              color: white;
-              padding: ${0.5 * GU}px ${2 * GU}px;
-              top: calc(50% - 16px);
-              left: 80px;
-          }
-        `}
+            width: ${27 * GU}px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: absolute;
+            content: "${label}";
+            background: rgba(44, 52, 55, 0.8);
+            border-radius: 12px;
+            color: white;
+            padding: ${0.5 * GU}px ${2 * GU}px;
+            top: calc(50% - 16px);
+            left: 80px;
+        }
+      `}
       `}
     >
       {active && (
@@ -60,24 +75,15 @@ function MenuItem({ active, path, label, src, onClick = () => {} }) {
           external={false}
           css={`
             display: block;
+            color: inherit;
           `}
           onClick={() => handleClickItem(path)}
         >
-          <img
-            src={src}
-            height={48}
-            width={48}
-            alt=""
-            css={`
-              display: block;
-              border: 2px solid ${theme.surface};
-              border-radius: 50%;
-            `}
-          />
+          {children}
         </Link>
       </div>
     </li>
   )
 }
 
-export default MenuItem
+export default BaseItem
