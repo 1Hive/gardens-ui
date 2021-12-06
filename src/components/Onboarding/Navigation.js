@@ -32,13 +32,7 @@ const Navigation = React.forwardRef(function Navigation(
     >
       <Button
         disabled={!backEnabled}
-        icon={
-          <IconArrowLeft
-            css={`
-              color: ${theme.accent};
-            `}
-          />
-        }
+        icon={<IconArrowLeft color={theme.accent} />}
         label={backLabel}
         onClick={onBack}
       />

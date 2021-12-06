@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -14,6 +14,9 @@ import { TransactionStatusType } from '@/prop-types'
 import flowerSvg from './assets/flower.svg'
 import gardensLogoMark from '@assets/gardensLogoMark.svg'
 import linesSvg from './assets/lines.svg'
+
+import confetti from 'canvas-confetti'
+import PageVisibility from 'react-page-visibility'
 
 const AnimDiv = animated.div
 const AnimSection = animated.section
@@ -233,6 +236,23 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
   const fullWidth = below('large')
   const small = below('medium')
 
+  const throwConfetti = useCallback(() => {
+    confetti({
+      particleCount: 200,
+      spread: 160,
+      origin: {
+        x: 0.6,
+        y: 0.7,
+      },
+    })
+  }, [])
+
+  useEffect(() => {
+    if (isFinalized) {
+      throwConfetti()
+    }
+  }, [isFinalized, throwConfetti])
+
   return (
     <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
       <div
@@ -259,6 +279,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
         >
           {isFinalized ? (
             <div>
+              <PageVisibility onChange={throwConfetti} />
               <p>
                 <strong>All done!</strong>
               </p>

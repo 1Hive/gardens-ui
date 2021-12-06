@@ -519,13 +519,7 @@ function LinksBox({
             ))}
           </div>
           <Button
-            icon={
-              <IconPlus
-                css={`
-                  color: ${theme.accent};
-                `}
-              />
-            }
+            icon={<IconPlus color={theme.accent} />}
             label="Add more"
             onClick={handleAddLink}
             disabled={links.length === 5}

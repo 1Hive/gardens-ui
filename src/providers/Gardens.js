@@ -6,17 +6,15 @@ import React, {
   useState,
 } from 'react'
 import { getGardens } from '@1hive/connect-gardens'
-
+import { useWallet } from './Wallet'
 import { ConnectedGardenProvider } from './ConnectedGarden'
 import { useDebounce } from '@hooks/useDebounce'
 import useGardenFilters from '@hooks/useGardenFilters'
 import { useGardenRoute } from '@hooks/useRouting'
-import { useWallet } from './Wallet'
-
-import { fetchFileContent } from '../services/github'
-import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { mergeGardenMetadata } from '@utils/garden-utils'
 import { testNameFilter } from '@utils/garden-filters-utils'
+import { fetchFileContent } from '../services/github'
+import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { getNetwork, getNetworkChainIdByType } from '@/networks'
 
 const DAOContext = React.createContext()
