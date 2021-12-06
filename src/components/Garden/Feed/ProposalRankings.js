@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+/** @jsx jsx */
+import React, { useCallback } from 'react';
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
 
-import iconTopSvg from '@assets/rankings/ranking-top.svg'
-import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
-import iconNewSvg from '@assets/rankings/ranking-new.svg'
-import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
+import iconTopSvg from '@assets/rankings/ranking-top.svg';
+import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg';
+import iconNewSvg from '@assets/rankings/ranking-new.svg';
+import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg';
+import { css, jsx } from '@emotion/react';
 
 const iconsMapping = {
   top: {
@@ -17,20 +19,20 @@ const iconsMapping = {
     iconSelected: iconNewSelectedSvg,
     label: 'Newest',
   },
-}
+};
 
 function getRankingIcon(key, selected) {
-  return iconsMapping[key][selected ? 'iconSelected' : 'icon']
+  return iconsMapping[key][selected ? 'iconSelected' : 'icon'];
 }
 
 function getRankingLabel(key) {
-  return iconsMapping[key].label
+  return iconsMapping[key].label;
 }
 
 function ProposalRankings({ items, onChange, selected }) {
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         align-items: center;
         position: relative;
@@ -48,37 +50,33 @@ function ProposalRankings({ items, onChange, selected }) {
         />
       ))}
     </div>
-  )
+  );
 }
 
 function Item({ icon, index, label, onSelect, selected }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleOnClick = useCallback(() => {
-    onSelect(index)
-  }, [index, onSelect])
+    onSelect(index);
+  }, [index, onSelect]);
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         align-items: center;
-        color: ${theme.content};
+        color: ${theme.content.toString()};
         margin-right: ${1 * GU}px;
         border-radius: ${2 * GU}px;
-        padding: ${0.5 * GU}px ${0.75 * GU}px;
-        background: linear-gradient(
-          268deg,
-          ${theme.accentEnd},
-          ${theme.accentStart}
-        );
+        padding: ${0.5 * GU}px ${1 * GU}px;
+        background: linear-gradient(268deg, ${theme.accentEnd.toString()}, ${theme.accentStart.toString()});
 
         ${!selected &&
           `
-          background: ${theme.surface};
-          color: ${theme.contentSecondary};
+          background: ${theme.surface.toString()};
+          color: ${theme.contentSecondary.toString()};
           cursor: pointer;
-          border: 1px solid ${theme.border};
+          border: 1px solid ${theme.border.toString()};
           &:hover {
             background: linear-gradient(268.53deg, rgba(170, 245, 212, 0.2) 0%, rgba(124, 224, 214, 0.2) 100%);
           }
@@ -88,7 +86,7 @@ function Item({ icon, index, label, onSelect, selected }) {
     >
       <img src={icon} height="22" width="22" alt="" />
       <div
-        css={`
+        css={css`
           ${textStyle('label1')};
           margin-left: ${0.75 * GU}px;
         `}
@@ -96,7 +94,7 @@ function Item({ icon, index, label, onSelect, selected }) {
         {label}
       </div>
     </div>
-  )
+  );
 }
 
-export default ProposalRankings
+export default ProposalRankings;

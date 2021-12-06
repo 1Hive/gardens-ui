@@ -1,23 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import CompactFilter from './CompactFilter'
-import ListFilter from './ListFilter'
-import TextFilter from './TextFilter'
-import { useWallet } from '@providers/Wallet'
-import { STATUS_FILTER_OPEN } from '@utils/filter-utils'
+/** @jsx jsx */
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui';
+import CompactFilter from './CompactFilter';
+import ListFilter from './ListFilter';
+import TextFilter from './TextFilter';
+import { useWallet } from '@providers/Wallet';
+import { STATUS_FILTER_OPEN } from '@utils/filter-utils';
+import { css, jsx } from '@emotion/react';
 
 const Filters = React.memo(({ compact, ...props }) => {
-  const theme = useTheme()
-  const { account } = useWallet()
+  const theme = useTheme();
+  const { account } = useWallet();
 
-  const supportFilterDisabled =
-    props.proposalStatusFilter > STATUS_FILTER_OPEN || !account
+  const supportFilterDisabled = props.proposalStatusFilter > STATUS_FILTER_OPEN || !account;
 
   if (compact) {
-    return (
-      <CompactFilter {...props} supportFilterDisabled={supportFilterDisabled} />
-    )
+    return <CompactFilter {...props} supportFilterDisabled={supportFilterDisabled} />;
   }
 
   const {
@@ -33,11 +32,11 @@ const Filters = React.memo(({ compact, ...props }) => {
     onStatusFilterChange,
     onSupportFilterChange,
     onTypeFilterChange,
-  } = props
+  } = props;
 
   return (
     <div
-      css={`
+      css={css`
         min-width: 270px;
         height: fit-content;
         margin-top: ${3 * GU}px;
@@ -47,14 +46,14 @@ const Filters = React.memo(({ compact, ...props }) => {
       `}
     >
       <div
-        css={`
+        css={css`
           margin-bottom: ${4 * GU}px;
           padding-bottom: ${3 * GU}px;
-          border-bottom: 1px solid ${theme.border};
+          border-bottom: 1px solid ${theme.border.toString()};
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -63,7 +62,7 @@ const Filters = React.memo(({ compact, ...props }) => {
           `}
         >
           <div
-            css={`
+            css={css`
               ${textStyle('label2')};
             `}
           >
@@ -71,19 +70,15 @@ const Filters = React.memo(({ compact, ...props }) => {
           </div>
           <Button onClick={onClearFilters} label="Clear" size="mini" />
         </div>
-        <ListFilter
-          items={itemsType}
-          onChange={onTypeFilterChange}
-          selected={proposalTypeFilter}
-        />
+        <ListFilter items={itemsType} onChange={onTypeFilterChange} selected={proposalTypeFilter} />
       </div>
       <div
-        css={`
+        css={css`
           margin-bottom: ${3 * GU}px;
         `}
       >
         <label
-          css={`
+          css={css`
             display: block;
             ${textStyle('label2')};
             margin-bottom: ${1 * GU}px;
@@ -101,12 +96,12 @@ const Filters = React.memo(({ compact, ...props }) => {
       </div>
       {!supportFilterDisabled && (
         <div
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
           <label
-            css={`
+            css={css`
               display: block;
               ${textStyle('label2')};
               margin-bottom: ${1 * GU}px;
@@ -123,14 +118,10 @@ const Filters = React.memo(({ compact, ...props }) => {
           />
         </div>
       )}
-      <TextFilter
-        text={proposalNameFilter}
-        onChange={onNameFilterChange}
-        placeholder="Search by proposal name"
-      />
+      <TextFilter text={proposalNameFilter} onChange={onNameFilterChange} placeholder="Search by proposal name" />
     </div>
-  )
-})
+  );
+});
 
 Filters.propTypes = {
   itemsStatus: PropTypes.array.isRequired,
@@ -142,6 +133,6 @@ Filters.propTypes = {
   onStatusFilterChange: PropTypes.func.isRequired,
   onSupportFilterChange: PropTypes.func.isRequired,
   onTypeFilterChange: PropTypes.func.isRequired,
-}
+};
 
-export default Filters
+export default Filters;

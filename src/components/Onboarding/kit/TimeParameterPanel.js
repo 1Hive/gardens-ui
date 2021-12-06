@@ -1,11 +1,13 @@
-import React from 'react'
-import { Box, GU, textStyle } from '@1hive/1hive-ui'
-import { DurationFields } from '.'
+import React from 'react';
+import { Box, GU, textStyle } from '@1hive/1hive-ui';
+import { DurationFields } from '.';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const TimeParameterPanel = ({ title, description, value, onUpdate }) => {
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         justify-content: center;
         align-items: center;
@@ -13,13 +15,13 @@ const TimeParameterPanel = ({ title, description, value, onUpdate }) => {
       `}
     >
       <Box
-        css={`
+        css={css`
           width: 60%;
           margin-right: ${GU * 6}px;
         `}
       >
         <div
-          css={`
+          css={css`
             ${textStyle('title3')};
             margin-bottom: ${GU}px;
           `}
@@ -30,18 +32,14 @@ const TimeParameterPanel = ({ title, description, value, onUpdate }) => {
       </Box>
 
       <div
-        css={`
+        css={css`
           width: 24%;
         `}
       >
-        <DurationFields
-          duration={value}
-          onUpdate={onUpdate}
-          direction="column"
-        />
+        <DurationFields duration={value} onUpdate={onUpdate} direction="column" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TimeParameterPanel
+export default TimeParameterPanel;

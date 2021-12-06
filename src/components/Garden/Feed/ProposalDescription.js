@@ -1,15 +1,18 @@
-import React from 'react'
-import { GU, LoadingRing, textStyle } from '@1hive/1hive-ui'
-import Description from '../Description'
+import React from 'react';
+import { GU, LoadingRing, textStyle } from '@1hive/1hive-ui';
+import Description from '../Description';
 
-import { useDescribeVote } from '@hooks/useDescribeVote'
-import { ProposalTypes } from '@/types'
+import { useDescribeVote } from '@hooks/useDescribeVote';
+import { ProposalTypes } from '@/types';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ProposalDescription({ proposal, onSelectProposal }) {
   return (
     <div
       onClick={onSelectProposal}
-      css={`
+      css={css`
         cursor: pointer;
         margin-bottom: ${3 * GU}px;
         ${textStyle('body1')};
@@ -21,23 +24,16 @@ function ProposalDescription({ proposal, onSelectProposal }) {
         overflow: hidden;
       `}
     >
-      {proposal.type === ProposalTypes.Decision ? (
-        <DecisionDescription proposal={proposal} />
-      ) : (
-        proposal.name
-      )}
+      {proposal.type === ProposalTypes.Decision ? <DecisionDescription proposal={proposal} /> : proposal.name}
     </div>
-  )
+  );
 }
 
 function DecisionDescription({ proposal }) {
-  const { description, emptyScript, loading } = useDescribeVote(
-    proposal.script,
-    proposal.id
-  )
+  const { description, emptyScript, loading } = useDescribeVote(proposal.script, proposal.id);
 
   if (loading) {
-    return <LoadingRing />
+    return <LoadingRing />;
   }
 
   return (
@@ -47,7 +43,7 @@ function DecisionDescription({ proposal }) {
       ) : (
         <Description
           path={description}
-          css={`
+          css={css`
             -webkit-line-clamp: 2;
             overflow: hidden;
             max-width: 750px;
@@ -57,7 +53,7 @@ function DecisionDescription({ proposal }) {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default ProposalDescription
+export default ProposalDescription;

@@ -1,25 +1,20 @@
-import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
-import { css, keyframes } from 'styled-components'
-import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
-import Illustration from './Illustration'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '../stepper-statuses'
-import { springs } from '@/style/springs'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { Transition, animated } from 'react-spring/renderprops';
+import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui';
+import Illustration from './Illustration';
+import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from '../stepper-statuses';
+import { springs } from '@/style/springs';
+import { useDisableAnimation } from '@hooks/useDisableAnimation';
+/** @jsx jsx */
+import { css, jsx, keyframes } from '@emotion/react';
 
 const STATUS_ICONS = {
   [STEP_ERROR]: IconCross,
   [STEP_SUCCESS]: IconCheck,
-}
+};
 
-const AnimatedDiv = animated.div
+const AnimatedDiv = animated.div;
 
 const spinAnimation = css`
   mask-image: linear-gradient(35deg, rgba(0, 0, 0, 0.1) 10%, rgba(0, 0, 0, 1));
@@ -32,7 +27,7 @@ const spinAnimation = css`
       transform: rotate(360deg);
     }
   `} 1.25s linear infinite;
-`
+`;
 
 const pulseAnimation = css`
   animation: ${keyframes`
@@ -44,28 +39,21 @@ const pulseAnimation = css`
       opacity: 0.1;
     }
   `} 0.75s linear alternate infinite;
-`
+`;
 
 function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
-  const theme = useTheme()
-  const [animationDisabled, enableAnimation] = useDisableAnimation()
+  const theme = useTheme();
+  const { animationDisabled, enableAnimation } = useDisableAnimation();
 
   const [statusIcon, illustration] = useMemo(() => {
-    const Icon = STATUS_ICONS[status]
+    const Icon = STATUS_ICONS[status];
 
-    return [
-      Icon && <Icon />,
-      <StepIllustration
-        number={number}
-        status={status}
-        withoutFirstStep={withoutFirstStep}
-      />,
-    ]
-  }, [status, number, withoutFirstStep])
+    return [Icon && <Icon />, <StepIllustration number={number} status={status} withoutFirstStep={withoutFirstStep} />];
+  }, [status, number, withoutFirstStep]);
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         position: relative;
         width: ${15 * GU}px;
@@ -74,7 +62,7 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
       {...props}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           flex: 1;
           align-items: center;
@@ -82,22 +70,20 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
         `}
       >
         <div
-          css={`
+          css={css`
             position: relative;
             z-index: 1;
           `}
         >
           <div
-            css={`
+            css={css`
               position: absolute;
               bottom: ${0.5 * GU}px;
               right: 0;
             `}
           >
             <Transition
-              config={(_, state) =>
-                state === 'enter' ? springs.gentle : springs.instant
-              }
+              config={(_, state) => (state === 'enter' ? springs.gentle : springs.instant)}
               items={statusIcon}
               onStart={enableAnimation}
               immediate={animationDisabled}
@@ -118,13 +104,13 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
                 currentStatusIcon &&
                 (animProps => (
                   <AnimatedDiv
-                    css={`
+                    css={css`
                       display: flex;
                       justify-content: center;
                       align-items: center;
                       border-radius: 100%;
                       padding: ${0.25 * GU}px;
-                      background-color: ${theme.surface};
+                      background-color: ${theme.surface.toString()};
                       color: ${color};
                       border: 1px solid currentColor;
                       bottom: 0;
@@ -142,7 +128,7 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
           {illustration}
         </div>
         <div
-          css={`
+          css={css`
             position: absolute;
             top: 0;
             left: 0;
@@ -150,47 +136,32 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${
-              status === STEP_WAITING ? 'transparent' : color
-            };
+            border: 2px solid ${status === STEP_WAITING ? 'transparent' : color};
             ${status === STEP_PROMPTING ? pulseAnimation : ''}
             ${status === STEP_WORKING ? spinAnimation : ''}
-            ${
-              status === STEP_PROMPTING
-                ? `background-color: ${theme.contentSecondary};`
-                : ''
-            }
+            ${status === STEP_PROMPTING ? `background-color: ${theme.contentSecondary.toString()};` : ''}
           `}
         />
       </div>
     </div>
-  )
+  );
 }
 
 StatusVisual.propTypes = {
-  status: PropTypes.oneOf([
-    STEP_WAITING,
-    STEP_PROMPTING,
-    STEP_WORKING,
-    STEP_SUCCESS,
-    STEP_ERROR,
-  ]).isRequired,
+  status: PropTypes.oneOf([STEP_WAITING, STEP_PROMPTING, STEP_WORKING, STEP_SUCCESS, STEP_ERROR]).isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
-}
+};
 
 /* eslint-disable react/prop-types */
 function StepIllustration({ number, status, withoutFirstStep }) {
-  const theme = useTheme()
+  const theme = useTheme();
   const renderIllustration =
-    status === STEP_WORKING ||
-    status === STEP_ERROR ||
-    status === STEP_SUCCESS ||
-    withoutFirstStep
+    status === STEP_WORKING || status === STEP_ERROR || status === STEP_SUCCESS || withoutFirstStep;
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         justify-content: center;
         align-items: center;
@@ -202,15 +173,15 @@ function StepIllustration({ number, status, withoutFirstStep }) {
         <Illustration status={status} index={number} />
       ) : (
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.contentSecondary};
+            background-color: ${theme.contentSecondary.toString()};
             height: 100%;
             width: 100%;
             border-radius: 100%;
-            color: ${theme.positiveContent};
+            color: ${theme.positiveContent.toString()};
             ${textStyle('title1')};
             font-weight: 600;
           `}
@@ -219,8 +190,8 @@ function StepIllustration({ number, status, withoutFirstStep }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 /* eslint-enable react/prop-types */
 
-export default StatusVisual
+export default StatusVisual;

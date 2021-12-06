@@ -1,65 +1,60 @@
-import React, { useState } from 'react'
-import {
-  GU,
-  IconCheck,
-  IconCloudUpload,
-  IconClose,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import styled from 'styled-components'
+/** @jsx jsx */
+import React, { useState } from 'react';
+import { GU, IconCheck, IconCloudUpload, IconClose, textStyle, useTheme } from '@1hive/1hive-ui';
+import { css, jsx } from '@emotion/react';
+import styled from 'styled-components';
 
-const MAX_FILE_SIZE = 1000000 // 1Mb
+const MAX_FILE_SIZE = 1000000; // 1Mb
 
 function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
-  const theme = useTheme()
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [error, setError] = useState('')
+  const theme = useTheme();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [error, setError] = useState('');
 
   const photoUpload = e => {
-    e.preventDefault()
-    const reader = new FileReader()
-    const file = e.target.files[0]
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
     if (file?.size <= MAX_FILE_SIZE) {
       if (reader !== undefined && file !== undefined) {
         reader.onloadend = () => {
-          setImageLoaded(true)
-        }
-        reader.readAsDataURL(file)
+          setImageLoaded(true);
+        };
+        reader.readAsDataURL(file);
       }
     } else {
-      setError('Max size 1Mb')
+      setError('Max size 1Mb');
     }
-  }
+  };
 
   const handleOnChange = e => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = () => {
-        handleReaderLoaded(reader, file.type.split('/')[1])
-      }
-      reader.readAsBinaryString(file)
+        handleReaderLoaded(reader, file.type.split('/')[1]);
+      };
+      reader.readAsBinaryString(file);
     }
-  }
+  };
 
   const handleReaderLoaded = (reader, extension) => {
-    const binaryString = reader.result
-    onImageLoaded(btoa(binaryString), extension)
-  }
+    const binaryString = reader.result;
+    onImageLoaded(btoa(binaryString), extension);
+  };
 
   const handleRemove = e => {
-    e.preventDefault()
-    setImageLoaded(false)
-    document.getElementById(`file-${id}`).value = ''
-    onImageRemoved()
-  }
+    e.preventDefault();
+    setImageLoaded(false);
+    document.getElementById(`file-${id}`).value = '';
+    onImageRemoved();
+  };
 
   return (
     <div>
       {(imageLoaded || imageExist) && (
         <div
-          css={`
+          css={css`
             display: flex;
             position: absolute;
             height: ${3 * GU}px;
@@ -82,44 +77,38 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
         <Container
           width={100}
           height={100}
-          hoverColor={theme.selected}
+          hoverColor={theme.selected.toString()}
           imageLoaded={imageLoaded || imageExist}
-          successColor={theme.positive}
+          successColor={theme.positive.toString()}
         >
           {imageLoaded || imageExist ? (
             <IconCheck
-              css={`
+              css={css`
                 cursor: pointer;
-                color: ${theme.positiveContent};
+                color: ${theme.positiveContent.toString()};
               `}
               size="large"
             />
           ) : (
             <IconCloudUpload
-              css={`
+              css={css`
                 cursor: pointer;
               `}
               size="large"
             />
           )}
-          <input
-            type="file"
-            name="avatar"
-            id={`file-${id}`}
-            accept=".png, .jpg"
-            onChange={photoUpload}
-          />
+          <input type="file" name="avatar" id={`file-${id}`} accept=".png, .jpg" onChange={photoUpload} />
         </Container>
       </form>
       {error && (
         <div
-          css={`
+          css={css`
             width: 95px;
           `}
         >
           <span
-            css={`
-              color: ${theme.error};
+            css={css`
+              color: ${theme.error.toString()};
               ${textStyle('body4')};
             `}
           >
@@ -128,7 +117,7 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -154,6 +143,6 @@ const Container = styled.div`
     transition: all 1s;
     box-shadow: 0px 0px 15px 2px ${props => props.hoverColor};
   }
-`
+`;
 
-export default ImageUploader
+export default ImageUploader;

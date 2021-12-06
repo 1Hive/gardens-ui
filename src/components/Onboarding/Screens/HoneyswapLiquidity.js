@@ -1,142 +1,100 @@
-import React, { useCallback, useState } from 'react'
-import {
-  Box,
-  DropDown,
-  GU,
-  LoadingRing,
-  TextInput,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import Header from '../kit/Header'
-import Navigation from '../Navigation'
-import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
-import { useOnboardingState } from '@providers/Onboarding'
-import { useTokenBalanceOf } from '@hooks/useToken'
-import { useWallet } from '@providers/Wallet'
+import React, { useCallback, useState } from 'react';
+import { Box, DropDown, GU, LoadingRing, TextInput, textStyle, useTheme } from '@1hive/1hive-ui';
+import Header from '../kit/Header';
+import Navigation from '../Navigation';
+import useHNYPriceOracle from '@hooks/useHNYPriceOracle';
+import { useOnboardingState } from '@providers/Onboarding';
+import { useTokenBalanceOf } from '@hooks/useToken';
+import { useWallet } from '@providers/Wallet';
 
-import {
-  formatTokenAmount,
-  getLocalTokenIconBySymbol,
-} from '@utils/token-utils'
-import { getNetwork } from '@/networks'
-import { toDecimals } from '@utils/math-utils'
-import { BYOT_TYPE } from '../constants'
-import { bigNum } from '@/lib/bigNumber'
+import { formatTokenAmount, getLocalTokenIconBySymbol } from '@utils/token-utils';
+import { getNetwork } from '@/networks';
+import { toDecimals } from '@utils/math-utils';
+import { BYOT_TYPE } from '../constants';
+import { bigNum } from '@/lib/bigNumber';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const MIN_HNY_USD = 100
-const HNY_DENOMINATION = 0
+const MIN_HNY_USD = 100;
+const HNY_DENOMINATION = 0;
 
 function HoneyswapLiquidity() {
-  const theme = useTheme()
-  const { account } = useWallet()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
-  const {
-    denomination,
-    honeyTokenLiquidity,
-    honeyTokenLiquidityStable,
-    tokenLiquidity,
-  } = config.liquidity
-  const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
+  const theme = useTheme();
+  const { account } = useWallet();
+  const { config, onBack, onConfigChange, onNext, step, steps } = useOnboardingState();
+  const { denomination, honeyTokenLiquidity, honeyTokenLiquidityStable, tokenLiquidity } = config.liquidity;
+  const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18));
 
   // State vars
-  const [denom, setDenom] = useState(denomination) // 0 HNY, 1 USD
+  const [denom, setDenom] = useState(denomination); // 0 HNY, 1 USD
   const [denominatedAmount, setDenominatedAmount] = useState(
-    denom === HNY_DENOMINATION ? honeyTokenLiquidity : honeyTokenLiquidityStable
-  )
-  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity)
+    denom === HNY_DENOMINATION ? honeyTokenLiquidity : honeyTokenLiquidityStable,
+  );
+  const [tokenAmount, setTokenAmount] = useState(tokenLiquidity);
 
-  const hnyTokenBalance = useTokenBalanceOf(getNetwork().honeyToken, account)
-  const existingTokenBalance = useTokenBalanceOf(config.tokens.address, account)
+  const hnyTokenBalance = useTokenBalanceOf(getNetwork().honeyToken, account);
+  const existingTokenBalance = useTokenBalanceOf(config.tokens.address, account);
 
   // Callback functions
   const handleDenominatedAmountChange = useCallback(event => {
-    const newAmount = event.target.value
+    const newAmount = event.target.value;
     if (isNaN(newAmount) || newAmount < 0) {
-      return
+      return;
     }
 
-    setDenominatedAmount(newAmount)
-  }, [])
+    setDenominatedAmount(newAmount);
+  }, []);
 
   const handleTokenAmountChange = useCallback(event => {
-    const newAmount = event.target.value
+    const newAmount = event.target.value;
     if (isNaN(newAmount) || newAmount < 0) {
-      return
+      return;
     }
 
-    setTokenAmount(newAmount)
-  }, [])
+    setTokenAmount(newAmount);
+  }, []);
 
   const handleNext = useCallback(
     event => {
-      event.preventDefault()
+      event.preventDefault();
 
       onConfigChange('liquidity', {
         denomination: denom,
-        honeyTokenLiquidity:
-          denom === HNY_DENOMINATION
-            ? denominatedAmount
-            : String(denominatedAmount / hnyPrice),
+        honeyTokenLiquidity: denom === HNY_DENOMINATION ? denominatedAmount : String(denominatedAmount / hnyPrice),
         honeyTokenLiquidityStable:
-          denom === HNY_DENOMINATION
-            ? String(denominatedAmount * hnyPrice)
-            : denominatedAmount,
+          denom === HNY_DENOMINATION ? String(denominatedAmount * hnyPrice) : denominatedAmount,
         tokenLiquidity: tokenAmount,
-      })
+      });
 
-      onNext()
+      onNext();
     },
-    [denom, denominatedAmount, hnyPrice, onConfigChange, onNext, tokenAmount]
-  )
+    [denom, denominatedAmount, hnyPrice, onConfigChange, onNext, tokenAmount],
+  );
 
   // Calculate necessary values
-  const liquidityProvided = Boolean(denominatedAmount > 0 && tokenAmount > 0)
-  const satisfiesMin =
-    Number(
-      denom === HNY_DENOMINATION
-        ? denominatedAmount * hnyPrice
-        : denominatedAmount
-    ) >= 100
+  const liquidityProvided = Boolean(denominatedAmount > 0 && tokenAmount > 0);
+  const satisfiesMin = Number(denom === HNY_DENOMINATION ? denominatedAmount * hnyPrice : denominatedAmount) >= 100;
 
-  const tokenSymbol =
-    config.garden.type === BYOT_TYPE
-      ? config.tokens.existingTokenSymbol
-      : config.tokens.symbol
+  const tokenSymbol = config.garden.type === BYOT_TYPE ? config.tokens.existingTokenSymbol : config.tokens.symbol;
 
   const equivalentValue = String(
-    parseFloat(
-      denom === HNY_DENOMINATION
-        ? denominatedAmount * hnyPrice
-        : denominatedAmount / hnyPrice
-    ).toFixed(2)
-  )
+    parseFloat(denom === HNY_DENOMINATION ? denominatedAmount * hnyPrice : denominatedAmount / hnyPrice).toFixed(2),
+  );
 
-  const hnyAmount =
-    denom === HNY_DENOMINATION ? denominatedAmount : equivalentValue
+  const hnyAmount = denom === HNY_DENOMINATION ? denominatedAmount : equivalentValue;
 
-  const hasSufficientHNYBalance = bigNum(hnyAmount, 18).lte(hnyTokenBalance)
-  const hasSufficientETokenBalance = bigNum(
-    tokenAmount,
-    config.tokens.decimals
-  ).lte(existingTokenBalance)
+  const hasSufficientHNYBalance = bigNum(hnyAmount, 18).lte(hnyTokenBalance);
+  const hasSufficientETokenBalance = bigNum(tokenAmount, config.tokens.decimals).lte(existingTokenBalance);
 
   const nextEnabled =
     liquidityProvided &&
     satisfiesMin &&
     hasSufficientHNYBalance &&
-    (config.garden.type !== BYOT_TYPE || hasSufficientETokenBalance)
+    (config.garden.type !== BYOT_TYPE || hasSufficientETokenBalance);
 
   return (
     <div
-      css={`
+      css={css`
         max-width: 550px;
         margin: 0 auto;
       `}
@@ -147,7 +105,7 @@ function HoneyswapLiquidity() {
         thirdtitle={`Set the initial HNY/${tokenSymbol} token equivalence`}
       />
       <div
-        css={`
+        css={css`
           margin-bottom: ${4 * GU}px;
         `}
       >
@@ -155,7 +113,7 @@ function HoneyswapLiquidity() {
           <Box padding={2 * GU}>
             <div>Input</div>
             <div
-              css={`
+              css={css`
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -167,32 +125,25 @@ function HoneyswapLiquidity() {
                 value={denominatedAmount}
                 onChange={handleDenominatedAmountChange}
                 wide
-                css={`
+                css={css`
                   border: 0;
                   width: 100%;
                   padding: 0;
                   ${textStyle('title3')};
-                  color: ${theme[
-                    denominatedAmount ? 'content' : 'contentSecondary'
-                  ]};
+                  color: ${theme[denominatedAmount ? 'content' : 'contentSecondary']};
                 `}
               />
               <DropDown
                 items={[
                   <div
-                    css={`
+                    css={css`
                       display: flex;
                       align-items: center;
                     `}
                   >
-                    <img
-                      src={getLocalTokenIconBySymbol('HNY')}
-                      width="32"
-                      height="32"
-                      alt=""
-                    />
+                    <img src={getLocalTokenIconBySymbol('HNY')} width="32" height="32" alt="" />
                     <span
-                      css={`
+                      css={css`
                         margin-left: ${1 * GU}px;
                         ${textStyle('title4')};
                       `}
@@ -201,7 +152,7 @@ function HoneyswapLiquidity() {
                     </span>
                   </div>,
                   <span
-                    css={`
+                    css={css`
                       margin-left: ${5 * GU}px;
                       ${textStyle('title4')};
                     `}
@@ -212,7 +163,7 @@ function HoneyswapLiquidity() {
                 selected={denom}
                 onChange={setDenom}
                 width="150px"
-                css={`
+                css={css`
                   border: 0;
                   padding-left: 0;
                   padding-right: 0;
@@ -225,45 +176,41 @@ function HoneyswapLiquidity() {
             </div>
             {hnyTokenBalance.gte(0) && (
               <div
-                css={`
-                  color: ${theme[
-                    hasSufficientHNYBalance ? 'contentSecondary' : 'negative'
-                  ]};
+                css={css`
+                  color: ${theme[hasSufficientHNYBalance ? 'contentSecondary' : 'negative']};
                 `}
               >
                 <span>
                   {hasSufficientHNYBalance ? null : (
                     <span
-                      css={`
+                      css={css`
                         margin-right: ${0.5 * GU}px;
                       `}
                     >
                       Insufficient funds.
                     </span>
                   )}
-                  <span>
-                    Balance: {formatTokenAmount(hnyTokenBalance, 18)} HNY
-                  </span>
+                  <span>Balance: {formatTokenAmount(hnyTokenBalance, 18)} HNY</span>
                 </span>
               </div>
             )}
           </Box>
           <div
-            css={`
+            css={css`
               margin-top: ${1 * GU}px;
-              color: ${theme.contentSecondary};
+              color: ${theme.contentSecondary.toString()};
             `}
           >
             {denominatedAmount && (
               <div
-                css={`
+                css={css`
                   font-weight: bold;
                   display: flex;
                   align-items: center;
                 `}
               >
                 <span
-                  css={`
+                  css={css`
                     margin-right: ${0.5 * GU}px;
                   `}
                 >
@@ -273,14 +220,13 @@ function HoneyswapLiquidity() {
                   <LoadingRing />
                 ) : (
                   <span>
-                    {equivalentValue}{' '}
-                    {denom === HNY_DENOMINATION ? 'USD' : 'HNY'}
+                    {equivalentValue} {denom === HNY_DENOMINATION ? 'USD' : 'HNY'}
                   </span>
                 )}
               </div>
             )}
             <div
-              css={`
+              css={css`
                 ${textStyle('body3')};
               `}
             >
@@ -289,7 +235,7 @@ function HoneyswapLiquidity() {
           </div>
         </div>
         <div
-          css={`
+          css={css`
             text-align: center;
             ${textStyle('title2')};
             margin: ${2 * GU}px 0;
@@ -301,7 +247,7 @@ function HoneyswapLiquidity() {
           <Box padding={2 * GU}>
             <div>Input</div>
             <div
-              css={`
+              css={css`
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -313,7 +259,7 @@ function HoneyswapLiquidity() {
                 value={tokenAmount}
                 onChange={handleTokenAmountChange}
                 wide
-                css={`
+                css={css`
                   border: 0;
                   width: 100%;
                   padding: 0;
@@ -321,14 +267,9 @@ function HoneyswapLiquidity() {
                   color: ${theme[tokenAmount ? 'content' : 'contentSecondary']};
                 `}
               />
-              <img
-                src={getLocalTokenIconBySymbol(tokenSymbol)}
-                width="32"
-                height="32"
-                alt=""
-              />
+              <img src={getLocalTokenIconBySymbol(tokenSymbol)} width="32" height="32" alt="" />
               <span
-                css={`
+                css={css`
                   ${textStyle('title4')};
                   margin-left: ${1 * GU}px;
                 `}
@@ -338,16 +279,14 @@ function HoneyswapLiquidity() {
             </div>
             {config.garden.type === BYOT_TYPE && existingTokenBalance.gte(0) && (
               <div
-                css={`
-                  color: ${theme[
-                    hasSufficientETokenBalance ? 'contentSecondary' : 'negative'
-                  ]};
+                css={css`
+                  color: ${theme[hasSufficientETokenBalance ? 'contentSecondary' : 'negative']};
                 `}
               >
                 <span>
                   {hasSufficientETokenBalance ? null : (
                     <span
-                      css={`
+                      css={css`
                         margin-right: ${0.5 * GU}px;
                       `}
                     >
@@ -355,11 +294,7 @@ function HoneyswapLiquidity() {
                     </span>
                   )}
                   <span>
-                    Balance:{' '}
-                    {formatTokenAmount(
-                      existingTokenBalance,
-                      config.tokens.decimals
-                    )}{' '}
+                    Balance: {formatTokenAmount(existingTokenBalance, config.tokens.decimals)}{' '}
                     {config.tokens.existingTokenSymbol}
                   </span>
                 </span>
@@ -369,14 +304,14 @@ function HoneyswapLiquidity() {
 
           {liquidityProvided && (
             <div
-              css={`
+              css={css`
                 margin-top: ${3 * GU}px;
-                color: ${theme.contentSecondary};
+                color: ${theme.contentSecondary.toString()};
                 ${textStyle('body3')};
               `}
             >
               <div
-                css={`
+                css={css`
                   display: flex;
                   align-items: center;
                   justify-content: space-between;
@@ -384,13 +319,12 @@ function HoneyswapLiquidity() {
               >
                 <span>Initial price</span>
                 <span>
-                  1 {tokenSymbol} (
-                  {parseFloat((hnyAmount * hnyPrice) / tokenAmount).toFixed(2)}{' '}
-                  USD) = {parseFloat(hnyAmount / tokenAmount).toFixed(4)} HNY
+                  1 {tokenSymbol} ({parseFloat((hnyAmount * hnyPrice) / tokenAmount).toFixed(2)} USD) ={' '}
+                  {parseFloat(hnyAmount / tokenAmount).toFixed(4)} HNY
                 </span>
               </div>
               <div
-                css={`
+                css={css`
                   display: flex;
                   align-items: center;
                   justify-content: space-between;
@@ -415,7 +349,7 @@ function HoneyswapLiquidity() {
         onNext={handleNext}
       />
     </div>
-  )
+  );
 }
 
-export default HoneyswapLiquidity
+export default HoneyswapLiquidity;

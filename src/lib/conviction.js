@@ -1,8 +1,8 @@
-import BigNumber from './bigNumber'
-import { addressesEqual } from '@utils/web3-utils'
-import { safeDivBN } from '@utils/math-utils'
+import BigNumber from './bigNumber';
+import { addressesEqual } from '@utils/web3-utils';
+import { safeDivBN } from '@utils/math-utils';
 
-const oneBN = new BigNumber('1')
+const oneBN = new BigNumber('1');
 /**
  * Calculate the amount of conviction at certain time from an initial conviction
  * and the amount of staked tokens following the formula:
@@ -14,14 +14,12 @@ const oneBN = new BigNumber('1')
  * @return {BigNumber} Amount of conviction at time t
  */
 export function calculateConviction(timePassed, initConv, amount, alpha) {
-  const t = timePassed
-  const y0 = initConv
-  const x = amount
-  const a = alpha
+  const t = timePassed;
+  const y0 = initConv;
+  const x = amount;
+  const a = alpha;
 
-  return y0
-    .multipliedBy(a.pow(t))
-    .plus(x.multipliedBy(oneBN.minus(a.pow(t))).div(oneBN.minus(a)))
+  return y0.multipliedBy(a.pow(t)).plus(x.multipliedBy(oneBN.minus(a.pow(t))).div(oneBN.minus(a)));
 }
 
 /**
@@ -33,34 +31,25 @@ export function calculateConviction(timePassed, initConv, amount, alpha) {
  * @return {BigNumber} Current conviction
  */
 export function getCurrentConviction(stakes, currentTime, alpha) {
-  const lastStake = [...stakes].pop()
+  const lastStake = [...stakes].pop();
   if (lastStake) {
-    const { time, totalTokensStaked, conviction } = lastStake
+    const { time, totalTokensStaked, conviction } = lastStake;
 
     // Calculate from last stake to now
-    const ret = calculateConviction(
-      currentTime - time,
-      conviction,
-      totalTokensStaked,
-      alpha
-    )
-    return ret
+    const ret = calculateConviction(currentTime - time, conviction, totalTokensStaked, alpha);
+    return ret;
   } else {
-    return new BigNumber('0')
+    return new BigNumber('0');
   }
 }
 
 // TODO: Move the following code to tests
 export function checkConvictionImplementation(stakes, alpha) {
-  const { conviction } = convictionFromStakes(stakes, alpha)
+  const { conviction } = convictionFromStakes(stakes, alpha);
   if (stakes.length > 0) {
-    const solidityConviction = [...stakes].pop().conviction
+    const solidityConviction = [...stakes].pop().conviction;
     if (solidityConviction !== conviction) {
-      console.error(
-        'Mismatch between solidity and js code on conviction calculation.',
-        solidityConviction,
-        conviction
-      )
+      console.error('Mismatch between solidity and js code on conviction calculation.', solidityConviction, conviction);
     }
   }
 }
@@ -74,33 +63,20 @@ export function checkConvictionImplementation(stakes, alpha) {
  * @param {string} alpha Constant that controls the conviction decay
  * @return {BigNumber} Current conviction
  */
-export function getCurrentConvictionByEntity(
-  stakes,
-  entity,
-  currentTime,
-  alpha
-) {
+export function getCurrentConvictionByEntity(stakes, entity, currentTime, alpha) {
   if (!entity) {
-    return new BigNumber('0')
+    return new BigNumber('0');
   }
 
-  const entityStakes = stakesByEntity(stakes, entity)
+  const entityStakes = stakesByEntity(stakes, entity);
 
   if (!entityStakes.length > 0) {
-    return new BigNumber('0')
+    return new BigNumber('0');
   }
 
-  const { time, totalTokensStaked, conviction } = convictionFromStakes(
-    entityStakes,
-    alpha
-  )
+  const { time, totalTokensStaked, conviction } = convictionFromStakes(entityStakes, alpha);
   // Calculate from last stake to now
-  return calculateConviction(
-    currentTime - time,
-    conviction,
-    totalTokensStaked,
-    alpha
-  )
+  return calculateConviction(currentTime - time, conviction, totalTokensStaked, alpha);
 }
 
 /**
@@ -113,49 +89,42 @@ export function getCurrentConvictionByEntity(
  * @returns {BigNumber[]} Array with conviction amounts from time t-50 to time t
  */
 export function getConvictionHistory(stakes, currentTime, alpha, timeUnit) {
-  const history = []
-  let initTime = currentTime - 50 * timeUnit - 1
+  const history = [];
+  let initTime = currentTime - 50 * timeUnit - 1;
 
   // Fill the first spots with 0s if currentTime < 50
   while (initTime < 0) {
     if (initTime % timeUnit === 0) {
-      history.push(BigNumber('0'))
+      history.push(BigNumber('0'));
     }
-    initTime++
+    initTime++;
   }
 
-  const oldStakes = [...stakes].filter(stake => stake.time <= initTime)
-  const recentStakes = [...stakes].filter(stake => stake.time > initTime)
+  const oldStakes = [...stakes].filter(stake => stake.time <= initTime);
+  const recentStakes = [...stakes].filter(stake => stake.time > initTime);
 
-  let { totalTokensStaked: oldAmount, conviction: lastConv, time: lastTime } = [
-    ...oldStakes,
-  ].pop() || {
+  let { totalTokensStaked: oldAmount, conviction: lastConv, time: lastTime } = [...oldStakes].pop() || {
     totalTokensStaked: new BigNumber('0'),
     conviction: new BigNumber('0'),
     time: 0,
-  }
-  lastConv = calculateConviction(
-    initTime - lastTime,
-    lastConv,
-    oldAmount,
-    alpha
-  )
-  let timePassed = 0 // age of current conviction amount, reset every time conviction stake is changed.
-  let i = 0
+  };
+  lastConv = calculateConviction(initTime - lastTime, lastConv, oldAmount, alpha);
+  let timePassed = 0; // age of current conviction amount, reset every time conviction stake is changed.
+  let i = 0;
 
   for (let t = initTime; t <= currentTime; t++) {
     if (t % timeUnit === 0) {
-      history.push(calculateConviction(timePassed, lastConv, oldAmount, alpha))
+      history.push(calculateConviction(timePassed, lastConv, oldAmount, alpha));
     }
     // check if new stakes are made at this time
     while (recentStakes.length > i && recentStakes[i].time <= t) {
-      oldAmount = recentStakes[i++].totalTokensStaked
-      timePassed = 0
-      lastConv = [...history].pop()
+      oldAmount = recentStakes[i++].totalTokensStaked;
+      timePassed = 0;
+      lastConv = [...history].pop();
     }
-    timePassed++
+    timePassed++;
   }
-  return history
+  return history;
 }
 
 /**
@@ -168,19 +137,8 @@ export function getConvictionHistory(stakes, currentTime, alpha, timeUnit) {
  * @param {number} timeUnit Number of blocks a time unit has
  * @returns {BigNumber[]} Array with conviction amounts from time 0 to `time`
  */
-export function getConvictionHistoryByEntity(
-  stakes,
-  entity,
-  time,
-  alpha,
-  timeUnit
-) {
-  return getConvictionHistory(
-    stakesByEntity(stakes, entity),
-    time,
-    alpha,
-    timeUnit
-  )
+export function getConvictionHistoryByEntity(stakes, entity, time, alpha, timeUnit) {
+  return getConvictionHistory(stakesByEntity(stakes, entity), time, alpha, timeUnit);
 }
 
 /**
@@ -194,10 +152,10 @@ export function getConvictionHistoryByEntity(
  * current amount of staked tokens
  */
 export function getRemainingTimeToPass(threshold, conviction, amount, alpha) {
-  const a = alpha
-  const y = threshold
-  const y0 = conviction
-  const x = amount
+  const a = alpha;
+  const y = threshold;
+  const y0 = conviction;
+  const x = amount;
 
   return (
     Math.log(
@@ -209,11 +167,11 @@ export function getRemainingTimeToPass(threshold, conviction, amount, alpha) {
           a
             .minus(oneBN)
             .multipliedBy(y0)
-            .plus(x)
+            .plus(x),
         )
-        .toNumber()
+        .toNumber(),
     ) / Math.log(a.toNumber())
-  )
+  );
 }
 
 /**
@@ -227,16 +185,10 @@ export function getRemainingTimeToPass(threshold, conviction, amount, alpha) {
  * @returns {BigNumber} Number from -1 to 1 that represents the increment or
  * decrement of conviction
  */
-export function getConvictionTrend(
-  stakes,
-  maxConviction,
-  time,
-  alpha,
-  timeUnit = 5
-) {
-  const currentConviction = getCurrentConviction(stakes, time, alpha)
-  const futureConviction = getCurrentConviction(stakes, time + timeUnit, alpha)
-  return safeDivBN(futureConviction.minus(currentConviction), maxConviction)
+export function getConvictionTrend(stakes, maxConviction, time, alpha, timeUnit = 5) {
+  const currentConviction = getCurrentConviction(stakes, time, alpha);
+  const futureConviction = getCurrentConviction(stakes, time + timeUnit, alpha);
+  return safeDivBN(futureConviction.minus(currentConviction), maxConviction);
 }
 
 /**
@@ -252,15 +204,15 @@ export function getConvictionTrend(
  */
 
 export function calculateThreshold(requested, funds, supply, alpha, beta, rho) {
-  const share = requested.div(funds)
+  const share = requested.div(funds);
 
   if (share.lt(beta)) {
     return rho
       .multipliedBy(supply)
       .div(oneBN.minus(alpha))
-      .div(beta.minus(share).pow(2))
+      .div(beta.minus(share).pow(2));
   } else {
-    return null
+    return null;
   }
 }
 
@@ -275,13 +227,13 @@ export function calculateThreshold(requested, funds, supply, alpha, beta, rho) {
  * pass
  */
 export function getMinNeededStake(threshold, alpha) {
-  const y = threshold
-  const a = alpha
+  const y = threshold;
+  const a = alpha;
 
   return a
     .negated()
     .multipliedBy(y)
-    .plus(y)
+    .plus(y);
 }
 
 /**
@@ -294,53 +246,45 @@ export function getMinNeededStake(threshold, alpha) {
  * @returns {BigNumber} Max amount of conviction possible
  */
 export function getMaxConviction(amount, alpha) {
-  const x = amount
-  const a = alpha
-  return x.div(oneBN.minus(a))
+  const x = amount;
+  const a = alpha;
+  return x.div(oneBN.minus(a));
 }
 
 function convictionFromStakes(stakes, alpha) {
   const [conviction, time, totalTokensStaked] = stakes.reduce(
     ([lastConv, lastTime, oldAmount], stake) => {
-      const amount = stake.totalTokensStaked
-      const timePassed = stake.time - lastTime
-      lastConv = calculateConviction(timePassed, lastConv, oldAmount, alpha)
-      lastTime = stake.time
-      return [lastConv, lastTime, amount]
+      const amount = stake.totalTokensStaked;
+      const timePassed = stake.time - lastTime;
+      lastConv = calculateConviction(timePassed, lastConv, oldAmount, alpha);
+      lastTime = stake.time;
+      return [lastConv, lastTime, amount];
     },
-    [new BigNumber('0'), 0, new BigNumber('0')] // Initial conviction, time, and amount to 0
-  )
-  return { conviction, time, totalTokensStaked }
+    [new BigNumber('0'), 0, new BigNumber('0')], // Initial conviction, time, and amount to 0
+  );
+  return { conviction, time, totalTokensStaked };
 }
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ supporter: { user: { address } } }) =>
-      addressesEqual(entity, address)
-    )
+    .filter(({ supporter: { user: { address } } }) => addressesEqual(entity, address))
     .map(({ time, tokensStaked, conviction }) => ({
       time,
       totalTokensStaked: tokensStaked,
       conviction,
-    }))
+    }));
 }
 
 export function isEntitySupporting(proposal, entity) {
   if (!entity) {
-    return false
+    return false;
   }
 
-  const entityStake = proposal.stakes.find(
-    ({
-      supporter: {
-        user: { address },
-      },
-    }) => addressesEqual(entity, address)
-  )
+  const entityStake = proposal.stakes.find(({ supporter: { user: { address } } }) => addressesEqual(entity, address));
 
   if (!entityStake) {
-    return false
+    return false;
   }
 
-  return entityStake.amount.gt(0)
+  return entityStake.amount.gt(0);
 }

@@ -1,21 +1,21 @@
-import React, { useCallback, useState } from 'react'
-import PropTypes from 'prop-types'
-import { css } from 'styled-components'
-import { useTheme, textStyle, GU } from '@1hive/1hive-ui'
-import { HoverIndicator } from './components'
-
+import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useTheme, textStyle, GU } from '@1hive/1hive-ui';
+import { HoverIndicator } from './components';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
-  const theme = useTheme()
-  const [isHovered, setIsHovered] = useState(false)
+  const theme = useTheme();
+  const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseEnter = useCallback(() => setIsHovered(true), [])
-  const handleMouseLeave = useCallback(() => setIsHovered(false), [])
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      css={`
+      css={css`
         position: relative;
         display: flex;
         align-items: center;
@@ -40,8 +40,8 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
           selected && !disabled
             ? `
                 &&& {
-                  background: ${theme.selected};
-                  color: ${theme.positiveContent};
+                  background: ${theme.selected.toString()};
+                  color: ${theme.positiveContent.toString()};
                 }
               `
             : ''
@@ -56,14 +56,14 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
 
         ${today &&
           css`
-            color: ${theme.selected};
+            color: ${theme.selected.toString()};
             font-weight: 600;
           `}
 
         ${weekDay &&
           css`
             pointer-events: none;
-            color: ${theme.contentSecondary};
+            color: ${theme.contentSecondary.toString()};
             text-transform: uppercase;
           `}
 
@@ -77,7 +77,7 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
     >
       {isHovered ? <HoverIndicator theme={theme} selected={selected} /> : null}
       <span
-        css={`
+        css={css`
           ${textStyle(weekDay ? 'body4' : 'body3')};
         `}
       >
@@ -85,18 +85,18 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
       </span>
       {today ? (
         <div
-          css={`
+          css={css`
             position: absolute;
             bottom: 1px;
             font-size: 9px;
-            color: ${selected ? theme.surface : theme.selected};
+            color: ${selected ? theme.surface.toString() : theme.selected.toString()};
           `}
         >
           ●
         </div>
       ) : null}
     </div>
-  )
+  );
 }
 
 MonthDay.propTypes = {
@@ -105,6 +105,6 @@ MonthDay.propTypes = {
   selected: PropTypes.bool,
   today: PropTypes.bool,
   weekDay: PropTypes.bool,
-}
+};
 
-export default MonthDay
+export default MonthDay;

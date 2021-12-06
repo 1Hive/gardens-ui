@@ -1,20 +1,21 @@
-import React from 'react'
-import { GU } from '@1hive/1hive-ui'
-
-import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
-import { formatTokenAmount } from '@utils/token-utils'
-import lockIconSvg from '@assets/icon-lock.svg'
+import React from 'react';
+import { GU } from '@1hive/1hive-ui';
+import useGardenTokenIcon from '@hooks/useGardenTokenIcon';
+import { formatTokenAmount } from '@utils/token-utils';
+import lockIconSvg from '@assets/icon-lock.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ActionCollateral({ proposal }) {
-  const { collateralRequirement } = proposal
+  const { collateralRequirement } = proposal;
   const tokenIcon = useGardenTokenIcon({
     id: collateralRequirement.tokenId,
     symbol: collateralRequirement.tokenSymbol,
-  })
+  });
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         align-items: center;
       `}
@@ -24,24 +25,21 @@ function ActionCollateral({ proposal }) {
         alt=""
         height="24"
         width="24"
-        css={`
+        css={css`
           margin-right: ${1 * GU}px;
         `}
       />
       <div
-        css={`
+        css={css`
           margin-right: ${0.5 * GU}px;
         `}
       >
-        {formatTokenAmount(
-          collateralRequirement.actionAmount,
-          collateralRequirement.tokenDecimals
-        )}{' '}
+        {formatTokenAmount(collateralRequirement.actionAmount, collateralRequirement.tokenDecimals)}{' '}
         {collateralRequirement.tokenSymbol}
       </div>
       <img src={lockIconSvg} alt="" width="16" height="16" />
     </div>
-  )
+  );
 }
 
-export default ActionCollateral
+export default ActionCollateral;

@@ -1,118 +1,91 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import {
-  Field,
-  GU,
-  Help,
-  Info,
-  isAddress,
-  LoadingRing,
-  TextInput,
-} from '@1hive/1hive-ui'
-import GnosisSafeField from './GnosisSafeField'
-import Header from '../../../kit/Header'
-import Navigation from '../../../Navigation'
-import { useTokenData } from '@hooks/useToken'
-import { useOnboardingState } from '@providers/Onboarding'
+import React, { useCallback, useEffect, useState } from 'react';
+import { Field, GU, Help, Info, isAddress, LoadingRing, TextInput } from '@1hive/1hive-ui';
+import GnosisSafeField from './GnosisSafeField';
+import Header from '../../../kit/Header';
+import Navigation from '../../../Navigation';
+import { useTokenData } from '@hooks/useToken';
+import { useOnboardingState } from '@providers/Onboarding';
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg';
+import iconCheck from '@assets/iconCheck.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function useFieldsLayout() {
   return `
     display: grid;
     grid-template-columns: 8fr 1fr 1fr;
     grid-column-gap: ${1.5 * GU}px;
-  `
+  `;
 }
-function validationError(
-  tokenAddress,
-  tokenName,
-  tokenSymbol,
-  gnosisSafeAddress,
-  gnosisSafeChecked
-) {
+function validationError(tokenAddress, tokenName, tokenSymbol, gnosisSafeAddress, gnosisSafeChecked) {
   if (!tokenAddress) {
-    return 'Please, provide a token address.'
+    return 'Please, provide a token address.';
   }
   if (!isAddress(tokenAddress)) {
-    return 'The token address you provided is invalid.'
+    return 'The token address you provided is invalid.';
   }
   if (!tokenName.trim()) {
-    return 'Please add a token name.'
+    return 'Please add a token name.';
   }
   if (!tokenSymbol) {
-    return 'Please add a token symbol.'
+    return 'Please add a token symbol.';
   }
   if (gnosisSafeChecked && !isAddress(gnosisSafeAddress)) {
-    return 'The Gnosis safe address you provided is invalid.'
+    return 'The Gnosis safe address you provided is invalid.';
   }
-  return null
+  return null;
 }
 
 function TokenSettingsBYOT() {
-  const fieldsLayout = useFieldsLayout()
+  const fieldsLayout = useFieldsLayout();
 
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    steps,
-    step,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, steps, step } = useOnboardingState();
 
-  const [formError, setFormError] = useState(null)
-  const [tokenAddress, setTokenAddress] = useState(config.tokens.address)
-  const [tokenData, loadingTokenData, tokenDataError] = useTokenData(
-    isAddress(tokenAddress) && tokenAddress
-  )
-  const [gardenTokenName, setGardenTokenName] = useState(config.tokens.name)
-  const [gardenTokenSymbol, setGardenTokenSymbol] = useState(
-    config.tokens.symbol
-  )
-  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(
-    config.tokens.gnosisSafe
-  )
-  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(
-    Boolean(config.tokens.gnosisSafe)
-  )
+  const [formError, setFormError] = useState(null);
+  const [tokenAddress, setTokenAddress] = useState(config.tokens.address);
+  const [tokenData, loadingTokenData, tokenDataError] = useTokenData(isAddress(tokenAddress) && tokenAddress);
+  const [gardenTokenName, setGardenTokenName] = useState(config.tokens.name);
+  const [gardenTokenSymbol, setGardenTokenSymbol] = useState(config.tokens.symbol);
+  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(config.tokens.gnosisSafe);
+  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(Boolean(config.tokens.gnosisSafe));
 
   const handleTokenAddressChange = useCallback(event => {
-    setFormError(null)
-    setTokenAddress(event.target.value)
-  }, [])
+    setFormError(null);
+    setTokenAddress(event.target.value);
+  }, []);
   const handleTokenNameChange = useCallback(event => {
-    setFormError(null)
-    setGardenTokenName(event.target.value)
-  }, [])
+    setFormError(null);
+    setGardenTokenName(event.target.value);
+  }, []);
   const handleTokenSymbolChange = useCallback(event => {
-    setFormError(null)
-    setGardenTokenSymbol(event.target.value.trim().toUpperCase())
-  }, [])
+    setFormError(null);
+    setGardenTokenSymbol(event.target.value.trim().toUpperCase());
+  }, []);
 
   const handleGnosisSafeAddressChange = useCallback(newAddress => {
-    setFormError(null)
-    setGnosisSafeAddress(newAddress)
-  }, [])
+    setFormError(null);
+    setGnosisSafeAddress(newAddress);
+  }, []);
 
   const handleGnosisSafeCheckChange = useCallback(checked => {
-    setGnosisSafeChecked(checked)
-  }, [])
+    setGnosisSafeChecked(checked);
+  }, []);
 
   const handleNext = useCallback(
     event => {
-      event.preventDefault()
+      event.preventDefault();
 
       const error = validationError(
         tokenAddress,
         gardenTokenName,
         gardenTokenSymbol,
         gnosisSafeAddress,
-        gnosisSafeChecked
-      )
+        gnosisSafeChecked,
+      );
       if (error) {
-        setFormError(error)
-        return
+        setFormError(error);
+        return;
       }
 
       onConfigChange('tokens', {
@@ -122,11 +95,11 @@ function TokenSettingsBYOT() {
         decimals: tokenData.decimals,
         existingTokenSymbol: tokenData.symbol,
         gnosisSafe: gnosisSafeAddress,
-      })
+      });
       onConfigChange('conviction', {
         requestToken: tokenAddress,
-      })
-      onNext()
+      });
+      onNext();
     },
     [
       gardenTokenName,
@@ -137,38 +110,28 @@ function TokenSettingsBYOT() {
       onNext,
       tokenAddress,
       tokenData,
-    ]
-  )
+    ],
+  );
   useEffect(() => {
-    if (
-      isAddress(tokenAddress) &&
-      !tokenDataError &&
-      tokenData.name &&
-      tokenData.symbol &&
-      !loadingTokenData
-    ) {
-      setGardenTokenName(`Garden ${tokenData.name}`)
-      setGardenTokenSymbol(`g${tokenData.symbol}`)
+    if (isAddress(tokenAddress) && !tokenDataError && tokenData.name && tokenData.symbol && !loadingTokenData) {
+      setGardenTokenName(`Garden ${tokenData.name}`);
+      setGardenTokenSymbol(`g${tokenData.symbol}`);
     } else {
-      setGardenTokenName('')
-      setGardenTokenSymbol('')
+      setGardenTokenName('');
+      setGardenTokenSymbol('');
     }
-  }, [tokenData, loadingTokenData, tokenAddress, tokenDataError])
+  }, [tokenData, loadingTokenData, tokenAddress, tokenDataError]);
 
   return (
     <form
-      css={`
+      css={css`
         display: grid;
       `}
     >
       <div>
-        <Header
-          title="Garden Tokenomics"
-          subtitle="Garden token"
-          thirdtitle="Choose the settings of your token"
-        />
+        <Header title="Garden Tokenomics" subtitle="Garden token" thirdtitle="Choose the settings of your token" />
         <div
-          css={`
+          css={css`
             ${fieldsLayout};
           `}
         >
@@ -177,12 +140,11 @@ function TokenSettingsBYOT() {
               <React.Fragment>
                 Token address
                 <Help hint="What is Token Address?">
-                  <strong>Token Address</strong> is the address of an existent
-                  ERC-20 token to use within your garden.
+                  <strong>Token Address</strong> is the address of an existent ERC-20 token to use within your garden.
                 </Help>
               </React.Fragment>
             }
-            css={`
+            css={css`
               grid-column: 1/3;
             `}
           >
@@ -197,7 +159,7 @@ function TokenSettingsBYOT() {
             )}
           </Field>
           <div
-            css={`
+            css={css`
               display: flex;
               margin: auto auto auto ${2 * GU}px;
             `}
@@ -205,7 +167,7 @@ function TokenSettingsBYOT() {
             {loadingTokenData && (
               <LoadingRing
                 mode="half-circle"
-                css={`
+                css={css`
                   & > svg {
                     height: ${2 * GU}px;
                     width: ${2 * GU}px;
@@ -213,14 +175,9 @@ function TokenSettingsBYOT() {
               />
             )}
 
-            {!tokenDataError &&
-              gardenTokenSymbol &&
-              gardenTokenName &&
-              !loadingTokenData && <img src={iconCheck} />}
+            {!tokenDataError && gardenTokenSymbol && gardenTokenName && !loadingTokenData && <img src={iconCheck} />}
 
-            {tokenDataError && !loadingTokenData && isAddress(tokenAddress) && (
-              <img src={iconError} />
-            )}
+            {tokenDataError && !loadingTokenData && isAddress(tokenAddress) && <img src={iconError} />}
           </div>
 
           <Field
@@ -228,8 +185,8 @@ function TokenSettingsBYOT() {
               <React.Fragment>
                 Garden Token Name
                 <Help hint="What is Token Name?">
-                  <strong>Garden Token Name</strong> is the name you can assign
-                  to the token that will be minted when creating this garden.
+                  <strong>Garden Token Name</strong> is the name you can assign to the token that will be minted when
+                  creating this garden.
                 </Help>
               </React.Fragment>
             }
@@ -250,13 +207,12 @@ function TokenSettingsBYOT() {
               <React.Fragment>
                 Garden Token Symbol
                 <Help hint="What is Token Symbol?">
-                  <strong>Garden Token Symbol</strong> or ticker is a shortened
-                  name (typically in capital letters) that refers to a token on
-                  a trading platform. For example: HNY.
+                  <strong>Garden Token Symbol</strong> or ticker is a shortened name (typically in capital letters) that
+                  refers to a token on a trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
-            css={`
+            css={css`
               grid-column: 2/4;
             `}
           >
@@ -283,7 +239,7 @@ function TokenSettingsBYOT() {
       {formError && (
         <Info
           mode="error"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
@@ -293,19 +249,18 @@ function TokenSettingsBYOT() {
       {gardenTokenName && gardenTokenSymbol && (
         <Info
           mode="warning"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
-          We recommend sticking with the default syntax unless you have a good
-          reason not to.
+          We recommend sticking with the default syntax unless you have a good reason not to.
         </Info>
       )}
 
       {isAddress(tokenAddress) && tokenDataError && (
         <Info
           mode="error"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
@@ -314,13 +269,12 @@ function TokenSettingsBYOT() {
       )}
 
       <Info
-        css={`
+        css={css`
           margin-bottom: ${4 * GU}px;
         `}
       >
-        Add the address of an existent ERC-20 token you want to use within your
-        Garden. These settings will determine the name and symbol of a new token
-        that will govern your community.
+        Add the address of an existent ERC-20 token you want to use within your Garden. These settings will determine
+        the name and symbol of a new token that will govern your community.
       </Info>
 
       <Navigation
@@ -331,7 +285,7 @@ function TokenSettingsBYOT() {
         onNext={handleNext}
       />
     </form>
-  )
+  );
 }
 
-export default TokenSettingsBYOT
+export default TokenSettingsBYOT;

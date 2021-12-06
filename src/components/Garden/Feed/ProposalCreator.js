@@ -1,56 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import {
-  EthIdenticon,
-  GU,
-  shortenAddress,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import ProposalIcon from '@components/ProposalIcon'
+/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
+import { EthIdenticon, GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
+import ProposalIcon from '@components/ProposalIcon';
 
-import { convertToString } from '@/types'
-import { getProfileForAccount } from '@lib/profile'
-import { dateFormat } from '@utils/date-utils'
-import { addressesEqual } from '@utils/web3-utils'
-import { ZERO_ADDR } from '@/constants'
+import { convertToString } from '@/types';
+import { getProfileForAccount } from '@lib/profile';
+import { dateFormat } from '@utils/date-utils';
+import { addressesEqual } from '@utils/web3-utils';
+import { ZERO_ADDR } from '@/constants';
+import { css, jsx } from '@emotion/react';
 
-const addressCache = new Map()
+const addressCache = new Map();
 
 function ProposalCreator({ proposal }) {
-  const theme = useTheme()
-  const [profile, setProfile] = useState(null)
+  const theme = useTheme();
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
     async function fetchProfile() {
       if (addressCache.get(proposal.creator)) {
-        setProfile(addressCache.get(proposal.creator))
-        return
+        setProfile(addressCache.get(proposal.creator));
+        return;
       }
 
-      const profile = await getProfileForAccount(proposal.creator)
+      const profile = await getProfileForAccount(proposal.creator);
       if (profile && !cancelled) {
-        const profileData = { name: profile.name, image: profile.image }
-        setProfile(profileData)
-        addressCache.set(proposal.creator, profileData)
+        const profileData = { name: profile.name, image: profile.image };
+        setProfile(profileData);
+        addressCache.set(proposal.creator, profileData);
       }
     }
 
-    fetchProfile()
+    fetchProfile();
     return () => {
-      cancelled = true
-    }
-  }, [proposal.creator])
+      cancelled = true;
+    };
+  }, [proposal.creator]);
 
   const ProposalType = (
     <>
       <ProposalIcon type={proposal.type} /> {convertToString(proposal.type)}
     </>
-  )
+  );
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
       `}
     >
@@ -61,7 +57,7 @@ function ProposalCreator({ proposal }) {
             height="43"
             width="43"
             alt=""
-            css={`
+            css={css`
               border-radius: 50%;
               display: block;
               object-fit: cover;
@@ -72,12 +68,12 @@ function ProposalCreator({ proposal }) {
         )}
       </div>
       <div
-        css={`
+        css={css`
           margin-left: ${1 * GU}px;
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
           `}
@@ -87,16 +83,14 @@ function ProposalCreator({ proposal }) {
           ) : (
             <>
               <strong
-                css={`
+                css={css`
                   margin-right: ${1 * GU}px;
                 `}
               >
-                {profile?.name
-                  ? profile.name
-                  : shortenAddress(proposal.creator)}
+                {profile?.name ? profile.name : shortenAddress(proposal.creator)}
               </strong>
               <span
-                css={`
+                css={css`
                   margin-right: ${0.5 * GU}px;
                 `}
               >
@@ -107,16 +101,16 @@ function ProposalCreator({ proposal }) {
           )}
         </div>
         <div
-          css={`
+          css={css`
             ${textStyle('body3')};
-            color: ${theme.contentSecondary};
+            color: ${theme.contentSecondary.toString()};
           `}
         >
           {dateFormat(proposal.createdAt, 'custom')}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProposalCreator
+export default ProposalCreator;

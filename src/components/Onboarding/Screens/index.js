@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { GU, springs } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
-import { useOnboardingState } from '@providers/Onboarding'
+import React, { useEffect, useState } from 'react';
+import { GU, springs } from '@1hive/1hive-ui';
+import { Transition, animated } from 'react-spring/renderprops';
+import { useOnboardingState } from '@providers/Onboarding';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const AnimatedDiv = animated.div
+const AnimatedDiv = animated.div;
 
 function OnboardingScreens() {
-  const [prevStep, setPrevStep] = useState(-1)
-  const { step, steps } = useOnboardingState()
+  const [prevStep, setPrevStep] = useState(-1);
+  const { step, steps } = useOnboardingState();
 
   useEffect(() => {
-    setPrevStep(step)
-  }, [step])
+    setPrevStep(step);
+  }, [step]);
 
-  const direction = step > prevStep ? 1 : -1
-  const { Screen } = steps[step]
+  const direction = step > prevStep ? 1 : -1;
+  const { Screen } = steps[step];
 
   return (
     <Transition
@@ -42,21 +44,21 @@ function OnboardingScreens() {
     >
       {({ Screen }) => ({ opacity, transform, position }) => (
         <div
-          css={`
+          css={css`
             overflow: hidden;
             position: relative;
           `}
         >
           <AnimatedDiv
             style={{ opacity, transform, position }}
-            css={`
+            css={css`
               top: 0;
               left: 0;
               right: 0;
             `}
           >
             <div
-              css={`
+              css={css`
                 margin-bottom: ${2 * GU}px;
               `}
             >
@@ -66,7 +68,7 @@ function OnboardingScreens() {
         </div>
       )}
     </Transition>
-  )
+  );
 }
 
-export default OnboardingScreens
+export default OnboardingScreens;

@@ -1,22 +1,22 @@
-import React, { useMemo, useContext } from 'react'
-import PropTypes from 'prop-types'
-import { TEXT_STYLES, useTheme } from '@1hive/1hive-ui'
+import React, { useMemo, useContext } from 'react';
+import PropTypes from 'prop-types';
+import { TEXT_STYLES, useTheme } from '@1hive/1hive-ui';
 
-const ChartsContext = React.createContext()
+const ChartsContext = React.createContext();
 
 const getAxisOffset = orient => {
   switch (orient) {
     case 'bottom':
-      return 36
+      return 36;
     case 'left':
-      return -40
+      return -40;
     default:
-      return 0
+      return 0;
   }
-}
+};
 
 function ChartsProvider({ children }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const ChartOptions = useMemo(
     () => ({
@@ -30,18 +30,18 @@ function ChartsProvider({ children }) {
           axis: {
             ticks: {
               text: {
-                fill: theme.contentSecondary,
+                fill: theme.contentSecondary.toString(),
               },
             },
             legend: {
               text: {
-                fill: theme.contentSecondary,
+                fill: theme.contentSecondary.toString(),
               },
             },
           },
           grid: {
             line: {
-              stroke: theme.contentSecondary.alpha(0.1),
+              stroke: theme.contentSecondary.alpha(0.1).toString(),
             },
           },
         },
@@ -71,22 +71,18 @@ function ChartsProvider({ children }) {
         },
       }),
     }),
-    [theme]
-  )
+    [theme],
+  );
 
-  return (
-    <ChartsContext.Provider value={ChartOptions}>
-      {children}
-    </ChartsContext.Provider>
-  )
+  return <ChartsContext.Provider value={ChartOptions}>{children}</ChartsContext.Provider>;
 }
 
 ChartsProvider.propTypes = {
   children: PropTypes.node,
-}
+};
 
 function useCharts() {
-  return useContext(ChartsContext)
+  return useContext(ChartsContext);
 }
 
-export { ChartsProvider, useCharts }
+export { ChartsProvider, useCharts };

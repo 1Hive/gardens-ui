@@ -1,37 +1,29 @@
-import React, { useState, useCallback } from 'react'
-import {
-  BIG_RADIUS,
-  ButtonIcon,
-  Card,
-  GU,
-  IconUp,
-  IconDown,
-  RADIUS,
-  springs,
-  useTheme,
-} from '@1hive/1hive-ui'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import React, { useState, useCallback } from 'react';
+import { BIG_RADIUS, ButtonIcon, Card, GU, IconUp, IconDown, RADIUS, springs, useTheme } from '@1hive/1hive-ui';
+import { Spring, Transition, animated } from 'react-spring/renderprops';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const AnimatedDiv = animated.div
+const AnimatedDiv = animated.div;
 
 function ExpandableCard({ content, expansion }) {
-  const [opened, setOpened] = useState(false)
-  const theme = useTheme()
+  const [opened, setOpened] = useState(false);
+  const theme = useTheme();
 
   const toggleButton = useCallback(() => {
-    setOpened(opened => !opened)
-  }, [])
+    setOpened(opened => !opened);
+  }, []);
 
   return (
     <div
-      css={`
+      css={css`
         position: relative;
         margin-bottom: ${RADIUS}px;
       `}
     >
       <OpenedSurfaceBorder opened={opened} />
       <Card
-        css={`
+        css={css`
           width: 100%;
           z-index: 2;
           height: auto;
@@ -42,30 +34,24 @@ function ExpandableCard({ content, expansion }) {
         {content}
       </Card>
       <div
-        css={`
+        css={css`
           margin-top: ${-RADIUS}px;
         `}
       >
-        <Transition
-          native
-          items={opened}
-          from={{ height: 0 }}
-          enter={{ height: 'auto' }}
-          leave={{ height: 0 }}
-        >
+        <Transition native items={opened} from={{ height: 0 }} enter={{ height: 'auto' }} leave={{ height: 0 }}>
           {show =>
             show &&
             (props => (
               <AnimatedDiv
-                css={`
-                  background: ${theme.surfaceUnder};
+                css={css`
+                  background: ${theme.surfaceUnder.toString()};
                   overflow: hidden;
                   z-index: 1;
                 `}
                 style={props}
               >
                 <div
-                  css={`
+                  css={css`
                     width: 100%;
                     overflow: hidden;
 
@@ -81,23 +67,23 @@ function ExpandableCard({ content, expansion }) {
         </Transition>
       </div>
     </div>
-  )
+  );
 }
 
 function ToggleButton({ onClick, opened }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <ButtonIcon
       label={opened ? 'Close' : 'Open'}
       focusRingRadius={RADIUS}
       onClick={onClick}
-      css={`
+      css={css`
         position: absolute;
         top: ${3.5 * GU}px;
         left: ${3.5 * GU}px;
         display: flex;
         flex-direction: column;
-        color: ${theme.surfaceContentSecondary};
+        color: ${theme.surfaceContentSecondary.toString()};
         & > div {
           display: flex;
           transform-origin: 50% 50%;
@@ -106,7 +92,7 @@ function ToggleButton({ onClick, opened }) {
       `}
     >
       <div
-        css={`
+        css={css`
           transform: rotate3d(${opened ? 1 : 0}, 0, 0, 180deg);
           transform: rotate3d(0, 0, ${opened ? 1 : 0}, 180deg);
         `}
@@ -114,7 +100,7 @@ function ToggleButton({ onClick, opened }) {
         <IconUp size="small" />
       </div>
       <div
-        css={`
+        css={css`
           transform: rotate3d(${opened ? -1 : 0}, 0, 0, 180deg);
           transform: rotate3d(0, 0, ${opened ? -1 : 0}, 180deg);
         `}
@@ -122,20 +108,15 @@ function ToggleButton({ onClick, opened }) {
         <IconDown size="small" />
       </div>
     </ButtonIcon>
-  )
+  );
 }
 
 function OpenedSurfaceBorder({ opened }) {
   return (
-    <Spring
-      native
-      from={{ width: 0 }}
-      to={{ width: Number(opened) }}
-      config={springs.smooth}
-    >
+    <Spring native from={{ width: 0 }} to={{ width: Number(opened) }} config={springs.smooth}>
       {({ width }) => (
         <div
-          css={`
+          css={css`
             position: absolute;
             top: 0;
             left: 0;
@@ -146,18 +127,14 @@ function OpenedSurfaceBorder({ opened }) {
           `}
         >
           <AnimatedDiv
-            css={`
+            css={css`
               z-index: 3;
               position: absolute;
               top: 0;
               left: 0;
               height: 100%;
               width: 3px;
-              background: linear-gradient(
-                90deg,
-                #32fff5 -103.98%,
-                #01bfe3 80.13%
-              );
+              background: linear-gradient(90deg, #32fff5 -103.98%, #01bfe3 80.13%);
               transform-origin: 0 0;
             `}
             style={{
@@ -167,6 +144,6 @@ function OpenedSurfaceBorder({ opened }) {
         </div>
       )}
     </Spring>
-  )
+  );
 }
-export default ExpandableCard
+export default ExpandableCard;

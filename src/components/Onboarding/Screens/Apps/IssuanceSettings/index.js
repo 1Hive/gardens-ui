@@ -1,111 +1,98 @@
-import React, { Fragment, useCallback, useReducer, useState } from 'react'
-import { Button, GU, Help, Info } from '@1hive/1hive-ui'
-import IssuanceChart from './IssuanceChart'
-import { Header, PercentageField } from '@components/Onboarding/kit'
-import Navigation from '@components/Onboarding/Navigation'
-import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
+import React, { Fragment, useCallback, useReducer, useState } from 'react';
+import { Button, GU, Help, Info } from '@1hive/1hive-ui';
+import IssuanceChart from './IssuanceChart';
+import { Header, PercentageField } from '@components/Onboarding/kit';
+import Navigation from '@components/Onboarding/Navigation';
+import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const CHART_HEIGHT = '350px'
-const CHART_WIDTH = '100%'
+const CHART_HEIGHT = '350px';
+const CHART_WIDTH = '100%';
 
 function validationError(targetRatio, maxAdjustmentRatioPerYear) {
   if (targetRatio === '0') {
-    return 'Target ratio cannot be zero.'
+    return 'Target ratio cannot be zero.';
   }
   if (maxAdjustmentRatioPerYear === '0') {
-    return 'Issuance throttle cannot be zero.'
+    return 'Issuance throttle cannot be zero.';
   }
-  return null
+  return null;
 }
 
 function reduceFields(fields, [field, value]) {
   switch (field) {
     case 'initialRatio':
-      return { ...fields, initialRatio: value }
+      return { ...fields, initialRatio: value };
     case 'targetRatio':
-      return { ...fields, targetRatio: value }
+      return { ...fields, targetRatio: value };
     case 'maxAdjustmentRatioPerYear':
-      return { ...fields, maxAdjustmentRatioPerYear: value }
+      return { ...fields, maxAdjustmentRatioPerYear: value };
     default:
-      return fields
+      return fields;
   }
 }
 
 function IssuanceSettings() {
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } = useOnboardingState();
 
-  const [formError, setFormError] = useState(null)
-  const [
-    { initialRatio, targetRatio, maxAdjustmentRatioPerYear },
-    updateField,
-  ] = useReducer(reduceFields, { ...config.issuance })
+  const [formError, setFormError] = useState(null);
+  const [{ initialRatio, targetRatio, maxAdjustmentRatioPerYear }, updateField] = useReducer(reduceFields, {
+    ...config.issuance,
+  });
 
-  const { issuance: DEFAULT_ISSUANCE_CONFIG } = DEFAULT_CONFIG
+  const { issuance: DEFAULT_ISSUANCE_CONFIG } = DEFAULT_CONFIG;
 
   const handleInitialRatioChange = useCallback(
     value => {
-      updateField(['initialRatio', value])
+      updateField(['initialRatio', value]);
     },
-    [updateField]
-  )
+    [updateField],
+  );
 
   const handleTargetRatioChange = useCallback(
     value => {
-      updateField(['targetRatio', value])
+      updateField(['targetRatio', value]);
     },
-    [updateField]
-  )
+    [updateField],
+  );
 
   const handleMaxAdjustmentRatioPerYear = useCallback(
     value => {
-      updateField(['maxAdjustmentRatioPerYear', value])
+      updateField(['maxAdjustmentRatioPerYear', value]);
     },
-    [updateField]
-  )
+    [updateField],
+  );
 
   const handleReset = useCallback(() => {
-    updateField(['initialRatio', DEFAULT_ISSUANCE_CONFIG.initialRatio])
-    updateField(['targetRatio', DEFAULT_ISSUANCE_CONFIG.targetRatio])
-    updateField([
-      'maxAdjustmentRatioPerYear',
-      DEFAULT_ISSUANCE_CONFIG.maxAdjustmentRatioPerYear,
-    ])
+    updateField(['initialRatio', DEFAULT_ISSUANCE_CONFIG.initialRatio]);
+    updateField(['targetRatio', DEFAULT_ISSUANCE_CONFIG.targetRatio]);
+    updateField(['maxAdjustmentRatioPerYear', DEFAULT_ISSUANCE_CONFIG.maxAdjustmentRatioPerYear]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateField])
+  }, [updateField]);
 
   const handleNext = event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const error = validationError(targetRatio, maxAdjustmentRatioPerYear)
+    const error = validationError(targetRatio, maxAdjustmentRatioPerYear);
     if (error) {
-      setFormError(error)
-      return
+      setFormError(error);
+      return;
     }
 
     onConfigChange('issuance', {
       initialRatio,
       targetRatio,
       maxAdjustmentRatioPerYear,
-    })
-    onNext()
-  }
+    });
+    onNext();
+  };
 
   return (
     <div>
-      <Header
-        title="Configure Tokenomics"
-        subtitle="Issuance policy"
-        thirdtitle="Model your community's economy"
-      />
+      <Header title="Configure Tokenomics" subtitle="Issuance policy" thirdtitle="Model your community's economy" />
       <div
-        css={`
+        css={css`
           display: flex;
           flex-direction: column;
           margin: 0 ${2 * GU}px;
@@ -117,11 +104,9 @@ function IssuanceSettings() {
             <Fragment>
               Initial Ratio
               <Help hint="What is Initial Ratio?">
-                <strong>Initial Ratio</strong> is the initial fraction of the
-                total supply that is held in the common pool. For example, if
-                seed token holders have 90 tokens, and the initial ratio is 10%,
-                this means that the total supply of tokens is 100. And 10 are in
-                the common pool.
+                <strong>Initial Ratio</strong> is the initial fraction of the total supply that is held in the common
+                pool. For example, if seed token holders have 90 tokens, and the initial ratio is 10%, this means that
+                the total supply of tokens is 100. And 10 are in the common pool.
               </Help>
             </Fragment>
           }
@@ -133,11 +118,9 @@ function IssuanceSettings() {
             <Fragment>
               Target Ratio
               <Help hint="What is Target Ratio?">
-                <strong>Target Ratio</strong> is the ideal fraction of the total
-                supply that should be in the common pool. For example, a value
-                of 30% means the token will be issued or burnt overtime to
-                ensure that the amount of tokens held in the common pool always
-                converges to 30% of the total supply.
+                <strong>Target Ratio</strong> is the ideal fraction of the total supply that should be in the common
+                pool. For example, a value of 30% means the token will be issued or burnt overtime to ensure that the
+                amount of tokens held in the common pool always converges to 30% of the total supply.
               </Help>
             </Fragment>
           }
@@ -149,10 +132,9 @@ function IssuanceSettings() {
             <Fragment>
               Throttle
               <Help hint="What is Issuance Throttle?">
-                The <strong>issuance throttle</strong> prevents high issuance or
-                burnt adjustments in short periods of time. For example, a 1%
-                throttle will force the issuance to be practically linear.
-                Higher values allow for bigger adjustments.
+                The <strong>issuance throttle</strong> prevents high issuance or burnt adjustments in short periods of
+                time. For example, a 1% throttle will force the issuance to be practically linear. Higher values allow
+                for bigger adjustments.
               </Help>
             </Fragment>
           }
@@ -163,12 +145,12 @@ function IssuanceSettings() {
           size="mini"
           onClick={handleReset}
           label="Reset Defaults"
-          css={`
+          css={css`
             align-self: flex-end;
           `}
         />
         <div
-          css={`
+          css={css`
             align-self: center;
             width: 100%;
           `}
@@ -182,19 +164,18 @@ function IssuanceSettings() {
           />
         </div>
         <Info
-          css={`
+          css={css`
             margin-top: ${3 * GU}px;
           `}
         >
-          The initial ratio refers to the ratio of tokens to be minted and sent
-          to the Common Pool. These will then be available to be distributed
-          through conviction voting.
+          The initial ratio refers to the ratio of tokens to be minted and sent to the Common Pool. These will then be
+          available to be distributed through conviction voting.
         </Info>
       </div>
       {formError && (
         <Info
           mode="error"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
@@ -209,7 +190,7 @@ function IssuanceSettings() {
         onNext={handleNext}
       />
     </div>
-  )
+  );
 }
 
-export default IssuanceSettings
+export default IssuanceSettings;

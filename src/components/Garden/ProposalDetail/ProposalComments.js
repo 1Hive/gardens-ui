@@ -1,19 +1,21 @@
-import React from 'react'
-import { GU, Split, useLayout } from '@1hive/1hive-ui'
-import DiscourseComments from '@/components/DiscourseComments'
+import React from 'react';
+import { GU, Split, useLayout } from '@1hive/1hive-ui';
+import DiscourseComments from '@/components/DiscourseComments';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ProposalComments({ link }) {
-  const { layoutName } = useLayout()
+  const { layoutName } = useLayout();
 
   // We take the last section of the link that includes the topicId
-  const discourseTopicId = link.split('/').reverse()[0]
+  const discourseTopicId = link.split('/').reverse()[0];
 
   return (
     <Split
       primary={
         link && (
           <div
-            css={`
+            css={css`
               padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
             `}
           >
@@ -22,7 +24,7 @@ function ProposalComments({ link }) {
         )
       }
     />
-  )
+  );
 }
 
-export default ProposalComments
+export default ProposalComments;

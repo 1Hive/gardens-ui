@@ -1,19 +1,16 @@
-import React from 'react'
-import {
-  GU,
-  IconInfo,
-  ContextMenu,
-  ContextMenuItem,
-  useLayout,
-} from '@1hive/1hive-ui'
-import ProposalCreator from './ProposalCreator'
+import React from 'react';
+import { GU, IconInfo, ContextMenu, ContextMenuItem, useLayout } from '@1hive/1hive-ui';
+import ProposalCreator from './ProposalCreator';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ProposalHeader({ proposal, onSelectProposal }) {
-  const { layoutName } = useLayout()
+  const { layoutName } = useLayout();
 
   return (
     <div
-      css={`
+      css={css`
         margin-bottom: ${3 * GU}px;
         display: flex;
         align-items: flex-start;
@@ -29,7 +26,7 @@ function ProposalHeader({ proposal, onSelectProposal }) {
         </ContextMenu>
       )}
     </div>
-  )
+  );
 }
 
-export default ProposalHeader
+export default ProposalHeader;

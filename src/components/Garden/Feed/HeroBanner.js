@@ -1,18 +1,14 @@
-import React from 'react'
-import {
-  BIG_RADIUS,
-  Button,
-  GU,
-  IconPlus,
-  textStyle,
-  useLayout,
-} from '@1hive/1hive-ui'
-import { useWallet } from '@providers/Wallet'
+import React from 'react';
+import { BIG_RADIUS, Button, GU, IconPlus, textStyle, useLayout } from '@1hive/1hive-ui';
+import { useWallet } from '@providers/Wallet';
 
-import desktopBanner from '@assets/banner.png'
-import mobileBanner from '@assets/banner-mobile.png'
-import tabletBanner from '@assets/banner-tablet.png'
-import tabletBannerFull from '@assets/banner-tablet-full.png'
+import desktopBanner from '@assets/banner.png';
+import mobileBanner from '@assets/banner-mobile.png';
+import tabletBanner from '@assets/banner-tablet.png';
+import tabletBannerFull from '@assets/banner-tablet-full.png';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },
@@ -20,25 +16,25 @@ const BANNERS = {
   medium_full: { image: tabletBannerFull, aspectRatio: '36%' },
   large: { image: desktopBanner, aspectRatio: '159%' },
   max: { image: desktopBanner, aspectRatio: '159%' },
-}
+};
 
 function HeroBanner({ onRequestNewProposal }) {
-  const { account } = useWallet()
-  const { layoutName } = useLayout()
+  const { account } = useWallet();
+  const { layoutName } = useLayout();
 
-  const mobileMode = layoutName === 'small'
-  const tabletMode = layoutName === 'medium'
-  const compactMode = mobileMode || tabletMode
-  const banner = tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
+  const mobileMode = layoutName === 'small';
+  const tabletMode = layoutName === 'medium';
+  const compactMode = mobileMode || tabletMode;
+  const banner = tabletMode ? BANNERS.medium_full : BANNERS[layoutName];
 
   return (
     <div
-      css={`
+      css={css`
         height: fit-content;
       `}
     >
       <div
-        css={`
+        css={css`
           background: url(${banner.image}) no-repeat;
           background-size: cover;
 
@@ -49,7 +45,7 @@ function HeroBanner({ onRequestNewProposal }) {
         `}
       >
         <div
-          css={`
+          css={css`
             padding: ${8 * GU}px;
             position: absolute;
             top: 0;
@@ -61,21 +57,19 @@ function HeroBanner({ onRequestNewProposal }) {
           `}
         >
           <div
-            css={`
+            css={css`
               text-align: center;
               width: 100%;
             `}
           >
             <h2
-              css={`
+              css={css`
                 ${textStyle(compactMode ? 'title3' : 'title2')};
                 margin: 0 auto;
                 max-width: 300px;
               `}
             >
-              {account
-                ? `The community wants to hear from you!`
-                : `Connect your account to create a proposal`}
+              {account ? `The community wants to hear from you!` : `Connect your account to create a proposal`}
             </h2>
             {account && (
               <Button
@@ -84,7 +78,7 @@ function HeroBanner({ onRequestNewProposal }) {
                 label="Create proposal"
                 icon={<IconPlus />}
                 display="label"
-                css={`
+                css={css`
                   margin-top: ${3 * GU}px;
                 `}
               />
@@ -93,7 +87,7 @@ function HeroBanner({ onRequestNewProposal }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default HeroBanner
+export default HeroBanner;

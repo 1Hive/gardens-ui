@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
+/** @jsx jsx */
+import React, { useCallback, useState } from 'react';
+import { animated, Transition } from 'react-spring/renderprops';
 import {
   BIG_RADIUS,
   DropDown,
@@ -9,16 +10,17 @@ import {
   SearchInput,
   springs,
   textStyle,
-  useTheme,
   useViewport,
-} from '@1hive/1hive-ui'
-import arrowDownSvg from '@assets/arrowDown.svg'
+  useTheme,
+} from '@1hive/1hive-ui';
+import arrowDownSvg from '@assets/arrowDown.svg';
+import { css, jsx } from '@emotion/react';
 
 function CompactFilter({ ...props }) {
-  const { below } = useViewport()
+  const { below } = useViewport();
 
-  const Filter = below('medium') ? CompactFilterSlider : CompactFilterBar
-  return <Filter {...props} />
+  const Filter = below('medium') ? CompactFilterSlider : CompactFilterBar;
+  return <Filter {...props} />;
 }
 
 function CompactFilterBar({
@@ -35,20 +37,20 @@ function CompactFilterBar({
   onTypeFilterChange,
   supportFilterDisabled,
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <div
-      css={`
+      css={css`
         width: 100%;
         padding: ${1.5 * GU}px;
         border-radius: ${BIG_RADIUS}px;
-        border: 1px solid ${theme.border};
-        background-color: ${theme.surface};
+        border: 1px solid ${theme.border.toString()};
+        background-color: ${theme.surface.toString()};
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           column-gap: ${1 * GU}px;
@@ -81,13 +83,13 @@ function CompactFilterBar({
           value={proposalNameFilter}
           onChange={onNameFilterChange}
           placeholder="Search by proposal name"
-          css={`
+          css={css`
             width: ${30 * GU}px;
           `}
         />
       </div>
     </div>
-  )
+  );
 }
 
 function CompactFilterSlider({
@@ -106,12 +108,12 @@ function CompactFilterSlider({
   sliderVisible,
   supportFilterDisabled,
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <AnimatedSlider visible={sliderVisible}>
       <div
-        css={`
+        css={css`
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -119,36 +121,31 @@ function CompactFilterSlider({
       >
         <div>
           <div
-            css={`
+            css={css`
               padding: ${3 * GU}px;
               display: flex;
               align-items: center;
               justify-content: space-between;
-              border-bottom: 1px solid ${theme.border};
+              border-bottom: 1px solid ${theme.border.toString()};
             `}
           >
             <div
-              css={`
+              css={css`
                 ${textStyle('body1')};
               `}
             >
               Filters
             </div>
             <div
-              css={`
+              css={css`
                 cursor: pointer;
               `}
               onClick={onToggleFilterSlider}
             >
-              <IconCross color={theme.surfaceIcon} />
+              <IconCross color={theme.surfaceIcon.toString()} />
             </div>
           </div>
-          <AnimatedFilter
-            header="Type"
-            items={itemsType}
-            onSelect={onTypeFilterChange}
-            selected={proposalTypeFilter}
-          />
+          <AnimatedFilter header="Type" items={itemsType} onSelect={onTypeFilterChange} selected={proposalTypeFilter} />
           <AnimatedFilter
             header="Status"
             items={itemsStatus}
@@ -164,7 +161,7 @@ function CompactFilterSlider({
             />
           )}
           <div
-            css={`
+            css={css`
               margin-top: ${2 * GU}px;
             `}
           >
@@ -173,12 +170,14 @@ function CompactFilterSlider({
               onChange={onNameFilterChange}
               placeholder="Search by proposal name"
               wide
-              css="border-radius: 0;"
+              css={css`
+                border-radius: 0;
+              `}
             />
           </div>
         </div>
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -190,11 +189,12 @@ function CompactFilterSlider({
         </div>
       </div>
     </AnimatedSlider>
-  )
+  );
 }
 
+// TODO: @refactor-ts
 function AnimatedSlider({ children, visible }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <RootPortal>
       <Transition
@@ -218,7 +218,7 @@ function AnimatedSlider({ children, visible }) {
                   left: '0',
                   right: '0',
                   zIndex: '4',
-                  background: theme.overlay.alpha(0.9),
+                  background: theme.overlay.alpha(0.9).toString(),
                 }}
               >
                 <animated.div
@@ -232,9 +232,9 @@ function AnimatedSlider({ children, visible }) {
                   }}
                 >
                   <div
-                    css={`
+                    css={css`
                       height: calc(100vh - ${3 * GU}px);
-                      background-color: ${theme.surface};
+                      background-color: ${theme.surface.toString()};
                       border-top-left-radius: 16px;
                       border-top-right-radius: 16px;
                     `}
@@ -248,41 +248,41 @@ function AnimatedSlider({ children, visible }) {
         }
       </Transition>
     </RootPortal>
-  )
+  );
 }
 
 function AnimatedFilter({ header, items, selected, onSelect }) {
-  const theme = useTheme()
-  const [opened, setOpened] = useState(false)
+  const theme = useTheme();
+  const [opened, setOpened] = useState(false);
 
   const handleFilterToggle = useCallback(() => {
-    setOpened(opened => !opened)
-  }, [])
+    setOpened(opened => !opened);
+  }, []);
 
   return (
     <div>
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid ${theme.border};
+          border-bottom: 1px solid ${theme.border.toString()};
           cursor: pointer;
           padding: ${2 * GU}px;
 
           &:hover {
-            background: ${theme.surfaceHighlight};
+            background: ${theme.surfaceHighlight.toString()};
           }
 
           &:active {
-            background: ${theme.surfacePressed};
+            background: ${theme.surfacePressed.toString()};
           }
         `}
         onClick={handleFilterToggle}
       >
         <div>{header}</div>
         <div
-          css={`
+          css={css`
             transform: rotate(${opened ? '180deg' : '0deg'});
             transition: transform 0.3s ease;
           `}
@@ -305,22 +305,16 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
               style={{
                 height: height.interpolate(v => `${v}px`),
                 overflow: 'hidden',
-                borderBottom: `1px solid ${theme.border}`,
+                borderBottom: `1px solid ${theme.border.toString()}`,
               }}
             >
               <ul
-                css={`
+                css={css`
                   list-style: none;
                 `}
               >
                 {items.map((item, index) => (
-                  <ListItem
-                    key={index}
-                    index={index}
-                    item={item}
-                    selected={selected}
-                    onSelect={onSelect}
-                  />
+                  <ListItem key={index} index={index} item={item} selected={selected} onSelect={onSelect} />
                 ))}
               </ul>
             </animated.div>
@@ -328,25 +322,25 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
         }
       </Transition>
     </div>
-  )
+  );
 }
 
 function ListItem({ index, item, onSelect, selected }) {
-  const theme = useTheme()
-  const isSelected = selected === index
+  const theme = useTheme();
+  const isSelected = selected === index;
 
   const handleOnClick = useCallback(() => {
-    onSelect(index)
-  }, [index, onSelect])
+    onSelect(index);
+  }, [index, onSelect]);
 
   return (
     <li
       onClick={handleOnClick}
-      css={`
+      css={css`
         cursor: pointer;
         padding: ${1 * GU}px ${2 * GU}px;
-        color: ${isSelected ? theme.content : theme.contentSecondary};
-        background: ${isSelected ? '#EAFAF9' : theme.surface};
+        color: ${isSelected ? theme.content.toString() : theme.contentSecondary.toString()};
+        background: ${isSelected ? '#EAFAF9' : theme.surface.toString()};
         ${!isSelected &&
           `
           &:hover {
@@ -357,7 +351,7 @@ function ListItem({ index, item, onSelect, selected }) {
     >
       {item}
     </li>
-  )
+  );
 }
 
-export default CompactFilter
+export default CompactFilter;

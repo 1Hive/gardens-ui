@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { springs, useTheme } from '@1hive/1hive-ui'
-import { Spring, animated } from 'react-spring/renderprops'
+import React from 'react';
+import styled from 'styled-components';
+import { springs, useTheme } from '@1hive/1hive-ui';
+import { Spring, animated } from 'react-spring/renderprops';
 
 function SummaryBar({
   show = true,
@@ -12,48 +12,41 @@ function SummaryBar({
   compact = false,
   ...props
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
   // Third part overlaps first and second if it is negative
-  const thirdBegins = firstSize + secondSize + Math.min(thirdSize, 0)
+  const thirdBegins = firstSize + secondSize + Math.min(thirdSize, 0);
   return (
-    <Spring
-      from={{ progress: 0 }}
-      to={{ progress: Number(show) }}
-      config={springs.lazy}
-      native
-    >
+    <Spring from={{ progress: 0 }} to={{ progress: Number(show) }} config={springs.lazy} native>
       {({ progress }) => (
         <Main compact={compact} {...props}>
           <CombinedBar>
             <BarPart
               style={{
-                backgroundColor: theme.accent,
-                transform: progress.interpolate(
-                  v => `scale3d(${firstSize * v}, 1, 1)`
-                ),
+                backgroundColor: theme.accent.toString(),
+                transform: progress.interpolate(v => `scale3d(${firstSize * v}, 1, 1)`),
               }}
             />
             <BarPart
               style={{
-                backgroundColor: theme.accent,
+                backgroundColor: theme.accent.toString(),
                 transform: progress.interpolate(
                   v => `
                     translate3d(${100 * firstSize * v}%, 0, 0)
                     scale3d(${secondSize * v}, 1, 1)
-                  `
+                  `,
                 ),
               }}
             />
             <BarPart
               style={{
-                backgroundColor: thirdSize > 0 ? theme.accent : theme.negative,
+                backgroundColor: thirdSize > 0 ? theme.accent.toString() : theme.negative.toString(),
                 opacity: thirdSize > 0 ? 0.2 : 0.8,
                 transform: progress.interpolate(
                   v => `
                     translate3d(
                       ${100 * thirdBegins * v}%, 0, 0)
                     scale3d(${Math.abs(thirdSize) * v}, 1, 1)
-                  `
+                  `,
                 ),
               }}
             />
@@ -65,7 +58,7 @@ function SummaryBar({
                   v => `
                     translate3d(${100 * requiredSize * v}%, 0, 0)
                     scale3d(1, ${requiredSize > 0 ? v : 0}, 1)
-                  `
+                  `,
                 ),
               }}
             >
@@ -75,7 +68,7 @@ function SummaryBar({
         </Main>
       )}
     </Spring>
-  )
+  );
 }
 
 const Main = styled.div`
@@ -84,7 +77,7 @@ const Main = styled.div`
   align-items: center;
   height: ${({ compact }) => (compact ? '30px' : '50px')};
   margin: ${({ compact }) => (compact ? '0' : '10px 0')};
-`
+`;
 
 const CombinedBar = styled.div`
   position: relative;
@@ -93,7 +86,7 @@ const CombinedBar = styled.div`
   height: 6px;
   border-radius: 2px;
   background: #edf3f6;
-`
+`;
 
 const BarPart = styled(animated.div)`
   position: absolute;
@@ -103,7 +96,7 @@ const BarPart = styled(animated.div)`
   bottom: 0;
   height: 6px;
   transform-origin: 0 0;
-`
+`;
 
 const RequiredSeparatorClip = styled.div`
   overflow: hidden;
@@ -112,15 +105,15 @@ const RequiredSeparatorClip = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-`
+`;
 
 const RequiredSeparatorWrapper = styled(animated.div)`
   height: 100%;
-`
+`;
 
 const RequiredSeparator = styled.div`
   height: 100%;
   border-left: 1px dashed #979797;
-`
+`;
 
-export default SummaryBar
+export default SummaryBar;

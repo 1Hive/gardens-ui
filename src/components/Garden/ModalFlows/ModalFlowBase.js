@@ -1,13 +1,14 @@
-import React, { useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { keyframes } from 'styled-components'
-import { useTheme, GU } from '@1hive/1hive-ui'
-import LoadingRing from '@components/LoadingRing'
-import MultiModalScreens from '@components/MultiModal/MultiModalScreens'
-import Stepper from '@components/Stepper/Stepper'
-import { useActivity } from '@providers/ActivityProvider'
-import { useWallet } from '@providers/Wallet'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+/** @jsx jsx */
+import React, { useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { GU, useTheme } from '@1hive/1hive-ui';
+import LoadingRing from '@components/LoadingRing';
+import MultiModalScreens from '@components/MultiModal/MultiModalScreens';
+import Stepper from '@components/Stepper/Stepper';
+import { useActivity } from '@providers/ActivityProvider';
+import { useWallet } from '@providers/Wallet';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import { css, jsx, keyframes } from '@emotion/react';
 
 const indexNumber = {
   0: 'First',
@@ -15,20 +16,12 @@ const indexNumber = {
   2: 'Third',
   3: 'Fourth',
   4: 'Fifth',
-}
+};
 
-function ModalFlowBase({
-  frontLoad,
-  loading,
-  screens,
-  transactions,
-  transactionTitle,
-  onComplete,
-  onCompleteActions,
-}) {
-  const { addActivity } = useActivity()
-  const { ethers } = useWallet()
-  const signer = useMemo(() => ethers.getSigner(), [ethers])
+function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionTitle, onComplete, onCompleteActions }) {
+  const { addActivity } = useActivity();
+  const { ethers } = useWallet();
+  const signer = useMemo(() => ethers.getSigner(), [ethers]);
 
   const transactionSteps = useMemo(
     () =>
@@ -38,63 +31,54 @@ function ModalFlowBase({
               ? transaction.description
               : transactions.length === 1
               ? 'Sign transaction'
-              : `${indexNumber[index]} transaction`
+              : `${indexNumber[index]} transaction`;
 
             return {
               // TODO: Add titles from description
               title,
-              handleSign: async ({
-                setSuccess,
-                setWorking,
-                setError,
-                setHash,
-              }) => {
+              handleSign: async ({ setSuccess, setWorking, setError, setHash }) => {
                 try {
                   const trx = {
                     from: transaction.from,
                     to: transaction.to,
                     data: transaction.data,
                     gasLimit: transaction.gasLimit,
-                  }
-                  const tx = await signer.sendTransaction(trx)
+                  };
+                  const tx = await signer.sendTransaction(trx);
 
-                  await addActivity(
-                    tx,
-                    transaction.type,
-                    transaction.description
-                  )
-                  setHash(tx.hash)
+                  await addActivity(tx, transaction.type, transaction.description);
+                  setHash(tx.hash);
 
-                  setWorking()
+                  setWorking();
 
                   // We need to wait for pre-transactions to mine before asking for the next signature
                   // TODO: Provide a better user experience than waiting on all transactions
-                  await tx.wait()
+                  await tx.wait();
 
-                  setSuccess()
+                  setSuccess();
                 } catch (err) {
-                  console.error(err)
-                  setError()
+                  console.error(err);
+                  setError();
                 }
               },
-            }
+            };
           })
         : null,
-    [addActivity, transactions, signer]
-  )
+    [addActivity, transactions, signer],
+  );
   const extendedScreens = useMemo(() => {
-    const allScreens = []
+    const allScreens = [];
 
     // Add loading screen as first item if enabled
     if (frontLoad) {
       allScreens.push({
         content: <LoadingScreen loading={loading} />,
-      })
+      });
     }
 
     // Spread in our flow screens
     if (screens) {
-      allScreens.push(...screens)
+      allScreens.push(...screens);
     }
 
     // Apply transaction singing at the end
@@ -102,54 +86,39 @@ function ModalFlowBase({
       allScreens.push({
         title: transactionTitle,
         width: modalWidthFromCount(transactions.length),
-        content: (
-          <Stepper
-            steps={transactionSteps}
-            onComplete={onComplete}
-            onCompleteActions={onCompleteActions}
-          />
-        ),
-      })
+        content: <Stepper steps={transactionSteps} onComplete={onComplete} onCompleteActions={onCompleteActions} />,
+      });
     }
 
-    return allScreens
-  }, [
-    frontLoad,
-    loading,
-    screens,
-    transactions,
-    transactionSteps,
-    transactionTitle,
-    onComplete,
-    onCompleteActions,
-  ])
+    return allScreens;
+  }, [frontLoad, loading, screens, transactions, transactionSteps, transactionTitle, onComplete, onCompleteActions]);
 
-  return <MultiModalScreens screens={extendedScreens} />
+  return <MultiModalScreens screens={extendedScreens} />;
 }
 
 /* eslint-disable react/prop-types */
 function LoadingScreen({ loading }) {
-  const theme = useTheme()
-  const { next } = useMultiModal()
+  const theme = useTheme();
+  const { next } = useMultiModal();
 
   useEffect(() => {
-    let timeout
+    let timeout;
 
     if (!loading) {
       // Provide a minimum appearance duration to avoid visual confusion on very fast requests
       timeout = setTimeout(() => {
-        next()
-      }, 100)
+        next();
+      }, 100);
     }
 
     return () => {
-      clearTimeout(timeout)
-    }
-  }, [loading, next])
+      clearTimeout(timeout);
+    };
+  }, [loading, next]);
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         justify-content: center;
         padding-top: ${16 * GU}px;
@@ -157,7 +126,7 @@ function LoadingScreen({ loading }) {
       `}
     >
       <div
-        css={`
+        css={css`
           animation: ${keyframes`
             from {
               transform: scale(1.3);
@@ -170,27 +139,27 @@ function LoadingScreen({ loading }) {
         `}
       >
         <LoadingRing
-          css={`
-            color: ${theme.accent};
+          css={css`
+            color: ${theme.accent.toString()};
           `}
         />
       </div>
     </div>
-  )
+  );
 }
 /* eslint-enable react/prop-types */
 
 function modalWidthFromCount(count) {
   if (count >= 3) {
-    return 865
+    return 865;
   }
 
   if (count === 2) {
-    return 700
+    return 700;
   }
 
   // Modal will fallback to the default
-  return null
+  return null;
 }
 
 ModalFlowBase.propTypes = {
@@ -199,11 +168,11 @@ ModalFlowBase.propTypes = {
   screens: PropTypes.array,
   transactions: PropTypes.array,
   transactionTitle: PropTypes.string,
-}
+};
 
 ModalFlowBase.defaultProps = {
   frontLoad: true,
   transactionTitle: 'Create transaction',
-}
+};
 
-export default ModalFlowBase
+export default ModalFlowBase;

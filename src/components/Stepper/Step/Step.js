@@ -1,78 +1,64 @@
-import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { Transition, animated } from 'react-spring/renderprops';
 import {
   TransactionBadge,
   textStyle,
   useTheme,
   // RADIUS,
   GU,
-} from '@1hive/1hive-ui'
-import Divider from './Divider'
-import { getNetwork } from '@/networks'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '../stepper-statuses'
-import StatusVisual from './StatusVisual'
+} from '@1hive/1hive-ui';
+import Divider from './Divider';
+import { getNetwork } from '@/networks';
+import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from '../stepper-statuses';
+import StatusVisual from './StatusVisual';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
+import { springs } from '@/style/springs';
+import { useDisableAnimation } from '@hooks/useDisableAnimation';
 
-import { springs } from '@/style/springs'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
+const AnimatedSpan = animated.span;
 
-const AnimatedSpan = animated.span
-
-function Step({
-  title,
-  desc,
-  status,
-  number,
-  transactionHash,
-  showDivider,
-  withoutFirstStep,
-  ...props
-}) {
-  const theme = useTheme()
-  const network = getNetwork()
-  const [animationDisabled, enableAnimation] = useDisableAnimation()
+function Step({ title, desc, status, number, transactionHash, showDivider, withoutFirstStep, ...props }) {
+  const theme = useTheme();
+  const network = getNetwork();
+  const { animationDisabled, enableAnimation } = useDisableAnimation();
 
   const { visualColor, descColor } = useMemo(() => {
     const appearance = {
       [STEP_WAITING]: {
-        visualColor: theme.accent,
-        descColor: theme.contentSecondary,
+        visualColor: theme.accent.toString(),
+        descColor: theme.contentSecondary.toString(),
       },
       [STEP_PROMPTING]: {
         visualColor: '#7CE0D6',
-        descColor: theme.contentSecondary,
+        descColor: theme.contentSecondary.toString(),
       },
       [STEP_WORKING]: {
         visualColor: '#FFE862',
         descColor: '#C3A22B',
       },
       [STEP_SUCCESS]: {
-        visualColor: theme.positive,
-        descColor: theme.positive,
+        visualColor: theme.positive.toString(),
+        descColor: theme.positive.toString(),
       },
       [STEP_ERROR]: {
-        visualColor: theme.negative,
-        descColor: theme.negative,
+        visualColor: theme.negative.toString(),
+        descColor: theme.negative.toString(),
       },
-    }
+    };
 
-    const { descColor, visualColor } = appearance[status]
+    const { descColor, visualColor } = appearance[status];
     return {
       visualColor: `${visualColor}`,
       descColor: `${descColor}`,
-    }
-  }, [status, theme])
+    };
+  }, [status, theme]);
 
   return (
     <>
       <div
-        css={`
+        css={css`
           position: relative;
           display: flex;
           flex-direction: column;
@@ -86,13 +72,13 @@ function Step({
           status={status}
           color={visualColor}
           number={number}
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
           withoutFirstStep={withoutFirstStep}
         />
         <h2
-          css={`
+          css={css`
             ${textStyle('title4')}
             height:${6 * GU}px;
             line-height: 1.2;
@@ -104,11 +90,11 @@ function Step({
         </h2>
 
         <p
-          css={`
+          css={css`
             width: 100%;
             position: relative;
             text-align: center;
-            color: ${theme.contentSecondary};
+            color: ${theme.contentSecondary.toString()};
             line-height: 1.2;
           `}
         >
@@ -137,7 +123,7 @@ function Step({
               item &&
               (transitionProps => (
                 <AnimatedSpan
-                  css={`
+                  css={css`
                     display: flex;
                     justify-content: center;
                     left: 0;
@@ -155,7 +141,7 @@ function Step({
         </p>
 
         <div
-          css={`
+          css={css`
             margin-top: ${1.5 * GU}px;
             position: relative;
             width: 100%;
@@ -185,7 +171,7 @@ function Step({
               currentHash ? (
                 <AnimatedSpan
                   style={transitionProps}
-                  css={`
+                  css={css`
                     display: flex;
                     justify-content: center;
                     width: 100%;
@@ -204,7 +190,7 @@ function Step({
         {showDivider && (
           <Divider
             color={visualColor}
-            css={`
+            css={css`
               position: absolute;
               top: ${6 * GU}px;
               right: 0;
@@ -215,7 +201,7 @@ function Step({
         )}
       </div>
     </>
-  )
+  );
 }
 
 Step.propTypes = {
@@ -223,14 +209,8 @@ Step.propTypes = {
   desc: PropTypes.string,
   transactionHash: PropTypes.string,
   number: PropTypes.number,
-  status: PropTypes.oneOf([
-    STEP_WAITING,
-    STEP_PROMPTING,
-    STEP_WORKING,
-    STEP_SUCCESS,
-    STEP_ERROR,
-  ]).isRequired,
+  status: PropTypes.oneOf([STEP_WAITING, STEP_PROMPTING, STEP_WORKING, STEP_SUCCESS, STEP_ERROR]).isRequired,
   showDivider: PropTypes.bool,
-}
+};
 
-export default Step
+export default Step;

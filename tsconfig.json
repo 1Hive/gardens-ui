@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*" ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@abis/*": [
+        "./abis/*"
+      ],
+      "@assets/*": [
+        "./assets/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@providers/*": [
+        "./providers/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ],
+    },
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
+    ],
+  },
+  "include": [
+    "./src/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "src/types"
+  ]
+}

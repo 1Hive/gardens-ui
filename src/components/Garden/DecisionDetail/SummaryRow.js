@@ -1,15 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
-
-import { formatTokenAmount } from '@utils/token-utils'
+/** @jsx jsx */
+import React from 'react';
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
+import { formatTokenAmount } from '@utils/token-utils';
+import { css, jsx } from '@emotion/react';
+import styled from 'styled-components';
 
 /* eslint-disable react/prop-types */
 function SummaryRow({ color, label, pct, token, ...props }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         width: 100%;
         margin-bottom: ${1 * GU}px;
@@ -21,16 +22,16 @@ function SummaryRow({ color, label, pct, token, ...props }) {
       {...props}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
         `}
       >
         <Bullet color={color} />
         <div
-          css={`
+          css={css`
             width: ${4 * GU}px;
-            color: ${theme.surfaceContentSecondary};
+            color: ${theme.surfaceContentSecondary.toString()};
           `}
         >
           {label}
@@ -39,8 +40,8 @@ function SummaryRow({ color, label, pct, token, ...props }) {
       </div>
       {token && (
         <div
-          css={`
-            color: ${theme.surfaceContentSecondary};
+          css={css`
+            color: ${theme.surfaceContentSecondary.toString()};
             margin-left: ${2 * GU}px;
           `}
         >
@@ -48,7 +49,7 @@ function SummaryRow({ color, label, pct, token, ...props }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 const Bullet = styled.div`
@@ -59,6 +60,6 @@ const Bullet = styled.div`
   margin-right: ${1 * GU}px;
   border-radius: 50%;
   background: ${({ color }) => color};
-`
+`;
 
-export default React.memo(SummaryRow)
+export default React.memo(SummaryRow);

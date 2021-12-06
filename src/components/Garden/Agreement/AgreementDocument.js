@@ -1,62 +1,52 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import {
-  Box,
-  Markdown,
-  textStyle,
-  useTheme,
-  useLayout,
-  GU,
-} from '@1hive/1hive-ui'
-import ModalButton from '../ModalFlows/ModalButton'
-import { useMounted } from '@hooks/useMounted'
-import { useWallet } from '@providers/Wallet'
-import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils'
+/** @jsx jsx */
+import React, { useCallback, useEffect, useState } from 'react';
+import { Box, Markdown, textStyle, useLayout, GU, useTheme } from '@1hive/1hive-ui';
+import ModalButton from '../ModalFlows/ModalButton';
+import { useMounted } from '@hooks/useMounted';
+import { useWallet } from '@providers/Wallet';
+import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils';
+import { css, jsx } from '@emotion/react';
+import styled from 'styled-components';
 
-function AgreementDocument({
-  ipfsUri,
-  isSigning,
-  onSignAgreement,
-  signedAgreement,
-}) {
-  const theme = useTheme()
-  const { account } = useWallet()
-  const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
-  const [markdownContent, setMarkdownContent] = useState('')
+function AgreementDocument({ ipfsUri, isSigning, onSignAgreement, signedAgreement }) {
+  const theme = useTheme();
+  const { account } = useWallet();
+  const { layoutName } = useLayout();
+  const compactMode = layoutName === 'small';
+  const [markdownContent, setMarkdownContent] = useState('');
 
-  const mounted = useMounted()
+  const mounted = useMounted();
 
   useEffect(() => {
     // TODO: Add loading state if data size becomes large enough to be a problem
     async function getAgreementIpfsContent() {
-      const { data, error } = await ipfsGet(getIpfsCidFromUri(ipfsUri))
+      const { data, error } = await ipfsGet(getIpfsCidFromUri(ipfsUri));
 
       if (error && mounted()) {
         // Fail gracefully on error and render just the empty component
-        setMarkdownContent('')
+        setMarkdownContent('');
 
-        return
+        return;
       }
 
       if (mounted()) {
-        setMarkdownContent(data)
+        setMarkdownContent(data);
       }
     }
 
     if (ipfsUri) {
-      getAgreementIpfsContent()
+      getAgreementIpfsContent();
     }
-  }, [ipfsUri, mounted])
+  }, [ipfsUri, mounted]);
 
   const handleSign = useCallback(() => {
-    onSignAgreement()
-  }, [onSignAgreement])
+    onSignAgreement();
+  }, [onSignAgreement]);
 
   return (
     <Box
       padding={0}
-      css={`
+      css={css`
         padding: ${({ compact }) => `${compact ? 2 * GU : 7 * GU}px`};
       `}
     >
@@ -69,7 +59,7 @@ function AgreementDocument({
         </ModalButton>
       )}
     </Box>
-  )
+  );
 }
 
 const Article = styled.article`
@@ -119,7 +109,7 @@ const Article = styled.article`
 
     li::before {
       content: '•';
-      color: ${({ theme }) => theme.accent};
+      color: ${({ theme }) => theme.accent.toString()};
       font-weight: bold;
       display: inline-block;
       width: 1em;
@@ -143,11 +133,11 @@ const Article = styled.article`
       margin-bottom: 0;
     }
   }
-`
+`;
 // const LineSeparator = styled.div`
 //   height: 1px;
 //   border-bottom: 0.5px solid ${({ border }) => border};
 //   margin: ${3 * GU}px 0;
 // `
 
-export default AgreementDocument
+export default AgreementDocument;

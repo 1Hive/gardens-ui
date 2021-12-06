@@ -1,100 +1,70 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
-import {
-  Button,
-  GU,
-  Info,
-  Link,
-  LoadingRing,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
-import { useWallet } from '@providers/Wallet'
+/** @jsx jsx */
+import React, { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, GU, Info, Link, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
+import InfoField from '../../InfoField';
+import ModalButton from '../ModalButton';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken';
+import { useWallet } from '@providers/Wallet';
 
-import env from '@/environment'
-import { formatTokenAmount } from '@utils/token-utils'
-import { getDisputableAppByName } from '@utils/app-utils'
-import { buildGardenPath } from '@utils/routing-utils'
+import env from '@/environment';
+import { formatTokenAmount } from '@utils/token-utils';
+import { getDisputableAppByName } from '@utils/app-utils';
+import { buildGardenPath } from '@utils/routing-utils';
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg';
+import iconCheck from '@assets/iconCheck.svg';
+import { css, jsx } from '@emotion/react';
 
-function ChallengeRequirements({
-  agreement,
-  collateralTokenAccountBalance,
-  disputeFees,
-}) {
-  const { account } = useWallet()
-  const { next } = useMultiModal()
-  const { disputableAppsWithRequirements } = agreement
-  const history = useHistory()
+function ChallengeRequirements({ agreement, collateralTokenAccountBalance, disputeFees }) {
+  const { account } = useWallet();
+  const { next } = useMultiModal();
+  const { disputableAppsWithRequirements } = agreement;
+  const history = useHistory();
 
-  const convictionAppRequirements = getDisputableAppByName(
-    disputableAppsWithRequirements,
-    env('CONVICTION_APP_NAME')
-  )
-  const { challengeAmount, token } = convictionAppRequirements
+  const convictionAppRequirements = getDisputableAppByName(disputableAppsWithRequirements, env('CONVICTION_APP_NAME'));
+  const { challengeAmount, token } = convictionAppRequirements;
 
   // Dispute fee token data
-  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
-  const feeTokenAccountBalance = useTokenBalanceOf(disputeFees.token, account)
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token);
+  const feeTokenAccountBalance = useTokenBalanceOf(disputeFees.token, account);
 
   const error = useMemo(() => {
-    return (
-      !collateralTokenAccountBalance.gte(challengeAmount) ||
-      !feeTokenAccountBalance.gte(disputeFees.amount)
-    )
-  }, [
-    challengeAmount,
-    collateralTokenAccountBalance,
-    disputeFees,
-    feeTokenAccountBalance,
-  ])
+    return !collateralTokenAccountBalance.gte(challengeAmount) || !feeTokenAccountBalance.gte(disputeFees.amount);
+  }, [challengeAmount, collateralTokenAccountBalance, disputeFees, feeTokenAccountBalance]);
 
   const handleOnContinue = useCallback(() => {
-    next()
-  }, [next])
+    next();
+  }, [next]);
 
   return (
     <div>
       <Info
         title="Challenge guidelines"
-        css={`
+        css={css`
           margin-bottom: ${2 * GU}px;
         `}
       >
-        Challenging a proposal gives the proposal author a chance to settle the
-        dispute by accepting your settlement offer (and withdrawing their
-        proposal). If they refuse, the dispute is raised to{' '}
+        Challenging a proposal gives the proposal author a chance to settle the dispute by accepting your settlement
+        offer (and withdrawing their proposal). If they refuse, the dispute is raised to{' '}
         <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link> (a{' '}
-        <Link href="https://www.brightid.org/">BrightID</Link> integrated fork
-        of{' '}
-        <Link href="https://github.com/aragon/aragon-court/tree/master/docs">
-          Aragon Court
-        </Link>
+        <Link href="https://www.brightid.org/">BrightID</Link> integrated fork of{' '}
+        <Link href="https://github.com/aragon/aragon-court/tree/master/docs">Aragon Court</Link>
         ).
         <br />
         <br />
-        Once Celeste is invoked, a decentralised (and randomly selected) group
-        of BrightID verified humans – called keepers – is drafted to rule on the
-        dispute (they are tasked with deciding whether or not the disputed
-        action is compatible with this community’s{' '}
-        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
-          Covenant.
-        </Link>{' '}
+        Once Celeste is invoked, a decentralised (and randomly selected) group of BrightID verified humans – called
+        keepers – is drafted to rule on the dispute (they are tasked with deciding whether or not the disputed action is
+        compatible with this community’s{' '}
+        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>Covenant.</Link> <br />
         <br />
-        <br />
-        If the keepers decide the proposal is compatible, on-chain execution
-        continues. If they decide it is not, the proposal is blocked and
-        removed.
+        If the keepers decide the proposal is compatible, on-chain execution continues. If they decide it is not, the
+        proposal is blocked and removed.
       </Info>
       <InfoField label="Challenge deposit">
-        You must deposit {formatTokenAmount(challengeAmount, token.decimals)}{' '}
-        {token.symbol} in order to challenge a proposal.
+        You must deposit {formatTokenAmount(challengeAmount, token.decimals)} {token.symbol} in order to challenge a
+        proposal.
       </InfoField>
       <CollateralStatus
         accountBalance={collateralTokenAccountBalance}
@@ -103,7 +73,7 @@ function ChallengeRequirements({
       />
       <InfoField
         label="Dispute fees"
-        css={`
+        css={css`
           margin-top: ${5 * GU}px;
         `}
       >
@@ -111,102 +81,90 @@ function ChallengeRequirements({
           <LoadingRing />
         ) : (
           <span>
-            You must deposit{' '}
-            {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{' '}
-            {feeToken.symbol} to cover the initial dispute fees.
+            You must deposit {formatTokenAmount(disputeFees.amount, feeToken.decimals)} {feeToken.symbol} to cover the
+            initial dispute fees.
           </span>
         )}
       </InfoField>
       {!loadingFeeToken && (
-        <FeesStatus
-          accountBalance={feeTokenAccountBalance}
-          feesAmount={disputeFees.amount}
-          token={feeToken}
-        />
+        <FeesStatus accountBalance={feeTokenAccountBalance} feesAmount={disputeFees.amount} token={feeToken} />
       )}
       <Info
-        css={`
+        css={css`
           margin-top: ${2 * GU}px;
         `}
       >
-        The challenge deposit and dispute fees will be returned to your account
-        should the submitter accept your settlement offer, or should you win the
-        dispute.
+        The challenge deposit and dispute fees will be returned to your account should the submitter accept your
+        settlement offer, or should you win the dispute.
       </Info>
-      <ModalButton
-        mode="strong"
-        loading={false}
-        onClick={handleOnContinue}
-        disabled={error}
-      >
+      <ModalButton mode="strong" loading={false} onClick={handleOnContinue} disabled={error}>
         Continue
       </ModalButton>
     </div>
-  )
+  );
 }
 
 function CollateralStatus({ accountBalance, challengeAmount, token }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const infoData = useMemo(() => {
     if (accountBalance.gte(challengeAmount)) {
       return {
         backgroundColor: '#EBFBF6',
-        color: theme.positive,
+        color: theme.positive.toString(),
         icon: iconCheck,
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           challengeAmount,
-          token.decimals
+          token.decimals,
         )} ${token.symbol} as the challenge deposit.`,
-      }
+      };
     }
 
     return {
-      backgroundColor: theme.negativeSurface,
-      color: theme.negative,
+      backgroundColor: theme.negativeSurface.toString(),
+      color: theme.negative.toString(),
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         challengeAmount,
-        token.decimals
+        token.decimals,
       )} ${token.symbol} as the challenge deposit.`,
-    }
-  }, [accountBalance, challengeAmount, token, theme])
+    };
+  }, [accountBalance, challengeAmount, token, theme]);
 
-  return <InfoBox data={infoData} />
+  return <InfoBox data={infoData} />;
 }
 
 function FeesStatus({ accountBalance, feesAmount, token }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const infoData = useMemo(() => {
     if (accountBalance.gte(feesAmount)) {
       return {
         backgroundColor: '#EBFBF6',
-        color: theme.positive,
+        color: theme.positive.toString(),
         icon: iconCheck,
-        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
-          feesAmount,
-          token.decimals
-        )} ${token.symbol} as the dispute fees.`,
-      }
+        text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(feesAmount, token.decimals)} ${
+          token.symbol
+        } as the dispute fees.`,
+      };
     }
 
     return {
-      backgroundColor: theme.negativeSurface,
-      color: theme.negative,
+      backgroundColor: theme.negativeSurface.toString(),
+      color: theme.negative.toString(),
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         feesAmount,
-        token.decimals
+        token.decimals,
       )} ${token.symbol} as the dispute fees.`,
       actionButton: 'Get HNY ↗',
       buttonOnClick: () =>
         // TODO : remove once we have swap integration
         window.open('https://app.honeyswap.org/#/swap', '_blank'),
-    }
-  }, [accountBalance, feesAmount, token, theme])
+    };
+  }, [accountBalance, feesAmount, token, theme]);
 
-  return <InfoBox data={infoData} />
+  return <InfoBox data={infoData} />;
 }
 
 function InfoBox({ data }) {
@@ -215,13 +173,13 @@ function InfoBox({ data }) {
       background={data.backgroundColor}
       borderColor="none"
       color={data.color}
-      css={`
+      css={css`
         border-radius: ${0.5 * GU}px;
         margin-top: ${1.5 * GU}px;
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           ${textStyle('body2')};
@@ -229,7 +187,7 @@ function InfoBox({ data }) {
       >
         <img src={data.icon} width="18" height="18" />
         <span
-          css={`
+          css={css`
             margin-left: ${1.5 * GU}px;
           `}
         >
@@ -237,12 +195,12 @@ function InfoBox({ data }) {
         </span>
         {data.actionButton && (
           <div
-            css={`
+            css={css`
               margin-left: auto;
             `}
           >
             <Button
-              css={`
+              css={css`
                 border-radius: ${0.5 * GU}px;
               `}
               onClick={data.buttonOnClick}
@@ -253,7 +211,7 @@ function InfoBox({ data }) {
         )}
       </div>
     </Info>
-  )
+  );
 }
 
-export default ChallengeRequirements
+export default ChallengeRequirements;

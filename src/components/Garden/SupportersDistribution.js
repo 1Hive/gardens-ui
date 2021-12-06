@@ -1,23 +1,16 @@
-import React, { useMemo } from 'react'
-import {
-  Box,
-  Distribution,
-  GU,
-  textStyle,
-  useLayout,
-  useTheme,
-} from '@1hive/1hive-ui'
-import IdentityBadge from '../IdentityBadge'
+/** @jsx jsx */
+import React, { useMemo } from 'react';
+import { Box, Distribution, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui';
+import IdentityBadge from '../IdentityBadge';
+import { useGardenState } from '@providers/GardenState';
+import { useWallet } from '@providers/Wallet';
+import { formatTokenAmount } from '@utils/token-utils';
+import { stakesPercentages } from '@utils/math-utils';
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils';
+import noSupportIllustration from '@assets/noSupportIllustration.svg';
+import { css, jsx } from '@emotion/react';
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-import { formatTokenAmount } from '@utils/token-utils'
-import { stakesPercentages } from '@utils/math-utils'
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
-
-import noSupportIllustration from '@assets/noSupportIllustration.svg'
-
-const DISTRIBUTION_ITEMS_MAX = 6
+const DISTRIBUTION_ITEMS_MAX = 6;
 
 function displayedStakes(stakes, total, stakeToken) {
   return stakesPercentages(
@@ -25,48 +18,36 @@ function displayedStakes(stakes, total, stakeToken) {
     {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
-    }
+    },
   ).map(stake => ({
     item: {
-      entity:
-        stake.index === -1
-          ? 'Others'
-          : stakes[stake.index].supporter.user.address,
-      amount: formatTokenAmount(
-        stake.index === -1 ? stake.amount : stakes[stake.index].amount,
-        stakeToken.decimals
-      ),
+      entity: stake.index === -1 ? 'Others' : stakes[stake.index].supporter.user.address,
+      amount: formatTokenAmount(stake.index === -1 ? stake.amount : stakes[stake.index].amount, stakeToken.decimals),
     },
     percentage: stake.percentage,
-  }))
+  }));
 }
 
-const SupportersDistribution = React.memo(function SupportersDistribution({
-  stakes,
-  totalTokensStaked,
-}) {
-  const { config } = useGardenState()
-  const { stakeToken } = config.conviction
+const SupportersDistribution = React.memo(function SupportersDistribution({ stakes, totalTokensStaked }) {
+  const { config } = useGardenState();
+  const { stakeToken } = config.conviction;
 
-  const totalStakedString = totalTokensStaked.toString(10)
+  const totalStakedString = totalTokensStaked.toString(10);
   const transformedStakes = useMemo(() => {
     if (!stakes) {
-      return null
+      return null;
     }
 
-    return displayedStakes(stakes, totalTokensStaked, stakeToken)
-  }, [totalStakedString, stakeToken.id]) // eslint-disable-line
+    return displayedStakes(stakes, totalTokensStaked, stakeToken);
+  }, [totalStakedString, stakeToken.id]); // eslint-disable-line
 
   return (
     <Box heading="Supported by" padding={2 * GU}>
       {stakes.length > 0 ? (
         <>
-          <MemoizedDistribution
-            stakes={transformedStakes}
-            tokenSymbol={stakeToken.symbol}
-          />
+          <MemoizedDistribution stakes={transformedStakes} tokenSymbol={stakeToken.symbol} />
           <div
-            css={`
+            css={css`
               margin-top: ${3 * GU}px;
               display: flex;
               justify-content: space-between;
@@ -84,7 +65,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
       ) : (
         <>
           <div
-            css={`
+            css={css`
               display: flex;
               justify-content: center;
             `}
@@ -92,13 +73,13 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
             <img src={noSupportIllustration} alt="" />
           </div>
           <div
-            css={`
+            css={css`
               margin-top: ${3 * GU}px;
               text-align: center;
             `}
           >
             <span
-              css={`
+              css={css`
                 ${textStyle('body2')};
               `}
             >
@@ -108,24 +89,21 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
         </>
       )}
     </Box>
-  )
-})
+  );
+});
 
-const MemoizedDistribution = React.memo(function MemoizedDistribution({
-  stakes,
-  tokenSymbol,
-}) {
-  const theme = useTheme()
+const MemoizedDistribution = React.memo(function MemoizedDistribution({ stakes, tokenSymbol }) {
+  const theme = useTheme();
 
   const colors = useMemo(
-    () => [theme.green, theme.red, theme.purple, theme.yellow],
-    [theme]
-  )
+    () => [theme.green.toString(), theme.red.toString(), theme.purple.toString(), theme.yellow.toString()],
+    [theme],
+  );
 
   const adjustedStakes = stakes.map(stake => ({
     ...stake,
     percentage: Math.round(stake.percentage),
-  }))
+  }));
 
   return (
     <Distribution
@@ -134,14 +112,14 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
       renderFullLegendItem={({ color, item, percentage }) => {
         return (
           <div
-            css={`
+            css={css`
               display: flex;
               align-items: center;
               width: 100%;
             `}
           >
             <div
-              css={`
+              css={css`
                 background: ${color};
                 width: 8px;
                 height: 8px;
@@ -156,23 +134,23 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
               tokenSymbol={tokenSymbol}
             />
           </div>
-        )
+        );
       }}
     />
-  )
-})
+  );
+});
 
 const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
-  const theme = useTheme()
-  const { account } = useWallet()
-  const { layoutName } = useLayout()
+  const theme = useTheme();
+  const { account } = useWallet();
+  const { layoutName } = useLayout();
 
-  const isCurrentUser = addressesEqual(entity, account)
-  const compactMode = layoutName === 'medium' || layoutName === 'small'
+  const isCurrentUser = addressesEqual(entity, account);
+  const compactMode = layoutName === 'medium' || layoutName === 'small';
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         width: 100%;
         justify-content: space-between;
@@ -184,27 +162,27 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
         compact
         iconSize="18"
         labelStyle={`${textStyle('body3')}`}
-        css={`
+        css={css`
           width: ${compactMode ? 'auto' : '110px'};
         `}
       />
       <div
-        css={`
+        css={css`
           display: flex;
           ${textStyle('body3')};
         `}
       >
         <span
-          css={`
+          css={css`
             margin-right: ${0.5 * GU}px;
-            color: ${theme.contentSecondary};
+            color: ${theme.contentSecondary.toString()};
           `}
         >
           {percentage}%
         </span>
 
         <span
-          css={`
+          css={css`
             margin-right: ${0.5 * GU}px;
           `}
         >
@@ -214,7 +192,7 @@ const DistributionItem = ({ amount, entity, percentage, tokenSymbol }) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SupportersDistribution
+export default SupportersDistribution;

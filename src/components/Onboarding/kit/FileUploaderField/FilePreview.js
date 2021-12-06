@@ -1,16 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Button, GU, IconClose, IconFile, textStyle } from '@1hive/1hive-ui'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, GU, IconClose, IconFile, textStyle } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const FilePreview = ({ file, label, onCancel }) => {
   const handleCancel = e => {
-    e.preventDefault()
-    onCancel()
-  }
+    e.preventDefault();
+    onCancel();
+  };
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -18,7 +20,7 @@ const FilePreview = ({ file, label, onCancel }) => {
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           justify-content: center;
           align-items: center;
@@ -26,7 +28,7 @@ const FilePreview = ({ file, label, onCancel }) => {
       >
         <div>
           <IconFile
-            css={`
+            css={css`
               color: grey;
               width: ${4 * GU}px;
               height: ${4 * GU}px;
@@ -35,7 +37,7 @@ const FilePreview = ({ file, label, onCancel }) => {
         </div>
         <div
           title={file.name}
-          css={`
+          css={css`
             max-width: 200px;
             white-space: nowrap;
             overflow: hidden;
@@ -47,13 +49,13 @@ const FilePreview = ({ file, label, onCancel }) => {
           {file.name || 'Unnamed file'}
         </div>
         <div
-          css={`
+          css={css`
             margin-left: ${1 * GU}px;
           `}
         >
           <Button
             onClick={handleCancel}
-            css={`
+            css={css`
               border-radius: 50%;
             `}
             display="icon"
@@ -65,13 +67,13 @@ const FilePreview = ({ file, label, onCancel }) => {
       </div>
       {label}
     </div>
-  )
-}
+  );
+};
 
 FilePreview.propTypes = {
   file: PropTypes.shape({ name: PropTypes.string }),
   label: PropTypes.node,
   onCancel: PropTypes.func.isRequired,
-}
+};
 
-export default FilePreview
+export default FilePreview;

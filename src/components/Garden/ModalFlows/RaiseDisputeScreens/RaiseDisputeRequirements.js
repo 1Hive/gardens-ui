@@ -1,43 +1,33 @@
-import React, { useCallback, useMemo } from 'react'
-import {
-  Button,
-  GU,
-  Info,
-  Link,
-  LoadingRing,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
-import { useWallet } from '@providers/Wallet'
+import React, { useCallback, useMemo } from 'react';
+import { Button, GU, Info, Link, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
+import InfoField from '../../InfoField';
+import ModalButton from '../ModalButton';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken';
+import { useWallet } from '@providers/Wallet';
 
-import { formatTokenAmount } from '@utils/token-utils'
+import { formatTokenAmount } from '@utils/token-utils';
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
-import { getNetwork } from '@/networks'
+import iconError from '@assets/iconError.svg';
+import iconCheck from '@assets/iconCheck.svg';
+import { getNetwork } from '@/networks';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-function RaiseDisputeRequirements({
-  celesteSynced,
-  disputeFees,
-  getTransactions,
-}) {
-  const { account } = useWallet()
-  const { next } = useMultiModal()
+function RaiseDisputeRequirements({ celesteSynced, disputeFees, getTransactions }) {
+  const { account } = useWallet();
+  const { next } = useMultiModal();
   // Dispute fee token data
-  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
-  const accountBalance = useTokenBalanceOf(disputeFees.token, account)
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token);
+  const accountBalance = useTokenBalanceOf(disputeFees.token, account);
 
   const handleOnCreateDispute = useCallback(() => {
     getTransactions(() => {
-      next()
-    })
-  }, [next, getTransactions])
+      next();
+    });
+  }, [next, getTransactions]);
 
-  const enoughDisputeFees = accountBalance.gte(disputeFees.amount)
+  const enoughDisputeFees = accountBalance.gte(disputeFees.amount);
   return (
     <div>
       <InfoField label="Dispute fees">
@@ -45,28 +35,20 @@ function RaiseDisputeRequirements({
           <LoadingRing />
         ) : (
           <span>
-            You must deposit{' '}
-            {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{' '}
-            {feeToken.symbol} as the dispute fees. This balance will be returned
-            to your account if Celeste outcome is to allow the action.
+            You must deposit {formatTokenAmount(disputeFees.amount, feeToken.decimals)} {feeToken.symbol} as the dispute
+            fees. This balance will be returned to your account if Celeste outcome is to allow the action.
           </span>
         )}
       </InfoField>
       {!loadingFeeToken && (
-        <FeesStatus
-          accountBalance={accountBalance}
-          feesAmount={disputeFees.amount}
-          token={feeToken}
-        />
+        <FeesStatus accountBalance={accountBalance} feesAmount={disputeFees.amount} token={feeToken} />
       )}
       <div
-        css={`
+        css={css`
           margin-top: ${3 * GU}px;
         `}
       >
-        <InfoField label="Celeste status">
-          Celeste's term must be up to date in order to dispute this action.
-        </InfoField>
+        <InfoField label="Celeste status">Celeste's term must be up to date in order to dispute this action.</InfoField>
         <CelesteSyncedStatus synced={celesteSynced} />
       </div>
       <ModalButton
@@ -78,11 +60,11 @@ function RaiseDisputeRequirements({
         Create dispute
       </ModalButton>
     </div>
-  )
+  );
 }
 
 function FeesStatus({ accountBalance, feesAmount, token }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const infoData = useMemo(() => {
     if (accountBalance.gte(feesAmount)) {
@@ -90,11 +72,10 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
         backgroundColor: '#EBFBF6',
         color: theme.positive.toString(),
         icon: iconCheck,
-        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
-          feesAmount,
-          token.decimals
-        )} ${token.symbol} as the dispute fees.`,
-      }
+        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(feesAmount, token.decimals)} ${
+          token.symbol
+        } as the dispute fees.`,
+      };
     }
 
     return {
@@ -103,17 +84,17 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
         feesAmount,
-        token.decimals
+        token.decimals,
       )} ${token.symbol} as the dispute fees.`,
-    }
-  }, [accountBalance, feesAmount, theme, token])
+    };
+  }, [accountBalance, feesAmount, theme, token]);
 
-  return <InfoBox data={infoData} />
+  return <InfoBox data={infoData} />;
 }
 
 function CelesteSyncedStatus({ synced }) {
-  const theme = useTheme()
-  const celesteUrl = getNetwork().celesteUrl
+  const theme = useTheme();
+  const celesteUrl = getNetwork().celesteUrl;
 
   const infoData = useMemo(() => {
     if (synced) {
@@ -122,7 +103,7 @@ function CelesteSyncedStatus({ synced }) {
         color: theme.positive.toString(),
         icon: iconCheck,
         text: `Celeste is Synced!`,
-      }
+      };
     }
 
     return {
@@ -131,14 +112,13 @@ function CelesteSyncedStatus({ synced }) {
       icon: iconError,
       text: (
         <div>
-          Celeste is not synced, head over to the{' '}
-          <Link href={celesteUrl}>dashboard</Link> and update the term.
+          Celeste is not synced, head over to the <Link href={celesteUrl}>dashboard</Link> and update the term.
         </div>
       ),
-    }
-  }, [celesteUrl, synced, theme])
+    };
+  }, [celesteUrl, synced, theme]);
 
-  return <InfoBox data={infoData} />
+  return <InfoBox data={infoData} />;
 }
 
 function InfoBox({ data }) {
@@ -147,13 +127,13 @@ function InfoBox({ data }) {
       background={data.backgroundColor}
       borderColor="none"
       color={data.color}
-      css={`
+      css={css`
         border-radius: ${0.5 * GU}px;
         margin-top: ${1.5 * GU}px;
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           ${textStyle('body2')};
@@ -161,7 +141,7 @@ function InfoBox({ data }) {
       >
         <img src={data.icon} width="18" height="18" />
         <span
-          css={`
+          css={css`
             margin-left: ${1.5 * GU}px;
           `}
         >
@@ -169,12 +149,12 @@ function InfoBox({ data }) {
         </span>
         {data.actionButton && (
           <div
-            css={`
+            css={css`
               margin-left: auto;
             `}
           >
             <Button
-              css={`
+              css={css`
                 border-radius: ${0.5 * GU}px;
               `}
               onClick={data.buttonOnClick}
@@ -185,7 +165,7 @@ function InfoBox({ data }) {
         )}
       </div>
     </Info>
-  )
+  );
 }
 
-export default RaiseDisputeRequirements
+export default RaiseDisputeRequirements;

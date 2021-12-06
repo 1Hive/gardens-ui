@@ -1,43 +1,41 @@
-import React, { useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui'
-import ModalButton from '../ModalButton'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-
-import signGraphic from '@assets/smart-contract.svg'
+import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui';
+import ModalButton from '../ModalButton';
+import { useConnectedGarden } from '@providers/ConnectedGarden';
+import { useGardenState } from '@providers/GardenState';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import signGraphic from '@assets/smart-contract.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function SignOverview({ getTransactions }) {
-  const [loading, setLoading] = useState(false)
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const connectedGarden = useConnectedGarden()
-  const { mainToken } = useGardenState()
-  const { layoutName } = useLayout()
-  const { next } = useMultiModal()
-  const theme = useTheme()
+  const [loading, setLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const connectedGarden = useConnectedGarden();
+  const { mainToken } = useGardenState();
+  const { layoutName } = useLayout();
+  const { next } = useMultiModal();
+  const theme = useTheme();
 
-  const smallMode = layoutName === 'small'
+  const smallMode = layoutName === 'small';
 
   const handleSign = useCallback(() => {
-    setLoading(true)
+    setLoading(true);
 
     // Proceed to the next screen after transactions have been received
     getTransactions(() => {
-      next()
-    })
-  }, [getTransactions, next])
+      next();
+    });
+  }, [getTransactions, next]);
 
-  const handleAcceptTerms = useCallback(
-    checked => setAcceptedTerms(checked),
-    []
-  )
+  const handleAcceptTerms = useCallback(checked => setAcceptedTerms(checked), []);
 
   return (
     <>
       <img
         src={signGraphic}
-        css={`
+        css={css`
           display: block;
           width: auto;
           height: ${smallMode ? 17 * GU : 20 * GU}px;
@@ -47,13 +45,13 @@ function SignOverview({ getTransactions }) {
         `}
       />
       <label
-        css={`
+        css={css`
           display: flex;
           margin-bottom: ${3 * GU}px;
         `}
       >
         <div
-          css={`
+          css={css`
             margin-left: -${0.5 * GU}px;
             margin-right: ${1 * GU}px;
           `}
@@ -61,8 +59,8 @@ function SignOverview({ getTransactions }) {
           <Checkbox
             checked={acceptedTerms}
             onChange={handleAcceptTerms}
-            css={`
-              border-color: ${theme.accent};
+            css={css`
+              border-color: ${theme.accent.toString()};
             `}
           />
         </div>
@@ -76,20 +74,15 @@ function SignOverview({ getTransactions }) {
         </p>
       </Field>
 
-      <ModalButton
-        mode="strong"
-        loading={loading}
-        onClick={handleSign}
-        disabled={!acceptedTerms}
-      >
+      <ModalButton mode="strong" loading={loading} onClick={handleSign} disabled={!acceptedTerms}>
         Sign Covenant
       </ModalButton>
     </>
-  )
+  );
 }
 
 SignOverview.propTypes = {
   getTransactions: PropTypes.func,
-}
+};
 
-export default SignOverview
+export default SignOverview;

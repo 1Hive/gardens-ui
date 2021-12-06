@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  Button,
-  GU,
-  IconArrowUp,
-  Markdown,
-  Modal,
-  RootPortal,
-  textStyle,
-} from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Button, GU, IconArrowUp, Markdown, Modal, RootPortal, textStyle } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const MINIMUM_SCROLL_TOP = 150
+const MINIMUM_SCROLL_TOP = 150;
 
 const CovenantModal = ({ open, file, onClose }) => {
-  const [displayScrollBtn, setDisplayScrollBtn] = useState(false)
-  const modalRef = useRef()
+  const [displayScrollBtn, setDisplayScrollBtn] = useState(false);
+  const modalRef = useRef();
 
   const handleScrollChange = useCallback(
     e => {
@@ -22,17 +16,17 @@ const CovenantModal = ({ open, file, onClose }) => {
        * implement ref forwarding so we get it from the event target.
        */
       if (!modalRef.current) {
-        modalRef.current = e.target
+        modalRef.current = e.target;
       }
 
       if (e.target.scrollTop > MINIMUM_SCROLL_TOP) {
-        setDisplayScrollBtn(true)
+        setDisplayScrollBtn(true);
       } else {
-        setDisplayScrollBtn(false)
+        setDisplayScrollBtn(false);
       }
     },
-    [setDisplayScrollBtn]
-  )
+    [setDisplayScrollBtn],
+  );
 
   const handleCloseModal = useCallback(
     e => {
@@ -41,21 +35,21 @@ const CovenantModal = ({ open, file, onClose }) => {
        * avoid closing it when clicking the "back to top" button
        */
       if (e && e.target) {
-        onClose()
+        onClose();
       }
     },
-    [onClose]
-  )
+    [onClose],
+  );
 
   useEffect(() => {
     if (!open) {
-      modalRef.current = null
+      modalRef.current = null;
     }
-  }, [open])
+  }, [open]);
 
   return (
     <Modal
-      css={`
+      css={css`
         z-index: 4;
       `}
       visible={open}
@@ -64,7 +58,7 @@ const CovenantModal = ({ open, file, onClose }) => {
       width="960px"
     >
       <div
-        css={`
+        css={css`
           padding: 0 ${4 * GU}px;
           padding-top: ${2 * GU}px;
         `}
@@ -72,7 +66,7 @@ const CovenantModal = ({ open, file, onClose }) => {
         <Markdown normalized content={file?.content ?? ''} />
         <RootPortal>
           <div
-            css={`
+            css={css`
               opacity: ${displayScrollBtn ? '1' : '0'};
               position: fixed;
               bottom: ${2 * GU}px;
@@ -82,14 +76,12 @@ const CovenantModal = ({ open, file, onClose }) => {
             `}
           >
             <Button
-              css={`
+              css={css`
                 padding: ${1 * GU};
                 ${textStyle('body3')};
               `}
               size="small"
-              onClick={() =>
-                modalRef.current.scrollTo({ behavior: 'smooth', top: 0 })
-              }
+              onClick={() => modalRef.current.scrollTo({ behavior: 'smooth', top: 0 })}
             >
               <IconArrowUp /> Back to Top
             </Button>
@@ -97,7 +89,7 @@ const CovenantModal = ({ open, file, onClose }) => {
         </RootPortal>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
-export default CovenantModal
+export default CovenantModal;

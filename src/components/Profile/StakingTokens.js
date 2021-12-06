@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui';
 
-import BigNumber from '@lib/bigNumber'
-import { stakesPercentages } from '@utils/math-utils'
+import BigNumber from '@lib/bigNumber';
+import { stakesPercentages } from '@utils/math-utils';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const DISTRIBUTION_ITEMS_MAX = 6
+const DISTRIBUTION_ITEMS_MAX = 6;
 
 function displayedStakes(stakes, total) {
   return stakesPercentages(
@@ -13,58 +15,57 @@ function displayedStakes(stakes, total) {
     {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
-    }
+    },
   ).map((stake, index) => ({
     item: {
       gardenId: stake.index === -1 ? null : stakes[stake.index].gardenId,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
-      proposalName:
-        stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
+      proposalName: stake.index === -1 ? 'Others' : stakes[stake.index].proposalName,
     },
     percentage: stake.percentage,
-  }))
+  }));
 }
 
 const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
-  const theme = useTheme()
-  const { below } = useViewport()
-  const compact = below('large')
+  const theme = useTheme();
+  const { below } = useViewport();
+  const compact = below('large');
 
-  const history = useHistory()
+  const history = useHistory();
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(`/garden/${gardenId}/proposal/${proposalId}`)
+      history.push(`/garden/${gardenId}/proposal/${proposalId}`);
     },
-    [history]
-  )
+    [history],
+  );
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
-      return new BigNumber('0')
+      return new BigNumber('0');
     }
 
     return myStakes.reduce((accumulator, stake) => {
-      return accumulator.plus(stake.amount)
-    }, new BigNumber('0'))
-  }, [myStakes])
+      return accumulator.plus(stake.amount);
+    }, new BigNumber('0'));
+  }, [myStakes]);
 
   const stakes = useMemo(() => {
     if (!myStakes) {
-      return null
+      return null;
     }
-    return displayedStakes(myStakes, myActiveTokens)
-  }, [myStakes, myActiveTokens])
+    return displayedStakes(myStakes, myActiveTokens);
+  }, [myStakes, myActiveTokens]);
 
   if (myActiveTokens.eq(0)) {
-    return null
+    return null;
   }
 
-  const colors = [theme.green, theme.red, theme.purple, theme.yellow]
+  const colors = [theme.green.toString(), theme.red.toString(), theme.purple.toString(), theme.yellow.toString()];
 
   const adjustedStakes = stakes.map(stake => ({
     ...stake,
     percentage: Math.round(stake.percentage),
-  }))
+  }));
 
   return (
     <Box heading="Supported proposals" padding={3 * GU}>
@@ -82,31 +83,25 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
                 proposalId={item.proposalId}
                 selectProposal={handleSelectProposal}
               />
-            )
+            );
           }}
         />
       </div>
     </Box>
-  )
-})
+  );
+});
 
-const DistributionItem = ({
-  compact,
-  gardenId,
-  proposalId,
-  proposalName,
-  selectProposal,
-}) => {
-  const theme = useTheme()
+const DistributionItem = ({ compact, gardenId, proposalId, proposalName, selectProposal }) => {
+  const theme = useTheme();
 
   const handleOnClick = useCallback(() => {
-    selectProposal(gardenId, proposalId)
-  }, [gardenId, proposalId, selectProposal])
+    selectProposal(gardenId, proposalId);
+  }, [gardenId, proposalId, selectProposal]);
 
   return (
     <div
-      css={`
-        background: ${theme.badge};
+      css={css`
+        background: ${theme.badge.toString()};
         border-radius: 3px;
         padding: ${0.5 * GU}px ${1 * GU}px;
         width: ${compact ? '100%' : `${18 * GU}px`};
@@ -116,14 +111,14 @@ const DistributionItem = ({
 
         ${proposalId &&
           `cursor: pointer; &:hover {
-          background: ${theme.badge.alpha(0.7)}
+          background: ${theme.badge.alpha(0.7).toString()}
         }`}
       `}
       onClick={proposalId ? handleOnClick : null}
     >
       {proposalName}
     </div>
-  )
-}
+  );
+};
 
-export default StakingTokens
+export default StakingTokens;

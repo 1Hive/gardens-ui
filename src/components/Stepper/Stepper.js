@@ -1,75 +1,68 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { PropTypes } from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
-import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
-import Step from './Step/Step'
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import { PropTypes } from 'prop-types';
+import { Transition, animated } from 'react-spring/renderprops';
+import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui';
+import Step from './Step/Step';
 
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
-import { useMounted } from '@hooks/useMounted'
-import { useMultiModal } from '../MultiModal/MultiModalProvider'
-import useStepperLayout from './useStepperLayout'
+import { useDisableAnimation } from '@hooks/useDisableAnimation';
+import { useMounted } from '@hooks/useMounted';
+import { useMultiModal } from '../MultiModal/MultiModalProvider';
+import useStepperLayout from './useStepperLayout';
 
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from './stepper-statuses'
-import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
+import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from './stepper-statuses';
+import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const AnimatedDiv = animated.div
+const AnimatedDiv = animated.div;
 
-const INITIAL_STATUS = STEP_PROMPTING
+const INITIAL_STATUS = STEP_PROMPTING;
 
-const DEFAULT_DESCRIPTIONS = TRANSACTION_SIGNING_DESC
+const DEFAULT_DESCRIPTIONS = TRANSACTION_SIGNING_DESC;
 
 function initialStepState(steps) {
   return steps.map((_, i) => {
     return {
       status: i === 0 ? INITIAL_STATUS : STEP_WAITING,
       hash: null,
-    }
-  })
+    };
+  });
 }
 
 function reduceSteps(steps, [action, stepIndex, value]) {
   if (action === 'setHash') {
-    steps[stepIndex].hash = value
-    return [...steps]
+    steps[stepIndex].hash = value;
+    return [...steps];
   }
   if (action === 'setStatus') {
-    steps[stepIndex].status = value
-    return [...steps]
+    steps[stepIndex].status = value;
+    return [...steps];
   }
-  return steps
+  return steps;
 }
 
 function Stepper({ steps, onComplete, onCompleteActions }) {
-  const theme = useTheme()
-  const mounted = useMounted()
-  const { close } = useMultiModal()
-  const [animationDisabled, enableAnimation] = useDisableAnimation()
-  const [stepperStage, setStepperStage] = useState(0)
-  const [stepState, updateStep] = useReducer(
-    reduceSteps,
-    initialStepState(steps)
-  )
+  const theme = useTheme();
+  const mounted = useMounted();
+  const { close } = useMultiModal();
+  const { animationDisabled, enableAnimation } = useDisableAnimation();
+  const [stepperStage, setStepperStage] = useState(0);
+  const [stepState, updateStep] = useReducer(reduceSteps, initialStepState(steps));
 
-  const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout()
+  const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout();
 
-  const stepsCount = steps.length - 1
+  const stepsCount = steps.length - 1;
 
   const renderStep = useCallback(
     (stepIndex, showDivider) => {
-      const { title, descriptions: suppliedDescriptions } = steps[stepIndex]
-      const { status, hash } = stepState[stepIndex]
-      const descriptions = suppliedDescriptions || DEFAULT_DESCRIPTIONS
+      const { title, descriptions: suppliedDescriptions } = steps[stepIndex];
+      const { status, hash } = stepState[stepIndex];
+      const descriptions = suppliedDescriptions || DEFAULT_DESCRIPTIONS;
 
       return (
         <li
           key={stepIndex}
-          css={`
+          css={css`
             display: flex;
           `}
         >
@@ -83,112 +76,101 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
             withoutFirstStep={steps.length === 1}
           />
         </li>
-      )
+      );
     },
-    [stepState, steps]
-  )
+    [stepState, steps],
+  );
 
   const renderSteps = useCallback(() => {
     return steps.map((_, index) => {
-      const showDivider =
-        index < stepsCount && stepState[index].status !== STEP_WAITING
+      const showDivider = index < stepsCount && stepState[index].status !== STEP_WAITING;
 
-      return renderStep(index, showDivider)
-    })
-  }, [renderStep, steps, stepsCount, stepState])
+      return renderStep(index, showDivider);
+    });
+  }, [renderStep, steps, stepsCount, stepState]);
 
   const updateStepStatus = useCallback(
     status => {
       if (mounted()) {
-        updateStep(['setStatus', stepperStage, status])
+        updateStep(['setStatus', stepperStage, status]);
       }
     },
-    [stepperStage, mounted]
-  )
+    [stepperStage, mounted],
+  );
 
   const updateHash = useCallback(
     hash => {
       if (mounted()) {
-        updateStep(['setHash', stepperStage, hash])
+        updateStep(['setHash', stepperStage, hash]);
       }
     },
-    [stepperStage, mounted]
-  )
+    [stepperStage, mounted],
+  );
 
   const handleSign = useCallback(() => {
-    const { handleSign } = steps[stepperStage]
+    const { handleSign } = steps[stepperStage];
 
-    updateStepStatus(INITIAL_STATUS)
+    updateStepStatus(INITIAL_STATUS);
 
     // Pass state updates as render props to handleSign
     handleSign({
       setPrompting: () => updateStepStatus(STEP_PROMPTING),
       setWorking: () => updateStepStatus(STEP_WORKING),
       setError: () => {
-        updateStepStatus(STEP_ERROR)
+        updateStepStatus(STEP_ERROR);
       },
       setSuccess: () => {
-        updateStepStatus(STEP_SUCCESS)
+        updateStepStatus(STEP_SUCCESS);
 
         // Advance to next step or fire complete callback
         if (mounted()) {
           if (stepperStage === stepsCount) {
-            onComplete()
+            onComplete();
           } else {
-            setStepperStage(stepperStage + 1)
+            setStepperStage(stepperStage + 1);
           }
         }
       },
       setHash: hash => updateHash(hash),
-    })
-  }, [
-    mounted,
-    onComplete,
-    steps,
-    stepperStage,
-    stepsCount,
-    updateStepStatus,
-    updateHash,
-  ])
+    });
+  }, [mounted, onComplete, steps, stepperStage, stepsCount, updateStepStatus, updateHash]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (steps.length > 0) {
-      handleSign()
+      handleSign();
     }
-  }, [stepperStage])
+  }, [stepperStage]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const completed =
-    stepperStage === stepsCount &&
-    stepState[stepperStage].status === STEP_SUCCESS
+  const completed = stepperStage === stepsCount && stepState[stepperStage].status === STEP_SUCCESS;
 
   useEffect(() => {
-    let timeout
+    let timeout;
     if (completed && !onCompleteActions) {
-      timeout = setTimeout(() => close(), 2500)
+      timeout = setTimeout(() => close(), 2500);
     }
     return () => {
-      clearTimeout(timeout)
-    }
-  }, [close, completed, onCompleteActions])
+      clearTimeout(timeout);
+    };
+  }, [close, completed, onCompleteActions]);
 
   return (
     <div
-      css={`
+      css={css`
         margin-top: ${3.25 * GU}px;
       `}
     >
       <div
         ref={outerBoundsRef}
-        css={`
+        css={css`
           display: flex;
           justify-content: center;
         `}
       >
         <ul
           ref={innerBoundsRef}
-          css={`
+          css={css`
             padding: 0;
             display: flex;
             flex-direction: ${layout === 'collapsed' ? 'column' : 'row'};
@@ -198,10 +180,10 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
             <>
               {steps.length > 1 && (
                 <p
-                  css={`
+                  css={css`
                     text-align: center;
                     margin-bottom: ${2 * GU}px;
-                    color: ${theme.contentSecondary};
+                    color: ${theme.contentSecondary.toString()};
                   `}
                 >
                   {stepperStage + 1} out of {steps.length} transactions
@@ -209,7 +191,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
               )}
 
               <div
-                css={`
+                css={css`
                   position: relative;
                 `}
               >
@@ -236,8 +218,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
                   {currentStage => animProps => (
                     <AnimatedDiv
                       style={{
-                        position:
-                          currentStage === stepperStage ? 'static' : 'absolute',
+                        position: currentStage === stepperStage ? 'static' : 'absolute',
                         ...animProps,
                       }}
                     >
@@ -254,7 +235,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
       {completed && (
         <div>
           <Info
-            css={`
+            css={css`
               margin-top: ${5 * GU}px;
             `}
           >
@@ -262,7 +243,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           </Info>
           {onCompleteActions && (
             <div
-              css={`
+              css={css`
                 margin-top: ${3 * GU}px;
               `}
             >
@@ -272,7 +253,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 Stepper.propTypes = {
@@ -287,14 +268,14 @@ Stepper.propTypes = {
         [STEP_SUCCESS]: PropTypes.string,
         [STEP_ERROR]: PropTypes.string,
       }),
-    })
+    }),
   ).isRequired,
   onComplete: PropTypes.func,
   onCompleteActions: PropTypes.node,
-}
+};
 
 Stepper.defaultProps = {
   onComplete: noop,
-}
+};
 
-export default Stepper
+export default Stepper;

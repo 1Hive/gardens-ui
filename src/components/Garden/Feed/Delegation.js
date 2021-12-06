@@ -1,24 +1,18 @@
-import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
-import {
-  Box,
-  Button,
-  EthIdenticon,
-  GU,
-  Link,
-  LoadingRing,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import IdentityBadge from '@components/IdentityBadge'
-import useProfile from '@hooks/useProfile'
-import { useSupporterSubscription } from '@hooks/useSubscriptions'
-import { useWallet } from '@providers/Wallet'
+/** @jsx jsx */
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router';
+import { Box, Button, EthIdenticon, GU, Link, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
+import IdentityBadge from '@components/IdentityBadge';
+import useProfile from '@hooks/useProfile';
+import { useSupporterSubscription } from '@hooks/useSubscriptions';
+import { useWallet } from '@providers/Wallet';
+
+import { css, jsx } from '@emotion/react';
 
 function Delegation({ onRemoveDelegate, onSetDelegate }) {
-  const { account } = useWallet()
-  const theme = useTheme()
-  const [supporter, loading] = useSupporterSubscription(account)
+  const { account } = useWallet();
+  const theme = useTheme();
+  const [supporter, loading] = useSupporterSubscription(account);
 
   return (
     <Box>
@@ -26,19 +20,19 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
         <LoadingRing />
       ) : (
         <div
-          css={`
+          css={css`
             text-align: center;
           `}
         >
           <div
-            css={`
+            css={css`
               ${textStyle('title4')};
             `}
           >
             Your delegate
           </div>
           <div
-            css={`
+            css={css`
               margin-top: ${2 * GU}px;
             `}
           >
@@ -50,21 +44,21 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
               />
             ) : (
               <div
-                css={`
+                css={css`
                   text-align: center;
                 `}
               >
                 <div
-                  css={`
+                  css={css`
                     ${textStyle('body1')};
                   `}
                 >
                   None
                 </div>
                 <span
-                  css={`
+                  css={css`
                     ${textStyle('body3')};
-                    color: ${theme.contentSecondary};
+                    color: ${theme.contentSecondary.toString()};
                   `}
                 >
                   (You vote for yourself)
@@ -74,7 +68,7 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
                   label="Delegate voting"
                   wide
                   onClick={onSetDelegate}
-                  css={`
+                  css={css`
                     margin-top: ${3 * GU}px;
                   `}
                 />
@@ -84,23 +78,23 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
         </div>
       )}
     </Box>
-  )
+  );
 }
 
 function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
-  const theme = useTheme()
-  const history = useHistory()
-  const profile = useProfile(representative.address)
+  const theme = useTheme();
+  const history = useHistory();
+  const profile = useProfile(representative.address);
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${representative.address}`)
-  }, [history, representative])
+    history.push(`/profile?account=${representative.address}`);
+  }, [history, representative]);
 
   return (
     <div>
       <div
         onClick={handleViewProfile}
-        css={`
+        css={css`
           margin-bottom: ${1 * GU}px;
           cursor: pointer;
         `}
@@ -111,7 +105,7 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
             height="72"
             width="72"
             alt=""
-            css={`
+            css={css`
               border-radius: 50%;
               display: block;
               object-fit: cover;
@@ -119,16 +113,12 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
             `}
           />
         ) : (
-          <EthIdenticon
-            address={representative.address}
-            radius={50}
-            scale={3}
-          />
+          <EthIdenticon address={representative.address} radius={50} scale={3} />
         )}
       </div>
       {profile?.name && (
         <div
-          css={`
+          css={css`
             ${textStyle('body1')};
           `}
         >
@@ -137,7 +127,7 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
       )}
       <IdentityBadge entity={representative.address} withProfile={false} />
       <div
-        css={`
+        css={css`
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -146,15 +136,15 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
         <Link onClick={onSetDelegate}>Change</Link>
         <Link
           onClick={onRemoveDelegate}
-          css={`
-            color: ${theme.negative};
-          `}
+          style={{
+            color: theme.negative.toString(),
+          }}
         >
           Remove
         </Link>
       </div>
     </div>
-  )
+  );
 }
 
-export default Delegation
+export default Delegation;

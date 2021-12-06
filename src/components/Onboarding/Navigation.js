@@ -1,30 +1,32 @@
-import React, { useRef, useImperativeHandle } from 'react'
-import PropTypes from 'prop-types'
-import { Button, IconArrowLeft, GU, useTheme } from '@1hive/1hive-ui'
+import React, { useRef, useImperativeHandle } from 'react';
+import PropTypes from 'prop-types';
+import { Button, IconArrowLeft, GU, useTheme } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const Navigation = React.forwardRef(function Navigation(
   { backEnabled, backLabel, nextEnabled, nextLabel, onBack, onNext },
-  ref
+  ref,
 ) {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const nextRef = useRef()
+  const nextRef = useRef();
 
   useImperativeHandle(
     ref,
     () => ({
       focusNext: () => {
         if (nextRef.current) {
-          nextRef.current.focus()
+          nextRef.current.focus();
         }
       },
     }),
-    []
-  )
+    [],
+  );
 
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         width: 100%;
         justify-content: space-between;
@@ -34,8 +36,8 @@ const Navigation = React.forwardRef(function Navigation(
         disabled={!backEnabled}
         icon={
           <IconArrowLeft
-            css={`
-              color: ${theme.accent};
+            css={css`
+              color: ${theme.accent.toString()};
             `}
           />
         }
@@ -49,13 +51,13 @@ const Navigation = React.forwardRef(function Navigation(
         mode="strong"
         onClick={onNext}
         type="submit"
-        css={`
+        css={css`
           margin-left: ${1.5 * GU}px;
         `}
       />
     </div>
-  )
-})
+  );
+});
 
 Navigation.propTypes = {
   backEnabled: PropTypes.bool.isRequired,
@@ -64,13 +66,13 @@ Navigation.propTypes = {
   nextLabel: PropTypes.string.isRequired,
   onBack: PropTypes.func.isRequired,
   onNext: PropTypes.func.isRequired,
-}
+};
 
 Navigation.defaultProps = {
   backEnabled: true,
   backLabel: 'Back',
   nextEnabled: true,
   nextLabel: 'Next',
-}
+};
 
-export default Navigation
+export default Navigation;

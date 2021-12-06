@@ -1,13 +1,16 @@
-import React from 'react'
-import { useLayout, GU } from '@1hive/1hive-ui'
+import React from 'react';
+import { useLayout, GU } from '@1hive/1hive-ui';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function LayoutColumns({ primary, secondary, inverted }) {
-  const { layoutName } = useLayout()
-  const oneColumn = layoutName === 'small' || layoutName === 'medium'
+  const { layoutName } = useLayout();
+  const oneColumn = layoutName === 'small' || layoutName === 'medium';
 
   const primaryContent = (
     <div
-      css={`
+      css={css`
         flex-grow: 1;
         min-width: 0;
         margin-left: ${!oneColumn && inverted ? 2 * GU : 0}px;
@@ -16,11 +19,11 @@ function LayoutColumns({ primary, secondary, inverted }) {
     >
       {primary}
     </div>
-  )
+  );
 
   const secondaryContent = (
     <div
-      css={`
+      css={css`
         flex-shrink: 0;
         flex-grow: 0;
         width: ${oneColumn ? '100%' : `306px`};
@@ -30,18 +33,18 @@ function LayoutColumns({ primary, secondary, inverted }) {
     >
       {secondary}
     </div>
-  )
+  );
 
   return (
     <div
-      css={`
+      css={css`
         display: ${oneColumn ? 'block' : 'flex'};
       `}
     >
       {inverted ? secondaryContent : primaryContent}
       {inverted ? primaryContent : secondaryContent}
     </div>
-  )
+  );
 }
 
-export default LayoutColumns
+export default LayoutColumns;

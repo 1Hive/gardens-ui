@@ -1,14 +1,16 @@
-import React from 'react'
-import { Link, GU, useTheme } from '@1hive/1hive-ui'
+import React from 'react';
+import { Link, GU, useTheme } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function MenuItem({ active, path, label, src }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <li
-      css={`
+      css={css`
         position: relative;
-        background: ${active ? 'rgb(212 251 216)' : theme.surface};
+        background: ${active ? 'rgb(212 251 216)' : theme.surface.toString()};
         height: ${8.5 * GU}px;
         width: 100%;
         ${label &&
@@ -27,7 +29,7 @@ function MenuItem({ active, path, label, src }) {
     >
       {active && (
         <div
-          css={`
+          css={css`
             position: absolute;
             top: 0;
             bottom: 0;
@@ -38,7 +40,7 @@ function MenuItem({ active, path, label, src }) {
         />
       )}
       <div
-        css={`
+        css={css`
           display: flex;
           padding: ${1.5 * GU}px;
           ${!active &&
@@ -50,25 +52,25 @@ function MenuItem({ active, path, label, src }) {
         <Link
           external={false}
           href={path}
-          css={`
-            display: block;
-          `}
+          style={{
+            display: 'block',
+          }}
         >
           <img
             src={src}
             height={48}
             width={48}
             alt=""
-            css={`
+            css={css`
               display: block;
-              border: 2px solid ${theme.surface};
+              border: 2px solid ${theme.surface.toString()};
               border-radius: 50%;
             `}
           />
         </Link>
       </div>
     </li>
-  )
+  );
 }
 
-export default MenuItem
+export default MenuItem;

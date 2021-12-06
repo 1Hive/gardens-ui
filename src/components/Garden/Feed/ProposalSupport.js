@@ -1,69 +1,65 @@
-import React from 'react'
-import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
+/** @jsx jsx */
+import React from 'react';
+import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui';
 
-import { ConvictionBar } from '../ConvictionVisuals'
-import SummaryBar from '../DecisionDetail/SummaryBar' // TODO: Move to root component folder
-import SummaryRow from '../DecisionDetail/SummaryRow'
+import { ConvictionBar } from '../ConvictionVisuals';
+import SummaryBar from '../DecisionDetail/SummaryBar'; // TODO: Move to root component folder
+import SummaryRow from '../DecisionDetail/SummaryRow';
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-import { ProposalTypes } from '@/types'
-import { safeDiv } from '@utils/math-utils'
-import { getConnectedAccountCast } from '@utils/vote-utils'
-import { VOTE_NAY, VOTE_YEA } from '@/constants'
+import { useGardenState } from '@providers/GardenState';
+import { useWallet } from '@providers/Wallet';
+import { ProposalTypes } from '@/types';
+import { safeDiv } from '@utils/math-utils';
+import { getConnectedAccountCast } from '@utils/vote-utils';
+import { VOTE_NAY, VOTE_YEA } from '@/constants';
+import { css, jsx } from '@emotion/react';
 
 function ProposalSupport({ proposal }) {
-  const theme = useTheme()
-  const { config } = useGardenState()
-  const { requestToken } = config.conviction
+  const theme = useTheme();
+  const { config } = useGardenState();
+  const { requestToken } = config.conviction;
 
   return (
     <div
-      css={`
+      css={css`
         margin-bottom: ${2 * GU}px;
       `}
     >
       <div
-        css={`
+        css={css`
           ${textStyle('label2')};
-          color: ${theme.contentSecondary};
+          color: ${theme.contentSecondary.toString()};
         `}
       >
         Current {proposal.type !== ProposalTypes.Decision ? 'support' : 'votes'}
       </div>
       {proposal.type !== ProposalTypes.Decision ? (
         <div>
-          <ConvictionBar
-            proposal={proposal}
-            withThreshold={Boolean(requestToken)}
-          />
+          <ConvictionBar proposal={proposal} withThreshold={Boolean(requestToken)} />
         </div>
       ) : (
         <DecisionSummaryBar proposal={proposal} />
       )}
     </div>
-  )
+  );
 }
 
 function DecisionSummaryBar({ proposal }) {
-  const theme = useTheme()
-  const { account: connectedAccount } = useWallet()
-  const { minAcceptQuorum, nay, yea } = proposal
+  const theme = useTheme();
+  const { account: connectedAccount } = useWallet();
+  const { minAcceptQuorum, nay, yea } = proposal;
 
-  const totalVotes = parseFloat(yea) + parseFloat(nay)
-  const yeasPct = safeDiv(parseFloat(yea), totalVotes)
-  const naysPct = safeDiv(parseFloat(nay), totalVotes)
+  const totalVotes = parseFloat(yea) + parseFloat(nay);
+  const yeasPct = safeDiv(parseFloat(yea), totalVotes);
+  const naysPct = safeDiv(parseFloat(nay), totalVotes);
 
-  const connectedAccountCast = getConnectedAccountCast(
-    proposal,
-    connectedAccount
-  )
+  const connectedAccountCast = getConnectedAccountCast(proposal, connectedAccount);
 
   const YouTag = (
     <div>
       <Tag>You</Tag>
     </div>
-  )
+  );
 
   return (
     <div>
@@ -71,34 +67,37 @@ function DecisionSummaryBar({ proposal }) {
         positiveSize={yeasPct}
         negativeSize={naysPct}
         requiredSize={minAcceptQuorum}
-        css="margin: 0; height: 24px;"
+        css={css`
+          margin: 0;
+          height: 24px;
+        `}
       />
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           justify-content: space-between;
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: flex-start;
             width: auto;
           `}
         >
           <SummaryRow
-            color={theme.positive}
+            color={theme.positive.toString()}
             label="Yes"
             pct={Math.floor(yeasPct * 100)}
-            css={`
+            css={css`
               margin-right: ${1 * GU}px;
             `}
           />
           {connectedAccountCast.vote === VOTE_YEA && YouTag}
         </div>
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: flex-start;
             width: auto;
@@ -106,17 +105,17 @@ function DecisionSummaryBar({ proposal }) {
         >
           {connectedAccountCast.vote === VOTE_NAY && YouTag}
           <SummaryRow
-            color={theme.negative}
+            color={theme.negative.toString()}
             label="No"
             pct={Math.floor(naysPct * 100)}
-            css={`
+            css={css`
               margin-left: ${1 * GU}px;
             `}
           />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProposalSupport
+export default ProposalSupport;

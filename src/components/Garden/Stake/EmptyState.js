@@ -1,7 +1,9 @@
-import React from 'react'
-import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
-import tokenIcon from './assets/connect-icon.svg'
-import LayoutColumns from '../Layout/LayoutColumns'
+import React from 'react';
+import { Card, GU, Header, textStyle } from '@1hive/1hive-ui';
+import tokenIcon from './assets/connect-icon.svg';
+import LayoutColumns from '../Layout/LayoutColumns';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 export default function EmptyState({ icon }) {
   return (
@@ -10,7 +12,7 @@ export default function EmptyState({ icon }) {
       <LayoutColumns
         primary={
           <Card
-            css={`
+            css={css`
               width: 100%;
               height: 100%;
               display: flex;
@@ -23,14 +25,14 @@ export default function EmptyState({ icon }) {
             <img
               src={icon}
               alt=""
-              css={`
+              css={css`
                 max-width: ${22 * GU}px;
                 height: auto;
                 margin: ${4 * GU}px 0;
               `}
             />
             <span
-              css={`
+              css={css`
                 ${textStyle('title3')};
               `}
             >
@@ -41,7 +43,7 @@ export default function EmptyState({ icon }) {
         secondary={
           <>
             <Card
-              css={`
+              css={css`
                 width: 100%;
                 height: auto;
                 text-align: center;
@@ -52,13 +54,13 @@ export default function EmptyState({ icon }) {
                 src={tokenIcon}
                 width={6.5 * GU}
                 height={6.5 * GU}
-                css={`
+                css={css`
                   margin: auto;
                   margin-bottom: ${1 * GU}px;
                 `}
               />
               <span
-                css={`
+                css={css`
                   font-weight: 300;
                   ${textStyle('body2')};
                 `}
@@ -71,5 +73,5 @@ export default function EmptyState({ icon }) {
         inverted
       />
     </>
-  )
+  );
 }

@@ -1,61 +1,59 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  ButtonIcon,
-  GU,
-  Header,
-  IconClose,
-  Layout,
-  Root,
-  Tabs,
-  springs,
-  useTheme,
-  useViewport,
-} from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
-import { useEsc } from '../../../hooks/useKeyboardArrows'
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ButtonIcon, GU, Header, IconClose, Layout, Root, Tabs, springs, useTheme, useViewport } from '@1hive/1hive-ui';
+import { Transition, animated } from 'react-spring/renderprops';
+import { useEsc } from '../../../hooks/useKeyboardArrows';
 
-import AppsAddresses from './AppsAddresses'
-import EVMExecutor from './EVMExecutor'
+import AppsAddresses from './AppsAddresses';
+import EVMExecutor from './EVMExecutor';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const SECTIONS = new Map([
   ['generalInfo', 'General Info'],
   ['evmExecutor', 'EVM Executor'],
-])
-const PATHS = Array.from(SECTIONS.keys())
-const VALUES = Array.from(SECTIONS.values())
+]);
+const PATHS = Array.from(SECTIONS.keys());
+const VALUES = Array.from(SECTIONS.values());
 
-const GENERAL_INFO_INDEX = 0
-const EVM_EXECUTOR_INDEX = 1
+const GENERAL_INFO_INDEX = 0;
+const EVM_EXECUTOR_INDEX = 1;
 
-const AnimatedDiv = animated.div
+const AnimatedDiv = animated.div;
 
 function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
-  useEsc(onClose)
+  useEsc(onClose);
 
-  const container = useRef()
+  const container = useRef();
   useEffect(() => {
     if (container.current) {
-      container.current.focus()
+      container.current.focus();
     }
-  }, [])
+  }, []);
 
   return (
-    <div ref={container} tabIndex="0" css="outline: 0">
-      <Layout css="z-index: 2">
+    <div
+      ref={container}
+      tabIndex="0"
+      css={css`
+        outline: 0;
+      `}
+    >
+      <Layout
+        css={css`
+          z-index: 2;
+        `}
+      >
         <Close compact={compact} onClick={onClose} />
         <Header
           primary="Global preferences"
-          css={`
+          css={css`
             padding-top: ${!compact ? 10 * GU : 0}px;
           `}
         />
         <Root.Provider>
           <React.Fragment>
-            <Tabs
-              items={VALUES}
-              onChange={onNavigation}
-              selected={sectionIndex}
-            />
+            <Tabs items={VALUES} onChange={onNavigation} selected={sectionIndex} />
 
             {sectionIndex === GENERAL_INFO_INDEX && <AppsAddresses />}
             {sectionIndex === EVM_EXECUTOR_INDEX && <EVMExecutor />}
@@ -63,36 +61,36 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
         </Root.Provider>
       </Layout>
     </div>
-  )
+  );
 }
 
 function useGlobalPreferences({ path = '', onScreenChange }) {
-  const [sectionIndex, setSectionIndex] = useState(null)
+  const [sectionIndex, setSectionIndex] = useState(null);
   const handleNavigation = useCallback(
     index => {
-      onScreenChange(PATHS[index])
+      onScreenChange(PATHS[index]);
     },
-    [onScreenChange]
-  )
+    [onScreenChange],
+  );
 
   useEffect(() => {
     if (!path) {
-      setSectionIndex(null)
-      return
+      setSectionIndex(null);
+      return;
     }
-    const index = PATHS.findIndex(item => path.startsWith(item))
+    const index = PATHS.findIndex(item => path.startsWith(item));
 
-    setSectionIndex(index === -1 ? null : index)
-  }, [path, sectionIndex])
+    setSectionIndex(index === -1 ? null : index);
+  }, [path, sectionIndex]);
 
-  return { sectionIndex, handleNavigation }
+  return { sectionIndex, handleNavigation };
 }
 
 function Close({ compact, onClick }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <div
-      css={`
+      css={css`
         position: absolute;
         right: 0;
         padding-top: ${2.5 * GU}px;
@@ -107,24 +105,24 @@ function Close({ compact, onClick }) {
     >
       <ButtonIcon onClick={onClick} label="Close">
         <IconClose
-          css={`
-            color: ${theme.surfaceIcon};
+          css={css`
+            color: ${theme.surfaceIcon.toString()};
           `}
         />
       </ButtonIcon>
     </div>
-  )
+  );
 }
 
 function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
   const { sectionIndex, handleNavigation } = useGlobalPreferences({
     path,
     onScreenChange,
-  })
+  });
 
-  const { below } = useViewport()
-  const compact = below('medium')
-  const theme = useTheme()
+  const { below } = useViewport();
+  const compact = below('medium');
+  const theme = useTheme();
 
   return (
     <Transition
@@ -149,10 +147,10 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
                 v => `
                   translate3d(0, ${(1 - v) * 10}px, 0)
                   scale3d(${1 - (1 - v) * 0.03}, ${1 - (1 - v) * 0.03}, 1)
-                `
+                `,
               ),
             }}
-            css={`
+            css={css`
               position: fixed;
               top: 0;
               bottom: 0;
@@ -161,8 +159,8 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
               overflow: auto;
               min-width: ${45 * GU}px;
               padding-bottom: ${compact ? 2 : 0 * GU}px;
-              border-top: 2px solid ${theme.accent};
-              background: ${theme.surface};
+              border-top: 2px solid ${theme.accent.toString()};
+              background: ${theme.surface.toString()};
             `}
           >
             <GlobalPreferences
@@ -176,7 +174,7 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
       /* eslint-enable react/prop-types */
       }
     </Transition>
-  )
+  );
 }
 
-export default React.memo(AnimatedGlobalPreferences)
+export default React.memo(AnimatedGlobalPreferences);

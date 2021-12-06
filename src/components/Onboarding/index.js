@@ -1,36 +1,33 @@
-import React from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
-import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
-import Deployment from './Deployment/Deployment'
-import { ChartsProvider } from '@providers/Charts'
-import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
-import Setup from './Setup'
-
-import { STATUS_GARDEN_SETUP } from './statuses'
+import React from 'react';
+import { animated, Transition } from 'react-spring/renderprops';
+import { RootPortal, springs, useTheme } from '@1hive/1hive-ui';
+import Deployment from './Deployment/Deployment';
+import { ChartsProvider } from '@providers/Charts';
+import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding';
+import Setup from './Setup';
+import { STATUS_GARDEN_SETUP } from './statuses';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function Onboarding({ onClose, visible }) {
-  const { status } = useOnboardingState()
+  const { status } = useOnboardingState();
 
   return (
     <AnimatedSlider visible={visible}>
       <div
-        css={`
+        css={css`
           display: flex;
           height: 100%;
         `}
       >
-        {status === STATUS_GARDEN_SETUP ? (
-          <Setup onClose={onClose} />
-        ) : (
-          <Deployment />
-        )}
+        {status === STATUS_GARDEN_SETUP ? <Setup onClose={onClose} /> : <Deployment />}
       </div>
     </AnimatedSlider>
-  )
+  );
 }
 
 function AnimatedSlider({ children, visible }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <RootPortal>
       <Transition
@@ -54,7 +51,7 @@ function AnimatedSlider({ children, visible }) {
                   left: '0',
                   right: '0',
                   zIndex: '4',
-                  background: theme.overlay.alpha(0.9),
+                  background: theme.overlay.alpha(0.9).toString(),
                 }}
               >
                 <animated.div
@@ -68,10 +65,10 @@ function AnimatedSlider({ children, visible }) {
                   }}
                 >
                   <div
-                    css={`
+                    css={css`
                       height: 100vh;
-                      background-color: ${theme.surface};
-                      border-top: 4px solid ${theme.accent};
+                      background-color: ${theme.surface.toString()};
+                      border-top: 4px solid ${theme.accent.toString()};
                     `}
                   >
                     {children}
@@ -83,7 +80,7 @@ function AnimatedSlider({ children, visible }) {
         }
       </Transition>
     </RootPortal>
-  )
+  );
 }
 
 export default ({ ...props }) => (
@@ -92,4 +89,4 @@ export default ({ ...props }) => (
       <Onboarding {...props} />
     </ChartsProvider>
   </OnboardingProvider>
-)
+);

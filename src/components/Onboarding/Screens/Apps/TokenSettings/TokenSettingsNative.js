@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   EthIdenticon,
@@ -13,101 +13,82 @@ import {
   RADIUS,
   TextInput,
   useTheme,
-} from '@1hive/1hive-ui'
-import GnosisSafeField from './GnosisSafeField'
-import Header from '../../../kit/Header'
-import Navigation from '../../../Navigation'
-import { useOnboardingState } from '@providers/Onboarding'
+} from '@1hive/1hive-ui';
+import GnosisSafeField from './GnosisSafeField';
+import Header from '../../../kit/Header';
+import Navigation from '../../../Navigation';
+import { useOnboardingState } from '@providers/Onboarding';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function useFieldsLayout() {
   return `
     display: grid;
     grid-template-columns: auto ${14.5 * GU}px;
     grid-column-gap: ${1.5 * GU}px;
-  `
+  `;
 }
 
 function validateDuplicateAddresses(members) {
-  const validAddresses = members
-    .map(([address]) => address.toLowerCase())
-    .filter(address => isAddress(address))
+  const validAddresses = members.map(([address]) => address.toLowerCase()).filter(address => isAddress(address));
 
-  return validAddresses.length === new Set(validAddresses).size
+  return validAddresses.length === new Set(validAddresses).size;
 }
 
-function validationError(
-  tokenName,
-  tokenSymbol,
-  members,
-  gnosisSafeAddress,
-  gnosisSafeChecked
-) {
+function validationError(tokenName, tokenSymbol, members, gnosisSafeAddress, gnosisSafeChecked) {
   if (members.some(([address]) => !isAddress(address))) {
-    return 'Holders: Every address you provide should be a valid address.'
+    return 'Holders: Every address you provide should be a valid address.';
   }
   if (members.some(([account, stake]) => !(stake > 0))) {
-    return 'Holders: Every account has to have a positive balance.'
+    return 'Holders: Every account has to have a positive balance.';
   }
   if (!validateDuplicateAddresses(members)) {
-    return 'One of your members is using the same address than another member. Please ensure every member address is unique.'
+    return 'One of your members is using the same address than another member. Please ensure every member address is unique.';
   }
   if (!tokenName.trim()) {
-    return 'Please add a token name.'
+    return 'Please add a token name.';
   }
   if (!tokenSymbol) {
-    return 'Please add a token symbol.'
+    return 'Please add a token symbol.';
   }
   if (gnosisSafeChecked && !isAddress(gnosisSafeAddress)) {
-    return 'The Gnosis safe address you provided is invalid.'
+    return 'The Gnosis safe address you provided is invalid.';
   }
-  return null
+  return null;
 }
 
 function TokenSettingsNative() {
-  const theme = useTheme()
-  const fieldsLayout = useFieldsLayout()
+  const theme = useTheme();
+  const fieldsLayout = useFieldsLayout();
 
-  const {
-    config,
-    onBack,
-    onNext,
-    steps,
-    step,
-    onConfigChange,
-  } = useOnboardingState()
+  const { config, onBack, onNext, steps, step, onConfigChange } = useOnboardingState();
 
-  const [formError, setFormError] = useState()
-  const [tokenName, setTokenName] = useState(config.tokens.name)
-  const [tokenSymbol, setTokenSymbol] = useState(config.tokens.symbol)
-  const [members, setMembers] = useState(
-    config.tokens.holders.length === 0 ? [['', 0]] : config.tokens.holders
-  )
-  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(
-    config.tokens.gnosisSafe
-  )
-  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(
-    Boolean(config.tokens.gnosisSafe)
-  )
+  const [formError, setFormError] = useState();
+  const [tokenName, setTokenName] = useState(config.tokens.name);
+  const [tokenSymbol, setTokenSymbol] = useState(config.tokens.symbol);
+  const [members, setMembers] = useState(config.tokens.holders.length === 0 ? [['', 0]] : config.tokens.holders);
+  const [gnosisSafeAddress, setGnosisSafeAddress] = useState(config.tokens.gnosisSafe);
+  const [gnosisSafeChecked, setGnosisSafeChecked] = useState(Boolean(config.tokens.gnosisSafe));
 
   const handleTokenNameChange = useCallback(event => {
-    setFormError(null)
-    setTokenName(event.target.value)
-  }, [])
+    setFormError(null);
+    setTokenName(event.target.value);
+  }, []);
 
   const handleTokenSymbolChange = useCallback(event => {
-    setFormError(null)
-    setTokenSymbol(event.target.value.trim().toUpperCase())
-  }, [])
+    setFormError(null);
+    setTokenSymbol(event.target.value.trim().toUpperCase());
+  }, []);
 
-  const membersRef = useRef()
-  const [focusLastMemberNext, setFocusLastMemberNext] = useState(false)
+  const membersRef = useRef();
+  const [focusLastMemberNext, setFocusLastMemberNext] = useState(false);
 
   useEffect(() => {
     if (!focusLastMemberNext || !membersRef.current) {
-      return
+      return;
     }
 
-    setFocusLastMemberNext(false)
+    setFocusLastMemberNext(false);
 
     // This could be managed in individual MemberField components, but using
     // the container with a .member class makes it simpler to manage, since we
@@ -116,69 +97,59 @@ function TokenSettingsNative() {
     //   - A field is being removed.
     //   - The first field is being emptied.
     //
-    const elts = membersRef.current.querySelectorAll('.member')
+    const elts = membersRef.current.querySelectorAll('.member');
     if (elts.length > 0) {
-      elts[elts.length - 1].querySelector('input').focus()
+      elts[elts.length - 1].querySelector('input').focus();
     }
-  }, [focusLastMemberNext])
+  }, [focusLastMemberNext]);
 
   const focusLastMember = useCallback(() => {
-    setFocusLastMemberNext(true)
-  }, [])
+    setFocusLastMemberNext(true);
+  }, []);
 
   const addMember = useCallback(() => {
-    setFormError(null)
-    setMembers(members => [...members, ['', 0]])
-    focusLastMember()
-  }, [focusLastMember])
+    setFormError(null);
+    setMembers(members => [...members, ['', 0]]);
+    focusLastMember();
+  }, [focusLastMember]);
 
   const removeMember = useCallback(
     index => {
-      setFormError(null)
+      setFormError(null);
       setMembers(members =>
         members.length < 2
           ? // When the remove button of the last field
             // gets clicked, we only empty the field.
             [['', 0]]
-          : members.filter((_, i) => i !== index)
-      )
-      focusLastMember()
+          : members.filter((_, i) => i !== index),
+      );
+      focusLastMember();
     },
-    [focusLastMember]
-  )
+    [focusLastMember],
+  );
 
   const updateMember = useCallback((index, updatedAccount, updatedStake) => {
-    setFormError(null)
-    setMembers(members =>
-      members.map((member, i) =>
-        i === index ? [updatedAccount, updatedStake] : member
-      )
-    )
-  }, [])
+    setFormError(null);
+    setMembers(members => members.map((member, i) => (i === index ? [updatedAccount, updatedStake] : member)));
+  }, []);
 
   const handleGnosisSafeAddressChange = useCallback(newAddress => {
-    setFormError(null)
-    setGnosisSafeAddress(newAddress)
-  }, [])
+    setFormError(null);
+    setGnosisSafeAddress(newAddress);
+  }, []);
 
   const handleGnosisSafeCheckChange = useCallback(checked => {
-    setGnosisSafeChecked(checked)
-  }, [])
+    setGnosisSafeChecked(checked);
+  }, []);
 
   const handleNext = useCallback(
     event => {
-      event.preventDefault()
+      event.preventDefault();
 
-      const error = validationError(
-        tokenName,
-        tokenSymbol,
-        members,
-        gnosisSafeAddress,
-        gnosisSafeChecked
-      )
+      const error = validationError(tokenName, tokenSymbol, members, gnosisSafeAddress, gnosisSafeChecked);
       if (error) {
-        setFormError(error)
-        return
+        setFormError(error);
+        return;
       }
 
       onConfigChange('tokens', {
@@ -186,37 +157,25 @@ function TokenSettingsNative() {
         symbol: tokenSymbol,
         holders: members,
         gnosisSafe: gnosisSafeAddress,
-      })
-      onNext()
+      });
+      onNext();
     },
-    [
-      gnosisSafeAddress,
-      gnosisSafeChecked,
-      members,
-      onConfigChange,
-      onNext,
-      tokenName,
-      tokenSymbol,
-    ]
-  )
+    [gnosisSafeAddress, gnosisSafeChecked, members, onConfigChange, onNext, tokenName, tokenSymbol],
+  );
 
-  const hideRemoveButton = members.length < 2 && !members[0]
+  const hideRemoveButton = members.length < 2 && !members[0];
 
   return (
     <form
-      css={`
+      css={css`
         display: grid;
       `}
     >
       <div>
-        <Header
-          title="Garden Tokenomics"
-          subtitle="Garden token"
-          thirdtitle="Choose the settings of your token"
-        />
+        <Header title="Garden Tokenomics" subtitle="Garden token" thirdtitle="Choose the settings of your token" />
 
         <div
-          css={`
+          css={css`
             ${fieldsLayout};
           `}
         >
@@ -225,8 +184,8 @@ function TokenSettingsNative() {
               <React.Fragment>
                 Token name
                 <Help hint="What is Token Name?">
-                  <strong>Token Name</strong> is the name you can assign to the
-                  token that will be minted when creating this garden.
+                  <strong>Token Name</strong> is the name you can assign to the token that will be minted when creating
+                  this garden.
                 </Help>
               </React.Fragment>
             }
@@ -247,21 +206,14 @@ function TokenSettingsNative() {
               <React.Fragment>
                 Token symbol
                 <Help hint="What is Token Symbol?">
-                  <strong>Token Symbol</strong> or ticker is a shortened name
-                  (typically in capital letters) that refers to a token on a
-                  trading platform. For example: HNY.
+                  <strong>Token Symbol</strong> or ticker is a shortened name (typically in capital letters) that refers
+                  to a token on a trading platform. For example: HNY.
                 </Help>
               </React.Fragment>
             }
           >
             {({ id }) => (
-              <TextInput
-                id={id}
-                onChange={handleTokenSymbolChange}
-                value={tokenSymbol}
-                placeholder="MCT"
-                wide
-              />
+              <TextInput id={id} onChange={handleTokenSymbolChange} value={tokenSymbol} placeholder="MCT" wide />
             )}
           </Field>
         </div>
@@ -269,7 +221,7 @@ function TokenSettingsNative() {
       <Field
         label={
           <div
-            css={`
+            css={css`
               width: 100%;
               ${fieldsLayout}
             `}
@@ -295,8 +247,8 @@ function TokenSettingsNative() {
         <Button
           icon={
             <IconPlus
-              css={`
-                color: ${theme.accent};
+              css={css`
+                color: ${theme.accent.toString()};
               `}
             />
           }
@@ -313,7 +265,7 @@ function TokenSettingsNative() {
       {formError && (
         <Info
           mode="error"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
@@ -322,13 +274,12 @@ function TokenSettingsNative() {
       )}
 
       <Info
-        css={`
+        css={css`
           margin-bottom: ${4 * GU}px;
         `}
       >
-        Add seed token holders to define the initial token distribution. These
-        settings will determine the name, symbol, and distribution of the token
-        that will govern your community.
+        Add seed token holders to define the initial token distribution. These settings will determine the name, symbol,
+        and distribution of the token that will govern your community.
       </Info>
 
       <Navigation
@@ -339,45 +290,38 @@ function TokenSettingsNative() {
         onNext={handleNext}
       />
     </form>
-  )
+  );
 }
 
-function MemberField({
-  index,
-  member,
-  hideRemoveButton,
-  onUpdate,
-  onRemove,
-  displayStake,
-}) {
-  const theme = useTheme()
-  const fieldsLayout = useFieldsLayout()
+function MemberField({ index, member, hideRemoveButton, onUpdate, onRemove, displayStake }) {
+  const theme = useTheme();
+  const fieldsLayout = useFieldsLayout();
 
-  const [account, stake] = member
+  const [account, stake] = member;
 
   const handleRemove = useCallback(() => {
-    onRemove(index)
-  }, [onRemove, index])
+    onRemove(index);
+  }, [onRemove, index]);
 
   const handleAccountChange = useCallback(
     event => {
-      onUpdate(index, event.target.value, stake)
+      onUpdate(index, event.target.value, stake);
     },
-    [onUpdate, stake, index]
-  )
+    [onUpdate, stake, index],
+  );
 
   const handleStakeChange = useCallback(
     event => {
-      const value = parseInt(event.target.value, 10)
-      onUpdate(index, account, isNaN(value) ? -1 : value)
+      const value = parseInt(event.target.value, 10);
+      onUpdate(index, account, isNaN(value) ? -1 : value);
     },
-    [onUpdate, account, index]
-  )
+    [onUpdate, account, index],
+  );
 
   return (
     <div
       className="member"
-      css={`
+      css={css`
         ${fieldsLayout};
         position: relative;
         margin-bottom: ${1.5 * GU}px;
@@ -386,14 +330,18 @@ function MemberField({
       <div>
         <TextInput
           adornment={
-            <span css="transform: translateY(1px)">
+            <span
+              css={css`
+                transform: translateY(1px);
+              `}
+            >
               {!hideRemoveButton && (
                 <Button
                   display="icon"
                   icon={
                     <IconTrash
-                      css={`
-                        color: ${theme.negative};
+                      css={css`
+                        color: ${theme.negative.toString()};
                       `}
                     />
                   }
@@ -410,12 +358,12 @@ function MemberField({
           placeholder="Ethereum address"
           value={account}
           wide
-          css={`
+          css={css`
             padding-left: ${4.5 * GU}px;
           `}
         />
         <div
-          css={`
+          css={css`
             position: absolute;
             top: ${1 * GU}px;
             left: ${1 * GU}px;
@@ -425,37 +373,27 @@ function MemberField({
             <EthIdenticon address={account} radius={RADIUS} />
           ) : (
             <div
-              css={`
+              css={css`
                 width: ${3 * GU}px;
                 height: ${3 * GU}px;
-                background: ${theme.disabled};
+                background: ${theme.disabled.toString()};
                 border-radius: ${RADIUS}px;
               `}
             />
           )}
         </div>
       </div>
-      <div>
-        {displayStake && (
-          <TextInput
-            onChange={handleStakeChange}
-            value={stake === -1 ? '' : stake}
-            wide
-          />
-        )}
-      </div>
+      <div>{displayStake && <TextInput onChange={handleStakeChange} value={stake === -1 ? '' : stake} wide />}</div>
     </div>
-  )
+  );
 }
 
 MemberField.propTypes = {
   hideRemoveButton: PropTypes.bool.isRequired,
   index: PropTypes.number.isRequired,
-  member: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  ).isRequired,
+  member: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
   onRemove: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-}
+};
 
-export default TokenSettingsNative
+export default TokenSettingsNative;

@@ -1,62 +1,59 @@
-import React, { useCallback } from 'react'
-import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import React, { useCallback } from 'react';
+import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui';
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
 
-import env from '@/environment'
-import { formatTokenAmount } from '@utils/token-utils'
-import { getDisputableAppByName } from '@utils/app-utils'
+import env from '@/environment';
+import { formatTokenAmount } from '@utils/token-utils';
+import { getDisputableAppByName } from '@utils/app-utils';
 
-import iconFees from '@assets/iconFees.svg'
+import iconFees from '@assets/iconFees.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
-  const { next } = useMultiModal()
-  const { layoutName } = useLayout()
-  const compactMode = layoutName === 'small'
+  const { next } = useMultiModal();
+  const { layoutName } = useLayout();
+  const compactMode = layoutName === 'small';
 
   const convictionAppRequirements = getDisputableAppByName(
     agreement.disputableAppsWithRequirements,
-    env('CONVICTION_APP_NAME')
-  )
+    env('CONVICTION_APP_NAME'),
+  );
 
-  const { actionAmount, token } = convictionAppRequirements
-  const tokenPrice = useHoneyswapTokenPrice(token.id)
+  const { actionAmount, token } = convictionAppRequirements;
+  const tokenPrice = useHoneyswapTokenPrice(token.id);
 
-  const formattedAmount = formatTokenAmount(actionAmount, token.decimals)
-  const dollarAmount =
-    tokenPrice > 0
-      ? formatTokenAmount(actionAmount * tokenPrice, token.decimals)
-      : '-'
+  const formattedAmount = formatTokenAmount(actionAmount, token.decimals);
+  const dollarAmount = tokenPrice > 0 ? formatTokenAmount(actionAmount * tokenPrice, token.decimals) : '-';
 
   const handleOnCreateTransaction = useCallback(() => {
     onCreateTransaction(() => {
-      next()
-    })
-  }, [onCreateTransaction, next])
+      next();
+    });
+  }, [onCreateTransaction, next]);
 
   return (
     <div>
       <Field
-        css={`
-          color: ${theme.surfaceContentSecondary};
+        css={css`
+          color: ${theme.surfaceContentSecondary.toString()};
         `}
       >
         <span
-          css={`
+          css={css`
             ${compactMode ? textStyle('body3') : textStyle('body2')};
           `}
         >
-          A small deposit is required for your proposal to be submitted. This
-          will be held until the proposal is finalised. If the proposal is
-          withdrawn by you or completed successfully your deposit will be
-          unlocked, and made available to you through the deposit manager. If
-          your proposal is disputed and cancelled by Celeste, your deposit will
-          be lost.
+          A small deposit is required for your proposal to be submitted. This will be held until the proposal is
+          finalised. If the proposal is withdrawn by you or completed successfully your deposit will be unlocked, and
+          made available to you through the deposit manager. If your proposal is disputed and cancelled by Celeste, your
+          deposit will be lost.
         </span>
       </Field>
 
       <div
-        css={`
+        css={css`
           display: flex;
           width: 100%;
           height: ${4 * GU}px;
@@ -66,14 +63,14 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
           `}
         >
           <img src={iconFees} alt="" height={4 * GU} width={4 * GU} />
           <h3
-            css={`
+            css={css`
               font-weight: 600;
               margin-left: ${GU}px;
             `}
@@ -83,7 +80,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         </div>
         <div>
           <span
-            css={`
+            css={css`
               text-align: left;
               font-weight: 600;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
@@ -94,7 +91,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           </span>
 
           <span
-            css={`
+            css={css`
               font-weight: 600;
               ${compactMode ? textStyle('body3') : textStyle('body2')};
             `}
@@ -107,13 +104,13 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
         label="Deposit and create proposal"
         mode="strong"
         onClick={handleOnCreateTransaction}
-        css={`
+        css={css`
           margin-top: ${3.125 * GU}px;
           width: 100%;
         `}
       />
     </div>
-  )
+  );
 }
 
-export default ActionFeesModal
+export default ActionFeesModal;

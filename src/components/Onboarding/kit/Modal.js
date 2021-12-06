@@ -1,18 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Button, Modal as OneHiveModal, GU, textStyle } from '@1hive/1hive-ui'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Modal as OneHiveModal, GU, textStyle } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const Modal = ({
-  children,
-  title,
-  buttonLabel,
-  visible,
-  onClick,
-  onClose,
-  width,
-}) => (
+const Modal = ({ children, title, buttonLabel, visible, onClick, onClose, width }) => (
   <OneHiveModal
-    css={`
+    css={css`
       // Modal needs to pop up over onboarding surface
       z-index: 4;
     `}
@@ -21,7 +15,7 @@ const Modal = ({
     onClose={onClose}
   >
     <div
-      css={`
+      css={css`
         display: flex;
         flex-direction: column;
         padding: 0 ${4 * GU}px;
@@ -30,7 +24,7 @@ const Modal = ({
     >
       {title && (
         <div
-          css={`
+          css={css`
             ${textStyle('title3')};
             margin-bottom: ${4 * GU}px;
           `}
@@ -40,7 +34,7 @@ const Modal = ({
       )}
       {children}
       <Button
-        css={`
+        css={css`
           align-self: flex-end;
           margin-top: ${3 * GU}px;
         `}
@@ -50,7 +44,7 @@ const Modal = ({
       />
     </div>
   </OneHiveModal>
-)
+);
 
 Modal.propTypes = {
   buttonLabel: PropTypes.string,
@@ -59,11 +53,7 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   title: PropTypes.node,
   visible: PropTypes.bool.isRequired,
-  width: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-}
+  width: PropTypes.oneOfType([PropTypes.func, PropTypes.number, PropTypes.string]),
+};
 
-export default Modal
+export default Modal;

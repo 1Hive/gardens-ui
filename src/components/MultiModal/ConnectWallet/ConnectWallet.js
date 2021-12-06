@@ -1,16 +1,19 @@
-import React, { useCallback } from 'react'
-import { GU, textStyle, Button } from '@1hive/1hive-ui'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import connectionError from '@/assets/connection-error.svg'
+import React, { useCallback } from 'react';
+import { GU, textStyle, Button } from '@1hive/1hive-ui';
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import connectionError from '@/assets/connection-error.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ConectWallet({ onDismiss }) {
-  const { next } = useMultiModal()
+  const { next } = useMultiModal();
   const handleOnConnect = useCallback(() => {
-    next()
-  }, [next])
+    next();
+  }, [next]);
+
   return (
     <div
-      css={`
+      css={css`
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -18,7 +21,7 @@ function ConectWallet({ onDismiss }) {
       `}
     >
       <h3
-        css={`
+        css={css`
           ${textStyle('title2')}
           margin-bottom: 8px;
         `}
@@ -26,7 +29,7 @@ function ConectWallet({ onDismiss }) {
         Connect your account
       </h3>
       <h4
-        css={`
+        css={css`
           ${textStyle('body2')}
           margin-top: ${3 * GU}px;
         `}
@@ -34,13 +37,13 @@ function ConectWallet({ onDismiss }) {
         You need to connect your account to create a garden
       </h4>
       <img
-        css={`
+        css={css`
           margin-top: ${3 * GU}px;
         `}
         src={connectionError}
       />
       <div
-        css={`
+        css={css`
           display: flex;
           margin-top: ${3 * GU}px;
           justify-content: space-between;
@@ -50,7 +53,7 @@ function ConectWallet({ onDismiss }) {
         <Button
           onClick={() => onDismiss(false)}
           wide
-          css={`
+          css={css`
             margin-top: ${3 * GU}px;
             margin-right: ${2 * GU}px;
             width: ${30 * GU}px;
@@ -62,7 +65,7 @@ function ConectWallet({ onDismiss }) {
           mode="strong"
           onClick={handleOnConnect}
           wide
-          css={`
+          css={css`
             margin-top: ${3 * GU}px;
             width: ${30 * GU}px;
           `}
@@ -71,7 +74,7 @@ function ConectWallet({ onDismiss }) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
-export default ConectWallet
+export default ConectWallet;

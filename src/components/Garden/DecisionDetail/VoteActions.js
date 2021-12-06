@@ -1,33 +1,25 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import {
-  Button,
-  GU,
-  IconCheck,
-  IconConnect,
-  IconCross,
-  Info,
-  RADIUS,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
-import useExtendedVoteData from '@hooks/useExtendedVoteData'
-import { useWallet } from '@providers/Wallet'
-import { noop, dateFormat } from '@utils/date-utils'
-import { VOTE_NAY, VOTE_YEA } from '@/constants'
-import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils'
+/** @jsx jsx */
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, GU, IconCheck, IconConnect, IconCross, Info, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
+import { useGardenState } from '@providers/GardenState';
+import useExtendedVoteData from '@hooks/useExtendedVoteData';
+import { useWallet } from '@providers/Wallet';
+import { noop, dateFormat } from '@utils/date-utils';
+import { VOTE_NAY, VOTE_YEA } from '@/constants';
+import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils';
+import { css, jsx } from '@emotion/react';
+import styled from 'styled-components';
 
 const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
-  const [ready, setReady] = useState(false)
-  const theme = useTheme()
-  const { account: connectedAccount } = useWallet()
-  const { config } = useGardenState()
-  const { token } = config.voting
+  const [ready, setReady] = useState(false);
+  const theme = useTheme();
+  const { account: connectedAccount } = useWallet();
+  const { config } = useGardenState();
+  const { token } = config.voting;
 
-  const connectedAccountCast = getConnectedAccountCast(vote, connectedAccount)
+  const connectedAccountCast = getConnectedAccountCast(vote, connectedAccount);
 
-  const { hasEnded, snapshotBlock } = vote
+  const { hasEnded, snapshotBlock } = vote;
   const {
     canExecute,
     canUserVote,
@@ -43,14 +35,12 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     userBalancePromise,
     userBalanceNowPromise,
     startTimestamp,
-  } = useExtendedVoteData(vote)
+  } = useExtendedVoteData(vote);
 
-  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(
-    connectedAccountCast.vote
-  )
+  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountCast.vote);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
     const whenReady = async () => {
       try {
@@ -61,19 +51,19 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
           principalsBalancePromise,
           userBalancePromise,
           userBalanceNowPromise,
-        ])
+        ]);
         if (!cancelled) {
-          setReady(true)
+          setReady(true);
         }
       } catch (err) {
-        console.error(`Error fetching voting extended data ${err}`)
+        console.error(`Error fetching voting extended data ${err}`);
       }
-    }
-    whenReady()
+    };
+    whenReady();
 
     return () => {
-      cancelled = true
-    }
+      cancelled = true;
+    };
   }, [
     canExecutePromise,
     canUserVotePromise,
@@ -81,7 +71,7 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     principalsBalancePromise,
     userBalancePromise,
     userBalanceNowPromise,
-  ])
+  ]);
 
   const handleVoteYes = useCallback(
     () =>
@@ -91,8 +81,8 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
         supports: true,
         principals,
       }),
-    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
-  )
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals],
+  );
   const handleVoteNo = useCallback(
     () =>
       onVote({
@@ -101,11 +91,11 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
         supports: false,
         principals,
       }),
-    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
-  )
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals],
+  );
 
   if (!ready) {
-    return null
+    return null;
   }
 
   if (hasEnded) {
@@ -117,28 +107,27 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
               mode="strong"
               onClick={onExecute}
               wide
-              css={`
+              css={css`
                 margin-top: ${2.5 * GU}px;
               `}
             >
               Enact this vote
             </Button>
             <Info
-              css={`
+              css={css`
                 margin-top: ${2.5 * GU}px;
               `}
             >
-              The voting period is closed and the vote has passed.{' '}
-              <strong>Anyone</strong> can now enact this vote to execute its
-              action.
+              The voting period is closed and the vote has passed. <strong>Anyone</strong> can now enact this vote to
+              execute its action.
             </Info>
           </React.Fragment>
         )}
       </React.Fragment>
-    )
+    );
   }
 
-  const startDate = new Date(startTimestamp)
+  const startDate = new Date(startTimestamp);
 
   if (canUserVote || canUserVoteOnBehalfOf) {
     return (
@@ -157,26 +146,21 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
           <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
           {canUserVote && isAccountVoteCasted && (
             <Info mode="warning">
-              <strong>
-                Although your delegate has voted on your behalf, you can always
-                override their vote.
-              </strong>
+              <strong>Although your delegate has voted on your behalf, you can always override their vote.</strong>
             </Info>
           )}
         </React.Fragment>
       </div>
-    )
+    );
   }
 
   if (isAccountVoteCasted) {
     return (
       <div>
         <Buttons disabled />
-        <Info mode="warning">
-          You have already voted and changing vote is not allowed.
-        </Info>
+        <Info mode="warning">You have already voted and changing vote is not allowed.</Info>
       </div>
-    )
+    );
   }
 
   return (
@@ -188,39 +172,37 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
             {userBalanceNow > 0
               ? 'Although the currently connected account holds tokens, it'
               : 'The currently connected account'}{' '}
-            did not hold any <strong>{token.symbol}</strong> tokens when this
-            vote began ({dateFormat(startDate)}) and therefore cannot
-            participate in this vote. Make sure your accounts are holding{' '}
-            <strong>{token.symbol}</strong> at the time a vote begins if you'd
-            like to vote using this Voting app.
+            did not hold any <strong>{token.symbol}</strong> tokens when this vote began ({dateFormat(startDate)}) and
+            therefore cannot participate in this vote. Make sure your accounts are holding{' '}
+            <strong>{token.symbol}</strong> at the time a vote begins if you'd like to vote using this Voting app.
           </Info>
         </>
       ) : (
         <div
-          css={`
+          css={css`
             border-radius: ${RADIUS}px;
-            background: ${theme.background};
+            background: ${theme.background.toString()};
             padding: ${3.5 * GU}px ${10 * GU}px;
             text-align: center;
           `}
         >
           <div
-            css={`
+            css={css`
               ${textStyle('body1')};
             `}
           >
             You must enable your account to interact with this decision
           </div>
           <div
-            css={`
+            css={css`
               ${textStyle('body2')};
-              color: ${theme.surfaceContentSecondary};
+              color: ${theme.surfaceContentSecondary.toString()};
               margin-top: ${2 * GU}px;
             `}
           >
             Connect to your Ethereum provider by clicking on the{' '}
             <strong
-              css={`
+              css={css`
                 display: inline-flex;
                 align-items: center;
                 position: relative;
@@ -229,21 +211,20 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
             >
               <IconConnect /> Enable account
             </strong>{' '}
-            button on the header. You may be temporarily redirected to a new
-            screen.
+            button on the header. You may be temporarily redirected to a new screen.
           </div>
         </div>
       )}
     </div>
-  )
-})
+  );
+});
 
 const Buttons = ({ onClickYes = noop, onClickNo = noop, disabled = false }) => (
   <ButtonsContainer>
     <VotingButton mode="positive" wide disabled={disabled} onClick={onClickYes}>
       <IconCheck
         size="small"
-        css={`
+        css={css`
           margin-right: ${1 * GU}px;
         `}
       />
@@ -252,19 +233,19 @@ const Buttons = ({ onClickYes = noop, onClickNo = noop, disabled = false }) => (
     <VotingButton mode="negative" wide disabled={disabled} onClick={onClickNo}>
       <IconCross
         size="small"
-        css={`
+        css={css`
           margin-right: ${1 * GU}px;
         `}
       />
       No
     </VotingButton>
   </ButtonsContainer>
-)
+);
 
 const ButtonsContainer = styled.div`
   display: flex;
   margin: ${2 * GU}px 0;
-`
+`;
 
 const TokenReference = ({
   canUserVote,
@@ -276,12 +257,11 @@ const TokenReference = ({
   userBalance,
   userBalanceNow,
 }) => {
-  const votingWith =
-    Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance)
+  const votingWith = Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance);
 
   return (
     <Info
-      css={`
+      css={css`
         margin-top: ${2 * GU}px;
       `}
     >
@@ -293,8 +273,7 @@ const TokenReference = ({
       {canUserVote && (
         <div>
           {' '}
-          Your balance at snapshot taken at block{' '}
-          <strong>{snapshotBlock}</strong> at{' '}
+          Your balance at snapshot taken at block <strong>{snapshotBlock}</strong> at{' '}
           <strong>{dateFormat(startDate)}</strong> is{' '}
           <strong>
             {userBalance} {tokenSymbol}
@@ -321,8 +300,8 @@ const TokenReference = ({
         </div>
       )}
     </Info>
-  )
-}
+  );
+};
 
 const VotingButton = styled(Button)`
   ${textStyle('body2')};
@@ -330,6 +309,6 @@ const VotingButton = styled(Button)`
   &:first-child {
     margin-right: ${1 * GU}px;
   }
-`
+`;
 
-export default VoteActions
+export default VoteActions;

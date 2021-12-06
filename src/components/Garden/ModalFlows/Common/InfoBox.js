@@ -1,5 +1,7 @@
-import React from 'react'
-import { Button, GU, Info, textStyle } from '@1hive/1hive-ui'
+import React from 'react';
+import { Button, GU, Info, textStyle } from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function InfoBox({ data }) {
   return (
@@ -7,13 +9,13 @@ function InfoBox({ data }) {
       background={data.backgroundColor}
       borderColor="none"
       color={data.color.toString()}
-      css={`
+      css={css`
         border-radius: ${0.5 * GU}px;
         margin-top: ${1.5 * GU}px;
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -21,14 +23,14 @@ function InfoBox({ data }) {
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             align-items: center;
           `}
         >
           <img src={data.icon} width="18" height="18" />
           <span
-            css={`
+            css={css`
               margin-left: ${1.5 * GU}px;
             `}
           >
@@ -37,12 +39,12 @@ function InfoBox({ data }) {
         </div>
         {data.actionButton && (
           <div
-            css={`
+            css={css`
               margin-left: ${1 * GU}px;
             `}
           >
             <Button
-              css={`
+              css={css`
                 border-radius: ${0.5 * GU}px;
               `}
               onClick={data.buttonOnClick}
@@ -53,7 +55,7 @@ function InfoBox({ data }) {
         )}
       </div>
     </Info>
-  )
+  );
 }
 
-export default InfoBox
+export default InfoBox;

@@ -1,28 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui';
 
-import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
-import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens'
-import Filters from './Filters/Filters'
-import { GardenLoader } from '../Loader'
-import Metrics from './Metrics'
-import MultiModal from '../MultiModal/MultiModal'
-import NetworkErrorModal from '../NetworkErrorModal'
-import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
-import ProposalsList from './Feed/ProposalsList'
-import RightPanel from './Feed/RightPanel'
-import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
+import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens';
+import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens';
+import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens';
+import Filters from './Filters/Filters';
+import { GardenLoader } from '../Loader';
+import Metrics from './Metrics';
+import MultiModal from '../MultiModal/MultiModal';
+import NetworkErrorModal from '../NetworkErrorModal';
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens';
+import ProposalsList from './Feed/ProposalsList';
+import RightPanel from './Feed/RightPanel';
+import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens';
 
-import useGardenLogic from '@/logic/garden-logic'
-import { useWallet } from '@providers/Wallet'
-import { buildGardenPath } from '@utils/routing-utils'
+import useGardenLogic from '@/logic/garden-logic';
+import { useWallet } from '@providers/Wallet';
+import { buildGardenPath } from '@utils/routing-utils';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const Home = React.memo(function Home() {
-  const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [modalMode, setModalMode] = useState(null)
+  const [filterSliderVisible, setFilterSidlerVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMode, setModalMode] = useState(null);
   const {
     actions,
     commonPool,
@@ -35,81 +37,81 @@ const Home = React.memo(function Home() {
     totalActiveTokens,
     totalSupply,
     totalWrappedSupply,
-  } = useGardenLogic()
+  } = useGardenLogic();
 
-  const history = useHistory()
-  const { account } = useWallet()
+  const history = useHistory();
+  const { account } = useWallet();
 
   // min layout is never returned
-  const { below } = useViewport()
-  const { layoutName } = useLayout()
-  const largeMode = layoutName === 'large'
-  const compactMode = layoutName === 'small' || layoutName === 'medium'
+  const { below } = useViewport();
+  const { layoutName } = useLayout();
+  const largeMode = layoutName === 'large';
+  const compactMode = layoutName === 'small' || layoutName === 'medium';
 
   const handleBack = useCallback(() => {
-    history.push('/home')
-  }, [history])
+    history.push('/home');
+  }, [history]);
 
   const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible)
-  }, [])
+    setFilterSidlerVisible(visible => !visible);
+  }, []);
 
   const handleShowModal = useCallback(mode => {
-    setModalVisible(true)
-    setModalMode(mode)
-  }, [])
+    setModalVisible(true);
+    setModalMode(mode);
+  }, []);
 
   const handleHideModal = useCallback(() => {
-    setModalVisible(false)
+    setModalVisible(false);
 
     if (history.location.pathname.includes('create')) {
-      history.push(buildGardenPath(history.location, ''))
+      history.push(buildGardenPath(history.location, ''));
     }
-  }, [history])
+  }, [history]);
 
   const handleClaimRewards = useCallback(() => {
-    handleShowModal('claim')
-  }, [handleShowModal])
+    handleShowModal('claim');
+  }, [handleShowModal]);
 
   const handleSetDelegate = useCallback(() => {
-    handleShowModal('delegate')
-  }, [handleShowModal])
+    handleShowModal('delegate');
+  }, [handleShowModal]);
 
   const handleRemoveDelagate = useCallback(() => {
-    handleShowModal('removeDelegate')
-  }, [handleShowModal])
+    handleShowModal('removeDelegate');
+  }, [handleShowModal]);
 
   const handleRequestNewProposal = useCallback(() => {
-    handleShowModal('createProposal')
-  }, [handleShowModal])
+    handleShowModal('createProposal');
+  }, [handleShowModal]);
 
   const handleWrapToken = useCallback(() => {
-    handleShowModal('wrap')
-  }, [handleShowModal])
+    handleShowModal('wrap');
+  }, [handleShowModal]);
 
   const handleUnwrapToken = useCallback(() => {
-    handleShowModal('unwrap')
-  }, [handleShowModal])
+    handleShowModal('unwrap');
+  }, [handleShowModal]);
 
   const handleUpdatePriceOracle = useCallback(() => {
-    handleShowModal('updatePriceOracle')
-  }, [handleShowModal])
+    handleShowModal('updatePriceOracle');
+  }, [handleShowModal]);
   const handleProposalCreated = useCallback(() => {
-    filters.ranking.onChange(1)
-  }, [filters])
+    filters.ranking.onChange(1);
+  }, [filters]);
 
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
     if (account && history.location.pathname.includes('create')) {
-      handleRequestNewProposal()
+      handleRequestNewProposal();
     }
-  }, [account, handleRequestNewProposal, history])
+  }, [account, handleRequestNewProposal, history]);
 
   // TODO: Refactor components positioning with a grid layout
 
   return (
     <div
-      css={`
+      css={css`
         height: 100%;
       `}
     >
@@ -118,7 +120,7 @@ const Home = React.memo(function Home() {
       ) : (
         <>
           <div
-            css={`
+            css={css`
               margin-left: ${1 * GU}px;
               position: ${compactMode ? 'absolute' : 'sticky'};
               top: 16px;
@@ -128,7 +130,7 @@ const Home = React.memo(function Home() {
             {below('medium') && (
               <BackButton
                 onClick={handleBack}
-                css={`
+                css={css`
                   background: transparent;
                   border: 0;
                 `}
@@ -137,18 +139,18 @@ const Home = React.memo(function Home() {
           </div>
           <div>
             <div
-              css={`
+              css={css`
                 display: flex;
                 flex-direction: ${compactMode ? 'column-reverse' : 'row'};
               `}
             >
               <div
-                css={`
+                css={css`
                   flex-grow: 1;
                 `}
               >
                 <div
-                  css={`
+                  css={css`
                     margin: ${(below('medium') ? 0 : 3) * GU}px;
                   `}
                 >
@@ -156,9 +158,7 @@ const Home = React.memo(function Home() {
                     <Metrics
                       commonPool={commonPool}
                       onRequestUpdatePriceOracle={handleUpdatePriceOracle}
-                      onExecuteIssuance={
-                        actions.issuanceActions.executeIssuance
-                      }
+                      onExecuteIssuance={actions.issuanceActions.executeIssuance}
                       priceToken={priceToken}
                       totalActiveTokens={totalActiveTokens}
                       totalSupply={totalSupply}
@@ -166,7 +166,7 @@ const Home = React.memo(function Home() {
                     />
                   )}
                   <div
-                    css={`
+                    css={css`
                       display: flex;
                       flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
                     `}
@@ -201,7 +201,7 @@ const Home = React.memo(function Home() {
                     />
                     {largeMode && (
                       <div
-                        css={`
+                        css={css`
                           margin-left: ${3 * GU}px;
                         `}
                       >
@@ -227,18 +227,10 @@ const Home = React.memo(function Home() {
                 />
               )}
             </div>
-            <MultiModal
-              visible={modalVisible}
-              onClose={handleHideModal}
-              onClosed={() => setModalMode(null)}
-            >
+            <MultiModal visible={modalVisible} onClose={handleHideModal} onClosed={() => setModalMode(null)}>
               {modalMode === 'updatePriceOracle' && <PriceOracleScreens />}
-              {modalMode === 'createProposal' && (
-                <CreateProposalScreens onComplete={handleProposalCreated} />
-              )}
-              {(modalMode === 'wrap' || modalMode === 'unwrap') && (
-                <WrapTokenScreens mode={modalMode} />
-              )}
+              {modalMode === 'createProposal' && <CreateProposalScreens onComplete={handleProposalCreated} />}
+              {(modalMode === 'wrap' || modalMode === 'unwrap') && <WrapTokenScreens mode={modalMode} />}
               {modalMode === 'claim' && <ClaimRewardsScreens />}
               {(modalMode === 'delegate' || modalMode === 'removeDelegate') && (
                 <DelegateVotingScreens mode={modalMode} />
@@ -249,7 +241,7 @@ const Home = React.memo(function Home() {
       )}
       <NetworkErrorModal visible={Boolean(errors)} />
     </div>
-  )
-})
+  );
+});
 
-export default Home
+export default Home;

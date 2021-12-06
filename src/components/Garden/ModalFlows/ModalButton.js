@@ -1,27 +1,30 @@
-import React from 'react'
-import { Button, GU } from '@1hive/1hive-ui'
-import LoadingSpinner from '@components/LoadingRing'
+import React from 'react';
+import { Button, GU } from '@1hive/1hive-ui';
+import LoadingSpinner from '@components/LoadingRing';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ModalButton({ children, loading, ...props }) {
   return (
     <Button
       mode="strong"
       wide
-      css={`
+      css={css`
         margin-top: ${2 * GU}px;
       `}
       {...props}
     >
       {loading && (
         <LoadingSpinner
-          css={`
+          css={css`
             margin-right: ${1 * GU}px;
           `}
         />
       )}
       {loading ? 'Loading…' : children}
     </Button>
-  )
+  );
 }
 
-export default ModalButton
+export default ModalButton;

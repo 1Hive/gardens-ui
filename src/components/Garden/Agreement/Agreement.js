@@ -1,37 +1,40 @@
-import React, { useCallback, useState } from 'react'
-import { GU, Header, Info } from '@1hive/1hive-ui'
-import AgreementBindingActions from './AgreementBindingActions'
-import AgreementDetails from './AgreementDetails'
-import AgreementDocument from './AgreementDocument'
-import AgreementHeader from './AgreementHeader'
-import { GardenLoader } from '@components/Loader'
-import LayoutGutter from '../Layout/LayoutGutter'
-import LayoutLimiter from '../Layout/LayoutLimiter'
-import LayoutBox from '../Layout/LayoutBox'
-import LayoutColumns from '../Layout/LayoutColumns'
-import MultiModal from '@components/MultiModal/MultiModal'
-import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
-import { useAgreement } from '@hooks/useAgreement'
-import { useWallet } from '@providers/Wallet'
+import React, { useCallback, useState } from 'react';
+import { GU, Header, Info } from '@1hive/1hive-ui';
+import AgreementBindingActions from './AgreementBindingActions';
+import AgreementDetails from './AgreementDetails';
+import AgreementDocument from './AgreementDocument';
+import AgreementHeader from './AgreementHeader';
+import { GardenLoader } from '@components/Loader';
+import LayoutGutter from '../Layout/LayoutGutter';
+import LayoutLimiter from '../Layout/LayoutLimiter';
+import LayoutBox from '../Layout/LayoutBox';
+import LayoutColumns from '../Layout/LayoutColumns';
+import MultiModal from '@components/MultiModal/MultiModal';
+import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens';
+import { useAgreement } from '@hooks/useAgreement';
+import { useWallet } from '@providers/Wallet';
 
-import warningSvg from './assets/warning.svg'
+import warningSvg from './assets/warning.svg';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function Agreement() {
-  const [agreement, loading] = useAgreement()
-  const [signModalVisible, setSignModalVisible] = useState(false)
+  const [agreement, loading] = useAgreement();
+  const [signModalVisible, setSignModalVisible] = useState(false);
 
-  const signed = agreement.signedLatest
+  const signed = agreement.signedLatest;
 
   const handleShowModal = useCallback(() => {
-    setSignModalVisible(true)
-  }, [])
+    setSignModalVisible(true);
+  }, []);
 
   const handleHideModal = useCallback(() => {
-    setSignModalVisible(false)
-  }, [])
+    setSignModalVisible(false);
+  }, []);
 
   if (loading) {
-    return <GardenLoader />
+    return <GardenLoader />;
   }
 
   return (
@@ -49,16 +52,11 @@ function Agreement() {
         <SignAgreementScreens versionId={agreement.versionId} />
       </MultiModal>
     </LayoutGutter>
-  )
+  );
 }
 
-function AgreementLayout({
-  agreement,
-  isSigning,
-  signedAgreement,
-  onSignAgreement,
-}) {
-  const { account } = useWallet()
+function AgreementLayout({ agreement, isSigning, signedAgreement, onSignAgreement }) {
+  const { account } = useWallet();
   const {
     title,
     contractAddress,
@@ -66,7 +64,7 @@ function AgreementLayout({
     disputableAppsWithRequirements,
     effectiveFrom,
     stakingAddress,
-  } = agreement
+  } = agreement;
 
   return (
     <LayoutColumns
@@ -75,18 +73,18 @@ function AgreementLayout({
           {account && !signedAgreement && (
             <Info
               mode="warning"
-              css={`
+              css={css`
                 margin-bottom: ${2 * GU}px;
               `}
             >
               <div
-                css={`
+                css={css`
                   display: flex;
                 `}
               >
                 <img
                   src={warningSvg}
-                  css={`
+                  css={css`
                     margin-right: ${0.5 * GU}px;
                   `}
                   alt=""
@@ -113,11 +111,9 @@ function AgreementLayout({
           />
         </>
       }
-      secondary={
-        <AgreementBindingActions apps={disputableAppsWithRequirements} />
-      }
+      secondary={<AgreementBindingActions apps={disputableAppsWithRequirements} />}
     />
-  )
+  );
 }
 
-export default Agreement
+export default Agreement;

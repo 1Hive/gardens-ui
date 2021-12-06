@@ -1,24 +1,26 @@
-import React from 'react'
-import { GU, IconCross, useTheme } from '@1hive/1hive-ui'
-import Screens from './Screens'
-import StepsPanel from './Steps/StepsPanel'
+import React from 'react';
+import { GU, IconCross, useTheme } from '@1hive/1hive-ui';
+import Screens from './Screens';
+import StepsPanel from './Steps/StepsPanel';
 
-import gardensLogo from '@assets/gardensLogoMark.svg'
+import gardensLogo from '@assets/gardensLogoMark.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function Setup({ onClose }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <>
       <div
-        css={`
+        css={css`
           width: ${41 * GU}px;
           flex-shrink: 0;
           flex-grow: 0;
         `}
       >
         <img
-          css={`
+          css={css`
             display: flex;
             padding-left: ${2.25 * GU}px;
             margin-top: ${2 * GU}px;
@@ -30,7 +32,7 @@ function Setup({ onClose }) {
         <StepsPanel />
       </div>
       <div
-        css={`
+        css={css`
           width: 100%;
           flex-grow: 1;
           flex-shrink: 1;
@@ -38,7 +40,7 @@ function Setup({ onClose }) {
         `}
       >
         <div
-          css={`
+          css={css`
             padding: ${3 * GU}px;
             display: flex;
             align-items: center;
@@ -47,29 +49,29 @@ function Setup({ onClose }) {
         >
           <div />
           <div
-            css={`
+            css={css`
               cursor: pointer;
             `}
             onClick={onClose}
           >
-            <IconCross color={theme.surfaceIcon} />
+            <IconCross color={theme.surfaceIcon.toString()} />
           </div>
         </div>
         <div
-          css={`
+          css={css`
             overflow-y: auto;
             height: calc(100vh - 127px);
           `}
         >
           <section
-            css={`
+            css={css`
               margin: 0px auto;
               max-width: 950px;
               padding: 0px 24px 48px;
             `}
           >
             <div
-              css={`
+              css={css`
                 display: flex;
                 flex-direction: column;
               `}
@@ -80,7 +82,7 @@ function Setup({ onClose }) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Setup
+export default Setup;

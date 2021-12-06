@@ -1,43 +1,37 @@
-import React, { useCallback, useState } from 'react'
-import {
-  Button,
-  Field,
-  GU,
-  isAddress,
-  LoadingRing,
-  TextInput,
-  textStyle,
-} from '@1hive/1hive-ui'
-import IdentityBadge from '@components/IdentityBadge'
+import React, { useCallback, useState } from 'react';
+import { Button, Field, GU, isAddress, LoadingRing, TextInput, textStyle } from '@1hive/1hive-ui';
+import IdentityBadge from '@components/IdentityBadge';
 
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import useProfile from '@hooks/useProfile'
-import { useSupporterSubscription } from '@hooks/useSubscriptions'
-import { useWallet } from '@providers/Wallet'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import useProfile from '@hooks/useProfile';
+import { useSupporterSubscription } from '@hooks/useSubscriptions';
+import { useWallet } from '@providers/Wallet';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
-  const { account } = useWallet()
-  const { next } = useMultiModal()
-  const [representative, setRepresentative] = useState('')
-  const [supporter, loading] = useSupporterSubscription(account)
+  const { account } = useWallet();
+  const { next } = useMultiModal();
+  const [representative, setRepresentative] = useState('');
+  const [supporter, loading] = useSupporterSubscription(account);
 
   const handleRepresentativeChange = useCallback(event => {
-    setRepresentative(event.target.value)
-  }, [])
+    setRepresentative(event.target.value);
+  }, []);
 
   // Form submit handler
   const handleSubmit = useCallback(
     event => {
-      event.preventDefault()
+      event.preventDefault();
 
       getTransactions(() => {
-        next()
-      }, representative)
+        next();
+      }, representative);
     },
-    [getTransactions, next, representative]
-  )
+    [getTransactions, next, representative],
+  );
 
-  const hasRepresentative = Boolean(supporter?.representative)
+  const hasRepresentative = Boolean(supporter?.representative);
 
   // TODO: Add validation for setting own account as represnetative
   return (
@@ -46,38 +40,27 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
         <LoadingRing />
       ) : (
         <div>
-          {hasRepresentative && (
-            <CurrentDelegateProfile
-              address={supporter.representative.address}
-            />
-          )}
+          {hasRepresentative && <CurrentDelegateProfile address={supporter.representative.address} />}
           <div
-            css={`
+            css={css`
               display: flex;
               align-items: center;
               column-gap: 8px;
             `}
           >
             <Field
-              label={`Your ${
-                hasRepresentative ? 'new' : ''
-              } delegate's address`}
-              css={`
+              label={`Your ${hasRepresentative ? 'new' : ''} delegate's address`}
+              css={css`
                 width: 100%;
               `}
             >
-              <TextInput
-                value={representative}
-                onChange={handleRepresentativeChange}
-                placeholder="0x"
-                wide
-              />
+              <TextInput value={representative} onChange={handleRepresentativeChange} placeholder="0x" wide />
             </Field>
             <NewDelegateProfile address={representative} />
           </div>
 
           <div
-            css={`
+            css={css`
               display: flex;
               align-items: center;
               column-gap: ${2 * GU}px;
@@ -94,18 +77,18 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
         </div>
       )}
     </form>
-  )
-})
+  );
+});
 
 function CurrentDelegateProfile({ address }) {
   return (
     <div
-      css={`
+      css={css`
         margin-bottom: ${3 * GU}px;
       `}
     >
       <span
-        css={`
+        css={css`
           ${textStyle('label2')};
         `}
       >
@@ -115,25 +98,25 @@ function CurrentDelegateProfile({ address }) {
         <IdentityBadge entity={address} />
       </div>
     </div>
-  )
+  );
 }
 
 function NewDelegateProfile({ address }) {
-  const profile = useProfile(address)
+  const profile = useProfile(address);
 
   if (!address || !profile) {
-    return null
+    return null;
   }
 
   return (
     <div
-      css={`
+      css={css`
         flex-shrink: 0;
       `}
     >
       <IdentityBadge entity={address} />
     </div>
-  )
+  );
 }
 
-export default DelegateVoting
+export default DelegateVoting;

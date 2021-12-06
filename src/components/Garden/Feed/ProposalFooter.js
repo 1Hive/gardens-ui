@@ -1,71 +1,67 @@
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
-import { textStyle, useTheme } from '@1hive/1hive-ui'
-import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
+/** @jsx jsx */
+import React, { useMemo } from 'react';
+import { textStyle, useTheme } from '@1hive/1hive-ui';
+import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons';
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
+import { useGardenState } from '@providers/GardenState';
+import { useWallet } from '@providers/Wallet';
 
-import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
-import { VOTE_NAY, VOTE_YEA } from '@/constants'
-import { ProposalTypes } from '@/types'
-import { formatTokenAmount } from '@utils/token-utils'
-import { getConnectedAccountCast } from '../../../utils/vote-utils'
+import { getStatusAttributes } from '../DecisionDetail/VoteStatus';
+import { VOTE_NAY, VOTE_YEA } from '@/constants';
+import { ProposalTypes } from '@/types';
+import { formatTokenAmount } from '@utils/token-utils';
+import { getConnectedAccountCast } from '../../../utils/vote-utils';
+import { css, jsx } from '@emotion/react';
+import styled from 'styled-components';
 
 function ProposalCardFooter({ proposal }) {
   if (proposal.type === ProposalTypes.Decision) {
-    return <DecisionFooter proposal={proposal} />
+    return <DecisionFooter proposal={proposal} />;
   }
 
-  return <ProposalFooter proposal={proposal} />
+  return <ProposalFooter proposal={proposal} />;
 }
 
 function ProposalFooter({ proposal }) {
-  const { config } = useGardenState()
-  const { stakeToken } = config.conviction
-  const theme = useTheme()
+  const { config } = useGardenState();
+  const { stakeToken } = config.conviction;
+  const theme = useTheme();
 
-  const supportersCount = useMemo(
-    () => proposal.stakes.filter(({ amount }) => amount.gt(0)).length,
-    [proposal]
-  )
+  const supportersCount = useMemo(() => proposal.stakes.filter(({ amount }) => amount.gt(0)).length, [proposal]);
 
-  const formattedNeededTokens = formatTokenAmount(
-    proposal.neededTokens,
-    stakeToken.decimals
-  )
+  const formattedNeededTokens = formatTokenAmount(proposal.neededTokens, stakeToken.decimals);
 
   // TODO: Use mapping and status symbol
   const proposalStatusLabel = useMemo(() => {
     if (proposal.statusData.open) {
-      return 'Open'
+      return 'Open';
     }
 
     if (proposal.statusData.rejected) {
-      return 'Rejected'
+      return 'Rejected';
     }
 
     if (proposal.statusData.cancelled) {
-      return 'Cancelled'
+      return 'Cancelled';
     }
 
     if (proposal.statusData.settled) {
-      return 'Settled'
+      return 'Settled';
     }
 
     if (proposal.statusData.challenged) {
-      return 'Challenged'
+      return 'Challenged';
     }
 
     if (proposal.statusData.disputed) {
-      return 'Waiting for celeste'
+      return 'Waiting for celeste';
     }
 
-    return 'Closed'
-  }, [proposal.statusData])
+    return 'Closed';
+  }, [proposal.statusData]);
 
   return (
-    <Main color={theme.contentSecondary}>
+    <Main color={theme.contentSecondary.toString()}>
       <div>
         {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
       </div>
@@ -76,20 +72,20 @@ function ProposalFooter({ proposal }) {
       )}
       <div>Status: {proposalStatusLabel}</div>
     </Main>
-  )
+  );
 }
 
 function DecisionFooter({ proposal }) {
-  const theme = useTheme()
-  const { account } = useWallet()
-  const { label: statusLabel } = getStatusAttributes(proposal, theme)
+  const theme = useTheme();
+  const { account } = useWallet();
+  const { label: statusLabel } = getStatusAttributes(proposal, theme);
 
-  const votesCount = proposal.casts.length
+  const votesCount = proposal.casts.length;
 
   return (
-    <Main color={theme.contentSecondary}>
+    <Main color={theme.contentSecondary.toString()}>
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
         `}
@@ -101,19 +97,19 @@ function DecisionFooter({ proposal }) {
       </div>
       <div>Status: {statusLabel}</div>
     </Main>
-  )
+  );
 }
 
 function SupportIndicator({ account, vote }) {
-  const accountCast = getConnectedAccountCast(vote, account)
+  const accountCast = getConnectedAccountCast(vote, account);
 
   if (accountCast.vote === VOTE_YEA) {
-    return <ThumbsUpIcon />
+    return <ThumbsUpIcon />;
   } else if (accountCast.vote === VOTE_NAY) {
-    return <ThumbsDownIcon />
+    return <ThumbsDownIcon />;
   }
 
-  return null
+  return null;
 }
 
 const Main = styled.div`
@@ -123,6 +119,6 @@ const Main = styled.div`
 
   color: ${({ color }) => color};
   ${textStyle('body3')};
-`
+`;
 
-export default ProposalCardFooter
+export default ProposalCardFooter;

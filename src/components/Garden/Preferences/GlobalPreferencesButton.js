@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback } from 'react';
 import {
   ButtonBase,
   ButtonIcon,
@@ -11,39 +11,47 @@ import {
   textStyle,
   useTheme,
   useViewport,
-} from '@1hive/1hive-ui'
+} from '@1hive/1hive-ui';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function GlobalPreferencesButton({ onOpen }) {
-  const theme = useTheme()
-  const { below } = useViewport()
+  const theme = useTheme();
+  const { below } = useViewport();
 
-  const [opened, setOpened] = useState(false)
-  const containerRef = useRef()
+  const [opened, setOpened] = useState(false);
+  const containerRef = useRef();
 
-  const handleToggle = useCallback(() => setOpened(opened => !opened), [])
-  const handleClose = useCallback(() => setOpened(false), [])
+  const handleToggle = useCallback(() => setOpened(opened => !opened), []);
+  const handleClose = useCallback(() => setOpened(false), []);
   const handleItemClick = useCallback(
     path => () => {
-      setOpened(false)
-      onOpen(path)
+      setOpened(false);
+      onOpen(path);
     },
-    [onOpen]
-  )
+    [onOpen],
+  );
 
   return (
     <React.Fragment>
-      <div ref={containerRef}>
+      <div
+        ref={containerRef}
+        css={css`
+          display: flex;
+          align-items: center;
+        `}
+      >
         <ButtonIcon
           element="div"
           onClick={handleToggle}
           label="Global preferences"
-          css={`
+          css={css`
             width: ${4.25 * GU}px;
             height: 100%;
             border-radius: 0;
           `}
         >
-          <IconSettings color={theme.hint} />
+          <IconSettings color={theme.hint.toString()} />
         </ButtonIcon>
       </div>
       <Popover
@@ -54,38 +62,34 @@ function GlobalPreferencesButton({ onOpen }) {
         opener={containerRef.current}
       >
         <ul
-          css={`
+          css={css`
             /* Use 20px as the padding setting for popper is 10px */
             width: ${below('medium') ? `calc(100vw - 20px)` : `${42 * GU}px`};
             padding: 0;
             margin: 0;
             list-style: none;
-            background: ${theme.surface};
-            color: ${theme.content};
+            background: ${theme.surface.toString()};
+            color: ${theme.content.toString()};
             border-radius: ${RADIUS}px;
           `}
         >
           <li
-            css={`
+            css={css`
               display: flex;
               align-items: center;
               height: ${4 * GU}px;
               padding-left: ${2 * GU}px;
-              border-bottom: 1px solid ${theme.border};
+              border-bottom: 1px solid ${theme.border.toString()};
               ${textStyle('label2')};
-              color: ${theme.surfaceContentSecondary};
+              color: ${theme.surfaceContentSecondary.toString()};
             `}
           >
             Global preferences
           </li>
-          <Item
-            onClick={handleItemClick('generalInfo')}
-            Icon={IconConfiguration}
-            label="Settings"
-          />
+          <Item onClick={handleItemClick('generalInfo')} Icon={IconConfiguration} label="Settings" />
           <Item href="https://1hive.gitbook.io/gardens/">
             <div
-              css={`
+              css={css`
                 flex-grow: 1;
                 display: flex;
                 align-items: center;
@@ -95,8 +99,8 @@ function GlobalPreferencesButton({ onOpen }) {
               Any questions? Visit our wiki
             </div>
             <div
-              css={`
-                color: ${theme.surfaceContentSecondary};
+              css={css`
+                color: ${theme.surfaceContentSecondary.toString()};
               `}
             >
               <IconExternal />
@@ -105,16 +109,16 @@ function GlobalPreferencesButton({ onOpen }) {
         </ul>
       </Popover>
     </React.Fragment>
-  )
+  );
 }
 
 function Item({ children, Icon, label, onClick, href }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <li
-      css={`
+      css={css`
         & + & {
-          border-top: 1px solid ${theme.border};
+          border-top: 1px solid ${theme.border.toString()};
         }
       `}
     >
@@ -123,14 +127,14 @@ function Item({ children, Icon, label, onClick, href }) {
         label={label}
         external={Boolean(href)}
         href={href}
-        css={`
+        css={css`
           width: 100%;
           height: ${7 * GU}px;
           border-radius: 0;
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             width: 100%;
             height: 100%;
@@ -140,7 +144,7 @@ function Item({ children, Icon, label, onClick, href }) {
 
             &:active,
             &:focus {
-              background: ${theme.surfacePressed};
+              background: ${theme.surfacePressed.toString()};
             }
           `}
         >
@@ -148,7 +152,7 @@ function Item({ children, Icon, label, onClick, href }) {
             <>
               <Icon />
               <div
-                css={`
+                css={css`
                   flex-grow: 1;
                   display: flex;
                   align-items: center;
@@ -162,7 +166,7 @@ function Item({ children, Icon, label, onClick, href }) {
         </div>
       </ButtonBase>
     </li>
-  )
+  );
 }
 
-export default React.memo(GlobalPreferencesButton)
+export default React.memo(GlobalPreferencesButton);

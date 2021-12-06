@@ -1,16 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import {
-  Button,
-  Card,
-  GU,
-  Help,
-  Switch,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-import { formatTokenAmount } from '@utils/token-utils'
+import React, { useCallback, useMemo, useState } from 'react';
+import { Button, Card, GU, Help, Switch, textStyle, useTheme } from '@1hive/1hive-ui';
+import useGardenTokenIcon from '@hooks/useGardenTokenIcon';
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
+import { formatTokenAmount } from '@utils/token-utils';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function BalanceCard({
   allowance,
@@ -22,44 +16,44 @@ function BalanceCard({
   tokenSymbol,
   onDepositOrWithdraw,
 }) {
-  const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
-  const theme = useTheme()
-  const tokenPrice = useHoneyswapTokenPrice(tokenAddress)
+  const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0));
+  const theme = useTheme();
+  const tokenPrice = useHoneyswapTokenPrice(tokenAddress);
   const tokenIcon = useGardenTokenIcon({
     id: tokenAddress,
     symbol: tokenSymbol,
-  })
+  });
 
   const allowManagerDisabled = useMemo(() => {
     if (!allowLockManager) {
-      return false
+      return false;
     }
     if (locked.gt(0)) {
-      return true
+      return true;
     }
-    return false
-  }, [allowLockManager, locked])
+    return false;
+  }, [allowLockManager, locked]);
 
   const handleOnDeposit = useCallback(() => {
-    onDepositOrWithdraw('deposit')
-  }, [onDepositOrWithdraw])
+    onDepositOrWithdraw('deposit');
+  }, [onDepositOrWithdraw]);
 
   const handleOnWithdraw = useCallback(() => {
-    onDepositOrWithdraw('withdraw')
-  }, [onDepositOrWithdraw])
+    onDepositOrWithdraw('withdraw');
+  }, [onDepositOrWithdraw]);
 
   const handleOnAllowLockManager = useCallback(async () => {
     if (!allowLockManager) {
-      await stakeActions.allowManager()
+      await stakeActions.allowManager();
     } else {
-      await stakeActions.unlockAndRemoveManager()
+      await stakeActions.unlockAndRemoveManager();
     }
-    setAllowLockManager(!allowLockManager)
-  }, [allowLockManager, stakeActions])
+    setAllowLockManager(!allowLockManager);
+  }, [allowLockManager, stakeActions]);
 
   return (
     <Card
-      css={`
+      css={css`
         width: 100%;
         height: auto;
         text-align: center;
@@ -70,53 +64,45 @@ function BalanceCard({
         src={tokenIcon}
         width={6.5 * GU}
         height={6.5 * GU}
-        css={`
+        css={css`
           margin: auto;
           margin-bottom: ${1 * GU}px;
         `}
       />
       <h2
-        css={`
+        css={css`
           ${textStyle('title4')};
         `}
       >
         {total ? formatTokenAmount(total, tokenDecimals) : '-'}
       </h2>
       <h1
-        css={`
+        css={css`
           margin: ${0.5 * GU}px 0;
         `}
       >
         Total {tokenSymbol}
       </h1>
       <p
-        css={`
-          color: ${theme.positive};
+        css={css`
+          color: ${theme.positive.toString()};
         `}
       >
-        $
-        {total && tokenPrice > 0
-          ? formatTokenAmount(total * tokenPrice, tokenDecimals)
-          : '-'}
+        ${total && tokenPrice > 0 ? formatTokenAmount(total * tokenPrice, tokenDecimals) : '-'}
       </p>
       <Button
         mode="strong"
         wide
         label="Add funds"
         onClick={handleOnDeposit}
-        css={`
+        css={css`
           margin-top: ${2 * GU}px;
           margin-bottom: ${1.5 * GU}px;
         `}
       />
-      <Button
-        mode="normal"
-        wide
-        label="Withdraw funds"
-        onClick={handleOnWithdraw}
-      />
+      <Button mode="normal" wide label="Withdraw funds" onClick={handleOnWithdraw} />
       <div
-        css={`
+        css={css`
           display: flex;
           ${textStyle('body2')};
           width: 100%;
@@ -124,22 +110,18 @@ function BalanceCard({
           margin-top: ${5 * GU}px;
         `}
       >
-        <Switch
-          checked={allowLockManager}
-          onChange={handleOnAllowLockManager}
-          disabled={allowManagerDisabled}
-        />
+        <Switch checked={allowLockManager} onChange={handleOnAllowLockManager} disabled={allowManagerDisabled} />
         <span
-          css={`
+          css={css`
             margin-left: ${1.5 * GU}px;
-            color: ${theme.help};
+            color: ${theme.help.toString()};
             font-weight: 600;
           `}
         >
           Give Permission
         </span>
         <div
-          css={`
+          css={css`
             margin-left: ${1 * GU}px;
           `}
         >
@@ -151,7 +133,7 @@ function BalanceCard({
         </div>
       </div>
     </Card>
-  )
+  );
 }
 
-export default BalanceCard
+export default BalanceCard;

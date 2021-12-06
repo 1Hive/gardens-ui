@@ -1,35 +1,22 @@
-import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
-import {
-  GU,
-  Modal,
-  Root,
-  textStyle,
-  useTheme,
-  useViewport,
-} from '@1hive/1hive-ui'
-import CheckDisc from './CheckDisc'
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { GU, Modal, Root, textStyle, useTheme, useViewport } from '@1hive/1hive-ui';
+import CheckDisc from './CheckDisc';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function ErrorModal({ action, content, header, onClose, visible }) {
-  const theme = useTheme()
-  const { below } = useViewport()
-  const smallMode = below('medium')
+  const theme = useTheme();
+  const { below } = useViewport();
+  const smallMode = below('medium');
 
-  const modalWidth = useCallback(
-    ({ width }) => Math.min(55 * GU, width - 4 * GU),
-    []
-  )
+  const modalWidth = useCallback(({ width }) => Math.min(55 * GU, width - 4 * GU), []);
 
   return (
     <Root.Provider>
-      <Modal
-        visible={visible}
-        width={modalWidth}
-        onClose={onClose}
-        closeButton={Boolean(onClose)}
-      >
+      <Modal visible={visible} width={modalWidth} onClose={onClose} closeButton={Boolean(onClose)}>
         <section
-          css={`
+          css={css`
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -41,7 +28,7 @@ function ErrorModal({ action, content, header, onClose, visible }) {
         >
           <CheckDisc mode="error" size={9 * GU} />
           <h1
-            css={`
+            css={css`
               margin: ${4 * GU}px auto ${1 * GU}px;
               ${textStyle('title2')};
             `}
@@ -49,10 +36,10 @@ function ErrorModal({ action, content, header, onClose, visible }) {
             {header}
           </h1>
           <p
-            css={`
+            css={css`
               margin-bottom: ${7 * GU}px;
               ${textStyle('body1')};
-              color: ${theme.contentSecondary};
+              color: ${theme.contentSecondary.toString()};
             `}
           >
             {content}
@@ -61,7 +48,7 @@ function ErrorModal({ action, content, header, onClose, visible }) {
         </section>
       </Modal>
     </Root.Provider>
-  )
+  );
 }
 
 ErrorModal.propTypes = {
@@ -70,6 +57,6 @@ ErrorModal.propTypes = {
   header: PropTypes.node.isRequired,
   onClose: PropTypes.func,
   visible: PropTypes.bool.isRequired,
-}
+};
 
-export default ErrorModal
+export default ErrorModal;

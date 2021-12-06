@@ -1,48 +1,44 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { Popover, GU, RADIUS, useTheme } from '@1hive/1hive-ui'
-import DatePicker from './DatePicker'
-import Labels from './Labels'
-import { SINGLE_DATE } from './consts'
-import { dayjs, dateFormat } from '@utils/date-utils'
-import handleSingleDateSelect from './utils'
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Popover, GU, RADIUS, useTheme } from '@1hive/1hive-ui';
+import DatePicker from './DatePicker';
+import Labels from './Labels';
+import { SINGLE_DATE } from './consts';
+import { dayjs, dateFormat } from '@utils/date-utils';
+import handleSingleDateSelect from './utils';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
+function SingleDatePicker({ format, initialDate, onChange, validFromToday = false }) {
+  const theme = useTheme();
+  const labelsRef = useRef();
+  const [showPicker, setShowPicker] = useState(false);
 
-function SingleDatePicker({
-  format,
-  initialDate,
-  onChange,
-  validFromToday = false,
-}) {
-  const theme = useTheme()
-  const labelsRef = useRef()
-  const [showPicker, setShowPicker] = useState(false)
-
-  const handlePopoverClose = useCallback(() => setShowPicker(false), [])
+  const handlePopoverClose = useCallback(() => setShowPicker(false), []);
 
   const handleLabelsClick = useCallback(() => {
-    setShowPicker(show => !show)
-  }, [])
+    setShowPicker(show => !show);
+  }, []);
 
   const handleDateClick = useCallback(
     date => {
-      setShowPicker(false)
+      setShowPicker(false);
       if (date) {
         const result = handleSingleDateSelect({
           date,
           initialDate,
-        })
-        onChange(result.initialDate)
+        });
+        onChange(result.initialDate);
       }
     },
-    [onChange, initialDate]
-  )
+    [onChange, initialDate],
+  );
 
   const labelProps = useMemo(() => {
-    const _initialDate = initialDate
+    const _initialDate = initialDate;
     return {
       startText: _initialDate ? dateFormat(_initialDate, format) : SINGLE_DATE,
-    }
-  }, [format, initialDate])
+    };
+  }, [format, initialDate]);
 
   return (
     <div>
@@ -59,7 +55,7 @@ function SingleDatePicker({
         opener={labelsRef.current}
         placement="bottom-start"
         visible={showPicker}
-        css={`
+        css={css`
           min-width: ${37.5 * GU + 2}px;
           border: 0;
           filter: none;
@@ -69,15 +65,15 @@ function SingleDatePicker({
         `}
       >
         <div
-          css={`
+          css={css`
             padding: ${2.5 * GU}px ${3 * GU}px ${3 * GU}px;
-            border: 1px solid ${theme.border};
+            border: 1px solid ${theme.border.toString()};
             border-radius: ${RADIUS}px;
-            background: ${theme.surface};
+            background: ${theme.surface.toString()};
           `}
         >
           <div
-            css={`
+            css={css`
               display: flex;
               flex-direction: row;
               align-items: baseline;
@@ -93,7 +89,7 @@ function SingleDatePicker({
           </div>
 
           <div
-            css={`
+            css={css`
               display: flex;
               align-items: center;
               justify-content: space-between;
@@ -103,18 +99,18 @@ function SingleDatePicker({
         </div>
       </Popover>
     </div>
-  )
+  );
 }
 
 SingleDatePicker.propTypes = {
   format: PropTypes.string,
   initialDate: PropTypes.string,
   onChange: PropTypes.func,
-}
+};
 
 SingleDatePicker.defaultProps = {
   format: 'MM/DD/YYYY',
   onChange: () => {},
-}
+};
 
-export default SingleDatePicker
+export default SingleDatePicker;

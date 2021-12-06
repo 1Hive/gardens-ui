@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Button,
   Field,
@@ -11,58 +11,51 @@ import {
   TextInput,
   textStyle,
   useTheme,
-} from '@1hive/1hive-ui'
-import { FileUploaderField, Header } from '../kit'
-import Navigation from '../Navigation'
-import useGardenNameResolver from '@hooks/useGardenNameResolver'
-import { useOnboardingState } from '@providers/Onboarding'
+} from '@1hive/1hive-ui';
+import { FileUploaderField, Header } from '../kit';
+import Navigation from '../Navigation';
+import useGardenNameResolver from '@hooks/useGardenNameResolver';
+import { useOnboardingState } from '@providers/Onboarding';
 
-import LinksTooltipImg from '@assets/linksTooltip.svg'
+import LinksTooltipImg from '@assets/linksTooltip.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
-const COMMUNITY_LINK_TYPE = 'community'
-const DOCUMENTATION_LINK_TYPE = 'documentation'
+const COMMUNITY_LINK_TYPE = 'community';
+const DOCUMENTATION_LINK_TYPE = 'documentation';
 
-const GARDEN_LOGO_TYPE = 'logo_type'
-const GARDEN_LOGO = 'logo'
-const TOKEN_LOGO = 'token_logo'
+const GARDEN_LOGO_TYPE = 'logo_type';
+const GARDEN_LOGO = 'logo';
+const TOKEN_LOGO = 'token_logo';
 
-const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
+const DEFAULT_FORUM_LINK = 'https://forum.1hive.org';
 
 const URL_REGEX = new RegExp(
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
-)
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
+);
 
 function GardenMetadata() {
-  const theme = useTheme()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    steps,
-    step,
-  } = useOnboardingState()
-  const [formData, setFormData] = useState(config.garden)
-  const [displayErrors, setDisplayErrors] = useState(false)
-  const [formatValidationColor, setFormatValidationColor] = useState(
-    theme.contentSecondary
-  )
-  const resolvedAddress = useGardenNameResolver(formData.name)
+  const theme = useTheme();
+  const { config, onBack, onConfigChange, onNext, steps, step } = useOnboardingState();
+  const [formData, setFormData] = useState(config.garden);
+  const [displayErrors, setDisplayErrors] = useState(false);
+  const [formatValidationColor, setFormatValidationColor] = useState(theme.contentSecondary.toString());
+  const resolvedAddress = useGardenNameResolver(formData.name);
 
   const handleGardenNameChange = useCallback(event => {
-    const value = event.target.value
-    setFormData(formData => ({ ...formData, name: value }))
-  }, [])
+    const value = event.target.value;
+    setFormData(formData => ({ ...formData, name: value }));
+  }, []);
 
   const handleGardenDescriptionChange = useCallback(event => {
-    const value = event.target.value
-    setFormData(formData => ({ ...formData, description: value }))
-  }, [])
+    const value = event.target.value;
+    setFormData(formData => ({ ...formData, description: value }));
+  }, []);
 
   const handleForumChange = useCallback(event => {
-    const value = event.target.value
-    setFormData(formData => ({ ...formData, forum: value }))
-  }, [])
+    const value = event.target.value;
+    setFormData(formData => ({ ...formData, forum: value }));
+  }, []);
 
   const addLink = useCallback(
     type => {
@@ -74,20 +67,17 @@ function GardenMetadata() {
             }
           : {
               ...formData.links,
-              documentation: [
-                ...formData.links.documentation,
-                { link: '', label: '' },
-              ],
-            }
+              documentation: [...formData.links.documentation, { link: '', label: '' }],
+            };
       setFormData(formData => {
         return {
           ...formData,
           links: linksObject,
-        }
-      })
+        };
+      });
     },
-    [formData.links]
-  )
+    [formData.links],
+  );
 
   const removeLink = useCallback(
     (type, index) => {
@@ -106,17 +96,17 @@ function GardenMetadata() {
                 formData.links.documentation.length < 2
                   ? [{ link: '', label: '' }]
                   : formData.links.documentation.filter((_, i) => i !== index),
-            }
+            };
 
       setFormData(formData => {
         return {
           ...formData,
           links: linksObject,
-        }
-      })
+        };
+      });
     },
-    [formData.links]
-  )
+    [formData.links],
+  );
 
   const updateLink = useCallback(
     (type, index, updatedUrl, updatedLabel) => {
@@ -125,25 +115,25 @@ function GardenMetadata() {
           ? {
               ...formData.links,
               community: formData.links.community.map((link, i) =>
-                i === index ? { link: updatedUrl, label: updatedLabel } : link
+                i === index ? { link: updatedUrl, label: updatedLabel } : link,
               ),
             }
           : {
               ...formData.links,
               documentation: formData.links.documentation.map((link, i) =>
-                i === index ? { link: updatedUrl, label: updatedLabel } : link
+                i === index ? { link: updatedUrl, label: updatedLabel } : link,
               ),
-            }
+            };
 
       setFormData(formData => {
         return {
           ...formData,
           links: linksObject,
-        }
-      })
+        };
+      });
     },
-    [formData.links]
-  )
+    [formData.links],
+  );
 
   const handleOnAssetUpdated = useCallback((type, file) => {
     setFormData(formData => {
@@ -156,100 +146,95 @@ function GardenMetadata() {
               imageExtension: file.blob.type.split('/')[1],
             }
           : null,
-      }
-    })
-  }, [])
+      };
+    });
+  }, []);
 
   const handleOnGardenLogoTypeUpdated = useCallback(
     file => {
-      handleOnAssetUpdated(GARDEN_LOGO_TYPE, file)
+      handleOnAssetUpdated(GARDEN_LOGO_TYPE, file);
     },
-    [handleOnAssetUpdated]
-  )
+    [handleOnAssetUpdated],
+  );
 
   const handleOnGardenLogoUpdated = useCallback(
     file => {
-      handleOnAssetUpdated(GARDEN_LOGO, file)
+      handleOnAssetUpdated(GARDEN_LOGO, file);
     },
-    [handleOnAssetUpdated]
-  )
+    [handleOnAssetUpdated],
+  );
 
   const handleOnTokenLogoUpdated = useCallback(
     file => {
-      handleOnAssetUpdated(TOKEN_LOGO, file)
+      handleOnAssetUpdated(TOKEN_LOGO, file);
     },
-    [handleOnAssetUpdated]
-  )
+    [handleOnAssetUpdated],
+  );
 
   const errors = useMemo(() => {
-    const errors = []
+    const errors = [];
 
-    const { name, description, forum, links } = formData
-    const { documentation, community } = links
+    const { name, description, forum, links } = formData;
+    const { documentation, community } = links;
     if (!name) {
-      errors.push('Garden name not provided.')
+      errors.push('Garden name not provided.');
     }
     if (resolvedAddress) {
-      errors.push('Garden name is already taken')
+      errors.push('Garden name is already taken');
     }
     if (!description) {
-      errors.push('Garden description not provided.')
+      errors.push('Garden description not provided.');
     }
     if (forum && !URL_REGEX.test(forum)) {
-      errors.push('Forum is not in a valid url format.')
+      errors.push('Forum is not in a valid url format.');
     }
 
     documentation.map(doc => {
       if (doc.link && !URL_REGEX.test(doc.link)) {
-        errors.push(`${doc.label} is not in a valid url format.`)
+        errors.push(`${doc.label} is not in a valid url format.`);
       }
-    })
+    });
 
     community.map(com => {
       if (com.link && !URL_REGEX.test(com.link)) {
-        errors.push(`${com.label} is not in a valid url format.`)
+        errors.push(`${com.label} is not in a valid url format.`);
       }
-    })
+    });
 
-    return errors
-  }, [formData, resolvedAddress])
+    return errors;
+  }, [formData, resolvedAddress]);
 
   const handleNext = useCallback(() => {
     if (errors.length === 0) {
       onConfigChange('garden', {
         ...formData,
         forum: formData.forum || DEFAULT_FORUM_LINK,
-      })
-      onNext()
+      });
+      onNext();
     } else {
-      setDisplayErrors(true)
+      setDisplayErrors(true);
     }
-  }, [errors, onConfigChange, onNext, formData])
+  }, [errors, onConfigChange, onNext, formData]);
 
   const handleOnDragAccepted = useCallback(() => {
-    setFormatValidationColor(theme.contentSecondary)
-  }, [theme])
+    setFormatValidationColor(theme.contentSecondary.toString());
+  }, [theme]);
   const handleOnDragRejected = useCallback(() => {
-    setFormatValidationColor(theme.error)
-  }, [theme])
+    setFormatValidationColor(theme.error.toString());
+  }, [theme]);
 
   const ForumTooltip = (
     <div>
-      Add the URL to your discussion platform - we recommend{' '}
-      <Link href="https://www.discourse.org">discourse</Link>. If you don't, the{' '}
-      <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned
-      by default.
+      Add the URL to your discussion platform - we recommend <Link href="https://www.discourse.org">discourse</Link>. If
+      you don't, the <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned by default.
     </div>
-  )
+  );
 
   return (
     <div>
-      <Header
-        title="Add Profile"
-        subtitle="Fill with your garden information"
-      />
+      <Header title="Add Profile" subtitle="Fill with your garden information" />
       <div
-        css={`
+        css={css`
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -261,7 +246,9 @@ function GardenMetadata() {
             maxLength="50"
             onChange={handleGardenNameChange}
             value={formData.name}
-            css="width: 100%;"
+            style={{
+              width: '100%',
+            }}
           />
         </MetadataField>
         <MetadataField label="GARDEN DESCRIPTION">
@@ -270,14 +257,18 @@ function GardenMetadata() {
             maxLength="120"
             onChange={handleGardenDescriptionChange}
             value={formData.description}
-            css="width: 100%;"
+            style={{
+              width: '100%',
+            }}
           />
         </MetadataField>
         <MetadataField label="FORUM" optional tooltip={ForumTooltip}>
           <TextInput
             onChange={handleForumChange}
             value={formData.forum}
-            css="width: 100%;"
+            css={css`
+              width: 100%;
+            `}
           />
         </MetadataField>
 
@@ -289,16 +280,16 @@ function GardenMetadata() {
         >
           <div>
             <div
-              css={`
+              css={css`
                 display: flex;
                 flex-direction: column;
                 ${textStyle('body2')};
-                color: ${theme.contentSecondary};
+                color: ${theme.contentSecondary.toString()};
               `}
             >
               <span>Drag and drop or browse your files to upload one.</span>
               <span
-                css={`
+                css={css`
                   color: ${formatValidationColor};
                   font-weight: 600;
                   margin-top: ${1 * GU}px;
@@ -308,13 +299,13 @@ function GardenMetadata() {
               </span>
             </div>
             <div
-              css={`
+              css={css`
                 margin-top: ${2 * GU}px;
                 display: flex;
               `}
             >
               <div
-                css={`
+                css={css`
                   width: 100%;
                   margin-right: ${1.5 * GU}px;
                 `}
@@ -330,7 +321,7 @@ function GardenMetadata() {
                 />
               </div>
               <div
-                css={`
+                css={css`
                   width: 100%;
                   margin-right: ${1.5 * GU}px;
                 `}
@@ -346,7 +337,7 @@ function GardenMetadata() {
                 />
               </div>
               <div
-                css={`
+                css={css`
                   width: 100%;
                 `}
               >
@@ -384,7 +375,7 @@ function GardenMetadata() {
       {displayErrors && errors.length > 0 && (
         <Info
           mode="error"
-          css={`
+          css={css`
             margin-bottom: ${3 * GU}px;
           `}
         >
@@ -402,88 +393,81 @@ function GardenMetadata() {
         onNext={handleNext}
       />
     </div>
-  )
+  );
 }
 
-function LinksBox({
-  fieldTitle,
-  linksType,
-  links,
-  onAddLink,
-  onRemoveLink,
-  onUpdateLink,
-}) {
-  const [focusLastLinkNext, setFocusLastLinkNext] = useState(false)
-  const linksRef = useRef()
-  const theme = useTheme()
+function LinksBox({ fieldTitle, linksType, links, onAddLink, onRemoveLink, onUpdateLink }) {
+  const [focusLastLinkNext, setFocusLastLinkNext] = useState(false);
+  const linksRef = useRef();
+  const theme = useTheme();
 
   const focusLastLink = useCallback(() => {
-    setFocusLastLinkNext(true)
-  }, [])
+    setFocusLastLinkNext(true);
+  }, []);
 
   const handleAddLink = useCallback(() => {
-    onAddLink(linksType)
-    focusLastLink()
-  }, [focusLastLink, linksType, onAddLink])
+    onAddLink(linksType);
+    focusLastLink();
+  }, [focusLastLink, linksType, onAddLink]);
 
   const handleUpdateLink = useCallback(
     (index, updatedUrl, updatedLabel) => {
-      onUpdateLink(linksType, index, updatedUrl, updatedLabel)
+      onUpdateLink(linksType, index, updatedUrl, updatedLabel);
     },
-    [linksType, onUpdateLink]
-  )
+    [linksType, onUpdateLink],
+  );
 
   const handleRemoveLink = useCallback(
     index => {
-      onRemoveLink(linksType, index)
-      focusLastLink()
+      onRemoveLink(linksType, index);
+      focusLastLink();
     },
-    [focusLastLink, linksType, onRemoveLink]
-  )
+    [focusLastLink, linksType, onRemoveLink],
+  );
 
-  const hideRemoveButton = links.length < 2 && !links[0]
+  const hideRemoveButton = links.length < 2 && !links[0];
 
   useEffect(() => {
     if (!focusLastLinkNext || !linksRef.current) {
-      return
+      return;
     }
 
-    setFocusLastLinkNext(false)
+    setFocusLastLinkNext(false);
 
-    const elts = linksRef.current.querySelectorAll('.links')
+    const elts = linksRef.current.querySelectorAll('.links');
     if (elts.length > 0) {
-      elts[elts.length - 1].querySelector('input').focus()
+      elts[elts.length - 1].querySelector('input').focus();
     }
-  }, [focusLastLinkNext])
+  }, [focusLastLinkNext]);
 
   const ImageTooltip = (
     <div
-      css={`
+      css={css`
         width: 100%;
       `}
     >
       <h3
-        css={`
+        css={css`
           ${textStyle('body3')};
-          color: ${theme.contentSecondary};
+          color: ${theme.contentSecondary.toString()};
         `}
       >
         This links will be displayed at the footer of your Garden
       </h3>
       <img
-        css={`
+        css={css`
           width: 100%;
         `}
         alt=""
         src={LinksTooltipImg}
       />
     </div>
-  )
+  );
 
   return (
     <MetadataField optional label={fieldTitle} tooltip={ImageTooltip}>
       <div
-        css={`
+        css={css`
           width: 100%;
           margin-top: ${2 * GU}px;
         `}
@@ -491,7 +475,7 @@ function LinksBox({
         <Field
           label={
             <div
-              css={`
+              css={css`
                 width: 100%;
                 display: grid;
                 grid-template-columns: auto ${18 * GU}px;
@@ -502,7 +486,7 @@ function LinksBox({
               <div>Label</div>
             </div>
           }
-          css={`
+          css={css`
             width: 100%;
           `}
         >
@@ -521,8 +505,8 @@ function LinksBox({
           <Button
             icon={
               <IconPlus
-                css={`
-                  color: ${theme.accent};
+                css={css`
+                  color: ${theme.accent.toString()};
                 `}
               />
             }
@@ -533,37 +517,37 @@ function LinksBox({
         </Field>
       </div>
     </MetadataField>
-  )
+  );
 }
 
 function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const { link, label } = item
+  const { link, label } = item;
 
   const handleRemove = useCallback(() => {
-    onRemove(index)
-  }, [onRemove, index])
+    onRemove(index);
+  }, [onRemove, index]);
 
   const handleUrlChange = useCallback(
     event => {
-      onUpdate(index, event.target.value, label)
+      onUpdate(index, event.target.value, label);
     },
-    [onUpdate, label, index]
-  )
+    [onUpdate, label, index],
+  );
 
   const handleLabelChange = useCallback(
     event => {
-      const value = event.target.value
-      onUpdate(index, link, value)
+      const value = event.target.value;
+      onUpdate(index, link, value);
     },
-    [onUpdate, link, index]
-  )
+    [onUpdate, link, index],
+  );
 
   return (
     <div
       className="links"
-      css={`
+      css={css`
         display: grid;
         grid-template-columns: auto ${18 * GU}px;
         grid-column-gap: ${1.5 * GU}px;
@@ -574,14 +558,18 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
       <div>
         <TextInput
           adornment={
-            <span css="transform: translateY(1px)">
+            <span
+              css={css`
+                transform: translateY(1px);
+              `}
+            >
               {!hideRemoveButton && (
                 <Button
                   display="icon"
                   icon={
                     <IconTrash
-                      css={`
-                        color: ${theme.negative};
+                      css={css`
+                        color: ${theme.negative.toString()};
                       `}
                     />
                   }
@@ -598,7 +586,7 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
           placeholder="http://www.example.com"
           value={link}
           wide
-          css={`
+          css={css`
             padding-left: ${2 * GU}px;
           `}
         />
@@ -607,28 +595,28 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
         <TextInput onChange={handleLabelChange} value={label} wide />
       </div>
     </div>
-  )
+  );
 }
 
 function MetadataField({ children, label, optional, tooltip }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <div
-      css={`
+      css={css`
         width: 100%;
         margin-top: ${2 * GU}px;
       `}
     >
       <div
-        css={`
+        css={css`
           display: flex;
           align-items: center;
         `}
       >
         <span
-          css={`
+          css={css`
             ${textStyle('label2')};
-            color: ${theme.surfaceContentSecondary};
+            color: ${theme.surfaceContentSecondary.toString()};
             margin-right: ${0.5 * GU}px;
           `}
         >
@@ -637,7 +625,7 @@ function MetadataField({ children, label, optional, tooltip }) {
         {tooltip && <Help hint="">{tooltip}</Help>}
       </div>
       <div
-        css={`
+        css={css`
           width: 100%;
           margin-top: ${1 * GU}px;
         `}
@@ -645,6 +633,6 @@ function MetadataField({ children, label, optional, tooltip }) {
         {children}
       </div>
     </div>
-  )
+  );
 }
-export default GardenMetadata
+export default GardenMetadata;

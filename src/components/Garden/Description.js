@@ -1,10 +1,12 @@
-import React from 'react'
-import { GU, IdentityBadge, useTheme } from '@1hive/1hive-ui'
+/** @jsx jsx */
+import React from 'react';
+import { GU, IdentityBadge, useTheme } from '@1hive/1hive-ui';
+import { css, jsx } from '@emotion/react';
 
 function Description({ disableBadgeInteraction, path, ...props }) {
   return (
     <span
-      css={`
+      css={css`
         // overflow-wrap:anywhere and hyphens:auto are not supported yet by
         // the latest versions of Safari (as of June 2020), which
         // is why word-break:break-word has been added here.
@@ -16,27 +18,23 @@ function Description({ disableBadgeInteraction, path, ...props }) {
     >
       {path
         ? path.map((step, index) => (
-            <DescriptionStep
-              disableBadgeInteraction={disableBadgeInteraction}
-              key={index}
-              step={step}
-            />
+            <DescriptionStep disableBadgeInteraction={disableBadgeInteraction} key={index} step={step} />
           ))
         : 'No description'}
     </span>
-  )
+  );
 }
 
 /* eslint-disable react/prop-types */
 function DescriptionStep({ step, disableBadgeInteraction }) {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const description = []
+  const description = [];
 
   if (step.annotatedDescription) {
     description.push(
       step.annotatedDescription.map(({ type, value }, index) => {
-        const key = index + 1
+        const key = index + 1;
 
         if (type === 'address' || type === 'any-account') {
           return (
@@ -48,40 +46,36 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
                 entity={type === 'any-account' ? 'Any account' : value}
               />
             </span>
-          )
+          );
         }
 
         if (type === 'role' || type === 'kernelNamespace' || type === 'app') {
-          return <span key={key}> “{value.name}”</span>
+          return <span key={key}> “{value.name}”</span>;
         }
 
         if (type === 'apmPackage') {
-          return <span key={key}> “{value.artifact.appName}”</span>
+          return <span key={key}> “{value.artifact.appName}”</span>;
         }
 
-        return <span key={key}> {value.description || value}</span>
-      })
-    )
+        return <span key={key}> {value.description || value}</span>;
+      }),
+    );
   } else {
-    description.push(
-      <span key={description.length + 1}>
-        {step.description || 'No description'}
-      </span>
-    )
+    description.push(<span key={description.length + 1}>{step.description || 'No description'}</span>);
   }
 
-  description.push(<br key={description.length + 1} />)
+  description.push(<br key={description.length + 1} />);
 
   const childrenDescriptions = (step.children || []).map((child, index) => {
-    return <DescriptionStep step={child} key={index} />
-  })
+    return <DescriptionStep step={child} key={index} />;
+  });
 
   return (
     <>
       <span>{description}</span>
       {childrenDescriptions.length > 0 && (
         <ul
-          css={`
+          css={css`
             list-style-type: none;
             margin-left: 0;
             padding-left: ${0.5 * GU}px;
@@ -89,19 +83,19 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
           `}
         >
           <li
-            css={`
+            css={css`
               padding-left: ${2 * GU}px;
               &:before {
                 content: '';
                 width: ${0.5 * GU}px;
                 height: ${0.5 * GU}px;
-                background: ${theme.accent};
+                background: ${theme.accent.toString()};
                 border-radius: 50%;
                 display: inline-block;
               }
               span {
                 display: inline;
-                color: ${theme.surfaceContentSecondary};
+                color: ${theme.surfaceContentSecondary.toString()};
               }
             `}
           >
@@ -110,7 +104,7 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
         </ul>
       )}
     </>
-  )
+  );
 }
 
-export default Description
+export default Description;

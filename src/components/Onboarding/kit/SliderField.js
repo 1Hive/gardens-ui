@@ -1,103 +1,83 @@
-import React, {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
-import PropTypes from 'prop-types'
-import {
-  Field,
-  GU,
-  Slider,
-  TextInput,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
-import { splitDecimalNumber } from '@utils/math-utils'
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Field, GU, Slider, TextInput, textStyle, useTheme } from '@1hive/1hive-ui';
+import { splitDecimalNumber } from '@utils/math-utils';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function removeTrailingZeros(num) {
-  const [whole, dec] = splitDecimalNumber(num)
+  const [whole, dec] = splitDecimalNumber(num);
   if (!dec) {
-    return whole || '0'
+    return whole || '0';
   }
 
-  return `${whole}.${dec}`
+  return `${whole}.${dec}`;
 }
 
 const SliderField = React.forwardRef(function SliderField(
-  {
-    label,
-    value,
-    minValue = 0,
-    maxValue = 100,
-    precision = 0,
-    valueSymbol = ' ',
-    onChange,
-  },
-  ref
+  { label, value, minValue = 0, maxValue = 100, precision = 0, valueSymbol = ' ', onChange },
+  ref,
 ) {
-  const theme = useTheme()
-  const inputRef = useRef()
-  const [textFieldValue, setTextFieldValue] = useState(value)
-  const textInputWidth =
-    (5 + valueSymbol.length + maxValue.toString().length + precision + 1) * GU
+  const theme = useTheme();
+  const inputRef = useRef();
+  const [textFieldValue, setTextFieldValue] = useState(value);
+  const textInputWidth = (5 + valueSymbol.length + maxValue.toString().length + precision + 1) * GU;
 
   useImperativeHandle(
     ref,
     () => ({
       focus: () => {
         if (inputRef.curent) {
-          inputRef.current.focus()
+          inputRef.current.focus();
         }
       },
       element: inputRef.current,
     }),
-    []
-  )
+    [],
+  );
 
   useEffect(() => {
-    setTextFieldValue(value)
-  }, [value])
+    setTextFieldValue(value);
+  }, [value]);
 
   const handleSliderChange = useCallback(
     v => {
-      const value = (v * maxValue).toFixed(precision)
-      onChange(value < minValue ? minValue : removeTrailingZeros(value))
+      const value = (v * maxValue).toFixed(precision);
+      onChange(value < minValue ? minValue : removeTrailingZeros(value));
     },
-    [minValue, maxValue, onChange, precision]
-  )
+    [minValue, maxValue, onChange, precision],
+  );
 
   const handleInputChange = useCallback(
     event => {
-      const value = event.target.value
+      const value = event.target.value;
 
       // Allow empty values so it can be easier to update input
       if (!event.target.value) {
-        setTextFieldValue('')
+        setTextFieldValue('');
       } else if (!isNaN(value) && value >= minValue && value <= maxValue) {
-        setTextFieldValue(value)
+        setTextFieldValue(value);
       }
     },
-    [minValue, maxValue]
-  )
+    [minValue, maxValue],
+  );
 
   const handleInputBlur = useCallback(() => {
     // It can be an empty value so we need to parse it again
-    const value = parseFloat(textFieldValue).toFixed(precision)
+    const value = parseFloat(textFieldValue).toFixed(precision);
 
     if (!isNaN(value)) {
-      onChange(removeTrailingZeros(value))
+      onChange(removeTrailingZeros(value));
     } else {
-      onChange(minValue)
+      onChange(minValue);
     }
-  }, [minValue, onChange, precision, textFieldValue])
+  }, [minValue, onChange, precision, textFieldValue]);
 
   return (
     <Field label={label}>
       {({ id }) => (
         <div
-          css={`
+          css={css`
             display: flex;
             flex-direction: row;
           `}
@@ -105,7 +85,7 @@ const SliderField = React.forwardRef(function SliderField(
           <Slider
             value={value / maxValue}
             onUpdate={handleSliderChange}
-            css={`
+            css={css`
               flex-grow: 1;
               padding-left: 0;
               padding-right: 0;
@@ -114,7 +94,7 @@ const SliderField = React.forwardRef(function SliderField(
             `}
           />
           <div
-            css={`
+            css={css`
               position: relative;
               flex-grow: 0;
               flex-shrink: 0;
@@ -128,14 +108,14 @@ const SliderField = React.forwardRef(function SliderField(
               onChange={handleInputChange}
               onBlur={handleInputBlur}
               wide
-              css={`
+              css={css`
                 padding-right: ${3.5 * GU + valueSymbol.length * 0.5 * GU}px;
                 text-align: right;
               `}
             />
             {valueSymbol && (
               <span
-                css={`
+                css={css`
                   position: absolute;
                   top: 0;
                   right: ${1.5 * GU}px;
@@ -143,7 +123,7 @@ const SliderField = React.forwardRef(function SliderField(
                   display: flex;
                   align-items: center;
                   ${textStyle('body3')};
-                  color: ${theme.surfaceContent};
+                  color: ${theme.surfaceContent.toString()};
                   pointer-events: none;
                 `}
               >
@@ -154,8 +134,8 @@ const SliderField = React.forwardRef(function SliderField(
         </div>
       )}
     </Field>
-  )
-})
+  );
+});
 
 SliderField.propTypes = {
   label: PropTypes.node,
@@ -164,6 +144,6 @@ SliderField.propTypes = {
   value: PropTypes.number.isRequired,
   valueSymbol: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-}
+};
 
-export default SliderField
+export default SliderField;

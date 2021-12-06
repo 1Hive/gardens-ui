@@ -1,25 +1,23 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router'
-import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
-import { animated, Transition } from 'react-spring/renderprops'
-import { BoxProgress, BoxReady } from './Boxes'
-import DeploymentStepsPanel from './DeploymentStepsPanel'
-import ErrorModal from './ErrorModal'
+import React, { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router';
+import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui';
+import { animated, Transition } from 'react-spring/renderprops';
+import { BoxProgress, BoxReady } from './Boxes';
+import DeploymentStepsPanel from './DeploymentStepsPanel';
+import ErrorModal from './ErrorModal';
 
-import useDeploymentState from './useDeploymentState'
+import useDeploymentState from './useDeploymentState';
 
-import flowersLeavesSvg from './assets/flowers-leaves.svg'
-import gardensLogo from '@assets/gardensLogoMark.svg'
+import flowersLeavesSvg from './assets/flowers-leaves.svg';
+import gardensLogo from '@assets/gardensLogoMark.svg';
 
-import {
-  STEP_WORKING,
-  STEP_SUCCESS,
-  STEP_PROMPTING,
-} from '@components/Stepper/stepper-statuses'
+import { STEP_WORKING, STEP_SUCCESS, STEP_PROMPTING } from '@components/Stepper/stepper-statuses';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 const Deployment = React.memo(function Deployment() {
-  const { above } = useViewport()
-  const history = useHistory()
+  const { above } = useViewport();
+  const history = useHistory();
 
   const {
     erroredTransactions,
@@ -28,31 +26,29 @@ const Deployment = React.memo(function Deployment() {
     onNextAttempt,
     readyToStart,
     transactionsStatus,
-  } = useDeploymentState()
+  } = useDeploymentState();
 
   const handleOpenGarden = useCallback(() => {
     if (gardenAddress && isFinalized) {
-      history.push(`/garden/${gardenAddress}`)
+      history.push(`/garden/${gardenAddress}`);
     }
-  }, [gardenAddress, history, isFinalized])
+  }, [gardenAddress, history, isFinalized]);
 
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
-      return [0, false]
+      return [0, false];
     }
     return [
-      transactionsStatus.findIndex(
-        ({ status }) => status === STEP_WORKING || status === STEP_PROMPTING
-      ),
+      transactionsStatus.findIndex(({ status }) => status === STEP_WORKING || status === STEP_PROMPTING),
       transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
-    ]
-  }, [transactionsStatus])
+    ];
+  }, [transactionsStatus]);
 
   return (
     <React.Fragment>
       {above('large') && (
         <div
-          css={`
+          css={css`
             width: ${41 * GU}px;
             flex-shrink: 0;
             flex-grow: 0;
@@ -60,7 +56,7 @@ const Deployment = React.memo(function Deployment() {
           `}
         >
           <img
-            css={`
+            css={css`
               display: flex;
               padding-left: ${2.25 * GU}px;
               margin-top: ${2 * GU}px;
@@ -70,14 +66,10 @@ const Deployment = React.memo(function Deployment() {
             alt=""
           />
           {readyToStart ? (
-            <DeploymentStepsPanel
-              allSuccess={allSuccess}
-              pending={pending}
-              transactionsStatus={transactionsStatus}
-            />
+            <DeploymentStepsPanel allSuccess={allSuccess} pending={pending} transactionsStatus={transactionsStatus} />
           ) : (
             <div
-              css={`
+              css={css`
                 display: flex;
                 align-items: center;
                 margin: ${5 * GU}px ${2 * GU}px;
@@ -85,7 +77,7 @@ const Deployment = React.memo(function Deployment() {
             >
               <LoadingRing />
               <span
-                css={`
+                css={css`
                   margin-left: ${1 * GU}px;
                 `}
               >
@@ -96,7 +88,7 @@ const Deployment = React.memo(function Deployment() {
         </div>
       )}
       <section
-        css={`
+        css={css`
           display: flex;
           flex-direction: column;
           width: 100%;
@@ -106,7 +98,7 @@ const Deployment = React.memo(function Deployment() {
         `}
       >
         <div
-          css={`
+          css={css`
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -161,7 +153,7 @@ const Deployment = React.memo(function Deployment() {
             !isFinalized && (
               <animated.div
                 style={{ opacity, transform }}
-                css={`
+                css={css`
                   background: url(${flowersLeavesSvg});
                   background-size: cover;
                   background-repeat: no-repeat;
@@ -183,15 +175,14 @@ const Deployment = React.memo(function Deployment() {
         }
         content={
           <p>
-            An error has occurred during the signature process. Don't worry, you
-            can try to send the transaction again.
+            An error has occurred during the signature process. Don't worry, you can try to send the transaction again.
           </p>
         }
         header="Something went wrong"
         visible={erroredTransactions > -1}
       />
     </React.Fragment>
-  )
-})
+  );
+});
 
-export default Deployment
+export default Deployment;

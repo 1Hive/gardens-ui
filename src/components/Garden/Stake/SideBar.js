@@ -1,20 +1,22 @@
-import React from 'react'
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import BalanceCard from './BalanceCard'
-import ExpandableCard from './ExpandableCard'
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
-import { formatTokenAmount } from '@utils/token-utils'
+import React from 'react';
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
+import BalanceCard from './BalanceCard';
+import ExpandableCard from './ExpandableCard';
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
+import { formatTokenAmount } from '@utils/token-utils';
 
-import coin from './assets/coin.svg'
-import wallet from './assets/wallet.svg'
+import coin from './assets/coin.svg';
+import wallet from './assets/wallet.svg';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react';
 
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
-  const { available, locked, total, allowance } = staking
-  const tokenPrice = useHoneyswapTokenPrice(token.id)
+  const { available, locked, total, allowance } = staking;
+  const tokenPrice = useHoneyswapTokenPrice(token.id);
 
   return (
     <div
-      css={`
+      css={css`
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
@@ -55,14 +57,14 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
         expansion="This is the part of your balance that is currently being deposited on either open proposals you have created, or proposals you have challenged. It is not available to be withdrawn."
       />
     </div>
-  )
+  );
 }
 
 function CardContent({ amount, icon, title, secondary, tokenAmount }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <div
-      css={`
+      css={css`
         text-align: center;
       `}
     >
@@ -70,34 +72,34 @@ function CardContent({ amount, icon, title, secondary, tokenAmount }) {
         src={icon}
         width={6 * GU}
         height={6 * GU}
-        css={`
+        css={css`
           margin: auto;
         `}
       />
       <h2
-        css={`
+        css={css`
           ${textStyle('title4')};
         `}
       >
         {tokenAmount}
       </h2>
       <h1
-        css={`
+        css={css`
           margin: ${0.5 * GU}px 0;
-          color: ${theme.contentSecondary};
+          color: ${theme.contentSecondary.toString()};
         `}
       >
         {title}
       </h1>
       <p
-        css={`
-          color: ${secondary ? theme.contentSecondary : theme.positive};
+        css={css`
+          color: ${secondary ? theme.contentSecondary.toString() : theme.positive.toString()};
         `}
       >
         $ {amount > 0 ? amount : '-'}
       </p>
     </div>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

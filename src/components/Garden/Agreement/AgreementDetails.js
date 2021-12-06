@@ -1,66 +1,51 @@
-import React from 'react'
-import {
-  textStyle,
-  IdentityBadge,
-  Link,
-  IconCheck,
-  useLayout,
-  useTheme,
-  GU,
-  RADIUS,
-} from '@1hive/1hive-ui'
-import { dateFormat } from '@utils/date-utils'
-import InfoField from '../InfoField'
-import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
-import { getNetwork } from '@/networks'
+/** @jsx jsx */
+import React from 'react';
+import { textStyle, IdentityBadge, Link, IconCheck, useLayout, GU, RADIUS, useTheme } from '@1hive/1hive-ui';
+import { dateFormat } from '@utils/date-utils';
+import InfoField from '../InfoField';
+import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils';
+import { getNetwork } from '@/networks';
+import { css, jsx } from '@emotion/react';
 
-function AgreementDetails({
-  creationDate,
-  contractAddress,
-  ipfsUri,
-  stakingAddress,
-  signedAgreement,
-}) {
-  const theme = useTheme()
-  const { layoutName } = useLayout()
-  const mobileMode = layoutName === 'small'
-  const multiColumnsMode = layoutName === 'max' || layoutName === 'medium'
+function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddress, signedAgreement }) {
+  const theme = useTheme();
+  const { layoutName } = useLayout();
+  const mobileMode = layoutName === 'small';
+  const multiColumnsMode = layoutName === 'max' || layoutName === 'medium';
 
-  const celesteUrl = getNetwork().celesteUrl
+  const celesteUrl = getNetwork().celesteUrl;
 
-  const ipfsCID = getIpfsCidFromUri(ipfsUri)
+  const ipfsCID = getIpfsCidFromUri(ipfsUri);
 
   return (
     <>
       <div
-        css={`
+        css={css`
           margin-bottom: ${3 * GU}px;
         `}
       >
         <InfoField label="Covenant IPFS Link">
           <Link
             href={getIpfsUrlFromUri(ipfsUri)}
-            css={`
-              max-width: 90%;
-            `}
+            style={{
+              maxWidth: '90%',
+            }}
           >
             <span
-              css={`
+              css={css`
                 display: block;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 text-align: left;
               `}
             >
-              {mobileMode
-                ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}`
-                : ipfsCID}
+              {mobileMode ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}` : ipfsCID}
             </span>
           </Link>
         </InfoField>
       </div>
       <div
-        css={`
+        css={css`
           display: grid;
           grid-gap: ${multiColumnsMode ? 2 * GU : 3 * GU}px;
           grid-auto-flow: ${multiColumnsMode ? 'column' : 'row'};
@@ -80,29 +65,29 @@ function AgreementDetails({
 
       {signedAgreement && (
         <div
-          css={`
+          css={css`
             display: flex;
             justify-content: center;
             margin-top: ${5 * GU}px;
-            background-color: ${theme.background};
-            border: 1px solid ${theme.border};
+            background-color: ${theme.background.toString()};
+            border: 1px solid ${theme.border.toString()};
             padding: ${4 * GU}px;
             border-radius: ${RADIUS}px;
           `}
         >
           <div
-            css={`
+            css={css`
               display: flex;
               align-items: center;
             `}
           >
             <div
-              css={`
+              css={css`
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 100%;
-                color: ${theme.accent};
+                color: ${theme.accent.toString()};
                 border: 2px solid currentColor;
                 width: ${5.5 * GU}px;
                 height: ${5.5 * GU}px;
@@ -114,7 +99,7 @@ function AgreementDetails({
             </div>
             <div>
               <h2
-                css={`
+                css={css`
                   ${textStyle('body1')}
                   font-weight: 600;
                 `}
@@ -122,19 +107,18 @@ function AgreementDetails({
                 You have sucessfully signed this Covenant
               </h2>
               <p
-                css={`
-                  color: ${theme.surfaceContentSecondary};
+                css={css`
+                  color: ${theme.surfaceContentSecondary.toString()};
                 `}
               >
-                You can now manage your token balances using the Deposit
-                Manager.
+                You can now manage your token balances using the Deposit Manager.
               </p>
             </div>
           </div>
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default AgreementDetails
+export default AgreementDetails;
