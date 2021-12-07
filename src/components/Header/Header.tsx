@@ -1,29 +1,31 @@
 /** @jsx jsx */
-import React, { useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router';
-import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui';
-import AccountModule from '../Account/AccountModule';
-import ActivityButton from '../Activity/ActivityButton';
-import BalanceModule from '../BalanceModule';
-import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton';
-import Layout from '../Layout';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useWallet } from '@providers/Wallet';
+import React, { useCallback, useMemo } from "react";
+import { useHistory } from "react-router";
+import { Button, GU, Link, useTheme, useViewport } from "@1hive/1hive-ui";
+import AccountModule from "../Account/AccountModule";
+import ActivityButton from "../Activity/ActivityButton";
+import BalanceModule from "../BalanceModule";
+import GlobalPreferencesButton from "../Garden/Preferences/GlobalPreferencesButton";
+import Layout from "../Layout";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useWallet } from "@providers/Wallet";
 
-import { buildGardenPath } from '@utils/routing-utils';
-import { getDexTradeTokenUrl } from '../../endpoints';
-import { getNetwork } from '../../networks';
+import { buildGardenPath } from "@utils/routing-utils";
+import { getDexTradeTokenUrl } from "../../endpoints";
+import { getNetwork } from "../../networks";
 
-import defaultGardenLogo from '@assets/defaultGardenLogo.png';
-import gardensLogo from '@assets/gardensLogoMark.svg';
-import gardensLogoType from '@assets/gardensLogoType.svg';
-import { css, jsx } from '@emotion/react';
+import defaultGardenLogo from "@assets/defaultGardenLogo.png";
+import gardensLogo from "@assets/gardensLogoMark.svg";
+import gardensLogoType from "@assets/gardensLogoType.svg";
+import { css, jsx } from "@emotion/react";
+
+import { HeaderContainer } from "./index.styled";
 
 function Header({ onOpenPreferences }) {
   const theme = useTheme();
   const { account } = useWallet();
   const { below } = useViewport();
-  const layoutSmall = below('medium');
+  const layoutSmall = below("medium");
   const network = getNetwork();
   const history = useHistory();
   const connectedGarden = useConnectedGarden();
@@ -40,19 +42,14 @@ function Header({ onOpenPreferences }) {
   }, [connectedGarden]);
 
   const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />;
-  const logoLink = `#${connectedGarden ? buildGardenPath(history.location, '') : '/home'}`;
+  const logoLink = `#${
+    connectedGarden ? buildGardenPath(history.location, "") : "/home"
+  }`;
 
   const showBalance = connectedGarden && account && !layoutSmall;
 
   return (
-    <header
-      css={css`
-        position: relative;
-        z-index: 1;
-        background: #fff;
-        box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
-      `}
-    >
+    <HeaderContainer>
       <Layout paddingBottom={0}>
         <div
           css={css`
@@ -73,12 +70,16 @@ function Header({ onOpenPreferences }) {
               href={logoLink}
               external={false}
               style={{
-                display: 'flex',
+                display: "flex",
               }}
             >
-              {layoutSmall ? Logo : <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />}
+              {layoutSmall ? (
+                Logo
+              ) : (
+                <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
+              )}
             </Link>
-            {!below('medium') && (
+            {!below("medium") && (
               <nav
                 css={css`
                   display: flex;
@@ -93,7 +94,7 @@ function Header({ onOpenPreferences }) {
                     href={network.celesteUrl}
                     style={{
                       color: theme.contentSecondary.toString(),
-                      textDecoration: 'none',
+                      textDecoration: "none",
                     }}
                   >
                     Become a Keeper
@@ -148,7 +149,7 @@ function Header({ onOpenPreferences }) {
           </div>
         </div>
       </Layout>
-    </header>
+    </HeaderContainer>
   );
 }
 
@@ -161,7 +162,7 @@ function GardenNavItems({ garden }) {
   const { preferredNetwork } = useWallet();
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(history.location, 'covenant');
+    const path = buildGardenPath(history.location, "covenant");
     history.push(path);
   }, [history]);
 
@@ -171,7 +172,7 @@ function GardenNavItems({ garden }) {
       <Link
         href={forumURL}
         style={{
-          textDecoration: 'none',
+          textDecoration: "none",
           color: theme.contentSecondary.toString(),
           marginLeft: `${4 * GU}px`,
         }}
@@ -182,7 +183,7 @@ function GardenNavItems({ garden }) {
         href={getDexTradeTokenUrl(preferredNetwork, token.id)}
         style={{
           color: theme.contentSecondary.toString(),
-          textDecoration: 'none',
+          textDecoration: "none",
           marginLeft: `${4 * GU}px`,
         }}
       >
@@ -193,7 +194,7 @@ function GardenNavItems({ garden }) {
           href={garden.wiki}
           style={{
             color: theme.contentSecondary.toString(),
-            textDecoration: 'none',
+            textDecoration: "none",
             marginLeft: `${4 * GU}px`,
           }}
         >
