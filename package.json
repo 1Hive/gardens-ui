@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel ",
-    "build": "parcel build --dist-dir=build",
+    "build": "yarn run sync-assets && parcel build",
     "sync-assets": "copy-aragon-ui-assets ./public",
     "bundlewatch": "bundlewatch",
     "analyzer": "PARCEL_BUNDLE_ANALYZER=1 parcel build --dist-dir=build"

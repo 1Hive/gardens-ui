@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { GU, springs } from '@1hive/1hive-ui';
-import { Transition, animated } from 'react-spring/renderprops';
-import { useOnboardingState } from '@providers/Onboarding';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useEffect, useState } from "react";
+import { GU, springs } from "@1hive/1hive-ui";
+import { Transition, animated } from "react-spring/renderprops";
+import { useOnboardingState } from "@providers/Onboarding";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const AnimatedDiv = animated.div;
 
@@ -27,17 +27,17 @@ function OnboardingScreens() {
       keys={({ step }) => step}
       from={{
         opacity: 0,
-        position: 'absolute',
+        position: "absolute",
         transform: `translate3d(${10 * direction}%, 0, 0)`,
       }}
       enter={{
         opacity: 1,
-        position: 'static',
+        position: "static",
         transform: `translate3d(0%, 0, 0)`,
       }}
       leave={{
         opacity: 0,
-        position: 'absolute',
+        position: "absolute",
         transform: `translate3d(${-10 * direction}%, 0, 0)`,
       }}
       config={springs.smooth}

@@ -1,16 +1,27 @@
-/** @jsx jsx */
-import React, { useMemo } from 'react';
-import { Accordion, GU, IdentityBadge, Info, textStyle, useTheme } from '@1hive/1hive-ui';
-import { Header } from '../kit';
-import Navigation from '../Navigation';
-import { useOnboardingState } from '@providers/Onboarding';
-import { getNetwork } from '@/networks';
-import { addressesEqual } from '@utils/web3-utils';
-import { DAY_IN_SECONDS, HOUR_IN_SECONDS, MINUTE_IN_SECONDS } from '@utils/kit-utils';
-import { ZERO_ADDR } from '@/constants';
-import { BYOT_TYPE, NATIVE_TYPE } from '../constants';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React, { useMemo } from "react";
+import {
+  Accordion,
+  GU,
+  IdentityBadge,
+  Info,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { Header } from "../kit";
+import Navigation from "../Navigation";
+import { useOnboardingState } from "@providers/Onboarding";
+import { getNetwork } from "@/networks";
+import { addressesEqual } from "@utils/web3-utils";
+import {
+  DAY_IN_SECONDS,
+  HOUR_IN_SECONDS,
+  MINUTE_IN_SECONDS,
+} from "@utils/kit-utils";
+import { ZERO_ADDR } from "@/constants";
+import { BYOT_TYPE, NATIVE_TYPE } from "../constants";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 function ReviewInformation() {
   const { onBack, onStartDeployment } = useOnboardingState();
@@ -25,10 +36,10 @@ function ReviewInformation() {
       >
         <Accordion
           items={[
-            ['Type', <ReviewGardenType />],
-            ['Profile', <ReviewGardenProfile />],
-            ['Tokenomics', <ReviewGardenTokenomics />],
-            ['Governance', <ReviewGardenGovernance />],
+            ["Type", <ReviewGardenType />],
+            ["Profile", <ReviewGardenProfile />],
+            ["Tokenomics", <ReviewGardenTokenomics />],
+            ["Governance", <ReviewGardenGovernance />],
           ]}
         />
         <Info
@@ -36,12 +47,19 @@ function ReviewInformation() {
             margin-top: ${2 * GU}px;
           `}
         >
-          Carefully review your configuration settings. If something doesn’t look right, you can always go back and
-          change it before launching your garden.
+          Carefully review your configuration settings. If something doesn’t
+          look right, you can always go back and change it before launching your
+          garden.
         </Info>
       </div>
 
-      <Navigation backEnabled nextEnabled nextLabel="Launch your garden" onBack={onBack} onNext={onStartDeployment} />
+      <Navigation
+        backEnabled
+        nextEnabled
+        nextLabel="Launch your garden"
+        onBack={onBack}
+        onNext={onStartDeployment}
+      />
     </div>
   );
 }
@@ -56,7 +74,14 @@ function ReviewGardenType() {
         width: 100%;
       `}
     >
-      <Field label="Garden type" value={config.garden.type === NATIVE_TYPE ? 'Native Token' : 'Pre-existing Token'} />
+      <Field
+        label="Garden type"
+        value={
+          config.garden.type === NATIVE_TYPE
+            ? "Native Token"
+            : "Pre-existing Token"
+        }
+      />
     </div>
   );
 }
@@ -93,14 +118,23 @@ function ReviewGardenProfile() {
             grid-gap: ${9 * GU}px;
           `}
         >
-          <Field label="Header logo" value={config.garden.logo_type?.blob.name || 'No image'} />
-          <Field label="Garden logo" value={config.garden.logo?.blob.name || 'No image'} />
+          <Field
+            label="Header logo"
+            value={config.garden.logo_type?.blob.name || "No image"}
+          />
+          <Field
+            label="Garden logo"
+            value={config.garden.logo?.blob.name || "No image"}
+          />
 
-          <Field label="Token icon" value={config.garden.token_logo?.blob.name || 'No image'} />
+          <Field
+            label="Token icon"
+            value={config.garden.token_logo?.blob.name || "No image"}
+          />
         </div>
         <p
           css={css`
-            ${textStyle('body4')};
+            ${textStyle("body4")};
             color: ${theme.contentSecondary.toString()};
             margin-bottom: ${3 * GU}px;
           `}
@@ -120,7 +154,9 @@ function ReviewGardenProfile() {
         </div>
         <div>
           {Object.values(config.garden.links.community[0]).length > 0 ? (
-            config.garden.links.community.map(({ link, label }) => <Field label={label} value={link} />)
+            config.garden.links.community.map(({ link, label }) => (
+              <Field label={label} value={link} />
+            ))
           ) : (
             <div
               css={css`
@@ -144,7 +180,9 @@ function ReviewGardenProfile() {
         </div>
         <div>
           {Object.values(config.garden.links.documentation[0]).length > 0 ? (
-            config.garden.links.documentation.map(({ link, label }) => <Field label={label} value={link} />)
+            config.garden.links.documentation.map(({ link, label }) => (
+              <Field label={label} value={link} />
+            ))
           ) : (
             <div
               css={css`
@@ -185,12 +223,17 @@ function ReviewGardenTokenomics() {
 const ReviewTokens = () => {
   const { config } = useOnboardingState();
   // commonPool = ((totalSeedsAmount + gardenTokenLiquidity) * initialRatio) / (1 - initialRatio)
-  const totalSeedsAmount = config.tokens.holders.reduce((acc, [_, stake]) => acc + stake, 0);
+  const totalSeedsAmount = config.tokens.holders.reduce(
+    (acc, [_, stake]) => acc + stake,
+    0
+  );
   const initialRatio = config.issuance.initialRatio / 100;
 
   const commonPool =
-    parseFloat((totalSeedsAmount + parseInt(config.liquidity.tokenLiquidity)) * initialRatio) /
-    (1 - initialRatio).toFixed(2);
+    parseFloat(
+      (totalSeedsAmount + parseInt(config.liquidity.tokenLiquidity)) *
+        initialRatio
+    ) / (1 - initialRatio).toFixed(2);
 
   return (
     <div>
@@ -233,7 +276,7 @@ const ReviewTokens = () => {
                         margin-bottom: ${0.5 * GU}px;
                       `}
                     >
-                      <AddressBadge address={holder} />{' '}
+                      <AddressBadge address={holder} />{" "}
                       <span>
                         {stake} {config.tokens.symbol}
                       </span>
@@ -242,12 +285,20 @@ const ReviewTokens = () => {
                 </div>
               }
             />
-            <Field label="Common pool" value={`${commonPool} ${config.tokens.symbol}`} />
+            <Field
+              label="Common pool"
+              value={`${commonPool} ${config.tokens.symbol}`}
+            />
           </>
         )}
       </TwoCols>
       {config.tokens.gnosisSafe && (
-        <Field label="Gnosis safe" value={<AddressBadge address={config.tokens.gnosisSafe} shorten={false} />} />
+        <Field
+          label="Gnosis safe"
+          value={
+            <AddressBadge address={config.tokens.gnosisSafe} shorten={false} />
+          }
+        />
       )}
     </div>
   );
@@ -256,10 +307,13 @@ const ReviewTokens = () => {
 const ReviewHoneyswapLiquidity = () => {
   const { config } = useOnboardingState();
   const { garden, liquidity, tokens } = config;
-  const tokenSymbol = tokens[garden.type === NATIVE_TYPE ? 'symbol' : 'existingTokenSymbol'];
+  const tokenSymbol =
+    tokens[garden.type === NATIVE_TYPE ? "symbol" : "existingTokenSymbol"];
 
-  const tokenPriceInUSD = liquidity.honeyTokenLiquidityStable / liquidity.tokenLiquidity;
-  const tokenPriceInHNY = liquidity.honeyTokenLiquidity / liquidity.tokenLiquidity;
+  const tokenPriceInUSD =
+    liquidity.honeyTokenLiquidityStable / liquidity.tokenLiquidity;
+  const tokenPriceInHNY =
+    liquidity.honeyTokenLiquidity / liquidity.tokenLiquidity;
 
   return (
     <div>
@@ -275,8 +329,8 @@ const ReviewHoneyswapLiquidity = () => {
           label="Initial price"
           value={
             <span>
-              1 {tokenSymbol} ({parseFloat(tokenPriceInUSD).toFixed(2)} USD) = {parseFloat(tokenPriceInHNY).toFixed(4)}{' '}
-              HNY
+              1 {tokenSymbol} ({parseFloat(tokenPriceInUSD).toFixed(2)} USD) ={" "}
+              {parseFloat(tokenPriceInHNY).toFixed(4)} HNY
             </span>
           }
         />
@@ -284,8 +338,10 @@ const ReviewHoneyswapLiquidity = () => {
           label="Liquidity provided"
           value={
             <span>
-              {liquidity.tokenLiquidity} {tokenSymbol} ({liquidity.honeyTokenLiquidityStable} USD) +{' '}
-              {liquidity.honeyTokenLiquidity} HNY ({liquidity.honeyTokenLiquidityStable} USD)
+              {liquidity.tokenLiquidity} {tokenSymbol} (
+              {liquidity.honeyTokenLiquidityStable} USD) +{" "}
+              {liquidity.honeyTokenLiquidity} HNY (
+              {liquidity.honeyTokenLiquidityStable} USD)
             </span>
           }
         />
@@ -306,8 +362,14 @@ const ReviewIssuance = () => {
         ISSUANCE
       </div>
       <div>
-        <Field label="Target ratio" value={`${config.issuance.targetRatio} %`} />
-        <Field label="Throttle" value={`${config.issuance.maxAdjustmentRatioPerYear} %`} />
+        <Field
+          label="Target ratio"
+          value={`${config.issuance.targetRatio} %`}
+        />
+        <Field
+          label="Throttle"
+          value={`${config.issuance.maxAdjustmentRatioPerYear} %`}
+        />
       </div>
     </div>
   );
@@ -347,9 +409,18 @@ const ReviewAgreement = () => {
       <TwoCols>
         <Field label="Title" value={agreement.title} />
         <Field label="File" value={agreement.covenantFile.blob.name} />
-        <Field label="Action amount" value={`${agreement.actionAmount} ${tokens.symbol}`} />
-        <Field label="Challenge amount" value={`${agreement.challengeAmount} ${tokens.symbol}`} />
-        <Field label="Challenge period" value={<Duration duration={agreement.challengePeriod} />} />
+        <Field
+          label="Action amount"
+          value={`${agreement.actionAmount} ${tokens.symbol}`}
+        />
+        <Field
+          label="Challenge amount"
+          value={`${agreement.challengeAmount} ${tokens.symbol}`}
+        />
+        <Field
+          label="Challenge period"
+          value={<Duration duration={agreement.challengePeriod} />}
+        />
       </TwoCols>
     </div>
   );
@@ -369,14 +440,32 @@ const ReviewConvictionVoting = () => {
       </div>
       <div>
         <TwoCols>
-          <Field label="Conviction growth" value={`${conviction.halflifeDays} days`} />
+          <Field
+            label="Conviction growth"
+            value={`${conviction.halflifeDays} days`}
+          />
           <Field label="Spending limit" value={`${conviction.maxRatio} %`} />
         </TwoCols>
-        <Field label="Minimum conviction" value={`${conviction.minThreshold} %`} />
-        <Field label="Minimum active stake" value={`${conviction.minThresholdStakePct} %`} />
-        {conviction.requestToken && !addressesEqual(conviction.requestToken, ZERO_ADDR) && (
-          <Field label="Request token" value={<AddressBadge address={conviction.requestToken} shorten={false} />} />
-        )}
+        <Field
+          label="Minimum conviction"
+          value={`${conviction.minThreshold} %`}
+        />
+        <Field
+          label="Minimum active stake"
+          value={`${conviction.minThresholdStakePct} %`}
+        />
+        {conviction.requestToken &&
+          !addressesEqual(conviction.requestToken, ZERO_ADDR) && (
+            <Field
+              label="Request token"
+              value={
+                <AddressBadge
+                  address={conviction.requestToken}
+                  shorten={false}
+                />
+              }
+            />
+          )}
       </div>
     </div>
   );
@@ -406,13 +495,28 @@ const ReviewVoting = () => {
           />
         </TwoCols>
         <TwoCols>
-          <Field label="Voting duration" value={<Duration duration={voting.voteDuration} />} />
-          <Field label="Execution delay period" value={<Duration duration={voting.voteExecutionDelay} />} />
+          <Field
+            label="Voting duration"
+            value={<Duration duration={voting.voteDuration} />}
+          />
+          <Field
+            label="Execution delay period"
+            value={<Duration duration={voting.voteExecutionDelay} />}
+          />
         </TwoCols>
 
-        <Field label="Quiet ending period" value={<Duration duration={voting.voteQuietEndingPeriod} />} />
-        <Field label="Quiet ending extension period" value={<Duration duration={voting.voteQuietEndingExtension} />} />
-        <Field label="Delegated voting period" value={<Duration duration={voting.voteDelegatedVotingPeriod} />} />
+        <Field
+          label="Quiet ending period"
+          value={<Duration duration={voting.voteQuietEndingPeriod} />}
+        />
+        <Field
+          label="Quiet ending extension period"
+          value={<Duration duration={voting.voteQuietEndingExtension} />}
+        />
+        <Field
+          label="Delegated voting period"
+          value={<Duration duration={voting.voteDelegatedVotingPeriod} />}
+        />
       </div>
     </div>
   );
@@ -428,7 +532,7 @@ const Field = ({ label, value }) => {
     >
       <h2
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           font-weight: 200;
           color: ${theme.contentSecondary.toString()};
           margin-bottom: ${1 * GU}px;
@@ -438,7 +542,7 @@ const Field = ({ label, value }) => {
       </h2>
       <div
         css={css`
-          ${textStyle('body1')};
+          ${textStyle("body1")};
         `}
       >
         {value}
@@ -463,7 +567,14 @@ const LineBreak = () => {
 
 const AddressBadge = ({ address, shorten = true }) => {
   const { explorer, type } = getNetwork();
-  return <IdentityBadge entity={address} shorten={shorten} explorerProvider={explorer} networkType={type} />;
+  return (
+    <IdentityBadge
+      entity={address}
+      shorten={shorten}
+      explorerProvider={explorer}
+      networkType={type}
+    />
+  );
 };
 
 const Duration = ({ duration }) => {
@@ -473,7 +584,7 @@ const Duration = ({ duration }) => {
     <div>
       {days > 0 && (
         <span>
-          {days} day{days > 1 ? 's' : ''}
+          {days} day{days > 1 ? "s" : ""}
         </span>
       )}
       {hours > 0 && (
@@ -482,7 +593,7 @@ const Duration = ({ duration }) => {
             margin-left: ${0.5 * GU}px;
           `}
         >
-          {hours} hour{hours > 1 ? 's' : ''}
+          {hours} hour{hours > 1 ? "s" : ""}
         </span>
       )}
       {minutes > 0 && (
@@ -491,14 +602,14 @@ const Duration = ({ duration }) => {
             margin-left: ${0.5 * GU}px;
           `}
         >
-          {minutes} minute{minutes > 1 ? 's' : ''}
+          {minutes} minute{minutes > 1 ? "s" : ""}
         </span>
       )}
     </div>
   );
 };
 
-const useDurationUnits = duration => {
+const useDurationUnits = (duration) => {
   return useMemo(() => {
     let remaining = duration;
 

@@ -1,13 +1,16 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useGardenState } from '@providers/GardenState';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, IconCheck, RADIUS, textStyle, useTheme } from "@1hive/1hive-ui";
+import { useGardenState } from "@providers/GardenState";
 
-import { addressesEqual } from '@utils/web3-utils';
-import { formatTokenAmount } from '@utils/token-utils';
-import { getAccountCastDelegatedStake, getAccountCastStake } from '@utils/vote-utils';
-import { VOTE_YEA } from '@/constants';
-import { css, jsx } from '@emotion/react';
+import { addressesEqual } from "@utils/web3-utils";
+import { formatTokenAmount } from "@utils/token-utils";
+import {
+  getAccountCastDelegatedStake,
+  getAccountCastStake,
+} from "@utils/vote-utils";
+import { VOTE_YEA } from "@/constants";
+import { css, jsx } from "@emotion/react";
 
 function VoteCasted({ account, accountVote, caster, vote }) {
   const { config } = useGardenState();
@@ -56,19 +59,21 @@ function VoteCasted({ account, accountVote, caster, vote }) {
         <div>
           <div
             css={css`
-            ${textStyle('body1')}
+            ${textStyle("body1")}
             margin-bottom: ${0.5 * GU}px;
           `}
           >
-            {`Your ${addressesEqual(account, caster) ? '' : "delegate's"} vote was cast successfully`}
+            {`Your ${
+              addressesEqual(account, caster) ? "" : "delegate's"
+            } vote was cast successfully`}
           </div>
           <div
             css={css`
-            ${textStyle('body2')}
+            ${textStyle("body2")}
             color: ${theme.surfaceContentSecondary.toString()};
           `}
           >
-            {addressesEqual(account, caster) ? 'You' : 'Your delegate'} voted{' '}
+            {addressesEqual(account, caster) ? "You" : "Your delegate"} voted{" "}
             <span
               css={css`
                 color: ${theme.surfaceContent.toString()};
@@ -76,16 +81,19 @@ function VoteCasted({ account, accountVote, caster, vote }) {
                 text-transform: uppercase;
               `}
             >
-              {accountVote === VOTE_YEA ? 'yes' : 'no'}
-            </span>{' '}
-            with{' '}
+              {accountVote === VOTE_YEA ? "yes" : "no"}
+            </span>{" "}
+            with{" "}
             <span
               css={css`
                 color: ${theme.surfaceContent.toString()};
                 font-weight: 600;
               `}
             >
-              {totalStake.eq(0) ? '…' : formatTokenAmount(totalStake, token.decimals)} {token.symbol}
+              {totalStake.eq(0)
+                ? "…"
+                : formatTokenAmount(totalStake, token.decimals)}{" "}
+              {token.symbol}
             </span>
             .
           </div>

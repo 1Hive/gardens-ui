@@ -1,14 +1,24 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Field, GU, TextInput, useTheme, useViewport } from '@1hive/1hive-ui';
-import { DAY_IN_SECONDS, HOUR_IN_SECONDS, MINUTE_IN_SECONDS } from '@utils/kit-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import PropTypes from "prop-types";
+import { Field, GU, TextInput, useTheme, useViewport } from "@1hive/1hive-ui";
+import {
+  DAY_IN_SECONDS,
+  HOUR_IN_SECONDS,
+  MINUTE_IN_SECONDS,
+} from "@utils/kit-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-const DurationFields = ({ duration, onUpdate, label, direction = 'row', required }) => {
+const DurationFields = ({
+  duration,
+  onUpdate,
+  label,
+  direction = "row",
+  required,
+}) => {
   const theme = useTheme();
   const { above } = useViewport();
-  const isRow = direction === 'row';
+  const isRow = direction === "row";
 
   // Calculate the units based on the initial duration (in seconds).
   const [baseDays, baseHours, baseMinutes] = useMemo(() => {
@@ -34,7 +44,11 @@ const DurationFields = ({ duration, onUpdate, label, direction = 'row', required
   // If any of the units change, call onUpdate() with the updated duration,
   // so that it can get updated if the “next” button gets pressed.
   useEffect(() => {
-    onUpdate(minutes * MINUTE_IN_SECONDS + hours * HOUR_IN_SECONDS + days * DAY_IN_SECONDS);
+    onUpdate(
+      minutes * MINUTE_IN_SECONDS +
+        hours * HOUR_IN_SECONDS +
+        days * DAY_IN_SECONDS
+    );
   }, [onUpdate, minutes, hours, days]);
 
   // Invoked by handleDaysChange etc. to update a local unit.
@@ -45,9 +59,18 @@ const DurationFields = ({ duration, onUpdate, label, direction = 'row', required
     }
   }, []);
 
-  const handleDaysChange = useCallback(event => updateLocalUnit(event, setDays), [updateLocalUnit]);
-  const handleHoursChange = useCallback(event => updateLocalUnit(event, setHours), [updateLocalUnit]);
-  const handleMinutesChange = useCallback(event => updateLocalUnit(event, setMinutes), [updateLocalUnit]);
+  const handleDaysChange = useCallback(
+    (event) => updateLocalUnit(event, setDays),
+    [updateLocalUnit]
+  );
+  const handleHoursChange = useCallback(
+    (event) => updateLocalUnit(event, setHours),
+    [updateLocalUnit]
+  );
+  const handleMinutesChange = useCallback(
+    (event) => updateLocalUnit(event, setMinutes),
+    [updateLocalUnit]
+  );
 
   return (
     <Field label={label} required={required}>
@@ -61,9 +84,13 @@ const DurationFields = ({ duration, onUpdate, label, direction = 'row', required
           `}
         >
           {[
-            ['Days', handleDaysChange, days],
-            ['Hours', handleHoursChange, hours],
-            [above('medium') ? 'Minutes' : 'Min.', handleMinutesChange, minutes],
+            ["Days", handleDaysChange, days],
+            ["Hours", handleHoursChange, hours],
+            [
+              above("medium") ? "Minutes" : "Min.",
+              handleMinutesChange,
+              minutes,
+            ],
           ].map(([label, handler, value], index) => (
             <div
               key={label}
@@ -71,7 +98,7 @@ const DurationFields = ({ duration, onUpdate, label, direction = 'row', required
                 flex-grow: 1;
                 // max-width: ${17 * GU}px;
                 & + & {
-                  margin-${isRow ? 'left' : 'top'}: ${2 * GU}px;
+                  margin-${isRow ? "left" : "top"}: ${2 * GU}px;
                 }
               `}
             >
@@ -112,7 +139,7 @@ DurationFields.propTypes = {
 
 DurationFields.defaultProps = {
   duration: 0,
-  label: '',
+  label: "",
 };
 
 export default DurationFields;

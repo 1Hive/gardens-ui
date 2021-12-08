@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
 import {
   blockExplorerUrl,
   ButtonBase,
@@ -10,17 +10,17 @@ import {
   textStyle,
   IdentityBadge,
   useTheme,
-} from '@1hive/1hive-ui';
-import TimeTag from './TimeTag';
-import TransactionProgress from './TransactionProgress';
-import { useActivity } from '@providers/ActivityProvider';
+} from "@1hive/1hive-ui";
+import TimeTag from "./TimeTag";
+import TransactionProgress from "./TransactionProgress";
+import { useActivity } from "@providers/ActivityProvider";
 
-import { getNetworkType, transformAddresses } from '@utils/web3-utils';
-import { ActivityStatus } from './activity-statuses';
-import { getActivityData } from './activity-types';
-import { getNetwork } from '../../networks';
-import { useAsset } from '@/hooks/useAsset';
-import { css, jsx } from '@emotion/react';
+import { getNetworkType, transformAddresses } from "@utils/web3-utils";
+import { ActivityStatus } from "./activity-statuses";
+import { getActivityData } from "./activity-types";
+import { getNetwork } from "../../networks";
+import { useAsset } from "@/hooks/useAsset";
+import { css, jsx } from "@emotion/react";
 
 function ActivityItem({ activity }) {
   const theme = useTheme();
@@ -32,12 +32,12 @@ function ActivityItem({ activity }) {
   const handleOpen = useCallback(() => {
     if (activity.transactionHash) {
       window.open(
-        blockExplorerUrl('transaction', activity.transactionHash, {
+        blockExplorerUrl("transaction", activity.transactionHash, {
           networkType: getNetworkType(),
           provider: getNetwork().explorer,
         }),
-        '_blank',
-        'noopener',
+        "_blank",
+        "noopener"
       );
     }
   }, [activity]);
@@ -70,7 +70,9 @@ function ActivityItem({ activity }) {
             flex-direction: column;
             overflow: hidden;
             padding: ${2 * GU}px;
-            background: ${activity.read ? theme.surface.toString() : theme.surfaceHighlight.toString()};
+            background: ${activity.read
+              ? theme.surface.toString()
+              : theme.surfaceHighlight.toString()};
             transition-property: background;
             transition-duration: 50ms;
             transition-timing-function: ease-in-out;
@@ -101,12 +103,14 @@ function ActivityItem({ activity }) {
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: ${theme.surfaceContent.toString()};
-                ${textStyle('body1')};
+                ${textStyle("body1")};
               `}
             >
               {title}
             </div>
-            {activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING && <TimeTag date={activity.createdAt} />}
+            {activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING && (
+              <TimeTag date={activity.createdAt} />
+            )}
           </h1>
           <div
             css={css`
@@ -116,7 +120,10 @@ function ActivityItem({ activity }) {
           >
             <ItemContent text={activity.description} />
             <StatusMessage activity={activity} />
-            <TransactionProgress status={activity.status} createdAt={activity.createdAt} />
+            <TransactionProgress
+              status={activity.status}
+              createdAt={activity.createdAt}
+            />
           </div>
         </section>
       </ButtonBase>
@@ -143,7 +150,7 @@ function ActivityItem({ activity }) {
 }
 
 const ItemContent = React.memo(
-  ({ text = '' }: { text: string }) => (
+  ({ text = "" }: { text: string }) => (
     <p
       css={css`
         display: -webkit-box;
@@ -152,7 +159,7 @@ const ItemContent = React.memo(
         white-space: normal;
         word-break: break-word;
         overflow: hidden;
-        ${textStyle('body2')}
+        ${textStyle("body2")}
       `}
     >
       {transformAddresses(text, (part, isAddress, index) =>
@@ -162,24 +169,40 @@ const ItemContent = React.memo(
           </span>
         ) : (
           <span key={index}>{part}</span>
-        ),
+        )
       )}
     </p>
   ),
-  (prevProps, nextProps) => prevProps.text === nextProps.text,
+  (prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
 function getStatusData(activity, theme) {
   if (activity.status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED) {
-    return [<IconCheck size="small" />, <span>Transaction confirmed</span>, theme.positive.toString()];
+    return [
+      <IconCheck size="small" />,
+      <span>Transaction confirmed</span>,
+      theme.positive.toString(),
+    ];
   }
   if (activity.status === ActivityStatus.ACTIVITY_STATUS_FAILED) {
-    return [<IconCross size="small" />, <span>Transaction failed</span>, theme.negative.toString()];
+    return [
+      <IconCross size="small" />,
+      <span>Transaction failed</span>,
+      theme.negative.toString(),
+    ];
   }
   if (activity.status === ActivityStatus.ACTIVITY_STATUS_TIMED_OUT) {
-    return [<IconCross size="small" />, <span>Transaction timed out</span>, theme.negative.toString()];
+    return [
+      <IconCross size="small" />,
+      <span>Transaction timed out</span>,
+      theme.negative.toString(),
+    ];
   }
-  return [null, <span>Transaction pending</span>, theme.surfaceContentSecondary.toString()];
+  return [
+    null,
+    <span>Transaction pending</span>,
+    theme.surfaceContentSecondary.toString(),
+  ];
 }
 
 const StatusMessage = ({ activity }) => {
@@ -191,7 +214,7 @@ const StatusMessage = ({ activity }) => {
         display: flex;
         align-items: center;
         margin-top: ${2 * GU}px;
-        ${textStyle('label2')}
+        ${textStyle("label2")}
         color: ${color}
       `}
     >

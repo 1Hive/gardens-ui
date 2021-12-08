@@ -1,13 +1,21 @@
-import React from 'react';
-import { Box, Field, GU, IdentityBadge, Info, LoadingRing, useLayout } from '@1hive/1hive-ui';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useGardenState } from '@/providers/GardenState';
-import { useGardens } from '@/providers/Gardens';
-import { getNetwork } from '@/networks';
+import React from "react";
+import {
+  Box,
+  Field,
+  GU,
+  IdentityBadge,
+  Info,
+  LoadingRing,
+  useLayout,
+} from "@1hive/1hive-ui";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useGardenState } from "@/providers/GardenState";
+import { useGardens } from "@/providers/Gardens";
+import { getNetwork } from "@/networks";
 
-import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from "@utils/app-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function AppsAddresses() {
   const { layoutName } = useLayout();
@@ -19,7 +27,7 @@ function AppsAddresses() {
 
   const { explorer, type } = getNetwork();
 
-  const shortAddresses = layoutName === 'small';
+  const shortAddresses = layoutName === "small";
 
   if (!gardenState || !connectedGarden) {
     return null;
@@ -80,13 +88,18 @@ function AppsAddresses() {
               `}
             >
               {gardenState.config?.conviction.fundsManager && (
-                <AppField name="Funds Manager" address={gardenState.config.conviction.fundsManager} />
+                <AppField
+                  name="Funds Manager"
+                  address={gardenState.config.conviction.fundsManager}
+                />
               )}
               {gardenState.installedApps.map((app, index) => {
                 if (app.appId) {
                   return (
                     <AppField
-                      name={app?.name || KNOWN_SYSTEM_APPS.get(app.appId).humanName}
+                      name={
+                        app?.name || KNOWN_SYSTEM_APPS.get(app.appId).humanName
+                      }
                       address={app.address}
                       key={index}
                     />
@@ -104,7 +117,7 @@ function AppsAddresses() {
 function AppField({ name, address, index }) {
   const { layoutName } = useLayout();
   const { explorer, type } = getNetwork();
-  const shortAddresses = layoutName === 'small';
+  const shortAddresses = layoutName === "small";
 
   return (
     <div
@@ -114,7 +127,12 @@ function AppField({ name, address, index }) {
       `}
     >
       <Field label={SHORTENED_APPS_NAMES.get(name) || name}>
-        <IdentityBadge entity={address} shorten={shortAddresses} explorerProvider={explorer} networkType={type} />
+        <IdentityBadge
+          entity={address}
+          shorten={shortAddresses}
+          explorerProvider={explorer}
+          networkType={type}
+        />
       </Field>
     </div>
   );

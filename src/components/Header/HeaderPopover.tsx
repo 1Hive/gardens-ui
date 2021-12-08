@@ -1,10 +1,10 @@
 // @ts-nocheck
-/** @jsx jsx */
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { GU, Popover, springs } from '@1hive/1hive-ui';
-import { Spring, Transition, animated } from 'react-spring/renderprops';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { GU, Popover, springs } from "@1hive/1hive-ui";
+import { Spring, Transition, animated } from "react-spring/renderprops";
+import { css, jsx } from "@emotion/react";
 
 const AnimatedDiv = animated.div;
 
@@ -64,17 +64,23 @@ function HeaderPopover({
           overflow: hidden;
         `}
       >
-        <Spring config={springs.smooth} from={{ height: 32 * GU }} to={{ height }} immediate={!animate} native>
+        <Spring
+          config={springs.smooth}
+          from={{ height: 32 * GU }}
+          to={{ height }}
+          immediate={!animate}
+          native
+        >
           {({ height }) => (
             <AnimatedDiv
               ref={popoverFocusElement}
               tabIndex={0}
               style={{
-                height: measuredHeight ? height : 'auto',
-                position: 'relative',
+                height: measuredHeight ? height : "auto",
+                position: "relative",
                 flexGrow: 1,
-                width: '100%',
-                overflow: 'hidden',
+                width: "100%",
+                overflow: "hidden",
                 outline: 0,
               }}
             >
@@ -94,7 +100,7 @@ function HeaderPopover({
                 }}
                 immediate={!animate}
                 onRest={(_, status) => {
-                  if (status === 'update') {
+                  if (status === "update") {
                     setMeasuredHeight(false);
                   }
                 }}
@@ -102,9 +108,9 @@ function HeaderPopover({
                   setMeasuredHeight(true);
                 }}
               >
-                {screenData => ({ opacity, transform }) => (
+                {(screenData) => ({ opacity, transform }) => (
                   <AnimatedDiv
-                    ref={elt => {
+                    ref={(elt) => {
                       if (elt) {
                         setHeight(elt.clientHeight);
                       }
@@ -112,7 +118,7 @@ function HeaderPopover({
                     style={{
                       opacity,
                       transform,
-                      position: measuredHeight ? 'absolute' : 'static',
+                      position: measuredHeight ? "absolute" : "static",
                       top: 0,
                       left: 0,
                       right: 0,

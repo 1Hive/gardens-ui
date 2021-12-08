@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui';
-import ModalButton from '../ModalButton';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useGardenState } from '@providers/GardenState';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import signGraphic from '@assets/smart-contract.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useState, useCallback } from "react";
+import PropTypes from "prop-types";
+import { GU, Checkbox, Field, useLayout, useTheme } from "@1hive/1hive-ui";
+import ModalButton from "../ModalButton";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useGardenState } from "@providers/GardenState";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import signGraphic from "@assets/smart-contract.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ function SignOverview({ getTransactions }) {
   const { next } = useMultiModal();
   const theme = useTheme();
 
-  const smallMode = layoutName === 'small';
+  const smallMode = layoutName === "small";
 
   const handleSign = useCallback(() => {
     setLoading(true);
@@ -29,7 +29,10 @@ function SignOverview({ getTransactions }) {
     });
   }, [getTransactions, next]);
 
-  const handleAcceptTerms = useCallback(checked => setAcceptedTerms(checked), []);
+  const handleAcceptTerms = useCallback(
+    (checked) => setAcceptedTerms(checked),
+    []
+  );
 
   return (
     <>
@@ -74,7 +77,12 @@ function SignOverview({ getTransactions }) {
         </p>
       </Field>
 
-      <ModalButton mode="strong" loading={loading} onClick={handleSign} disabled={!acceptedTerms}>
+      <ModalButton
+        mode="strong"
+        loading={loading}
+        onClick={handleSign}
+        disabled={!acceptedTerms}
+      >
         Sign Covenant
       </ModalButton>
     </>

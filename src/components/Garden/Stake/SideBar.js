@@ -1,14 +1,14 @@
-import React from 'react';
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
-import BalanceCard from './BalanceCard';
-import ExpandableCard from './ExpandableCard';
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
-import { formatTokenAmount } from '@utils/token-utils';
+import React from "react";
+import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
+import BalanceCard from "./BalanceCard";
+import ExpandableCard from "./ExpandableCard";
+import { useHoneyswapTokenPrice } from "@hooks/useHoneyswapTokenPrice";
+import { formatTokenAmount } from "@utils/token-utils";
 
-import coin from './assets/coin.svg';
-import wallet from './assets/wallet.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import coin from "./assets/coin.svg";
+import wallet from "./assets/wallet.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
   const { available, locked, total, allowance } = staking;
@@ -78,7 +78,7 @@ function CardContent({ amount, icon, title, secondary, tokenAmount }) {
       />
       <h2
         css={css`
-          ${textStyle('title4')};
+          ${textStyle("title4")};
         `}
       >
         {tokenAmount}
@@ -93,10 +93,12 @@ function CardContent({ amount, icon, title, secondary, tokenAmount }) {
       </h1>
       <p
         css={css`
-          color: ${secondary ? theme.contentSecondary.toString() : theme.positive.toString()};
+          color: ${secondary
+            ? theme.contentSecondary.toString()
+            : theme.positive.toString()};
         `}
       >
-        $ {amount > 0 ? amount : '-'}
+        $ {amount > 0 ? amount : "-"}
       </p>
     </div>
   );

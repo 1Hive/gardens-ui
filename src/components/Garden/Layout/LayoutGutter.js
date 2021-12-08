@@ -1,14 +1,15 @@
-import React from 'react';
-import { useLayout, GU } from '@1hive/1hive-ui';
+import React from "react";
+import { useLayout, GU } from "@1hive/1hive-ui";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function LayoutGutter({ children, collapseWhenSmall, ...props }) {
   const { layoutName } = useLayout();
 
   const smallPaddingAmount = collapseWhenSmall ? 0 : 2 * GU;
-  const paddingAmount = layoutName === 'small' ? `${smallPaddingAmount}px` : '5%';
+  const paddingAmount =
+    layoutName === "small" ? `${smallPaddingAmount}px` : "5%";
 
   return (
     <div

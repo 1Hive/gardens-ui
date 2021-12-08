@@ -1,24 +1,33 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui';
-import { animated, Spring } from 'react-spring/renderprops';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Button, GU, Split, springs, useLayout } from "@1hive/1hive-ui";
+import { animated, Spring } from "react-spring/renderprops";
 
-import Activity from './Activity';
-import Delegates from './Delegates';
-import EditProfile from './EditProfile';
-import InactiveProposalsStake from './InactiveProposalsStake';
-import MainProfile from './MainProfile';
-import StakingTokens from './StakingTokens';
+import Activity from "./Activity";
+import Delegates from "./Delegates";
+import EditProfile from "./EditProfile";
+import InactiveProposalsStake from "./InactiveProposalsStake";
+import MainProfile from "./MainProfile";
+import StakingTokens from "./StakingTokens";
 
-import { useAccountStakes, useInactiveProposalsWithStake } from '@hooks/useStakes';
-import usePicture from '@hooks/usePicture';
-import useSelectedProfile from '@hooks/useSelectedProfile';
-import { useWallet } from '@providers/Wallet';
-import { addressesEqual } from '@utils/web3-utils';
+import {
+  useAccountStakes,
+  useInactiveProposalsWithStake,
+} from "@hooks/useStakes";
+import usePicture from "@hooks/usePicture";
+import useSelectedProfile from "@hooks/useSelectedProfile";
+import { useWallet } from "@providers/Wallet";
+import { addressesEqual } from "@utils/web3-utils";
 
-import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import profileCoverDefaultSvg from "@assets/profileCoverDefault.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Profile() {
   const [editMode, setEditMode] = useState(false);
@@ -27,13 +36,13 @@ function Profile() {
   const { account: connectedAccount } = useWallet();
   const history = useHistory();
   const { name: layout } = useLayout();
-  const oneColumn = layout === 'small' || layout === 'medium';
+  const oneColumn = layout === "small" || layout === "medium";
 
   const imageInput = useRef(null);
 
   // Selected account
   const searchParams = useSearchParams();
-  const selectedAccount = searchParams.get('account') || connectedAccount;
+  const selectedAccount = searchParams.get("account") || connectedAccount;
   const accountStakes = useAccountStakes(selectedAccount);
   const accountInactiveStakes = useInactiveProposalsWithStake(selectedAccount);
 
@@ -42,7 +51,7 @@ function Profile() {
 
   useEffect(() => {
     if (!selectedAccount) {
-      return history.push('/');
+      return history.push("/");
     }
   }, [connectedAccount, history, selectedAccount]);
 
@@ -51,7 +60,7 @@ function Profile() {
   }, [connectedAccount]);
 
   const toggleEditMode = useCallback(() => {
-    setEditMode(mode => !mode);
+    setEditMode((mode) => !mode);
   }, []);
 
   const coverSrc = useMemo(() => {
@@ -68,7 +77,8 @@ function Profile() {
   }, [coverPhoto, coverPic, editMode]);
 
   const isConnectedAccountProfile =
-    (connectedAccount && !selectedAccount) || addressesEqual(connectedAccount, selectedAccount);
+    (connectedAccount && !selectedAccount) ||
+    addressesEqual(connectedAccount, selectedAccount);
 
   return (
     <div>
@@ -82,7 +92,10 @@ function Profile() {
         {editMode ? (
           <EditProfile
             coverPic={coverPic}
-            coverPicRemovalEnabled={!coverPic.removed && (coverPhoto || (imageInput?.files && imageInput?.files[0]))}
+            coverPicRemovalEnabled={
+              !coverPic.removed &&
+              (coverPhoto || (imageInput?.files && imageInput?.files[0]))
+            }
             onBack={toggleEditMode}
             onCoverPicChange={onCoverPicChange}
             onCoverPicRemoval={onCoverPicRemoval}
@@ -111,7 +124,11 @@ function Profile() {
                 `}
               >
                 <Button
-                  label={selectedProfile?.authenticated ? 'Edit profile' : 'Loading profile…'}
+                  label={
+                    selectedProfile?.authenticated
+                      ? "Edit profile"
+                      : "Loading profile…"
+                  }
                   onClick={toggleEditMode}
                   disabled={!selectedProfile?.authenticated}
                 />
@@ -131,11 +148,13 @@ function Profile() {
                   <Delegates account={selectedAccount} />
                   <StakingTokens myStakes={accountStakes} />
                   {accountInactiveStakes.length > 0 && (
-                    <InactiveProposalsStake myInactiveStakes={accountInactiveStakes} />
+                    <InactiveProposalsStake
+                      myInactiveStakes={accountInactiveStakes}
+                    />
                   )}
                 </>
               }
-              invert={oneColumn ? 'vertical' : 'horizontal'}
+              invert={oneColumn ? "vertical" : "horizontal"}
             />
           </>
         )}
@@ -146,15 +165,20 @@ function Profile() {
 
 function AnimatedBackground({ height, image }) {
   return (
-    <Spring config={springs.smooth} from={{ height: `${40 * GU}px` }} to={{ height: `${height}px` }} native>
+    <Spring
+      config={springs.smooth}
+      from={{ height: `${40 * GU}px` }}
+      to={{ height: `${height}px` }}
+      native
+    >
       {({ height }) => (
         <animated.div
           style={{
             height,
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            right: '0',
+            position: "absolute",
+            top: "0",
+            left: "0",
+            right: "0",
           }}
         >
           <div

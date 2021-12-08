@@ -1,17 +1,27 @@
 // @ts-nocheck
-/** @jsx jsx */
-import React, { useCallback, useMemo } from 'react';
-import { getProviderFromUseWalletId } from 'use-wallet';
-import { ButtonBase, GU, Link, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-import { CONNECTORS } from '@/ethereum-providers/connectors';
-import { css, jsx } from '@emotion/react';
-import { Provider } from 'use-wallet/dist/cjs/types';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useMemo } from "react";
+import { getProviderFromUseWalletId } from "use-wallet";
+import {
+  ButtonBase,
+  GU,
+  Link,
+  RADIUS,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { CONNECTORS } from "@/ethereum-providers/connectors";
+import { css, jsx } from "@emotion/react";
+import { Provider } from "use-wallet/dist/cjs/types";
 
 function ScreenProviders({ onActivate }: { onActivate: (x) => void }) {
   const theme = useTheme();
 
   const providersInfo = useMemo(() => {
-    return CONNECTORS.map(provider => [provider.id, getProviderFromUseWalletId(provider.id)]);
+    return CONNECTORS.map((provider) => [
+      provider.id,
+      getProviderFromUseWalletId(provider.id),
+    ]);
   }, []);
 
   return (
@@ -20,7 +30,7 @@ function ScreenProviders({ onActivate }: { onActivate: (x) => void }) {
         css={css`
           padding-top: ${2 * GU}px;
           padding-left: ${2 * GU}px;
-          ${textStyle('label2')};
+          ${textStyle("label2")};
           color: ${theme.contentSecondary.toString()};
           margin-bottom: ${2 * GU}px;
         `}
@@ -46,7 +56,11 @@ function ScreenProviders({ onActivate }: { onActivate: (x) => void }) {
         >
           {providersInfo.map(([id, provider]) => (
             <React.Fragment key={id}>
-              <ProviderButton id={id} provider={provider} onActivate={onActivate} />
+              <ProviderButton
+                id={id}
+                provider={provider}
+                onActivate={onActivate}
+              />
             </React.Fragment>
           ))}
         </div>
@@ -60,7 +74,7 @@ function ScreenProviders({ onActivate }: { onActivate: (x) => void }) {
           <Link
             href="https://ethereum.org/wallets/"
             style={{
-              textDecoration: 'none',
+              textDecoration: "none",
             }}
           >
             What is an Ethereum provider?
@@ -71,7 +85,15 @@ function ScreenProviders({ onActivate }: { onActivate: (x) => void }) {
   );
 }
 
-function ProviderButton({ id, provider, onActivate }: { id: string; provider: Provider; onActivate: (id) => void }) {
+function ProviderButton({
+  id,
+  provider,
+  onActivate,
+}: {
+  id: string;
+  provider: Provider;
+  onActivate: (id) => void;
+}) {
   const theme = useTheme();
 
   const handleClick = useCallback(() => {
@@ -103,7 +125,7 @@ function ProviderButton({ id, provider, onActivate }: { id: string; provider: Pr
       <div
         css={css`
           margin-top: ${1 * GU}px;
-          ${textStyle('body1')};
+          ${textStyle("body1")};
         `}
       >
         {provider.name}

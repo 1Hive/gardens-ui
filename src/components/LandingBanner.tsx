@@ -1,35 +1,35 @@
-/** @jsx jsx */
-import React from 'react';
-import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
-import desktopBanner from '../assets/landingBanner.png';
-import mobileBanner from '@assets/landingBanner-mobile.png';
-import tabletBanner from '@assets/landingBanner-tablet.png';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Button, GU, useLayout, useTheme } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
+import desktopBanner from "../assets/landingBanner.png";
+import mobileBanner from "@assets/landingBanner-mobile.png";
+import tabletBanner from "@assets/landingBanner-tablet.png";
 
 const BANNERS = {
   small: {
-    aspectRatio: '53.5%',
-    hFontSize: '32px',
+    aspectRatio: "53.5%",
+    hFontSize: "32px",
     image: mobileBanner,
-    pFontSize: '14px',
+    pFontSize: "14px",
   },
   medium: {
     image: tabletBanner,
-    aspectRatio: '36.5%',
-    hFontSize: '52px',
-    pFontSize: '18px',
+    aspectRatio: "36.5%",
+    hFontSize: "52px",
+    pFontSize: "18px",
   },
   large: {
     image: desktopBanner,
-    aspectRatio: '26.5%',
-    hFontSize: '52px',
-    pFontSize: '18px',
+    aspectRatio: "26.5%",
+    hFontSize: "52px",
+    pFontSize: "18px",
   },
   max: {
     image: desktopBanner,
-    aspectRatio: '26.5%',
-    hFontSize: '64px',
-    pFontSize: '20px',
+    aspectRatio: "26.5%",
+    hFontSize: "64px",
+    pFontSize: "20px",
   },
 };
 
@@ -115,7 +115,12 @@ const LandingBanner = React.forwardRef<any, any>((props, ref) => {
                   margin-right: ${2 * GU}px;
                 `}
               />
-              <Button label="Create a Garden" mode="strong" onClick={onCreateGarden} wide />
+              <Button
+                label="Create a Garden"
+                mode="strong"
+                onClick={onCreateGarden}
+                wide
+              />
             </div>
           </div>
         </div>

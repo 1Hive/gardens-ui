@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BackButton,
   Box,
@@ -13,21 +13,30 @@ import {
   textStyle,
   useLayout,
   useTheme,
-} from '@1hive/1hive-ui';
-import BrightIdStatus from './BrightIdStatus';
-import SingleDatePicker from '../SingleDatePicker/SingleDatePicker';
+} from "@1hive/1hive-ui";
+import BrightIdStatus from "./BrightIdStatus";
+import SingleDatePicker from "../SingleDatePicker/SingleDatePicker";
 
-import { fetchPic } from '@/services';
-import { dateFormat } from '@utils/date-utils';
-import { validateEmail } from '@utils/validate-utils';
-import verifiedCheck from '@assets/verifiedCheck.svg';
+import { fetchPic } from "@/services";
+import { dateFormat } from "@utils/date-utils";
+import { validateEmail } from "@utils/validate-utils";
+import verifiedCheck from "@assets/verifiedCheck.svg";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   const { name: layout } = useLayout();
-  const { birthday, description, email, location, name, updateProfile, verifiedAccounts, website } = profile;
+  const {
+    birthday,
+    description,
+    email,
+    location,
+    name,
+    updateProfile,
+    verifiedAccounts,
+    website,
+  } = profile;
   const [error, setError] = useState(null);
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
@@ -57,7 +66,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   // Private data might not be ready yet
   useEffect(() => {
     if (birthday || email) {
-      setFormData(formData => ({
+      setFormData((formData) => ({
         ...formData,
         birthday,
         email: { removed: false, value: email, verified: Boolean(email) },
@@ -66,36 +75,36 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
     return () => {};
   }, [birthday, email]);
 
-  const handleAccountChange = useCallback(event => {
+  const handleAccountChange = useCallback((event) => {
     const { name, value } = event.target;
-    setFormData(formData => ({
+    setFormData((formData) => ({
       ...formData,
       [name]: { ...formData[name], value },
     }));
   }, []);
 
-  const handleAccountRemove = useCallback(account => {
-    setFormData(formData => ({
+  const handleAccountRemove = useCallback((account) => {
+    setFormData((formData) => ({
       ...formData,
       [account]: { ...formData[account], removed: true },
     }));
   }, []);
 
-  const handleAccountCancelRemove = useCallback(account => {
-    setFormData(formData => ({
+  const handleAccountCancelRemove = useCallback((account) => {
+    setFormData((formData) => ({
       ...formData,
       [account]: { ...formData[account], removed: false },
     }));
   }, []);
 
-  const handleDataChange = useCallback(event => {
+  const handleDataChange = useCallback((event) => {
     const { name, value: newValue } = event.target;
-    setFormData(formData => ({ ...formData, [name]: newValue }));
+    setFormData((formData) => ({ ...formData, [name]: newValue }));
   }, []);
 
-  const handleBirthdayChange = useCallback(date => {
-    const dateFormatted = dateFormat(date, 'iso');
-    setFormData(formData => ({ ...formData, birthday: dateFormatted }));
+  const handleBirthdayChange = useCallback((date) => {
+    const dateFormatted = dateFormat(date, "iso");
+    setFormData((formData) => ({ ...formData, birthday: dateFormatted }));
   }, []);
 
   const [updatedFields, removedFields] = useMemo(() => {
@@ -109,48 +118,57 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
     };
 
     if (formData.birthday && formData.birthday !== birthday) {
-      updatedFields.private.push(['birthday', formData.birthday]);
+      updatedFields.private.push(["birthday", formData.birthday]);
     }
 
     if (formData.description && formData.description !== description) {
-      updatedFields.public.push(['description', formData.description]);
+      updatedFields.public.push(["description", formData.description]);
     }
 
     if (formData.email.removed) {
-      removedFields.private.push('proof_email');
+      removedFields.private.push("proof_email");
     } else if (formData.email.verified && !email) {
-      updatedFields.public.push(['email', formData.email.value]);
+      updatedFields.public.push(["email", formData.email.value]);
     }
 
     if (formData.location && formData.location !== location) {
-      updatedFields.public.push(['location', formData.location]);
+      updatedFields.public.push(["location", formData.location]);
     }
 
     if (formData.name && formData.name !== name) {
-      updatedFields.public.push(['name', formData.name]);
+      updatedFields.public.push(["name", formData.name]);
     }
 
     if (formData.github.removed) {
-      removedFields.public.push('proof_github');
+      removedFields.public.push("proof_github");
     } else if (formData.github.verified && !verifiedAccounts?.github) {
-      updatedFields.public.push(['github', formData.github.value]);
+      updatedFields.public.push(["github", formData.github.value]);
     }
 
     if (formData.twitter.removed) {
-      removedFields.public.push('proof_twitter');
+      removedFields.public.push("proof_twitter");
     } else if (formData.twitter.verified && !verifiedAccounts?.twitter) {
-      updatedFields.public.push(['twitter', formData.twitter.value]);
+      updatedFields.public.push(["twitter", formData.twitter.value]);
     }
 
     if (formData.website && formData.website !== website) {
-      updatedFields.public.push(['website', formData.website]);
+      updatedFields.public.push(["website", formData.website]);
     }
 
     return [updatedFields, removedFields];
-  }, [birthday, description, email, formData, location, name, verifiedAccounts, website]);
+  }, [
+    birthday,
+    description,
+    email,
+    formData,
+    location,
+    name,
+    verifiedAccounts,
+    website,
+  ]);
 
   const handleFormSubmit = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault();
 
       try {
@@ -158,8 +176,8 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
 
         // Check if cover or profile pictures have been updated or removed
         for (const pic of [
-          { key: 'coverPhoto', ...coverPic },
-          { key: 'image', ...profilePic },
+          { key: "coverPhoto", ...coverPic },
+          { key: "image", ...profilePic },
         ]) {
           if (pic.updated) {
             // Upload updated image to IPFS and update it on 3box
@@ -168,10 +186,13 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
               throw error;
             }
 
-            if (data.Type !== 'error') {
-              updatedFields.public.push([pic.key, [{ '@type': 'ImageObject', contentUrl: { '/': data.Hash } }]]);
+            if (data.Type !== "error") {
+              updatedFields.public.push([
+                pic.key,
+                [{ "@type": "ImageObject", contentUrl: { "/": data.Hash } }],
+              ]);
             } else {
-              console.error('Could not fetch profile pic: ', data);
+              console.error("Could not fetch profile pic: ", data);
             }
           } else if (pic.removed) {
             removedFields.public.push(pic.key);
@@ -188,7 +209,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
 
       onBack();
     },
-    [coverPic, onBack, profilePic, removedFields, updatedFields, updateProfile],
+    [coverPic, onBack, profilePic, removedFields, updatedFields, updateProfile]
   );
 
   const saveDisabled =
@@ -217,15 +238,26 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
         <form onSubmit={handleFormSubmit}>
           <div
             css={css`
-              width: ${layout === 'small' ? '100%' : '50%'};
+              width: ${layout === "small" ? "100%" : "50%"};
             `}
           >
             <Section title="Basic">
               <Field label="Name">
-                <TextInput name="name" value={formData.name} onChange={handleDataChange} wide />
+                <TextInput
+                  name="name"
+                  value={formData.name}
+                  onChange={handleDataChange}
+                  wide
+                />
               </Field>
               <Field label="About me">
-                <TextInput name="description" value={formData.description} onChange={handleDataChange} multiline wide />
+                <TextInput
+                  name="description"
+                  value={formData.description}
+                  onChange={handleDataChange}
+                  multiline
+                  wide
+                />
               </Field>
             </Section>
             <Section title="Contact">
@@ -267,7 +299,8 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
                   margin-top: ${2 * GU}px;
                 `}
               >
-                In order to verify your linked identities please do so temporarily from the{' '}
+                In order to verify your linked identities please do so
+                temporarily from the{" "}
                 <Link href="https://3box.io/">3Box dapp</Link>.
               </Info>
             </Section>
@@ -276,13 +309,27 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
             </Section>
             <Section title="About">
               <Field label="Location">
-                <TextInput name="location" value={formData.location} onChange={handleDataChange} wide />
+                <TextInput
+                  name="location"
+                  value={formData.location}
+                  onChange={handleDataChange}
+                  wide
+                />
               </Field>
               <Field label="Website or url">
-                <TextInput name="website" value={formData.website} onChange={handleDataChange} wide />
+                <TextInput
+                  name="website"
+                  value={formData.website}
+                  onChange={handleDataChange}
+                  wide
+                />
               </Field>
               <Field label="Birthday">
-                <SingleDatePicker format="iso" initialDate={formData.birthday} onChange={handleBirthdayChange} />
+                <SingleDatePicker
+                  format="iso"
+                  initialDate={formData.birthday}
+                  onChange={handleBirthdayChange}
+                />
               </Field>
             </Section>
           </div>
@@ -335,7 +382,7 @@ function Section({ children, title }) {
     >
       <h5
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           margin-bottom: ${2 * GU}px;
         `}
       >
@@ -346,7 +393,17 @@ function Section({ children, title }) {
   );
 }
 
-function VerifiedAccount({ label, name, onChange, onRemove, onCancelRemove, removed, validation, value, verified }) {
+function VerifiedAccount({
+  label,
+  name,
+  onChange,
+  onRemove,
+  onCancelRemove,
+  removed,
+  validation,
+  value,
+  verified,
+}) {
   const theme = useTheme();
 
   const verificationDisabled = (validation && !validation(value)) || true; // TODO: remove
@@ -385,10 +442,10 @@ function VerifiedAccount({ label, name, onChange, onRemove, onCancelRemove, remo
             <ButtonBase
               onClick={() => (removed ? onCancelRemove : onRemove)(name)}
               css={css`
-                ${textStyle('label1')};
+                ${textStyle("label1")};
               `}
             >
-              {removed ? 'Cancel' : 'Remove'}
+              {removed ? "Cancel" : "Remove"}
             </ButtonBase>
           </div>
         ) : (
@@ -399,10 +456,12 @@ function VerifiedAccount({ label, name, onChange, onRemove, onCancelRemove, remo
             adornment={
               <ButtonBase
                 disabled={verificationDisabled}
-                onClick={() => window.alert('verify!')}
+                onClick={() => window.alert("verify!")}
                 css={css`
-                  ${textStyle('label1')};
-                  color: ${theme[verificationDisabled ? 'contentSecondary' : 'positive']};
+                  ${textStyle("label1")};
+                  color: ${theme[
+                    verificationDisabled ? "contentSecondary" : "positive"
+                  ]};
                   opacity: ${verificationDisabled ? 0.5 : 1};
                 `}
               >

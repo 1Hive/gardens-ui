@@ -1,8 +1,15 @@
-/** @jsx jsx */
-import React from 'react';
-import { ButtonBase, GU, IconLeft, IconRight, textStyle, useTheme } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import {
+  ButtonBase,
+  GU,
+  IconLeft,
+  IconRight,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 export const HoverIndicator = styled.span`
   width: 100%;
@@ -10,12 +17,14 @@ export const HoverIndicator = styled.span`
   position: absolute;
   border-radius: 50%;
   ${({ theme, selected }) => css`
-    background: ${selected ? theme.selected.toString() : theme.surface.toString()};
+    background: ${selected
+      ? theme.selected.toString()
+      : theme.surface.toString()};
     border: 2px solid ${theme.accent.toString()};
   `}
 `;
 
-const ArrowButton = props => {
+const ArrowButton = (props) => {
   const theme = useTheme();
   return (
     <ButtonBase
@@ -43,7 +52,7 @@ const SelectorWrapper = styled.div`
 
   span {
     ${({ small, theme }) => css`
-      ${textStyle(small ? 'label2' : 'body2')};
+      ${textStyle(small ? "label2" : "body2")};
       ${small &&
         css`
           color: ${theme.hint.toString()};

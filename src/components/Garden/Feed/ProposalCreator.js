@@ -1,14 +1,20 @@
-/** @jsx jsx */
-import React, { useEffect, useState } from 'react';
-import { EthIdenticon, GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
-import ProposalIcon from '@components/ProposalIcon';
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useState } from "react";
+import {
+  EthIdenticon,
+  GU,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import ProposalIcon from "@components/ProposalIcon";
 
-import { convertToString } from '@/types';
-import { getProfileForAccount } from '@lib/profile';
-import { dateFormat } from '@utils/date-utils';
-import { addressesEqual } from '@utils/web3-utils';
-import { ZERO_ADDR } from '@/constants';
-import { css, jsx } from '@emotion/react';
+import { convertToString } from "@/types";
+import { getProfileForAccount } from "@lib/profile";
+import { dateFormat } from "@utils/date-utils";
+import { addressesEqual } from "@utils/web3-utils";
+import { ZERO_ADDR } from "@/constants";
+import { css, jsx } from "@emotion/react";
 
 const addressCache = new Map();
 
@@ -87,7 +93,9 @@ function ProposalCreator({ proposal }) {
                   margin-right: ${1 * GU}px;
                 `}
               >
-                {profile?.name ? profile.name : shortenAddress(proposal.creator)}
+                {profile?.name
+                  ? profile.name
+                  : shortenAddress(proposal.creator)}
               </strong>
               <span
                 css={css`
@@ -95,18 +103,18 @@ function ProposalCreator({ proposal }) {
                 `}
               >
                 created a
-              </span>{' '}
+              </span>{" "}
               {ProposalType}
             </>
           )}
         </div>
         <div
           css={css`
-            ${textStyle('body3')};
+            ${textStyle("body3")};
             color: ${theme.contentSecondary.toString()};
           `}
         >
-          {dateFormat(proposal.createdAt, 'custom')}
+          {dateFormat(proposal.createdAt, "custom")}
         </div>
       </div>
     </div>

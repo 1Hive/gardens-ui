@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from "react";
 import {
   Button,
   ButtonBase,
@@ -11,27 +11,39 @@ import {
   textStyle,
   useLayout,
   useTheme,
-} from '@1hive/1hive-ui';
+} from "@1hive/1hive-ui";
 
-import ProfileForm from './ProfileForm';
-import Tabs from './Tabs';
-import usePicture from '@hooks/usePicture';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import ProfileForm from "./ProfileForm";
+import Tabs from "./Tabs";
+import usePicture from "@hooks/usePicture";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const IMAGE_DIMENSION = 15 * GU;
 const CONTENT = [ProfileForm];
-const TAB_ITEMS = ['Profile'];
+const TAB_ITEMS = ["Profile"];
 
 const EditProfile = React.forwardRef(
-  ({ coverPic, coverPicRemovalEnabled, onBack, onCoverPicChange, onCoverPicRemoval, profile }, coverPicInputRef) => {
+  (
+    {
+      coverPic,
+      coverPicRemovalEnabled,
+      onBack,
+      onCoverPicChange,
+      onCoverPicRemoval,
+      profile,
+    },
+    coverPicInputRef
+  ) => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [profilePic, onProfilePicChange, onProfilePicRemoval] = usePicture(true);
+    const [profilePic, onProfilePicChange, onProfilePicRemoval] = usePicture(
+      true
+    );
 
     const theme = useTheme();
     const { name: layout } = useLayout();
     const { account, image, name } = profile || {};
-    const oneColumn = layout === 'small' || layout === 'medium';
+    const oneColumn = layout === "small" || layout === "medium";
 
     const imageInput = useRef(null);
 
@@ -94,7 +106,11 @@ const EditProfile = React.forwardRef(
                   cursor: pointer;
                 `}
               />
-              <Button label="Change background" icon={<IconEdit />} display={oneColumn ? 'icon' : 'label'} />
+              <Button
+                label="Change background"
+                icon={<IconEdit />}
+                display={oneColumn ? "icon" : "label"}
+              />
             </label>
           </div>
         </div>
@@ -121,7 +137,10 @@ const EditProfile = React.forwardRef(
                     z-index: 1;
                   `}
                 >
-                  {!profilePic.removed && (image || (imageInput.current?.files && imageInput.current.files[0])) ? (
+                  {!profilePic.removed &&
+                  (image ||
+                    (imageInput.current?.files &&
+                      imageInput.current.files[0])) ? (
                     <img
                       src={
                         imageInput.current?.files && imageInput.current.files[0]
@@ -189,27 +208,29 @@ const EditProfile = React.forwardRef(
                       </label>
                     </div>
                   )}
-                  {selectedTab === 0 && !profilePic.removed && (image || (imageInput?.files && imageInput?.files[0])) && (
-                    <ButtonBase
-                      onClick={onProfilePicRemoval}
-                      css={css`
-                        position: absolute;
-                        bottom: ${1 * GU}px;
-                        background: ${theme.surface.toString()};
-                        color: ${theme.contentSecondary.toString()};
-                        padding: ${0.5 * GU}px;
-                        border-radius: 50%;
-                        display: flex;
-                        box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+                  {selectedTab === 0 &&
+                    !profilePic.removed &&
+                    (image || (imageInput?.files && imageInput?.files[0])) && (
+                      <ButtonBase
+                        onClick={onProfilePicRemoval}
+                        css={css`
+                          position: absolute;
+                          bottom: ${1 * GU}px;
+                          background: ${theme.surface.toString()};
+                          color: ${theme.contentSecondary.toString()};
+                          padding: ${0.5 * GU}px;
+                          border-radius: 50%;
+                          display: flex;
+                          box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 
-                        &:active {
-                          background: ${theme.surfacePressed.toString()};
-                        }
-                      `}
-                    >
-                      <IconCross />
-                    </ButtonBase>
-                  )}
+                          &:active {
+                            background: ${theme.surfacePressed.toString()};
+                          }
+                        `}
+                      >
+                        <IconCross />
+                      </ButtonBase>
+                    )}
                 </div>
               </div>
               {!oneColumn && (
@@ -225,7 +246,7 @@ const EditProfile = React.forwardRef(
                   >
                     <div
                       css={css`
-                        ${textStyle('title4')}
+                        ${textStyle("title4")}
                       `}
                     >
                       {name}
@@ -238,16 +259,20 @@ const EditProfile = React.forwardRef(
                       {shortenAddress(account)}
                     </div>
                   </div>
-                  <Tabs items={TAB_ITEMS} selected={selectedTab} onChange={setSelectedTab} />
+                  <Tabs
+                    items={TAB_ITEMS}
+                    selected={selectedTab}
+                    onChange={setSelectedTab}
+                  />
                 </div>
               )}
             </div>
           }
-          invert={oneColumn ? 'vertical' : 'horizontal'}
+          invert={oneColumn ? "vertical" : "horizontal"}
         />
       </div>
     );
-  },
+  }
 );
 
 export default EditProfile;

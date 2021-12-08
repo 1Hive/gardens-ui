@@ -1,6 +1,6 @@
-/** @jsx jsx */
-import React, { useCallback, useState } from 'react';
-import { animated, Transition } from 'react-spring/renderprops';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useState } from "react";
+import { animated, Transition } from "react-spring/renderprops";
 import {
   BIG_RADIUS,
   DropDown,
@@ -12,14 +12,14 @@ import {
   textStyle,
   useViewport,
   useTheme,
-} from '@1hive/1hive-ui';
-import arrowDownSvg from '@assets/arrowDown.svg';
-import { css, jsx } from '@emotion/react';
+} from "@1hive/1hive-ui";
+import arrowDownSvg from "@assets/arrowDown.svg";
+import { css, jsx } from "@emotion/react";
 
 function CompactFilter({ ...props }) {
   const { below } = useViewport();
 
-  const Filter = below('medium') ? CompactFilterSlider : CompactFilterBar;
+  const Filter = below("medium") ? CompactFilterSlider : CompactFilterBar;
   return <Filter {...props} />;
 }
 
@@ -131,7 +131,7 @@ function CompactFilterSlider({
           >
             <div
               css={css`
-                ${textStyle('body1')};
+                ${textStyle("body1")};
               `}
             >
               Filters
@@ -145,7 +145,12 @@ function CompactFilterSlider({
               <IconCross color={theme.surfaceIcon.toString()} />
             </div>
           </div>
-          <AnimatedFilter header="Type" items={itemsType} onSelect={onTypeFilterChange} selected={proposalTypeFilter} />
+          <AnimatedFilter
+            header="Type"
+            items={itemsType}
+            onSelect={onTypeFilterChange}
+            selected={proposalTypeFilter}
+          />
           <AnimatedFilter
             header="Status"
             items={itemsStatus}
@@ -200,35 +205,35 @@ function AnimatedSlider({ children, visible }) {
       <Transition
         native
         items={visible}
-        from={{ opacity: 0, transform: 'translateY(100%)' }}
-        enter={{ opacity: 1, transform: 'translateY(0%)' }}
-        leave={{ opacity: 0, transform: 'translateY(100%)' }}
+        from={{ opacity: 0, transform: "translateY(100%)" }}
+        enter={{ opacity: 1, transform: "translateY(0%)" }}
+        leave={{ opacity: 0, transform: "translateY(100%)" }}
         config={{ ...springs.smooth, precision: 0.001 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ opacity, transform }) => (
             <div>
               <animated.div
                 style={{
-                  position: 'fixed',
+                  position: "fixed",
                   opacity,
-                  top: '0',
-                  bottom: '0',
-                  left: '0',
-                  right: '0',
-                  zIndex: '4',
+                  top: "0",
+                  bottom: "0",
+                  left: "0",
+                  right: "0",
+                  zIndex: "4",
                   background: theme.overlay.alpha(0.9).toString(),
                 }}
               >
                 <animated.div
                   style={{
                     transform,
-                    position: 'fixed',
-                    bottom: '0',
-                    left: '0',
-                    right: '0',
-                    filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15))',
+                    position: "fixed",
+                    bottom: "0",
+                    left: "0",
+                    right: "0",
+                    filter: "drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15))",
                   }}
                 >
                   <div
@@ -256,7 +261,7 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
   const [opened, setOpened] = useState(false);
 
   const handleFilterToggle = useCallback(() => {
-    setOpened(opened => !opened);
+    setOpened((opened) => !opened);
   }, []);
 
   return (
@@ -283,7 +288,7 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
         <div>{header}</div>
         <div
           css={css`
-            transform: rotate(${opened ? '180deg' : '0deg'});
+            transform: rotate(${opened ? "180deg" : "0deg"});
             transition: transform 0.3s ease;
           `}
         >
@@ -294,17 +299,17 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
         native
         items={opened}
         from={{ height: 0 }}
-        enter={{ height: 'auto' }}
+        enter={{ height: "auto" }}
         leave={{ height: 0 }}
         config={{ ...springs.smooth, precision: 0.1 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ height }) => (
             <animated.div
               style={{
-                height: height.interpolate(v => `${v}px`),
-                overflow: 'hidden',
+                height: height.interpolate((v) => `${v}px`),
+                overflow: "hidden",
                 borderBottom: `1px solid ${theme.border.toString()}`,
               }}
             >
@@ -314,7 +319,13 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
                 `}
               >
                 {items.map((item, index) => (
-                  <ListItem key={index} index={index} item={item} selected={selected} onSelect={onSelect} />
+                  <ListItem
+                    key={index}
+                    index={index}
+                    item={item}
+                    selected={selected}
+                    onSelect={onSelect}
+                  />
                 ))}
               </ul>
             </animated.div>
@@ -339,8 +350,10 @@ function ListItem({ index, item, onSelect, selected }) {
       css={css`
         cursor: pointer;
         padding: ${1 * GU}px ${2 * GU}px;
-        color: ${isSelected ? theme.content.toString() : theme.contentSecondary.toString()};
-        background: ${isSelected ? '#EAFAF9' : theme.surface.toString()};
+        color: ${isSelected
+          ? theme.content.toString()
+          : theme.contentSecondary.toString()};
+        background: ${isSelected ? "#EAFAF9" : theme.surface.toString()};
         ${!isSelected &&
           `
           &:hover {

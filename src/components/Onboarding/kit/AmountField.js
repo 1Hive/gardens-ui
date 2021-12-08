@@ -1,12 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Field, GU, TextInput, textStyle, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback, useEffect, useState } from "react";
+import { Field, GU, TextInput, textStyle, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 // matches a number up to two decimals
 const regex = /^\d*(\.\d{0,2})?$/;
 
-const AmountField = ({ label, min = 0, max, onChange, required, unitSymbol, value, ...props }) => {
+const AmountField = ({
+  label,
+  min = 0,
+  max,
+  onChange,
+  required,
+  unitSymbol,
+  value,
+  ...props
+}) => {
   const theme = useTheme();
   const [amountFieldValue, setAmountFieldValue] = useState(value);
 
@@ -15,17 +24,22 @@ const AmountField = ({ label, min = 0, max, onChange, required, unitSymbol, valu
   }, [value]);
 
   const handleInputChange = useCallback(
-    e => {
+    (e) => {
       const value = parseFloat(e.target.value);
 
       // Allow empty values so it can be easier to update input
       if (!e.target.value) {
-        setAmountFieldValue('');
-      } else if (!isNaN(value) && regex.test(value) && value >= min && (max ? value < max : true)) {
+        setAmountFieldValue("");
+      } else if (
+        !isNaN(value) &&
+        regex.test(value) &&
+        value >= min &&
+        (max ? value < max : true)
+      ) {
         setAmountFieldValue(value);
       }
     },
-    [min, max],
+    [min, max]
   );
 
   const handleInputBlur = useCallback(() => {
@@ -73,7 +87,7 @@ const AmountField = ({ label, min = 0, max, onChange, required, unitSymbol, valu
               bottom: 0;
               display: flex;
               align-items: center;
-              ${textStyle('body3')};
+              ${textStyle("body3")};
               color: ${theme.contentSecondary.toString()};
               pointer-events: none;
             `}

@@ -1,18 +1,18 @@
-import React, { useCallback, useState } from 'react';
-import { GU, useToast } from '@1hive/1hive-ui';
-import { useGardens } from '@/providers/Gardens';
-import { useNodeHeight } from '@hooks/useNodeHeight';
+import React, { useCallback, useState } from "react";
+import { GU, useToast } from "@1hive/1hive-ui";
+import { useGardens } from "@/providers/Gardens";
+import { useNodeHeight } from "@hooks/useNodeHeight";
 
-import GardensFilters from './GardensFilters';
-import GardensList from './GardensList';
-import LandingBanner from './LandingBanner';
-import { useWallet } from '@providers/Wallet';
-import MultiModal from './MultiModal/MultiModal';
-import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreens';
-import Loader from './Loader';
-import Onboarding from './Onboarding';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import GardensFilters from "./GardensFilters";
+import GardensList from "./GardensList";
+import LandingBanner from "./LandingBanner";
+import { useWallet } from "@providers/Wallet";
+import MultiModal from "./MultiModal/MultiModal";
+import ConnectWalletScreens from "./MultiModal/ConnectWallet/ConnectWalletScreens";
+import Loader from "./Loader";
+import Onboarding from "./Onboarding";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Home() {
   const { height, customRef } = useNodeHeight();
@@ -33,7 +33,7 @@ function Home() {
 
   const handleOnboardingClose = useCallback(() => {
     setOnboardingVisible(false);
-    toast('Saved!');
+    toast("Saved!");
   }, [toast]);
 
   const handleCloseModal = useCallback(() => {
@@ -66,7 +66,10 @@ function Home() {
       </div>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
       <MultiModal visible={connectModalVisible} onClose={handleCloseModal}>
-        <ConnectWalletScreens onClose={handleCloseModal} onSuccess={handleOnboardingOpen} />
+        <ConnectWalletScreens
+          onClose={handleCloseModal}
+          onSuccess={handleOnboardingOpen}
+        />
       </MultiModal>
     </div>
   );

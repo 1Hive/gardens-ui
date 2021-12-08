@@ -1,24 +1,40 @@
-import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useDropzone } from 'react-dropzone';
-import { Card, Field, GU, IconUpload, textStyle, useTheme } from '@1hive/1hive-ui';
-import { mimeToExtension, readFile } from '@utils/kit-utils';
-import FilePreview from './FilePreview';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useDropzone } from "react-dropzone";
+import {
+  Card,
+  Field,
+  GU,
+  IconUpload,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { mimeToExtension, readFile } from "@utils/kit-utils";
+import FilePreview from "./FilePreview";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const DEFAULT_MAX_FILE_SIZE = 1000000; // 1Mb
-const DEFAULT_DROPZONE_ID = 'file-uploader';
+const DEFAULT_DROPZONE_ID = "file-uploader";
 
 const getDropzoneColor = (theme, isReject, isAccept) => {
   if (isReject) {
-    return { mainColor: theme.negative.toString(), backgroundColor: theme.negativeSurface.toString() };
+    return {
+      mainColor: theme.negative.toString(),
+      backgroundColor: theme.negativeSurface.toString(),
+    };
   } else if (isAccept) {
-    return { mainColor: theme.positive.toString(), backgroundColor: theme.positiveSurface.toString() };
-  } else return { mainColor: '#A1A9A4', backgroundColor: '#FFFFFF' };
+    return {
+      mainColor: theme.positive.toString(),
+      backgroundColor: theme.positiveSurface.toString(),
+    };
+  } else return { mainColor: "#A1A9A4", backgroundColor: "#FFFFFF" };
 };
 
-export const TextFileUploader = ({ dropzoneId = DEFAULT_DROPZONE_ID, label = 'browse your file' }) => {
+export const TextFileUploader = ({
+  dropzoneId = DEFAULT_DROPZONE_ID,
+  label = "browse your file",
+}) => {
   const theme = useTheme();
 
   return (
@@ -49,9 +65,11 @@ export const FileUploaderField = ({
 }) => {
   const theme = useTheme();
   const iconSize = 7 * GU;
-  const validExtensions = allowedMIMETypes?.map(f => mimeToExtension(f).toUpperCase());
+  const validExtensions = allowedMIMETypes?.map((f) =>
+    mimeToExtension(f).toUpperCase()
+  );
   const onDrop = useCallback(
-    files => {
+    (files) => {
       const reader = new FileReader();
       const file = files[0];
 
@@ -64,14 +82,24 @@ export const FileUploaderField = ({
         }
       }
     },
-    [maxFileSize, onFileUpdated],
+    [maxFileSize, onFileUpdated]
   );
-  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragAccept,
+    isDragReject,
+    open,
+  } = useDropzone({
     accept: allowedMIMETypes,
     onDrop,
     multiple: false,
   });
-  const { mainColor, backgroundColor } = getDropzoneColor(theme, isDragReject, isDragAccept);
+  const { mainColor, backgroundColor } = getDropzoneColor(
+    theme,
+    isDragReject,
+    isDragAccept
+  );
 
   useEffect(() => {
     if (isDragReject) {
@@ -87,7 +115,7 @@ export const FileUploaderField = ({
       css={css`
         width: 100%;
         color: ${theme.contentSecondary.toString()};
-        ${textStyle('body2')};
+        ${textStyle("body2")};
       `}
     >
       {label && (
@@ -115,7 +143,7 @@ export const FileUploaderField = ({
         `}
       >
         <div
-          {...getRootProps({ onClick: e => e.stopPropagation() })}
+          {...getRootProps({ onClick: (e) => e.stopPropagation() })}
           css={css`
             height: 100%;
             width: 100%;
@@ -138,7 +166,9 @@ export const FileUploaderField = ({
                 id,
                 /* Include file extensions as well due to some MIME
                  types aren't working on input tag, e.g., text/markdown. */
-                accept: allowedMIMETypes ? [...allowedMIMETypes, ...validExtensions] : null,
+                accept: allowedMIMETypes
+                  ? [...allowedMIMETypes, ...validExtensions]
+                  : null,
               })}
             />
             {!file ? (
@@ -175,7 +205,11 @@ export const FileUploaderField = ({
                 <TextFileUploader dropzoneId={id} />
               </div>
             ) : (
-              <FilePreview file={file.blob} onCancel={() => onFileUpdated(null)} label={previewLabel} />
+              <FilePreview
+                file={file.blob}
+                onCancel={() => onFileUpdated(null)}
+                label={previewLabel}
+              />
             )}
           </div>
         </div>

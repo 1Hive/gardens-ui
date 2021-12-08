@@ -1,18 +1,18 @@
-/** @jsx jsx */
-import React from 'react';
-import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui';
-import defaultGardenLogo from '@assets/defaultGardenLogo.png';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Box, GU, textStyle, useLayout, useTheme } from "@1hive/1hive-ui";
+import defaultGardenLogo from "@assets/defaultGardenLogo.png";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 const ParagraphWrapper = styled.div<{
   background;
   compactMode;
 }>`
-  ${textStyle('body2')};
-  color: ${props => props.background};
+  ${textStyle("body2")};
+  color: ${(props) => props.background};
   margin-top: ${1.5 * GU}px;
-  width: ${props => (props.compactMode ? 25 : 55) * GU}px;
+  width: ${(props) => (props.compactMode ? 25 : 55) * GU}px;
   display: flex;
   text-align: center;
 `;
@@ -28,7 +28,7 @@ export default function EmptyResults({
 }) {
   const theme = useTheme();
   const { layoutName } = useLayout();
-  const compactMode = layoutName === 'small';
+  const compactMode = layoutName === "small";
 
   return (
     <Box>
@@ -52,13 +52,16 @@ export default function EmptyResults({
         />
         <span
           css={css`
-            ${textStyle(compactMode ? 'title4' : 'title2')};
+            ${textStyle(compactMode ? "title4" : "title2")};
             text-align: center;
           `}
         >
           {title}
         </span>
-        <ParagraphWrapper background={theme.surfaceContentSecondary.toString()} compactMode={compactMode}>
+        <ParagraphWrapper
+          background={theme.surfaceContentSecondary.toString()}
+          compactMode={compactMode}
+        >
           {paragraph}
         </ParagraphWrapper>
       </div>

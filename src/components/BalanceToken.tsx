@@ -1,11 +1,11 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
-import { formatTokenAmount } from '@utils/token-utils';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
+import { formatTokenAmount } from "@utils/token-utils";
 
 const splitAmount = (amount, decimals) => {
-  const [integer, fractional] = formatTokenAmount(amount, decimals).split('.');
+  const [integer, fractional] = formatTokenAmount(amount, decimals).split(".");
   return (
     <span
       css={css`
@@ -37,8 +37,10 @@ const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
           marginRight: `${1 * GU}px`,
         }}
       />
-      {amount !== undefined && amount !== null ? splitAmount(amount, decimals) : ' - '}
-      {symbol || ''}
+      {amount !== undefined && amount !== null
+        ? splitAmount(amount, decimals)
+        : " - "}
+      {symbol || ""}
     </div>
   );
 };

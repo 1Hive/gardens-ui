@@ -1,7 +1,7 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, IdentityBadge, useTheme } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, IdentityBadge, useTheme } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
 
 function Description({ disableBadgeInteraction, path, ...props }) {
   return (
@@ -18,9 +18,13 @@ function Description({ disableBadgeInteraction, path, ...props }) {
     >
       {path
         ? path.map((step, index) => (
-            <DescriptionStep disableBadgeInteraction={disableBadgeInteraction} key={index} step={step} />
+            <DescriptionStep
+              disableBadgeInteraction={disableBadgeInteraction}
+              key={index}
+              step={step}
+            />
           ))
-        : 'No description'}
+        : "No description"}
     </span>
   );
 }
@@ -36,32 +40,36 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
       step.annotatedDescription.map(({ type, value }, index) => {
         const key = index + 1;
 
-        if (type === 'address' || type === 'any-account') {
+        if (type === "address" || type === "any-account") {
           return (
             <span key={key}>
-              {' '}
+              {" "}
               <IdentityBadge
                 badgeOnly={disableBadgeInteraction}
                 compact
-                entity={type === 'any-account' ? 'Any account' : value}
+                entity={type === "any-account" ? "Any account" : value}
               />
             </span>
           );
         }
 
-        if (type === 'role' || type === 'kernelNamespace' || type === 'app') {
+        if (type === "role" || type === "kernelNamespace" || type === "app") {
           return <span key={key}> “{value.name}”</span>;
         }
 
-        if (type === 'apmPackage') {
+        if (type === "apmPackage") {
           return <span key={key}> “{value.artifact.appName}”</span>;
         }
 
         return <span key={key}> {value.description || value}</span>;
-      }),
+      })
     );
   } else {
-    description.push(<span key={description.length + 1}>{step.description || 'No description'}</span>);
+    description.push(
+      <span key={description.length + 1}>
+        {step.description || "No description"}
+      </span>
+    );
   }
 
   description.push(<br key={description.length + 1} />);
@@ -86,7 +94,7 @@ function DescriptionStep({ step, disableBadgeInteraction }) {
             css={css`
               padding-left: ${2 * GU}px;
               &:before {
-                content: '';
+                content: "";
                 width: ${0.5 * GU}px;
                 height: ${0.5 * GU}px;
                 background: ${theme.accent.toString()};

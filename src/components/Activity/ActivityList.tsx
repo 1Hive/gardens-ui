@@ -1,13 +1,20 @@
-/** @jsx jsx */
-import React, { useMemo } from 'react';
-import { Transition, animated } from 'react-spring/renderprops';
-import { ButtonText, GU, textStyle, springs, useViewport, useTheme } from '@1hive/1hive-ui';
-import ActivityItem from './ActivityItem';
-import { useActivity } from '@providers/ActivityProvider';
-import { ActivityStatus } from './activity-statuses';
+/** @jsxImportSource @emotion/react */
+import React, { useMemo } from "react";
+import { Transition, animated } from "react-spring/renderprops";
+import {
+  ButtonText,
+  GU,
+  textStyle,
+  springs,
+  useViewport,
+  useTheme,
+} from "@1hive/1hive-ui";
+import ActivityItem from "./ActivityItem";
+import { useActivity } from "@providers/ActivityProvider";
+import { ActivityStatus } from "./activity-statuses";
 // TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
-import noDataSvg from '@assets/noData.svg';
-import { css, jsx } from '@emotion/react';
+import noDataSvg from "@assets/noData.svg";
+import { css, jsx } from "@emotion/react";
 
 // 8GU for top bar, 4GU for activity heading,
 // 11GU for HelpScout beacon (3GU top/bottom padding, 5GU beacon)
@@ -19,20 +26,29 @@ function ActivityList() {
   const { below, height } = useViewport();
   const { activities, clearActivities } = useActivity();
 
-  const activityItems = useMemo(() => activities.sort((a, b) => b.createdAt - a.createdAt), [activities]);
-
-  const canClear = useMemo(
-    () => activityItems.some(({ status }) => status !== ActivityStatus.ACTIVITY_STATUS_PENDING),
-    [activityItems],
+  const activityItems = useMemo(
+    () => activities.sort((a, b) => b.createdAt - a.createdAt),
+    [activities]
   );
 
-  const maxHeight = Math.min(MAX_LIST_HEIGHT_CLAMP, Math.ceil(height - MIN_LIST_HEIGHT_ADJUST));
+  const canClear = useMemo(
+    () =>
+      activityItems.some(
+        ({ status }) => status !== ActivityStatus.ACTIVITY_STATUS_PENDING
+      ),
+    [activityItems]
+  );
+
+  const maxHeight = Math.min(
+    MAX_LIST_HEIGHT_CLAMP,
+    Math.ceil(height - MIN_LIST_HEIGHT_ADJUST)
+  );
 
   return (
     <div
       css={css`
         /* Use 20px as the padding setting for popper is 10px */
-        width: ${below('medium') ? `calc(100vw - 20px)` : `${42 * GU}px`};
+        width: ${below("medium") ? `calc(100vw - 20px)` : `${42 * GU}px`};
       `}
     >
       <div
@@ -47,7 +63,7 @@ function ActivityList() {
       >
         <label
           css={css`
-            ${textStyle('label2')}
+            ${textStyle("label2")}
             color: ${theme.surfaceContentSecondary.toString()};
           `}
         >
@@ -58,7 +74,7 @@ function ActivityList() {
             onClick={clearActivities}
             css={css`
               padding: 0;
-              ${textStyle('label2')}
+              ${textStyle("label2")}
             `}
           >
             Clear all
@@ -76,19 +92,19 @@ function ActivityList() {
           <Transition
             native
             items={activityItems}
-            keys={activity => activity.transactionHash}
+            keys={(activity) => activity.transactionHash}
             trail={50}
             enter={{
               opacity: 1,
-              transform: 'translate3d(0px, 0, 0)',
+              transform: "translate3d(0px, 0, 0)",
             }}
             leave={{
               opacity: 0,
-              transform: 'translate3d(20px, 0, 0)',
+              transform: "translate3d(20px, 0, 0)",
             }}
             config={springs.smooth}
           >
-            {activity => transitionStyles => (
+            {(activity) => (transitionStyles) => (
               <div
                 css={css`
                   & + & {
@@ -96,7 +112,9 @@ function ActivityList() {
                   }
                 `}
               >
-                <animated.div style={{ ...transitionStyles, overflow: 'hidden' }}>
+                <animated.div
+                  style={{ ...transitionStyles, overflow: "hidden" }}
+                >
                   <ActivityItem activity={activity} />
                 </animated.div>
               </div>
@@ -116,7 +134,7 @@ function ActivityList() {
             <span
               css={css`
                 margin-top: ${2 * GU}px;
-                ${textStyle('body2')}
+                ${textStyle("body2")}
               `}
             >
               No activity yet!

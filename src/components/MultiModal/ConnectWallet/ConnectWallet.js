@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
-import { GU, textStyle, Button } from '@1hive/1hive-ui';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import connectionError from '@/assets/connection-error.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback } from "react";
+import { GU, textStyle, Button } from "@1hive/1hive-ui";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import connectionError from "@/assets/connection-error.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ConectWallet({ onDismiss }) {
   const { next } = useMultiModal();
@@ -22,7 +22,7 @@ function ConectWallet({ onDismiss }) {
     >
       <h3
         css={css`
-          ${textStyle('title2')}
+          ${textStyle("title2")}
           margin-bottom: 8px;
         `}
       >
@@ -30,7 +30,7 @@ function ConectWallet({ onDismiss }) {
       </h3>
       <h4
         css={css`
-          ${textStyle('body2')}
+          ${textStyle("body2")}
           margin-top: ${3 * GU}px;
         `}
       >

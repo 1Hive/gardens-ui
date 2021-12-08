@@ -1,9 +1,16 @@
-import React from 'react';
-import { textStyle, GU, Link, useTheme, ProgressBar, Info } from '@1hive/1hive-ui';
-import DeploymentStepsItem from './DeploymentStepsItem';
-import { TransactionStatusType } from '../../../constants';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import {
+  textStyle,
+  GU,
+  Link,
+  useTheme,
+  ProgressBar,
+  Info,
+} from "@1hive/1hive-ui";
+import DeploymentStepsItem from "./DeploymentStepsItem";
+import { TransactionStatusType } from "../../../constants";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 type DeploymentStepsPanelProps = {
   allSuccess: boolean;
@@ -13,11 +20,15 @@ type DeploymentStepsPanelProps = {
       name: string;
       status: TransactionStatusType;
       txHash?: any;
-    },
+    }
   ];
 };
 
-function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }: DeploymentStepsPanelProps) {
+function DeploymentStepsPanel({
+  transactionsStatus,
+  pending,
+  allSuccess,
+}: DeploymentStepsPanelProps) {
   const theme = useTheme();
 
   return (
@@ -31,11 +42,16 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }: Deplo
         border-right: 1px solid ${theme.border.toString()};
       `}
     >
-      <ProgressBar value={Math.max(0, Math.min(1, allSuccess ? 1 : pending / transactionsStatus.length))} />
+      <ProgressBar
+        value={Math.max(
+          0,
+          Math.min(1, allSuccess ? 1 : pending / transactionsStatus.length)
+        )}
+      />
       <div
         css={css`
           padding: ${3 * GU}px 0 ${3 * GU}px;
-          ${textStyle('body1')};
+          ${textStyle("body1")};
           text-align: center;
           color: ${theme.surfaceContentSecondary.toString()};
         `}
@@ -51,7 +67,7 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }: Deplo
       >
         <h1
           css={css`
-            ${textStyle('label2')};
+            ${textStyle("label2")};
             color: ${theme.surfaceContentSecondary.toString()};
           `}
         >
@@ -60,27 +76,39 @@ function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }: Deplo
 
         <div>
           {transactionsStatus.map(({ name, status, txHash }, index) => (
-            <DeploymentStepsItem key={index} index={index} name={name} status={status} txHash={txHash} />
+            <DeploymentStepsItem
+              key={index}
+              index={index}
+              name={name}
+              status={status}
+              txHash={txHash}
+            />
           ))}
         </div>
       </div>
 
       {!allSuccess && (
         <Info mode="warning">
-          It might take some time before these transactions get processed. Please be patient and do not close this
-          window until it finishes.
+          It might take some time before these transactions get processed.
+          Please be patient and do not close this window until it finishes.
         </Info>
       )}
     </aside>
   );
 }
 
-const InlineLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const InlineLink = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
   <Link
     href={href}
     style={{
-      display: 'inline',
-      whiteSpace: 'normal',
+      display: "inline",
+      whiteSpace: "normal",
     }}
   >
     {children}

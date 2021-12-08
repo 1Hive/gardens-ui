@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback } from "react";
+import PropTypes from "prop-types";
+import { ButtonBase, GU, textStyle, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Tab({ index, item, onChange, selected }) {
   const theme = useTheme();
@@ -20,7 +20,7 @@ function Tab({ index, item, onChange, selected }) {
       <ButtonBase
         onClick={handleClick}
         css={css`
-          ${textStyle('body2')};
+          ${textStyle("body2")};
           border-radius: 0;
           height: ${5 * GU}px;
           transition: background 50ms ease-in-out;
@@ -33,7 +33,9 @@ function Tab({ index, item, onChange, selected }) {
           css={css`
             padding: 0 ${3 * GU}px;
             white-space: nowrap;
-            color: ${selected ? theme.surfaceContent.toString() : theme.surfaceContentSecondary.toString()};
+            color: ${selected
+              ? theme.surfaceContent.toString()
+              : theme.surfaceContentSecondary.toString()};
           `}
         >
           {item}

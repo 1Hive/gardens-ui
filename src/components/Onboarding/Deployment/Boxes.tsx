@@ -1,12 +1,19 @@
-import React from 'react';
-import { Button, GU, ProgressBar, textStyle, useTheme, useViewport } from '@1hive/1hive-ui';
-import { animated } from 'react-spring/renderprops';
-import flowerSvg from './assets/flower.svg';
-import gardensLogoMark from '@assets/gardensLogoMark.svg';
-import linesSvg from './assets/lines.svg';
-import { TransactionStatusType } from '../../../constants';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import {
+  Button,
+  GU,
+  ProgressBar,
+  textStyle,
+  useTheme,
+  useViewport,
+} from "@1hive/1hive-ui";
+import { animated } from "react-spring/renderprops";
+import flowerSvg from "./assets/flower.svg";
+import gardensLogoMark from "@assets/gardensLogoMark.svg";
+import linesSvg from "./assets/lines.svg";
+import { TransactionStatusType } from "../../../constants";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const AnimDiv = animated.div;
 const AnimSection = animated.section;
@@ -15,14 +22,20 @@ type BoxBaseProps = {
   children: React.ReactNode;
   background: string;
   boxTransform;
-  direction?: 'column' | 'column-reverse' | 'row' | 'row-reverse';
+  direction?: "column" | "column-reverse" | "row" | "row-reverse";
   opacity: any;
 };
 
-function BoxBase({ children, background, boxTransform, direction = 'column', opacity }: BoxBaseProps) {
+function BoxBase({
+  children,
+  background,
+  boxTransform,
+  direction = "column",
+  opacity,
+}: BoxBaseProps) {
   const theme = useTheme();
   const { below } = useViewport();
-  const fullWidth = below('large');
+  const fullWidth = below("large");
   return (
     <AnimDiv
       style={{ opacity }}
@@ -45,21 +58,23 @@ function BoxBase({ children, background, boxTransform, direction = 'column', opa
         style={{ transform: boxTransform }}
         css={css`
           flex-grow: 1;
-          display: ${direction === 'column' ? 'grid' : 'flex'};
+          display: ${direction === "column" ? "grid" : "flex"};
           flex-direction: ${direction};
           align-items: center;
           justify-content: center;
-          max-width: ${fullWidth ? 'none' : `${128 * GU}px`};
-          height: ${fullWidth ? 'auto' : `${80 * GU}px`};
+          max-width: ${fullWidth ? "none" : `${128 * GU}px`};
+          height: ${fullWidth ? "auto" : `${80 * GU}px`};
           background: ${theme.surface.toString()};
           border-radius: ${fullWidth ? 0 : 12}px;
-          box-shadow: ${fullWidth ? 'none' : '0px 10px 28px rgba(0, 0, 0, 0.15)'};
-          position: ${fullWidth ? 'absolute' : 'static'};
+          box-shadow: ${fullWidth
+            ? "none"
+            : "0px 10px 28px rgba(0, 0, 0, 0.15)"};
+          position: ${fullWidth ? "absolute" : "static"};
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          overflow: ${fullWidth ? 'auto' : 'visible'};
+          overflow: ${fullWidth ? "auto" : "visible"};
         `}
       >
         {children}
@@ -78,16 +93,25 @@ type BoxProgressProps = {
       name: string;
       status: TransactionStatusType;
       txHash?: any;
-    },
+    }
   ];
 };
 
-export function BoxProgress({ allSuccess, boxTransform, opacity, pending, transactionsStatus }: BoxProgressProps) {
+export function BoxProgress({
+  allSuccess,
+  boxTransform,
+  opacity,
+  pending,
+  transactionsStatus,
+}: BoxProgressProps) {
   const theme = useTheme();
   const { below } = useViewport();
-  const fullWidth = below('large');
+  const fullWidth = below("large");
 
-  const progress = Math.max(0, Math.min(1, allSuccess ? 1 : pending / transactionsStatus.length));
+  const progress = Math.max(
+    0,
+    Math.min(1, allSuccess ? 1 : pending / transactionsStatus.length)
+  );
 
   return (
     <>
@@ -105,13 +129,13 @@ export function BoxProgress({ allSuccess, boxTransform, opacity, pending, transa
       <BoxBase
         background="#8DE995"
         boxTransform={boxTransform}
-        direction={fullWidth ? 'column' : 'row-reverse'}
+        direction={fullWidth ? "column" : "row-reverse"}
         opacity={opacity}
       >
         <div
           css={css`
             width: ${fullWidth ? 100 : 50}%;
-            height: ${fullWidth ? '430px' : '100%'};
+            height: ${fullWidth ? "430px" : "100%"};
             background: linear-gradient(300deg, #3dcb60 -17%, #8de995 280%);
             display: flex;
             align-items: center;
@@ -141,14 +165,14 @@ export function BoxProgress({ allSuccess, boxTransform, opacity, pending, transa
             flex-direction: column;
             justify-content: center;
             width: ${fullWidth ? 100 : 50}%;
-            height: ${fullWidth ? 'auto' : '100%'};
+            height: ${fullWidth ? "auto" : "100%"};
             padding: ${6 * GU}px;
           `}
         >
           <h1
             css={css`
               margin-bottom: ${2 * GU}px;
-              ${textStyle('title1')};
+              ${textStyle("title1")};
               width: 320px;
             `}
           >
@@ -156,13 +180,13 @@ export function BoxProgress({ allSuccess, boxTransform, opacity, pending, transa
           </h1>
           <p
             css={css`
-              ${textStyle('body1')}
+              ${textStyle("body1")}
               line-height: 2;
               color: ${theme.surfaceContentSecondary.toString()};
             `}
           >
-            Providing a beautiful foundation for public communities to coordinate around shared resources in a bottom-up
-            fashion.
+            Providing a beautiful foundation for public communities to
+            coordinate around shared resources in a bottom-up fashion.
           </p>
 
           {fullWidth && (
@@ -185,7 +209,7 @@ export function BoxProgress({ allSuccess, boxTransform, opacity, pending, transa
               <div
                 css={css`
                   padding: ${3 * GU}px 0 ${3 * GU}px;
-                  ${textStyle('body1')};
+                  ${textStyle("body1")};
                   text-align: center;
                   color: ${theme.surfaceContentSecondary.toString()};
                 `}
@@ -207,16 +231,21 @@ type BoxReadyProps = {
   boxTransform;
 };
 
-export function BoxReady({ isFinalized, onOpenGarden, opacity, boxTransform }: BoxReadyProps) {
+export function BoxReady({
+  isFinalized,
+  onOpenGarden,
+  opacity,
+  boxTransform,
+}: BoxReadyProps) {
   const { below } = useViewport();
-  const fullWidth = below('large');
-  const small = below('medium');
+  const fullWidth = below("large");
+  const small = below("medium");
 
   return (
     <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
       <div
         css={css`
-          ${textStyle('title1')};
+          ${textStyle("title1")};
           text-align: center;
           padding: ${6 * GU}px ${small ? 6 * GU : 10 * GU}px;
         `}

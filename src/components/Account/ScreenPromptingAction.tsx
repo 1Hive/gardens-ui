@@ -1,9 +1,9 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, textStyle, Link, useTheme } from '@1hive/1hive-ui';
-import { getNetwork } from '@/networks';
-import loadingRing from './assets/loading-ring.svg';
-import { css, jsx, keyframes } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, textStyle, Link, useTheme } from "@1hive/1hive-ui";
+import { getNetwork } from "@/networks";
+import loadingRing from "./assets/loading-ring.svg";
+import { css, jsx, keyframes } from "@emotion/react";
 
 const spin = keyframes`
   from {
@@ -76,7 +76,7 @@ function AccountModuleActionScreen({ onCancel }: { onCancel?: () => void }) {
         <h1
           css={css`
             padding-top: ${2 * GU}px;
-            ${textStyle('body1')};
+            ${textStyle("body1")};
             font-weight: 600;
           `}
         >

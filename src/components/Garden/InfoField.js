@@ -1,7 +1,7 @@
-import React from 'react';
-import { Field, GU } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import { Field, GU } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function InfoField({ label, children, ...props }) {
   return (

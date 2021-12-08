@@ -1,27 +1,43 @@
-import React, { useCallback } from 'react';
-import { Checkbox, EthIdenticon, Field, GU, Info, isAddress, Link, RADIUS, TextInput, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback } from "react";
+import {
+  Checkbox,
+  EthIdenticon,
+  Field,
+  GU,
+  Info,
+  isAddress,
+  Link,
+  RADIUS,
+  TextInput,
+  useTheme,
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-function GnosisSafeField({ gnosisSafeAddress, gnosisSafeChecked, onGnosisSafeAddressChange, onGnosisSafeCheckChange }) {
+function GnosisSafeField({
+  gnosisSafeAddress,
+  gnosisSafeChecked,
+  onGnosisSafeAddressChange,
+  onGnosisSafeCheckChange,
+}) {
   const theme = useTheme();
 
   const hanleGnosisSafeCheckChanged = useCallback(
-    checked => {
+    (checked) => {
       if (!checked) {
-        onGnosisSafeAddressChange('');
+        onGnosisSafeAddressChange("");
       }
 
       onGnosisSafeCheckChange(checked);
     },
-    [onGnosisSafeAddressChange, onGnosisSafeCheckChange],
+    [onGnosisSafeAddressChange, onGnosisSafeCheckChange]
   );
 
   const handleGnosisSafeAddressChange = useCallback(
-    event => {
+    (event) => {
       onGnosisSafeAddressChange(event.target.value);
     },
-    [onGnosisSafeAddressChange],
+    [onGnosisSafeAddressChange]
   );
 
   return (
@@ -61,15 +77,15 @@ function GnosisSafeField({ gnosisSafeAddress, gnosisSafeChecked, onGnosisSafeAdd
                       white-space: nowrap;
                     `}
                   >
-                    Use{' '}
+                    Use{" "}
                     <Link
                       href="https://gnosis-safe.io/"
                       style={{
-                        textDecoration: 'none',
+                        textDecoration: "none",
                       }}
                     >
                       Gnosis Safe
-                    </Link>{' '}
+                    </Link>{" "}
                   </span>
                 </div>
               </div>
@@ -100,7 +116,10 @@ function GnosisSafeField({ gnosisSafeAddress, gnosisSafeChecked, onGnosisSafeAdd
                     `}
                   >
                     {isAddress(gnosisSafeAddress) ? (
-                      <EthIdenticon address={gnosisSafeAddress} radius={RADIUS} />
+                      <EthIdenticon
+                        address={gnosisSafeAddress}
+                        radius={RADIUS}
+                      />
                     ) : (
                       <div
                         css={css`
@@ -122,9 +141,11 @@ function GnosisSafeField({ gnosisSafeAddress, gnosisSafeChecked, onGnosisSafeAdd
                   margin-top: ${3 * GU}px;
                 `}
               >
-                Using a Gnosis Safe will require for you to set the FundsManager contract as a module on your Safe so
-                that it allows it to transfer funds after execution of Conviction Voting proposals. You can find the
-                FundsManager address in the settings page of your garden.
+                Using a Gnosis Safe will require for you to set the FundsManager
+                contract as a module on your Safe so that it allows it to
+                transfer funds after execution of Conviction Voting proposals.
+                You can find the FundsManager address in the settings page of
+                your garden.
               </Info>
             )}
           </div>

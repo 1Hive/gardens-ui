@@ -1,8 +1,8 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { GU, useTheme } from '@1hive/1hive-ui';
-import HelpTip from '@components/HelpTip';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import { GU, useTheme } from "@1hive/1hive-ui";
+import HelpTip from "@components/HelpTip";
+import { css, jsx } from "@emotion/react";
 
 function ListFilter({ items, selected, onChange }) {
   return (
@@ -32,7 +32,9 @@ function ListItem({ index, item, onSelect, selected, helptip }) {
     <div
       css={css`
         margin-bottom: ${1 * GU}px;
-        color: ${theme[selected === index ? 'content' : 'contentSecondary'].toString()};
+        color: ${theme[
+          selected === index ? "content" : "contentSecondary"
+        ].toString()};
       `}
     >
       <span

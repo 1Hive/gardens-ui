@@ -1,14 +1,19 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Popover, GU, RADIUS, useTheme } from '@1hive/1hive-ui';
-import DatePicker from './DatePicker';
-import Labels from './Labels';
-import { SINGLE_DATE } from './consts';
-import { dayjs, dateFormat } from '@utils/date-utils';
-import handleSingleDateSelect from './utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
-function SingleDatePicker({ format, initialDate, onChange, validFromToday = false }) {
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { Popover, GU, RADIUS, useTheme } from "@1hive/1hive-ui";
+import DatePicker from "./DatePicker";
+import Labels from "./Labels";
+import { SINGLE_DATE } from "./consts";
+import { dayjs, dateFormat } from "@utils/date-utils";
+import handleSingleDateSelect from "./utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
+function SingleDatePicker({
+  format,
+  initialDate,
+  onChange,
+  validFromToday = false,
+}) {
   const theme = useTheme();
   const labelsRef = useRef();
   const [showPicker, setShowPicker] = useState(false);
@@ -16,11 +21,11 @@ function SingleDatePicker({ format, initialDate, onChange, validFromToday = fals
   const handlePopoverClose = useCallback(() => setShowPicker(false), []);
 
   const handleLabelsClick = useCallback(() => {
-    setShowPicker(show => !show);
+    setShowPicker((show) => !show);
   }, []);
 
   const handleDateClick = useCallback(
-    date => {
+    (date) => {
       setShowPicker(false);
       if (date) {
         const result = handleSingleDateSelect({
@@ -30,7 +35,7 @@ function SingleDatePicker({ format, initialDate, onChange, validFromToday = fals
         onChange(result.initialDate);
       }
     },
-    [onChange, initialDate],
+    [onChange, initialDate]
   );
 
   const labelProps = useMemo(() => {
@@ -81,7 +86,7 @@ function SingleDatePicker({ format, initialDate, onChange, validFromToday = fals
           >
             <DatePicker
               initialDate={dayjs(initialDate || undefined)
-                .subtract(0, 'month')
+                .subtract(0, "month")
                 .toDate()}
               onSelect={handleDateClick}
               validFromToday={validFromToday}
@@ -109,7 +114,7 @@ SingleDatePicker.propTypes = {
 };
 
 SingleDatePicker.defaultProps = {
-  format: 'MM/DD/YYYY',
+  format: "MM/DD/YYYY",
   onChange: () => {},
 };
 

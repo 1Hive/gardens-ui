@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, GU, Info, textStyle } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import { Button, GU, Info, textStyle } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function InfoBox({ data }) {
   return (
@@ -19,7 +19,7 @@ function InfoBox({ data }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
         <div

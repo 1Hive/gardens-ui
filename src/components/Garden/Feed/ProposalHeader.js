@@ -1,9 +1,15 @@
-import React from 'react';
-import { GU, IconInfo, ContextMenu, ContextMenuItem, useLayout } from '@1hive/1hive-ui';
-import ProposalCreator from './ProposalCreator';
+import React from "react";
+import {
+  GU,
+  IconInfo,
+  ContextMenu,
+  ContextMenuItem,
+  useLayout,
+} from "@1hive/1hive-ui";
+import ProposalCreator from "./ProposalCreator";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ProposalHeader({ proposal, onSelectProposal }) {
   const { layoutName } = useLayout();
@@ -18,7 +24,7 @@ function ProposalHeader({ proposal, onSelectProposal }) {
       `}
     >
       <ProposalCreator proposal={proposal} />
-      {layoutName !== 'small' && (
+      {layoutName !== "small" && (
         <ContextMenu>
           <ContextMenuItem onClick={onSelectProposal}>
             <IconInfo /> Details

@@ -1,26 +1,26 @@
-import React, { useCallback, useState } from 'react';
-import Lottie from 'react-lottie-player';
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
+import React, { useCallback, useState } from "react";
+import Lottie from "react-lottie-player";
+import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
 
-import { useOnboardingState } from '@providers/Onboarding';
-import byotAnimation from '@assets/lotties/byotAnimation.json';
-import nativeAnimation from '@assets/lotties/nativeAnimation.json';
+import { useOnboardingState } from "@providers/Onboarding";
+import byotAnimation from "@assets/lotties/byotAnimation.json";
+import nativeAnimation from "@assets/lotties/nativeAnimation.json";
 
-import { BYOT_TYPE, NATIVE_TYPE } from '../constants';
-import { Header } from '../kit';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { BYOT_TYPE, NATIVE_TYPE } from "../constants";
+import { Header } from "../kit";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function GardenTypeSelector() {
   const { config, onConfigChange, onNext } = useOnboardingState();
   const [selectedType] = useState(config.garden.type);
 
   const handleNext = useCallback(
-    selectedType => {
-      onConfigChange('garden', { type: selectedType });
+    (selectedType) => {
+      onConfigChange("garden", { type: selectedType });
       onNext();
     },
-    [onConfigChange, onNext],
+    [onConfigChange, onNext]
   );
 
   const handleSelectNative = useCallback(() => {
@@ -33,7 +33,10 @@ function GardenTypeSelector() {
 
   return (
     <div>
-      <Header title="Select Type" subtitle="Choose the type of garden you'd like to launch." />
+      <Header
+        title="Select Type"
+        subtitle="Choose the type of garden you'd like to launch."
+      />
       <div
         css={css`
           display: flex;
@@ -86,7 +89,8 @@ function Card({ title, onSelect, paragraph, selected, animationData }) {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        transition: box-shadow 0.5s ease, transform 0.3s ease, border-color 1.5s ease;
+        transition: box-shadow 0.5s ease, transform 0.3s ease,
+          border-color 1.5s ease;
         ${selected
           ? `
           border: 2px solid #56D571;
@@ -130,7 +134,7 @@ function Card({ title, onSelect, paragraph, selected, animationData }) {
         <div
           css={css`
             color: ${theme.content.toString()};
-            ${textStyle('body1')};
+            ${textStyle("body1")};
             margin-bottom: ${2 * GU}px;
           `}
         >

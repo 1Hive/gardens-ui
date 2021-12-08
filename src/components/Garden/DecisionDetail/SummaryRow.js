@@ -1,9 +1,9 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
-import { formatTokenAmount } from '@utils/token-utils';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
+import { formatTokenAmount } from "@utils/token-utils";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 /* eslint-disable react/prop-types */
 function SummaryRow({ color, label, pct, token, ...props }) {
@@ -17,7 +17,7 @@ function SummaryRow({ color, label, pct, token, ...props }) {
         align-items: center;
         justify-content: space-between;
         white-space: nowrap;
-        ${textStyle('body2')};
+        ${textStyle("body2")};
       `}
       {...props}
     >

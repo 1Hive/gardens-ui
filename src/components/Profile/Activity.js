@@ -1,15 +1,23 @@
-import React, { useMemo } from 'react';
-import { Box, GU, isAddress, Link, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
+import React, { useMemo } from "react";
+import {
+  Box,
+  GU,
+  isAddress,
+  Link,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
 
-import ProposalIcon from '../ProposalIcon';
-import { useGardens } from '@/providers/Gardens';
-import useUser from '@hooks/useUser';
+import ProposalIcon from "../ProposalIcon";
+import { useGardens } from "@/providers/Gardens";
+import useUser from "@hooks/useUser";
 
-import { convertToString } from '@/types';
-import { dateFormat } from '@utils/date-utils';
-import { getGardenLabel } from '@utils/garden-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { convertToString } from "@/types";
+import { dateFormat } from "@utils/date-utils";
+import { getGardenLabel } from "@utils/garden-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme();
@@ -24,7 +32,9 @@ function Activity({ account, isConnectedAccount, profileName }) {
     return user.supports
       .flatMap(({ stakesHistory }) => stakesHistory)
       .reduce((acc, stake) => {
-        const index = acc.findIndex(accStake => accStake.proposal.id === stake.proposal.id);
+        const index = acc.findIndex(
+          (accStake) => accStake.proposal.id === stake.proposal.id
+        );
 
         if (index >= 0) {
           return acc;
@@ -40,7 +50,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
         <h3
           css={css`
             margin-bottom: ${2 * GU}px;
-            ${textStyle('title3')};
+            ${textStyle("title3")};
           `}
         >
           Recent activity
@@ -51,7 +61,10 @@ function Activity({ account, isConnectedAccount, profileName }) {
               const gardenAddress = proposal.organization.id;
               const gardenPath = `/#/garden/${gardenAddress}`;
               // TODO: evaluate a more efficient way to handle this
-              const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata);
+              const gardenLabel = getGardenLabel(
+                gardenAddress,
+                gardensMetadata
+              );
 
               return (
                 <div
@@ -74,34 +87,37 @@ function Activity({ account, isConnectedAccount, profileName }) {
                       column-gap: ${0.75 * GU}px;
                     `}
                   >
-                    {isConnectedAccount ? 'You' : profileName} supported the <ProposalIcon type={proposal.type} />{' '}
-                    {convertToString(proposal.type)}{' '}
+                    {isConnectedAccount ? "You" : profileName} supported the{" "}
+                    <ProposalIcon type={proposal.type} />{" "}
+                    {convertToString(proposal.type)}{" "}
                     <Link
                       href={`${gardenPath}/proposal/${proposal.id}`}
                       external={false}
                       style={{
-                        textAlign: 'left',
-                        textDecoration: 'none',
-                        whiteSpace: 'normal',
+                        textAlign: "left",
+                        textDecoration: "none",
+                        whiteSpace: "normal",
                       }}
                     >
                       {proposal.name}
                     </Link>
                     <span>
-                      {' '}
-                      in{' '}
+                      {" "}
+                      in{" "}
                       <Link href={gardenPath} external={false}>
-                        {isAddress(gardenLabel) ? shortenAddress(gardenLabel) : gardenLabel}
+                        {isAddress(gardenLabel)
+                          ? shortenAddress(gardenLabel)
+                          : gardenLabel}
                       </Link>
                     </span>
                   </div>
                   <div
                     css={css`
                       color: ${theme.contentSecondary.toString()};
-                      ${textStyle('body3')};
+                      ${textStyle("body3")};
                     `}
                   >
-                    {dateFormat(createdAt, 'custom')}
+                    {dateFormat(createdAt, "custom")}
                   </div>
                 </div>
               );

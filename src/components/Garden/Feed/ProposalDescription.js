@@ -1,12 +1,12 @@
-import React from 'react';
-import { GU, LoadingRing, textStyle } from '@1hive/1hive-ui';
-import Description from '../Description';
+import React from "react";
+import { GU, LoadingRing, textStyle } from "@1hive/1hive-ui";
+import Description from "../Description";
 
-import { useDescribeVote } from '@hooks/useDescribeVote';
-import { ProposalTypes } from '@/types';
+import { useDescribeVote } from "@hooks/useDescribeVote";
+import { ProposalTypes } from "@/types";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ProposalDescription({ proposal, onSelectProposal }) {
   return (
@@ -15,7 +15,7 @@ function ProposalDescription({ proposal, onSelectProposal }) {
       css={css`
         cursor: pointer;
         margin-bottom: ${3 * GU}px;
-        ${textStyle('body1')};
+        ${textStyle("body1")};
         text-decoration: underline;
         overflow-wrap: anywhere;
         display: -webkit-box;
@@ -24,13 +24,20 @@ function ProposalDescription({ proposal, onSelectProposal }) {
         overflow: hidden;
       `}
     >
-      {proposal.type === ProposalTypes.Decision ? <DecisionDescription proposal={proposal} /> : proposal.name}
+      {proposal.type === ProposalTypes.Decision ? (
+        <DecisionDescription proposal={proposal} />
+      ) : (
+        proposal.name
+      )}
     </div>
   );
 }
 
 function DecisionDescription({ proposal }) {
-  const { description, emptyScript, loading } = useDescribeVote(proposal.script, proposal.id);
+  const { description, emptyScript, loading } = useDescribeVote(
+    proposal.script,
+    proposal.id
+  );
 
   if (loading) {
     return <LoadingRing />;
@@ -39,7 +46,7 @@ function DecisionDescription({ proposal }) {
   return (
     <div>
       {emptyScript ? (
-        proposal.metadata || 'No description'
+        proposal.metadata || "No description"
       ) : (
         <Description
           path={description}

@@ -1,16 +1,27 @@
-/** @jsx jsx */
-import React from 'react';
-import { Button, GU, Modal, Viewport } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Button, GU, Modal, Viewport } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
 
-const EMBED_ID = '1ZvXNsLEPAg';
+const EMBED_ID = "1ZvXNsLEPAg";
 
-const WelcomeModal = React.memo(function WelcomeModal({ onClose, visible }: { onClose: () => void; visible: boolean }) {
+const WelcomeModal = React.memo(function WelcomeModal({
+  onClose,
+  visible,
+}: {
+  onClose: () => void;
+  visible: boolean;
+}) {
   return (
     <Viewport>
       {({ width }) => {
         return (
-          <Modal closeButton={false} padding={0} width={Math.min(860, width - 40)} visible={visible}>
+          <Modal
+            closeButton={false}
+            padding={0}
+            width={Math.min(860, width - 40)}
+            visible={visible}
+          >
             <div
               css={css`
                 overflow: hidden;

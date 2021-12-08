@@ -1,29 +1,41 @@
-/** @jsx jsx */
-import React, { useMemo, useRef } from 'react';
-import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui';
-import { ChainUnsupportedError } from 'use-wallet';
-import { SUPPORTED_CHAINS } from '@/networks';
-import { getNetworkName } from '@utils/web3-utils';
-import connectionError from '@/assets/connection-error.svg';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useMemo, useRef } from "react";
+import { GU, Link, textStyle, useTheme } from "@1hive/1hive-ui";
+import { ChainUnsupportedError } from "use-wallet";
+import { SUPPORTED_CHAINS } from "@/networks";
+import { getNetworkName } from "@utils/web3-utils";
+import connectionError from "@/assets/connection-error.svg";
+import { css, jsx } from "@emotion/react";
 
-function AccountModuleErrorScreen({ error, onBack }: { error: any; onBack: () => void }) {
+function AccountModuleErrorScreen({
+  error,
+  onBack,
+}: {
+  error: any;
+  onBack: () => void;
+}) {
   const theme = useTheme();
   const elementRef = useRef();
 
-  let networkNames = '';
+  let networkNames = "";
   SUPPORTED_CHAINS.forEach((chain, i, array) => {
     networkNames += getNetworkName(chain);
     if (i !== array.length - 1) {
-      networkNames += ', ';
+      networkNames += ", ";
     }
   });
 
   const [title, secondary] = useMemo(() => {
     if (error instanceof ChainUnsupportedError) {
-      return ['Wrong network', `Please select one of these networks in your wallet and try again: ${networkNames}`];
+      return [
+        "Wrong network",
+        `Please select one of these networks in your wallet and try again: ${networkNames}`,
+      ];
     }
-    return ['Failed to enable your account', 'You can try another Ethereum wallet.'];
+    return [
+      "Failed to enable your account",
+      "You can try another Ethereum wallet.",
+    ];
   }, [error, networkNames]);
 
   return (
@@ -59,7 +71,7 @@ function AccountModuleErrorScreen({ error, onBack }: { error: any; onBack: () =>
         <h1
           css={css`
             padding-top: ${2 * GU}px;
-            ${textStyle('body1')};
+            ${textStyle("body1")};
             font-weight: 600;
           `}
         >

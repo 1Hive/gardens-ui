@@ -1,13 +1,20 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BIG_RADIUS, Button, GU, useLayout, useViewport, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  BIG_RADIUS,
+  Button,
+  GU,
+  useLayout,
+  useViewport,
+  useTheme,
+} from "@1hive/1hive-ui";
 
-import noProposalsYetLogo from '@assets/noProposalsYet.svg';
-import EmptyResults from '../../EmptyResults';
-import ProposalCard from './ProposalCard';
-import ProposalRankings from './ProposalRankings';
-import filterToggleSvg from '@assets/filter.svg';
-import { css, jsx } from '@emotion/react';
+import noProposalsYetLogo from "@assets/noProposalsYet.svg";
+import EmptyResults from "../../EmptyResults";
+import ProposalCard from "./ProposalCard";
+import ProposalRankings from "./ProposalRankings";
+import filterToggleSvg from "@assets/filter.svg";
+import { css, jsx } from "@emotion/react";
 
 function ProposalsList({
   activeFilters,
@@ -26,7 +33,7 @@ function ProposalsList({
   const theme = useTheme();
   const { below } = useViewport();
   const { layoutName } = useLayout();
-  const compact = layoutName === 'small' || layoutName === 'medium';
+  const compact = layoutName === "small" || layoutName === "medium";
 
   const handleFetchMoreProposals = useCallback(() => {
     setFetching(true);
@@ -52,7 +59,7 @@ function ProposalsList({
           top: -1px;
           z-index: 3;
           position: sticky;
-          padding: ${2 * GU}px ${(below('medium') ? 1 : 0) * GU}px;
+          padding: ${2 * GU}px ${(below("medium") ? 1 : 0) * GU}px;
           background-color: ${theme.background.toString()};
 
           ${!compact && `padding-top: ${3 * GU}px;`}
@@ -64,8 +71,12 @@ function ProposalsList({
             align-items: center;
           `}
         >
-          {below('medium') && <FilterToggle onToggle={onToggleFilterSlider} />}
-          <ProposalRankings items={rankingItems} onChange={onRankingFilterChange} selected={selectedRanking} />
+          {below("medium") && <FilterToggle onToggle={onToggleFilterSlider} />}
+          <ProposalRankings
+            items={rankingItems}
+            onChange={onRankingFilterChange}
+            selected={selectedRanking}
+          />
         </div>
       </div>
       <div>
@@ -85,7 +96,7 @@ function ProposalsList({
                 `}
               >
                 <Button
-                  label={fetching ? 'Loading…' : 'Load more'}
+                  label={fetching ? "Loading…" : "Load more"}
                   onClick={handleFetchMoreProposals}
                   disabled={fetching}
                 />
@@ -95,8 +106,12 @@ function ProposalsList({
         ) : (
           <EmptyResults
             image={noProposalsYetLogo}
-            title={activeFilters ? 'No results found' : 'No proposals yet!'}
-            paragraph={activeFilters ? 'We couldn’t find any proposal matching your filter selection' : ''}
+            title={activeFilters ? "No results found" : "No proposals yet!"}
+            paragraph={
+              activeFilters
+                ? "We couldn’t find any proposal matching your filter selection"
+                : ""
+            }
           />
         )}
       </div>

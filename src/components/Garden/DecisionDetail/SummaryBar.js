@@ -1,35 +1,52 @@
-/** @jsx jsx */
-import React from 'react';
-import { springs, RADIUS, useTheme } from '@1hive/1hive-ui';
-import { Spring, animated } from 'react-spring/renderprops';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { springs, RADIUS, useTheme } from "@1hive/1hive-ui";
+import { Spring, animated } from "react-spring/renderprops";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
-function SummaryBar({ disabledProgressBars, positiveSize, negativeSize, requiredSize, ...props }) {
+function SummaryBar({
+  disabledProgressBars,
+  positiveSize,
+  negativeSize,
+  requiredSize,
+  ...props
+}) {
   const theme = useTheme();
 
   return (
-    <Spring from={{ progress: 0 }} to={{ progress: 1 }} config={springs.lazy} native>
+    <Spring
+      from={{ progress: 0 }}
+      to={{ progress: 1 }}
+      config={springs.lazy}
+      native
+    >
       {({ progress }) => (
         <Main {...props}>
           <CombinedBar>
             {!!positiveSize && (
               <BarPart
                 style={{
-                  backgroundColor: disabledProgressBars ? theme.surfaceOpened.toString() : theme.positive.toString(),
-                  transform: progress.interpolate(v => `scale3d(${positiveSize * v}, 1, 1)`),
+                  backgroundColor: disabledProgressBars
+                    ? theme.surfaceOpened.toString()
+                    : theme.positive.toString(),
+                  transform: progress.interpolate(
+                    (v) => `scale3d(${positiveSize * v}, 1, 1)`
+                  ),
                 }}
               />
             )}
             {!!negativeSize && (
               <BarPart
                 style={{
-                  backgroundColor: disabledProgressBars ? theme.controlUnder.toString() : theme.negative.toString(),
+                  backgroundColor: disabledProgressBars
+                    ? theme.controlUnder.toString()
+                    : theme.negative.toString(),
                   transform: progress.interpolate(
-                    v => `
+                    (v) => `
                     translate3d(${100 * positiveSize * v}%, 0, 0)
                     scale3d(${negativeSize * v}, 1, 1)
-                  `,
+                  `
                   ),
                 }}
               />
@@ -39,10 +56,10 @@ function SummaryBar({ disabledProgressBars, positiveSize, negativeSize, required
             <RequiredSeparatorWrapper
               style={{
                 transform: progress.interpolate(
-                  v => `
+                  (v) => `
                   translate3d(${100 * requiredSize * v}%, 0, 0)
                   scale3d(1, ${requiredSize > 0 ? v : 0}, 1)
-                `,
+                `
                 ),
               }}
             >
@@ -73,7 +90,7 @@ const Main = styled.div`
   height: 25px;
 `;
 
-const CombinedBar = props => {
+const CombinedBar = (props) => {
   const theme = useTheme();
   return (
     <div

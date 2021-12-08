@@ -1,15 +1,15 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui';
-import Balance from '../Balance';
-import ProposalCountdown from './ProposalCountdown';
-import ProposalDescription from './ProposalDescription';
-import ProposalSupport from './ProposalSupport';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, Help, Link, LoadingRing, useTheme } from "@1hive/1hive-ui";
+import Balance from "../Balance";
+import ProposalCountdown from "./ProposalCountdown";
+import ProposalDescription from "./ProposalDescription";
+import ProposalSupport from "./ProposalSupport";
 
-import { ProposalTypes } from '@/types';
-import { useGardenState } from '@providers/GardenState';
-import { formatTokenAmount } from '@utils/token-utils';
-import { css, jsx } from '@emotion/react';
+import { ProposalTypes } from "@/types";
+import { useGardenState } from "@providers/GardenState";
+import { formatTokenAmount } from "@utils/token-utils";
+import { css, jsx } from "@emotion/react";
 
 function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const theme = useTheme();
@@ -19,7 +19,10 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
 
   return (
     <div>
-      <ProposalDescription proposal={proposal} onSelectProposal={onSelectProposal} />
+      <ProposalDescription
+        proposal={proposal}
+        onSelectProposal={onSelectProposal}
+      />
       {proposal.type !== ProposalTypes.Decision && (
         <div
           css={css`
@@ -61,14 +64,23 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
                       margin: 0px ${0.5 * GU}px;
                     `}
                   >
-                    {formatTokenAmount(proposal.requestedAmountConverted, requestToken.decimals)} {requestToken.symbol}
+                    {formatTokenAmount(
+                      proposal.requestedAmountConverted,
+                      requestToken.decimals
+                    )}{" "}
+                    {requestToken.symbol}
                   </span>
                   <Help hint="">
-                    Converted to {requestToken.symbol} at time of execution. For funding proposals denominated in{' '}
-                    {stableToken.symbol} to be made successfully, this Garden's{' '}
-                    <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">price oracle</Link> must
-                    be called consistently. Contact your Garden administrator or development team if the proposal
-                    execution transaction is continually failing or if the request stable amount is not accurate.
+                    Converted to {requestToken.symbol} at time of execution. For
+                    funding proposals denominated in {stableToken.symbol} to be
+                    made successfully, this Garden's{" "}
+                    <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                      price oracle
+                    </Link>{" "}
+                    must be called consistently. Contact your Garden
+                    administrator or development team if the proposal execution
+                    transaction is continually failing or if the request stable
+                    amount is not accurate.
                   </Help>
                 </div>
               )}
@@ -77,7 +89,9 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
         </div>
       )}
       <ProposalSupport proposal={proposal} />
-      {proposal.type === ProposalTypes.Decision && <ProposalCountdown proposal={proposal} />}
+      {proposal.type === ProposalTypes.Decision && (
+        <ProposalCountdown proposal={proposal} />
+      )}
     </div>
   );
 }

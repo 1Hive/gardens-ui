@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { GU, IconCheck, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import { GU, IconCheck, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ConfigureStepsItem({ stepNumber, step, label, currentStep, type }) {
   const theme = useTheme();
 
-  const isStepType = type === 'step';
+  const isStepType = type === "step";
 
   const stepStyles = useMemo(() => {
     if (step === currentStep) {
@@ -61,7 +61,7 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep, type }) {
         css={css`
           margin-left: ${isStepType ? 3 * GU : 6 * GU}px;
           font-size: ${isStepType ? 18 : 16}px;
-          font-weight: ${step === currentStep ? '600' : '400'};
+          font-weight: ${step === currentStep ? "600" : "400"};
           overflow: hidden;
           text-overflow: ellipsis;
         `}

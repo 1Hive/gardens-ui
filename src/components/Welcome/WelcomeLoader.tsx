@@ -1,19 +1,21 @@
-/** @jsx jsx */
-import React, { useCallback, useState } from 'react';
-import { GU } from '@1hive/1hive-ui';
-import WelcomeModal from './WelcomeModal';
-import InfoButton from '@assets/InfoButton.svg';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useState } from "react";
+import { GU } from "@1hive/1hive-ui";
+import WelcomeModal from "./WelcomeModal";
+import InfoButton from "@assets/InfoButton.svg";
+import { css, jsx } from "@emotion/react";
 
 function WelcomeLoader() {
-  const [welcomeClosed, setWelcomeClosed] = useState(localStorage.getItem('welcomeClosed') === 'true');
+  const [welcomeClosed, setWelcomeClosed] = useState(
+    localStorage.getItem("welcomeClosed") === "true"
+  );
 
   const handleOnOpen = useCallback(() => {
     setWelcomeClosed(false);
   }, []);
 
   const handleOnClose = useCallback(() => {
-    localStorage.setItem('welcomeClosed', 'true');
+    localStorage.setItem("welcomeClosed", "true");
     setWelcomeClosed(true);
   }, []);
 

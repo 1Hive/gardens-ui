@@ -1,31 +1,41 @@
-import React, { useCallback } from 'react';
-import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui';
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import React, { useCallback } from "react";
+import {
+  Button,
+  Field,
+  GU,
+  textStyle,
+  theme,
+  useLayout,
+} from "@1hive/1hive-ui";
+import { useHoneyswapTokenPrice } from "@hooks/useHoneyswapTokenPrice";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 
-import env from '@/environment';
-import { formatTokenAmount } from '@utils/token-utils';
-import { getDisputableAppByName } from '@utils/app-utils';
+import env from "@/environment";
+import { formatTokenAmount } from "@utils/token-utils";
+import { getDisputableAppByName } from "@utils/app-utils";
 
-import iconFees from '@assets/iconFees.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import iconFees from "@assets/iconFees.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const { next } = useMultiModal();
   const { layoutName } = useLayout();
-  const compactMode = layoutName === 'small';
+  const compactMode = layoutName === "small";
 
   const votingAppRequirements = getDisputableAppByName(
     agreement.disputableAppsWithRequirements,
-    env('VOTING_APP_NAME'),
+    env("VOTING_APP_NAME")
   );
 
   const { actionAmount, token } = votingAppRequirements;
   const tokenPrice = useHoneyswapTokenPrice(token.id);
 
   const formattedAmount = formatTokenAmount(actionAmount, token.decimals);
-  const dollarAmount = tokenPrice > 0 ? formatTokenAmount(actionAmount * tokenPrice, token.decimals) : '-';
+  const dollarAmount =
+    tokenPrice > 0
+      ? formatTokenAmount(actionAmount * tokenPrice, token.decimals)
+      : "-";
 
   const handleOnCreateTransaction = useCallback(() => {
     onCreateTransaction(() => {
@@ -42,12 +52,14 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
       >
         <span
           css={css`
-            ${compactMode ? textStyle('body3') : textStyle('body2')};
+            ${compactMode ? textStyle("body3") : textStyle("body2")};
           `}
         >
-          A small deposit is required for your decision to be submitted that will be held until the decision is
-          finalised, point at which your deposit will be unlocked, and made available to you through the deposit
-          manager. If your decision is disputed and cancelled by Celeste, your deposit will be lost.
+          A small deposit is required for your decision to be submitted that
+          will be held until the decision is finalised, point at which your
+          deposit will be unlocked, and made available to you through the
+          deposit manager. If your decision is disputed and cancelled by
+          Celeste, your deposit will be lost.
         </span>
       </Field>
 
@@ -82,7 +94,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             css={css`
               text-align: left;
               font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')};
+              ${compactMode ? textStyle("body3") : textStyle("body2")};
               margin-right: ${(compactMode ? 1.5 : 3) * GU}px;
             `}
           >
@@ -92,7 +104,7 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
           <span
             css={css`
               font-weight: 600;
-              ${compactMode ? textStyle('body3') : textStyle('body2')};
+              ${compactMode ? textStyle("body3") : textStyle("body2")};
             `}
           >
             {formattedAmount} {token.symbol}

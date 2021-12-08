@@ -1,10 +1,17 @@
-import React, { useMemo } from 'react';
-import { textStyle, GU, IconCheck, useTheme, IconCross, TransactionBadge } from '@1hive/1hive-ui';
-import { StepTypes } from '@components/Stepper/stepper-statuses';
-import { getNetwork } from '../../../networks';
-import { TransactionStatusType } from '../../../constants';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useMemo } from "react";
+import {
+  textStyle,
+  GU,
+  IconCheck,
+  useTheme,
+  IconCross,
+  TransactionBadge,
+} from "@1hive/1hive-ui";
+import { StepTypes } from "@components/Stepper/stepper-statuses";
+import { getNetwork } from "../../../networks";
+import { TransactionStatusType } from "../../../constants";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 type DeploymentStepsItemProps = {
   index: number;
@@ -13,14 +20,19 @@ type DeploymentStepsItemProps = {
   txHash;
 };
 
-function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsItemProps) {
+function DeploymentStepsItem({
+  index,
+  name,
+  status,
+  txHash,
+}: DeploymentStepsItemProps) {
   const theme = useTheme();
   const network = getNetwork();
 
   const { icon, label, styles } = useMemo(() => {
     if (status === StepTypes.STEP_PROMPTING) {
       return {
-        label: 'Waiting for signature',
+        label: "Waiting for signature",
         styles: `
       border: 2px solid ${theme.selected.toString()};
     `,
@@ -28,14 +40,14 @@ function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsIte
     }
     if (status === StepTypes.STEP_WORKING) {
       return {
-        label: 'Transaction being processed…',
+        label: "Transaction being processed…",
         styles: `background: ${theme.accent.toString()};`,
       };
     }
     if (status === StepTypes.STEP_SUCCESS) {
       return {
         icon: <IconCheck />,
-        label: 'Transaction processed!',
+        label: "Transaction processed!",
         styles: `
         background: ${theme.positive.toString()};
         color: white;
@@ -46,7 +58,7 @@ function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsIte
     if (status === StepTypes.STEP_ERROR) {
       return {
         icon: <IconCross />,
-        label: 'An error has occured',
+        label: "An error has occured",
         styles: `
       border: 2px solid ${theme.negative.toString()};
       color: ${theme.negative.toString()};
@@ -93,7 +105,7 @@ function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsIte
         css={css`
           margin-left: ${3 * GU}px;
           font-size: 18px;
-          font-weight: ${status === StepTypes.STEP_WORKING ? '600' : '400'};
+          font-weight: ${status === StepTypes.STEP_WORKING ? "600" : "400"};
           overflow: hidden;
           text-overflow: ellipsis;
         `}
@@ -102,7 +114,7 @@ function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsIte
         {label && (
           <div
             css={css`
-              ${textStyle('body3')};
+              ${textStyle("body3")};
               color: ${theme.surfaceContentSecondary.toString()};
             `}
           >
@@ -110,7 +122,11 @@ function DeploymentStepsItem({ index, name, status, txHash }: DeploymentStepsIte
           </div>
         )}
         {txHash && (
-          <TransactionBadge transaction={txHash} networkType={network.type} explorerProvider={network.explorer} />
+          <TransactionBadge
+            transaction={txHash}
+            networkType={network.type}
+            explorerProvider={network.explorer}
+          />
         )}
       </div>
     </div>

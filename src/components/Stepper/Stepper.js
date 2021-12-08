@@ -1,18 +1,24 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import { PropTypes } from 'prop-types';
-import { Transition, animated } from 'react-spring/renderprops';
-import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui';
-import Step from './Step/Step';
+import React, { useCallback, useEffect, useReducer, useState } from "react";
+import { PropTypes } from "prop-types";
+import { Transition, animated } from "react-spring/renderprops";
+import { GU, Info, noop, springs, useTheme } from "@1hive/1hive-ui";
+import Step from "./Step/Step";
 
-import { useDisableAnimation } from '@hooks/useDisableAnimation';
-import { useMounted } from '@hooks/useMounted';
-import { useMultiModal } from '../MultiModal/MultiModalProvider';
-import useStepperLayout from './useStepperLayout';
+import { useDisableAnimation } from "@hooks/useDisableAnimation";
+import { useMounted } from "@hooks/useMounted";
+import { useMultiModal } from "../MultiModal/MultiModalProvider";
+import useStepperLayout from "./useStepperLayout";
 
-import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from './stepper-statuses';
-import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import {
+  STEP_ERROR,
+  STEP_PROMPTING,
+  STEP_SUCCESS,
+  STEP_WAITING,
+  STEP_WORKING,
+} from "./stepper-statuses";
+import { TRANSACTION_SIGNING_DESC } from "./stepper-descriptions";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const AnimatedDiv = animated.div;
 
@@ -30,11 +36,11 @@ function initialStepState(steps) {
 }
 
 function reduceSteps(steps, [action, stepIndex, value]) {
-  if (action === 'setHash') {
+  if (action === "setHash") {
     steps[stepIndex].hash = value;
     return [...steps];
   }
-  if (action === 'setStatus') {
+  if (action === "setStatus") {
     steps[stepIndex].status = value;
     return [...steps];
   }
@@ -47,7 +53,10 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   const { close } = useMultiModal();
   const { animationDisabled, enableAnimation } = useDisableAnimation();
   const [stepperStage, setStepperStage] = useState(0);
-  const [stepState, updateStep] = useReducer(reduceSteps, initialStepState(steps));
+  const [stepState, updateStep] = useReducer(
+    reduceSteps,
+    initialStepState(steps)
+  );
 
   const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout();
 
@@ -78,33 +87,34 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
         </li>
       );
     },
-    [stepState, steps],
+    [stepState, steps]
   );
 
   const renderSteps = useCallback(() => {
     return steps.map((_, index) => {
-      const showDivider = index < stepsCount && stepState[index].status !== STEP_WAITING;
+      const showDivider =
+        index < stepsCount && stepState[index].status !== STEP_WAITING;
 
       return renderStep(index, showDivider);
     });
   }, [renderStep, steps, stepsCount, stepState]);
 
   const updateStepStatus = useCallback(
-    status => {
+    (status) => {
       if (mounted()) {
-        updateStep(['setStatus', stepperStage, status]);
+        updateStep(["setStatus", stepperStage, status]);
       }
     },
-    [stepperStage, mounted],
+    [stepperStage, mounted]
   );
 
   const updateHash = useCallback(
-    hash => {
+    (hash) => {
       if (mounted()) {
-        updateStep(['setHash', stepperStage, hash]);
+        updateStep(["setHash", stepperStage, hash]);
       }
     },
-    [stepperStage, mounted],
+    [stepperStage, mounted]
   );
 
   const handleSign = useCallback(() => {
@@ -131,9 +141,17 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           }
         }
       },
-      setHash: hash => updateHash(hash),
+      setHash: (hash) => updateHash(hash),
     });
-  }, [mounted, onComplete, steps, stepperStage, stepsCount, updateStepStatus, updateHash]);
+  }, [
+    mounted,
+    onComplete,
+    steps,
+    stepperStage,
+    stepsCount,
+    updateStepStatus,
+    updateHash,
+  ]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -143,7 +161,9 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   }, [stepperStage]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const completed = stepperStage === stepsCount && stepState[stepperStage].status === STEP_SUCCESS;
+  const completed =
+    stepperStage === stepsCount &&
+    stepState[stepperStage].status === STEP_SUCCESS;
 
   useEffect(() => {
     let timeout;
@@ -173,10 +193,10 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           css={css`
             padding: 0;
             display: flex;
-            flex-direction: ${layout === 'collapsed' ? 'column' : 'row'};
+            flex-direction: ${layout === "collapsed" ? "column" : "row"};
           `}
         >
-          {layout === 'collapsed' && (
+          {layout === "collapsed" && (
             <>
               {steps.length > 1 && (
                 <p
@@ -207,7 +227,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
                   }}
                   enter={{
                     opacity: 1,
-                    transform: 'translate3d(0, 0, 0)',
+                    transform: "translate3d(0, 0, 0)",
                   }}
                   leave={{
                     opacity: 0,
@@ -215,10 +235,11 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
                   }}
                   native
                 >
-                  {currentStage => animProps => (
+                  {(currentStage) => (animProps) => (
                     <AnimatedDiv
                       style={{
-                        position: currentStage === stepperStage ? 'static' : 'absolute',
+                        position:
+                          currentStage === stepperStage ? "static" : "absolute",
                         ...animProps,
                       }}
                     >
@@ -229,7 +250,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
               </div>
             </>
           )}
-          {layout === 'expanded' && renderSteps()}
+          {layout === "expanded" && renderSteps()}
         </ul>
       </div>
       {completed && (
@@ -268,7 +289,7 @@ Stepper.propTypes = {
         [STEP_SUCCESS]: PropTypes.string,
         [STEP_ERROR]: PropTypes.string,
       }),
-    }),
+    })
   ).isRequired,
   onComplete: PropTypes.func,
   onCompleteActions: PropTypes.node,

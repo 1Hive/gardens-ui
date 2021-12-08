@@ -1,10 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { textStyle, useTheme, GU } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import PropTypes from "prop-types";
+import { textStyle, useTheme, GU } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-function Header({ title, subtitle, thirdtitle, topSpacing = 3 * GU, bottomSpacing = 7 * GU }) {
+function Header({
+  title,
+  subtitle,
+  thirdtitle,
+  topSpacing = 3 * GU,
+  bottomSpacing = 7 * GU,
+}) {
   const theme = useTheme();
   return (
     <header
@@ -24,7 +30,7 @@ function Header({ title, subtitle, thirdtitle, topSpacing = 3 * GU, bottomSpacin
       {subtitle && (
         <div
           css={css`
-            ${textStyle('title3')};
+            ${textStyle("title3")};
             color: ${theme.contentSecondary.toString()};
             padding-top: ${1 * GU}px;
           `}
@@ -35,7 +41,7 @@ function Header({ title, subtitle, thirdtitle, topSpacing = 3 * GU, bottomSpacin
       {thirdtitle && (
         <div
           css={css`
-            ${textStyle('body2')};
+            ${textStyle("body2")};
             color: ${theme.contentSecondary.toString()};
             padding-top: ${2 * GU}px;
           `}

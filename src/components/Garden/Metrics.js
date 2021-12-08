@@ -1,14 +1,23 @@
-/** @jsx jsx */
-import React, { useCallback, useMemo, useState } from 'react';
-import { Box, Button, GU, Help, Split, textStyle, useLayout, useTheme } from '@1hive/1hive-ui';
-import HelpTip from '@components/HelpTip';
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice';
-import { usePriceOracle } from '@hooks/usePriceOracle';
-import { useGardenState } from '@providers/GardenState';
-import { useWallet } from '@providers/Wallet';
-import { formatDecimals, formatTokenAmount } from '@utils/token-utils';
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useMemo, useState } from "react";
+import {
+  Box,
+  Button,
+  GU,
+  Help,
+  Split,
+  textStyle,
+  useLayout,
+  useTheme,
+} from "@1hive/1hive-ui";
+import HelpTip from "@components/HelpTip";
+import { useHoneyswapTokenPrice } from "@hooks/useHoneyswapTokenPrice";
+import { usePriceOracle } from "@hooks/usePriceOracle";
+import { useGardenState } from "@providers/GardenState";
+import { useWallet } from "@providers/Wallet";
+import { formatDecimals, formatTokenAmount } from "@utils/token-utils";
+import defaultTokenLogo from "@assets/defaultTokenLogo.svg";
+import { css, jsx } from "@emotion/react";
 
 const Metrics = React.memo(function Metrics({
   commonPool,
@@ -20,8 +29,8 @@ const Metrics = React.memo(function Metrics({
   totalWrappedSupply,
 }) {
   const currency = {
-    name: 'USD',
-    symbol: '$',
+    name: "USD",
+    symbol: "$",
     rate: 1,
   };
   return (
@@ -40,7 +49,11 @@ const Metrics = React.memo(function Metrics({
               currency={currency}
               token={priceToken}
             />
-            <SupplySection currency={currency} totalSupply={totalSupply} totalWrappedSupply={totalWrappedSupply} />
+            <SupplySection
+              currency={currency}
+              totalSupply={totalSupply}
+              totalWrappedSupply={totalWrappedSupply}
+            />
             <div>
               <TokenBalance
                 label="Total Support"
@@ -74,13 +87,18 @@ const Metrics = React.memo(function Metrics({
   );
 });
 
-function PriceSection({ token, onExecuteIssuance, currency, onRequestUpdatePriceOracle }) {
+function PriceSection({
+  token,
+  onExecuteIssuance,
+  currency,
+  onRequestUpdatePriceOracle,
+}) {
   const { layoutName } = useLayout();
-  const compactMode = layoutName === 'small';
+  const compactMode = layoutName === "small";
   const [priceMode, setPriceMode] = useState(true);
 
   const handleTogglePriceMode = useCallback(() => {
-    setPriceMode(priceMode => !priceMode);
+    setPriceMode((priceMode) => !priceMode);
   }, []);
 
   return (
@@ -119,7 +137,7 @@ function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
   const [supplyMode, setSupplyMode] = useState(true);
 
   const handleToggleSupplyMode = useCallback(() => {
-    setSupplyMode(supplyMode => !supplyMode);
+    setSupplyMode((supplyMode) => !supplyMode);
   }, []);
 
   return (
@@ -186,14 +204,14 @@ function Metric({ label, value, symbol, color, helptip }) {
       </div>
       <span
         css={css`
-          ${textStyle('title3')};
+          ${textStyle("title3")};
           color: ${color || theme.content.toString()};
         `}
       >
-        {value}{' '}
+        {value}{" "}
         <span
           css={css`
-            ${textStyle('body3')}
+            ${textStyle("body3")}
           `}
         >
           {symbol}
@@ -210,7 +228,12 @@ function TokenBalance({ label, token, value, currency, helptip }) {
 
   return (
     <>
-      <Metric label={label} value={formatTokenAmount(value, token.decimals)} symbol={token.symbol} helptip={helptip} />
+      <Metric
+        label={label}
+        value={formatTokenAmount(value, token.decimals)}
+        symbol={token.symbol}
+        helptip={helptip}
+      />
       <div
         css={css`
           color: ${theme.green.toString()};
@@ -228,7 +251,12 @@ function TokenBalance({ label, token, value, currency, helptip }) {
   );
 }
 
-function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle }) {
+function TokenPrice({
+  currency,
+  oracleMode,
+  token,
+  onRequestUpdatePriceOracle,
+}) {
   const { account } = useWallet();
   const theme = useTheme();
 
@@ -237,7 +265,12 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
 
   const honeyswapPrice = useHoneyswapTokenPrice(token.id);
 
-  const [convertedAmount, loading, canUpdate] = usePriceOracle(true, 1, token.id, stableToken.id);
+  const [convertedAmount, loading, canUpdate] = usePriceOracle(
+    true,
+    1,
+    token.id,
+    stableToken.id
+  );
 
   const price = useMemo(() => {
     if (loading) {
@@ -247,7 +280,10 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
     return oracleMode ? convertedAmount.valueOf() : honeyswapPrice;
   }, [oracleMode, convertedAmount, honeyswapPrice, loading]);
 
-  const oraclePrice = price > 0 ? `${currency.symbol} ${formatDecimals(price * currency.rate, 2)}` : '-';
+  const oraclePrice =
+    price > 0
+      ? `${currency.symbol} ${formatDecimals(price * currency.rate, 2)}`
+      : "-";
 
   return (
     <div
@@ -265,7 +301,7 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
           css={css`
             display: flex;
             flex-direction: column;
-            ${textStyle('title4')};
+            ${textStyle("title4")};
             margin-bottom: ${0.5 * GU}px;
           `}
         >
@@ -279,7 +315,7 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
           {oracleMode && (
             <span
               css={css`
-                ${textStyle('body4')}
+                ${textStyle("body4")}
               `}
             >
               (Oracle)
@@ -294,8 +330,8 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
             `}
           >
             <Help hint="What is Oracle Price?">
-              This is the price used for funding proposals defined in stable asset. Calling update price could return a
-              reward.
+              This is the price used for funding proposals defined in stable
+              asset. Calling update price could return a reward.
             </Help>
           </span>
         )}
@@ -304,7 +340,7 @@ function TokenPrice({ currency, oracleMode, token, onRequestUpdatePriceOracle })
         css={css`
           display: flex;
           align-items: center;
-          ${textStyle('title2')};
+          ${textStyle("title2")};
           color: ${theme.green.toString()};
         `}
       >
@@ -345,7 +381,7 @@ function Dot({ isActive, onChange }) {
     <span
       onClick={
         !isActive
-          ? e => {
+          ? (e) => {
               e.preventDefault();
               onChange();
             }
@@ -356,10 +392,10 @@ function Dot({ isActive, onChange }) {
         width: 10px;
         margin: 5px;
         border: 1px solid #c8c8c9;
-        background-color: ${isActive ? '#C8C8C9' : '#ffffff'};
+        background-color: ${isActive ? "#C8C8C9" : "#ffffff"};
         border-radius: 50%;
         display: inline-block;
-        cursor: ${!isActive && 'pointer'};
+        cursor: ${!isActive && "pointer"};
       `}
     />
   );

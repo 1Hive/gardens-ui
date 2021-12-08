@@ -1,17 +1,26 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router';
-import { GU, Pagination, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useHistory } from "react-router";
+import {
+  GU,
+  Pagination,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
 
-import defaultGardenLogo from '@assets/defaultGardenLogo.png';
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg';
-import EmptyResults from './EmptyResults';
-import { css, jsx } from '@emotion/react';
+import defaultGardenLogo from "@assets/defaultGardenLogo.png";
+import defaultTokenLogo from "@assets/defaultTokenLogo.svg";
+import EmptyResults from "./EmptyResults";
+import { css, jsx } from "@emotion/react";
 
 const GARDENS_PER_PAGE = 10;
 
 const computeCurrentGardens = (gardens, currentPage) => {
-  const currentGardens = gardens.slice(currentPage * GARDENS_PER_PAGE, GARDENS_PER_PAGE * (currentPage + 1));
+  const currentGardens = gardens.slice(
+    currentPage * GARDENS_PER_PAGE,
+    GARDENS_PER_PAGE * (currentPage + 1)
+  );
 
   return currentGardens;
 };
@@ -21,9 +30,12 @@ function GardensList({ gardens }) {
 
   const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE);
 
-  const currentGardens = useMemo(() => computeCurrentGardens(gardens, selectedPage), [gardens, selectedPage]);
+  const currentGardens = useMemo(
+    () => computeCurrentGardens(gardens, selectedPage),
+    [gardens, selectedPage]
+  );
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page);
   }, []);
 
@@ -45,11 +57,17 @@ function GardensList({ gardens }) {
               margin-bottom: ${2 * GU}px;
             `}
           >
-            {currentGardens.map(garden => (
+            {currentGardens.map((garden) => (
               <GardenCard key={garden.id} garden={garden} />
             ))}
           </div>
-          {pages > 1 && <Pagination pages={pages} selected={selectedPage} onChange={handlePageChange} />}
+          {pages > 1 && (
+            <Pagination
+              pages={pages}
+              selected={selectedPage}
+              onChange={handlePageChange}
+            />
+          )}
         </div>
       ) : (
         <EmptyResults title="No gardens found" />
@@ -102,7 +120,7 @@ function GardenCard({ garden }) {
       </div>
       <div
         css={css`
-          ${textStyle('title4')};
+          ${textStyle("title4")};
         `}
       >
         {garden.name || shortenAddress(garden.id)}
@@ -116,19 +134,24 @@ function GardenCard({ garden }) {
           overflow: hidden;
         `}
       >
-        {garden.description || 'No description'}
+        {garden.description || "No description"}
       </div>
       <div
         css={css`
           display: flex;
           align-items: center;
           margin-bottom: ${1 * GU}px;
-          ${textStyle('title4')};
+          ${textStyle("title4")};
           justify-content: center;
           color: ${theme.content.toString()};
         `}
       >
-        <img src={token?.logo || defaultTokenLogo} alt="" height="20" width="20" />
+        <img
+          src={token?.logo || defaultTokenLogo}
+          alt=""
+          height="20"
+          width="20"
+        />
         <span
           css={css`
             margin-left: ${0.75 * GU}px;
@@ -146,10 +169,10 @@ function GardenCard({ garden }) {
         `}
       >
         <div>
-          {garden.proposalCount} Proposal{garden.proposalCount === 1 ? '' : 's'}
+          {garden.proposalCount} Proposal{garden.proposalCount === 1 ? "" : "s"}
         </div>
         <div>
-          {garden.supporterCount} Member{garden.supporterCount === 1 ? '' : 's'}
+          {garden.supporterCount} Member{garden.supporterCount === 1 ? "" : "s"}
         </div>
       </div>
     </div>

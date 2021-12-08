@@ -1,13 +1,22 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { useHistory } from 'react-router';
-import { Box, Button, EthIdenticon, GU, Link, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
-import IdentityBadge from '@components/IdentityBadge';
-import useProfile from '@hooks/useProfile';
-import { useSupporterSubscription } from '@hooks/useSubscriptions';
-import { useWallet } from '@providers/Wallet';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import { useHistory } from "react-router";
+import {
+  Box,
+  Button,
+  EthIdenticon,
+  GU,
+  Link,
+  LoadingRing,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import IdentityBadge from "@components/IdentityBadge";
+import useProfile from "@hooks/useProfile";
+import { useSupporterSubscription } from "@hooks/useSubscriptions";
+import { useWallet } from "@providers/Wallet";
 
-import { css, jsx } from '@emotion/react';
+import { css, jsx } from "@emotion/react";
 
 function Delegation({ onRemoveDelegate, onSetDelegate }) {
   const { account } = useWallet();
@@ -26,7 +35,7 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
         >
           <div
             css={css`
-              ${textStyle('title4')};
+              ${textStyle("title4")};
             `}
           >
             Your delegate
@@ -50,14 +59,14 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
               >
                 <div
                   css={css`
-                    ${textStyle('body1')};
+                    ${textStyle("body1")};
                   `}
                 >
                   None
                 </div>
                 <span
                   css={css`
-                    ${textStyle('body3')};
+                    ${textStyle("body3")};
                     color: ${theme.contentSecondary.toString()};
                   `}
                 >
@@ -113,13 +122,17 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
             `}
           />
         ) : (
-          <EthIdenticon address={representative.address} radius={50} scale={3} />
+          <EthIdenticon
+            address={representative.address}
+            radius={50}
+            scale={3}
+          />
         )}
       </div>
       {profile?.name && (
         <div
           css={css`
-            ${textStyle('body1')};
+            ${textStyle("body1")};
           `}
         >
           {profile.name}

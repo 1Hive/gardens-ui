@@ -1,9 +1,9 @@
-/** @jsx jsx */
-import React from 'react';
-import { getProviderFromUseWalletId } from 'use-wallet';
-import { GU, textStyle, Link, useTheme } from '@1hive/1hive-ui';
-import { css, jsx, keyframes } from '@emotion/react';
-import loadingRing from './assets/loading-ring.svg';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { getProviderFromUseWalletId } from "use-wallet";
+import { GU, textStyle, Link, useTheme } from "@1hive/1hive-ui";
+import { css, jsx, keyframes } from "@emotion/react";
+import loadingRing from "./assets/loading-ring.svg";
 
 const spin = keyframes`
   from {
@@ -14,7 +14,13 @@ const spin = keyframes`
   }
 `;
 
-function AccountModuleConnectingScreen({ onCancel, providerId }: { providerId: string; onCancel: () => void }) {
+function AccountModuleConnectingScreen({
+  onCancel,
+  providerId,
+}: {
+  providerId: string;
+  onCancel: () => void;
+}) {
   const theme = useTheme();
   const provider = getProviderFromUseWalletId(providerId);
   return (
@@ -68,14 +74,15 @@ function AccountModuleConnectingScreen({ onCancel, providerId }: { providerId: s
               left: 0;
               right: 0;
               bottom: 0;
-              background: 50% 50% / auto ${5 * GU}px no-repeat url(${provider.image});
+              background: 50% 50% / auto ${5 * GU}px no-repeat
+                url(${provider.image});
             `}
           />
         </div>
         <h1
           css={css`
             padding-top: ${2 * GU}px;
-            ${textStyle('body1')};
+            ${textStyle("body1")};
             font-weight: 600;
           `}
         >
@@ -87,7 +94,8 @@ function AccountModuleConnectingScreen({ onCancel, providerId }: { providerId: s
             color: ${theme.surfaceContentSecondary.toString()};
           `}
         >
-          Log into {provider.name || 'Unknown'}. You may be temporarily redirected to a new screen.
+          Log into {provider.name || "Unknown"}. You may be temporarily
+          redirected to a new screen.
         </p>
       </div>
       <div

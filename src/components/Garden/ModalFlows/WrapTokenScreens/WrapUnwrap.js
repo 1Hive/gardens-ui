@@ -1,25 +1,34 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import BigNumber from '@lib/bigNumber';
-import { Button, ButtonBase, Field, GU, Info, TextInput, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useGardenState } from '@providers/GardenState';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
+import React, { useCallback, useMemo, useState } from "react";
+import BigNumber from "@lib/bigNumber";
+import {
+  Button,
+  ButtonBase,
+  Field,
+  GU,
+  Info,
+  TextInput,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { useGardenState } from "@providers/GardenState";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 
-import { toDecimals } from '@utils/math-utils';
-import { formatTokenAmount } from '@utils/token-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { toDecimals } from "@utils/math-utils";
+import { formatTokenAmount } from "@utils/token-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   const theme = useTheme();
   const [amount, setAmount] = useState({
-    value: '0',
-    valueBN: new BigNumber('0'),
+    value: "0",
+    valueBN: new BigNumber("0"),
   });
 
   const { token, wrappableToken } = useGardenState();
   const { next } = useMultiModal();
 
-  const wrapMode = mode === 'wrap';
+  const wrapMode = mode === "wrap";
 
   const formTokenValues = useMemo(() => {
     return wrapMode
@@ -31,15 +40,21 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   }, [token, wrappableToken, wrapMode]);
 
   const handleEditMode = useCallback(
-    editMode => {
-      setAmount(amount => {
+    (editMode) => {
+      setAmount((amount) => {
         const newValue = amount.valueBN.gte(0)
-          ? formatTokenAmount(amount.valueBN, formTokenValues.token.decimals, false, false, {
-              commas: !editMode,
-              replaceZeroBy: editMode ? '' : '0',
-              rounding: formTokenValues.token.decimals,
-            })
-          : '';
+          ? formatTokenAmount(
+              amount.valueBN,
+              formTokenValues.token.decimals,
+              false,
+              false,
+              {
+                commas: !editMode,
+                replaceZeroBy: editMode ? "" : "0",
+                rounding: formTokenValues.token.decimals,
+              }
+            )
+          : "";
 
         return {
           ...amount,
@@ -47,16 +62,18 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         };
       });
     },
-    [formTokenValues.token],
+    [formTokenValues.token]
   );
 
   // Amount change handler
   const handleAmountChange = useCallback(
-    event => {
-      const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '');
+    (event) => {
+      const newAmount = event.target.value.replace(/,/g, ".").replace(/-/g, "");
 
       const newAmountBN = new BigNumber(
-        isNaN(event.target.value) ? -1 : toDecimals(newAmount, formTokenValues.token.decimals),
+        isNaN(event.target.value)
+          ? -1
+          : toDecimals(newAmount, formTokenValues.token.decimals)
       );
 
       setAmount({
@@ -64,38 +81,44 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         valueBN: newAmountBN,
       });
     },
-    [formTokenValues.token],
+    [formTokenValues.token]
   );
 
   const handleMaxSelected = useCallback(() => {
     setAmount({
       valueBN: formTokenValues.accountBalance,
-      value: formatTokenAmount(formTokenValues.accountBalance, formTokenValues.token.decimals, false, false, {
-        commas: false,
-        rounding: formTokenValues.token.decimals,
-      }),
+      value: formatTokenAmount(
+        formTokenValues.accountBalance,
+        formTokenValues.token.decimals,
+        false,
+        false,
+        {
+          commas: false,
+          rounding: formTokenValues.token.decimals,
+        }
+      ),
     });
   }, [formTokenValues]);
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault();
 
       getTransactions(() => {
         next();
       }, amount.valueBN.toString(10));
     },
-    [amount, getTransactions, next],
+    [amount, getTransactions, next]
   );
 
   const errorMessage = useMemo(() => {
     if (amount.valueBN.eq(new BigNumber(-1))) {
-      return 'Invalid amount';
+      return "Invalid amount";
     }
 
     if (amount.valueBN.gt(formTokenValues.accountBalance)) {
-      return 'Insufficient balance';
+      return "Insufficient balance";
     }
 
     return null;
@@ -105,12 +128,12 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
     <form onSubmit={handleSubmit}>
       <span
         css={css`
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
         {wrapMode
-          ? 'The amount you wrap will be available to stake and vote on proposals'
-          : 'If you unwrap your tokens you will lose your voting power. Any stake on suggestions or funding proposals will be removed when unwrapping.'}
+          ? "The amount you wrap will be available to stake and vote on proposals"
+          : "If you unwrap your tokens you will lose your voting power. Any stake on suggestions or funding proposals will be removed when unwrapping."}
       </span>
       <Field
         label="amount"
@@ -139,26 +162,30 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
         />
         <span
           css={css`
-            ${textStyle('body3')};
+            ${textStyle("body3")};
             color: ${theme.contentSecondary.toString()};
           `}
         >
-          {'Your account balance has '}
+          {"Your account balance has "}
           <span
             css={css`
               font-weight: 600;
             `}
           >
-            {formatTokenAmount(wrappableToken.accountBalance, wrappableToken.data.decimals)}{' '}
+            {formatTokenAmount(
+              wrappableToken.accountBalance,
+              wrappableToken.data.decimals
+            )}{" "}
             {wrappableToken.data.symbol}
           </span>
-          {' and '}
+          {" and "}
           <span
             css={css`
               font-weight: 600;
             `}
           >
-            {formatTokenAmount(token.accountBalance, token.data.decimals)} {token.data.symbol}
+            {formatTokenAmount(token.accountBalance, token.data.decimals)}{" "}
+            {token.data.symbol}
           </span>
         </span>
       </Field>
@@ -169,13 +196,14 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
             margin-top: ${2 * GU}px;
           `}
         >
-          You can unwrap your tokens at any time but you will lose your voting power. Any stake on suggestions or
-          funding proposals will be removed when unwrapping.
+          You can unwrap your tokens at any time but you will lose your voting
+          power. Any stake on suggestions or funding proposals will be removed
+          when unwrapping.
         </Info>
       )}
 
       <Button
-        label={wrapMode ? 'Wrap' : 'Unwrap'}
+        label={wrapMode ? "Wrap" : "Unwrap"}
         wide
         type="submit"
         mode="strong"

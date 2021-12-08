@@ -1,29 +1,37 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import AceEditor from 'react-ace';
-import { utils } from 'ethers';
-import 'ace-builds/src-noconflict/mode-jade';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import AceEditor from "react-ace";
+import { utils } from "ethers";
+import "ace-builds/src-noconflict/mode-jade";
 
-import { Box, Button, DropDown, Field, GU, Info, TextInput } from '@1hive/1hive-ui';
-import { evmcl, EVMcrispr } from '@1hive/evmcrispr';
+import {
+  Box,
+  Button,
+  DropDown,
+  Field,
+  GU,
+  Info,
+  TextInput,
+} from "@1hive/1hive-ui";
+import { evmcl, EVMcrispr } from "@1hive/evmcrispr";
 
-import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens';
-import MultiModal from '@components/MultiModal/MultiModal';
+import CreateDecisionScreens from "../ModalFlows/CreateDecisionScreens/CreateDecisionScreens";
+import MultiModal from "@components/MultiModal/MultiModal";
 
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useGardenState } from '@/providers/GardenState';
-import { useWallet } from '@/providers/Wallet';
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useGardenState } from "@/providers/GardenState";
+import { useWallet } from "@/providers/Wallet";
 
-import { SHORTENED_APPS_NAMES } from '@utils/app-utils';
+import { SHORTENED_APPS_NAMES } from "@utils/app-utils";
 
-import env from '@/environment';
-import { getAppByName } from '@utils/data-utils';
-import actions from '@/actions/garden-action-types';
-import radspec from '@/radspec';
-import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import env from "@/environment";
+import { getAppByName } from "@utils/data-utils";
+import actions from "@/actions/garden-action-types";
+import radspec from "@/radspec";
+import { TERMINAL_EXECUTOR_MESSAGE } from "@/constants";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-const INTERACTION_TYPES = ['Internal', 'External', 'Terminal'];
+const INTERACTION_TYPES = ["Internal", "External", "Terminal"];
 
 const INTERNAL_INDEX = 0;
 const EXTERNAL_INDEX = 1;
@@ -34,7 +42,9 @@ function EVMExecutor() {
   const gardenState = useGardenState();
 
   const connectedGarden = useConnectedGarden();
-  const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(false);
+  const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
+    false
+  );
   const [abi, setAbi] = useState();
   const [externalContractAddress, setExternalContractAddress] = useState(null);
   const [formattedAbi, setFormattedAbi] = useState(null);
@@ -52,7 +62,10 @@ function EVMExecutor() {
       if (!connectedGarden || !account) {
         return;
       }
-      const crispr = await EVMcrispr.create(connectedGarden.address, ethers.getSigner());
+      const crispr = await EVMcrispr.create(
+        connectedGarden.address,
+        ethers.getSigner()
+      );
 
       setEvmcrispr(crispr);
     }
@@ -64,7 +77,10 @@ function EVMExecutor() {
       return null;
     }
 
-    return getAppByName(gardenState.installedApps, env('VOTING_APP_NAME')).artifact.appName.split('.aragonpm.eth')[0];
+    return getAppByName(
+      gardenState.installedApps,
+      env("VOTING_APP_NAME")
+    ).artifact.appName.split(".aragonpm.eth")[0];
   }, [gardenState]);
 
   const installedApps = useMemo(() => {
@@ -74,11 +90,12 @@ function EVMExecutor() {
     return evmcrispr.apps();
   }, [evmcrispr]);
 
-  const shortenedAppsNames = installedApps.map(appName => {
-    const dotIndex = appName.indexOf('.');
+  const shortenedAppsNames = installedApps.map((appName) => {
+    const dotIndex = appName.indexOf(".");
     return (
-      SHORTENED_APPS_NAMES.get(dotIndex > 0 ? appName.substr(0, dotIndex) : appName.slice(0, -2)) ||
-      appName.slice(0, -2)
+      SHORTENED_APPS_NAMES.get(
+        dotIndex > 0 ? appName.substr(0, dotIndex) : appName.slice(0, -2)
+      ) || appName.slice(0, -2)
     );
   });
 
@@ -94,14 +111,21 @@ function EVMExecutor() {
       appFunctions = Object.getOwnPropertyNames(evmcrispr.exec(appName));
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
-      appFunctions = formattedAbi.map(item => {
-        if (item.type === 'function' && item.stateMutability !== 'view') {
+      appFunctions = formattedAbi.map((item) => {
+        if (item.type === "function" && item.stateMutability !== "view") {
           return item.name;
         }
       });
     }
     return appFunctions;
-  }, [evmcrispr, formattedAbi, interactionType, selectedApp, installedApps, shortenedAppsNames]);
+  }, [
+    evmcrispr,
+    formattedAbi,
+    interactionType,
+    selectedApp,
+    installedApps,
+    shortenedAppsNames,
+  ]);
 
   const requiredParameters = useMemo(() => {
     if (selectedFunction === null) {
@@ -112,37 +136,50 @@ function EVMExecutor() {
         return [];
       }
 
-      const { paramNames, paramTypes } = evmcrispr.exec(installedApps[selectedApp])[functionList[selectedFunction]];
+      const { paramNames, paramTypes } = evmcrispr.exec(
+        installedApps[selectedApp]
+      )[functionList[selectedFunction]];
 
       return paramNames.map((parameter, index) => {
         return [parameter, paramTypes[index]];
       });
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
-      return formattedAbi[selectedFunction].inputs.map(parameter => {
+      return formattedAbi[selectedFunction].inputs.map((parameter) => {
         return [parameter.name, parameter.type];
       });
     }
-  }, [evmcrispr, formattedAbi, installedApps, interactionType, functionList, selectedApp, selectedFunction]);
+  }, [
+    evmcrispr,
+    formattedAbi,
+    installedApps,
+    interactionType,
+    functionList,
+    selectedApp,
+    selectedFunction,
+  ]);
 
   const humanReadableSignature = useMemo(() => {
     if (!formattedAbi || selectedFunction === null) {
-      return '';
+      return "";
     }
     let signature = `${formattedAbi[selectedFunction].name}(`;
 
     formattedAbi[selectedFunction].inputs.forEach(
       (element, index, array) => {
-        signature = index < array.length - 1 ? `${signature}${element.type},` : `${signature}${element.type})`;
+        signature =
+          index < array.length - 1
+            ? `${signature}${element.type},`
+            : `${signature}${element.type})`;
       },
-      [signature],
+      [signature]
     );
     return signature;
   }, [formattedAbi, selectedFunction]);
 
   const handleOnChangeParameters = useCallback((index, event) => {
     const newValue = event.target.value;
-    setParameters(prevState => {
+    setParameters((prevState) => {
       const newArray = [...prevState];
       newArray[index] = newValue;
       return newArray;
@@ -162,21 +199,32 @@ function EVMExecutor() {
     // having some issue on the lib when passing the function that need to check with david
     if (interactionType === INTERNAL_INDEX) {
       intent = await evmcrispr.encode(
-        [evmcrispr.exec(installedApps[selectedApp])[functionList[selectedFunction]](...parameters)],
+        [
+          evmcrispr
+            .exec(installedApps[selectedApp])
+            [functionList[selectedFunction]](...parameters),
+        ],
         [forwarderName],
-        { context: 'new decision' },
+        { context: "new decision" }
       );
     }
     if (interactionType === EXTERNAL_INDEX) {
       intent = await evmcrispr.encode(
-        [evmcrispr.act(evmcrispr.app('agent'), externalContractAddress, humanReadableSignature, [...parameters])],
+        [
+          evmcrispr.act(
+            evmcrispr.app("agent"),
+            externalContractAddress,
+            humanReadableSignature,
+            [...parameters]
+          ),
+        ],
         [forwarderName],
-        { context: 'new decision' },
+        { context: "new decision" }
       );
     }
     if (terminalMode) {
       intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-        context: 'new decision',
+        context: "new decision",
       });
     }
 
@@ -196,12 +244,12 @@ function EVMExecutor() {
     code,
   ]);
 
-  const handleOnContractAddressChange = useCallback(event => {
+  const handleOnContractAddressChange = useCallback((event) => {
     const value = event.target.value;
     setExternalContractAddress(value);
   }, []);
 
-  const handleOnAbiChange = useCallback(event => {
+  const handleOnAbiChange = useCallback((event) => {
     const value = event.target.value;
     setAbi(value);
     let iface;
@@ -210,14 +258,14 @@ function EVMExecutor() {
       iface = new utils.Interface(value);
       formattedAbi = iface.format(utils.FormatTypes.json);
       setFormattedAbi(
-        JSON.parse(formattedAbi).filter(item => {
-          if (item.type === 'function' && item.stateMutability !== 'view') {
+        JSON.parse(formattedAbi).filter((item) => {
+          if (item.type === "function" && item.stateMutability !== "view") {
             return item.name;
           }
-        }),
+        })
       );
     } catch (error) {
-      console.error('Error parsing ABI ', error);
+      console.error("Error parsing ABI ", error);
     }
   }, []);
 
@@ -236,17 +284,31 @@ function EVMExecutor() {
   return (
     <Box heading="App selector">
       <Field label="Interaction type">
-        <DropDown items={INTERACTION_TYPES} onChange={setInteractionType} selected={interactionType} wide />
+        <DropDown
+          items={INTERACTION_TYPES}
+          onChange={setInteractionType}
+          selected={interactionType}
+          wide
+        />
       </Field>
       {interactionType === INTERNAL_INDEX && (
         <Field label="Select App">
-          <DropDown items={shortenedAppsNames} onChange={setSelectedApp} selected={selectedApp} wide />
+          <DropDown
+            items={shortenedAppsNames}
+            onChange={setSelectedApp}
+            selected={selectedApp}
+            wide
+          />
         </Field>
       )}
       {interactionType === EXTERNAL_INDEX && (
         <>
           <Field label="Contract address">
-            <TextInput value={externalContractAddress} wide onChange={handleOnContractAddressChange} />
+            <TextInput
+              value={externalContractAddress}
+              wide
+              onChange={handleOnContractAddressChange}
+            />
           </Field>
           <Field label="ABI">
             <TextInput
@@ -290,7 +352,12 @@ function EVMExecutor() {
       )}
       {functionList?.length > 0 && (
         <Field label="Select Function">
-          <DropDown items={functionList} onChange={setSelectedFunction} selected={selectedFunction} wide />
+          <DropDown
+            items={functionList}
+            onChange={setSelectedFunction}
+            selected={selectedFunction}
+            wide
+          />
         </Field>
       )}
       {requiredParameters?.length > 0 && (
@@ -299,7 +366,7 @@ function EVMExecutor() {
             return (
               <TextInput
                 key={index}
-                onChange={event => handleOnChangeParameters(index, event)}
+                onChange={(event) => handleOnChangeParameters(index, event)}
                 placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
                 wide
                 css={css`
@@ -321,7 +388,8 @@ function EVMExecutor() {
           You must connect your account in order to create a decision.
         </Info>
       )}
-      {selectedFunction !== null || (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
+      {selectedFunction !== null ||
+      (terminalMode && code !== TERMINAL_EXECUTOR_MESSAGE) ? (
         <Button
           css={css`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
@@ -336,7 +404,10 @@ function EVMExecutor() {
       ) : (
         <> </>
       )}
-      <MultiModal visible={createDecisionModalVisible} onClose={handleOnHideModal}>
+      <MultiModal
+        visible={createDecisionModalVisible}
+        onClose={handleOnHideModal}
+      >
         <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
       </MultiModal>
     </Box>

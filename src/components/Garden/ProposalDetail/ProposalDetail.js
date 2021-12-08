@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback, useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   BackButton,
   Box,
@@ -17,55 +17,65 @@ import {
   TransactionBadge,
   useLayout,
   useTheme,
-} from '@1hive/1hive-ui';
+} from "@1hive/1hive-ui";
 
 // Components
-import ActionCollateral from '../ActionCollateral';
-import Balance from '../Balance';
-import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens';
-import { ConvictionBar } from '../ConvictionVisuals';
-import DisputableActionInfo from '../DisputableActionInfo';
-import DisputableInfo from '../DisputableInfo';
-import DisputeFees from '../DisputeFees';
-import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens';
-import IdentityBadge from '@components/IdentityBadge';
-import LoadingRing from '@/components/LoadingRing';
-import MultiModal from '@components/MultiModal/MultiModal';
-import ProposalActions from './ProposalActions';
-import ProposalComments from './ProposalComments';
-import ProposalHeader from './ProposalHeader';
-import ProposalStatus, { getStatusAttributes } from './ProposalStatus';
-import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens';
-import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens';
-import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens';
-import SupportersDistribution from '../SupportersDistribution';
-import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens';
+import ActionCollateral from "../ActionCollateral";
+import Balance from "../Balance";
+import ChallengeProposalScreens from "../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens";
+import { ConvictionBar } from "../ConvictionVisuals";
+import DisputableActionInfo from "../DisputableActionInfo";
+import DisputableInfo from "../DisputableInfo";
+import DisputeFees from "../DisputeFees";
+import ExecuteProposalScreens from "../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens";
+import IdentityBadge from "@components/IdentityBadge";
+import LoadingRing from "@/components/LoadingRing";
+import MultiModal from "@components/MultiModal/MultiModal";
+import ProposalActions from "./ProposalActions";
+import ProposalComments from "./ProposalComments";
+import ProposalHeader from "./ProposalHeader";
+import ProposalStatus, { getStatusAttributes } from "./ProposalStatus";
+import RaiseDisputeScreens from "../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens";
+import RemoveProposalScreens from "../ModalFlows/RemoveProposalScreens/RemoveProposalScreens";
+import SettleProposalScreens from "../ModalFlows/SettleProposalScreens/SettleProposalScreens";
+import SupportersDistribution from "../SupportersDistribution";
+import SupportProposalScreens from "../ModalFlows/SupportProposal/SupportProposalScreens";
 
 // Hooks
-import { useWallet } from '@providers/Wallet';
-import useChallenge from '@hooks/useChallenge';
+import { useWallet } from "@providers/Wallet";
+import useChallenge from "@hooks/useChallenge";
 
 // utils
-import BigNumber from '@lib/bigNumber';
-import { formatTokenAmount } from '@utils/token-utils';
-import { addressesEqualNoSum as addressesEqual, soliditySha3 } from '@utils/web3-utils';
-import { getNetwork } from '@/networks';
-import { ProposalTypes } from '@/types';
-import { ZERO_ADDR } from '@/constants';
+import BigNumber from "@lib/bigNumber";
+import { formatTokenAmount } from "@utils/token-utils";
+import {
+  addressesEqualNoSum as addressesEqual,
+  soliditySha3,
+} from "@utils/web3-utils";
+import { getNetwork } from "@/networks";
+import { ProposalTypes } from "@/types";
+import { ZERO_ADDR } from "@/constants";
 
 // assets
-import warningIcon from '../Agreement/assets/warning.svg';
+import warningIcon from "../Agreement/assets/warning.svg";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE');
+const CANCEL_ROLE_HASH = soliditySha3("CANCEL_PROPOSAL_ROLE");
 
-function ProposalDetail({ commonPool, proposal, actions, permissions, requestToken, stableToken }) {
+function ProposalDetail({
+  commonPool,
+  proposal,
+  actions,
+  permissions,
+  requestToken,
+  stableToken,
+}) {
   const theme = useTheme();
   const history = useHistory();
   const { layoutName } = useLayout();
-  const oneColumn = layoutName === 'small' || layoutName === 'medium';
+  const oneColumn = layoutName === "small" || layoutName === "medium";
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMode, setModalMode] = useState(null);
 
@@ -96,7 +106,7 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
     actions.resolveAction(proposal.disputeId);
   }, [actions, proposal]);
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true);
     setModalMode(mode);
   }, []);
@@ -112,7 +122,8 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
 
     return permissions.find(
       ({ roleHash, granteeAddress }) =>
-        roleHash === CANCEL_ROLE_HASH && addressesEqual(granteeAddress, connectedAccount),
+        roleHash === CANCEL_ROLE_HASH &&
+        addressesEqual(granteeAddress, connectedAccount)
     );
   }, [connectedAccount, creator, permissions]);
 
@@ -121,10 +132,11 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
       stakes.filter(({ amount }) => {
         return amount.gt(new BigNumber(0));
       }),
-    [stakes],
+    [stakes]
   );
 
-  const fundingProposal = requestToken && proposal.type === ProposalTypes.Proposal;
+  const fundingProposal =
+    requestToken && proposal.type === ProposalTypes.Proposal;
 
   return (
     <div
@@ -143,7 +155,7 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
       <div
         css={css`
           > div > div:nth-child(2) {
-            width: ${oneColumn ? '100%' : `${40 * GU}px`};
+            width: ${oneColumn ? "100%" : `${40 * GU}px`};
           }
         `}
       >
@@ -167,7 +179,7 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                     <ProposalHeader proposal={proposal} />
                     <h1
                       css={css`
-                        ${textStyle('title2')};
+                        ${textStyle("title2")};
                       `}
                     >
                       {name}
@@ -193,15 +205,26 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                     >
                       {fundingProposal ? (
                         <span>
-                          This proposal is requesting{' '}
-                          <strong>{formatTokenAmount(requestedAmountConverted, requestToken.decimals)}</strong>{' '}
-                          {requestToken.symbol} out of{' '}
-                          <strong>{formatTokenAmount(commonPool, requestToken.decimals)}</strong> {requestToken.symbol}{' '}
-                          currently in the common pool.
+                          This proposal is requesting{" "}
+                          <strong>
+                            {formatTokenAmount(
+                              requestedAmountConverted,
+                              requestToken.decimals
+                            )}
+                          </strong>{" "}
+                          {requestToken.symbol} out of{" "}
+                          <strong>
+                            {formatTokenAmount(
+                              commonPool,
+                              requestToken.decimals
+                            )}
+                          </strong>{" "}
+                          {requestToken.symbol} currently in the common pool.
                         </span>
                       ) : (
                         <span>
-                          This suggestion is for signaling purposes and is not requesting any {requestToken.symbol}
+                          This suggestion is for signaling purposes and is not
+                          requesting any {requestToken.symbol}
                         </span>
                       )}
                     </div>
@@ -209,8 +232,10 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                   <div
                     css={css`
                       display: grid;
-                      grid-template-columns: ${layoutName !== 'small' ? 'auto auto auto' : 'auto'};
-                      grid-gap: ${layoutName !== 'small' ? 5 * GU : 2.5 * GU}px;
+                      grid-template-columns: ${layoutName !== "small"
+                        ? "auto auto auto"
+                        : "auto"};
+                      grid-gap: ${layoutName !== "small" ? 5 * GU : 2.5 * GU}px;
                     `}
                   >
                     <DataField
@@ -223,7 +248,7 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                         ) : (
                           <span
                             css={css`
-                              ${textStyle('body2')};
+                              ${textStyle("body2")};
                             `}
                           >
                             No link provided
@@ -234,7 +259,10 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                         grid-column-start: span 2;
                       `}
                     />
-                    <DataField label="Status" value={<ProposalStatus proposal={proposal} />} />
+                    <DataField
+                      label="Status"
+                      value={<ProposalStatus proposal={proposal} />}
+                    />
                     {fundingProposal && (
                       <Amount
                         requestedAmount={requestedAmount}
@@ -250,7 +278,10 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                         label="Beneficiary"
                         value={
                           <IdentityBadge
-                            connectedAccount={addressesEqual(beneficiary, connectedAccount)}
+                            connectedAccount={addressesEqual(
+                              beneficiary,
+                              connectedAccount
+                            )}
                             entity={beneficiary}
                           />
                         }
@@ -259,28 +290,46 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                     <DataField
                       label="Created By"
                       value={
-                        <IdentityBadge connectedAccount={addressesEqual(creator, connectedAccount)} entity={creator} />
+                        <IdentityBadge
+                          connectedAccount={addressesEqual(
+                            creator,
+                            connectedAccount
+                          )}
+                          entity={creator}
+                        />
                       }
                     />
-                    {proposal.number !== '1' && (
+                    {proposal.number !== "1" && (
                       <>
-                        <DataField label="Deposit Amount" value={<ActionCollateral proposal={proposal} />} />
-                        {proposal.pausedAt > 0 && <DisputeFees proposal={proposal} />}
+                        <DataField
+                          label="Deposit Amount"
+                          value={<ActionCollateral proposal={proposal} />}
+                        />
+                        {proposal.pausedAt > 0 && (
+                          <DisputeFees proposal={proposal} />
+                        )}
                       </>
                     )}
                   </div>
-                  {(statusData.open || statusData.challenged || statusData.disputed) && (
+                  {(statusData.open ||
+                    statusData.challenged ||
+                    statusData.disputed) && (
                     <DataField
                       label="Progress"
-                      value={<ConvictionBar proposal={proposal} withThreshold={!!requestToken} />}
+                      value={
+                        <ConvictionBar
+                          proposal={proposal}
+                          withThreshold={!!requestToken}
+                        />
+                      }
                     />
                   )}
                   <DisputableInfo proposal={proposal} />
                   <ProposalActions
                     proposal={proposal}
-                    onChangeSupport={() => handleShowModal('update')}
-                    onExecuteProposal={() => handleShowModal('execute')}
-                    onRequestSupportProposal={() => handleShowModal('support')}
+                    onChangeSupport={() => handleShowModal("update")}
+                    onExecuteProposal={() => handleShowModal("execute")}
+                    onRequestSupportProposal={() => handleShowModal("support")}
                   />
                 </section>
               </Box>
@@ -292,7 +341,10 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                     border-color: ${borderColor};
                   `}
                 >
-                  <ArgumentBox proposal={proposal} connectedAccount={connectedAccount} />
+                  <ArgumentBox
+                    proposal={proposal}
+                    connectedAccount={connectedAccount}
+                  />
                 </Box>
               )}
             </>
@@ -302,10 +354,10 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
               {proposal.creator !== ZERO_ADDR && (
                 <DisputableActionInfo
                   proposal={proposal}
-                  onChallengeAction={() => handleShowModal('challenge')}
-                  onDisputeAction={() => handleShowModal('dispute')}
+                  onChallengeAction={() => handleShowModal("challenge")}
+                  onDisputeAction={() => handleShowModal("dispute")}
                   onResolveAction={handleResolveAction}
-                  onSettleAction={() => handleShowModal('settle')}
+                  onSettleAction={() => handleShowModal("settle")}
                 />
               )}
               {statusData.open && (
@@ -317,10 +369,11 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                           color: ${theme.contentSecondary.toString()};
                         `}
                       >
-                        As the original author, you can remove this proposal from consideration
+                        As the original author, you can remove this proposal
+                        from consideration
                       </span>
                       <Button
-                        onClick={() => handleShowModal('remove')}
+                        onClick={() => handleShowModal("remove")}
                         wide
                         css={css`
                           margin-top: ${3 * GU}px;
@@ -330,27 +383,35 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
                       </Button>
                     </Box>
                   )}
-                  {!fundingProposal && proposal.number !== '1' && (
+                  {!fundingProposal && proposal.number !== "1" && (
                     <Box
                       padding={3 * GU}
                       css={css`
                         color: ${theme.contentSecondary.toString()};
                       `}
                     >
-                      This suggestion will be active until it is removed by the creator or an authorised entity.
+                      This suggestion will be active until it is removed by the
+                      creator or an authorised entity.
                     </Box>
                   )}
                 </>
               )}
 
-              <SupportersDistribution stakes={filteredStakes} totalTokensStaked={totalTokensStaked} />
+              <SupportersDistribution
+                stakes={filteredStakes}
+                totalTokensStaked={totalTokensStaked}
+              />
             </div>
           }
         />
         <ProposalComments link={link} />
       </div>
-      <MultiModal visible={modalVisible} onClose={() => setModalVisible(false)} onClosed={() => setModalMode(null)}>
-        {modalMode === 'challenge' && (
+      <MultiModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onClosed={() => setModalMode(null)}
+      >
+        {modalMode === "challenge" && (
           <ChallengeProposalScreens
             agreementActions={{
               challengeAction: actions.challengeAction,
@@ -360,13 +421,19 @@ function ProposalDetail({ commonPool, proposal, actions, permissions, requestTok
             proposal={proposal}
           />
         )}
-        {modalMode === 'settle' && <SettleProposalScreens proposal={proposal} />}
-        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
-        {(modalMode === 'support' || modalMode === 'update') && (
+        {modalMode === "settle" && (
+          <SettleProposalScreens proposal={proposal} />
+        )}
+        {modalMode === "dispute" && <RaiseDisputeScreens proposal={proposal} />}
+        {(modalMode === "support" || modalMode === "update") && (
           <SupportProposalScreens proposal={proposal} mode={modalMode} />
         )}
-        {modalMode === 'remove' && <RemoveProposalScreens proposal={proposal} />}
-        {modalMode === 'execute' && <ExecuteProposalScreens proposal={proposal} />}
+        {modalMode === "remove" && (
+          <RemoveProposalScreens proposal={proposal} />
+        )}
+        {modalMode === "execute" && (
+          <ExecuteProposalScreens proposal={proposal} />
+        )}
       </MultiModal>
     </div>
   );
@@ -384,7 +451,7 @@ function ArgumentBox({ proposal, connectedAccount }) {
         css={css`
           display: flex;
           justify-content: space-between;
-          ${textStyle('body1')};
+          ${textStyle("body1")};
           color: ${theme.warning.toString()};
         `}
       >
@@ -396,7 +463,10 @@ function ArgumentBox({ proposal, connectedAccount }) {
           `}
         >
           <img src={warningIcon} width={30} height={30} />
-          <h1>{connectedAccount === proposal.creator ? 'Your' : 'This'} proposal has been challenged</h1>
+          <h1>
+            {connectedAccount === proposal.creator ? "Your" : "This"} proposal
+            has been challenged
+          </h1>
         </div>
         <div
           onClick={() => setShowArgument(!showArgument)}
@@ -414,7 +484,7 @@ function ArgumentBox({ proposal, connectedAccount }) {
               width: ${18 * GU}px;
             `}
           >
-            {showArgument ? 'Hide' : 'Show'} arguments
+            {showArgument ? "Hide" : "Show"} arguments
           </h1>
           {showArgument ? <IconUp /> : <IconDown />}
         </div>
@@ -444,7 +514,11 @@ function ArgumentBox({ proposal, connectedAccount }) {
                   `}
                 />
               ) : (
-                <EthIdenticon address={challenge.challenger.address} radius={50} scale={1.8} />
+                <EthIdenticon
+                  address={challenge.challenger.address}
+                  radius={50}
+                  scale={1.8}
+                />
               )}
             </div>
             <div
@@ -465,9 +539,14 @@ function ArgumentBox({ proposal, connectedAccount }) {
                     margin-right: ${1 * GU}px;
                   `}
                 >
-                  {challenge.challenger.name ? challenge.challenger.name : shortenAddress(challenge.challenger.address)}
+                  {challenge.challenger.name
+                    ? challenge.challenger.name
+                    : shortenAddress(challenge.challenger.address)}
                 </h2>
-                <Tag background={theme.warningSurface.toString()} color={theme.warningSurfaceContent.toString()}>
+                <Tag
+                  background={theme.warningSurface.toString()}
+                  color={theme.warningSurfaceContent.toString()}
+                >
                   challenger
                 </Tag>
               </div>
@@ -495,7 +574,7 @@ function DataField({ label, value, ...props }) {
     <div {...props}>
       <h2
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           font-weight: 200;
           color: ${theme.surfaceContentSecondary.toString()};
           margin-bottom: ${2 * GU}px;
@@ -506,7 +585,7 @@ function DataField({ label, value, ...props }) {
 
       <div
         css={css`
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
         {value}
@@ -515,7 +594,13 @@ function DataField({ label, value, ...props }) {
   );
 }
 
-const Amount = ({ requestedAmount, requestedAmountConverted, requestToken, stable, stableToken }) => {
+const Amount = ({
+  requestedAmount,
+  requestedAmountConverted,
+  requestToken,
+  stable,
+  stableToken,
+}) => {
   const theme = useTheme();
   const primaryToken = stable ? stableToken : requestToken;
 
@@ -550,14 +635,23 @@ const Amount = ({ requestedAmount, requestedAmountConverted, requestToken, stabl
                   margin: 0px ${0.5 * GU}px;
                 `}
               >
-                {formatTokenAmount(requestedAmountConverted, requestToken.decimals)} {requestToken.symbol}
+                {formatTokenAmount(
+                  requestedAmountConverted,
+                  requestToken.decimals
+                )}{" "}
+                {requestToken.symbol}
               </span>
               <Help hint="">
-                Converted to {requestToken.symbol} at time of execution. For funding proposals denominated in{' '}
-                {stableToken.symbol} to be made successfully, this Garden's{' '}
-                <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">price oracle</Link> must be
-                called consistently. Contact your Garden administrator or development team if the proposal execution
-                transaction is continually failing or if the request stable amount is not accurate.
+                Converted to {requestToken.symbol} at time of execution. For
+                funding proposals denominated in {stableToken.symbol} to be made
+                successfully, this Garden's{" "}
+                <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                  price oracle
+                </Link>{" "}
+                must be called consistently. Contact your Garden administrator
+                or development team if the proposal execution transaction is
+                continually failing or if the request stable amount is not
+                accurate.
               </Help>
             </div>
           )}

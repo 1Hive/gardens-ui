@@ -1,9 +1,9 @@
-import React from 'react';
-import { Card, GU, Header, textStyle } from '@1hive/1hive-ui';
-import tokenIcon from './assets/connect-icon.svg';
-import LayoutColumns from '../Layout/LayoutColumns';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import { Card, GU, Header, textStyle } from "@1hive/1hive-ui";
+import tokenIcon from "./assets/connect-icon.svg";
+import LayoutColumns from "../Layout/LayoutColumns";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 export default function EmptyState({ icon }) {
   return (
@@ -33,7 +33,7 @@ export default function EmptyState({ icon }) {
             />
             <span
               css={css`
-                ${textStyle('title3')};
+                ${textStyle("title3")};
               `}
             >
               No data available
@@ -62,7 +62,7 @@ export default function EmptyState({ icon }) {
               <span
                 css={css`
                   font-weight: 300;
-                  ${textStyle('body2')};
+                  ${textStyle("body2")};
                 `}
               >
                 To check your balance please connect your account

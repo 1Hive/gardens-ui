@@ -1,22 +1,25 @@
-/** @jsx jsx */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui';
-import CompactFilter from './CompactFilter';
-import ListFilter from './ListFilter';
-import TextFilter from './TextFilter';
-import { useWallet } from '@providers/Wallet';
-import { STATUS_FILTER_OPEN } from '@utils/filter-utils';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, DropDown, GU, textStyle, useTheme } from "@1hive/1hive-ui";
+import CompactFilter from "./CompactFilter";
+import ListFilter from "./ListFilter";
+import TextFilter from "./TextFilter";
+import { useWallet } from "@providers/Wallet";
+import { STATUS_FILTER_OPEN } from "@utils/filter-utils";
+import { css, jsx } from "@emotion/react";
 
 const Filters = React.memo(({ compact, ...props }) => {
   const theme = useTheme();
   const { account } = useWallet();
 
-  const supportFilterDisabled = props.proposalStatusFilter > STATUS_FILTER_OPEN || !account;
+  const supportFilterDisabled =
+    props.proposalStatusFilter > STATUS_FILTER_OPEN || !account;
 
   if (compact) {
-    return <CompactFilter {...props} supportFilterDisabled={supportFilterDisabled} />;
+    return (
+      <CompactFilter {...props} supportFilterDisabled={supportFilterDisabled} />
+    );
   }
 
   const {
@@ -63,14 +66,18 @@ const Filters = React.memo(({ compact, ...props }) => {
         >
           <div
             css={css`
-              ${textStyle('label2')};
+              ${textStyle("label2")};
             `}
           >
             Filters
           </div>
           <Button onClick={onClearFilters} label="Clear" size="mini" />
         </div>
-        <ListFilter items={itemsType} onChange={onTypeFilterChange} selected={proposalTypeFilter} />
+        <ListFilter
+          items={itemsType}
+          onChange={onTypeFilterChange}
+          selected={proposalTypeFilter}
+        />
       </div>
       <div
         css={css`
@@ -80,7 +87,7 @@ const Filters = React.memo(({ compact, ...props }) => {
         <label
           css={css`
             display: block;
-            ${textStyle('label2')};
+            ${textStyle("label2")};
             margin-bottom: ${1 * GU}px;
           `}
         >
@@ -103,7 +110,7 @@ const Filters = React.memo(({ compact, ...props }) => {
           <label
             css={css`
               display: block;
-              ${textStyle('label2')};
+              ${textStyle("label2")};
               margin-bottom: ${1 * GU}px;
             `}
           >
@@ -118,7 +125,11 @@ const Filters = React.memo(({ compact, ...props }) => {
           />
         </div>
       )}
-      <TextFilter text={proposalNameFilter} onChange={onNameFilterChange} placeholder="Search by proposal name" />
+      <TextFilter
+        text={proposalNameFilter}
+        onChange={onNameFilterChange}
+        placeholder="Search by proposal name"
+      />
     </div>
   );
 });

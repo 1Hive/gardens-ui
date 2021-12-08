@@ -1,109 +1,145 @@
-import React, { Fragment, useCallback, useReducer, useState } from 'react';
-import { Field, GU, Help, Info, Link, TextInput, textStyle, useTheme } from '@1hive/1hive-ui';
-import CovenantModal from './CovenantModal';
-import { DurationFields, Header, FileUploaderField, TextFileUploader, AmountField } from '@components/Onboarding/kit';
-import Navigation from '@components/Onboarding/Navigation';
-import { useOnboardingState } from '@providers/Onboarding';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { Fragment, useCallback, useReducer, useState } from "react";
+import {
+  Field,
+  GU,
+  Help,
+  Info,
+  Link,
+  TextInput,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import CovenantModal from "./CovenantModal";
+import {
+  DurationFields,
+  Header,
+  FileUploaderField,
+  TextFileUploader,
+  AmountField,
+} from "@components/Onboarding/kit";
+import Navigation from "@components/Onboarding/Navigation";
+import { useOnboardingState } from "@providers/Onboarding";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const MAX_TITLE_LENGTH = 50;
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
-    case 'title':
+    case "title":
       return { ...fields, title: value };
-    case 'covenantFile':
+    case "covenantFile":
       return { ...fields, covenantFile: value };
-    case 'challengePeriod':
+    case "challengePeriod":
       return { ...fields, challengePeriod: value };
-    case 'challengeAmount':
+    case "challengeAmount":
       return { ...fields, challengeAmount: value };
-    case 'actionAmount':
+    case "actionAmount":
       return { ...fields, actionAmount: value };
     default:
       return fields;
   }
 };
 
-const validateAgreementSettings = (title, covenantFile, actionAmount, challengeAmount, challengePeriod) => {
+const validateAgreementSettings = (
+  title,
+  covenantFile,
+  actionAmount,
+  challengeAmount,
+  challengePeriod
+) => {
   if (!title.trim()) {
-    return 'Please add a title.';
+    return "Please add a title.";
   }
   if (!covenantFile?.content) {
-    return 'File content empty. Please upload your Covenant.';
+    return "File content empty. Please upload your Covenant.";
   }
   if (!actionAmount) {
-    return 'Please add an action deposit.';
+    return "Please add an action deposit.";
   }
   if (!challengeAmount) {
-    return 'Please add a challenge deposit.';
+    return "Please add a challenge deposit.";
   }
   if (!challengePeriod) {
-    return 'Please add a settlement period.';
+    return "Please add a settlement period.";
   }
   return null;
 };
 
 function AgreementSettings() {
   const theme = useTheme();
-  const { config, onBack, onConfigChange, onNext, step, steps } = useOnboardingState();
+  const {
+    config,
+    onBack,
+    onConfigChange,
+    onNext,
+    step,
+    steps,
+  } = useOnboardingState();
   const [formError, setFormError] = useState();
-  const [{ actionAmount, challengeAmount, challengePeriod, covenantFile, title }, updateField] = useReducer(
-    reduceFields,
-    config.agreement,
-  );
+  const [
+    { actionAmount, challengeAmount, challengePeriod, covenantFile, title },
+    updateField,
+  ] = useReducer(reduceFields, config.agreement);
   const [covenantOpened, setCovenantOpened] = useState(false);
-  const [formatValidationColor, setFormatValidationColor] = useState(theme.contentSecondary.toString());
+  const [formatValidationColor, setFormatValidationColor] = useState(
+    theme.contentSecondary.toString()
+  );
 
   const handleActionAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['actionAmount', value]);
+      updateField(["actionAmount", value]);
     },
-    [setFormError, updateField],
+    [setFormError, updateField]
   );
 
   const handleChallengeAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['challengeAmount', value]);
+      updateField(["challengeAmount", value]);
     },
-    [setFormError, updateField],
+    [setFormError, updateField]
   );
 
   const handleChallengePeriod = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['challengePeriod', value]);
+      updateField(["challengePeriod", value]);
     },
-    [setFormError, updateField],
+    [setFormError, updateField]
   );
 
   const handleCovenantFileChange = useCallback(
-    file => {
+    (file) => {
       setFormError(null);
-      updateField(['covenantFile', file]);
+      updateField(["covenantFile", file]);
     },
-    [setFormError, updateField],
+    [setFormError, updateField]
   );
 
   const handleTitleChange = useCallback(
     ({ target: { value } }) => {
       if (value.length <= MAX_TITLE_LENGTH) {
         setFormError(null);
-        updateField(['title', value]);
+        updateField(["title", value]);
       }
     },
-    [setFormError, updateField],
+    [setFormError, updateField]
   );
 
   const handleNextClick = useCallback(() => {
-    const error = validateAgreementSettings(title, covenantFile, actionAmount, challengeAmount, challengePeriod);
+    const error = validateAgreementSettings(
+      title,
+      covenantFile,
+      actionAmount,
+      challengeAmount,
+      challengePeriod
+    );
     setFormError(error);
 
     if (!error) {
-      onConfigChange('agreement', {
+      onConfigChange("agreement", {
         actionAmount,
         challengeAmount,
         challengePeriod,
@@ -112,7 +148,15 @@ function AgreementSettings() {
       });
       onNext();
     }
-  }, [actionAmount, challengeAmount, challengePeriod, covenantFile, onConfigChange, onNext, title]);
+  }, [
+    actionAmount,
+    challengeAmount,
+    challengePeriod,
+    covenantFile,
+    onConfigChange,
+    onNext,
+    title,
+  ]);
 
   const handleOnDragAccepted = useCallback(() => {
     setFormatValidationColor(theme.contentSecondary.toString());
@@ -122,7 +166,8 @@ function AgreementSettings() {
     setFormatValidationColor(theme.error.toString());
   }, [theme]);
 
-  const collateralTokenSymbol = config.tokens.existingTokenSymbol || config.tokens.symbol;
+  const collateralTokenSymbol =
+    config.tokens.existingTokenSymbol || config.tokens.symbol;
 
   return (
     <div>
@@ -137,7 +182,12 @@ function AgreementSettings() {
         `}
       >
         <Field label="Title">
-          <TextInput value={title} onChange={handleTitleChange} autofocus wide />
+          <TextInput
+            value={title}
+            onChange={handleTitleChange}
+            autofocus
+            wide
+          />
         </Field>
         <div
           css={css`
@@ -148,7 +198,7 @@ function AgreementSettings() {
         >
           <span
             css={css`
-              ${textStyle('label2')};
+              ${textStyle("label2")};
               color: ${theme.surfaceContentSecondary.toString()};
               margin-right: ${0.5 * GU}px;
             `}
@@ -156,23 +206,26 @@ function AgreementSettings() {
             Covenant
           </span>
           <Help>
-            A covenant is a document, stored on IPFS, which explains what the Garden is about in plain English. It
-            establishes values, rules, and customs. And is used to protect the Garden from malicious actors without
-            sacrificing the agency of its members. Take{' '}
-            <Link href="https://1hive.org/#/covenant">1Hive’s Covenant</Link> as an example.
+            A covenant is a document, stored on IPFS, which explains what the
+            Garden is about in plain English. It establishes values, rules, and
+            customs. And is used to protect the Garden from malicious actors
+            without sacrificing the agency of its members. Take{" "}
+            <Link href="https://1hive.org/#/covenant">1Hive’s Covenant</Link> as
+            an example.
           </Help>
         </div>
         <div
           css={css`
             display: flex;
             flex-direction: column;
-            ${textStyle('body2')};
+            ${textStyle("body2")};
             color: ${theme.contentSecondary.toString()};
           `}
         >
           <span>
-            Drag and drop a document here or <TextFileUploader /> to upload your community covenant. By uploading a
-            file, you agree to Gardens uploading this file to IPFS.
+            Drag and drop a document here or <TextFileUploader /> to upload your
+            community covenant. By uploading a file, you agree to Gardens
+            uploading this file to IPFS.
           </span>
           <span
             css={css`
@@ -186,7 +239,7 @@ function AgreementSettings() {
           </span>
         </div>
         <FileUploaderField
-          allowedMIMETypes={['text/markdown', 'text/plain']}
+          allowedMIMETypes={["text/markdown", "text/plain"]}
           file={covenantFile}
           onDragAccepted={handleOnDragAccepted}
           onDragRejected={handleOnDragRejected}
@@ -212,8 +265,9 @@ function AgreementSettings() {
             <Fragment>
               Action Deposit
               <Help hint="What is Action Deposit?">
-                <strong>Action Deposit</strong> is the amount of collateral tokens that will be locked every time an
-                action (proposal for funding, signaling proposal and decision vote) is submitted.
+                <strong>Action Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal and decision vote) is submitted.
               </Help>
             </Fragment>
           }
@@ -227,8 +281,9 @@ function AgreementSettings() {
             <Fragment>
               Challenge Deposit
               <Help hint="What is Challenge Deposit?">
-                <strong>Challenge Deposit</strong> is the amount of collateral tokens that will be locked every time an
-                action (proposal for funding, signaling proposal or decision vote) is challenged.
+                <strong>Challenge Deposit</strong> is the amount of collateral
+                tokens that will be locked every time an action (proposal for
+                funding, signaling proposal or decision vote) is challenged.
               </Help>
             </Fragment>
           }
@@ -242,9 +297,11 @@ function AgreementSettings() {
             <Fragment>
               Settlement Period
               <Help hint="What is the Settlement Period?">
-                The <strong>Settlement Period</strong> is the amount of time the proposal author has to either accept a
-                settlement or raise the dispute to <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link> after a
-                proposal has been challenged.
+                The <strong>Settlement Period</strong> is the amount of time the
+                proposal author has to either accept a settlement or raise the
+                dispute to{" "}
+                <Link href="https://1hive.gitbook.io/celeste/">Celeste</Link>{" "}
+                after a proposal has been challenged.
               </Help>
             </Fragment>
           }
@@ -262,7 +319,11 @@ function AgreementSettings() {
           </Info>
         )}
       </div>
-      <CovenantModal open={covenantOpened} file={covenantFile} onClose={() => setCovenantOpened(false)} />
+      <CovenantModal
+        open={covenantOpened}
+        file={covenantFile}
+        onClose={() => setCovenantOpened(false)}
+      />
       <Navigation
         backEnabled
         nextEnabled

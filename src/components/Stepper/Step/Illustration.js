@@ -1,14 +1,19 @@
-import React from 'react';
-import { useTheme } from '@1hive/1hive-ui';
+import React from "react";
+import { useTheme } from "@1hive/1hive-ui";
 
-import { STEP_ERROR, STEP_SUCCESS, STEP_PROMPTING, STEP_WORKING } from '../stepper-statuses';
+import {
+  STEP_ERROR,
+  STEP_SUCCESS,
+  STEP_PROMPTING,
+  STEP_WORKING,
+} from "../stepper-statuses";
 
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg';
-import signRequestFailIllustration from '@assets/signRequestFail.svg';
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg';
-import blockIcon from '@assets/blockIcon.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import signRequestSuccessIllustration from "@assets/signRequestSuccess.svg";
+import signRequestFailIllustration from "@assets/signRequestFail.svg";
+import trxBeingMinedIllustration from "@assets/trxBeingMined.svg";
+import blockIcon from "@assets/blockIcon.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const illustrations = {
   [STEP_WORKING]: trxBeingMinedIllustration,

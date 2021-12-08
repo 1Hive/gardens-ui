@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { eachDayOfInterval, GU } from '@1hive/1hive-ui';
-import MonthDay from './MonthDay';
-import { Selector } from './components';
-import { dayjs } from '@utils/date-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { eachDayOfInterval, GU } from "@1hive/1hive-ui";
+import MonthDay from "./MonthDay";
+import { Selector } from "./components";
+import { dayjs } from "@utils/date-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 function DatePicker({
   initialDate,
   onSelect,
@@ -21,24 +21,24 @@ function DatePicker({
 }) {
   const [selectedDate, setSelectedDate] = useState(initialDate);
 
-  const setDate = ({ year, add }) => event => {
+  const setDate = ({ year, add }) => (event) => {
     setSelectedDate(
       dayjs(selectedDate)
-        .startOf('month')
-        [add ? 'add' : 'subtract'](1, year ? 'year' : 'month')
-        .toDate(),
+        .startOf("month")
+        [add ? "add" : "subtract"](1, year ? "year" : "month")
+        .toDate()
     );
   };
 
   const today = dayjs()
-    .startOf('day')
+    .startOf("day")
     .toDate();
 
   const selectedDayjs = dayjs(selectedDate || today);
 
-  const isSelected = day => {
+  const isSelected = (day) => {
     if (initialDate) {
-      return day.isSame(initialDate, 'day');
+      return day.isSame(initialDate, "day");
     }
     return false;
   };
@@ -51,14 +51,23 @@ function DatePicker({
       {...props}
     >
       {!hideYearSelector && (
-        <Selector prev={setDate({ year: true, add: false })} next={setDate({ year: true, add: true })} small>
+        <Selector
+          prev={setDate({ year: true, add: false })}
+          next={setDate({ year: true, add: true })}
+          small
+        >
           {selectedDayjs.format(yearFormat)}
         </Selector>
       )}
 
       {!hideMonthSelector && (
-        <Selector prev={setDate({ year: false, add: false })} next={setDate({ year: false, add: true })}>
-          {selectedDayjs.format(!hideYearSelector ? monthFormat : monthYearFormat)}
+        <Selector
+          prev={setDate({ year: false, add: false })}
+          next={setDate({ year: false, add: true })}
+        >
+          {selectedDayjs.format(
+            !hideYearSelector ? monthFormat : monthYearFormat
+          )}
         </Selector>
       )}
 
@@ -71,28 +80,31 @@ function DatePicker({
       >
         {!hideWeekDays &&
           eachDayOfInterval({
-            start: selectedDayjs.startOf('week'),
-            end: selectedDayjs.endOf('week'),
-          }).map(day => {
+            start: selectedDayjs.startOf("week"),
+            end: selectedDayjs.endOf("week"),
+          }).map((day) => {
             const dayJs = dayjs(day);
             return (
-              <MonthDay key={dayJs.format('dd')} weekDay>
+              <MonthDay key={dayJs.format("dd")} weekDay>
                 {dayJs.format(weekDayFormat)}
               </MonthDay>
             );
           })}
 
         {eachDayOfInterval({
-          start: selectedDayjs.startOf('month').startOf('week'),
-          end: selectedDayjs.endOf('month').endOf('week'),
-        }).map(day => {
+          start: selectedDayjs.startOf("month").startOf("week"),
+          end: selectedDayjs.endOf("month").endOf("week"),
+        }).map((day) => {
           const dayJs = dayjs(day);
           return (
             <MonthDay
               key={dayJs.valueOf()}
-              disabled={!selectedDayjs.isSame(dayJs, 'month') || (validFromToday && dayJs.isBefore(today))}
+              disabled={
+                !selectedDayjs.isSame(dayJs, "month") ||
+                (validFromToday && dayJs.isBefore(today))
+              }
               selected={isSelected(dayJs)}
-              today={dayJs.isSame(today, 'day')}
+              today={dayJs.isSame(today, "day")}
               onClick={() => onSelect(dayJs.toDate())}
             >
               {dayJs.format(props.dayFormat)}
@@ -130,11 +142,11 @@ DatePicker.propTypes = {
 
 DatePicker.defaultProps = {
   onSelect: () => {},
-  dayFormat: 'D',
-  monthFormat: 'MMMM',
-  monthYearFormat: 'MMMM YYYY',
-  weekDayFormat: 'ddd',
-  yearFormat: 'YYYY',
+  dayFormat: "D",
+  monthFormat: "MMMM",
+  monthYearFormat: "MMMM YYYY",
+  weekDayFormat: "ddd",
+  yearFormat: "YYYY",
 };
 
 export default DatePicker;

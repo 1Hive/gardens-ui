@@ -1,14 +1,14 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import { GU, useViewport, useTheme } from '@1hive/1hive-ui';
-import ProposalFooter from './ProposalFooter';
-import ProposalHeader from './ProposalHeader';
-import ProposalInfo from './ProposalInfo';
-import { useProposalWithThreshold } from '@hooks/useProposals';
-import { buildGardenPath } from '@utils/routing-utils';
-import { ProposalTypes } from '@/types';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { GU, useViewport, useTheme } from "@1hive/1hive-ui";
+import ProposalFooter from "./ProposalFooter";
+import ProposalHeader from "./ProposalHeader";
+import ProposalInfo from "./ProposalInfo";
+import { useProposalWithThreshold } from "@hooks/useProposals";
+import { buildGardenPath } from "@utils/routing-utils";
+import { ProposalTypes } from "@/types";
+import { css, jsx } from "@emotion/react";
 
 function ProposalCard({ proposal, ...props }) {
   return proposal.type === ProposalTypes.Decision ? (
@@ -30,9 +30,13 @@ function Card({ loading = false, proposal }) {
   const { below } = useViewport();
 
   const handleSelectProposal = useCallback(() => {
-    const entityPath = proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal';
+    const entityPath =
+      proposal.type === ProposalTypes.Decision ? "vote" : "proposal";
 
-    const path = buildGardenPath(history.location, `${entityPath}/${proposal.number}`);
+    const path = buildGardenPath(
+      history.location,
+      `${entityPath}/${proposal.number}`
+    );
     history.push(path);
   }, [history, proposal.number, proposal.type]);
 
@@ -45,7 +49,7 @@ function Card({ loading = false, proposal }) {
         padding: ${3 * GU}px;
         border-radius: ${2 * GU}px;
 
-        ${below('medium') &&
+        ${below("medium") &&
           `
           padding-left: ${2 * GU}px;
           padding-right: ${2 * GU}px;
@@ -55,8 +59,15 @@ function Card({ loading = false, proposal }) {
         `}
       `}
     >
-      <ProposalHeader proposal={proposal} onSelectProposal={handleSelectProposal} />
-      <ProposalInfo loading={loading} proposal={proposal} onSelectProposal={handleSelectProposal} />
+      <ProposalHeader
+        proposal={proposal}
+        onSelectProposal={handleSelectProposal}
+      />
+      <ProposalInfo
+        loading={loading}
+        proposal={proposal}
+        onSelectProposal={handleSelectProposal}
+      />
       <ProposalFooter proposal={proposal} />
     </div>
   );

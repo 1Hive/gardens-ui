@@ -1,20 +1,32 @@
-import React, { useCallback, useMemo } from 'react';
-import { Button, GU, Info, Link, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
-import InfoField from '../../InfoField';
-import ModalButton from '../ModalButton';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import { useTokenBalanceOf, useTokenData } from '@hooks/useToken';
-import { useWallet } from '@providers/Wallet';
+import React, { useCallback, useMemo } from "react";
+import {
+  Button,
+  GU,
+  Info,
+  Link,
+  LoadingRing,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import InfoField from "../../InfoField";
+import ModalButton from "../ModalButton";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import { useTokenBalanceOf, useTokenData } from "@hooks/useToken";
+import { useWallet } from "@providers/Wallet";
 
-import { formatTokenAmount } from '@utils/token-utils';
+import { formatTokenAmount } from "@utils/token-utils";
 
-import iconError from '@assets/iconError.svg';
-import iconCheck from '@assets/iconCheck.svg';
-import { getNetwork } from '@/networks';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import iconError from "@assets/iconError.svg";
+import iconCheck from "@assets/iconCheck.svg";
+import { getNetwork } from "@/networks";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-function RaiseDisputeRequirements({ celesteSynced, disputeFees, getTransactions }) {
+function RaiseDisputeRequirements({
+  celesteSynced,
+  disputeFees,
+  getTransactions,
+}) {
   const { account } = useWallet();
   const { next } = useMultiModal();
   // Dispute fee token data
@@ -35,20 +47,28 @@ function RaiseDisputeRequirements({ celesteSynced, disputeFees, getTransactions 
           <LoadingRing />
         ) : (
           <span>
-            You must deposit {formatTokenAmount(disputeFees.amount, feeToken.decimals)} {feeToken.symbol} as the dispute
-            fees. This balance will be returned to your account if Celeste outcome is to allow the action.
+            You must deposit{" "}
+            {formatTokenAmount(disputeFees.amount, feeToken.decimals)}{" "}
+            {feeToken.symbol} as the dispute fees. This balance will be returned
+            to your account if Celeste outcome is to allow the action.
           </span>
         )}
       </InfoField>
       {!loadingFeeToken && (
-        <FeesStatus accountBalance={accountBalance} feesAmount={disputeFees.amount} token={feeToken} />
+        <FeesStatus
+          accountBalance={accountBalance}
+          feesAmount={disputeFees.amount}
+          token={feeToken}
+        />
       )}
       <div
         css={css`
           margin-top: ${3 * GU}px;
         `}
       >
-        <InfoField label="Celeste status">Celeste's term must be up to date in order to dispute this action.</InfoField>
+        <InfoField label="Celeste status">
+          Celeste's term must be up to date in order to dispute this action.
+        </InfoField>
         <CelesteSyncedStatus synced={celesteSynced} />
       </div>
       <ModalButton
@@ -69,12 +89,13 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
   const infoData = useMemo(() => {
     if (accountBalance.gte(feesAmount)) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: "#EBFBF6",
         color: theme.positive.toString(),
         icon: iconCheck,
-        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(feesAmount, token.decimals)} ${
-          token.symbol
-        } as the dispute fees.`,
+        text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
+          feesAmount,
+          token.decimals
+        )} ${token.symbol} as the dispute fees.`,
       };
     }
 
@@ -84,7 +105,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       icon: iconError,
       text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
         feesAmount,
-        token.decimals,
+        token.decimals
       )} ${token.symbol} as the dispute fees.`,
     };
   }, [accountBalance, feesAmount, theme, token]);
@@ -99,7 +120,7 @@ function CelesteSyncedStatus({ synced }) {
   const infoData = useMemo(() => {
     if (synced) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: "#EBFBF6",
         color: theme.positive.toString(),
         icon: iconCheck,
         text: `Celeste is Synced!`,
@@ -112,7 +133,8 @@ function CelesteSyncedStatus({ synced }) {
       icon: iconError,
       text: (
         <div>
-          Celeste is not synced, head over to the <Link href={celesteUrl}>dashboard</Link> and update the term.
+          Celeste is not synced, head over to the{" "}
+          <Link href={celesteUrl}>dashboard</Link> and update the term.
         </div>
       ),
     };
@@ -136,7 +158,7 @@ function InfoBox({ data }) {
         css={css`
           display: flex;
           align-items: center;
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
         <img src={data.icon} width="18" height="18" />

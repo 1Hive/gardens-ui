@@ -1,8 +1,14 @@
-/** @jsx jsx */
-import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react';
-import { Spring } from 'react-spring/renderprops';
-import { unselectable, springs } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, {
+  useMemo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Spring } from "react-spring/renderprops";
+import { unselectable, springs } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
 
 const LABELS_HEIGHT = 30;
 const WIDTH_DEFAULT = 300;
@@ -18,16 +24,16 @@ function useMeasuredWidth() {
   }, []);
 
   const onRef = useCallback(
-    element => {
+    (element) => {
       ref.current = element;
       onResize();
     },
-    [onResize],
+    [onResize]
   );
 
   useEffect(() => {
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [onResize]);
 
   return [measuredWidth, onRef];
@@ -53,7 +59,9 @@ const ModifiedLineChart = ({
 
   // the total amount of values
   const lines = useMemo(() => {
-    return linesProps.map(lineOrValues => (Array.isArray(lineOrValues) ? { values: lineOrValues } : lineOrValues));
+    return linesProps.map((lineOrValues) =>
+      Array.isArray(lineOrValues) ? { values: lineOrValues } : lineOrValues
+    );
   }, [linesProps]);
 
   // the count of provided values
@@ -69,10 +77,10 @@ const ModifiedLineChart = ({
   }, [valuesCount, total]);
 
   const getX = useCallback(
-    index => {
+    (index) => {
       return (width / Math.max(1, totalCount - 1)) * index;
     },
-    [width, totalCount],
+    [width, totalCount]
   );
 
   const getY = useCallback(
@@ -80,27 +88,42 @@ const ModifiedLineChart = ({
       const padding = dotRadius + 2;
       return height - padding - (height - padding * 2) * percentage * progress;
     },
-    [dotRadius],
+    [dotRadius]
   );
 
   const getLabelPosition = useCallback((index, length) => {
-    if (index === 0) return 'start';
-    if (index === length - 1) return 'end';
-    return 'middle';
+    if (index === 0) return "start";
+    if (index === length - 1) return "end";
+    return "middle";
   }, []);
 
-  const labels = label && totalCount > 0 ? [...Array(totalCount).keys()].map(label) : null;
+  const labels =
+    label && totalCount > 0 ? [...Array(totalCount).keys()].map(label) : null;
 
   const chartHeight = height - (labels ? LABELS_HEIGHT : 0);
 
   const rectangle = (
     <g>
-      <rect width={width} height={chartHeight} rx="3" ry="3" fill="#ffffff" strokeWidth="1" stroke={borderColor} />
+      <rect
+        width={width}
+        height={chartHeight}
+        rx="3"
+        ry="3"
+        fill="#ffffff"
+        strokeWidth="1"
+        stroke={borderColor}
+      />
     </g>
   );
 
   return (
-    <Spring from={{ progress: 0 }} to={{ progress: 1 }} config={springConfig} delay={animDelay} reset={reset}>
+    <Spring
+      from={{ progress: 0 }}
+      to={{ progress: 1 }}
+      config={springConfig}
+      delay={animDelay}
+      reset={reset}
+    >
       {({ progress }) => (
         <svg
           viewBox={`0 0 ${width} ${height}`}
@@ -120,8 +143,9 @@ const ModifiedLineChart = ({
               <path
                 d={`
                     ${[...new Array(totalCount - 1)].reduce(
-                      (path, _, index) => `${path} M ${getX(index)},${chartHeight} l 0,-8`,
-                      '',
+                      (path, _, index) =>
+                        `${path} M ${getX(index)},${chartHeight} l 0,-8`,
+                      ""
                     )}
                   `}
                 stroke={borderColor}
@@ -143,9 +167,9 @@ const ModifiedLineChart = ({
                                   `L
                                    ${getX((index + 1) * progress)},
                                    ${getY(val, progress, chartHeight)}
-                                  `,
+                                  `
                               )
-                              .join('')}
+                              .join("")}
                           `}
                   fill="transparent"
                   stroke={line.color || color(lineIndex, { lines })}
@@ -165,9 +189,9 @@ const ModifiedLineChart = ({
                                   `L
                                    ${getX((index + 1) * progress)},
                                    ${getY(val, progress, chartHeight)}
-                                  `,
+                                  `
                               )
-                              .join('')}
+                              .join("")}
                           `}
                   fill="transparent"
                   stroke={line.color || color(lineIndex, { lines })}
@@ -224,7 +248,7 @@ const ModifiedLineChart = ({
                     >
                       {label}
                     </text>
-                  ),
+                  )
               )}
             </g>
           )}
@@ -242,11 +266,12 @@ ModifiedLineChart.defaultProps = {
   dotRadius: 7 / 2,
   animDelay: 500,
   reset: false,
-  borderColor: 'rgba(209, 209, 209, 0.5)',
-  labelColor: '#6d777b',
+  borderColor: "rgba(209, 209, 209, 0.5)",
+  labelColor: "#6d777b",
   lines: [],
-  label: index => index + 1,
-  color: (index, { lines }) => `hsl(${(index * (360 / lines.length) + 40) % 360}, 60%, 70%)`,
+  label: (index) => index + 1,
+  color: (index, { lines }) =>
+    `hsl(${(index * (360 / lines.length) + 40) % 360}, 60%, 70%)`,
 };
 
 export default ModifiedLineChart;

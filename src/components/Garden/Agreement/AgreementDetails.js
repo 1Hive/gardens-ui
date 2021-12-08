@@ -1,17 +1,32 @@
-/** @jsx jsx */
-import React from 'react';
-import { textStyle, IdentityBadge, Link, IconCheck, useLayout, GU, RADIUS, useTheme } from '@1hive/1hive-ui';
-import { dateFormat } from '@utils/date-utils';
-import InfoField from '../InfoField';
-import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils';
-import { getNetwork } from '@/networks';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import {
+  textStyle,
+  IdentityBadge,
+  Link,
+  IconCheck,
+  useLayout,
+  GU,
+  RADIUS,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { dateFormat } from "@utils/date-utils";
+import InfoField from "../InfoField";
+import { getIpfsCidFromUri, getIpfsUrlFromUri } from "@utils/ipfs-utils";
+import { getNetwork } from "@/networks";
+import { css, jsx } from "@emotion/react";
 
-function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddress, signedAgreement }) {
+function AgreementDetails({
+  creationDate,
+  contractAddress,
+  ipfsUri,
+  stakingAddress,
+  signedAgreement,
+}) {
   const theme = useTheme();
   const { layoutName } = useLayout();
-  const mobileMode = layoutName === 'small';
-  const multiColumnsMode = layoutName === 'max' || layoutName === 'medium';
+  const mobileMode = layoutName === "small";
+  const multiColumnsMode = layoutName === "max" || layoutName === "medium";
 
   const celesteUrl = getNetwork().celesteUrl;
 
@@ -28,7 +43,7 @@ function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddre
           <Link
             href={getIpfsUrlFromUri(ipfsUri)}
             style={{
-              maxWidth: '90%',
+              maxWidth: "90%",
             }}
           >
             <span
@@ -39,7 +54,9 @@ function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddre
                 text-align: left;
               `}
             >
-              {mobileMode ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}` : ipfsCID}
+              {mobileMode
+                ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}`
+                : ipfsCID}
             </span>
           </Link>
         </InfoField>
@@ -48,7 +65,7 @@ function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddre
         css={css`
           display: grid;
           grid-gap: ${multiColumnsMode ? 2 * GU : 3 * GU}px;
-          grid-auto-flow: ${multiColumnsMode ? 'column' : 'row'};
+          grid-auto-flow: ${multiColumnsMode ? "column" : "row"};
         `}
       >
         <InfoField label="Arbitrator">
@@ -100,7 +117,7 @@ function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddre
             <div>
               <h2
                 css={css`
-                  ${textStyle('body1')}
+                  ${textStyle("body1")}
                   font-weight: 600;
                 `}
               >
@@ -111,7 +128,8 @@ function AgreementDetails({ creationDate, contractAddress, ipfsUri, stakingAddre
                   color: ${theme.surfaceContentSecondary.toString()};
                 `}
               >
-                You can now manage your token balances using the Deposit Manager.
+                You can now manage your token balances using the Deposit
+                Manager.
               </p>
             </div>
           </div>

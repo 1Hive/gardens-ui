@@ -1,9 +1,18 @@
-/** @jsx jsx */
-import React, { useState, useCallback } from 'react';
-import { Button, ButtonBase, Link, GU, IconDown, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useState, useCallback } from "react";
+import {
+  Button,
+  ButtonBase,
+  Link,
+  GU,
+  IconDown,
+  RADIUS,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
 
-const SUPPORT_URL = 'https://github.com/1hive/gardens/issues/new';
+const SUPPORT_URL = "https://github.com/1hive/gardens/issues/new";
 
 type GenericErrorProps = {
   detailsTitle: string;
@@ -11,7 +20,11 @@ type GenericErrorProps = {
   reportCallback?: () => void;
 };
 
-const GenericError = React.memo(function({ detailsTitle, detailsContent, reportCallback }: GenericErrorProps) {
+const GenericError = React.memo(function({
+  detailsTitle,
+  detailsContent,
+  reportCallback,
+}: GenericErrorProps) {
   const theme = useTheme();
   const [opened, setOpened] = useState(false);
   const toggle = useCallback(() => {
@@ -23,7 +36,7 @@ const GenericError = React.memo(function({ detailsTitle, detailsContent, reportC
       <h1
         css={css`
           color: ${theme.surfaceContent.toString()};
-          ${textStyle('title2')};
+          ${textStyle("title2")};
           margin-bottom: ${1.5 * GU}px;
           text-align: center;
         `}
@@ -35,11 +48,12 @@ const GenericError = React.memo(function({ detailsTitle, detailsContent, reportC
           margin-bottom: ${5 * GU}px;
           text-align: center;
           color: ${theme.surfaceContentSecondary.toString()};
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
-        Something went wrong! You can restart the app, or you can{' '}
-        <Link href={SUPPORT_URL}>tell us what went wrong</Link> if the problem persists
+        Something went wrong! You can restart the app, or you can{" "}
+        <Link href={SUPPORT_URL}>tell us what went wrong</Link> if the problem
+        persists
       </p>
       {(detailsTitle || detailsContent) && (
         <div
@@ -54,7 +68,7 @@ const GenericError = React.memo(function({ detailsTitle, detailsContent, reportC
               display: flex;
               align-items: center;
               color: ${theme.surfaceContentSecondary.toString()};
-              ${textStyle('label2')};
+              ${textStyle("label2")};
             `}
           >
             Click here to see more details
@@ -77,13 +91,13 @@ const GenericError = React.memo(function({ detailsTitle, detailsContent, reportC
                 color: ${theme.text.toString()};
                 white-space: pre;
                 background: ${theme.surfaceUnder.toString()};
-                ${textStyle('body3')};
+                ${textStyle("body3")};
               `}
             >
               {detailsTitle && (
                 <h2
                   css={css`
-                    ${textStyle('body2')};
+                    ${textStyle("body2")};
                     margin-bottom: ${1.5 * GU}px;
                   `}
                 >
@@ -102,10 +116,12 @@ const GenericError = React.memo(function({ detailsTitle, detailsContent, reportC
               display: flex;
               justify-content: flex-end;
             `
-            : ''}
+            : ""}
         `}
       >
-        {reportCallback && <Button onClick={reportCallback}>Send Report</Button>}
+        {reportCallback && (
+          <Button onClick={reportCallback}>Send Report</Button>
+        )}
         <Button
           mode="strong"
           onClick={() => window.location.reload()}

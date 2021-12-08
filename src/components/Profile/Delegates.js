@@ -1,14 +1,23 @@
-import React from 'react';
-import { Box, GU, isAddress, Link, LoadingRing, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
-import IdentityBadge from '@components/IdentityBadge';
-import { useGardens } from '@providers/Gardens';
-import useUser from '@hooks/useUser';
-import { useWallet } from '@providers/Wallet';
+import React from "react";
+import {
+  Box,
+  GU,
+  isAddress,
+  Link,
+  LoadingRing,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import IdentityBadge from "@components/IdentityBadge";
+import { useGardens } from "@providers/Gardens";
+import useUser from "@hooks/useUser";
+import { useWallet } from "@providers/Wallet";
 
-import { addressesEqual } from '@utils/web3-utils';
-import { getGardenLabel } from '@utils/garden-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { addressesEqual } from "@utils/web3-utils";
+import { getGardenLabel } from "@utils/garden-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Delegates({ account }) {
   const [user, loading] = useUser(account);
@@ -45,11 +54,11 @@ function MyDelegates({ account, user }) {
     >
       <h3
         css={css`
-          ${textStyle('label2')};
+          ${textStyle("label2")};
           margin-bottom: ${1 * GU}px;
         `}
       >
-        {addressesEqual(account, connectedAccount) ? 'My ' : ''}Delegates
+        {addressesEqual(account, connectedAccount) ? "My " : ""}Delegates
       </h3>
       {user?.supports && user.supports.length > 0 ? (
         user.supports.map((support, index) => {
@@ -68,7 +77,7 @@ function MyDelegates({ account, user }) {
       ) : (
         <div
           css={css`
-            ${textStyle('body3')};
+            ${textStyle("body3")};
             color: ${theme.contentSecondary.toString()};
           `}
         >
@@ -91,7 +100,7 @@ function DelegateFor({ user }) {
     >
       <h3
         css={css`
-          ${textStyle('label2')};
+          ${textStyle("label2")};
           margin-bottom: ${1 * GU}px;
         `}
       >
@@ -100,13 +109,17 @@ function DelegateFor({ user }) {
       {user?.representativeFor && user.representativeFor.length > 0 ? (
         user.representativeFor.map((principal, index) => {
           return (
-            <DelegateItem key={index} address={principal.user.address} gardenAddress={principal.organization.id} />
+            <DelegateItem
+              key={index}
+              address={principal.user.address}
+              gardenAddress={principal.organization.id}
+            />
           );
         })
       ) : (
         <div
           css={css`
-            ${textStyle('body3')};
+            ${textStyle("body3")};
             color: ${theme.contentSecondary.toString()};
           `}
         >
@@ -129,9 +142,16 @@ const DelegateItem = ({ address, gardenAddress }) => {
         column-gap: ${0.5 * GU}px;
       `}
     >
-      <IdentityBadge entity={address} compact iconSize="18" labelStyle={`${textStyle('body3')}`} />
+      <IdentityBadge
+        entity={address}
+        compact
+        iconSize="18"
+        labelStyle={`${textStyle("body3")}`}
+      />
       <span>on</span>
-      <Link href={gardenPath}>{isAddress(gardenLabel) ? shortenAddress(gardenLabel) : gardenLabel}</Link>
+      <Link href={gardenPath}>
+        {isAddress(gardenLabel) ? shortenAddress(gardenLabel) : gardenLabel}
+      </Link>
     </div>
   );
 };

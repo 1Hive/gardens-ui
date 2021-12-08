@@ -1,10 +1,10 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useDisputeFees } from '@hooks/useDispute';
-import honeyIconSvg from '@assets/honey.svg';
-import { formatTokenAmount } from '@utils/token-utils';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, LoadingRing, textStyle, useTheme } from "@1hive/1hive-ui";
+import { useDisputeFees } from "@hooks/useDispute";
+import honeyIconSvg from "@assets/honey.svg";
+import { formatTokenAmount } from "@utils/token-utils";
+import { css, jsx } from "@emotion/react";
 
 function DisputeFees({ proposal }) {
   const theme = useTheme();
@@ -14,7 +14,7 @@ function DisputeFees({ proposal }) {
     <div>
       <h2
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           font-weight: 200;
           color: ${theme.surfaceContentSecondary.toString()};
           margin-bottom: ${2 * GU}px;
@@ -28,7 +28,7 @@ function DisputeFees({ proposal }) {
       ) : (
         <div
           css={css`
-            ${textStyle('body2')};
+            ${textStyle("body2")};
           `}
         >
           <div
@@ -48,7 +48,10 @@ function DisputeFees({ proposal }) {
             />
             {proposal.challengerArbitratorFee && (
               <div>
-                {formatTokenAmount(fees.amount, proposal.challengerArbitratorFee.tokenDecimals)}{' '}
+                {formatTokenAmount(
+                  fees.amount,
+                  proposal.challengerArbitratorFee.tokenDecimals
+                )}{" "}
                 {proposal.challengerArbitratorFee.tokenSymbol}
               </div>
             )}

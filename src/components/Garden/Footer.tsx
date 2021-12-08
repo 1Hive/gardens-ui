@@ -1,6 +1,6 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import {
   ButtonBase,
   GU,
@@ -10,47 +10,47 @@ import {
   useLayout,
   useViewport,
   useTheme,
-} from '@1hive/1hive-ui';
-import Layout from '../Layout';
-import MultiModal from '../MultiModal/MultiModal';
-import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useWallet } from '@providers/Wallet';
+} from "@1hive/1hive-ui";
+import Layout from "../Layout";
+import MultiModal from "../MultiModal/MultiModal";
+import CreateProposalScreens from "./ModalFlows/CreateProposalScreens/CreateProposalScreens";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useWallet } from "@providers/Wallet";
 
-import { buildGardenPath } from '@utils/routing-utils';
-import { getDexTradeTokenUrl } from '../../endpoints';
+import { buildGardenPath } from "@utils/routing-utils";
+import { getDexTradeTokenUrl } from "../../endpoints";
 
-import createSvg from '../../assets/create.svg';
-import defaultGardenLogo from '@assets/defaultGardenLogo.png';
-import getHoneySvg from '@assets/getHoney.svg'; // TODO: Update
-import gardenSvg from '@assets/gardensLogoMark.svg';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+import createSvg from "../../assets/create.svg";
+import defaultGardenLogo from "@assets/defaultGardenLogo.png";
+import getHoneySvg from "@assets/getHoney.svg"; // TODO: Update
+import gardenSvg from "@assets/gardensLogoMark.svg";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 const defaultFooterData = {
   links: {
     community: [
       {
-        label: 'Discord',
-        link: 'https://discord.gg/4fm7pgB',
+        label: "Discord",
+        link: "https://discord.gg/4fm7pgB",
       },
       {
-        label: 'Github',
-        link: 'https://github.com/1hive/gardens',
+        label: "Github",
+        link: "https://github.com/1hive/gardens",
       },
       {
-        label: 'Twitter',
-        link: 'https://twitter.com/gardensdao',
+        label: "Twitter",
+        link: "https://twitter.com/gardensdao",
       },
       {
-        label: 'Website',
-        link: 'https://gardens.1hive.org/',
+        label: "Website",
+        link: "https://gardens.1hive.org/",
       },
     ],
     documentation: [
       {
-        label: 'Gitbook',
-        link: 'https://1hive.gitbook.io/gardens',
+        label: "Gitbook",
+        link: "https://1hive.gitbook.io/gardens",
       },
     ],
   },
@@ -63,7 +63,7 @@ const defaultFooterData = {
 function Footer() {
   const theme = useTheme();
   const { below } = useViewport();
-  const compactMode = below('medium');
+  const compactMode = below("medium");
   const [footerData, setFooterData] = useState(defaultFooterData);
 
   const connectedGarden = useConnectedGarden();
@@ -95,7 +95,11 @@ function Footer() {
     >
       <Layout paddingBottom={40}>
         {compactMode ? (
-          footerData.garden && <FixedFooter token={footerData.wrappableToken || footerData.token} />
+          footerData.garden && (
+            <FixedFooter
+              token={footerData.wrappableToken || footerData.token}
+            />
+          )
         ) : (
           <div
             css={css`
@@ -122,7 +126,7 @@ function Footer() {
               <div>
                 <h5
                   css={css`
-                    ${textStyle('body1')};
+                    ${textStyle("body1")};
                     margin-bottom: ${1.5 * GU}px;
                   `}
                 >
@@ -141,7 +145,7 @@ function Footer() {
               <div>
                 <h5
                   css={css`
-                    ${textStyle('body1')};
+                    ${textStyle("body1")};
                     margin-bottom: ${1.5 * GU}px;
                   `}
                 >
@@ -169,10 +173,12 @@ function FixedFooter({ token }) {
   const { account } = useWallet();
   const { layoutName } = useLayout();
   const { preferredNetwork } = useWallet();
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(false);
+  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
+    false
+  );
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(history.location, 'covenant');
+    const path = buildGardenPath(history.location, "covenant");
     history.push(path);
   }, [history]);
 
@@ -200,12 +206,16 @@ function FixedFooter({ token }) {
               margin: 0 ${3 * GU}px;
               display: flex;
               align-items: center;
-              justify-content: ${layoutName === 'medium' ? 'space-between' : 'space-around'};
+              justify-content: ${layoutName === "medium"
+                ? "space-between"
+                : "space-around"};
             `}
           >
             <FooterItem
               href="#/home"
-              icon={<img src={gardenSvg} alt="home" width="24px" height="24px" />}
+              icon={
+                <img src={gardenSvg} alt="home" width="24px" height="24px" />
+              }
               label="Home"
             />
             <FooterItem
@@ -241,7 +251,10 @@ function FixedFooter({ token }) {
           </div>
         </div>
       </div>
-      <MultiModal visible={createProposalModalVisible} onClose={() => setCreateProposalModalVisible(false)}>
+      <MultiModal
+        visible={createProposalModalVisible}
+        onClose={() => setCreateProposalModalVisible(false)}
+      >
         <CreateProposalScreens />
       </MultiModal>
     </div>
@@ -292,7 +305,7 @@ function FooterItem({
         <span
           css={css`
             color: ${theme.contentSecondary.toString()};
-            ${textStyle('body4')};
+            ${textStyle("body4")};
             line-height: 1;
             display: block;
           `}

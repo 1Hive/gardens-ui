@@ -1,11 +1,17 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, ButtonIcon, IconRight, IconLeft, useTheme } from '@1hive/1hive-ui';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, ButtonIcon, IconRight, IconLeft, useTheme } from "@1hive/1hive-ui";
+import { css, jsx } from "@emotion/react";
 
-function PrevNext({ onClick, type }: { onClick: () => void; type: 'next' | 'previous' }) {
+function PrevNext({
+  onClick,
+  type,
+}: {
+  onClick: () => void;
+  type: "next" | "previous";
+}) {
   const theme = useTheme();
-  const next = type === 'next';
+  const next = type === "next";
   const Icon = next ? IconRight : IconLeft;
 
   let directionStyle = next
@@ -19,7 +25,7 @@ function PrevNext({ onClick, type }: { onClick: () => void; type: 'next' | 'prev
   return (
     <ButtonIcon
       onClick={onClick}
-      label={next ? 'Next' : 'Previous'}
+      label={next ? "Next" : "Previous"}
       css={css`
         position: absolute !important;
         z-index: 1;

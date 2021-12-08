@@ -1,14 +1,21 @@
-/** @jsx jsx */
-import React from 'react';
-import { IconCheck, Tag, textStyle, useLayout, GU, useTheme } from '@1hive/1hive-ui';
-import icon from './assets/icon.svg';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import {
+  IconCheck,
+  Tag,
+  textStyle,
+  useLayout,
+  GU,
+  useTheme,
+} from "@1hive/1hive-ui";
+import icon from "./assets/icon.svg";
+import { css, jsx } from "@emotion/react";
 
 function AgreementHeader({ title }) {
   const theme = useTheme();
   const { layoutName } = useLayout();
 
-  const compactMode = layoutName === 'small';
+  const compactMode = layoutName === "small";
 
   return (
     <div
@@ -29,7 +36,7 @@ function AgreementHeader({ title }) {
         <div>
           <h2
             css={css`
-              ${compactMode ? textStyle('title3') : textStyle('title2')};
+              ${compactMode ? textStyle("title3") : textStyle("title2")};
               margin-bottom: ${0.75 * GU}px;
             `}
           >

@@ -1,40 +1,56 @@
-/** @jsx jsx */
-import React, { useState, useCallback, useMemo } from 'react';
-import { TextInput, formatTokenAmount, Field, textStyle, GU, useTheme } from '@1hive/1hive-ui';
-import InfoField from '../../InfoField';
-import ModalButton from '../ModalButton';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import HelpTip from '@components/HelpTip';
-import { durationToHours, toMs } from '@utils/date-utils';
-import BigNumber from '@lib/bigNumber';
-import { toDecimals } from '@utils/math-utils';
-import { toHex } from 'web3-utils';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useState, useCallback, useMemo } from "react";
+import {
+  TextInput,
+  formatTokenAmount,
+  Field,
+  textStyle,
+  GU,
+  useTheme,
+} from "@1hive/1hive-ui";
+import InfoField from "../../InfoField";
+import ModalButton from "../ModalButton";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import HelpTip from "@components/HelpTip";
+import { durationToHours, toMs } from "@utils/date-utils";
+import BigNumber from "@lib/bigNumber";
+import { toDecimals } from "@utils/math-utils";
+import { toHex } from "web3-utils";
+import { css, jsx } from "@emotion/react";
 
 function ChallengeRequirements({ getTransactions, proposal }) {
   const theme = useTheme();
 
   const { collateralRequirement, actionId } = proposal;
-  const { challengeDuration, tokenDecimals, tokenSymbol, challengeAmount } = collateralRequirement;
+  const {
+    challengeDuration,
+    tokenDecimals,
+    tokenSymbol,
+    challengeAmount,
+  } = collateralRequirement;
 
   const settlementPeriodHours = durationToHours(toMs(challengeDuration));
 
   const [error, setError] = useState(null);
-  const [argument, setArgument] = useState('');
+  const [argument, setArgument] = useState("");
   const [loading, setLoading] = useState(false);
   const { next } = useMultiModal();
 
-  const maxChallengeAmount = useMemo(() => formatTokenAmount(challengeAmount, tokenDecimals), [
-    challengeAmount,
-    tokenDecimals,
-  ]);
+  const maxChallengeAmount = useMemo(
+    () => formatTokenAmount(challengeAmount, tokenDecimals),
+    [challengeAmount, tokenDecimals]
+  );
 
-  const [settlementAmount, setSettlementAmount] = useState(maxChallengeAmount.toString());
+  const [settlementAmount, setSettlementAmount] = useState(
+    maxChallengeAmount.toString()
+  );
 
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault();
-      const amountBN = new BigNumber(toDecimals(settlementAmount, tokenDecimals));
+      const amountBN = new BigNumber(
+        toDecimals(settlementAmount, tokenDecimals)
+      );
       setLoading(true);
 
       // Proceed to the next screen after transactions have been received
@@ -47,10 +63,10 @@ function ChallengeRequirements({ getTransactions, proposal }) {
         actionId,
         amountBN.toString(10),
         true,
-        toHex(argument),
+        toHex(argument)
       );
     },
-    [argument, next, actionId, getTransactions, settlementAmount, tokenDecimals],
+    [argument, next, actionId, getTransactions, settlementAmount, tokenDecimals]
   );
 
   const handleArgumentChange = useCallback(({ target }) => {
@@ -59,14 +75,17 @@ function ChallengeRequirements({ getTransactions, proposal }) {
 
   const handleSettlementChange = useCallback(
     ({ target }) => {
-      if (Number(target.value) < 0 || Number(target.value) > Number(maxChallengeAmount)) {
+      if (
+        Number(target.value) < 0 ||
+        Number(target.value) > Number(maxChallengeAmount)
+      ) {
         setError(true);
       } else {
         setError(null);
       }
       setSettlementAmount(target.value);
     },
-    [maxChallengeAmount],
+    [maxChallengeAmount]
   );
 
   return (
@@ -84,7 +103,7 @@ function ChallengeRequirements({ getTransactions, proposal }) {
         `}
       >
         <p>
-          {settlementPeriodHours}{' '}
+          {settlementPeriodHours}{" "}
           <span
             css={css`
               color: ${theme.surfaceContentSecondary.toString()};
@@ -121,10 +140,11 @@ function ChallengeRequirements({ getTransactions, proposal }) {
           css={css`
             margin-top: ${1 * GU}px;
             color: ${theme.surfaceContentSecondary.toString()};
-            ${textStyle('body3')};
+            ${textStyle("body3")};
           `}
         >
-          This amount cannot be greater than the proposal creation deposit amount : {maxChallengeAmount} {tokenSymbol}.
+          This amount cannot be greater than the proposal creation deposit
+          amount : {maxChallengeAmount} {tokenSymbol}.
         </p>
       </Field>
 
@@ -145,7 +165,12 @@ function ChallengeRequirements({ getTransactions, proposal }) {
           `}
         />
       </Field>
-      <ModalButton mode="strong" type="submit" loading={loading} disabled={error}>
+      <ModalButton
+        mode="strong"
+        type="submit"
+        loading={loading}
+        disabled={error}
+      >
         Create transaction
       </ModalButton>
     </form>

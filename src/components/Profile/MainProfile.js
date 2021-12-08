@@ -1,14 +1,30 @@
-import React from 'react';
-import { Box, EthIdenticon, GU, Link, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import {
+  Box,
+  EthIdenticon,
+  GU,
+  Link,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const IMAGE_DIMENSION = 20 * GU;
 const BOX_PADDING = 5 * GU;
 
 function MainProfile({ profile }) {
   const theme = useTheme();
-  const { account, description, email, image, name, verifiedAccounts, website } = profile || {};
+  const {
+    account,
+    description,
+    email,
+    image,
+    name,
+    verifiedAccounts,
+    website,
+  } = profile || {};
 
   return (
     <Box padding={BOX_PADDING}>
@@ -48,7 +64,7 @@ function MainProfile({ profile }) {
           <div>
             <div
               css={css`
-                ${textStyle('title3')}
+                ${textStyle("title3")}
               `}
             >
               {name}
@@ -98,23 +114,25 @@ function MainProfile({ profile }) {
                   margin-top: ${2 * GU}px;
                 `}
               >
-                {Object.values(verifiedAccounts).map((verifiedAccount, index) => {
-                  return (
-                    <div key={index}>
-                      <Link href={verifiedAccount.url}>
-                        <img
-                          src={verifiedAccount.icon}
-                          width="24"
-                          height="24"
-                          alt=""
-                          css={css`
-                            display: block;
-                          `}
-                        />
-                      </Link>
-                    </div>
-                  );
-                })}
+                {Object.values(verifiedAccounts).map(
+                  (verifiedAccount, index) => {
+                    return (
+                      <div key={index}>
+                        <Link href={verifiedAccount.url}>
+                          <img
+                            src={verifiedAccount.icon}
+                            width="24"
+                            height="24"
+                            alt=""
+                            css={css`
+                              display: block;
+                            `}
+                          />
+                        </Link>
+                      </div>
+                    );
+                  }
+                )}
               </div>
             )}
           </div>
@@ -134,7 +152,7 @@ function MainProfile({ profile }) {
               >
                 <h4
                   css={css`
-                    ${textStyle('body1')};
+                    ${textStyle("body1")};
                   `}
                 >
                   About me

@@ -1,11 +1,18 @@
-/** @jsx jsx */
-import React from 'react';
-import { EthIdenticon, GU, RADIUS, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useProfile } from '@providers/Profile';
-import HeaderModule from '../Header/HeaderModule';
-import { getNetworkName } from '@utils/web3-utils';
-import { useWallet } from '@providers/Wallet';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import {
+  EthIdenticon,
+  GU,
+  RADIUS,
+  shortenAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { useProfile } from "@providers/Profile";
+import HeaderModule from "../Header/HeaderModule";
+import { getNetworkName } from "@utils/web3-utils";
+import { useWallet } from "@providers/Wallet";
+import { css, jsx } from "@emotion/react";
 
 function AccountButton({ onClick }: { onClick?: () => void }) {
   const theme = useTheme();
@@ -54,7 +61,7 @@ function AccountButton({ onClick }: { onClick?: () => void }) {
           <div
             css={css`
               margin-bottom: -5px;
-              ${textStyle('body2')}
+              ${textStyle("body2")}
             `}
           >
             <div

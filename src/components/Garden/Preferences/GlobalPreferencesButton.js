@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from "react";
 import {
   ButtonBase,
   ButtonIcon,
@@ -11,9 +11,9 @@ import {
   textStyle,
   useTheme,
   useViewport,
-} from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function GlobalPreferencesButton({ onOpen }) {
   const theme = useTheme();
@@ -22,14 +22,14 @@ function GlobalPreferencesButton({ onOpen }) {
   const [opened, setOpened] = useState(false);
   const containerRef = useRef();
 
-  const handleToggle = useCallback(() => setOpened(opened => !opened), []);
+  const handleToggle = useCallback(() => setOpened((opened) => !opened), []);
   const handleClose = useCallback(() => setOpened(false), []);
   const handleItemClick = useCallback(
-    path => () => {
+    (path) => () => {
       setOpened(false);
       onOpen(path);
     },
-    [onOpen],
+    [onOpen]
   );
 
   return (
@@ -64,7 +64,7 @@ function GlobalPreferencesButton({ onOpen }) {
         <ul
           css={css`
             /* Use 20px as the padding setting for popper is 10px */
-            width: ${below('medium') ? `calc(100vw - 20px)` : `${42 * GU}px`};
+            width: ${below("medium") ? `calc(100vw - 20px)` : `${42 * GU}px`};
             padding: 0;
             margin: 0;
             list-style: none;
@@ -80,13 +80,17 @@ function GlobalPreferencesButton({ onOpen }) {
               height: ${4 * GU}px;
               padding-left: ${2 * GU}px;
               border-bottom: 1px solid ${theme.border.toString()};
-              ${textStyle('label2')};
+              ${textStyle("label2")};
               color: ${theme.surfaceContentSecondary.toString()};
             `}
           >
             Global preferences
           </li>
-          <Item onClick={handleItemClick('generalInfo')} Icon={IconConfiguration} label="Settings" />
+          <Item
+            onClick={handleItemClick("generalInfo")}
+            Icon={IconConfiguration}
+            label="Settings"
+          />
           <Item href="https://1hive.gitbook.io/gardens/">
             <div
               css={css`

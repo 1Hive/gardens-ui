@@ -1,34 +1,42 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Field, GU, isAddress, LoadingRing, TextInput, textStyle } from '@1hive/1hive-ui';
-import IdentityBadge from '@components/IdentityBadge';
+import React, { useCallback, useState } from "react";
+import {
+  Button,
+  Field,
+  GU,
+  isAddress,
+  LoadingRing,
+  TextInput,
+  textStyle,
+} from "@1hive/1hive-ui";
+import IdentityBadge from "@components/IdentityBadge";
 
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import useProfile from '@hooks/useProfile';
-import { useSupporterSubscription } from '@hooks/useSubscriptions';
-import { useWallet } from '@providers/Wallet';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import useProfile from "@hooks/useProfile";
+import { useSupporterSubscription } from "@hooks/useSubscriptions";
+import { useWallet } from "@providers/Wallet";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
   const { account } = useWallet();
   const { next } = useMultiModal();
-  const [representative, setRepresentative] = useState('');
+  const [representative, setRepresentative] = useState("");
   const [supporter, loading] = useSupporterSubscription(account);
 
-  const handleRepresentativeChange = useCallback(event => {
+  const handleRepresentativeChange = useCallback((event) => {
     setRepresentative(event.target.value);
   }, []);
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault();
 
       getTransactions(() => {
         next();
       }, representative);
     },
-    [getTransactions, next, representative],
+    [getTransactions, next, representative]
   );
 
   const hasRepresentative = Boolean(supporter?.representative);
@@ -40,7 +48,11 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
         <LoadingRing />
       ) : (
         <div>
-          {hasRepresentative && <CurrentDelegateProfile address={supporter.representative.address} />}
+          {hasRepresentative && (
+            <CurrentDelegateProfile
+              address={supporter.representative.address}
+            />
+          )}
           <div
             css={css`
               display: flex;
@@ -49,12 +61,19 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
             `}
           >
             <Field
-              label={`Your ${hasRepresentative ? 'new' : ''} delegate's address`}
+              label={`Your ${
+                hasRepresentative ? "new" : ""
+              } delegate's address`}
               css={css`
                 width: 100%;
               `}
             >
-              <TextInput value={representative} onChange={handleRepresentativeChange} placeholder="0x" wide />
+              <TextInput
+                value={representative}
+                onChange={handleRepresentativeChange}
+                placeholder="0x"
+                wide
+              />
             </Field>
             <NewDelegateProfile address={representative} />
           </div>
@@ -67,7 +86,7 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
             `}
           >
             <Button
-              label={hasRepresentative ? 'Update delegate' : 'Delegate'}
+              label={hasRepresentative ? "Update delegate" : "Delegate"}
               wide
               type="submit"
               mode="strong"
@@ -89,7 +108,7 @@ function CurrentDelegateProfile({ address }) {
     >
       <span
         css={css`
-          ${textStyle('label2')};
+          ${textStyle("label2")};
         `}
       >
         Your current delegate

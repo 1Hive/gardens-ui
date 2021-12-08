@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { Spring, Transition, animated } from 'react-spring/renderprops';
+import React, { useCallback, useState } from "react";
+import { Spring, Transition, animated } from "react-spring/renderprops";
 import {
   ButtonIcon,
   GU,
@@ -11,14 +11,14 @@ import {
   useLayout,
   useTheme,
   Viewport,
-} from '@1hive/1hive-ui';
-import { MultiModalProvider, useMultiModal } from './MultiModalProvider';
-import { springs } from '../../style/springs';
-import { useDisableAnimation } from '../../hooks/useDisableAnimation';
-import { useInside } from 'use-inside';
-import headerBackground from '@assets/modal-background.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+} from "@1hive/1hive-ui";
+import { MultiModalProvider, useMultiModal } from "./MultiModalProvider";
+import { springs } from "../../style/springs";
+import { useDisableAnimation } from "../../hooks/useDisableAnimation";
+import { useInside } from "use-inside";
+import headerBackground from "@assets/modal-background.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const DEFAULT_MODAL_WIDTH = 80 * GU;
 const AnimatedDiv = animated.div;
@@ -33,10 +33,10 @@ function MultiModalScreens({
       graphicHeader: boolean;
       title: string;
       width: number;
-    },
+    }
   ];
 }) {
-  const [, { onClose, handleOnClosed, visible }] = useInside('MultiModal');
+  const [, { onClose, handleOnClosed, visible }] = useInside("MultiModal");
 
   return (
     <MultiModalProvider screens={screens} onClose={onClose}>
@@ -45,11 +45,21 @@ function MultiModalScreens({
   );
 }
 
-function MultiModalFrame({ visible, onClosed }: { visible: boolean; onClosed: () => void }) {
+function MultiModalFrame({
+  visible,
+  onClosed,
+}: {
+  visible: boolean;
+  onClosed: () => void;
+}) {
   const theme = useTheme();
   const { currentScreen, close } = useMultiModal();
 
-  const { disableClose, width: currentScreenWidth, graphicHeader } = currentScreen;
+  const {
+    disableClose,
+    width: currentScreenWidth,
+    graphicHeader,
+  } = currentScreen;
 
   const modalWidth = currentScreenWidth || DEFAULT_MODAL_WIDTH;
 
@@ -66,7 +76,10 @@ function MultiModalFrame({ visible, onClosed }: { visible: boolean; onClosed: ()
         const viewportWidth = width - 4 * GU;
 
         return (
-          <Spring config={springs.tight} to={{ width: Math.min(viewportWidth, modalWidth) }}>
+          <Spring
+            config={springs.tight}
+            to={{ width: Math.min(viewportWidth, modalWidth) }}
+          >
             {({ width }) => {
               return (
                 <Modal
@@ -102,7 +115,11 @@ function MultiModalFrame({ visible, onClosed }: { visible: boolean; onClosed: ()
                         onClick={handleModalClose}
                       >
                         <IconCross
-                          color={graphicHeader ? theme.overlay.toString() : theme.surfaceContentSecondary.toString()}
+                          color={
+                            graphicHeader
+                              ? theme.overlay.toString()
+                              : theme.surfaceContentSecondary.toString()
+                          }
                         />
                       </ButtonIcon>
                     )}
@@ -120,7 +137,11 @@ function MultiModalFrame({ visible, onClosed }: { visible: boolean; onClosed: ()
 }
 
 // We memoize this compontent to avoid excessive re-renders when animating
-const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { viewportWidth: number }) {
+const MultiModalContent = React.memo(function ModalContent({
+  viewportWidth,
+}: {
+  viewportWidth: number;
+}) {
   const theme = useTheme();
   const { step, direction, getScreen } = useMultiModal();
   const [applyStaticHeight, setApplyStaticHeight] = useState(false);
@@ -128,7 +149,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
   const { animationDisabled, enableAnimation } = useDisableAnimation();
   const { layoutName } = useLayout();
 
-  const smallMode = layoutName === 'small';
+  const smallMode = layoutName === "small";
 
   const onStart = useCallback(() => {
     enableAnimation();
@@ -139,7 +160,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
   }, [animationDisabled, enableAnimation]);
 
   const renderScreen = useCallback(
-    screen => {
+    (screen) => {
       const { title, content, graphicHeader, width } = screen;
       const standardPadding = smallMode ? 3 * GU : 5 * GU;
 
@@ -161,7 +182,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
                   position: relative;
                   z-index: 1;
 
-                  ${smallMode ? textStyle('title3') : textStyle('title2')};
+                  ${smallMode ? textStyle("title3") : textStyle("title2")};
                   font-weight: 600;
                   color: ${theme.overlay.toString()};
                 `}
@@ -173,13 +194,13 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
             title && (
               <div
                 css={css`
-                  padding: ${smallMode ? 3 * GU : 5 * GU}px ${standardPadding}px ${smallMode ? 1.5 * GU : 2.5 * GU}px
-                    ${standardPadding}px;
+                  padding: ${smallMode ? 3 * GU : 5 * GU}px ${standardPadding}px
+                    ${smallMode ? 1.5 * GU : 2.5 * GU}px ${standardPadding}px;
                 `}
               >
                 <h1
                   css={css`
-                    ${smallMode ? textStyle('title3') : textStyle('title2')};
+                    ${smallMode ? textStyle("title3") : textStyle("title2")};
 
                     margin-top: -${0.5 * GU}px;
                   `}
@@ -194,8 +215,12 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
             <div
               css={css`
                 /* For better performance we avoid reflowing long text between screen changes by matching the screen width with the modal width */
-                width: ${Math.min(viewportWidth, width || DEFAULT_MODAL_WIDTH)}px;
-                padding: ${title ? 0 : standardPadding}px ${standardPadding}px ${standardPadding}px ${standardPadding}px;
+                width: ${Math.min(
+                  viewportWidth,
+                  width || DEFAULT_MODAL_WIDTH
+                )}px;
+                padding: ${title ? 0 : standardPadding}px ${standardPadding}px
+                  ${standardPadding}px ${standardPadding}px;
               `}
             >
               {content}
@@ -204,20 +229,27 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
         </>
       );
     },
-    [smallMode, theme, viewportWidth],
+    [smallMode, theme, viewportWidth]
   );
 
   return (
-    <Spring config={springs.tight} to={{ height }} immediate={animationDisabled} native>
+    <Spring
+      config={springs.tight}
+      to={{ height }}
+      immediate={animationDisabled}
+      native
+    >
       {({ height }) => (
         <AnimatedDiv
           style={{
-            position: 'relative',
-            height: applyStaticHeight ? height : 'auto',
+            position: "relative",
+            height: applyStaticHeight ? height : "auto",
           }}
         >
           <Transition
-            config={(_, state) => (state === 'leave' ? springs.instant : springs.tight)}
+            config={(_, state) =>
+              state === "leave" ? springs.instant : springs.tight
+            }
             items={step}
             immediate={animationDisabled}
             from={{
@@ -226,10 +258,10 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
             }}
             enter={{
               opacity: 1,
-              transform: 'translate3d(0, 0, 0)',
+              transform: "translate3d(0, 0, 0)",
             }}
             leave={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               left: 0,
               opacity: 0,
@@ -238,25 +270,25 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }: { 
             onStart={onStart}
             native
             onRest={(_, status) => {
-              if (status === 'update') {
+              if (status === "update") {
                 setApplyStaticHeight(false);
               }
             }}
           >
-            {step => animProps => {
+            {(step) => (animProps) => {
               const stepScreen = getScreen(step);
 
               return (
                 <>
                   {stepScreen && (
                     <AnimatedDiv
-                      ref={elt => {
+                      ref={(elt) => {
                         if (elt) {
                           setHeight(elt.clientHeight);
                         }
                       }}
                       style={{
-                        width: '100%',
+                        width: "100%",
                         ...animProps,
                       }}
                     >

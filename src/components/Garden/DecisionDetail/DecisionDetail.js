@@ -1,6 +1,6 @@
-/** @jsx jsx */
-import React, { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   BackButton,
   Box,
@@ -11,42 +11,42 @@ import {
   TransactionBadge,
   useLayout,
   useTheme,
-} from '@1hive/1hive-ui';
+} from "@1hive/1hive-ui";
 
-import ActionCollateral from '../ActionCollateral';
-import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens';
-import Description from '../Description';
-import DisputableActionInfo from '../DisputableActionInfo';
-import DisputableInfo from '../DisputableInfo';
-import DisputeFees from '../DisputeFees';
-import IdentityBadge from '@components/IdentityBadge';
-import MultiModal from '@components/MultiModal/MultiModal';
-import ProposalHeader from '../ProposalDetail/ProposalHeader';
-import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens';
-import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens';
-import SummaryBar from './SummaryBar';
-import SummaryRow from './SummaryRow';
-import VoteActions from './VoteActions';
-import VoteCasted from './VoteCasted';
-import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens';
-import VoteStatus, { getStatusAttributes } from './VoteStatus';
+import ActionCollateral from "../ActionCollateral";
+import ChallengeProposalScreens from "../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens";
+import Description from "../Description";
+import DisputableActionInfo from "../DisputableActionInfo";
+import DisputableInfo from "../DisputableInfo";
+import DisputeFees from "../DisputeFees";
+import IdentityBadge from "@components/IdentityBadge";
+import MultiModal from "@components/MultiModal/MultiModal";
+import ProposalHeader from "../ProposalDetail/ProposalHeader";
+import RaiseDisputeScreens from "../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens";
+import SettleProposalScreens from "../ModalFlows/SettleProposalScreens/SettleProposalScreens";
+import SummaryBar from "./SummaryBar";
+import SummaryRow from "./SummaryRow";
+import VoteActions from "./VoteActions";
+import VoteCasted from "./VoteCasted";
+import VoteOnDecisionScreens from "../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens";
+import VoteStatus, { getStatusAttributes } from "./VoteStatus";
 
-import { useDescribeVote } from '@hooks/useDescribeVote';
-import { useGardenState } from '@providers/GardenState';
-import { useWallet } from '@providers/Wallet';
+import { useDescribeVote } from "@hooks/useDescribeVote";
+import { useGardenState } from "@providers/GardenState";
+import { useWallet } from "@providers/Wallet";
 
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils';
-import { round, safeDiv } from '@utils/math-utils';
-import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils';
-import { getNetwork } from '@/networks';
+import { addressesEqualNoSum as addressesEqual } from "@utils/web3-utils";
+import { round, safeDiv } from "@utils/math-utils";
+import { getConnectedAccountCast, getQuorumProgress } from "@utils/vote-utils";
+import { getNetwork } from "@/networks";
 
-import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+import { PCT_BASE, VOTE_NAY, VOTE_YEA } from "@/constants";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalData, setModalData] = useState({ mode: '' });
+  const [modalData, setModalData] = useState({ mode: "" });
   const theme = useTheme();
   const history = useHistory();
   const { layoutName } = useLayout();
@@ -55,18 +55,28 @@ function DecisionDetail({ proposal, actions }) {
     config: { voting: votingConfig },
   } = useGardenState();
 
-  const { description, emptyScript, loading: descriptionLoading } = useDescribeVote(proposal.script, proposal.id);
+  const {
+    description,
+    emptyScript,
+    loading: descriptionLoading,
+  } = useDescribeVote(proposal.script, proposal.id);
 
   const network = getNetwork();
 
-  const oneColumn = layoutName === 'small' || layoutName === 'medium';
-  const connectedAccountCast = getConnectedAccountCast(proposal, connectedAccount);
+  const oneColumn = layoutName === "small" || layoutName === "medium";
+  const connectedAccountCast = getConnectedAccountCast(
+    proposal,
+    connectedAccount
+  );
 
   const { background, borderColor } = getStatusAttributes(proposal, theme);
 
-  const youVoted = connectedAccountCast.vote === VOTE_YEA || connectedAccountCast.vote === VOTE_NAY;
+  const youVoted =
+    connectedAccountCast.vote === VOTE_YEA ||
+    connectedAccountCast.vote === VOTE_NAY;
 
-  const { creator, minAcceptQuorum, nay, number, statusData, yea } = proposal || {};
+  const { creator, minAcceptQuorum, nay, number, statusData, yea } =
+    proposal || {};
 
   const totalVotes = parseFloat(yea) + parseFloat(nay);
   const yeasPct = safeDiv(parseFloat(yea), totalVotes);
@@ -77,9 +87,9 @@ function DecisionDetail({ proposal, actions }) {
     history.goBack();
   }, [history]);
 
-  const handleVote = useCallback(data => {
+  const handleVote = useCallback((data) => {
     setModalVisible(true);
-    setModalData({ mode: 'vote', ...data });
+    setModalData({ mode: "vote", ...data });
   }, []);
 
   const handleExecute = useCallback(() => {
@@ -90,7 +100,7 @@ function DecisionDetail({ proposal, actions }) {
     actions.resolveAction(proposal.disputeId);
   }, [actions, proposal]);
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true);
     setModalData({ mode });
   }, []);
@@ -100,7 +110,7 @@ function DecisionDetail({ proposal, actions }) {
   }, []);
 
   const handleModalClosed = useCallback(() => {
-    setModalData({ mode: '' });
+    setModalData({ mode: "" });
   }, []);
 
   return (
@@ -120,7 +130,7 @@ function DecisionDetail({ proposal, actions }) {
       <div
         css={css`
           > div > div:nth-child(2) {
-            width: ${oneColumn ? '100%' : `${40 * GU}px`};
+            width: ${oneColumn ? "100%" : `${40 * GU}px`};
           }
         `}
       >
@@ -143,7 +153,7 @@ function DecisionDetail({ proposal, actions }) {
                   <ProposalHeader proposal={proposal} />
                   <h1
                     css={css`
-                      ${textStyle('title2')};
+                      ${textStyle("title2")};
                     `}
                   >
                     {`Vote #${number}`}
@@ -167,12 +177,15 @@ function DecisionDetail({ proposal, actions }) {
                     grid-gap: ${5 * GU}px;
                   `}
                 >
-                  <Row compactMode={oneColumn} cols={proposal.pausedAt > 0 ? 3 : 2}>
+                  <Row
+                    compactMode={oneColumn}
+                    cols={proposal.pausedAt > 0 ? 3 : 2}
+                  >
                     <DataField
                       label="Description"
                       value={
                         emptyScript ? (
-                          proposal.metadata || 'No description'
+                          proposal.metadata || "No description"
                         ) : (
                           <div>
                             {proposal.metadata && (
@@ -194,15 +207,32 @@ function DecisionDetail({ proposal, actions }) {
                       loading={descriptionLoading}
                     />
                     {proposal.pausedAt > 0 && <div />}
-                    <DataField label="Status" value={<VoteStatus vote={proposal} />} />
+                    <DataField
+                      label="Status"
+                      value={<VoteStatus vote={proposal} />}
+                    />
                   </Row>
-                  <Row compactMode={oneColumn} cols={proposal.pausedAt > 0 ? 3 : 2}>
-                    <DataField label="Deposit Amount" value={<ActionCollateral proposal={proposal} />} />
-                    {proposal.pausedAt > 0 && <DisputeFees proposal={proposal} />}
+                  <Row
+                    compactMode={oneColumn}
+                    cols={proposal.pausedAt > 0 ? 3 : 2}
+                  >
+                    <DataField
+                      label="Deposit Amount"
+                      value={<ActionCollateral proposal={proposal} />}
+                    />
+                    {proposal.pausedAt > 0 && (
+                      <DisputeFees proposal={proposal} />
+                    )}
                     <DataField
                       label="Submitted by"
                       value={
-                        <IdentityBadge connectedAccount={addressesEqual(creator, connectedAccount)} entity={creator} />
+                        <IdentityBadge
+                          connectedAccount={addressesEqual(
+                            creator,
+                            connectedAccount
+                          )}
+                          entity={creator}
+                        />
                       }
                     />
                   </Row>
@@ -226,7 +256,11 @@ function DecisionDetail({ proposal, actions }) {
               </div>
               <DisputableInfo proposal={proposal} />
               {(statusData.open || statusData.pendingExecution) && (
-                <VoteActions onExecute={handleExecute} onVote={handleVote} vote={proposal} />
+                <VoteActions
+                  onExecute={handleExecute}
+                  onVote={handleVote}
+                  vote={proposal}
+                />
               )}
             </Box>
           }
@@ -234,25 +268,29 @@ function DecisionDetail({ proposal, actions }) {
             <>
               <DisputableActionInfo
                 proposal={proposal}
-                onChallengeAction={() => handleShowModal('challenge')}
-                onDisputeAction={() => handleShowModal('dispute')}
+                onChallengeAction={() => handleShowModal("challenge")}
+                onDisputeAction={() => handleShowModal("dispute")}
                 onResolveAction={handleResolveAction}
-                onSettleAction={() => handleShowModal('settle')}
+                onSettleAction={() => handleShowModal("settle")}
               />
 
               <Box heading="Relative support %">
                 <div
                   css={css`
-                    ${textStyle('body2')};
+                    ${textStyle("body2")};
                   `}
                 >
-                  {round(yeasPct * 100, 2)}%{' '}
+                  {round(yeasPct * 100, 2)}%{" "}
                   <span
                     css={css`
                       color: ${theme.surfaceContentSecondary.toString()};
                     `}
                   >
-                    ({votingConfig.supportRequiredPct.div(PCT_BASE.div(100)).toNumber()}% support needed)
+                    (
+                    {votingConfig.supportRequiredPct
+                      .div(PCT_BASE.div(100))
+                      .toNumber()}
+                    % support needed)
                   </span>
                 </div>
                 <SummaryBar
@@ -266,16 +304,20 @@ function DecisionDetail({ proposal, actions }) {
               <Box heading="Minimum approval %">
                 <div
                   css={css`
-                    ${textStyle('body2')};
+                    ${textStyle("body2")};
                   `}
                 >
-                  {round(quorumProgress * 100, 2)}%{' '}
+                  {round(quorumProgress * 100, 2)}%{" "}
                   <span
                     css={css`
                       color: ${theme.surfaceContentSecondary.toString()};
                     `}
                   >
-                    ({votingConfig.minAcceptQuorumPct.div(PCT_BASE.div(100)).toNumber()}% approval needed)
+                    (
+                    {votingConfig.minAcceptQuorumPct
+                      .div(PCT_BASE.div(100))
+                      .toNumber()}
+                    % approval needed)
                   </span>
                 </div>
                 <SummaryBar
@@ -290,8 +332,12 @@ function DecisionDetail({ proposal, actions }) {
           }
         />
       </div>
-      <MultiModal visible={modalVisible} onClose={handleCloseModal} onClosed={handleModalClosed}>
-        {modalData.mode === 'challenge' && (
+      <MultiModal
+        visible={modalVisible}
+        onClose={handleCloseModal}
+        onClosed={handleModalClosed}
+      >
+        {modalData.mode === "challenge" && (
           <ChallengeProposalScreens
             agreementActions={{
               challengeAction: actions.challengeAction,
@@ -301,9 +347,15 @@ function DecisionDetail({ proposal, actions }) {
             proposal={proposal}
           />
         )}
-        {modalData.mode === 'settle' && <SettleProposalScreens proposal={proposal} />}
-        {modalData.mode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
-        {modalData.mode === 'vote' && <VoteOnDecisionScreens proposal={proposal} {...modalData} />}
+        {modalData.mode === "settle" && (
+          <SettleProposalScreens proposal={proposal} />
+        )}
+        {modalData.mode === "dispute" && (
+          <RaiseDisputeScreens proposal={proposal} />
+        )}
+        {modalData.mode === "vote" && (
+          <VoteOnDecisionScreens proposal={proposal} {...modalData} />
+        )}
       </MultiModal>
     </div>
   );
@@ -316,7 +368,7 @@ function DataField({ label, value, loading = false }) {
     <div>
       <h2
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           font-weight: 200;
           color: ${theme.surfaceContentSecondary.toString()};
           margin-bottom: ${2 * GU}px;
@@ -330,7 +382,7 @@ function DataField({ label, value, loading = false }) {
       ) : (
         <div
           css={css`
-            ${textStyle('body2')};
+            ${textStyle("body2")};
           `}
         >
           {value}
@@ -402,7 +454,7 @@ const Row = styled.div`
 
   ${({ compactMode = false, cols = 2 }) => `
     grid-gap: ${(compactMode ? 2.5 : 5) * GU}px;
-    grid-template-columns: ${compactMode ? 'auto' : `repeat(${cols}, 1fr)`};
+    grid-template-columns: ${compactMode ? "auto" : `repeat(${cols}, 1fr)`};
   `}
 `;
 

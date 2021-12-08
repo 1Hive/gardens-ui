@@ -1,24 +1,32 @@
-/** @jsx jsx */
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { GU, useTheme } from '@1hive/1hive-ui';
-import LoadingRing from '@components/LoadingRing';
-import MultiModalScreens from '@components/MultiModal/MultiModalScreens';
-import Stepper from '@components/Stepper/Stepper';
-import { useActivity } from '@providers/ActivityProvider';
-import { useWallet } from '@providers/Wallet';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import { css, jsx, keyframes } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
+import { GU, useTheme } from "@1hive/1hive-ui";
+import LoadingRing from "@components/LoadingRing";
+import MultiModalScreens from "@components/MultiModal/MultiModalScreens";
+import Stepper from "@components/Stepper/Stepper";
+import { useActivity } from "@providers/ActivityProvider";
+import { useWallet } from "@providers/Wallet";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import { css, jsx, keyframes } from "@emotion/react";
 
 const indexNumber = {
-  0: 'First',
-  1: 'Second',
-  2: 'Third',
-  3: 'Fourth',
-  4: 'Fifth',
+  0: "First",
+  1: "Second",
+  2: "Third",
+  3: "Fourth",
+  4: "Fifth",
 };
 
-function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionTitle, onComplete, onCompleteActions }) {
+function ModalFlowBase({
+  frontLoad,
+  loading,
+  screens,
+  transactions,
+  transactionTitle,
+  onComplete,
+  onCompleteActions,
+}) {
   const { addActivity } = useActivity();
   const { ethers } = useWallet();
   const signer = useMemo(() => ethers.getSigner(), [ethers]);
@@ -30,13 +38,18 @@ function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionT
             const title = transaction.description
               ? transaction.description
               : transactions.length === 1
-              ? 'Sign transaction'
+              ? "Sign transaction"
               : `${indexNumber[index]} transaction`;
 
             return {
               // TODO: Add titles from description
               title,
-              handleSign: async ({ setSuccess, setWorking, setError, setHash }) => {
+              handleSign: async ({
+                setSuccess,
+                setWorking,
+                setError,
+                setHash,
+              }) => {
                 try {
                   const trx = {
                     from: transaction.from,
@@ -46,7 +59,11 @@ function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionT
                   };
                   const tx = await signer.sendTransaction(trx);
 
-                  await addActivity(tx, transaction.type, transaction.description);
+                  await addActivity(
+                    tx,
+                    transaction.type,
+                    transaction.description
+                  );
                   setHash(tx.hash);
 
                   setWorking();
@@ -64,7 +81,7 @@ function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionT
             };
           })
         : null,
-    [addActivity, transactions, signer],
+    [addActivity, transactions, signer]
   );
   const extendedScreens = useMemo(() => {
     const allScreens = [];
@@ -86,12 +103,27 @@ function ModalFlowBase({ frontLoad, loading, screens, transactions, transactionT
       allScreens.push({
         title: transactionTitle,
         width: modalWidthFromCount(transactions.length),
-        content: <Stepper steps={transactionSteps} onComplete={onComplete} onCompleteActions={onCompleteActions} />,
+        content: (
+          <Stepper
+            steps={transactionSteps}
+            onComplete={onComplete}
+            onCompleteActions={onCompleteActions}
+          />
+        ),
       });
     }
 
     return allScreens;
-  }, [frontLoad, loading, screens, transactions, transactionSteps, transactionTitle, onComplete, onCompleteActions]);
+  }, [
+    frontLoad,
+    loading,
+    screens,
+    transactions,
+    transactionSteps,
+    transactionTitle,
+    onComplete,
+    onCompleteActions,
+  ]);
 
   return <MultiModalScreens screens={extendedScreens} />;
 }
@@ -172,7 +204,7 @@ ModalFlowBase.propTypes = {
 
 ModalFlowBase.defaultProps = {
   frontLoad: true,
-  transactionTitle: 'Create transaction',
+  transactionTitle: "Create transaction",
 };
 
 export default ModalFlowBase;

@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useTheme, textStyle, GU } from '@1hive/1hive-ui';
-import { HoverIndicator } from './components';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback, useState } from "react";
+import PropTypes from "prop-types";
+import { useTheme, textStyle, GU } from "@1hive/1hive-ui";
+import { HoverIndicator } from "./components";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
   const theme = useTheme();
   const [isHovered, setIsHovered] = useState(false);
@@ -33,7 +33,7 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
                 pointer-events: none;
                 opacity: 0;
               `
-            : ''
+            : ""
         };
 
         ${
@@ -44,7 +44,7 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
                   color: ${theme.positiveContent.toString()};
                 }
               `
-            : ''
+            : ""
         }
 
         ${isHovered &&
@@ -78,7 +78,7 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
       {isHovered ? <HoverIndicator theme={theme} selected={selected} /> : null}
       <span
         css={css`
-          ${textStyle(weekDay ? 'body4' : 'body3')};
+          ${textStyle(weekDay ? "body4" : "body3")};
         `}
       >
         {children}
@@ -89,7 +89,9 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
             position: absolute;
             bottom: 1px;
             font-size: 9px;
-            color: ${selected ? theme.surface.toString() : theme.selected.toString()};
+            color: ${selected
+              ? theme.surface.toString()
+              : theme.selected.toString()};
           `}
         >
           ●

@@ -1,25 +1,40 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Transition, animated } from 'react-spring/renderprops';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import { Transition, animated } from "react-spring/renderprops";
 import {
   TransactionBadge,
   textStyle,
   useTheme,
   // RADIUS,
   GU,
-} from '@1hive/1hive-ui';
-import Divider from './Divider';
-import { getNetwork } from '@/networks';
-import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from '../stepper-statuses';
-import StatusVisual from './StatusVisual';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
-import { springs } from '@/style/springs';
-import { useDisableAnimation } from '@hooks/useDisableAnimation';
+} from "@1hive/1hive-ui";
+import Divider from "./Divider";
+import { getNetwork } from "@/networks";
+import {
+  STEP_ERROR,
+  STEP_PROMPTING,
+  STEP_SUCCESS,
+  STEP_WAITING,
+  STEP_WORKING,
+} from "../stepper-statuses";
+import StatusVisual from "./StatusVisual";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
+import { springs } from "@/style/springs";
+import { useDisableAnimation } from "@hooks/useDisableAnimation";
 
 const AnimatedSpan = animated.span;
 
-function Step({ title, desc, status, number, transactionHash, showDivider, withoutFirstStep, ...props }) {
+function Step({
+  title,
+  desc,
+  status,
+  number,
+  transactionHash,
+  showDivider,
+  withoutFirstStep,
+  ...props
+}) {
   const theme = useTheme();
   const network = getNetwork();
   const { animationDisabled, enableAnimation } = useDisableAnimation();
@@ -31,12 +46,12 @@ function Step({ title, desc, status, number, transactionHash, showDivider, witho
         descColor: theme.contentSecondary.toString(),
       },
       [STEP_PROMPTING]: {
-        visualColor: '#7CE0D6',
+        visualColor: "#7CE0D6",
         descColor: theme.contentSecondary.toString(),
       },
       [STEP_WORKING]: {
-        visualColor: '#FFE862',
-        descColor: '#C3A22B',
+        visualColor: "#FFE862",
+        descColor: "#C3A22B",
       },
       [STEP_SUCCESS]: {
         visualColor: theme.positive.toString(),
@@ -79,14 +94,14 @@ function Step({ title, desc, status, number, transactionHash, showDivider, witho
         />
         <h2
           css={css`
-            ${textStyle('title4')}
+            ${textStyle("title4")}
             height:${6 * GU}px;
             line-height: 1.2;
             text-align: center;
             margin-bottom: ${1 * GU}px;
           `}
         >
-          {status === STEP_ERROR ? 'Transaction failed' : title}
+          {status === STEP_ERROR ? "Transaction failed" : title}
         </h2>
 
         <p
@@ -110,18 +125,18 @@ function Step({ title, desc, status, number, transactionHash, showDivider, witho
             }}
             enter={{
               opacity: 1,
-              transform: 'translate3d(0, 0, 0)',
+              transform: "translate3d(0, 0, 0)",
             }}
             leave={{
-              position: 'absolute',
+              position: "absolute",
               opacity: 0,
               transform: `translate3d(0, -${2 * GU}px, 0)`,
             }}
             native
           >
-            {item =>
+            {(item) =>
               item &&
-              (transitionProps => (
+              ((transitionProps) => (
                 <AnimatedSpan
                   css={css`
                     display: flex;
@@ -157,17 +172,17 @@ function Step({ title, desc, status, number, transactionHash, showDivider, witho
             }}
             enter={{
               opacity: 1,
-              transform: 'translate3d(0, 0, 0)',
+              transform: "translate3d(0, 0, 0)",
             }}
             leave={{
-              position: 'absolute',
+              position: "absolute",
               left: 0,
               bottom: 0,
               opacity: 0,
             }}
             native
           >
-            {currentHash => transitionProps =>
+            {(currentHash) => (transitionProps) =>
               currentHash ? (
                 <AnimatedSpan
                   style={transitionProps}
@@ -209,7 +224,13 @@ Step.propTypes = {
   desc: PropTypes.string,
   transactionHash: PropTypes.string,
   number: PropTypes.number,
-  status: PropTypes.oneOf([STEP_WAITING, STEP_PROMPTING, STEP_WORKING, STEP_SUCCESS, STEP_ERROR]).isRequired,
+  status: PropTypes.oneOf([
+    STEP_WAITING,
+    STEP_PROMPTING,
+    STEP_WORKING,
+    STEP_SUCCESS,
+    STEP_ERROR,
+  ]).isRequired,
   showDivider: PropTypes.bool,
 };
 

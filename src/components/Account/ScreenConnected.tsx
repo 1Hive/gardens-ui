@@ -1,18 +1,27 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import { getProviderFromUseWalletId } from 'use-wallet';
-import { Button, ButtonBase, GU, IconCheck, IconCopy, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-import IdentityBadge from '../IdentityBadge';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
-import { useWallet } from '@providers/Wallet';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { getProviderFromUseWalletId } from "use-wallet";
+import {
+  Button,
+  ButtonBase,
+  GU,
+  IconCheck,
+  IconCopy,
+  RADIUS,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import IdentityBadge from "../IdentityBadge";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useCopyToClipboard } from "@hooks/useCopyToClipboard";
+import { useWallet } from "@providers/Wallet";
 
-import { buildGardenPath } from '@utils/routing-utils';
-import { getNetworkName } from '@utils/web3-utils';
-import profileButtonSvg from '@assets/profileButton.svg';
-import stakeButtonSvg from '@assets/stakeButton.svg';
-import { css, jsx } from '@emotion/react';
+import { buildGardenPath } from "@utils/routing-utils";
+import { getNetworkName } from "@utils/web3-utils";
+import profileButtonSvg from "@assets/profileButton.svg";
+import stakeButtonSvg from "@assets/stakeButton.svg";
+import { css, jsx } from "@emotion/react";
 
 function AccountScreenConnected({ providerId, onClosePopover }) {
   const theme = useTheme();
@@ -30,7 +39,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
   }, [history, onClosePopover]);
 
   const goToStakeManagement = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral');
+    const path = buildGardenPath(history.location, "collateral");
     history.push(path);
     onClosePopover();
   }, [history, onClosePopover]);
@@ -95,7 +104,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
       >
         <h4
           css={css`
-            ${textStyle('label2')};
+            ${textStyle("label2")};
             color: ${theme.contentSecondary.toString()};
             margin-bottom: ${2 * GU}px;
           `}
@@ -126,7 +135,9 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
                 transform: translateY(-2px);
               `}
             />
-            <span>{providerInfo.id === 'unknown' ? 'Wallet' : providerInfo.name}</span>
+            <span>
+              {providerInfo.id === "unknown" ? "Wallet" : providerInfo.name}
+            </span>
           </div>
           <div
             css={css`
@@ -171,7 +182,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
               display: flex;
               align-items: center;
               color: ${theme.positive.toString()};
-              ${textStyle('label2')};
+              ${textStyle("label2")};
             `}
           >
             <IconCheck size="small" />

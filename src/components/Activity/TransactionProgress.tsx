@@ -1,13 +1,13 @@
-/** @jsx jsx */
-import React from 'react';
-import { ProgressBar, GU } from '@1hive/1hive-ui';
-import { Transition, animated } from 'react-spring/renderprops';
-import TimeTag from './TimeTag';
-import useNow from '@hooks/useNow';
-import { ActivityStatusType, ActivityStatus } from './activity-statuses';
-import { norm } from '@utils/math-utils';
-import { MINUTE } from '@utils/date-utils';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { ProgressBar, GU } from "@1hive/1hive-ui";
+import { Transition, animated } from "react-spring/renderprops";
+import TimeTag from "./TimeTag";
+import useNow from "@hooks/useNow";
+import { ActivityStatusType, ActivityStatus } from "./activity-statuses";
+import { norm } from "@utils/math-utils";
+import { MINUTE } from "@utils/date-utils";
+import { css, jsx } from "@emotion/react";
 
 const DELAY_BEFORE_HIDE = 1000;
 const TX_DURATION_AVERAGE = 3 * MINUTE;
@@ -39,7 +39,10 @@ function TransactionProgress({
 
   const progress = getProgress(status, createdAt, estimate, threshold, now);
   const showConfirmed = status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED;
-  const showTimer = !showConfirmed && now < threshold && status === ActivityStatus.ACTIVITY_STATUS_PENDING;
+  const showTimer =
+    !showConfirmed &&
+    now < threshold &&
+    status === ActivityStatus.ACTIVITY_STATUS_PENDING;
 
   return (
     <Transition
@@ -49,13 +52,13 @@ function TransactionProgress({
       enter={{ height: 28, opacity: 1 }}
       leave={{ height: 0, opacity: 0 }}
     >
-      {show =>
+      {(show) =>
         show &&
-        (transition => (
+        ((transition) => (
           <animated.div
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               paddingTop: `${1 * GU}px`,
               ...transition,
             }}
@@ -67,7 +70,12 @@ function TransactionProgress({
             >
               <ProgressBar animate value={showConfirmed ? 1 : progress} />
             </div>
-            {(showTimer || showConfirmed) && <TimeTag date={estimate} label={showConfirmed ? 'confirmed' : null} />}
+            {(showTimer || showConfirmed) && (
+              <TimeTag
+                date={estimate}
+                label={showConfirmed ? "confirmed" : null}
+              />
+            )}
           </animated.div>
         ))
       }

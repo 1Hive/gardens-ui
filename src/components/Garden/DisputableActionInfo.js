@@ -1,17 +1,32 @@
-/** @jsx jsx */
-import React, { useMemo } from 'react';
-import { addressesEqual, Box, Button, GU, Info, Link, LoadingRing, textStyle, Timer, useTheme } from '@1hive/1hive-ui';
-import { ConvictionCountdown } from './ConvictionVisuals';
-import { useWallet } from '@providers/Wallet';
-import { useDisputeState } from '@hooks/useDispute';
-import { ProposalTypes } from '@/types';
-import { dateFormat } from '@utils/date-utils';
-import { formatTokenAmount } from '@utils/token-utils';
-import { DisputeStates, DISPUTE_STATE_RULED, RoundStates } from '@utils/dispute-utils';
-import { getNetwork } from '@/networks';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useMemo } from "react";
+import {
+  addressesEqual,
+  Box,
+  Button,
+  GU,
+  Info,
+  Link,
+  LoadingRing,
+  textStyle,
+  Timer,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { ConvictionCountdown } from "./ConvictionVisuals";
+import { useWallet } from "@providers/Wallet";
+import { useDisputeState } from "@hooks/useDispute";
+import { ProposalTypes } from "@/types";
+import { dateFormat } from "@utils/date-utils";
+import { formatTokenAmount } from "@utils/token-utils";
+import {
+  DisputeStates,
+  DISPUTE_STATE_RULED,
+  RoundStates,
+} from "@utils/dispute-utils";
+import { getNetwork } from "@/networks";
+import { css, jsx } from "@emotion/react";
 
-const DATE_FORMAT = 'YYYY/MM/DD , HH:mm';
+const DATE_FORMAT = "YYYY/MM/DD , HH:mm";
 
 function getInfoActionContent(proposal, account, actions) {
   const isSubmitter = addressesEqual(account, proposal.creator);
@@ -23,25 +38,29 @@ function getInfoActionContent(proposal, account, actions) {
       return {
         info:
           proposal.type === ProposalTypes.Suggestion
-            ? 'This suggestion will remain open until it is either successfully challenged or removed by the original author.'
+            ? "This suggestion will remain open until it is either successfully challenged or removed by the original author."
             : `This proposal is currently open. It will pass if nobody successfully challenges it ${
                 proposal.type === ProposalTypes.Decision
-                  ? 'during the voting period and the result of the vote is cast with majority support'
-                  : 'and it receives enough support'
+                  ? "during the voting period and the result of the vote is cast with majority support"
+                  : "and it receives enough support"
               }.`,
         actions: isSubmitter
           ? []
           : [
               {
-                label: `Challenge ${proposal.type === ProposalTypes.Decision ? 'decision' : 'proposal'}`,
-                mode: 'strong',
+                label: `Challenge ${
+                  proposal.type === ProposalTypes.Decision
+                    ? "decision"
+                    : "proposal"
+                }`,
+                mode: "strong",
                 onClick: actions.onChallengeAction,
               },
             ],
       };
     }
 
-    return { info: 'Proposals cannot be challenged more than once.' };
+    return { info: "Proposals cannot be challenged more than once." };
   }
 
   if (proposal.statusData.challenged && isSubmitter) {
@@ -50,13 +69,13 @@ function getInfoActionContent(proposal, account, actions) {
         "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
       actions: [
         {
-          label: 'Accept settlement',
-          mode: 'strong',
+          label: "Accept settlement",
+          mode: "strong",
           onClick: actions.onSettleAction,
         },
         {
-          label: 'Raise to celeste',
-          mode: 'normal',
+          label: "Raise to celeste",
+          mode: "normal",
           onClick: actions.onDisputeAction,
         },
       ],
@@ -68,11 +87,11 @@ function getInfoActionContent(proposal, account, actions) {
     if (isChallenger) {
       return {
         info:
-          'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
+          "When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.",
         actions: [
           {
-            label: 'Claim collateral',
-            mode: 'strong',
+            label: "Claim collateral",
+            mode: "strong",
             onClick: actions.onSettleAction,
           },
         ],
@@ -83,7 +102,13 @@ function getInfoActionContent(proposal, account, actions) {
   return null;
 }
 
-function DisputableActionInfo({ proposal, onChallengeAction, onDisputeAction, onResolveAction, onSettleAction }) {
+function DisputableActionInfo({
+  proposal,
+  onChallengeAction,
+  onDisputeAction,
+  onResolveAction,
+  onSettleAction,
+}) {
   return (
     <Box heading="Disputable action">
       <div
@@ -97,7 +122,9 @@ function DisputableActionInfo({ proposal, onChallengeAction, onDisputeAction, on
         ) : (
           <Conviction proposal={proposal} />
         )}
-        {(proposal.statusData.challenged || proposal.statusData.settled) && <Settlement proposal={proposal} />}
+        {(proposal.statusData.challenged || proposal.statusData.settled) && (
+          <Settlement proposal={proposal} />
+        )}
         {(proposal.statusData.disputed || proposal.disputedAt > 0) && (
           <Dispute onResolveAction={onResolveAction} proposal={proposal} />
         )}
@@ -114,14 +141,23 @@ function DisputableActionInfo({ proposal, onChallengeAction, onDisputeAction, on
 
 function VotingPeriod({ proposal }) {
   const voteEndPeriodNode = usePeriod(proposal, proposal.endDate);
-  const delegatedVotingEndPeriodNode = usePeriod(proposal, proposal.delegatedVotingEndDate);
+  const delegatedVotingEndPeriodNode = usePeriod(
+    proposal,
+    proposal.delegatedVotingEndDate
+  );
 
   const isResumed = proposal.statusData.open && proposal.pausedAt > 0;
 
   return (
     <>
-      <DataField label={`Voting period${isResumed ? ` (Resumed)` : ''}`} value={voteEndPeriodNode} />
-      <DataField label="Delegated voting period" value={delegatedVotingEndPeriodNode} />
+      <DataField
+        label={`Voting period${isResumed ? ` (Resumed)` : ""}`}
+        value={voteEndPeriodNode}
+      />
+      <DataField
+        label="Delegated voting period"
+        value={delegatedVotingEndPeriodNode}
+      />
     </>
   );
 }
@@ -130,10 +166,14 @@ function usePeriod(proposal, periodEndDate) {
   const theme = useTheme();
 
   return useMemo(() => {
-    if (proposal.statusData.challenged || proposal.statusData.disputed || proposal.statusData.settled) {
+    if (
+      proposal.statusData.challenged ||
+      proposal.statusData.disputed ||
+      proposal.statusData.settled
+    ) {
       return (
         <span>
-          Paused{' '}
+          Paused{" "}
           <span
             css={css`
               color: ${theme.contentSecondary.toString()};
@@ -147,7 +187,7 @@ function usePeriod(proposal, periodEndDate) {
 
     return periodEndDate < Date.now() ? (
       <span>
-        Ended{' '}
+        Ended{" "}
         <span
           css={css`
             color: ${theme.contentSecondary.toString()};
@@ -167,19 +207,24 @@ function Conviction({ proposal }) {
     return null;
   }
 
-  const isCancelled = proposal.statusData.cancelled || proposal.statusData.settled;
+  const isCancelled =
+    proposal.statusData.cancelled || proposal.statusData.settled;
 
   return (
     <DataField
       label="Estimated time until pass"
-      value={isCancelled ? 'Cancelled' : <ConvictionCountdown proposal={proposal} />}
+      value={
+        isCancelled ? "Cancelled" : <ConvictionCountdown proposal={proposal} />
+      }
     />
   );
 }
 
 function Settlement({ proposal }) {
   const theme = useTheme();
-  const endDate = new Date(proposal.settledAt > 0 ? proposal.settledAt : proposal.challengeEndDate);
+  const endDate = new Date(
+    proposal.settledAt > 0 ? proposal.settledAt : proposal.challengeEndDate
+  );
 
   return (
     <>
@@ -188,7 +233,7 @@ function Settlement({ proposal }) {
         value={
           endDate.getTime() < Date.now() ? (
             <span>
-              Ended{' '}
+              Ended{" "}
               <span
                 css={css`
                   color: ${theme.contentSecondary.toString()};
@@ -207,7 +252,10 @@ function Settlement({ proposal }) {
           label="Settlement amount"
           value={
             <span>
-              {formatTokenAmount(proposal.settlementOffer, proposal.collateralRequirement.tokenDecimals)}{' '}
+              {formatTokenAmount(
+                proposal.settlementOffer,
+                proposal.collateralRequirement.tokenDecimals
+              )}{" "}
               {proposal.collateralRequirement.tokenSymbol}
             </span>
           }
@@ -248,7 +296,11 @@ function Dispute({ onResolveAction, proposal }) {
               `}
             >
               {disputeState !== null ? (
-                `(${roundState ? RoundStates[roundState] : DisputeStates[disputeState]})`
+                `(${
+                  roundState
+                    ? RoundStates[roundState]
+                    : DisputeStates[disputeState]
+                })`
               ) : (
                 <LoadingRing />
               )}
@@ -279,7 +331,7 @@ function DataField({ label, value, loading = false }) {
     <div>
       <h2
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           font-weight: 200;
           color: ${theme.surfaceContentSecondary.toString()};
           margin-bottom: ${1 * GU}px;
@@ -293,7 +345,7 @@ function DataField({ label, value, loading = false }) {
       ) : (
         <div
           css={css`
-            ${textStyle('body2')};
+            ${textStyle("body2")};
           `}
         >
           {value}
@@ -303,7 +355,12 @@ function DataField({ label, value, loading = false }) {
   );
 }
 
-function Actions({ proposal, onChallengeAction, onDisputeAction, onSettleAction }) {
+function Actions({
+  proposal,
+  onChallengeAction,
+  onDisputeAction,
+  onSettleAction,
+}) {
   const { account } = useWallet();
   const content = getInfoActionContent(proposal, account, {
     onChallengeAction,

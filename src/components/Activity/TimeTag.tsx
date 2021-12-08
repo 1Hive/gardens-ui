@@ -1,9 +1,9 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
-import { getRelativeTime } from '@utils/date-utils';
-import useNow from '@hooks/useNow';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
+import { getRelativeTime } from "@utils/date-utils";
+import useNow from "@hooks/useNow";
+import { css, jsx } from "@emotion/react";
 
 function TimeTag({ date, label, ...props }: { date: number; label? }) {
   const theme = useTheme();
@@ -17,7 +17,7 @@ function TimeTag({ date, label, ...props }: { date: number; label? }) {
         text-overflow: ellipsis;
         white-space: nowrap;
         color: ${theme.surfaceContentSecondary.toString()};
-        ${textStyle('label2')};
+        ${textStyle("label2")};
       `}
       {...props}
     >

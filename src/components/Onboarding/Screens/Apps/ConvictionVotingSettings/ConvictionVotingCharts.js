@@ -1,14 +1,17 @@
-import { GU } from '@1hive/1hive-ui';
-import React, { useMemo } from 'react';
-import ConvictionTimeChart from './Charts/ConvictionTimeChart';
-import ThresholdRequestedChart from './Charts/ThresholdRequestedChart';
+import { GU } from "@1hive/1hive-ui";
+import React, { useMemo } from "react";
+import ConvictionTimeChart from "./Charts/ConvictionTimeChart";
+import ThresholdRequestedChart from "./Charts/ThresholdRequestedChart";
 
-import { calculateThreshold, toPercentage } from '@utils/conviction-modelling-helpers';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import {
+  calculateThreshold,
+  toPercentage,
+} from "@utils/conviction-modelling-helpers";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
-const CHART_HEIGHT = '270px;';
-const CHART_WIDTH = '550px;';
+const CHART_HEIGHT = "270px;";
+const CHART_WIDTH = "550px;";
 
 const ConvictionVotingCharts = ({
   decay,
@@ -20,7 +23,9 @@ const ConvictionVotingCharts = ({
   weight,
 }) => {
   const requestedAmountThresholdPct = useMemo(() => {
-    return toPercentage(calculateThreshold(weight, maxRatio, requestedAmount)).toFixed(2);
+    return toPercentage(
+      calculateThreshold(weight, maxRatio, requestedAmount)
+    ).toFixed(2);
   }, [maxRatio, requestedAmount, weight]);
 
   return (

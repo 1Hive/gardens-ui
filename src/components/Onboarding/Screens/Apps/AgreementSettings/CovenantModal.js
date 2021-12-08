@@ -1,7 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, GU, IconArrowUp, Markdown, Modal, RootPortal, textStyle } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Button,
+  GU,
+  IconArrowUp,
+  Markdown,
+  Modal,
+  RootPortal,
+  textStyle,
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const MINIMUM_SCROLL_TOP = 150;
 
@@ -10,7 +18,7 @@ const CovenantModal = ({ open, file, onClose }) => {
   const modalRef = useRef();
 
   const handleScrollChange = useCallback(
-    e => {
+    (e) => {
       /**
        * Can't get modal ref directly from modal because it doesn't
        * implement ref forwarding so we get it from the event target.
@@ -25,11 +33,11 @@ const CovenantModal = ({ open, file, onClose }) => {
         setDisplayScrollBtn(false);
       }
     },
-    [setDisplayScrollBtn],
+    [setDisplayScrollBtn]
   );
 
   const handleCloseModal = useCallback(
-    e => {
+    (e) => {
       /**
        * Hide modal only when clicking the close button to
        * avoid closing it when clicking the "back to top" button
@@ -38,7 +46,7 @@ const CovenantModal = ({ open, file, onClose }) => {
         onClose();
       }
     },
-    [onClose],
+    [onClose]
   );
 
   useEffect(() => {
@@ -63,11 +71,11 @@ const CovenantModal = ({ open, file, onClose }) => {
           padding-top: ${2 * GU}px;
         `}
       >
-        <Markdown normalized content={file?.content ?? ''} />
+        <Markdown normalized content={file?.content ?? ""} />
         <RootPortal>
           <div
             css={css`
-              opacity: ${displayScrollBtn ? '1' : '0'};
+              opacity: ${displayScrollBtn ? "1" : "0"};
               position: fixed;
               bottom: ${2 * GU}px;
               right: ${4 * GU}px;
@@ -78,10 +86,12 @@ const CovenantModal = ({ open, file, onClose }) => {
             <Button
               css={css`
                 padding: ${1 * GU};
-                ${textStyle('body3')};
+                ${textStyle("body3")};
               `}
               size="small"
-              onClick={() => modalRef.current.scrollTo({ behavior: 'smooth', top: 0 })}
+              onClick={() =>
+                modalRef.current.scrollTo({ behavior: "smooth", top: 0 })
+              }
             >
               <IconArrowUp /> Back to Top
             </Button>

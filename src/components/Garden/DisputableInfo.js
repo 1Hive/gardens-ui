@@ -1,20 +1,20 @@
-/** @jsx jsx */
-import React from 'react';
-import { Box, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useWallet } from '@providers/Wallet';
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils';
-import { dateFormat } from '@utils/date-utils';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Box, GU, Info, Link, textStyle, useTheme } from "@1hive/1hive-ui";
+import { useWallet } from "@providers/Wallet";
+import { addressesEqualNoSum as addressesEqual } from "@utils/web3-utils";
+import { dateFormat } from "@utils/date-utils";
 
-import warningIconSvg from '@assets/icon-warning.svg';
-import { formatTokenAmount } from '@utils/token-utils';
+import warningIconSvg from "@assets/icon-warning.svg";
+import { formatTokenAmount } from "@utils/token-utils";
 
-import celesteStarIconSvg from '@assets/icon-celeste-star.svg';
-import coinsIconSvg from '@assets/icon-coins.svg';
-import { ProposalTypes } from '@/types';
-import { getNetwork } from '@/networks';
-import { css, jsx } from '@emotion/react';
+import celesteStarIconSvg from "@assets/icon-celeste-star.svg";
+import coinsIconSvg from "@assets/icon-coins.svg";
+import { ProposalTypes } from "@/types";
+import { getNetwork } from "@/networks";
+import { css, jsx } from "@emotion/react";
 
-const DATE_FORMAT = 'YYYY/MM/DD , HH:mm';
+const DATE_FORMAT = "YYYY/MM/DD , HH:mm";
 
 function DisputableInfo({ proposal }) {
   if (proposal.statusData.challenged) {
@@ -47,15 +47,15 @@ function ProposalChallengedInfo({ proposal }) {
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                You have challenged this action on{' '}
+                You have challenged this action on{" "}
               </span>
-              {dateFormat(proposal.challengedAt, DATE_FORMAT)}{' '}
+              {dateFormat(proposal.challengedAt, DATE_FORMAT)}{" "}
               <span
                 css={css`
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                and locked{' '}
+                and locked{" "}
                 <span
                   css={css`
                     color: ${theme.content.toString()};
@@ -63,11 +63,12 @@ function ProposalChallengedInfo({ proposal }) {
                 >
                   {formatTokenAmount(
                     proposal.collateralRequirement.challengeAmount,
-                    proposal.collateralRequirement.tokenDecimals,
-                  )}{' '}
+                    proposal.collateralRequirement.tokenDecimals
+                  )}{" "}
                   {proposal.collateralRequirement.tokenSymbol}
-                </span>{' '}
-                as the challenge deposit. You can manage your deposit balances in{' '}
+                </span>{" "}
+                as the challenge deposit. You can manage your deposit balances
+                in{" "}
               </span>
               <Link href="#/collateral" external={false}>
                 Deposit Manager
@@ -112,21 +113,26 @@ function ProposalDisputedInfo({ proposal }) {
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                {isSubmitter ? 'You' : 'Submitter'} invoked celeste on{' '}
+                {isSubmitter ? "You" : "Submitter"} invoked celeste on{" "}
               </span>
-              {dateFormat(proposal.disputedAt, 'YYYY/MM/DD HH:mm')}.{' '}
+              {dateFormat(proposal.disputedAt, "YYYY/MM/DD HH:mm")}.{" "}
               <span
                 css={css`
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                You can follow the process in{' '}
+                You can follow the process in{" "}
               </span>
-              <Link href={`${celesteUrl}/disputes/${proposal.disputeId}`}>Celeste Dashboard</Link>.
+              <Link href={`${celesteUrl}/disputes/${proposal.disputeId}`}>
+                Celeste Dashboard
+              </Link>
+              .
             </div>
           }
           iconSrc={celesteStarIconSvg}
-          title={`${isSubmitter ? 'You' : 'Submitter'} have invoked Celeste and are awaiting a response`}
+          title={`${
+            isSubmitter ? "You" : "Submitter"
+          } have invoked Celeste and are awaiting a response`}
         />
       )}
 
@@ -137,9 +143,10 @@ function ProposalDisputedInfo({ proposal }) {
       >
         Celeste has been invoked to settle a dispute with this proposal
         {proposal.type !== ProposalTypes.Decision
-          ? ' but you can still support it and increase its support (conviction)'
-          : ''}
-        . When the dispute is resolved, if allowed, the proposal will continue as normal othersiwe it will be cancelled.
+          ? " but you can still support it and increase its support (conviction)"
+          : ""}
+        . When the dispute is resolved, if allowed, the proposal will continue
+        as normal othersiwe it will be cancelled.
       </Info>
     </div>
   );
@@ -157,7 +164,11 @@ function ProposalSettledInfo({ proposal }) {
       {(isSubmitter || isChallenger) && (
         <InfoBox
           iconSrc={isSubmitter ? coinsIconSvg : warningIconSvg}
-          title={isSubmitter ? 'You have accepted the settlement offer' : 'You have challenged this vote'}
+          title={
+            isSubmitter
+              ? "You have accepted the settlement offer"
+              : "You have challenged this vote"
+          }
           content={
             <div>
               <span
@@ -165,29 +176,34 @@ function ProposalSettledInfo({ proposal }) {
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                {isSubmitter ? 'You acccepted the settlement offer on' : 'You challenged this proposal on'}
-              </span>{' '}
+                {isSubmitter
+                  ? "You acccepted the settlement offer on"
+                  : "You challenged this proposal on"}
+              </span>{" "}
               {dateFormat(
                 isSubmitter
                   ? proposal.settledAt > 0
                     ? proposal.settledAt
                     : proposal.challengeEndDate
                   : proposal.challengedAt,
-                'YYYY/MM/DD HH:mm',
-              )}{' '}
+                "YYYY/MM/DD HH:mm"
+              )}{" "}
               <span
                 css={css`
                   color: ${theme.contentSecondary.toString()};
                 `}
               >
-                and{' '}
+                and{" "}
                 {isSubmitter ? (
-                  `${formatTokenAmount(proposal.settlementOffer, proposal.collateralRequirement.tokenDecimals)} ${
+                  `${formatTokenAmount(
+                    proposal.settlementOffer,
+                    proposal.collateralRequirement.tokenDecimals
+                  )} ${
                     proposal.collateralRequirement.tokenSymbol
                   }  from your proposal deposit has been forfeited and the remaining unlocked`
                 ) : (
                   <span>
-                    your challenge deposit has been returned to your wallet{' '}
+                    your challenge deposit has been returned to your wallet{" "}
                     <span
                       css={css`
                         color: ${theme.content.toString()};
@@ -195,13 +211,13 @@ function ProposalSettledInfo({ proposal }) {
                     >
                       {formatTokenAmount(
                         proposal.collateralRequirement.challengeAmount,
-                        proposal.collateralRequirement.tokenDecimals,
-                      )}{' '}
+                        proposal.collateralRequirement.tokenDecimals
+                      )}{" "}
                       {proposal.collateralRequirement.tokenSymbol}
                     </span>
                   </span>
                 )}
-                . You can manage your deposit balances in{' '}
+                . You can manage your deposit balances in{" "}
               </span>
               <Link href="#/profile" external={false}>
                 Deposit Manager
@@ -212,8 +228,9 @@ function ProposalSettledInfo({ proposal }) {
         />
       )}
       <Info mode="warning">
-        This {proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'} has been cancelled: it was challenged, and
-        the settlement offer accepted.
+        This {proposal.type === ProposalTypes.Decision ? "vote" : "proposal"}{" "}
+        has been cancelled: it was challenged, and the settlement offer
+        accepted.
       </Info>
     </div>
   );
@@ -243,13 +260,13 @@ const InfoBox = ({ content, iconSrc, title }) => {
         >
           <div
             css={css`
-              ${textStyle('body1')};
+              ${textStyle("body1")};
               margin-bottom: ${2 * GU}px;
             `}
           >
             <div
               css={css`
-                ${textStyle('body1')};
+                ${textStyle("body1")};
                 margin-bottom: ${2 * GU}px;
               `}
             >

@@ -1,19 +1,31 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Markdown, textStyle, useLayout, GU, useTheme } from '@1hive/1hive-ui';
-import ModalButton from '../ModalFlows/ModalButton';
-import { useMounted } from '@hooks/useMounted';
-import { useWallet } from '@providers/Wallet';
-import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Box,
+  Markdown,
+  textStyle,
+  useLayout,
+  GU,
+  useTheme,
+} from "@1hive/1hive-ui";
+import ModalButton from "../ModalFlows/ModalButton";
+import { useMounted } from "@hooks/useMounted";
+import { useWallet } from "@providers/Wallet";
+import { getIpfsCidFromUri, ipfsGet } from "@utils/ipfs-utils";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
-function AgreementDocument({ ipfsUri, isSigning, onSignAgreement, signedAgreement }) {
+function AgreementDocument({
+  ipfsUri,
+  isSigning,
+  onSignAgreement,
+  signedAgreement,
+}) {
   const theme = useTheme();
   const { account } = useWallet();
   const { layoutName } = useLayout();
-  const compactMode = layoutName === 'small';
-  const [markdownContent, setMarkdownContent] = useState('');
+  const compactMode = layoutName === "small";
+  const [markdownContent, setMarkdownContent] = useState("");
 
   const mounted = useMounted();
 
@@ -24,7 +36,7 @@ function AgreementDocument({ ipfsUri, isSigning, onSignAgreement, signedAgreemen
 
       if (error && mounted()) {
         // Fail gracefully on error and render just the empty component
-        setMarkdownContent('');
+        setMarkdownContent("");
 
         return;
       }
@@ -68,19 +80,19 @@ const Article = styled.article`
     margin-top: ${4 * GU}px;
     margin-bottom: ${1 * GU}px;
 
-    ${textStyle('title2')};
+    ${textStyle("title2")};
   }
 
   h2 {
-    ${textStyle('title4')};
+    ${textStyle("title4")};
   }
 
   h3 {
-    ${textStyle('body1')};
+    ${textStyle("body1")};
   }
 
   h4 {
-    ${textStyle('body2')};
+    ${textStyle("body2")};
   }
 
   h2,
@@ -108,7 +120,7 @@ const Article = styled.article`
     list-style: none;
 
     li::before {
-      content: '•';
+      content: "•";
       color: ${({ theme }) => theme.accent.toString()};
       font-weight: bold;
       display: inline-block;

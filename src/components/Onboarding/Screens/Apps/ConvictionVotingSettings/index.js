@@ -1,69 +1,90 @@
-import React, { Fragment, useCallback, useReducer, useState } from 'react';
-import { Button, GU, Help, Info, isAddress, textStyle, useTheme } from '@1hive/1hive-ui';
-import AdvancedSettingsModal from './AdvancedSettingsModal';
-import ConvictionVotingCharts from './ConvictionVotingCharts';
-import Navigation from '@components/Onboarding/Navigation';
-import { Header, PercentageField, SliderField } from '@components/Onboarding/kit';
-import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding';
-import { calculateDecay, calculateWeight } from '@utils/conviction-modelling-helpers';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { Fragment, useCallback, useReducer, useState } from "react";
+import {
+  Button,
+  GU,
+  Help,
+  Info,
+  isAddress,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import AdvancedSettingsModal from "./AdvancedSettingsModal";
+import ConvictionVotingCharts from "./ConvictionVotingCharts";
+import Navigation from "@components/Onboarding/Navigation";
+import {
+  Header,
+  PercentageField,
+  SliderField,
+} from "@components/Onboarding/kit";
+import { DEFAULT_CONFIG, useOnboardingState } from "@providers/Onboarding";
+import {
+  calculateDecay,
+  calculateWeight,
+} from "@utils/conviction-modelling-helpers";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const MAX_HALF_LIFE_DAYS = 60;
 const DEFAULT_REQUESTED_AMOUNT = 2;
 const DEFAULT_STAKE_ON_PROPOSAL = 5;
 const DEFAULT_STAKE_ON_OTHER_PROPOSALS = 0;
 
-function validationError(halflifeDays, maxRatio, minThreshold, requestToken, minThresholdStakePct) {
-  if (halflifeDays === '0') {
-    return 'Conviction growth cannot be zero.';
+function validationError(
+  halflifeDays,
+  maxRatio,
+  minThreshold,
+  requestToken,
+  minThresholdStakePct
+) {
+  if (halflifeDays === "0") {
+    return "Conviction growth cannot be zero.";
   }
-  if (maxRatio === '0') {
-    return 'Spending limit cannot be zero.';
+  if (maxRatio === "0") {
+    return "Spending limit cannot be zero.";
   }
-  if (minThreshold === '0') {
-    return 'Minimum conviction cannot be zero.';
+  if (minThreshold === "0") {
+    return "Minimum conviction cannot be zero.";
   }
-  if (minThresholdStakePct === '0') {
-    return 'Minimum active stake cannot be zero.';
+  if (minThresholdStakePct === "0") {
+    return "Minimum active stake cannot be zero.";
   }
   if (Boolean(requestToken) && !isAddress(requestToken)) {
-    return 'The request token address should be a valid address.';
+    return "The request token address should be a valid address.";
   }
   return null;
 }
 
 const reduceFields = (fields, [field, value]) => {
   switch (field) {
-    case 'halflifeDays':
+    case "halflifeDays":
       return {
         ...fields,
         decay: calculateDecay(value),
         halflifeDays: value,
       };
-    case 'minThreshold':
+    case "minThreshold":
       return {
         ...fields,
         minThreshold: value,
         weight: calculateWeight(value, fields.maxRatio),
       };
-    case 'minThresholdStakePct':
+    case "minThresholdStakePct":
       return {
         ...fields,
         minThresholdStakePct: value,
       };
-    case 'maxRatio':
+    case "maxRatio":
       return {
         ...fields,
         maxRatio: value,
         weight: calculateWeight(fields.minThreshold, value),
       };
-    case 'requestedAmount':
+    case "requestedAmount":
       return {
         ...fields,
         requestedAmount: value,
       };
-    case 'requestToken':
+    case "requestToken":
       return {
         ...fields,
         requestToken: value,
@@ -75,7 +96,14 @@ const reduceFields = (fields, [field, value]) => {
 
 function ConvictionVotingSettings() {
   const theme = useTheme();
-  const { config, onBack, onConfigChange, onNext, step, steps } = useOnboardingState();
+  const {
+    config,
+    onBack,
+    onConfigChange,
+    onNext,
+    step,
+    steps,
+  } = useOnboardingState();
 
   const [formError, setFormError] = useState(null);
   const [
@@ -103,46 +131,46 @@ function ConvictionVotingSettings() {
   const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction;
 
   const handleHalflifeDaysChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['halflifeDays', value]);
+      updateField(["halflifeDays", value]);
     },
-    [updateField],
+    [updateField]
   );
 
-  const handleMaxRatioChange = useCallback(value => {
+  const handleMaxRatioChange = useCallback((value) => {
     setFormError(null);
-    updateField(['maxRatio', value]);
+    updateField(["maxRatio", value]);
   }, []);
 
   const handleMinThresholdChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['minThreshold', value]);
+      updateField(["minThreshold", value]);
     },
-    [updateField],
+    [updateField]
   );
 
   const handleRequestedAmountChange = useCallback(
-    value => {
-      updateField(['requestedAmount', value]);
+    (value) => {
+      updateField(["requestedAmount", value]);
     },
-    [updateField],
+    [updateField]
   );
 
   const handleMinThresholdStakePctChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null);
-      updateField(['minThresholdStakePct', value]);
+      updateField(["minThresholdStakePct", value]);
     },
-    [updateField],
+    [updateField]
   );
 
   const handleRequestTokenChange = useCallback(
-    event => {
-      updateField(['requestToken', event.target.value]);
+    (event) => {
+      updateField(["requestToken", event.target.value]);
     },
-    [updateField],
+    [updateField]
   );
 
   const handleOpenModal = useCallback(() => setModalVisible(true), []);
@@ -150,23 +178,32 @@ function ConvictionVotingSettings() {
   const handleCloseModal = useCallback(() => setModalVisible(false), []);
 
   const handleReset = useCallback(() => {
-    updateField(['halflifeDays', DEFAULT_CONVICTION_CONFIG.halflifeDays]);
-    updateField(['maxRatio', DEFAULT_CONVICTION_CONFIG.maxRatio]);
-    updateField(['minThreshold', DEFAULT_CONVICTION_CONFIG.minThreshold]);
-    updateField(['minThresholdStakePct', DEFAULT_CONVICTION_CONFIG.minThresholdStakePct]);
-    updateField(['requestToken', config.tokens.address]);
+    updateField(["halflifeDays", DEFAULT_CONVICTION_CONFIG.halflifeDays]);
+    updateField(["maxRatio", DEFAULT_CONVICTION_CONFIG.maxRatio]);
+    updateField(["minThreshold", DEFAULT_CONVICTION_CONFIG.minThreshold]);
+    updateField([
+      "minThresholdStakePct",
+      DEFAULT_CONVICTION_CONFIG.minThresholdStakePct,
+    ]);
+    updateField(["requestToken", config.tokens.address]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.tokens.address, updateField]);
 
-  const handleNextClick = event => {
+  const handleNextClick = (event) => {
     event.preventDefault();
-    const error = validationError(halflifeDays, maxRatio, minThreshold, requestToken, minThresholdStakePct);
+    const error = validationError(
+      halflifeDays,
+      maxRatio,
+      minThreshold,
+      requestToken,
+      minThresholdStakePct
+    );
     if (error) {
       setFormError(error);
       return;
     }
 
-    onConfigChange('conviction', {
+    onConfigChange("conviction", {
       decay,
       halflifeDays,
       maxRatio,
@@ -205,9 +242,12 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Conviction Growth (days)
                 <Help hint="What is Conviction Growth?">
-                  <strong>Conviction Growth</strong> is the number of days it takes to accumulate or reduce voting power
-                  by 50%. For example, if the conviction growth is set to 1 day your tokens must support a proposal for
-                  1 day to reach 50% of those tokens' max voting power, 2 days to reach 75%, 3 days to reach 87.5%, etc.
+                  <strong>Conviction Growth</strong> is the number of days it
+                  takes to accumulate or reduce voting power by 50%. For
+                  example, if the conviction growth is set to 1 day your tokens
+                  must support a proposal for 1 day to reach 50% of those
+                  tokens' max voting power, 2 days to reach 75%, 3 days to reach
+                  87.5%, etc.
                 </Help>
               </Fragment>
             }
@@ -221,8 +261,9 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Spending Limit
                 <Help hint="What is Spending Limit?">
-                  <strong>Spending Limit</strong> is the the maximum percentage of total funds an individual proposal
-                  can request from the common pool.
+                  <strong>Spending Limit</strong> is the the maximum percentage
+                  of total funds an individual proposal can request from the
+                  common pool.
                 </Help>
               </Fragment>
             }
@@ -235,8 +276,9 @@ function ConvictionVotingSettings() {
               <Fragment>
                 Minimum Conviction
                 <Help hint="What is Minimum Conviction?">
-                  <strong>Minimum Conviction</strong> is the mininum percentage of tokens that are used for calculating
-                  the threshold to pass any proposal.
+                  <strong>Minimum Conviction</strong> is the mininum percentage
+                  of tokens that are used for calculating the threshold to pass
+                  any proposal.
                 </Help>
               </Fragment>
             }
@@ -271,18 +313,20 @@ function ConvictionVotingSettings() {
               css={css`
                 color: ${theme.contentSecondary.toString()};
                 margin-bottom: ${3 * GU}px;
-                ${textStyle('body3')};
+                ${textStyle("body3")};
               `}
             >
-              The next configuration allows you to play with different amounts, it is not an actual parameter. It will
-              help you understand the significance of the threshold for conviction voting proposals:
+              The next configuration allows you to play with different amounts,
+              it is not an actual parameter. It will help you understand the
+              significance of the threshold for conviction voting proposals:
             </div>
             <PercentageField
               label={
                 <Fragment>
                   Requested Amount
                   <Help hint="What is Requested Amount?">
-                    <strong>Requested Amount</strong> is the percentage of the common pool being requested.
+                    <strong>Requested Amount</strong> is the percentage of the
+                    common pool being requested.
                   </Help>
                 </Fragment>
               }

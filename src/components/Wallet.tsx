@@ -1,11 +1,11 @@
-/** @jsx jsx */
-import React from 'react';
-import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
-import useAccountTokens from '../hooks/useAccountTokens';
-import { useGardenState } from '../providers/GardenState';
-import { formatTokenAmount } from '../utils/token-utils';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Box, GU, LoadingRing, textStyle, useTheme } from "@1hive/1hive-ui";
+import useAccountTokens from "../hooks/useAccountTokens";
+import { useGardenState } from "../providers/GardenState";
+import { formatTokenAmount } from "../utils/token-utils";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 function Wallet({ account }) {
   const theme = useTheme();
@@ -30,7 +30,14 @@ function Wallet({ account }) {
             symbol={symbol}
           />
           <LineSeparator border={theme.border.toString()} />
-          <Balance amount={inactiveTokens} decimals={decimals} icon={logo} inactive label="Idle" symbol={symbol} />
+          <Balance
+            amount={inactiveTokens}
+            decimals={decimals}
+            icon={logo}
+            inactive
+            label="Idle"
+            symbol={symbol}
+          />
         </div>
       </div>
     </Box>
@@ -90,8 +97,8 @@ const Balance = ({
         ) : (
           <span
             css={css`
-              ${textStyle('title4')};
-              color: ${theme[inactive ? 'negative' : 'content']};
+              ${textStyle("title4")};
+              color: ${theme[inactive ? "negative" : "content"]};
             `}
           >
             {formatTokenAmount(amount, decimals)}

@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
-import { GU, IdentityBadge, textStyle, useLayout } from '@1hive/1hive-ui';
-import InfoField from '../../InfoField';
-import ModalButton from '../ModalButton';
-import { formatTokenAmount } from '@utils/token-utils';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import useChallenge from '@hooks/useChallenge';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback } from "react";
+import { GU, IdentityBadge, textStyle, useLayout } from "@1hive/1hive-ui";
+import InfoField from "../../InfoField";
+import ModalButton from "../ModalButton";
+import { formatTokenAmount } from "@utils/token-utils";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import useChallenge from "@hooks/useChallenge";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function SettlementDetails({ getTransactions, isChallenger, proposal }) {
   const { id, challenger, collateralRequirement, settlementOffer } = proposal;
@@ -23,7 +23,7 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
   return (
     <div
       css={css`
-        ${textStyle('body2')};
+        ${textStyle("body2")};
       `}
     >
       <span>
@@ -36,13 +36,22 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
       <div
         css={css`
           display: grid;
-          grid-template-columns: ${layoutName !== 'small' ? 'auto auto' : 'auto'};
+          grid-template-columns: ${layoutName !== "small"
+            ? "auto auto"
+            : "auto"};
           grid-gap: ${2.5 * GU}px;
           margin-top: ${3 * GU}px;
         `}
       >
-        <InfoField label={isChallenger ? 'Amount you will get from submitter' : 'Amount that will be slashed'}>
-          {formatTokenAmount(settlementOffer, 18)} {collateralRequirement.tokenSymbol}
+        <InfoField
+          label={
+            isChallenger
+              ? "Amount you will get from submitter"
+              : "Amount that will be slashed"
+          }
+        >
+          {formatTokenAmount(settlementOffer, 18)}{" "}
+          {collateralRequirement.tokenSymbol}
         </InfoField>
 
         <div
@@ -66,7 +75,7 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
         {!loading && challenge.context}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
-        {isChallenger ? 'Claim deposit' : 'Accept settlement'}
+        {isChallenger ? "Claim deposit" : "Accept settlement"}
       </ModalButton>
     </div>
   );

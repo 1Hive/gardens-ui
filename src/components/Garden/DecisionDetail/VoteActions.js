@@ -1,14 +1,24 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useState } from 'react';
-import { Button, GU, IconCheck, IconConnect, IconCross, Info, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-import { useGardenState } from '@providers/GardenState';
-import useExtendedVoteData from '@hooks/useExtendedVoteData';
-import { useWallet } from '@providers/Wallet';
-import { noop, dateFormat } from '@utils/date-utils';
-import { VOTE_NAY, VOTE_YEA } from '@/constants';
-import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Button,
+  GU,
+  IconCheck,
+  IconConnect,
+  IconCross,
+  Info,
+  RADIUS,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { useGardenState } from "@providers/GardenState";
+import useExtendedVoteData from "@hooks/useExtendedVoteData";
+import { useWallet } from "@providers/Wallet";
+import { noop, dateFormat } from "@utils/date-utils";
+import { VOTE_NAY, VOTE_YEA } from "@/constants";
+import { getConnectedAccountCast, isVoteAction } from "@utils/vote-utils";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const [ready, setReady] = useState(false);
@@ -37,7 +47,9 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     startTimestamp,
   } = useExtendedVoteData(vote);
 
-  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(connectedAccountCast.vote);
+  const isAccountVoteCasted = [VOTE_YEA, VOTE_NAY].includes(
+    connectedAccountCast.vote
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -81,7 +93,7 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
         supports: true,
         principals,
       }),
-    [canUserVote, canUserVoteOnBehalfOf, onVote, principals],
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
   );
   const handleVoteNo = useCallback(
     () =>
@@ -91,7 +103,7 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
         supports: false,
         principals,
       }),
-    [canUserVote, canUserVoteOnBehalfOf, onVote, principals],
+    [canUserVote, canUserVoteOnBehalfOf, onVote, principals]
   );
 
   if (!ready) {
@@ -118,8 +130,9 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
                 margin-top: ${2.5 * GU}px;
               `}
             >
-              The voting period is closed and the vote has passed. <strong>Anyone</strong> can now enact this vote to
-              execute its action.
+              The voting period is closed and the vote has passed.{" "}
+              <strong>Anyone</strong> can now enact this vote to execute its
+              action.
             </Info>
           </React.Fragment>
         )}
@@ -146,7 +159,10 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
           <Buttons onClickYes={handleVoteYes} onClickNo={handleVoteNo} />
           {canUserVote && isAccountVoteCasted && (
             <Info mode="warning">
-              <strong>Although your delegate has voted on your behalf, you can always override their vote.</strong>
+              <strong>
+                Although your delegate has voted on your behalf, you can always
+                override their vote.
+              </strong>
             </Info>
           )}
         </React.Fragment>
@@ -158,7 +174,9 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
     return (
       <div>
         <Buttons disabled />
-        <Info mode="warning">You have already voted and changing vote is not allowed.</Info>
+        <Info mode="warning">
+          You have already voted and changing vote is not allowed.
+        </Info>
       </div>
     );
   }
@@ -170,11 +188,13 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
           <Buttons disabled />
           <Info mode="warning">
             {userBalanceNow > 0
-              ? 'Although the currently connected account holds tokens, it'
-              : 'The currently connected account'}{' '}
-            did not hold any <strong>{token.symbol}</strong> tokens when this vote began ({dateFormat(startDate)}) and
-            therefore cannot participate in this vote. Make sure your accounts are holding{' '}
-            <strong>{token.symbol}</strong> at the time a vote begins if you'd like to vote using this Voting app.
+              ? "Although the currently connected account holds tokens, it"
+              : "The currently connected account"}{" "}
+            did not hold any <strong>{token.symbol}</strong> tokens when this
+            vote began ({dateFormat(startDate)}) and therefore cannot
+            participate in this vote. Make sure your accounts are holding{" "}
+            <strong>{token.symbol}</strong> at the time a vote begins if you'd
+            like to vote using this Voting app.
           </Info>
         </>
       ) : (
@@ -188,19 +208,19 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
         >
           <div
             css={css`
-              ${textStyle('body1')};
+              ${textStyle("body1")};
             `}
           >
             You must enable your account to interact with this decision
           </div>
           <div
             css={css`
-              ${textStyle('body2')};
+              ${textStyle("body2")};
               color: ${theme.surfaceContentSecondary.toString()};
               margin-top: ${2 * GU}px;
             `}
           >
-            Connect to your Ethereum provider by clicking on the{' '}
+            Connect to your Ethereum provider by clicking on the{" "}
             <strong
               css={css`
                 display: inline-flex;
@@ -210,8 +230,9 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
               `}
             >
               <IconConnect /> Enable account
-            </strong>{' '}
-            button on the header. You may be temporarily redirected to a new screen.
+            </strong>{" "}
+            button on the header. You may be temporarily redirected to a new
+            screen.
           </div>
         </div>
       )}
@@ -257,7 +278,8 @@ const TokenReference = ({
   userBalance,
   userBalanceNow,
 }) => {
-  const votingWith = Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance);
+  const votingWith =
+    Math.min(userBalance, userBalanceNow) + Math.max(0, principalsBalance);
 
   return (
     <Info
@@ -265,35 +287,36 @@ const TokenReference = ({
         margin-top: ${2 * GU}px;
       `}
     >
-      Voting with{' '}
+      Voting with{" "}
       <strong>
         {votingWith} {tokenSymbol}
       </strong>
       .
       {canUserVote && (
         <div>
-          {' '}
-          Your balance at snapshot taken at block <strong>{snapshotBlock}</strong> at{' '}
-          <strong>{dateFormat(startDate)}</strong> is{' '}
+          {" "}
+          Your balance at snapshot taken at block{" "}
+          <strong>{snapshotBlock}</strong> at{" "}
+          <strong>{dateFormat(startDate)}</strong> is{" "}
           <strong>
             {userBalance} {tokenSymbol}
           </strong>
           {userBalance !== userBalanceNow ? (
             <span>
-              Your current balance is{' '}
+              Your current balance is{" "}
               <strong>
                 {userBalanceNow} {tokenSymbol}
               </strong>
               )
             </span>
           ) : (
-            ''
+            ""
           )}
         </div>
       )}
       {canUserVoteOnBehalfOf && principalsBalance > 0 && (
         <div>
-          Delegated voting power:{' '}
+          Delegated voting power:{" "}
           <strong>
             {principalsBalance} {tokenSymbol}
           </strong>
@@ -304,7 +327,7 @@ const TokenReference = ({
 };
 
 const VotingButton = styled(Button)`
-  ${textStyle('body2')};
+  ${textStyle("body2")};
   width: 50%;
   &:first-child {
     margin-right: ${1 * GU}px;

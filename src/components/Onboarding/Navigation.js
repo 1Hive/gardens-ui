@@ -1,12 +1,12 @@
-import React, { useRef, useImperativeHandle } from 'react';
-import PropTypes from 'prop-types';
-import { Button, IconArrowLeft, GU, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useRef, useImperativeHandle } from "react";
+import PropTypes from "prop-types";
+import { Button, IconArrowLeft, GU, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const Navigation = React.forwardRef(function Navigation(
   { backEnabled, backLabel, nextEnabled, nextLabel, onBack, onNext },
-  ref,
+  ref
 ) {
   const theme = useTheme();
 
@@ -21,7 +21,7 @@ const Navigation = React.forwardRef(function Navigation(
         }
       },
     }),
-    [],
+    []
   );
 
   return (
@@ -70,9 +70,9 @@ Navigation.propTypes = {
 
 Navigation.defaultProps = {
   backEnabled: true,
-  backLabel: 'Back',
+  backLabel: "Back",
   nextEnabled: true,
-  nextLabel: 'Next',
+  nextLabel: "Next",
 };
 
 export default Navigation;

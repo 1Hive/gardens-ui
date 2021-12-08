@@ -1,18 +1,26 @@
-/** @jsx jsx */
-import React from 'react';
-import { Accordion, AppBadge, Box, GU, useTheme } from '@1hive/1hive-ui';
-import HelpTip from '@components/HelpTip';
-import InfoField from '../InfoField';
-import { getNetwork } from '@/networks';
-import { formatTokenAmount } from '@utils/token-utils';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Accordion, AppBadge, Box, GU, useTheme } from "@1hive/1hive-ui";
+import HelpTip from "@components/HelpTip";
+import InfoField from "../InfoField";
+import { getNetwork } from "@/networks";
+import { formatTokenAmount } from "@utils/token-utils";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 function AgreementBindingActions({ apps }) {
   const network = getNetwork();
 
   const items = apps.map(
-    ({ address, actionAmount, challengeAmount, humanName, iconSrc, token, settlementPeriodHours }) => [
+    ({
+      address,
+      actionAmount,
+      challengeAmount,
+      humanName,
+      iconSrc,
+      token,
+      settlementPeriodHours,
+    }) => [
       <div
         css={css`
           display: flex;
@@ -73,7 +81,7 @@ function AgreementBindingActions({ apps }) {
           {settlementPeriodHours} <SubtleLabel>Hours</SubtleLabel>
         </InfoField>
       </div>,
-    ],
+    ]
   );
 
   return (

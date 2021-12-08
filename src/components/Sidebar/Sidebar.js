@@ -1,32 +1,35 @@
-import React, { useMemo } from 'react';
-import { useRouteMatch } from 'react-router';
-import { useTrail, animated } from 'react-spring';
-import { GU, Link, useTheme } from '@1hive/1hive-ui';
-import LoadingRing from '../LoadingRing';
-import MenuItem from './MenuItem';
-import { useGardens } from '@providers/Gardens';
-import { useUserState } from '@providers/User';
+import React, { useMemo } from "react";
+import { useRouteMatch } from "react-router";
+import { useTrail, animated } from "react-spring";
+import { GU, Link, useTheme } from "@1hive/1hive-ui";
+import LoadingRing from "../LoadingRing";
+import MenuItem from "./MenuItem";
+import { useGardens } from "@providers/Gardens";
+import { useUserState } from "@providers/User";
 
-import { addressesEqual } from '@utils/web3-utils';
-import gardensLogo from '@assets/gardensLogoMark.svg';
-import defaultGardenLogo from '@assets/defaultGardenLogo.png';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { addressesEqual } from "@utils/web3-utils";
+import gardensLogo from "@assets/gardensLogoMark.svg";
+import defaultGardenLogo from "@assets/defaultGardenLogo.png";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Sidebar() {
   const theme = useTheme();
   const { user: connectedUser, loading: userLoading } = useUserState();
   const { gardensMetadata } = useGardens();
 
-  const match = useRouteMatch('/garden/:daoId');
+  const match = useRouteMatch("/garden/:daoId");
 
   const sidebarGardens = useMemo(() => {
     if (!connectedUser?.gardensSigned) {
       return [];
     }
 
-    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { name, logo } = gardensMetadata?.find(g => addressesEqual(g.address, gardenSignedAddress)) || {};
+    const result = connectedUser.gardensSigned.map((gardenSignedAddress) => {
+      const { name, logo } =
+        gardensMetadata?.find((g) =>
+          addressesEqual(g.address, gardenSignedAddress)
+        ) || {};
 
       return {
         address: gardenSignedAddress,
@@ -44,8 +47,8 @@ function Sidebar() {
     config: { mass: 5, tension: 1500, friction: 150 },
     delay: 300,
     opacity: startTrail ? 1 : 0,
-    marginLeft: startTrail ? '0' : '-40px',
-    from: { marginLeft: '-40px', opacity: 0 },
+    marginLeft: startTrail ? "0" : "-40px",
+    from: { marginLeft: "-40px", opacity: 0 },
   });
 
   return (
@@ -74,7 +77,7 @@ function Sidebar() {
             border-bottom: 1px solid ${theme.border.toString()};
           `}
         >
-          <Link href="#/home" external={false} style={{ display: 'block' }}>
+          <Link href="#/home" external={false} style={{ display: "block" }}>
             <img
               src={gardensLogo}
               height={40}

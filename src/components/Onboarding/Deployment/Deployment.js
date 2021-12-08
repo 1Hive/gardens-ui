@@ -1,19 +1,23 @@
-import React, { useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router';
-import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui';
-import { animated, Transition } from 'react-spring/renderprops';
-import { BoxProgress, BoxReady } from './Boxes';
-import DeploymentStepsPanel from './DeploymentStepsPanel';
-import ErrorModal from './ErrorModal';
+import React, { useCallback, useMemo } from "react";
+import { useHistory } from "react-router";
+import { Button, GU, LoadingRing, springs, useViewport } from "@1hive/1hive-ui";
+import { animated, Transition } from "react-spring/renderprops";
+import { BoxProgress, BoxReady } from "./Boxes";
+import DeploymentStepsPanel from "./DeploymentStepsPanel";
+import ErrorModal from "./ErrorModal";
 
-import useDeploymentState from './useDeploymentState';
+import useDeploymentState from "./useDeploymentState";
 
-import flowersLeavesSvg from './assets/flowers-leaves.svg';
-import gardensLogo from '@assets/gardensLogoMark.svg';
+import flowersLeavesSvg from "./assets/flowers-leaves.svg";
+import gardensLogo from "@assets/gardensLogoMark.svg";
 
-import { STEP_WORKING, STEP_SUCCESS, STEP_PROMPTING } from '@components/Stepper/stepper-statuses';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import {
+  STEP_WORKING,
+  STEP_SUCCESS,
+  STEP_PROMPTING,
+} from "@components/Stepper/stepper-statuses";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const Deployment = React.memo(function Deployment() {
   const { above } = useViewport();
@@ -39,14 +43,16 @@ const Deployment = React.memo(function Deployment() {
       return [0, false];
     }
     return [
-      transactionsStatus.findIndex(({ status }) => status === STEP_WORKING || status === STEP_PROMPTING),
+      transactionsStatus.findIndex(
+        ({ status }) => status === STEP_WORKING || status === STEP_PROMPTING
+      ),
       transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
     ];
   }, [transactionsStatus]);
 
   return (
     <React.Fragment>
-      {above('large') && (
+      {above("large") && (
         <div
           css={css`
             width: ${41 * GU}px;
@@ -66,7 +72,11 @@ const Deployment = React.memo(function Deployment() {
             alt=""
           />
           {readyToStart ? (
-            <DeploymentStepsPanel allSuccess={allSuccess} pending={pending} transactionsStatus={transactionsStatus} />
+            <DeploymentStepsPanel
+              allSuccess={allSuccess}
+              pending={pending}
+              transactionsStatus={transactionsStatus}
+            />
           ) : (
             <div
               css={css`
@@ -116,7 +126,7 @@ const Deployment = React.memo(function Deployment() {
             leave={{ opacity: 0, transform: `translate3d(-10%, 0, 0)` }}
             config={springs.smooth}
           >
-            {allSuccess =>
+            {(allSuccess) =>
               /* eslint-disable react/prop-types */
               ({ opacity, transform }) =>
                 allSuccess ? (
@@ -149,7 +159,7 @@ const Deployment = React.memo(function Deployment() {
           leave={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
           config={springs.smooth}
         >
-          {isFinalized => ({ opacity, transform }) =>
+          {(isFinalized) => ({ opacity, transform }) =>
             !isFinalized && (
               <animated.div
                 style={{ opacity, transform }}
@@ -175,7 +185,8 @@ const Deployment = React.memo(function Deployment() {
         }
         content={
           <p>
-            An error has occurred during the signature process. Don't worry, you can try to send the transaction again.
+            An error has occurred during the signature process. Don't worry, you
+            can try to send the transaction again.
           </p>
         }
         header="Something went wrong"

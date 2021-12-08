@@ -1,9 +1,12 @@
-import React from 'react';
-import { GU, Tag, Timer } from '@1hive/1hive-ui';
-import { PROPOSAL_STATUS_CHALLENGED_STRING, PROPOSAL_STATUS_DISPUTED_STRING } from '@/constants';
+import React from "react";
+import { GU, Tag, Timer } from "@1hive/1hive-ui";
+import {
+  PROPOSAL_STATUS_CHALLENGED_STRING,
+  PROPOSAL_STATUS_DISPUTED_STRING,
+} from "@/constants";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function ProposalCountdown({ proposal }) {
   if (proposal.hasEnded) {
@@ -18,7 +21,10 @@ function ProposalCountdown({ proposal }) {
 }
 
 function CountDown({ proposal }) {
-  const end = proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING ? proposal.challengeEndDate : proposal.endDate;
+  const end =
+    proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING
+      ? proposal.challengeEndDate
+      : proposal.endDate;
   return (
     <div
       css={css`

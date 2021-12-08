@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -13,42 +13,50 @@ import {
   MEDIUM_RADIUS,
   TextInput,
   useTheme,
-} from '@1hive/1hive-ui';
-import { useConnectedGarden } from '@providers/ConnectedGarden';
-import { useGardenState } from '@providers/GardenState';
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider';
-import { usePriceOracle } from '@hooks/usePriceOracle';
-import BigNumber from '@lib/bigNumber';
-import { toDecimals } from '@utils/math-utils';
-import { formatTokenAmount, isStableToken } from '@utils/token-utils';
-import { calculateThreshold, getMaxConviction } from '@lib/conviction';
+} from "@1hive/1hive-ui";
+import { useConnectedGarden } from "@providers/ConnectedGarden";
+import { useGardenState } from "@providers/GardenState";
+import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
+import { usePriceOracle } from "@hooks/usePriceOracle";
+import BigNumber from "@lib/bigNumber";
+import { toDecimals } from "@utils/math-utils";
+import { formatTokenAmount, isStableToken } from "@utils/token-utils";
+import { calculateThreshold, getMaxConviction } from "@lib/conviction";
 
-import { useHistory } from 'react-router-dom';
-import { buildGardenPath } from '@utils/routing-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { useHistory } from "react-router-dom";
+import { buildGardenPath } from "@utils/routing-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const SIGNALING_PROPOSAL = 0;
 const FUNDING_PROPOSAL = 1;
 
 const DEFAULT_FORM_DATA = {
-  title: '',
-  link: '',
+  title: "",
+  link: "",
   proposalType: SIGNALING_PROPOSAL,
   amount: {
     stable: false,
-    value: '0',
+    value: "0",
     valueBN: new BigNumber(0),
   },
-  beneficiary: '',
+  beneficiary: "",
 };
 
-const PROPOSAL_TYPES = ['Suggestion', 'Funding'];
+const PROPOSAL_TYPES = ["Suggestion", "Funding"];
 
-const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (data) => void }) => {
+const AddProposalPanel = React.memo(({ setProposalData }) => {
   const { next } = useMultiModal();
   const { commonPool, config } = useGardenState();
-  const { alpha, effectiveSupply, maxRatio, requestToken, stableToken, stakeToken, weight } = config.conviction;
+  const {
+    alpha,
+    effectiveSupply,
+    maxRatio,
+    requestToken,
+    stableToken,
+    stakeToken,
+    weight,
+  } = config.conviction;
 
   const connectedGarden = useConnectedGarden();
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -58,17 +66,23 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
   const forumRegex = new RegExp(connectedGarden.forumURL);
 
   const handleAmountEditMode = useCallback(
-    editMode => {
-      setFormData(formData => {
+    (editMode) => {
+      setFormData((formData) => {
         const { amount } = formData;
 
         const newValue = amount.valueBN.gte(0)
-          ? formatTokenAmount(amount.valueBN, stakeToken.decimals, false, false, {
-              commas: !editMode,
-              replaceZeroBy: editMode ? '' : '0',
-              rounding: stakeToken.decimals,
-            })
-          : '';
+          ? formatTokenAmount(
+              amount.valueBN,
+              stakeToken.decimals,
+              false,
+              false,
+              {
+                commas: !editMode,
+                replaceZeroBy: editMode ? "" : "0",
+                rounding: stakeToken.decimals,
+              }
+            )
+          : "";
 
         return {
           ...formData,
@@ -79,28 +93,32 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
         };
       });
     },
-    [stakeToken],
+    [stakeToken]
   );
 
-  const handleIsStableChange = useCallback(checked => {
-    setFormData(formData => ({
+  const handleIsStableChange = useCallback((checked) => {
+    setFormData((formData) => ({
       ...formData,
       amount: { ...formData.amount, stable: checked },
     }));
   }, []);
 
-  const handleTitleChange = useCallback(event => {
+  const handleTitleChange = useCallback((event) => {
     const updatedTitle = event.target.value;
-    setFormData(formData => ({ ...formData, title: updatedTitle }));
+    setFormData((formData) => ({ ...formData, title: updatedTitle }));
   }, []);
 
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const updatedAmount = event.target.value;
 
-      const newAmountBN = new BigNumber(isNaN(updatedAmount) ? -1 : toDecimals(updatedAmount, stakeToken.decimals));
+      const newAmountBN = new BigNumber(
+        isNaN(updatedAmount)
+          ? -1
+          : toDecimals(updatedAmount, stakeToken.decimals)
+      );
 
-      setFormData(formData => ({
+      setFormData((formData) => ({
         ...formData,
         amount: {
           ...formData.amount,
@@ -109,42 +127,45 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
         },
       }));
     },
-    [stakeToken.decimals],
+    [stakeToken.decimals]
   );
 
-  const handleProposalTypeChange = useCallback(selected => {
-    setFormData(formData => ({
+  const handleProposalTypeChange = useCallback((selected) => {
+    setFormData((formData) => ({
       ...formData,
       proposalType: selected,
     }));
   }, []);
 
-  const handleBeneficiaryChange = useCallback(event => {
+  const handleBeneficiaryChange = useCallback((event) => {
     const updatedBeneficiary = event.target.value;
 
-    setFormData(formData => ({ ...formData, beneficiary: updatedBeneficiary }));
+    setFormData((formData) => ({
+      ...formData,
+      beneficiary: updatedBeneficiary,
+    }));
   }, []);
 
-  const handleLinkChange = useCallback(event => {
+  const handleLinkChange = useCallback((event) => {
     const updatedLink = event.target.value;
-    setFormData(formData => ({ ...formData, link: updatedLink }));
+    setFormData((formData) => ({ ...formData, link: updatedLink }));
   }, []);
 
   const handleOnContinue = useCallback(
-    event => {
+    (event) => {
       event.preventDefault();
 
       setProposalData(formData);
       next();
     },
-    [formData, next, setProposalData],
+    [formData, next, setProposalData]
   );
 
   const [requestAmount, loadingRequestAmount] = usePriceOracle(
     formData.amount.stable,
     formData.amount.valueBN,
     stableToken.id,
-    requestToken.id,
+    requestToken.id
   );
 
   const errors = useMemo(() => {
@@ -153,23 +174,30 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
     const { amount, beneficiary, link } = formData;
     if (requestToken) {
       if (amount.valueBN.eq(-1)) {
-        errors.push('Invalid requested amount');
+        errors.push("Invalid requested amount");
       }
 
       if (beneficiary && !isAddress(beneficiary)) {
-        errors.push('Beneficiary is not a valid ethereum address');
+        errors.push("Beneficiary is not a valid ethereum address");
       }
     }
 
     if (link && !forumRegex.test(link)) {
-      errors.push('Forum post link not provided ');
+      errors.push("Forum post link not provided ");
     }
 
     return errors;
   }, [formData, forumRegex, requestToken]);
 
   const neededThreshold = useMemo(() => {
-    const threshold = calculateThreshold(requestAmount, commonPool, effectiveSupply, alpha, maxRatio, weight);
+    const threshold = calculateThreshold(
+      requestAmount,
+      commonPool,
+      effectiveSupply,
+      alpha,
+      maxRatio,
+      weight
+    );
 
     const max = getMaxConviction(effectiveSupply, alpha);
 
@@ -180,20 +208,27 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
     !formData.title ||
     !formData.link ||
     errors.length > 0 ||
-    (formData.proposalType === FUNDING_PROPOSAL && (formData.amount.valueBN.eq(0) || !formData.beneficiary));
+    (formData.proposalType === FUNDING_PROPOSAL &&
+      (formData.amount.valueBN.eq(0) || !formData.beneficiary));
 
   const history = useHistory();
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
-        All proposals are bound by this community's{' '}
-        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>Covenant</Link> . If you haven't taken the time
-        to read through it yet, please make sure you do so.
+        All proposals are bound by this community's{" "}
+        <Link href={`#${buildGardenPath(history.location, "covenant")}`}>
+          Covenant
+        </Link>{" "}
+        . If you haven't taken the time to read through it yet, please make sure
+        you do so.
         <br />
-        <br /> Before creating a proposal you must first create a post on the{' '}
-        <Link href={connectedGarden?.forumURL}>{connectedGarden?.name} Forum</Link> . This post should explain why you
-        believe this proposal is beneficial to the community and (if applicable) what the requested funds will be used
-        for.
+        <br /> Before creating a proposal you must first create a post on the{" "}
+        <Link href={connectedGarden?.forumURL}>
+          {connectedGarden?.name} Forum
+        </Link>{" "}
+        . This post should explain why you believe this proposal is beneficial
+        to the community and (if applicable) what the requested funds will be
+        used for.
       </Info>
       <Field
         label="Select proposal type"
@@ -218,7 +253,7 @@ const AddProposalPanel = React.memo(({ setProposalData }: { setProposalData: (da
         ideas or future funding proposals.`
             : `Funding proposals ask for an amount of funds. These funds are granted
         if the proposal in question receives enough support (conviction).`}
-        </span>{' '}
+        </span>{" "}
       </Info>
       <Field
         label="Title"
@@ -347,7 +382,11 @@ function RequestedAmount({
             `}
           >
             {stable ? (
-              <ConvertedAmount amount={convertedAmount} loading={loadingAmount} requestToken={requestToken} />
+              <ConvertedAmount
+                amount={convertedAmount}
+                loading={loadingAmount}
+                requestToken={requestToken}
+              />
             ) : (
               <div />
             )}
@@ -365,10 +404,14 @@ function RequestedAmount({
                 `}
               >
                 <Help hint="">
-                  For funding proposals denominated in {stableToken.symbol} to be made successfully, this Garden's{' '}
-                  <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">price oracle</Link> must be
-                  called consistently. Contact your Garden administrator or development team if the requested stable
-                  amount is not accurate.
+                  For funding proposals denominated in {stableToken.symbol} to
+                  be made successfully, this Garden's{" "}
+                  <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                    price oracle
+                  </Link>{" "}
+                  must be called consistently. Contact your Garden administrator
+                  or development team if the requested stable amount is not
+                  accurate.
                 </Help>
               </div>
             </div>
@@ -380,10 +423,11 @@ function RequestedAmount({
           margin-bottom: ${3 * GU}px;
         `}
       >
-        The larger the requested amount, the more support required for the proposal to pass.{' '}
+        The larger the requested amount, the more support required for the
+        proposal to pass.{" "}
         {isRequestTokenStable
-          ? ''
-          : `If you specify the proposal amount in ${stableToken.symbol} it will be converted to ${requestToken.symbol} if/when it is passed.`}{' '}
+          ? ""
+          : `If you specify the proposal amount in ${stableToken.symbol} it will be converted to ${requestToken.symbol} if/when it is passed.`}{" "}
         {neededThreshold
           ? `The conviction
         required in order for the proposal to pass with the requested amount is
@@ -417,7 +461,8 @@ function ConvertedAmount({ amount, loading, requestToken }) {
         <LoadingRing />
       ) : (
         <span>
-          {formatTokenAmount(amount, requestToken.decimals)} {requestToken.symbol}
+          {formatTokenAmount(amount, requestToken.decimals)}{" "}
+          {requestToken.symbol}
         </span>
       )}
     </div>

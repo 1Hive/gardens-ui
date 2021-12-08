@@ -1,8 +1,8 @@
-/** @jsx jsx */
-import React from 'react';
-import { Card, GU, useViewport, useTheme } from '@1hive/1hive-ui';
-import flowerError from '../../assets/flowerError.svg';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { Card, GU, useViewport, useTheme } from "@1hive/1hive-ui";
+import flowerError from "../../assets/flowerError.svg";
+import { css, jsx } from "@emotion/react";
 
 function GlobalErrorScreen({ children }: { children: React.ReactNode }) {
   return (

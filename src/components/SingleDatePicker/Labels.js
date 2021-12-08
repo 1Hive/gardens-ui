@@ -1,11 +1,21 @@
-import React, { forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import { ButtonBase, IconCalendar, GU, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
-import { SINGLE_DATE, INPUT_BORDER } from './consts';
+import React, { forwardRef } from "react";
+import PropTypes from "prop-types";
+import {
+  ButtonBase,
+  IconCalendar,
+  GU,
+  RADIUS,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
+import { SINGLE_DATE, INPUT_BORDER } from "./consts";
 
-const Labels = forwardRef(function Labels({ enabled, startText, hasSetDates, onClick, ...props }, ref) {
+const Labels = forwardRef(function Labels(
+  { enabled, startText, hasSetDates, onClick, ...props },
+  ref
+) {
   const theme = useTheme();
 
   const hasNoStart = startText === SINGLE_DATE;
@@ -20,7 +30,8 @@ const Labels = forwardRef(function Labels({ enabled, startText, hasSetDates, onC
           justify-content: space-between;
           align-items: center;
           padding: 7px 6px;
-          border: ${INPUT_BORDER}px solid ${hasSetDates ? theme.accent.toString() : theme.border.toString()};
+          border: ${INPUT_BORDER}px solid
+            ${hasSetDates ? theme.accent.toString() : theme.border.toString()};
           border-radius: ${RADIUS}px;
           background: ${theme.surface.toString()};
           overflow: hidden;
@@ -44,9 +55,9 @@ const Labels = forwardRef(function Labels({ enabled, startText, hasSetDates, onC
         >
           <div
             css={css`
-              color: ${hasNoStart ? theme.hint.toString() : 'inherit'};
+              color: ${hasNoStart ? theme.hint.toString() : "inherit"};
               text-align: center;
-              ${textStyle(hasNoStart ? 'body2' : 'body3')}
+              ${textStyle(hasNoStart ? "body2" : "body3")}
             `}
           >
             {startText}
@@ -68,7 +79,9 @@ const Labels = forwardRef(function Labels({ enabled, startText, hasSetDates, onC
         >
           <IconCalendar
             css={css`
-              color: ${enabled ? theme.accent.toString() : theme.surfaceIcon.toString()};
+              color: ${enabled
+                ? theme.accent.toString()
+                : theme.surfaceIcon.toString()};
             `}
           />
         </div>

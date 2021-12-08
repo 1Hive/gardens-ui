@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link, GU, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import { Link, GU, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function MenuItem({ active, path, label, src }) {
   const theme = useTheme();
@@ -10,7 +10,7 @@ function MenuItem({ active, path, label, src }) {
     <li
       css={css`
         position: relative;
-        background: ${active ? 'rgb(212 251 216)' : theme.surface.toString()};
+        background: ${active ? "rgb(212 251 216)" : theme.surface.toString()};
         height: ${8.5 * GU}px;
         width: 100%;
         ${label &&
@@ -53,7 +53,7 @@ function MenuItem({ active, path, label, src }) {
           external={false}
           href={path}
           style={{
-            display: 'block',
+            display: "block",
           }}
         >
           <img

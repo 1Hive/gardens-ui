@@ -1,28 +1,28 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { GU, textStyle, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
 
-import iconTopSvg from '@assets/rankings/ranking-top.svg';
-import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg';
-import iconNewSvg from '@assets/rankings/ranking-new.svg';
-import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg';
-import { css, jsx } from '@emotion/react';
+import iconTopSvg from "@assets/rankings/ranking-top.svg";
+import iconTopSelectedSvg from "@assets/rankings/ranking-top-selected.svg";
+import iconNewSvg from "@assets/rankings/ranking-new.svg";
+import iconNewSelectedSvg from "@assets/rankings/ranking-new-selected.svg";
+import { css, jsx } from "@emotion/react";
 
 const iconsMapping = {
   top: {
     icon: iconTopSvg,
     iconSelected: iconTopSelectedSvg,
-    label: 'Most supported',
+    label: "Most supported",
   },
   new: {
     icon: iconNewSvg,
     iconSelected: iconNewSelectedSvg,
-    label: 'Newest',
+    label: "Newest",
   },
 };
 
 function getRankingIcon(key, selected) {
-  return iconsMapping[key][selected ? 'iconSelected' : 'icon'];
+  return iconsMapping[key][selected ? "iconSelected" : "icon"];
 }
 
 function getRankingLabel(key) {
@@ -69,7 +69,11 @@ function Item({ icon, index, label, onSelect, selected }) {
         margin-right: ${1 * GU}px;
         border-radius: ${2 * GU}px;
         padding: ${0.5 * GU}px ${1 * GU}px;
-        background: linear-gradient(268deg, ${theme.accentEnd.toString()}, ${theme.accentStart.toString()});
+        background: linear-gradient(
+          268deg,
+          ${theme.accentEnd.toString()},
+          ${theme.accentStart.toString()}
+        );
 
         ${!selected &&
           `
@@ -87,7 +91,7 @@ function Item({ icon, index, label, onSelect, selected }) {
       <img src={icon} height="22" width="22" alt="" />
       <div
         css={css`
-          ${textStyle('label1')};
+          ${textStyle("label1")};
           margin-left: ${0.75 * GU}px;
         `}
       >

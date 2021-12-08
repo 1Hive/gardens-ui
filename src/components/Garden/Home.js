@@ -1,25 +1,25 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui';
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { BackButton, GU, useLayout, useViewport } from "@1hive/1hive-ui";
 
-import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens';
-import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens';
-import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens';
-import Filters from './Filters/Filters';
-import { GardenLoader } from '../Loader';
-import Metrics from './Metrics';
-import MultiModal from '../MultiModal/MultiModal';
-import NetworkErrorModal from '../NetworkErrorModal';
-import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens';
-import ProposalsList from './Feed/ProposalsList';
-import RightPanel from './Feed/RightPanel';
-import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens';
+import ClaimRewardsScreens from "./ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens";
+import CreateProposalScreens from "./ModalFlows/CreateProposalScreens/CreateProposalScreens";
+import DelegateVotingScreens from "./ModalFlows/DelegateVotingScreens/DelegateVotingScreens";
+import Filters from "./Filters/Filters";
+import { GardenLoader } from "../Loader";
+import Metrics from "./Metrics";
+import MultiModal from "../MultiModal/MultiModal";
+import NetworkErrorModal from "../NetworkErrorModal";
+import PriceOracleScreens from "./ModalFlows/PriceOracleScreens/PriceOracleScreens";
+import ProposalsList from "./Feed/ProposalsList";
+import RightPanel from "./Feed/RightPanel";
+import WrapTokenScreens from "./ModalFlows/WrapTokenScreens/WrapTokenScreens";
 
-import useGardenLogic from '@/logic/garden-logic';
-import { useWallet } from '@providers/Wallet';
-import { buildGardenPath } from '@utils/routing-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import useGardenLogic from "@/logic/garden-logic";
+import { useWallet } from "@providers/Wallet";
+import { buildGardenPath } from "@utils/routing-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const Home = React.memo(function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false);
@@ -45,18 +45,18 @@ const Home = React.memo(function Home() {
   // min layout is never returned
   const { below } = useViewport();
   const { layoutName } = useLayout();
-  const largeMode = layoutName === 'large';
-  const compactMode = layoutName === 'small' || layoutName === 'medium';
+  const largeMode = layoutName === "large";
+  const compactMode = layoutName === "small" || layoutName === "medium";
 
   const handleBack = useCallback(() => {
-    history.push('/home');
+    history.push("/home");
   }, [history]);
 
   const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible);
+    setFilterSidlerVisible((visible) => !visible);
   }, []);
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true);
     setModalMode(mode);
   }, []);
@@ -64,37 +64,37 @@ const Home = React.memo(function Home() {
   const handleHideModal = useCallback(() => {
     setModalVisible(false);
 
-    if (history.location.pathname.includes('create')) {
-      history.push(buildGardenPath(history.location, ''));
+    if (history.location.pathname.includes("create")) {
+      history.push(buildGardenPath(history.location, ""));
     }
   }, [history]);
 
   const handleClaimRewards = useCallback(() => {
-    handleShowModal('claim');
+    handleShowModal("claim");
   }, [handleShowModal]);
 
   const handleSetDelegate = useCallback(() => {
-    handleShowModal('delegate');
+    handleShowModal("delegate");
   }, [handleShowModal]);
 
   const handleRemoveDelagate = useCallback(() => {
-    handleShowModal('removeDelegate');
+    handleShowModal("removeDelegate");
   }, [handleShowModal]);
 
   const handleRequestNewProposal = useCallback(() => {
-    handleShowModal('createProposal');
+    handleShowModal("createProposal");
   }, [handleShowModal]);
 
   const handleWrapToken = useCallback(() => {
-    handleShowModal('wrap');
+    handleShowModal("wrap");
   }, [handleShowModal]);
 
   const handleUnwrapToken = useCallback(() => {
-    handleShowModal('unwrap');
+    handleShowModal("unwrap");
   }, [handleShowModal]);
 
   const handleUpdatePriceOracle = useCallback(() => {
-    handleShowModal('updatePriceOracle');
+    handleShowModal("updatePriceOracle");
   }, [handleShowModal]);
   const handleProposalCreated = useCallback(() => {
     filters.ranking.onChange(1);
@@ -102,7 +102,7 @@ const Home = React.memo(function Home() {
 
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
-    if (account && history.location.pathname.includes('create')) {
+    if (account && history.location.pathname.includes("create")) {
       handleRequestNewProposal();
     }
   }, [account, handleRequestNewProposal, history]);
@@ -122,12 +122,12 @@ const Home = React.memo(function Home() {
           <div
             css={css`
               margin-left: ${1 * GU}px;
-              position: ${compactMode ? 'absolute' : 'sticky'};
+              position: ${compactMode ? "absolute" : "sticky"};
               top: 16px;
               z-index: 2;
             `}
           >
-            {below('medium') && (
+            {below("medium") && (
               <BackButton
                 onClick={handleBack}
                 css={css`
@@ -141,7 +141,7 @@ const Home = React.memo(function Home() {
             <div
               css={css`
                 display: flex;
-                flex-direction: ${compactMode ? 'column-reverse' : 'row'};
+                flex-direction: ${compactMode ? "column-reverse" : "row"};
               `}
             >
               <div
@@ -151,14 +151,16 @@ const Home = React.memo(function Home() {
               >
                 <div
                   css={css`
-                    margin: ${(below('medium') ? 0 : 3) * GU}px;
+                    margin: ${(below("medium") ? 0 : 3) * GU}px;
                   `}
                 >
-                  {layoutName !== 'small' && (
+                  {layoutName !== "small" && (
                     <Metrics
                       commonPool={commonPool}
                       onRequestUpdatePriceOracle={handleUpdatePriceOracle}
-                      onExecuteIssuance={actions.issuanceActions.executeIssuance}
+                      onExecuteIssuance={
+                        actions.issuanceActions.executeIssuance
+                      }
                       priceToken={priceToken}
                       totalActiveTokens={totalActiveTokens}
                       totalSupply={totalSupply}
@@ -168,7 +170,7 @@ const Home = React.memo(function Home() {
                   <div
                     css={css`
                       display: flex;
-                      flex-wrap: ${compactMode ? 'wrap' : 'nowrap'};
+                      flex-wrap: ${compactMode ? "wrap" : "nowrap"};
                     `}
                   >
                     <Filters
@@ -227,12 +229,20 @@ const Home = React.memo(function Home() {
                 />
               )}
             </div>
-            <MultiModal visible={modalVisible} onClose={handleHideModal} onClosed={() => setModalMode(null)}>
-              {modalMode === 'updatePriceOracle' && <PriceOracleScreens />}
-              {modalMode === 'createProposal' && <CreateProposalScreens onComplete={handleProposalCreated} />}
-              {(modalMode === 'wrap' || modalMode === 'unwrap') && <WrapTokenScreens mode={modalMode} />}
-              {modalMode === 'claim' && <ClaimRewardsScreens />}
-              {(modalMode === 'delegate' || modalMode === 'removeDelegate') && (
+            <MultiModal
+              visible={modalVisible}
+              onClose={handleHideModal}
+              onClosed={() => setModalMode(null)}
+            >
+              {modalMode === "updatePriceOracle" && <PriceOracleScreens />}
+              {modalMode === "createProposal" && (
+                <CreateProposalScreens onComplete={handleProposalCreated} />
+              )}
+              {(modalMode === "wrap" || modalMode === "unwrap") && (
+                <WrapTokenScreens mode={modalMode} />
+              )}
+              {modalMode === "claim" && <ClaimRewardsScreens />}
+              {(modalMode === "delegate" || modalMode === "removeDelegate") && (
                 <DelegateVotingScreens mode={modalMode} />
               )}
             </MultiModal>

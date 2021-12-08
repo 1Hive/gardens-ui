@@ -1,24 +1,24 @@
-import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui';
-import { formatTokenAmount } from '@utils/token-utils';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { Box, GU, textStyle, useTheme, useViewport } from "@1hive/1hive-ui";
+import { formatTokenAmount } from "@utils/token-utils";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport();
-  const compact = below('large');
+  const compact = below("large");
   const history = useHistory();
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
       history.push(`garden/${gardenId}/proposal/${proposalId}`);
     },
-    [history],
+    [history]
   );
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>
-      {myInactiveStakes.map(stake => {
+      {myInactiveStakes.map((stake) => {
         return (
           <ProposalItem
             amount={stake.amount}
@@ -34,7 +34,14 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   );
 }
 
-const ProposalItem = ({ amount, compact, gardenId, proposalId, proposalName, selectProposal }) => {
+const ProposalItem = ({
+  amount,
+  compact,
+  gardenId,
+  proposalId,
+  proposalName,
+  selectProposal,
+}) => {
   const theme = useTheme();
 
   const handleOnClick = useCallback(() => {
@@ -65,7 +72,7 @@ const ProposalItem = ({ amount, compact, gardenId, proposalId, proposalName, sel
           width: 100%;
           justify-content: space-between;
           align-items: center;
-          ${textStyle('body2')};
+          ${textStyle("body2")};
         `}
       >
         <div
@@ -73,7 +80,7 @@ const ProposalItem = ({ amount, compact, gardenId, proposalId, proposalName, sel
             background: ${theme.badge.toString()};
             border-radius: 3px;
             padding: ${0.5 * GU}px ${1 * GU}px;
-            width: ${compact ? '100%' : `${18 * GU}px`};
+            width: ${compact ? "100%" : `${18 * GU}px`};
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

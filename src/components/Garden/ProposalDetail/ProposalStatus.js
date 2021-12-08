@@ -1,50 +1,50 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, IconCheck, IconCross, textStyle, useTheme } from "@1hive/1hive-ui";
 
-import celesteIconSvg from '@assets/celeste-icon.svg';
-import challengeIconSvg from '@assets/challenge-icon.svg';
-import { css, jsx } from '@emotion/react';
-import styled from 'styled-components';
+import celesteIconSvg from "@assets/celeste-icon.svg";
+import challengeIconSvg from "@assets/challenge-icon.svg";
+import { css, jsx } from "@emotion/react";
+import styled from "styled-components";
 
 export function getStatusAttributes(proposal, theme) {
   if (proposal.statusData.open) {
     return {
-      label: 'Open',
+      label: "Open",
       Icon: IconCheck,
       color: theme.positive.toString(),
     };
   }
   if (proposal.statusData.cancelled) {
     return {
-      label: 'Cancelled',
+      label: "Cancelled",
       Icon: IconCross,
       color: theme.negative.toString(),
-      background: '#FFF8F8',
+      background: "#FFF8F8",
       borderColor: theme.negative.toString(),
     };
   }
   if (proposal.statusData.disputed) {
     return {
-      label: 'Waiting for celeste',
+      label: "Waiting for celeste",
       iconSrc: celesteIconSvg,
-      color: '#8253A8',
-      background: '#FCFAFF',
-      borderColor: '#8253A8',
+      color: "#8253A8",
+      background: "#FCFAFF",
+      borderColor: "#8253A8",
     };
   }
   if (proposal.statusData.challenged) {
     return {
-      label: 'Challenged',
+      label: "Challenged",
       iconSrc: challengeIconSvg,
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
+      color: "#F5A623",
+      background: "#FFFDFA",
+      borderColor: "#F5A623",
     };
   }
   if (proposal.statusData.settled) {
     return {
-      label: 'Settled',
+      label: "Settled",
       Icon: IconCross,
       color: theme.contentSecondary.toString(),
       background: theme.background.toString(),
@@ -52,7 +52,7 @@ export function getStatusAttributes(proposal, theme) {
   }
   if (proposal.statusData.executed) {
     return {
-      label: 'Executed',
+      label: "Executed",
       Icon: IconCheck,
       color: theme.positive.toString(),
     };
@@ -67,7 +67,7 @@ const ProposalStatus = ({ proposal }) => {
   return (
     <Main
       css={css`
-        ${textStyle('body2')};
+        ${textStyle("body2")};
         color: ${color || theme.surfaceContentSecondary};
       `}
     >
@@ -96,7 +96,7 @@ const Main = styled.span`
 `;
 
 const StatusLabel = styled.span`
-  margin-left: ${({ spaced }) => (spaced ? `${0.5 * GU}px` : '0')};
+  margin-left: ${({ spaced }) => (spaced ? `${0.5 * GU}px` : "0")};
   text-transform: uppercase;
 `;
 

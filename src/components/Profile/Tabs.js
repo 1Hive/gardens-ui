@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { GU } from '@1hive/1hive-ui';
-import Tab from './Tab';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import PropTypes from "prop-types";
+import { GU } from "@1hive/1hive-ui";
+import Tab from "./Tab";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Tabs({ items, selected, onChange }) {
   return (
@@ -15,7 +15,13 @@ function Tabs({ items, selected, onChange }) {
     >
       <ul>
         {items.map((item, i) => (
-          <Tab key={i} index={i} item={item} onChange={onChange} selected={i === selected} />
+          <Tab
+            key={i}
+            index={i}
+            item={item}
+            onChange={onChange}
+            selected={i === selected}
+          />
         ))}
       </ul>
     </nav>

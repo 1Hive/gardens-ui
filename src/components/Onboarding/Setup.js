@@ -1,11 +1,11 @@
-import React from 'react';
-import { GU, IconCross, useTheme } from '@1hive/1hive-ui';
-import Screens from './Screens';
-import StepsPanel from './Steps/StepsPanel';
+import React from "react";
+import { GU, IconCross, useTheme } from "@1hive/1hive-ui";
+import Screens from "./Screens";
+import StepsPanel from "./Steps/StepsPanel";
 
-import gardensLogo from '@assets/gardensLogoMark.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import gardensLogo from "@assets/gardensLogoMark.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function Setup({ onClose }) {
   const theme = useTheme();

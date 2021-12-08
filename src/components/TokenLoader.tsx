@@ -1,8 +1,8 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU } from '@1hive/1hive-ui';
-import honeySvg from '@assets/IconHNYLoader.svg';
-import { css, jsx, keyframes } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU } from "@1hive/1hive-ui";
+import honeySvg from "@assets/IconHNYLoader.svg";
+import { css, jsx, keyframes } from "@emotion/react";
 
 const spinAnimation = css`
   mask-image: linear-gradient(35deg, transparent 15%, rgba(0, 0, 0, 1));

@@ -1,8 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import { BIG_RADIUS, ButtonIcon, Card, GU, IconUp, IconDown, RADIUS, springs, useTheme } from '@1hive/1hive-ui';
-import { Spring, Transition, animated } from 'react-spring/renderprops';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useState, useCallback } from "react";
+import {
+  BIG_RADIUS,
+  ButtonIcon,
+  Card,
+  GU,
+  IconUp,
+  IconDown,
+  RADIUS,
+  springs,
+  useTheme,
+} from "@1hive/1hive-ui";
+import { Spring, Transition, animated } from "react-spring/renderprops";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const AnimatedDiv = animated.div;
 
@@ -11,7 +21,7 @@ function ExpandableCard({ content, expansion }) {
   const theme = useTheme();
 
   const toggleButton = useCallback(() => {
-    setOpened(opened => !opened);
+    setOpened((opened) => !opened);
   }, []);
 
   return (
@@ -38,10 +48,16 @@ function ExpandableCard({ content, expansion }) {
           margin-top: ${-RADIUS}px;
         `}
       >
-        <Transition native items={opened} from={{ height: 0 }} enter={{ height: 'auto' }} leave={{ height: 0 }}>
-          {show =>
+        <Transition
+          native
+          items={opened}
+          from={{ height: 0 }}
+          enter={{ height: "auto" }}
+          leave={{ height: 0 }}
+        >
+          {(show) =>
             show &&
-            (props => (
+            ((props) => (
               <AnimatedDiv
                 css={css`
                   background: ${theme.surfaceUnder.toString()};
@@ -74,7 +90,7 @@ function ToggleButton({ onClick, opened }) {
   const theme = useTheme();
   return (
     <ButtonIcon
-      label={opened ? 'Close' : 'Open'}
+      label={opened ? "Close" : "Open"}
       focusRingRadius={RADIUS}
       onClick={onClick}
       css={css`
@@ -113,7 +129,12 @@ function ToggleButton({ onClick, opened }) {
 
 function OpenedSurfaceBorder({ opened }) {
   return (
-    <Spring native from={{ width: 0 }} to={{ width: Number(opened) }} config={springs.smooth}>
+    <Spring
+      native
+      from={{ width: 0 }}
+      to={{ width: Number(opened) }}
+      config={springs.smooth}
+    >
       {({ width }) => (
         <div
           css={css`
@@ -134,11 +155,15 @@ function OpenedSurfaceBorder({ opened }) {
               left: 0;
               height: 100%;
               width: 3px;
-              background: linear-gradient(90deg, #32fff5 -103.98%, #01bfe3 80.13%);
+              background: linear-gradient(
+                90deg,
+                #32fff5 -103.98%,
+                #01bfe3 80.13%
+              );
               transform-origin: 0 0;
             `}
             style={{
-              transform: width.interpolate(v => `scale3d(${v}, 1, 1)`),
+              transform: width.interpolate((v) => `scale3d(${v}, 1, 1)`),
             }}
           />
         </div>

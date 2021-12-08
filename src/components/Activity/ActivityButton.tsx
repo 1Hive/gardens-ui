@@ -1,10 +1,18 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Spring, animated } from 'react-spring/renderprops';
-import { ButtonIcon, IconAlert, Popover, GU, Tag, springs, useTheme } from '@1hive/1hive-ui';
-import ActivityList from './ActivityList';
-import { useActivity } from '@providers/ActivityProvider';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Spring, animated } from "react-spring/renderprops";
+import {
+  ButtonIcon,
+  IconAlert,
+  Popover,
+  GU,
+  Tag,
+  springs,
+  useTheme,
+} from "@1hive/1hive-ui";
+import ActivityList from "./ActivityList";
+import { useActivity } from "@providers/ActivityProvider";
+import { css, jsx } from "@emotion/react";
 
 function ActivityButton() {
   const theme = useTheme();
@@ -15,13 +23,13 @@ function ActivityButton() {
 
   const handleToggle = useCallback(
     () =>
-      setOpened(opened => {
+      setOpened((opened) => {
         if (opened) {
           markActivitiesRead();
         }
         return !opened;
       }),
-    [markActivitiesRead],
+    [markActivitiesRead]
   );
 
   const handleClose = useCallback(() => {
@@ -84,14 +92,17 @@ function ActivityButton() {
               {({ opacity, size }) => (
                 <animated.div
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: `-${0.5 * GU}px`,
                     right: `-${0.5 * GU}px`,
                     opacity,
                     transform: size
                       // @ts-ignore: Unreachable code error
-                      .interpolate([0, 0.2, 0.4, 0.6, 0.8, 1], [1.5, 1, 1.5, 1, 1.5, 1])
-                      .interpolate(s => `scale3d(${s}, ${s}, 1)`),
+                      .interpolate(
+                        [0, 0.2, 0.4, 0.6, 0.8, 1],
+                        [1.5, 1, 1.5, 1, 1.5, 1]
+                      )
+                      .interpolate((s) => `scale3d(${s}, ${s}, 1)`),
                   }}
                 >
                   <Tag limitDigits mode="activity" label={unreadCount} />

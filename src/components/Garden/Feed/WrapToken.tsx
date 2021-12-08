@@ -1,31 +1,40 @@
-/** @jsx jsx */
-import React, { useCallback } from 'react';
-import { Box, Button, GU, Help, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback } from "react";
+import {
+  Box,
+  Button,
+  GU,
+  Help,
+  LoadingRing,
+  textStyle,
+  useTheme,
+} from "@1hive/1hive-ui";
 
-import Carousel from '@components/Carousel/Carousel';
-import { useGardenState } from '@providers/GardenState';
-import useUnipoolRewards from '@/hooks/useUnipoolRewards';
+import Carousel from "@components/Carousel/Carousel";
+import { useGardenState } from "@providers/GardenState";
+import useUnipoolRewards from "@/hooks/useUnipoolRewards";
 
-import { formatTokenAmount } from '@utils/token-utils';
+import { formatTokenAmount } from "@utils/token-utils";
 
-import wrappedIcon from '@assets/wrappedIcon.svg';
-import unwrappedIcon from '@assets/unwrappedIcon.svg';
-import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg';
-import { css, jsx } from '@emotion/react';
+import wrappedIcon from "@assets/wrappedIcon.svg";
+import unwrappedIcon from "@assets/unwrappedIcon.svg";
+import claimRewardsIcon from "@assets/rewardsWrapperIcon.svg";
+import { css, jsx } from "@emotion/react";
 
 const modeAttributes = {
   wrap: {
     icon: unwrappedIcon,
-    button: { mode: 'strong', label: 'Wrap' },
+    button: { mode: "strong", label: "Wrap" },
     hint: null,
   },
   unwrap: {
     icon: wrappedIcon,
-    button: { mode: 'strong', label: 'Unwrap' },
-    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+    button: { mode: "strong", label: "Unwrap" },
+    hint:
+      "This amount can be used to vote on proposals. It can be unwrapped at any time.",
   },
   claim: {
-    button: { mode: 'normal', label: 'Claim' },
+    button: { mode: "normal", label: "Claim" },
     icon: claimRewardsIcon,
     hint: null,
   },
@@ -34,7 +43,8 @@ const modeAttributes = {
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState();
 
-  const loading = token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1);
+  const loading =
+    token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1);
 
   const [earnedRewards, rewardsLink] = useUnipoolRewards();
 
@@ -55,7 +65,13 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       onClick={onWrapToken}
       token={wrappableToken.data}
     />,
-    <Token balance={token.accountBalance} loading={loading} mode="unwrap" onClick={onUnwrapToken} token={token.data} />,
+    <Token
+      balance={token.accountBalance}
+      loading={loading}
+      mode="unwrap"
+      onClick={onUnwrapToken}
+      token={token.data}
+    />,
     <Token
       balance={earnedRewards}
       loading={!earnedRewards}
@@ -66,11 +82,11 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   ];
 
   const handleItemSelected = useCallback(
-    index => {
+    (index) => {
       if (index === carouselItems.length - 1) {
       }
     },
-    [carouselItems.length],
+    [carouselItems.length]
   );
 
   return (
@@ -91,7 +107,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme();
   const { button, icon, hint } = modeAttributes[mode];
-  const claimMode = mode === 'claim';
+  const claimMode = mode === "claim";
 
   return (
     <div
@@ -100,7 +116,7 @@ function Token({ balance, loading, mode, onClick, token }) {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        ${textStyle('body2')};
+        ${textStyle("body2")};
       `}
     >
       <img src={icon} height="48" width="48" />
@@ -134,7 +150,7 @@ function Token({ balance, loading, mode, onClick, token }) {
           align-items: center;
         `}
       >
-        <span>{`${claimMode ? 'Earned ' : ''}${token.symbol}`}</span>
+        <span>{`${claimMode ? "Earned " : ""}${token.symbol}`}</span>
         {hint && (
           <div
             css={css`

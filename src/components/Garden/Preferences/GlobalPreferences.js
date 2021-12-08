@@ -1,17 +1,28 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ButtonIcon, GU, Header, IconClose, Layout, Root, Tabs, springs, useTheme, useViewport } from '@1hive/1hive-ui';
-import { Transition, animated } from 'react-spring/renderprops';
-import { useEsc } from '../../../hooks/useKeyboardArrows';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  ButtonIcon,
+  GU,
+  Header,
+  IconClose,
+  Layout,
+  Root,
+  Tabs,
+  springs,
+  useTheme,
+  useViewport,
+} from "@1hive/1hive-ui";
+import { Transition, animated } from "react-spring/renderprops";
+import { useEsc } from "../../../hooks/useKeyboardArrows";
 
-import AppsAddresses from './AppsAddresses';
-import EVMExecutor from './EVMExecutor';
+import AppsAddresses from "./AppsAddresses";
+import EVMExecutor from "./EVMExecutor";
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const SECTIONS = new Map([
-  ['generalInfo', 'General Info'],
-  ['evmExecutor', 'EVM Executor'],
+  ["generalInfo", "General Info"],
+  ["evmExecutor", "EVM Executor"],
 ]);
 const PATHS = Array.from(SECTIONS.keys());
 const VALUES = Array.from(SECTIONS.values());
@@ -53,7 +64,11 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
         />
         <Root.Provider>
           <React.Fragment>
-            <Tabs items={VALUES} onChange={onNavigation} selected={sectionIndex} />
+            <Tabs
+              items={VALUES}
+              onChange={onNavigation}
+              selected={sectionIndex}
+            />
 
             {sectionIndex === GENERAL_INFO_INDEX && <AppsAddresses />}
             {sectionIndex === EVM_EXECUTOR_INDEX && <EVMExecutor />}
@@ -64,13 +79,13 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
   );
 }
 
-function useGlobalPreferences({ path = '', onScreenChange }) {
+function useGlobalPreferences({ path = "", onScreenChange }) {
   const [sectionIndex, setSectionIndex] = useState(null);
   const handleNavigation = useCallback(
-    index => {
+    (index) => {
       onScreenChange(PATHS[index]);
     },
-    [onScreenChange],
+    [onScreenChange]
   );
 
   useEffect(() => {
@@ -78,7 +93,7 @@ function useGlobalPreferences({ path = '', onScreenChange }) {
       setSectionIndex(null);
       return;
     }
-    const index = PATHS.findIndex(item => path.startsWith(item));
+    const index = PATHS.findIndex((item) => path.startsWith(item));
 
     setSectionIndex(index === -1 ? null : index);
   }, [path, sectionIndex]);
@@ -121,7 +136,7 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
   });
 
   const { below } = useViewport();
-  const compact = below('medium');
+  const compact = below("medium");
   const theme = useTheme();
 
   return (
@@ -133,7 +148,7 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
       leave={{ opacity: 0, enterProgress: 1, blocking: false }}
       config={springs.smooth}
     >
-      {show =>
+      {(show) =>
         show &&
         /* eslint-disable react/prop-types */
         // z-index 1 on mobile keeps the menu above this preferences modal
@@ -141,13 +156,13 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
           <AnimatedDiv
             style={{
               zIndex: 1,
-              pointerEvents: blocking ? 'auto' : 'none',
+              pointerEvents: blocking ? "auto" : "none",
               opacity,
               transform: enterProgress.interpolate(
-                v => `
+                (v) => `
                   translate3d(0, ${(1 - v) * 10}px, 0)
                   scale3d(${1 - (1 - v) * 0.03}, ${1 - (1 - v) * 0.03}, 1)
-                `,
+                `
               ),
             }}
             css={css`

@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, GU, IconClose, IconFile, textStyle } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, GU, IconClose, IconFile, textStyle } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const FilePreview = ({ file, label, onCancel }) => {
-  const handleCancel = e => {
+  const handleCancel = (e) => {
     e.preventDefault();
     onCancel();
   };
@@ -42,11 +42,11 @@ const FilePreview = ({ file, label, onCancel }) => {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            ${textStyle('body2')};
+            ${textStyle("body2")};
             margin-right: ${0.5 * GU}px;
           `}
         >
-          {file.name || 'Unnamed file'}
+          {file.name || "Unnamed file"}
         </div>
         <div
           css={css`

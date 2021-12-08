@@ -1,11 +1,11 @@
-/** @jsx jsx */
-import React, { useCallback, useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { GU, useViewport, unselectable, springs } from '@1hive/1hive-ui';
-import { animated, useSpring } from 'react-spring';
-import { useDrag } from 'react-use-gesture';
-import PrevNext from './PrevNext';
-import { css, jsx } from '@emotion/react';
+/** @jsxImportSource @emotion/react */
+import React, { useCallback, useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
+import { GU, useViewport, unselectable, springs } from "@1hive/1hive-ui";
+import { animated, useSpring } from "react-spring";
+import { useDrag } from "react-use-gesture";
+import PrevNext from "./PrevNext";
+import { css, jsx } from "@emotion/react";
 
 // TODO:
 //  - Center the items when the total is smaller than the viewport.
@@ -20,7 +20,13 @@ type CarouselProps = {
   onItemSelected: (selected) => void;
 };
 
-function Carousel({ items, itemWidth, itemHeight, itemSpacing, onItemSelected }: CarouselProps) {
+function Carousel({
+  items,
+  itemWidth,
+  itemHeight,
+  itemSpacing,
+  onItemSelected,
+}: CarouselProps) {
   const [selected, setSelected] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [visibleItems, setVisibleItems] = useState(0);
@@ -34,14 +40,19 @@ function Carousel({ items, itemWidth, itemHeight, itemSpacing, onItemSelected }:
   // Set the number of visible items,
   // and adjust the selected item if needed.
   useEffect(() => {
-    const visibleItems = Math.max(1, Math.floor((containerWidth - itemSpacing * 2) / (itemWidth + itemSpacing)));
+    const visibleItems = Math.max(
+      1,
+      Math.floor((containerWidth - itemSpacing * 2) / (itemWidth + itemSpacing))
+    );
     const lastSelectionableItem = items.length - visibleItems;
 
     setVisibleItems(visibleItems);
-    setSelected(selected => (selected > lastSelectionableItem ? lastSelectionableItem : selected));
+    setSelected((selected) =>
+      selected > lastSelectionableItem ? lastSelectionableItem : selected
+    );
   }, [containerWidth, itemSpacing, itemWidth, items]);
 
-  const updateContainerWidth = useCallback(element => {
+  const updateContainerWidth = useCallback((element) => {
     setContainerWidth(element ? element.clientWidth : 0);
   }, []);
 
@@ -52,33 +63,35 @@ function Carousel({ items, itemWidth, itemHeight, itemSpacing, onItemSelected }:
   }, [vw, updateContainerWidth]);
 
   const handleContainerRef = useCallback(
-    element => {
+    (element) => {
       container.current = element;
       updateContainerWidth(element);
     },
-    [updateContainerWidth],
+    [updateContainerWidth]
   );
 
   const prev = useCallback(() => {
-    setSelected(selected => Math.max(0, selected - visibleItems));
+    setSelected((selected) => Math.max(0, selected - visibleItems));
   }, [visibleItems]);
 
   const next = useCallback(() => {
-    setSelected(selected => Math.min(items.length - visibleItems, selected + visibleItems));
+    setSelected((selected) =>
+      Math.min(items.length - visibleItems, selected + visibleItems)
+    );
   }, [items.length, visibleItems]);
 
   // The total width of the visible items
-  const visibleItemsWidth = visibleItems * itemWidth + (visibleItems - 1) * itemSpacing;
+  const visibleItemsWidth =
+    visibleItems * itemWidth + (visibleItems - 1) * itemSpacing;
 
   // The space on one side of the visible items
   const sideSpace = (containerWidth - visibleItemsWidth) / 2;
 
   // Get the container x position from an item index
-  const xFromItem = useCallback(index => sideSpace - (itemWidth + itemSpacing) * index, [
-    sideSpace,
-    itemWidth,
-    itemSpacing,
-  ]);
+  const xFromItem = useCallback(
+    (index) => sideSpace - (itemWidth + itemSpacing) * index,
+    [sideSpace, itemWidth, itemSpacing]
+  );
 
   // The current x position, before the drag
   const selectedX = xFromItem(selected);
@@ -142,12 +155,14 @@ function Carousel({ items, itemWidth, itemHeight, itemSpacing, onItemSelected }:
       `}
     >
       {selected > 0 && <PrevNext type="previous" onClick={prev} />}
-      {selected < items.length - visibleItems && <PrevNext type="next" onClick={next} />}
+      {selected < items.length - visibleItems && (
+        <PrevNext type="next" onClick={next} />
+      )}
       <AnimatedDiv
         {...bindDrag()}
         style={{
           // @ts-ignore: Unreachable code error
-          transform: x.interpolate(x => `translate3d(${(0, x)}px, 0, 0)`),
+          transform: x.interpolate((x) => `translate3d(${(0, x)}px, 0, 0)`),
         }}
         css={css`
           display: flex;
@@ -160,8 +175,10 @@ function Carousel({ items, itemWidth, itemHeight, itemSpacing, onItemSelected }:
           <AnimatedDiv
             key={i}
             style={{
-              opacity: drag.interpolate(drag => {
-                return drag || (i >= selected && i < selected + visibleItems) ? 1 : 0.25;
+              opacity: drag.interpolate((drag) => {
+                return drag || (i >= selected && i < selected + visibleItems)
+                  ? 1
+                  : 0.25;
               }),
             }}
             css={css`

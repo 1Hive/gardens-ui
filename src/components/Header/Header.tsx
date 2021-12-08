@@ -1,4 +1,4 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React, { useCallback, useMemo } from "react";
 import { useHistory } from "react-router";
 import { Button, GU, Link, useTheme, useViewport } from "@1hive/1hive-ui";

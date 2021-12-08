@@ -1,15 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui';
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { IdentityBadge as Badge, GU, RADIUS } from "@1hive/1hive-ui";
 
-import { getNetwork } from '@/networks';
-import { getProfileForAccount } from '@lib/profile';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import { getNetwork } from "@/networks";
+import { getProfileForAccount } from "@lib/profile";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 const addressCache = new Map();
 
-function IdentityBadge({ entity, iconSize = '24', withProfile = true, ...props }) {
+function IdentityBadge({
+  entity,
+  iconSize = "24",
+  withProfile = true,
+  ...props
+}) {
   const [profile, setProfile] = useState(null);
   const history = useHistory();
 
@@ -49,7 +54,9 @@ function IdentityBadge({ entity, iconSize = '24', withProfile = true, ...props }
     entity,
     explorerProvider: explorer,
     networkType: type,
-    popoverAction: withProfile ? { label: 'View profile', onClick: handleViewProfile } : null,
+    popoverAction: withProfile
+      ? { label: "View profile", onClick: handleViewProfile }
+      : null,
     icon: null,
   };
 

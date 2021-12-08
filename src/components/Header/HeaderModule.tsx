@@ -1,7 +1,13 @@
-import React from 'react';
-import { ButtonBase, GU, IconDown, useTheme, useViewport } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import {
+  ButtonBase,
+  GU,
+  IconDown,
+  useTheme,
+  useViewport,
+} from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function HeaderModule({
   content,
@@ -39,7 +45,7 @@ function HeaderModule({
       >
         <>
           {icon}
-          {above('medium') && (
+          {above("medium") && (
             <React.Fragment>
               <div
                 css={css`
@@ -49,7 +55,9 @@ function HeaderModule({
               >
                 {content}
               </div>
-              {hasPopover && <IconDown size="small" color={theme.surfaceIcon.toString()} />}
+              {hasPopover && (
+                <IconDown size="small" color={theme.surfaceIcon.toString()} />
+              )}
             </React.Fragment>
           )}
         </>

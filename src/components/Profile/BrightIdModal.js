@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import QRCode from 'qrcode.react';
-import { GU, Info, Modal, textStyle, useLayout, useTheme, useViewport } from '@1hive/1hive-ui';
-import LoadingRing from '../LoadingRing';
-import { BRIGHT_ID_APP_DEEPLINK } from '@/endpoints';
-import { sponsorUser } from '@/services/sponsorUser';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React, { useEffect, useState } from "react";
+import QRCode from "qrcode.react";
+import {
+  GU,
+  Info,
+  Modal,
+  textStyle,
+  useLayout,
+  useTheme,
+  useViewport,
+} from "@1hive/1hive-ui";
+import LoadingRing from "../LoadingRing";
+import { BRIGHT_ID_APP_DEEPLINK } from "@/endpoints";
+import { sponsorUser } from "@/services/sponsorUser";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function BrightIdModal({ account, addressExist, visible, onClose }) {
   const [error, setError] = useState(null);
@@ -13,7 +21,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
   const deepLink = `${BRIGHT_ID_APP_DEEPLINK}/${account}`;
   const { width } = useViewport();
   const { layoutName } = useLayout();
-  const compactMode = layoutName === 'small';
+  const compactMode = layoutName === "small";
   const theme = useTheme();
 
   useEffect(() => {
@@ -33,7 +41,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
         }
       } catch (err) {
         setError(true);
-        console.error('Error when sponsoring account: ', err);
+        console.error("Error when sponsoring account: ", err);
       }
     };
 
@@ -45,10 +53,15 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
   }, [account, addressExist]);
 
   return (
-    <Modal padding={6 * GU} visible={visible} width={Math.min(64 * GU, width - 40)} onClose={onClose}>
+    <Modal
+      padding={6 * GU}
+      visible={visible}
+      width={Math.min(64 * GU, width - 40)}
+      onClose={onClose}
+    >
       <h5
         css={css`
-          ${textStyle('title3')};
+          ${textStyle("title3")};
           color: ${theme.surfaceContent.toString()};
         `}
       >
@@ -67,7 +80,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
       >
         <h5
           css={css`
-            ${textStyle('body1')};
+            ${textStyle("body1")};
             color: ${theme.surfaceContent.toString()};
             margin-bottom: ${3 * GU}px;
           `}
@@ -96,7 +109,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
                 </div>
                 <span
                   css={css`
-                    ${textStyle('body2')};
+                    ${textStyle("body2")};
                     color: ${theme.contentSecondary.toString()};
                   `}
                 >
@@ -104,27 +117,31 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
                 </span>
                 <span
                   css={css`
-                    ${textStyle('body3')};
+                    ${textStyle("body3")};
                     color: ${theme.contentSecondary.toString()};
                     margin-top: ${3 * GU}px;
                   `}
                 >
-                  Please do not close this window, otherwise the process will be stopped
+                  Please do not close this window, otherwise the process will be
+                  stopped
                 </span>
               </>
             )}
           </div>
         ) : (
           <>
-            <QRCode value={deepLink} style={{ width: `${17 * GU}px`, height: `${17 * GU}px` }} />
+            <QRCode
+              value={deepLink}
+              style={{ width: `${17 * GU}px`, height: `${17 * GU}px` }}
+            />
             <Info
               mode="warning"
               css={css`
                 margin-top: ${3 * GU}px;
               `}
             >
-              Scanning this code will prevent any previously connected addresses from connecting to BrightID in the
-              future through any 1Hive apps
+              Scanning this code will prevent any previously connected addresses
+              from connecting to BrightID in the future through any 1Hive apps
             </Info>
           </>
         )}

@@ -1,13 +1,19 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Transition, animated } from 'react-spring/renderprops';
-import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui';
-import Illustration from './Illustration';
-import { STEP_ERROR, STEP_PROMPTING, STEP_SUCCESS, STEP_WAITING, STEP_WORKING } from '../stepper-statuses';
-import { springs } from '@/style/springs';
-import { useDisableAnimation } from '@hooks/useDisableAnimation';
-/** @jsx jsx */
-import { css, jsx, keyframes } from '@emotion/react';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import { Transition, animated } from "react-spring/renderprops";
+import { GU, textStyle, IconCross, IconCheck, useTheme } from "@1hive/1hive-ui";
+import Illustration from "./Illustration";
+import {
+  STEP_ERROR,
+  STEP_PROMPTING,
+  STEP_SUCCESS,
+  STEP_WAITING,
+  STEP_WORKING,
+} from "../stepper-statuses";
+import { springs } from "@/style/springs";
+import { useDisableAnimation } from "@hooks/useDisableAnimation";
+/** @jsxImportSource @emotion/react */
+import { css, jsx, keyframes } from "@emotion/react";
 
 const STATUS_ICONS = {
   [STEP_ERROR]: IconCross,
@@ -48,7 +54,14 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
   const [statusIcon, illustration] = useMemo(() => {
     const Icon = STATUS_ICONS[status];
 
-    return [Icon && <Icon />, <StepIllustration number={number} status={status} withoutFirstStep={withoutFirstStep} />];
+    return [
+      Icon && <Icon />,
+      <StepIllustration
+        number={number}
+        status={status}
+        withoutFirstStep={withoutFirstStep}
+      />,
+    ];
   }, [status, number, withoutFirstStep]);
 
   return (
@@ -83,26 +96,28 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             `}
           >
             <Transition
-              config={(_, state) => (state === 'enter' ? springs.gentle : springs.instant)}
+              config={(_, state) =>
+                state === "enter" ? springs.gentle : springs.instant
+              }
               items={statusIcon}
               onStart={enableAnimation}
               immediate={animationDisabled}
               from={{
-                transform: 'scale3d(1.3, 1.3, 1)',
+                transform: "scale3d(1.3, 1.3, 1)",
               }}
               enter={{
                 opacity: 1,
-                transform: 'scale3d(1, 1, 1)',
+                transform: "scale3d(1, 1, 1)",
               }}
               leave={{
-                position: 'absolute',
+                position: "absolute",
                 opacity: 0,
               }}
               native
             >
-              {currentStatusIcon =>
+              {(currentStatusIcon) =>
                 currentStatusIcon &&
-                (animProps => (
+                ((animProps) => (
                   <AnimatedDiv
                     css={css`
                       display: flex;
@@ -136,10 +151,16 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${status === STEP_WAITING ? 'transparent' : color};
-            ${status === STEP_PROMPTING ? pulseAnimation : ''}
-            ${status === STEP_WORKING ? spinAnimation : ''}
-            ${status === STEP_PROMPTING ? `background-color: ${theme.contentSecondary.toString()};` : ''}
+            border: 2px solid ${
+              status === STEP_WAITING ? "transparent" : color
+            };
+            ${status === STEP_PROMPTING ? pulseAnimation : ""}
+            ${status === STEP_WORKING ? spinAnimation : ""}
+            ${
+              status === STEP_PROMPTING
+                ? `background-color: ${theme.contentSecondary.toString()};`
+                : ""
+            }
           `}
         />
       </div>
@@ -148,7 +169,13 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
 }
 
 StatusVisual.propTypes = {
-  status: PropTypes.oneOf([STEP_WAITING, STEP_PROMPTING, STEP_WORKING, STEP_SUCCESS, STEP_ERROR]).isRequired,
+  status: PropTypes.oneOf([
+    STEP_WAITING,
+    STEP_PROMPTING,
+    STEP_WORKING,
+    STEP_SUCCESS,
+    STEP_ERROR,
+  ]).isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
 };
@@ -157,7 +184,10 @@ StatusVisual.propTypes = {
 function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme();
   const renderIllustration =
-    status === STEP_WORKING || status === STEP_ERROR || status === STEP_SUCCESS || withoutFirstStep;
+    status === STEP_WORKING ||
+    status === STEP_ERROR ||
+    status === STEP_SUCCESS ||
+    withoutFirstStep;
 
   return (
     <div
@@ -182,7 +212,7 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             width: 100%;
             border-radius: 100%;
             color: ${theme.positiveContent.toString()};
-            ${textStyle('title1')};
+            ${textStyle("title1")};
             font-weight: 600;
           `}
         >

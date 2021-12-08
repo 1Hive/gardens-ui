@@ -1,18 +1,18 @@
-/** @jsx jsx */
-import React from 'react';
-import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui';
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { GU, Tag, textStyle, useTheme } from "@1hive/1hive-ui";
 
-import { ConvictionBar } from '../ConvictionVisuals';
-import SummaryBar from '../DecisionDetail/SummaryBar'; // TODO: Move to root component folder
-import SummaryRow from '../DecisionDetail/SummaryRow';
+import { ConvictionBar } from "../ConvictionVisuals";
+import SummaryBar from "../DecisionDetail/SummaryBar"; // TODO: Move to root component folder
+import SummaryRow from "../DecisionDetail/SummaryRow";
 
-import { useGardenState } from '@providers/GardenState';
-import { useWallet } from '@providers/Wallet';
-import { ProposalTypes } from '@/types';
-import { safeDiv } from '@utils/math-utils';
-import { getConnectedAccountCast } from '@utils/vote-utils';
-import { VOTE_NAY, VOTE_YEA } from '@/constants';
-import { css, jsx } from '@emotion/react';
+import { useGardenState } from "@providers/GardenState";
+import { useWallet } from "@providers/Wallet";
+import { ProposalTypes } from "@/types";
+import { safeDiv } from "@utils/math-utils";
+import { getConnectedAccountCast } from "@utils/vote-utils";
+import { VOTE_NAY, VOTE_YEA } from "@/constants";
+import { css, jsx } from "@emotion/react";
 
 function ProposalSupport({ proposal }) {
   const theme = useTheme();
@@ -27,15 +27,18 @@ function ProposalSupport({ proposal }) {
     >
       <div
         css={css`
-          ${textStyle('label2')};
+          ${textStyle("label2")};
           color: ${theme.contentSecondary.toString()};
         `}
       >
-        Current {proposal.type !== ProposalTypes.Decision ? 'support' : 'votes'}
+        Current {proposal.type !== ProposalTypes.Decision ? "support" : "votes"}
       </div>
       {proposal.type !== ProposalTypes.Decision ? (
         <div>
-          <ConvictionBar proposal={proposal} withThreshold={Boolean(requestToken)} />
+          <ConvictionBar
+            proposal={proposal}
+            withThreshold={Boolean(requestToken)}
+          />
         </div>
       ) : (
         <DecisionSummaryBar proposal={proposal} />
@@ -53,7 +56,10 @@ function DecisionSummaryBar({ proposal }) {
   const yeasPct = safeDiv(parseFloat(yea), totalVotes);
   const naysPct = safeDiv(parseFloat(nay), totalVotes);
 
-  const connectedAccountCast = getConnectedAccountCast(proposal, connectedAccount);
+  const connectedAccountCast = getConnectedAccountCast(
+    proposal,
+    connectedAccount
+  );
 
   const YouTag = (
     <div>

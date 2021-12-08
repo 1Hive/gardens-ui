@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Card, GU, textStyle, useTheme } from '@1hive/1hive-ui';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Card, GU, textStyle, useTheme } from "@1hive/1hive-ui";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 export const ChartBase = ({ children, height, title, width }) => (
   <div>
@@ -43,7 +43,7 @@ export const ChartTooltip = ({ xLabel, xValue, yLabel, yValue }) => {
         background: ${theme.helpSurface.toString()};
         padding: 9px 12px;
         border: 1px solid ${theme.border.toString()};
-        ${textStyle('body3')};
+        ${textStyle("body3")};
       `}
     >
       <div>

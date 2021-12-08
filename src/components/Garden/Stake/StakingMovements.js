@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import {
   GU,
   IconAttention,
@@ -12,8 +12,8 @@ import {
   Tag,
   useTheme,
   DataView,
-} from '@1hive/1hive-ui';
-import { useGardenState } from '@providers/GardenState';
+} from "@1hive/1hive-ui";
+import { useGardenState } from "@providers/GardenState";
 import {
   STAKING_SCHEDULED,
   STAKING_CHALLENGED,
@@ -26,12 +26,12 @@ import {
   COLLATERAL_SLASHED,
   STAKING_STATUSES,
   COLLATERAL_STATUSES,
-} from './staking-management-statuses';
-import { buildGardenPath } from '@utils/routing-utils';
-import { dateFormat, toMs } from '@utils/date-utils';
-import noDataIllustration from './assets/no-dataview-data.svg';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/react';
+} from "./staking-management-statuses";
+import { buildGardenPath } from "@utils/routing-utils";
+import { dateFormat, toMs } from "@utils/date-utils";
+import noDataIllustration from "./assets/no-dataview-data.svg";
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from "@emotion/react";
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
@@ -93,22 +93,26 @@ function StakingMovements({ stakingMovements, token }) {
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
-      const proposalType = disputableAddress === config.voting.id ? 'vote' : 'proposal';
+      const proposalType =
+        disputableAddress === config.voting.id ? "vote" : "proposal";
 
-      const path = buildGardenPath(history.location, `${proposalType}/${disputableActionId}`);
+      const path = buildGardenPath(
+        history.location,
+        `${proposalType}/${disputableActionId}`
+      );
       history.push(path);
     },
-    [config, history],
+    [config, history]
   );
 
   return (
     <DataView
       fields={[
-        { label: 'Date' },
-        { label: 'Status' },
-        { label: 'Action' },
-        { label: 'Collateral state', align: 'end' },
-        { label: 'Amount', align: 'end' },
+        { label: "Date" },
+        { label: "Status" },
+        { label: "Action" },
+        { label: "Collateral state", align: "end" },
+        { label: "Amount", align: "end" },
       ]}
       entries={stakingMovements}
       emptyState={{
@@ -130,15 +134,23 @@ function StakingMovements({ stakingMovements, token }) {
         const actionAttributes = getActionAttributes(stakingStatus, theme);
 
         const collateralStatus = COLLATERAL_STATUSES.get(collateralState);
-        const amountAttributes = getCollateralAttributes(collateralStatus, theme);
+        const amountAttributes = getCollateralAttributes(
+          collateralStatus,
+          theme
+        );
 
         return [
-          <time dateTime={dateFormat(toMs(createdAt), 'standard')} title={dateFormat(toMs(createdAt), 'standard')}>
-            {dateFormat(toMs(createdAt), 'onlyDate')}
+          <time
+            dateTime={dateFormat(toMs(createdAt), "standard")}
+            title={dateFormat(toMs(createdAt), "standard")}
+          >
+            {dateFormat(toMs(createdAt), "onlyDate")}
           </time>,
           <div>
             <Tag
-              background={actionAttributes.background && `${actionAttributes.background}`}
+              background={
+                actionAttributes.background && `${actionAttributes.background}`
+              }
               color={actionAttributes.color && `${actionAttributes.color}`}
               icon={actionAttributes.icon}
               mode="indicator"
@@ -146,7 +158,11 @@ function StakingMovements({ stakingMovements, token }) {
             />
           </div>,
           <div>
-            <Link onClick={() => handleGoToProposal(disputableActionId, disputableAddress)}>
+            <Link
+              onClick={() =>
+                handleGoToProposal(disputableActionId, disputableAddress)
+              }
+            >
               Proposal #{disputableActionId}
             </Link>
           </div>,
