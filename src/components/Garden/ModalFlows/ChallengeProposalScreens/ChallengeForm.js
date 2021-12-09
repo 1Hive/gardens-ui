@@ -1,18 +1,12 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import {
-  TextInput,
-  formatTokenAmount,
-  Field,
-  textStyle,
-  useTheme,
-  GU,
-} from '@1hive/1hive-ui'
+import { TextInput, Field, textStyle, useTheme, GU } from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import HelpTip from '@components/HelpTip'
 import { durationToHours, toMs } from '@utils/date-utils'
 import BigNumber from '@lib/bigNumber'
+import { formatTokenAmount } from '@utils/token-utils'
 import { toDecimals } from '@utils/math-utils'
 import { toHex } from 'web3-utils'
 
@@ -34,14 +28,13 @@ function ChallengeRequirements({ getTransactions, proposal }) {
   const [loading, setLoading] = useState(false)
   const { next } = useMultiModal()
 
-  const maxChallengeAmount = useMemo(
+  const maxChallengeAmountFormatted = useMemo(
     () => formatTokenAmount(challengeAmount, tokenDecimals),
     [challengeAmount, tokenDecimals]
   )
+  const maxChallengeAmount = maxChallengeAmountFormatted.replace(',', '')
 
-  const [settlementAmount, setSettlementAmount] = useState(
-    maxChallengeAmount.toString()
-  )
+  const [settlementAmount, setSettlementAmount] = useState(maxChallengeAmount)
 
   const handleSubmit = useCallback(
     event => {
@@ -73,6 +66,9 @@ function ChallengeRequirements({ getTransactions, proposal }) {
 
   const handleSettlementChange = useCallback(
     ({ target }) => {
+      if (isNaN(target.value)) {
+        return
+      }
       if (
         Number(target.value) < 0 ||
         Number(target.value) > Number(maxChallengeAmount)
@@ -125,7 +121,6 @@ function ChallengeRequirements({ getTransactions, proposal }) {
       >
         <TextInput
           value={settlementAmount}
-          type="number"
           max={maxChallengeAmount}
           wide
           onChange={handleSettlementChange}
@@ -142,7 +137,7 @@ function ChallengeRequirements({ getTransactions, proposal }) {
           `}
         >
           This amount cannot be greater than the proposal creation deposit
-          amount : {maxChallengeAmount} {tokenSymbol}.
+          amount : {maxChallengeAmountFormatted} {tokenSymbol}.
         </p>
       </Field>
 
