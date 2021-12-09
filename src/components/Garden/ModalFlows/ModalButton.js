@@ -2,7 +2,6 @@ import React from "react";
 import { Button, GU } from "@1hive/1hive-ui";
 import LoadingSpinner from "@components/LoadingRing";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function ModalButton({ children, loading, ...props }) {

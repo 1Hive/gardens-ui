@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import {

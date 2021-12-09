@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback, useState } from "react";
 import { animated, Transition } from "react-spring/renderprops";
 import {

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Card, GU, textStyle, useTheme } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 export const ChartBase = ({ children, height, title, width }) => (

@@ -6,7 +6,7 @@ import { useConnectedGarden } from "@providers/ConnectedGarden";
 import { useGardenState } from "@providers/GardenState";
 import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 import signGraphic from "@assets/smart-contract.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function SignOverview({ getTransactions }) {

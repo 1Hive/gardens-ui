@@ -9,7 +9,7 @@ import {
   useViewport,
 } from "@1hive/1hive-ui";
 import CheckDisc from "./CheckDisc";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function ErrorModal({ action, content, header, onClose, visible }) {

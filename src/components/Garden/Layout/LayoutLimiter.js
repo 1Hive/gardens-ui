@@ -1,6 +1,5 @@
 import React from "react";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function LayoutLimiter({ children, ...props }) {

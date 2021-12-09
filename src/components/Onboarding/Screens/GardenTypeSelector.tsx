@@ -8,7 +8,7 @@ import nativeAnimation from "@assets/lotties/nativeAnimation.json";
 
 import { BYOT_TYPE, NATIVE_TYPE } from "../constants";
 import { Header } from "../kit";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function GardenTypeSelector() {

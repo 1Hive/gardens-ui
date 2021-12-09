@@ -16,7 +16,7 @@ import useUser from "@hooks/useUser";
 import { convertToString } from "@/types";
 import { dateFormat } from "@utils/date-utils";
 import { getGardenLabel } from "@utils/garden-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Activity({ account, isConnectedAccount, profileName }) {

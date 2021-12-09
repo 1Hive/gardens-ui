@@ -24,7 +24,7 @@ import useGardenNameResolver from "@hooks/useGardenNameResolver";
 import { useOnboardingState } from "@providers/Onboarding";
 
 import LinksTooltipImg from "@assets/linksTooltip.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const COMMUNITY_LINK_TYPE = "community";

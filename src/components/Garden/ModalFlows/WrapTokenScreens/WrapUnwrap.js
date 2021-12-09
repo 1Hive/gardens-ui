@@ -15,7 +15,7 @@ import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 
 import { toDecimals } from "@utils/math-utils";
 import { formatTokenAmount } from "@utils/token-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {

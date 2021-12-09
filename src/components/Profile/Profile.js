@@ -26,7 +26,7 @@ import { useWallet } from "@providers/Wallet";
 import { addressesEqual } from "@utils/web3-utils";
 
 import profileCoverDefaultSvg from "@assets/profileCoverDefault.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Profile() {

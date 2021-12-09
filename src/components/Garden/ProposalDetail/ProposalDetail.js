@@ -59,7 +59,6 @@ import { ZERO_ADDR } from "@/constants";
 // assets
 import warningIcon from "../Agreement/assets/warning.svg";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 const CANCEL_ROLE_HASH = soliditySha3("CANCEL_PROPOSAL_ROLE");

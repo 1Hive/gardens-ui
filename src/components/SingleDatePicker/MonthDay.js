@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useTheme, textStyle, GU } from "@1hive/1hive-ui";
 import { HoverIndicator } from "./components";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
   const theme = useTheme();

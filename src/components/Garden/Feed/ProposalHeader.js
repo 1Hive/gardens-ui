@@ -8,7 +8,6 @@ import {
 } from "@1hive/1hive-ui";
 import ProposalCreator from "./ProposalCreator";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function ProposalHeader({ proposal, onSelectProposal }) {

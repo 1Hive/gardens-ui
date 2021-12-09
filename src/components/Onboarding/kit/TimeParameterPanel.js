@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, GU, textStyle } from "@1hive/1hive-ui";
 import { DurationFields } from ".";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const TimeParameterPanel = ({ title, description, value, onUpdate }) => {

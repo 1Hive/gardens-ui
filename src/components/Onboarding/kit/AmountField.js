@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Field, GU, TextInput, textStyle, useTheme } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 // matches a number up to two decimals

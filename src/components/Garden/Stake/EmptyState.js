@@ -2,7 +2,7 @@ import React from "react";
 import { Card, GU, Header, textStyle } from "@1hive/1hive-ui";
 import tokenIcon from "./assets/connect-icon.svg";
 import LayoutColumns from "../Layout/LayoutColumns";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 export default function EmptyState({ icon }) {

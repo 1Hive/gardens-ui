@@ -30,7 +30,7 @@ import {
 import { buildGardenPath } from "@utils/routing-utils";
 import { dateFormat, toMs } from "@utils/date-utils";
 import noDataIllustration from "./assets/no-dataview-data.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function getActionAttributes(status, theme) {

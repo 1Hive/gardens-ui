@@ -11,7 +11,7 @@ import {
 import useGardenTokenIcon from "@hooks/useGardenTokenIcon";
 import { useHoneyswapTokenPrice } from "@hooks/useHoneyswapTokenPrice";
 import { formatTokenAmount } from "@utils/token-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function BalanceCard({

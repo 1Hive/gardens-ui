@@ -16,7 +16,7 @@ import {
   STEP_SUCCESS,
   STEP_PROMPTING,
 } from "@components/Stepper/stepper-statuses";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const Deployment = React.memo(function Deployment() {

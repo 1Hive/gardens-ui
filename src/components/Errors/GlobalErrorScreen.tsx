@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Card, GU, useViewport, useTheme } from "@1hive/1hive-ui";
 import flowerError from "../../assets/flowerError.svg";

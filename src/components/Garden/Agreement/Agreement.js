@@ -16,7 +16,6 @@ import { useWallet } from "@providers/Wallet";
 
 import warningSvg from "./assets/warning.svg";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function Agreement() {

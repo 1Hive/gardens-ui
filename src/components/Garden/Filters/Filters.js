@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, DropDown, GU, textStyle, useTheme } from "@1hive/1hive-ui";

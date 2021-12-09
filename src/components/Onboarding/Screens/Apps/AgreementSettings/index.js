@@ -19,7 +19,7 @@ import {
 } from "@components/Onboarding/kit";
 import Navigation from "@components/Onboarding/Navigation";
 import { useOnboardingState } from "@providers/Onboarding";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const MAX_TITLE_LENGTH = 50;

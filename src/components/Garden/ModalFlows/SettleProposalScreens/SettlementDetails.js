@@ -5,7 +5,7 @@ import ModalButton from "../ModalButton";
 import { formatTokenAmount } from "@utils/token-utils";
 import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 import useChallenge from "@hooks/useChallenge";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function SettlementDetails({ getTransactions, isChallenger, proposal }) {

@@ -4,7 +4,7 @@ import IssuanceChart from "./IssuanceChart";
 import { Header, PercentageField } from "@components/Onboarding/kit";
 import Navigation from "@components/Onboarding/Navigation";
 import { DEFAULT_CONFIG, useOnboardingState } from "@providers/Onboarding";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const CHART_HEIGHT = "350px";

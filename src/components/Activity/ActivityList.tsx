@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useMemo } from "react";
 import { Transition, animated } from "react-spring/renderprops";
 import {

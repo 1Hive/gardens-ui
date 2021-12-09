@@ -15,7 +15,7 @@ import {
   PercentageField,
 } from "@components/Onboarding/kit";
 import { useOnboardingState } from "@providers/Onboarding";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const validateVotingSettings = (

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { springs, RADIUS, useTheme } from "@1hive/1hive-ui";
 import { Spring, animated } from "react-spring/renderprops";

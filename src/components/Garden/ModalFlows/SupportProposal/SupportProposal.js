@@ -16,7 +16,7 @@ import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 import { toDecimals, round, pct } from "@utils/math-utils";
 import { formatTokenAmount } from "@utils/token-utils";
 import BigNumber from "@lib/bigNumber";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const SupportProposal = React.memo(function SupportProposal({

@@ -15,7 +15,7 @@ import {
   useTheme,
 } from "@1hive/1hive-ui";
 import { splitDecimalNumber } from "@utils/math-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function removeTrailingZeros(num) {

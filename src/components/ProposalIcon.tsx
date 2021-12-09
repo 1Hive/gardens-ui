@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { GU, useTheme } from "@1hive/1hive-ui";
 import { ProposalTypes } from "@/types";

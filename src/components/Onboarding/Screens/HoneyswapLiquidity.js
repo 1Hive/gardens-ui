@@ -23,7 +23,7 @@ import { getNetwork } from "@/networks";
 import { toDecimals } from "@utils/math-utils";
 import { BYOT_TYPE } from "../constants";
 import { bigNum } from "@/lib/bigNumber";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const MIN_HNY_USD = 100;

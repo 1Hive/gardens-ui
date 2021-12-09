@@ -13,7 +13,7 @@ import { dateFormat } from "@utils/date-utils";
 import env from "@/environment";
 import { formatTokenAmount } from "@utils/token-utils";
 import { getDisputableAppByName } from "@utils/app-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function CreateDecisionRequirements({ agreement, staking }) {

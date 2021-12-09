@@ -10,7 +10,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import { useConnectedGarden } from "@providers/ConnectedGarden";
 import { useGardenState } from "@providers/GardenState";
 import usePreferences from "@hooks/usePreferences";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function MainView({ children }) {

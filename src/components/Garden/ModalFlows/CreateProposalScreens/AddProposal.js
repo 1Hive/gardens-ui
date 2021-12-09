@@ -25,7 +25,7 @@ import { calculateThreshold, getMaxConviction } from "@lib/conviction";
 
 import { useHistory } from "react-router-dom";
 import { buildGardenPath } from "@utils/routing-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const SIGNALING_PROPOSAL = 0;

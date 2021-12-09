@@ -10,7 +10,7 @@ import { useUserState } from "@providers/User";
 import { addressesEqual } from "@utils/web3-utils";
 import gardensLogo from "@assets/gardensLogoMark.svg";
 import defaultGardenLogo from "@assets/defaultGardenLogo.png";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Sidebar() {

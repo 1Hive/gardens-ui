@@ -16,7 +16,7 @@ import {
 import ProfileForm from "./ProfileForm";
 import Tabs from "./Tabs";
 import usePicture from "@hooks/usePicture";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const IMAGE_DIMENSION = 15 * GU;

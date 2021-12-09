@@ -7,7 +7,7 @@ import { formatTokenAmount } from "@utils/token-utils";
 
 import coin from "./assets/coin.svg";
 import wallet from "./assets/wallet.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {

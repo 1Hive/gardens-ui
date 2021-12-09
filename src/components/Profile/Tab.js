@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { ButtonBase, GU, textStyle, useTheme } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Tab({ index, item, onChange, selected }) {

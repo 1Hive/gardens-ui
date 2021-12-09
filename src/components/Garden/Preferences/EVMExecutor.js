@@ -28,7 +28,7 @@ import { getAppByName } from "@utils/data-utils";
 import actions from "@/actions/garden-action-types";
 import radspec from "@/radspec";
 import { TERMINAL_EXECUTOR_MESSAGE } from "@/constants";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const INTERACTION_TYPES = ["Internal", "External", "Terminal"];

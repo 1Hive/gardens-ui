@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, GU, Info, textStyle } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function InfoBox({ data }) {

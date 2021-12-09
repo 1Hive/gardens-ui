@@ -1,7 +1,7 @@
 import React, { useRef, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import { Button, IconArrowLeft, GU, useTheme } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const Navigation = React.forwardRef(function Navigation(

@@ -10,7 +10,7 @@ import {
 import { StepTypes } from "@components/Stepper/stepper-statuses";
 import { getNetwork } from "../../../networks";
 import { TransactionStatusType } from "../../../constants";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 type DeploymentStepsItemProps = {

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback, useState } from "react";
 import { GU } from "@1hive/1hive-ui";
 import WelcomeModal from "./WelcomeModal";

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { GU, useTheme } from "@1hive/1hive-ui";

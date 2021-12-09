@@ -16,7 +16,7 @@ import { useOnboardingState } from "@providers/Onboarding";
 
 import iconError from "@assets/iconError.svg";
 import iconCheck from "@assets/iconCheck.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function useFieldsLayout() {

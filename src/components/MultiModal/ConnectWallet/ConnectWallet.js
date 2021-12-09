@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { GU, textStyle, Button } from "@1hive/1hive-ui";
 import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 import connectionError from "@/assets/connection-error.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function ConectWallet({ onDismiss }) {

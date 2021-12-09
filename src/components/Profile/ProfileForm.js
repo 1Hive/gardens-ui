@@ -22,7 +22,6 @@ import { dateFormat } from "@utils/date-utils";
 import { validateEmail } from "@utils/validate-utils";
 import verifiedCheck from "@assets/verifiedCheck.svg";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function ProfileForm({ coverPic, onBack, profile, profilePic }) {

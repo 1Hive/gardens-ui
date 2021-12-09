@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Box, GU, textStyle, useLayout, useTheme } from "@1hive/1hive-ui";
 import defaultGardenLogo from "@assets/defaultGardenLogo.png";

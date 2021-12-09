@@ -6,7 +6,7 @@ import {
   HOUR_IN_SECONDS,
   MINUTE_IN_SECONDS,
 } from "@utils/kit-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DurationFields = ({

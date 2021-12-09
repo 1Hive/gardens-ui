@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Box, GU, Info, Link, textStyle, useTheme } from "@1hive/1hive-ui";
 import { useWallet } from "@providers/Wallet";

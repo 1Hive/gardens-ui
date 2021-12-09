@@ -11,7 +11,7 @@ import MultiModal from "./MultiModal/MultiModal";
 import ConnectWalletScreens from "./MultiModal/ConnectWallet/ConnectWalletScreens";
 import Loader from "./Loader";
 import Onboarding from "./Onboarding";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Home() {

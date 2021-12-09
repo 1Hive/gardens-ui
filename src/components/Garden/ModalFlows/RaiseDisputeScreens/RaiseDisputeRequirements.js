@@ -19,7 +19,7 @@ import { formatTokenAmount } from "@utils/token-utils";
 import iconError from "@assets/iconError.svg";
 import iconCheck from "@assets/iconCheck.svg";
 import { getNetwork } from "@/networks";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function RaiseDisputeRequirements({

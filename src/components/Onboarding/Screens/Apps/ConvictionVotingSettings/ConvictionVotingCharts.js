@@ -7,7 +7,7 @@ import {
   calculateThreshold,
   toPercentage,
 } from "@utils/conviction-modelling-helpers";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const CHART_HEIGHT = "270px;";

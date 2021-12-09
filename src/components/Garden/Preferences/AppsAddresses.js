@@ -14,7 +14,7 @@ import { useGardens } from "@/providers/Gardens";
 import { getNetwork } from "@/networks";
 
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from "@utils/app-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function AppsAddresses() {

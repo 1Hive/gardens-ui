@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useMemo } from "react";
 import { textStyle, useTheme } from "@1hive/1hive-ui";
 import { ThumbsDownIcon, ThumbsUpIcon } from "../Icons";

@@ -18,7 +18,7 @@ import GnosisSafeField from "./GnosisSafeField";
 import Header from "../../../kit/Header";
 import Navigation from "../../../Navigation";
 import { useOnboardingState } from "@providers/Onboarding";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function useFieldsLayout() {

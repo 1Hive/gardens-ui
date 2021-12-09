@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useMemo } from "react";
 import { Box, useLayout, GU, useTheme } from "@1hive/1hive-ui";
 import { css, jsx } from "@emotion/react";

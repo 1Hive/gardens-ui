@@ -16,7 +16,7 @@ import { useWallet } from "@providers/Wallet";
 
 import { addressesEqual } from "@utils/web3-utils";
 import { getGardenLabel } from "@utils/garden-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Delegates({ account }) {

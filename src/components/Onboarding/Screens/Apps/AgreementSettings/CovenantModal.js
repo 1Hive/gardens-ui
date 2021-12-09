@@ -8,7 +8,7 @@ import {
   RootPortal,
   textStyle,
 } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const MINIMUM_SCROLL_TOP = 150;

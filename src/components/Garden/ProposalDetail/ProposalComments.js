@@ -1,7 +1,7 @@
 import React from "react";
 import { GU, Split, useLayout } from "@1hive/1hive-ui";
 import DiscourseComments from "@/components/DiscourseComments";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function ProposalComments({ link }) {

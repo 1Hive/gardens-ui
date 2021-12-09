@@ -12,7 +12,7 @@ import flowerSvg from "./assets/flower.svg";
 import gardensLogoMark from "@assets/gardensLogoMark.svg";
 import linesSvg from "./assets/lines.svg";
 import { TransactionStatusType } from "../../../constants";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const AnimDiv = animated.div;

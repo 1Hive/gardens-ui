@@ -12,7 +12,7 @@ import BigNumber from "@lib/bigNumber";
 import { toDecimals } from "@utils/math-utils";
 import { formatTokenAmount } from "@utils/token-utils";
 import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DEFAULT_AMOUNT_DATA = {

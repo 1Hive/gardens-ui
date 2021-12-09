@@ -15,7 +15,7 @@ import { formatTokenAmount } from "@utils/token-utils";
 import { getDisputableAppByName } from "@utils/app-utils";
 
 import iconFees from "@assets/iconFees.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {

@@ -5,7 +5,6 @@ import Description from "../Description";
 import { useDescribeVote } from "@hooks/useDescribeVote";
 import { ProposalTypes } from "@/types";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function ProposalDescription({ proposal, onSelectProposal }) {

@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@1hive/1hive-ui";
 import { Spring, Transition, animated } from "react-spring/renderprops";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const AnimatedDiv = animated.div;

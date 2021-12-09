@@ -17,7 +17,6 @@ import { useEsc } from "../../../hooks/useKeyboardArrows";
 import AppsAddresses from "./AppsAddresses";
 import EVMExecutor from "./EVMExecutor";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 const SECTIONS = new Map([

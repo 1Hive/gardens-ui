@@ -8,7 +8,7 @@ import {
   textStyle,
   useTheme,
 } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const IMAGE_DIMENSION = 20 * GU;

@@ -18,7 +18,7 @@ import {
   STEP_WORKING,
 } from "../stepper-statuses";
 import StatusVisual from "./StatusVisual";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 import { springs } from "@/style/springs";
 import { useDisableAnimation } from "@hooks/useDisableAnimation";

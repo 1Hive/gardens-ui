@@ -14,7 +14,6 @@ import mobileBanner from "@assets/banner-mobile.png";
 import tabletBanner from "@assets/banner-tablet.png";
 import tabletBannerFull from "@assets/banner-tablet-full.png";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 const BANNERS = {

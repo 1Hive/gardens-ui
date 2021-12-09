@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { GU, Help, Link, LoadingRing, useTheme } from "@1hive/1hive-ui";
 import Balance from "../Balance";

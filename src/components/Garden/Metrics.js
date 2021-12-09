@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback, useMemo, useState } from "react";
 import {
   Box,

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from "@1hive/1hive-ui";
 import { useGardenState } from "@providers/GardenState";

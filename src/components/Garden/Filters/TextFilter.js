@@ -1,7 +1,6 @@
 import React from "react";
 import { GU, SearchInput, textStyle } from "@1hive/1hive-ui";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 const TextFilter = React.memo(({ text, onChange, placeholder = "" }) => {

@@ -4,7 +4,7 @@ import { IdentityBadge as Badge, GU, RADIUS } from "@1hive/1hive-ui";
 
 import { getNetwork } from "@/networks";
 import { getProfileForAccount } from "@lib/profile";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const addressCache = new Map();

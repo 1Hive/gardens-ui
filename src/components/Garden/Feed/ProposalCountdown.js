@@ -5,7 +5,6 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from "@/constants";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function ProposalCountdown({ proposal }) {

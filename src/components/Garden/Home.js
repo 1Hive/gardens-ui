@@ -18,7 +18,7 @@ import WrapTokenScreens from "./ModalFlows/WrapTokenScreens/WrapTokenScreens";
 import useGardenLogic from "@/logic/garden-logic";
 import { useWallet } from "@providers/Wallet";
 import { buildGardenPath } from "@utils/routing-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const Home = React.memo(function Home() {

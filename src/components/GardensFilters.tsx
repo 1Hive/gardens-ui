@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { DropDown, GU, SearchInput, useLayout } from "@1hive/1hive-ui";
 import { SUPPORTED_CHAINS } from "@/networks";

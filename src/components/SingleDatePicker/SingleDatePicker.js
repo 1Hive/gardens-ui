@@ -6,7 +6,7 @@ import Labels from "./Labels";
 import { SINGLE_DATE } from "./consts";
 import { dayjs, dateFormat } from "@utils/date-utils";
 import handleSingleDateSelect from "./utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 function SingleDatePicker({
   format,

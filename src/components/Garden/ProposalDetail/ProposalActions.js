@@ -7,7 +7,7 @@ import { useWallet } from "@providers/Wallet";
 import AccountNotConnected from "@components/AccountNotConnected";
 import { addressesEqual } from "@utils/web3-utils";
 import BigNumber from "@lib/bigNumber";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function ProposalActions({

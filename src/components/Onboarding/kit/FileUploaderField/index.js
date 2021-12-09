@@ -11,7 +11,7 @@ import {
 } from "@1hive/1hive-ui";
 import { mimeToExtension, readFile } from "@utils/kit-utils";
 import FilePreview from "./FilePreview";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DEFAULT_MAX_FILE_SIZE = 1000000; // 1Mb

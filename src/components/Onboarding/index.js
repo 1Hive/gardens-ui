@@ -6,7 +6,7 @@ import { ChartsProvider } from "@providers/Charts";
 import { OnboardingProvider, useOnboardingState } from "@providers/Onboarding";
 import Setup from "./Setup";
 import { STATUS_GARDEN_SETUP } from "./statuses";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Onboarding({ onClose, visible }) {

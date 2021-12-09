@@ -12,7 +12,7 @@ import {
 } from "../stepper-statuses";
 import { springs } from "@/style/springs";
 import { useDisableAnimation } from "@hooks/useDisableAnimation";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx, keyframes } from "@emotion/react";
 
 const STATUS_ICONS = {

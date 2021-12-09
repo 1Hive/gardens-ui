@@ -1,5 +1,5 @@
 // @ts-nocheck
-/** @jsxImportSource @emotion/react */
+
 import React, { useCallback, useMemo } from "react";
 import { getProviderFromUseWalletId } from "use-wallet";
 import {

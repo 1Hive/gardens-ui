@@ -21,7 +21,7 @@ import {
   calculateDecay,
   calculateWeight,
 } from "@utils/conviction-modelling-helpers";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const MAX_HALF_LIFE_DAYS = 60;

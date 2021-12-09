@@ -14,7 +14,7 @@ import { useMultiModal } from "@components/MultiModal/MultiModalProvider";
 import useProfile from "@hooks/useProfile";
 import { useSupporterSubscription } from "@hooks/useSubscriptions";
 import { useWallet } from "@providers/Wallet";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {

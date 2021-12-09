@@ -9,7 +9,7 @@ import {
 } from "@1hive/1hive-ui";
 import DeploymentStepsItem from "./DeploymentStepsItem";
 import { TransactionStatusType } from "../../../constants";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 type DeploymentStepsPanelProps = {

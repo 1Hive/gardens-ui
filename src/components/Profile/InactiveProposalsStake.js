@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box, GU, textStyle, useTheme, useViewport } from "@1hive/1hive-ui";
 import { formatTokenAmount } from "@utils/token-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function InactiveProposalsStake({ myInactiveStakes }) {

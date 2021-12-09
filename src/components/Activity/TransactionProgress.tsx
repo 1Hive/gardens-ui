@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { ProgressBar, GU } from "@1hive/1hive-ui";
 import { Transition, animated } from "react-spring/renderprops";

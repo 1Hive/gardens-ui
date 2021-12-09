@@ -17,7 +17,7 @@ import { springs } from "../../style/springs";
 import { useDisableAnimation } from "../../hooks/useDisableAnimation";
 import { useInside } from "use-inside";
 import headerBackground from "@assets/modal-background.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DEFAULT_MODAL_WIDTH = 80 * GU;

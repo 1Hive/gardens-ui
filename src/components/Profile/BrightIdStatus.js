@@ -10,12 +10,12 @@ import {
 } from "@1hive/1hive-ui";
 import IdentityBadge from "../IdentityBadge";
 import BrightIdModal from "./BrightIdModal";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 import { useWallet } from "@providers/Wallet";
 import { useBrightIdVerification } from "@hooks/useBrightIdVerification";
 import verifiedCheck from "@assets/verifiedCheck.svg";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function BrightIdStatus() {

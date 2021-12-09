@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Box, GU, LoadingRing, textStyle, useTheme } from "@1hive/1hive-ui";
 import useAccountTokens from "../hooks/useAccountTokens";

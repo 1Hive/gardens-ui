@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, useViewport } from "@1hive/1hive-ui";
 import { BREAKPOINTS } from "@/style/breakpoints";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function CustomLayout({ children, paddingBottom = 0 }) {

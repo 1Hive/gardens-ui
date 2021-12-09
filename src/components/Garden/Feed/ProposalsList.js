@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   BIG_RADIUS,

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useCallback } from "react";
 import { GU, useTheme } from "@1hive/1hive-ui";
 import HelpTip from "@components/HelpTip";

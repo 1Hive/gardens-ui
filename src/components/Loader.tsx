@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { useRouteMatch } from "react-router";
 import Lottie from "react-lottie-player";

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Accordion, AppBadge, Box, GU, useTheme } from "@1hive/1hive-ui";
 import HelpTip from "@components/HelpTip";

@@ -1,7 +1,6 @@
 import React from "react";
 import { useLayout, GU } from "@1hive/1hive-ui";
 
-/** @jsxImportSource @emotion/react */
 import { css, jsx } from "@emotion/react";
 
 function LayoutGutter({ children, collapseWhenSmall, ...props }) {

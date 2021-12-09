@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { GU } from "@1hive/1hive-ui";
 import Tab from "./Tab";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function Tabs({ items, selected, onChange }) {

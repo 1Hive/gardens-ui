@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, GU, useTheme } from "@1hive/1hive-ui";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function MenuItem({ active, path, label, src }) {

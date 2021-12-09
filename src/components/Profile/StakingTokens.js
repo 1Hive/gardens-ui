@@ -4,7 +4,7 @@ import { Box, Distribution, GU, useTheme, useViewport } from "@1hive/1hive-ui";
 
 import BigNumber from "@lib/bigNumber";
 import { stakesPercentages } from "@utils/math-utils";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 const DISTRIBUTION_ITEMS_MAX = 6;

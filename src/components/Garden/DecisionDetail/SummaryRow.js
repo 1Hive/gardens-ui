@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { GU, textStyle, useTheme } from "@1hive/1hive-ui";
 import { formatTokenAmount } from "@utils/token-utils";

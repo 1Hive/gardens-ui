@@ -12,7 +12,7 @@ import {
 import LoadingRing from "../LoadingRing";
 import { BRIGHT_ID_APP_DEEPLINK } from "@/endpoints";
 import { sponsorUser } from "@/services/sponsorUser";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 function BrightIdModal({ account, addressExist, visible, onClose }) {

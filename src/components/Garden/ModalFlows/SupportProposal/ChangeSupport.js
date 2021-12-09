@@ -18,7 +18,7 @@ import { addressesEqual } from "@utils/web3-utils";
 
 import { fromDecimals, pct, round, toDecimals } from "@utils/math-utils";
 import BigNumber from "@lib/bigNumber";
-/** @jsxImportSource @emotion/react */
+
 import { css, jsx } from "@emotion/react";
 
 // TODO - leaving this screen instead of doing the support and the change support in the same screen just in case fiore wants to change something

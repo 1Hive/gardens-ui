@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { GU } from "@1hive/1hive-ui";
 import honeySvg from "@assets/IconHNYLoader.svg";
