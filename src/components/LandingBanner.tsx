@@ -61,13 +61,18 @@ const ContainerChild = styled.div`
   text-align: center;
 `
 
-const Title = styled.h1`
+const Title = styled.h1<{
+  hFontSize: string;
+}>`
   font-size: ${props => props.hFontSize};
   font-weight: bold;
   color: #048333;
 `
 
-const Subtitle = styled.div`
+const Subtitle = styled.p<{
+  pFontSize: string;
+  color: any;
+}>`
   font-size: ${props => props.pFontSize};
   color: ${props => props.color};
 `
