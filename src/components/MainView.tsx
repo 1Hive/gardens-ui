@@ -11,7 +11,7 @@ import { useConnectedGarden } from "@providers/ConnectedGarden";
 import { useGardenState } from "@providers/GardenState";
 import usePreferences from "@hooks/usePreferences";
 
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 
 function MainView({ children }) {
   const { pathname } = useLocation();

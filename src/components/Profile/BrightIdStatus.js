@@ -16,8 +16,6 @@ import { useWallet } from "@providers/Wallet";
 import { useBrightIdVerification } from "@hooks/useBrightIdVerification";
 import verifiedCheck from "@assets/verifiedCheck.svg";
 
-import { css, jsx } from "@emotion/react";
-
 function BrightIdStatus() {
   const [brightIdModalVisible, setBrightIdModalVisible] = useState(false);
   const theme = useTheme();
