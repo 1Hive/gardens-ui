@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from 'react'
 
 export function useNodeHeight() {
-  const [height, setHeight] = useState(0)
-  const nodeObserver = useRef(null)
+  const [height, setHeight] = useState<number>(0)
+  const nodeObserver = useRef<any>(null)
 
   const customRef = useCallback(node => {
     if (nodeObserver.current) {
@@ -20,5 +20,5 @@ export function useNodeHeight() {
     }
   }, [])
 
-  return [height, customRef]
+  return { height, customRef }
 }
