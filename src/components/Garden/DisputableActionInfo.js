@@ -145,11 +145,21 @@ function VotingPeriod({ proposal }) {
     proposal,
     proposal.delegatedVotingEndDate
   )
+  const executionDelayEndPeriodNode = usePeriod(
+    proposal,
+    proposal.executionDelay
+  )
 
   const isResumed = proposal.statusData.open && proposal.pausedAt > 0
 
   return (
     <>
+      {proposal.isDelayed && (
+        <DataField
+          label="Execution delay"
+          value={executionDelayEndPeriodNode}
+        />
+      )}
       <DataField
         label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
         value={voteEndPeriodNode}

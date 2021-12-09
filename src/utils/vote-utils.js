@@ -65,6 +65,17 @@ export function hasVoteEnded(status, endDate, challengeEndDate) {
   )
 }
 
+export function getDelegatedVotingEndDate(vote) {
+  const baseDelegatedVotingEndDate = vote.startDate + vote.delegatedVotingPeriod
+
+  // If the vote was paused before the delegated voting period ended, we need to extend it
+  if (vote.pausedAt > 0 && vote.pausedAt > baseDelegatedVotingEndDate) {
+    return baseDelegatedVotingEndDate + vote.pauseDuration
+  }
+
+  return baseDelegatedVotingEndDate
+}
+
 export function getVoteEndDate(vote) {
   const baseVoteEndDate = vote.startDate + vote.voteTime
   const endDateAfterPause = baseVoteEndDate + vote.pauseDuration
@@ -81,15 +92,8 @@ export function getVoteEndDate(vote) {
   return lastComputedEndDate + vote.quietEndingExtension
 }
 
-export function getDelegatedVotingEndDate(vote) {
-  const baseDelegatedVotingEndDate = vote.startDate + vote.delegatedVotingPeriod
-
-  // If the vote was paused before the delegated voting period ended, we need to extend it
-  if (vote.pausedAt > 0 && vote.pausedAt > baseDelegatedVotingEndDate) {
-    return baseDelegatedVotingEndDate + vote.pauseDuration
-  }
-
-  return baseDelegatedVotingEndDate
+export function getExecutionDelayEndDate(vote, endDate) {
+  return endDate + vote.executionDelay
 }
 
 function wasVoteFlipped(vote) {
