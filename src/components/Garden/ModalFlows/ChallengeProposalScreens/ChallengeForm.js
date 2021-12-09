@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { TextInput, Field, textStyle, useTheme, GU } from '@1hive/1hive-ui'
+import HelpTip from '@components/HelpTip'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import HelpTip from '@components/HelpTip'
-import { durationToHours, toMs } from '@utils/date-utils'
+
 import BigNumber from '@lib/bigNumber'
+import { durationToHours, toMs } from '@utils/date-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { toDecimals } from '@utils/math-utils'
 import { toHex } from 'web3-utils'
@@ -22,12 +23,6 @@ function ChallengeRequirements({ getTransactions, proposal }) {
   } = collateralRequirement
 
   const settlementPeriodHours = durationToHours(toMs(challengeDuration))
-
-  const [error, setError] = useState(null)
-  const [argument, setArgument] = useState('')
-  const [loading, setLoading] = useState(false)
-  const { next } = useMultiModal()
-
   const maxChallengeAmountFormatted = useMemo(
     () => formatTokenAmount(challengeAmount, tokenDecimals),
     [challengeAmount, tokenDecimals]
@@ -35,6 +30,10 @@ function ChallengeRequirements({ getTransactions, proposal }) {
   const maxChallengeAmount = maxChallengeAmountFormatted.replace(',', '')
 
   const [settlementAmount, setSettlementAmount] = useState(maxChallengeAmount)
+  const [error, setError] = useState(null)
+  const [argument, setArgument] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { next } = useMultiModal()
 
   const handleSubmit = useCallback(
     event => {
