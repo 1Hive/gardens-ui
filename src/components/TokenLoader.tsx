@@ -1,7 +1,7 @@
-import React from "react";
-import { GU } from "@1hive/1hive-ui";
-import honeySvg from "@assets/IconHNYLoader.svg";
-import { css, jsx, keyframes } from "@emotion/react";
+import React from 'react'
+import { GU } from '@1hive/1hive-ui'
+import honeySvg from '@assets/IconHNYLoader.svg'
+import { css, jsx, keyframes } from '@emotion/react'
 
 const spinAnimation = css`
   mask-image: linear-gradient(35deg, transparent 15%, rgba(0, 0, 0, 1));
@@ -13,10 +13,10 @@ const spinAnimation = css`
       transform: rotate(360deg);
     }
   `} 1.25s linear infinite;
-`;
+`
 
 function TokenLoader() {
-  console.log(spinAnimation);
+  console.log(spinAnimation)
   return (
     <div
       css={css`
@@ -68,7 +68,7 @@ function TokenLoader() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default TokenLoader;
+export default TokenLoader

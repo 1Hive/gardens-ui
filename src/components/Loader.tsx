@@ -1,12 +1,12 @@
-import React from "react";
-import { useRouteMatch } from "react-router";
-import Lottie from "react-lottie-player";
+import React from 'react'
+import { useRouteMatch } from 'react-router'
+import Lottie from 'react-lottie-player'
 
-import beeAnimation from "@assets/lotties/bee-animation.json";
-import gardensLoader from "@assets/lotties/gardens-loader.json";
-import { is1HiveGarden } from "@/utils/garden-utils";
-import { css, jsx } from "@emotion/react";
-import styled from "styled-components";
+import beeAnimation from '@assets/lotties/bee-animation.json'
+import gardensLoader from '@assets/lotties/gardens-loader.json'
+import { is1HiveGarden } from '@/utils/garden-utils'
+import { css, jsx } from '@emotion/react'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   pointer-events: none;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-`;
+`
 
 export function GardenLoader() {
   return (
@@ -30,14 +30,14 @@ export function GardenLoader() {
     >
       <Loader />
     </div>
-  );
+  )
 }
 
 function Loader() {
   const match = useRouteMatch<{
-    daoId;
-  }>("/garden/:daoId");
-  const is1Hive = is1HiveGarden(match?.params.daoId);
+    daoId
+  }>('/garden/:daoId')
+  const is1Hive = is1HiveGarden(match?.params.daoId)
 
   return (
     <Wrapper>
@@ -51,7 +51,7 @@ function Loader() {
         }}
       />
     </Wrapper>
-  );
+  )
 }
 
-export default Loader;
+export default Loader

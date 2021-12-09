@@ -1,33 +1,33 @@
-import React from "react";
-import { Box, GU, textStyle, useLayout, useTheme } from "@1hive/1hive-ui";
-import defaultGardenLogo from "@assets/defaultGardenLogo.png";
-import { css, jsx } from "@emotion/react";
-import styled from "styled-components";
+import React from 'react'
+import { Box, GU, textStyle, useLayout, useTheme } from '@1hive/1hive-ui'
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import { css, jsx } from '@emotion/react'
+import styled from 'styled-components'
 
 const ParagraphWrapper = styled.div<{
-  background;
-  compactMode;
+  background
+  compactMode
 }>`
-  ${textStyle("body2")};
-  color: ${(props) => props.background};
+  ${textStyle('body2')};
+  color: ${props => props.background};
   margin-top: ${1.5 * GU}px;
-  width: ${(props) => (props.compactMode ? 25 : 55) * GU}px;
+  width: ${props => (props.compactMode ? 25 : 55) * GU}px;
   display: flex;
   text-align: center;
-`;
+`
 
 export default function EmptyResults({
   image = defaultGardenLogo,
   title,
   paragraph,
 }: {
-  image?: string;
-  title: string;
-  paragraph?: string;
+  image?: string
+  title: string
+  paragraph?: string
 }) {
-  const theme = useTheme();
-  const { layoutName } = useLayout();
-  const compactMode = layoutName === "small";
+  const theme = useTheme()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
 
   return (
     <Box>
@@ -51,7 +51,7 @@ export default function EmptyResults({
         />
         <span
           css={css`
-            ${textStyle(compactMode ? "title4" : "title2")};
+            ${textStyle(compactMode ? 'title4' : 'title2')};
             text-align: center;
           `}
         >
@@ -65,5 +65,5 @@ export default function EmptyResults({
         </ParagraphWrapper>
       </div>
     </Box>
-  );
+  )
 }

@@ -1,18 +1,18 @@
-import React from "react";
-import { GU, useTheme } from "@1hive/1hive-ui";
-import { ProposalTypes } from "@/types";
-import { css, jsx } from "@emotion/react";
+import React from 'react'
+import { GU, useTheme } from '@1hive/1hive-ui'
+import { ProposalTypes } from '@/types'
+import { css, jsx } from '@emotion/react'
 
 function ProposalIcon({ type }) {
-  const theme = useTheme();
-  let color;
+  const theme = useTheme()
+  let color
   if (type === ProposalTypes.Decision) {
-    color = "#FFC3AB";
+    color = '#FFC3AB'
   } else {
     color =
       type === ProposalTypes.Proposal
         ? theme.yellow.toString()
-        : theme.green.toString();
+        : theme.green.toString()
   }
 
   return (
@@ -25,7 +25,7 @@ function ProposalIcon({ type }) {
         margin: 0 ${0.5 * GU}px;
       `}
     />
-  );
+  )
 }
 
-export default ProposalIcon;
+export default ProposalIcon

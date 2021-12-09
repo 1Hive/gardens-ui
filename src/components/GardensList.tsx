@@ -1,48 +1,48 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useHistory } from "react-router";
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useHistory } from 'react-router'
 import {
   GU,
   Pagination,
   shortenAddress,
   textStyle,
   useTheme,
-} from "@1hive/1hive-ui";
+} from '@1hive/1hive-ui'
 
-import defaultGardenLogo from "@assets/defaultGardenLogo.png";
-import defaultTokenLogo from "@assets/defaultTokenLogo.svg";
-import EmptyResults from "./EmptyResults";
-import { css, jsx } from "@emotion/react";
+import defaultGardenLogo from '@assets/defaultGardenLogo.png'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import EmptyResults from './EmptyResults'
+import { css, jsx } from '@emotion/react'
 
-const GARDENS_PER_PAGE = 10;
+const GARDENS_PER_PAGE = 10
 
 const computeCurrentGardens = (gardens, currentPage) => {
   const currentGardens = gardens.slice(
     currentPage * GARDENS_PER_PAGE,
     GARDENS_PER_PAGE * (currentPage + 1)
-  );
+  )
 
-  return currentGardens;
-};
+  return currentGardens
+}
 
 function GardensList({ gardens }) {
-  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPage, setSelectedPage] = useState(0)
 
-  const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE);
+  const pages = Math.ceil(gardens.length / GARDENS_PER_PAGE)
 
   const currentGardens = useMemo(
     () => computeCurrentGardens(gardens, selectedPage),
     [gardens, selectedPage]
-  );
+  )
 
-  const handlePageChange = useCallback((page) => {
-    setSelectedPage(page);
-  }, []);
+  const handlePageChange = useCallback(page => {
+    setSelectedPage(page)
+  }, [])
 
   useEffect(() => {
     if (gardens.length) {
-      setSelectedPage(0);
+      setSelectedPage(0)
     }
-  }, [gardens]);
+  }, [gardens])
 
   return (
     <div>
@@ -56,7 +56,7 @@ function GardensList({ gardens }) {
               margin-bottom: ${2 * GU}px;
             `}
           >
-            {currentGardens.map((garden) => (
+            {currentGardens.map(garden => (
               <GardenCard key={garden.id} garden={garden} />
             ))}
           </div>
@@ -72,17 +72,17 @@ function GardensList({ gardens }) {
         <EmptyResults title="No gardens found" />
       )}
     </div>
-  );
+  )
 }
 
 function GardenCard({ garden }) {
-  const theme = useTheme();
-  const history = useHistory();
+  const theme = useTheme()
+  const history = useHistory()
   const handleSelectGarden = useCallback(() => {
-    history.push(`/garden/${garden.address}`);
-  }, [garden, history]);
+    history.push(`/garden/${garden.address}`)
+  }, [garden, history])
 
-  const token = garden.wrappableToken || garden.token;
+  const token = garden.wrappableToken || garden.token
 
   return (
     <div
@@ -119,7 +119,7 @@ function GardenCard({ garden }) {
       </div>
       <div
         css={css`
-          ${textStyle("title4")};
+          ${textStyle('title4')};
         `}
       >
         {garden.name || shortenAddress(garden.id)}
@@ -133,14 +133,14 @@ function GardenCard({ garden }) {
           overflow: hidden;
         `}
       >
-        {garden.description || "No description"}
+        {garden.description || 'No description'}
       </div>
       <div
         css={css`
           display: flex;
           align-items: center;
           margin-bottom: ${1 * GU}px;
-          ${textStyle("title4")};
+          ${textStyle('title4')};
           justify-content: center;
           color: ${theme.content.toString()};
         `}
@@ -168,14 +168,14 @@ function GardenCard({ garden }) {
         `}
       >
         <div>
-          {garden.proposalCount} Proposal{garden.proposalCount === 1 ? "" : "s"}
+          {garden.proposalCount} Proposal{garden.proposalCount === 1 ? '' : 's'}
         </div>
         <div>
-          {garden.supporterCount} Member{garden.supporterCount === 1 ? "" : "s"}
+          {garden.supporterCount} Member{garden.supporterCount === 1 ? '' : 's'}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default GardensList;
+export default GardensList

@@ -1,45 +1,45 @@
-import React from "react";
-import { GU, LoadingRing, textStyle, useTheme } from "@1hive/1hive-ui";
+import React from 'react'
+import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import HeaderModule from "./Header/HeaderModule";
-import useAccountTokens from "@hooks/useAccountTokens";
-import { useGardenState } from "@providers/GardenState";
-import { useWallet } from "@providers/Wallet";
+import HeaderModule from './Header/HeaderModule'
+import useAccountTokens from '@hooks/useAccountTokens'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
-import { formatTokenAmount } from "@utils/token-utils";
-import { safeDivBN } from "@utils/math-utils";
-import defaultTokenLogo from "@assets/defaultTokenLogo.svg";
-import { css, jsx } from "@emotion/react";
-import styled from "styled-components";
+import { formatTokenAmount } from '@utils/token-utils'
+import { safeDivBN } from '@utils/math-utils'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+import { css, jsx } from '@emotion/react'
+import styled from 'styled-components'
 
 const Wrapper = styled.div<{
-  color;
+  color
 }>`
   margin-bottom: -2px;
-  ${textStyle("body4")};
-  color: ${(props) => props.color};
-`;
+  ${textStyle('body4')};
+  color: ${props => props.color};
+`
 
 const WrapperSpan = styled.div<{
-  color;
+  color
 }>`
-  color: ${(props) => props.color};
-`;
+  color: ${props => props.color};
+`
 
 function BalanceModule() {
-  const theme = useTheme();
-  const wallet = useWallet();
-  const { token } = useGardenState();
+  const theme = useTheme()
+  const wallet = useWallet()
+  const { token } = useGardenState()
 
   const { inactiveTokens } = useAccountTokens(
     wallet.account,
     token.accountBalance
-  );
+  )
 
   const inactivePct = safeDivBN(
-    inactiveTokens.times("100"),
+    inactiveTokens.times('100'),
     token.accountBalance
-  ).toString();
+  ).toString()
 
   return (
     <HeaderModule
@@ -81,7 +81,7 @@ function BalanceModule() {
       }
       hasPopover={false}
     />
-  );
+  )
 }
 
-export default BalanceModule;
+export default BalanceModule

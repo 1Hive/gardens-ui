@@ -1,39 +1,35 @@
-import React from "react";
-import { useLocation } from "react-router";
-import { GU, Root, ScrollView, ToastHub, useViewport } from "@1hive/1hive-ui";
+import React from 'react'
+import { useLocation } from 'react-router'
+import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
-import Footer from "./Garden/Footer";
-import Header from "./Header/Header";
-import Layout from "./Layout";
-import GlobalPreferences from "./Garden/Preferences/GlobalPreferences";
-import Sidebar from "./Sidebar/Sidebar";
-import { useConnectedGarden } from "@providers/ConnectedGarden";
-import { useGardenState } from "@providers/GardenState";
-import usePreferences from "@hooks/usePreferences";
+import Footer from './Garden/Footer'
+import Header from './Header/Header'
+import Layout from './Layout'
+import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
+import Sidebar from './Sidebar/Sidebar'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import usePreferences from '@hooks/usePreferences'
 
-import { css } from "@emotion/react";
+import { css } from '@emotion/react'
 
 function MainView({ children }) {
-  const { pathname } = useLocation();
-  const { below } = useViewport();
-  const connectedGarden = useConnectedGarden();
+  const { pathname } = useLocation()
+  const { below } = useViewport()
+  const connectedGarden = useConnectedGarden()
 
-  const [
-    openPreferences,
-    closePreferences,
-    preferenceOption,
-  ] = usePreferences();
+  const [openPreferences, closePreferences, preferenceOption] = usePreferences()
 
-  let loadingGardenState = true;
+  let loadingGardenState = true
   if (connectedGarden) {
     // TODO: Refactor
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { loading } = useGardenState();
-    loadingGardenState = loading;
+    const { loading } = useGardenState()
+    loadingGardenState = loading
   }
 
-  const mobileMode = below("medium");
-  const compactMode = below("large");
+  const mobileMode = below('medium')
+  const compactMode = below('large')
 
   if (preferenceOption) {
     return (
@@ -42,7 +38,7 @@ function MainView({ children }) {
         onScreenChange={openPreferences}
         onClose={closePreferences}
       />
-    );
+    )
   }
 
   return (
@@ -64,7 +60,7 @@ function MainView({ children }) {
           display: flex;
         `}
       >
-        {pathname !== "/home" && !below("medium") && <Sidebar />}
+        {pathname !== '/home' && !below('medium') && <Sidebar />}
         <div
           css={css`
             display: flex;
@@ -115,7 +111,7 @@ function MainView({ children }) {
         </div>
       </div>
     </ToastHub>
-  );
+  )
 }
 
-export default MainView;
+export default MainView

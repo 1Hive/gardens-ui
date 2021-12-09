@@ -1,11 +1,11 @@
-import React from "react";
-import { GU, Modal, textStyle, useViewport } from "@1hive/1hive-ui";
-import flowerError from "@assets/flowerError.svg";
+import React from 'react'
+import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
+import flowerError from '@assets/flowerError.svg'
 
-import { css, jsx } from "@emotion/react";
+import { css, jsx } from '@emotion/react'
 
 function NetworkErrorModal({ visible }) {
-  const { width } = useViewport();
+  const { width } = useViewport()
 
   return (
     <Modal
@@ -24,7 +24,7 @@ function NetworkErrorModal({ visible }) {
         <img src={flowerError} alt="" height="88" width="71" />
         <h3
           css={css`
-            ${textStyle("title2")}
+            ${textStyle('title2')}
             margin-top: 24px;
             margin-bottom: 8px;
           `}
@@ -33,14 +33,14 @@ function NetworkErrorModal({ visible }) {
         </h3>
         <h4
           css={css`
-            ${textStyle("body3")}
+            ${textStyle('body3')}
           `}
         >
           An error has occurred with the network connection.
         </h4>
       </div>
     </Modal>
-  );
+  )
 }
 
-export default NetworkErrorModal;
+export default NetworkErrorModal

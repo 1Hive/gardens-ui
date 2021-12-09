@@ -1,7 +1,7 @@
-import React from "react";
-import { GU, LoadingRing as LoadingRingComponent } from "@1hive/1hive-ui";
+import React from 'react'
+import { GU, LoadingRing as LoadingRingComponent } from '@1hive/1hive-ui'
 
-import { css, jsx } from "@emotion/react";
+import { css, jsx } from '@emotion/react'
 
 export default function LoadingRing() {
   return (
@@ -16,5 +16,5 @@ export default function LoadingRing() {
           height: ${4 * GU}px;
       `}
     />
-  );
+  )
 }

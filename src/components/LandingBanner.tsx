@@ -1,43 +1,43 @@
-import React from "react";
-import { Button, GU, useLayout, useTheme } from "@1hive/1hive-ui";
-import { css, jsx } from "@emotion/react";
-import desktopBanner from "../assets/landingBanner.png";
-import mobileBanner from "@assets/landingBanner-mobile.png";
-import tabletBanner from "@assets/landingBanner-tablet.png";
+import React from 'react'
+import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
+import { css, jsx } from '@emotion/react'
+import desktopBanner from '../assets/landingBanner.png'
+import mobileBanner from '@assets/landingBanner-mobile.png'
+import tabletBanner from '@assets/landingBanner-tablet.png'
 
 const BANNERS = {
   small: {
-    aspectRatio: "53.5%",
-    hFontSize: "32px",
+    aspectRatio: '53.5%',
+    hFontSize: '32px',
     image: mobileBanner,
-    pFontSize: "14px",
+    pFontSize: '14px',
   },
   medium: {
     image: tabletBanner,
-    aspectRatio: "36.5%",
-    hFontSize: "52px",
-    pFontSize: "18px",
+    aspectRatio: '36.5%',
+    hFontSize: '52px',
+    pFontSize: '18px',
   },
   large: {
     image: desktopBanner,
-    aspectRatio: "26.5%",
-    hFontSize: "52px",
-    pFontSize: "18px",
+    aspectRatio: '26.5%',
+    hFontSize: '52px',
+    pFontSize: '18px',
   },
   max: {
     image: desktopBanner,
-    aspectRatio: "26.5%",
-    hFontSize: "64px",
-    pFontSize: "20px",
+    aspectRatio: '26.5%',
+    hFontSize: '64px',
+    pFontSize: '20px',
   },
-};
+}
 
 const LandingBanner = React.forwardRef<any, any>((props, ref) => {
-  const { onCreateGarden } = props;
-  const theme = useTheme();
-  const { layoutName } = useLayout();
+  const { onCreateGarden } = props
+  const theme = useTheme()
+  const { layoutName } = useLayout()
 
-  const { aspectRatio, hFontSize, image, pFontSize } = BANNERS[layoutName];
+  const { aspectRatio, hFontSize, image, pFontSize } = BANNERS[layoutName]
 
   return (
     <div
@@ -125,7 +125,7 @@ const LandingBanner = React.forwardRef<any, any>((props, ref) => {
         </div>
       </div>
     </div>
-  );
-});
+  )
+})
 
-export default LandingBanner;
+export default LandingBanner

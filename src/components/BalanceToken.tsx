@@ -1,10 +1,10 @@
-import React from "react";
-import { GU } from "@1hive/1hive-ui";
-import { css, jsx } from "@emotion/react";
-import { formatTokenAmount } from "@utils/token-utils";
+import React from 'react'
+import { GU } from '@1hive/1hive-ui'
+import { css, jsx } from '@emotion/react'
+import { formatTokenAmount } from '@utils/token-utils'
 
 const splitAmount = (amount, decimals) => {
-  const [integer, fractional] = formatTokenAmount(amount, decimals).split(".");
+  const [integer, fractional] = formatTokenAmount(amount, decimals).split('.')
   return (
     <span
       css={css`
@@ -14,8 +14,8 @@ const splitAmount = (amount, decimals) => {
       <span>{integer}</span>
       {fractional && <span className="fractional">.{fractional}</span>}
     </span>
-  );
-};
+  )
+}
 
 const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
   return (
@@ -38,10 +38,10 @@ const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
       />
       {amount !== undefined && amount !== null
         ? splitAmount(amount, decimals)
-        : " - "}
-      {symbol || ""}
+        : ' - '}
+      {symbol || ''}
     </div>
-  );
-};
+  )
+}
 
-export default BalanceToken;
+export default BalanceToken

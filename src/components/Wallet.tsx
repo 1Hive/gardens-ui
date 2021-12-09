@@ -1,16 +1,16 @@
-import React from "react";
-import { Box, GU, LoadingRing, textStyle, useTheme } from "@1hive/1hive-ui";
-import useAccountTokens from "../hooks/useAccountTokens";
-import { useGardenState } from "../providers/GardenState";
-import { formatTokenAmount } from "../utils/token-utils";
-import { css, jsx } from "@emotion/react";
-import styled from "styled-components";
+import React from 'react'
+import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
+import useAccountTokens from '../hooks/useAccountTokens'
+import { useGardenState } from '../providers/GardenState'
+import { formatTokenAmount } from '../utils/token-utils'
+import { css, jsx } from '@emotion/react'
+import styled from 'styled-components'
 
 function Wallet({ account }) {
-  const theme = useTheme();
-  const { token } = useGardenState();
-  const { decimals, logo, symbol } = token.data;
-  const { inactiveTokens } = useAccountTokens(account, token.accountBalance);
+  const theme = useTheme()
+  const { token } = useGardenState()
+  const { decimals, logo, symbol } = token.data
+  const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
   return (
     <Box padding={0}>
@@ -40,7 +40,7 @@ function Wallet({ account }) {
         </div>
       </div>
     </Box>
-  );
+  )
 }
 
 const Balance = ({
@@ -52,15 +52,15 @@ const Balance = ({
   loading,
   symbol,
 }: {
-  amount;
-  decimals;
-  icon;
-  label;
-  symbol;
-  loading?;
-  inactive?;
+  amount
+  decimals
+  icon
+  label
+  symbol
+  loading?
+  inactive?
 }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <div
@@ -96,8 +96,8 @@ const Balance = ({
         ) : (
           <span
             css={css`
-              ${textStyle("title4")};
-              color: ${theme[inactive ? "negative" : "content"]};
+              ${textStyle('title4')};
+              color: ${theme[inactive ? 'negative' : 'content']};
             `}
           >
             {formatTokenAmount(amount, decimals)}
@@ -105,15 +105,15 @@ const Balance = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const LineSeparator = styled.div<{
-  border: string;
+  border: string
 }>`
   height: 1px;
   border-bottom: 0.5px solid ${({ border }) => border};
   margin: ${3 * GU}px 0;
-`;
+`
 
-export default Wallet;
+export default Wallet

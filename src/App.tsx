@@ -1,17 +1,17 @@
-import React from 'react';
-import { HashRouter } from 'react-router-dom';
-import { Main } from '@1hive/1hive-ui';
+import React from 'react'
+import { HashRouter } from 'react-router-dom'
+import { Main } from '@1hive/1hive-ui'
 
-import GlobalErrorHandler from './GlobalErrorHandler';
-import MainView from '@components/MainView';
-import Routes from './routes/Routes';
-import WelcomeLoader from '@components/Welcome/WelcomeLoader';
+import GlobalErrorHandler from './GlobalErrorHandler'
+import MainView from '@components/MainView'
+import Routes from './routes/Routes'
+import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 
-import { ActivityProvider } from './providers/ActivityProvider';
-import { GardensProvider } from './providers/Gardens';
-import { ProfileProvider } from './providers/Profile';
-import { UserProvider } from './providers/User';
-import { WalletProvider } from './providers/Wallet';
+import { ActivityProvider } from './providers/ActivityProvider'
+import { GardensProvider } from './providers/Gardens'
+import { ProfileProvider } from './providers/Profile'
+import { UserProvider } from './providers/User'
+import { WalletProvider } from './providers/Wallet'
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
         </WalletProvider>
       </Main>
     </HashRouter>
-  );
+  )
 }
 
-export default App;
+export default App

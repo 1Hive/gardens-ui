@@ -1,44 +1,44 @@
-import React, { useCallback, useState } from "react";
-import { GU, useToast } from "@1hive/1hive-ui";
-import { useGardens } from "@/providers/Gardens";
-import { useNodeHeight } from "@hooks/useNodeHeight";
+import React, { useCallback, useState } from 'react'
+import { GU, useToast } from '@1hive/1hive-ui'
+import { useGardens } from '@/providers/Gardens'
+import { useNodeHeight } from '@hooks/useNodeHeight'
 
-import GardensFilters from "./GardensFilters";
-import GardensList from "./GardensList";
-import LandingBanner from "./LandingBanner";
-import { useWallet } from "@providers/Wallet";
-import MultiModal from "./MultiModal/MultiModal";
-import ConnectWalletScreens from "./MultiModal/ConnectWallet/ConnectWalletScreens";
-import Loader from "./Loader";
-import Onboarding from "./Onboarding";
+import GardensFilters from './GardensFilters'
+import GardensList from './GardensList'
+import LandingBanner from './LandingBanner'
+import { useWallet } from '@providers/Wallet'
+import MultiModal from './MultiModal/MultiModal'
+import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreens'
+import Loader from './Loader'
+import Onboarding from './Onboarding'
 
-import { css, jsx } from "@emotion/react";
+import { css, jsx } from '@emotion/react'
 
 function Home() {
-  const { height, customRef } = useNodeHeight();
-  const { externalFilters, internalFilters, gardens, loading } = useGardens();
-  const [onboardingVisible, setOnboardingVisible] = useState(false);
-  const [connectModalVisible, setConnectModalVisible] = useState(false);
+  const { height, customRef } = useNodeHeight()
+  const { externalFilters, internalFilters, gardens, loading } = useGardens()
+  const [onboardingVisible, setOnboardingVisible] = useState(false)
+  const [connectModalVisible, setConnectModalVisible] = useState(false)
 
-  const { account } = useWallet();
-  const toast = useToast();
+  const { account } = useWallet()
+  const toast = useToast()
 
   const handleOnboardingOpen = useCallback(() => {
     if (!account) {
-      setConnectModalVisible(true);
-      return;
+      setConnectModalVisible(true)
+      return
     }
-    setOnboardingVisible(true);
-  }, [account]);
+    setOnboardingVisible(true)
+  }, [account])
 
   const handleOnboardingClose = useCallback(() => {
-    setOnboardingVisible(false);
-    toast("Saved!");
-  }, [toast]);
+    setOnboardingVisible(false)
+    toast('Saved!')
+  }, [toast])
 
   const handleCloseModal = useCallback(() => {
-    setConnectModalVisible(false);
-  }, []);
+    setConnectModalVisible(false)
+  }, [])
 
   return (
     <div>
@@ -72,7 +72,7 @@ function Home() {
         />
       </MultiModal>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home
