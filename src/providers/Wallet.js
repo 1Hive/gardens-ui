@@ -27,14 +27,7 @@ function useWalletAugmented() {
 // Adds Ethers.js to the useWallet() object
 function WalletAugmented({ children }) {
   const wallet = useWallet()
-  const { ethereum, isConnected } = wallet
-
-  const ethers = useMemo(() => {
-    if (!ethereum) {
-      return getDefaultProvider()
-    }
-    return new EthersProviders.Web3Provider(ethereum, getEthersNetwork())
-  }, [ethereum])
+  const { chainId, ethereum, isConnected } = wallet
 
   const {
     connect,
@@ -44,6 +37,16 @@ function WalletAugmented({ children }) {
     resetConnection,
     switchingNetworks,
   } = useConnection()
+
+  const ethers = useMemo(() => {
+    if (!ethereum) {
+      return getDefaultProvider()
+    }
+    return new EthersProviders.Web3Provider(
+      ethereum,
+      getEthersNetwork(isConnected() ? chainId : preferredNetwork)
+    )
+  }, [chainId, ethereum, isConnected, preferredNetwork])
 
   const contextValue = useMemo(
     () => ({
