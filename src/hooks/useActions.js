@@ -22,6 +22,7 @@ import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
+const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
@@ -363,7 +364,7 @@ export default function useActions() {
       { actionId, settlementOffer, challengerFinishedEvidence, context },
       onDone = noop
     ) => {
-      const intent = await agreementApp.intent(
+      let intent = await agreementApp.intent(
         'challengeAction',
         [actionId, settlementOffer, challengerFinishedEvidence, context],
         {
@@ -371,6 +372,7 @@ export default function useActions() {
         }
       )
 
+      intent = imposeGasLimit(intent, CHALLENGE_GAS_LIMIT)
       const description = radspec[actions.CHALLENGE_ACTION]({
         actionId,
       })
