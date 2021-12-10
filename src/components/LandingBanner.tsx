@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, useLayout, useTheme } from '@1hive/1hive-ui'
 import desktopBanner from '@assets/landingBanner.png'
 import mobileBanner from '@assets/landingBanner-mobile.png'
@@ -33,8 +32,8 @@ const BANNERS = {
 }
 
 const Wrapper = styled.div<{
-  image: string;
-  aspectRatio: any;
+  image: string
+  aspectRatio: any
 }>`
   background: url(${props => props.image}) no-repeat;
   background-size: contain;
@@ -62,7 +61,7 @@ const ContainerChild = styled.div`
 `
 
 const Title = styled.h1<{
-  hFontSize: string;
+  hFontSize: string
 }>`
   font-size: ${props => props.hFontSize};
   font-weight: bold;
@@ -70,8 +69,8 @@ const Title = styled.h1<{
 `
 
 const Subtitle = styled.p<{
-  pFontSize: string;
-  color: any;
+  pFontSize: string
+  color: any
 }>`
   font-size: ${props => props.pFontSize};
   color: ${props => props.color};

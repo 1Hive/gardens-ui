@@ -28,6 +28,7 @@ export function getAppTheme() {
   if (storedAppTheme) {
     try {
       return JSON.parse(storedAppTheme)
+      /* eslint-disable-next-line no-empty */
     } catch (err) {}
   }
   return {

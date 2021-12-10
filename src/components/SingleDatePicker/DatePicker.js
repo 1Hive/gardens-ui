@@ -1,3 +1,4 @@
+/* eslint-disable no-unexpected-multiline */
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { eachDayOfInterval, GU } from '@1hive/1hive-ui'
