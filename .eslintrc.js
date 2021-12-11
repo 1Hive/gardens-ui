@@ -2,19 +2,6 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        semi: false,
-        trailingComma: 'es5',
-        bracketSpacing: true,
-        jsxBracketSameLine: false,
-        tabSize: 2,
-      },
-    ],
-  },
   overrides: [
     // typescript
     {
