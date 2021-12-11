@@ -3,7 +3,17 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   rules: {
-    "react/display-name": "off"
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        semi: false,
+        trailingComma: 'es5',
+        bracketSpacing: true,
+        jsxBracketSameLine: false,
+        tabSize: 2,
+      },
+    ],
   },
   overrides: [
     // typescript
@@ -21,20 +31,16 @@ module.exports = {
         '@typescript-eslint/member-delimiter-style': 0,
         '@typescript-eslint/interface-name-prefix': 0,
         '@typescript-eslint/no-use-before-define': 0,
-        "@typescript-eslint/explicit-function-return-type": {
-          "allowExpressions": true
-        },
+        '@typescript-eslint/explicit-function-return-type': 0,
+        '@typescript-eslint/explicit-module-boundary-types': 0,
         'react/prop-types': 0,
-        "react/display-name": "off"
+        'react/display-name': 'off',
       },
     },
 
     // eslint config files
     {
-      files: [
-        '.eslintrc.js',
-        './scripts/**',
-      ],
+      files: ['.eslintrc.js', './scripts/**'],
       env: {
         node: true,
       },
