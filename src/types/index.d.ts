@@ -7,5 +7,9 @@ declare module '@1hive/1hive-ui' {
   const useLayout: () => {
     layoutName: "small" | "medium" | "large" | "max"
   }
-  export { Main, GU, useToast, useTheme, Button, useLayout }
+  const Link: any
+  const useViewport: () => {
+    below: any
+  }
+  export { Main, GU, useToast, useTheme, Button, useLayout, useViewport, Link }
 }

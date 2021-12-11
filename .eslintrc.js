@@ -21,18 +21,18 @@ module.exports = {
         '@typescript-eslint/member-delimiter-style': 0,
         '@typescript-eslint/interface-name-prefix': 0,
         '@typescript-eslint/no-use-before-define': 0,
+        "@typescript-eslint/explicit-function-return-type": {
+          "allowExpressions": true
+        },
         'react/prop-types': 0,
-        "react/display-name": "off",
-        "@typescript-eslint/explicit-function-return-type": 0
+        "react/display-name": "off"
       },
     },
 
-    // gatsby and eslint config files
+    // eslint config files
     {
       files: [
         '.eslintrc.js',
-        'gatsby-node.js',
-        'gatsby-config.js',
         './scripts/**',
       ],
       env: {
