@@ -25,6 +25,15 @@ module.exports = {
       },
     },
 
+    // javascript
+    {
+      files: ['*.js'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off'
+      },
+    },
+
     // eslint config files
     {
       files: ['.eslintrc.js', './scripts/**'],
