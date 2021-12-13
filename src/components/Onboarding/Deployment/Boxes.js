@@ -238,10 +238,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
 
   useEffect(() => {
     if (isFinalized) {
-      throwConfetti({
-        x: 0.6,
-        y: 0.7,
-      })
+      throwConfetti()
     }
   }, [isFinalized])
 

@@ -2,8 +2,8 @@ import confetti from 'canvas-confetti'
 
 export const throwConfetti = origin => {
   origin = origin || {
-    x: 0.5,
-    y: 0.5,
+    x: 0.6,
+    y: 0.7,
   }
   confetti({
     particleCount: 200,
