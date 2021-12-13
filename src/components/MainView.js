@@ -28,6 +28,7 @@ function MainView({ children }) {
 
   const mobileMode = below('medium')
   const compactMode = below('large')
+  const renderSidebar = pathname !== '/home' && !mobileMode
 
   if (preferenceOption) {
     return (
@@ -54,7 +55,7 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {pathname !== '/home' && !below('medium') && <Sidebar />}
+        {renderSidebar && <Sidebar />}
         <div
           css={`
             display: flex;
@@ -68,7 +69,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
-              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
+              ${renderSidebar && `margin-left: ${9 * GU}px;`}
             `}
           >
             <div
