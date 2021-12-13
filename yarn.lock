@@ -247,31 +247,6 @@
     "@web3-react/types" "^6.0.7"
     tiny-warning "^1.0.3"
 
-"@aragon/ui@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@aragon/ui/-/ui-1.9.3.tgz#8660a815925bfa2598c175c8bea6233641867aa7"
-  integrity sha512-ofD0PVmz6KgxB8HfIRbTJC2eBOckqMN/pupZqKUosIq8I9M7SEj5UeRW7AtOn6Fp/ipJC5XlYZRxcJUUsP9thg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    airbnb-prop-types "^2.9.0"
-    arg "^2.0.0"
-    command-exists "^1.2.6"
-    dayjs "^1.8.14"
-    js-sha3 "^0.8.0"
-    jsbi "^3.1.2"
-    lodash "^4.17.19"
-    markdown-to-jsx "^6.11.0"
-    popper.js "^1.14.4"
-    prop-types "^15.6.0"
-    react-blockies "^1.4.0"
-    react-display-name "^0.2.3"
-    react-onclickout "^2.0.8"
-    react-spring "^7.2.11"
-    recursive-copy "^2.0.9"
-    token-amount "^0.1.0"
-    use-inside "^0.2.0"
-    use-token "^0.2.0"
-
 "@babel/code-frame@7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -12773,11 +12748,6 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsbi@^3.1.1:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.2.5.tgz#b37bb90e0e5c2814c1c2a1bcd8c729888a2e37d6"
-  integrity sha512-aBE4n43IPvjaddScbvWRA2YlTzKEynHzu7MqOyTipdHucf/VxS63ViCjxYRg86M8Rxwbt/GfzHl1kKERkt45fQ==
-
 jsbi@^3.1.2:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.1.4.tgz#9654dd02207a66a4911b4e4bb74265bc2cbc9dd0"
@@ -19905,7 +19875,7 @@ style-loader@0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-components@^4.4.1:
+styled-components@^4.3.2:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.4.1.tgz#e0631e889f01db67df4de576fedaca463f05c2f2"
   integrity sha512-RNqj14kYzw++6Sr38n7197xG33ipEOktGElty4I70IKzQF1jzaD1U4xQ+Ny/i03UUhHlC5NWEO+d8olRCDji6g==
@@ -20363,13 +20333,6 @@ toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
-
-token-amount@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/token-amount/-/token-amount-0.1.0.tgz#1b25775346a7de4df47a988ecf022ffe2d4b6f76"
-  integrity sha512-3p2HE8ef1PKB6Rl6tMmQW289esS5PWsPq/mG8JyyQUFe/1I3LtDBmSGYzzqW/99uvvoQNpUURI1fX8uZE6LSow==
-  dependencies:
-    jsbi "^3.1.1"
 
 tough-cookie@^2.3.3, tough-cookie@^2.3.4, tough-cookie@^2.5.0, tough-cookie@~2.5.0:
   version "2.5.0"
