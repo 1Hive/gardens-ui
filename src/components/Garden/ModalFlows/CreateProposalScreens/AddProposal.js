@@ -210,12 +210,12 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
-        All proposals are bound by this community's{' '}
+        All proposals are bound by this community&apos;s{' '}
         <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
           Covenant
         </Link>{' '}
-        . If you haven't taken the time to read through it yet, please make sure
-        you do so.
+        . If you haven&apos;t taken the time to read through it yet, please make
+        sure you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
         <Link href={connectedGarden.forumURL}>
@@ -400,7 +400,7 @@ function RequestedAmount({
               >
                 <Help hint="">
                   For funding proposals denominated in {stableToken.symbol} to
-                  be made successfully, this Garden's{' '}
+                  be made successfully, this Garden&apos;s{' '}
                   <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
                     price oracle
                   </Link>{' '}

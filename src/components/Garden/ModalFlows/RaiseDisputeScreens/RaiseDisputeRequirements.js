@@ -67,7 +67,8 @@ function RaiseDisputeRequirements({
         `}
       >
         <InfoField label="Celeste status">
-          Celeste's term must be up to date in order to dispute this action.
+          Celeste&apos;s term must be up to date in order to dispute this
+          action.
         </InfoField>
         <CelesteSyncedStatus synced={celesteSynced} />
       </div>
