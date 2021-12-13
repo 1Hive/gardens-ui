@@ -69,7 +69,7 @@ export function getDelegatedVotingEndDate(vote) {
   const baseDelegatedVotingEndDate = vote.startDate + vote.delegatedVotingPeriod
 
   // If the vote was paused before the delegated voting period ended, we need to extend it
-  if (vote.pausedAt > 0 && vote.pausedAt > baseDelegatedVotingEndDate) {
+  if (vote.pausedAt > 0 && vote.pausedAt < baseDelegatedVotingEndDate) {
     return baseDelegatedVotingEndDate + vote.pauseDuration
   }
 
