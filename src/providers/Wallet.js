@@ -38,21 +38,23 @@ function WalletAugmented({ children }) {
     switchingNetworks,
   } = useConnection()
 
+  const connected = isConnected()
+
   const ethers = useMemo(() => {
     if (!ethereum) {
       return getDefaultProvider()
     }
     return new EthersProviders.Web3Provider(
       ethereum,
-      getEthersNetwork(isConnected() ? chainId : preferredNetwork)
+      getEthersNetwork(connected ? chainId : preferredNetwork)
     )
-  }, [chainId, ethereum, isConnected, preferredNetwork])
+  }, [chainId, connected, ethereum, preferredNetwork])
 
   const contextValue = useMemo(
     () => ({
       ...wallet,
       connect,
-      connected: isConnected(),
+      connected,
       ethers,
       isSupportedNetwork: isSupportedChain(wallet.chainId),
       onNetworkSwitch,
@@ -63,8 +65,8 @@ function WalletAugmented({ children }) {
     }),
     [
       connect,
+      connected,
       ethers,
-      isConnected,
       onNetworkSwitch,
       onPreferredNetworkChange,
       preferredNetwork,
