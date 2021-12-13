@@ -1,7 +1,11 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:prettier/recommended',
+    'plugin:react/recommended',
+  ],
   plugins: ['react-hooks'],
   overrides: [
     // typescript
@@ -12,7 +16,6 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:react/recommended',
       ],
       rules: {
         '@typescript-eslint/no-explicit-any': 0,
@@ -22,7 +25,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/explicit-module-boundary-types': 0,
         'react/prop-types': 0,
-        'react/display-name': 'off',
+        'react/display-name': true,
       },
     },
 
@@ -38,6 +41,7 @@ module.exports = {
         'react/jsx-key': 0,
         'react/jsx-handler-names': 0,
         'linebreak-style': ['error', 'unix'],
+        'react/display-name': true,
       },
     },
 
