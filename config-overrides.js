@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* config-overrides.js */
 
 const path = require('path')

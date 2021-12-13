@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import { useWallet } from '@providers/Wallet'
@@ -99,7 +100,6 @@ export default function useDeploymentState() {
     return () => {
       cancelled = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, attempts, deployTransactions])
 
   // Statuses
