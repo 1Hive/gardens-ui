@@ -330,7 +330,7 @@ function ProposalDetail({
                   />
                 </section>
               </Box>
-              {(statusData.challenged || statusData.settled) && (
+              {proposal.pausedAt > 0 && (
                 <Box
                   padding={2.4 * GU}
                   css={`
@@ -461,8 +461,8 @@ function ArgumentBox({ proposal, connectedAccount }) {
         >
           <img src={warningIcon} width={30} height={30} />
           <h1>
-            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal
-            has been challenged
+            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal{' '}
+            {proposal.statusData.challenged ? 'has been' : 'was'} challenged
           </h1>
         </div>
         <div
