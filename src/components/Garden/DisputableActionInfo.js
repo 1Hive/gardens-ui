@@ -147,7 +147,7 @@ function VotingPeriod({ proposal }) {
   )
   const executionDelayEndPeriodNode = usePeriod(
     proposal,
-    proposal.executionDelay
+    proposal.executionDelayEndDate
   )
 
   const isResumed = proposal.statusData.open && proposal.pausedAt > 0
