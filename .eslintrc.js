@@ -30,7 +30,13 @@ module.exports = {
       files: ['*.js'],
       rules: {
         'no-undef': 'off',
-        'no-unused-vars': 'off'
+        'no-unused-vars': 'off',
+        'valid-jsdoc': 'error',
+        'react/prop-types': 0,
+        'react/jsx-fragments': 0,
+        'react/jsx-key': 0,
+        'react/jsx-handler-names': 0,
+        'linebreak-style': ['error', 'unix'],
       },
     },
 
