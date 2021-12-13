@@ -32,6 +32,7 @@ import {
 } from '@utils/proposal-utils'
 import {
   getDelegatedVotingEndDate,
+  getExecutionDelayEndDate,
   getVoteEndDate,
   getVoteStatusData,
   hasVoteEnded,
@@ -279,6 +280,8 @@ function processProposal(proposal, latestBlock, account, config) {
 function processDecision(proposal) {
   const delegatedVotingEndDate = getDelegatedVotingEndDate(proposal)
   const endDate = getVoteEndDate(proposal)
+  const executionDelayEndDate = getExecutionDelayEndDate(proposal, endDate)
+
   const hasEnded = hasVoteEnded(
     proposal.status,
     endDate,
@@ -288,9 +291,11 @@ function processDecision(proposal) {
 
   return {
     ...proposal,
+    executionDelayEndDate,
     delegatedVotingEndDate,
     endDate,
     hasEnded,
+    isDelayed: hasEnded && executionDelayEndDate > Date.now(),
     statusData,
   }
 }
