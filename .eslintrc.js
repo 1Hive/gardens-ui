@@ -25,7 +25,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/explicit-module-boundary-types': 0,
         'react/prop-types': 0,
-        'react/display-name': true,
+        'react/display-name': 0,
       },
     },
 
@@ -41,7 +41,7 @@ module.exports = {
         'react/jsx-key': 0,
         'react/jsx-handler-names': 0,
         'linebreak-style': ['error', 'unix'],
-        'react/display-name': true,
+        'react/display-name': 0,
       },
     },
 
