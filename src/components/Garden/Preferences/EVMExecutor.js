@@ -369,7 +369,7 @@ function EVMExecutor({ evmcrispr }) {
           css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={isSafari || !code || !account}
+          disabled={isSafari || !account || (terminalMode && !code)}
           mode="strong"
           wide
           onClick={handleOnShowModal}

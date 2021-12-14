@@ -45,7 +45,8 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
           setConvertedAmount(new BigNumber(result.toString()))
         }
       } catch (err) {
-        console.error(`Error consulting converted amount: ${err}`)
+        // The consult of the Oracle price can error if it hasn´t been updated in the configured period.
+        // For this reason we´ll not log the error to avoid confusion from actual errors.
       }
       setLoading(false)
     }
