@@ -19,7 +19,7 @@ import useGardenLogic from '@/logic/garden-logic'
 import { useWallet } from '@providers/Wallet'
 import { buildGardenPath } from '@utils/routing-utils'
 
-const Home = React.memo(function Home() {
+const Home = function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
@@ -250,6 +250,6 @@ const Home = React.memo(function Home() {
       <NetworkErrorModal visible={Boolean(errors)} />
     </div>
   )
-})
+}
 
-export default Home
+export default React.memo(Home)

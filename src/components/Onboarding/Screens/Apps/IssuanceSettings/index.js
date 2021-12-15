@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
 import IssuanceChart from './IssuanceChart'
@@ -77,7 +78,6 @@ function IssuanceSettings() {
       'maxAdjustmentRatioPerYear',
       DEFAULT_ISSUANCE_CONFIG.maxAdjustmentRatioPerYear,
     ])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateField])
 
   const handleNext = event => {

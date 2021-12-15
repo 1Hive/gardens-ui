@@ -191,8 +191,8 @@ const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
             did not hold any <strong>{token.symbol}</strong> tokens when this
             vote began ({dateFormat(startDate)}) and therefore cannot
             participate in this vote. Make sure your accounts are holding{' '}
-            <strong>{token.symbol}</strong> at the time a vote begins if you'd
-            like to vote using this Voting app.
+            <strong>{token.symbol}</strong> at the time a vote begins if
+            you&apos;d like to vote using this Voting app.
           </Info>
         </>
       ) : (
