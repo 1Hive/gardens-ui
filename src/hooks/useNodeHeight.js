@@ -20,5 +20,5 @@ export function useNodeHeight() {
     }
   }, [])
 
-  return [height, customRef]
+  return { height, customRef }
 }

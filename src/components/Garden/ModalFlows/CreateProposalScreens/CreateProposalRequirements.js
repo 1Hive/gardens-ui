@@ -39,8 +39,8 @@ function CreateProposalRequirements({ agreement, staking }) {
   return (
     <div>
       <InfoField label="Covenant signature and version">
-        Since proposals are bound by this community's covenant, you must sign
-        the{' '}
+        Since proposals are bound by this community&apos;s covenant, you must
+        sign the{' '}
         <Link
           href={`#${buildGardenPath(history.location, 'covenant')}`}
           external={false}

@@ -189,8 +189,8 @@ const Deployment = React.memo(function Deployment() {
         }
         content={
           <p>
-            An error has occurred during the signature process. Don't worry, you
-            can try to send the transaction again.
+            An error has occurred during the signature process. Don&apos;t
+            worry, you can try to send the transaction again.
           </p>
         }
         header="Something went wrong"

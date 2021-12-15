@@ -71,7 +71,7 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
                   <Help hint="">
                     Converted to {requestToken.symbol} at time of execution. For
                     funding proposals denominated in {stableToken.symbol} to be
-                    made successfully, this Garden's{' '}
+                    made successfully, this Garden&apos;s{' '}
                     <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
                       price oracle
                     </Link>{' '}

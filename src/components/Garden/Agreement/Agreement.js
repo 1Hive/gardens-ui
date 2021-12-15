@@ -35,7 +35,7 @@ function Agreement() {
   }
 
   return (
-    <LayoutGutter>
+    <LayoutGutter collapseWhenSmall>
       <LayoutLimiter>
         <Header primary="Covenant" />
         <AgreementLayout

@@ -76,6 +76,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
   const handleItemSelected = useCallback(
     index => {
+      // eslint-disable-next-line no-empty
       if (index === carouselItems.length - 1) {
       }
     },
