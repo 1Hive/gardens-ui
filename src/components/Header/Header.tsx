@@ -193,7 +193,7 @@ function Header({
                   <GlobalPreferencesButton onOpen={onOpenPreferences} />
                 </div>
               )}
-              {account && (
+              {connectedGarden && account && (
                 <div
                   css={`
                     display: flex;

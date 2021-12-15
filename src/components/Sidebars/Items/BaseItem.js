@@ -1,6 +1,5 @@
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
 
 const BaseItem = ({
   active,
@@ -11,17 +10,6 @@ const BaseItem = ({
   onClick = () => {},
 }) => {
   const theme = useTheme()
-  const history = useHistory()
-
-  const handleClickItem = useCallback(
-    path => {
-      if (path) {
-        history.push(path)
-      }
-      onClick()
-    },
-    [history, onClick]
-  )
 
   return (
     <li
@@ -73,11 +61,11 @@ const BaseItem = ({
       >
         <Link
           external={false}
+          href={path}
           css={`
             display: block;
             color: inherit;
           `}
-          onClick={() => handleClickItem(path)}
         >
           {children}
         </Link>
