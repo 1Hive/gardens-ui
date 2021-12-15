@@ -8,9 +8,9 @@ import React, {
 } from 'react'
 import PropTypes from 'prop-types'
 import StoredList from '../StoredList'
-import { getNetworkType } from '@utils/web3-utils'
-import { MINUTE } from '@utils/date-utils'
+import { useConnectedGarden } from './ConnectedGarden'
 import { useWallet } from './Wallet'
+
 import {
   ACTIVITY_STATUS_CONFIRMED,
   ACTIVITY_STATUS_FAILED,
@@ -18,6 +18,8 @@ import {
   ACTIVITY_STATUS_TIMED_OUT,
 } from '../components/Activity/activity-statuses'
 import actions from '../actions/garden-action-types'
+import { getNetworkType } from '@utils/web3-utils'
+import { MINUTE } from '@utils/date-utils'
 
 const ActivityContext = React.createContext()
 
@@ -35,8 +37,8 @@ const TypeSymbolsByName = new Map(Object.entries(actions))
 
 const TIMEOUT_DURATION = 10 * MINUTE
 
-function getStoredList(account) {
-  return new StoredList(`activity:${getNetworkType()}:${account}`, {
+function getStoredList(account, chainId) {
+  return new StoredList(`activity:${getNetworkType(chainId)}:${account}`, {
     preStringify: activity => ({
       ...activity,
       status: activity.status.description.replace('ACTIVITY_STATUS_', ''),
@@ -92,10 +94,10 @@ async function getActivityFinalStatus(
 }
 
 function ActivityProvider({ children }) {
-  const [activities, setActivities] = useState([])
   const storedList = useRef(null)
-  const wallet = useWallet()
-  const { account, ethers } = wallet
+  const { account, ethers } = useWallet()
+  const { chainId } = useConnectedGarden()
+  const [activities, setActivities] = useState([])
 
   // Update the activities, ensuring the activities
   // are updated in the stored list and in the state.
@@ -213,7 +215,7 @@ function ActivityProvider({ children }) {
     }
 
     let cancelled = false
-    storedList.current = getStoredList(account)
+    storedList.current = getStoredList(account, chainId)
     updateActivitiesFromStorage()
 
     activities.forEach(async activity => {
@@ -229,6 +231,7 @@ function ActivityProvider({ children }) {
   }, [
     account,
     activities,
+    chainId,
     ethers,
     updateActivitiesFromStorage,
     updateActivityStatus,

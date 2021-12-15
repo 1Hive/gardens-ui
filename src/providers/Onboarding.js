@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Screens } from '@components/Onboarding/Screens/config'
 import useGardenPoll from '@components/Onboarding/hooks/useGardenPoll'
 import usePinataUploader from '@hooks/usePinata'
+import useProgressSaver from '@components/Onboarding/hooks/useProgressSaver'
 import { useWallet } from './Wallet'
 
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
@@ -99,7 +100,15 @@ function OnboardingProvider({ children }) {
   const [deployTransactions, setDeployTransactions] = useState([])
   const [gardenAddress, setGardenAddress] = useState('')
 
-  const { account, ethers } = useWallet()
+  const { account, chainId, ethers } = useWallet()
+  const {
+    hasSavedProgress,
+    onClearProgress,
+    onResume,
+    onSaveConfig,
+    onSaveStep,
+    resumed,
+  } = useProgressSaver(setConfig, setStep)
 
   // Upload covenant content to ipfs when ready (starting deployment txs)
   const [covenantIpfs] = usePinataUploader(
@@ -109,22 +118,36 @@ function OnboardingProvider({ children }) {
 
   const handleConfigChange = useCallback(
     (key, data) =>
-      setConfig(config => ({
-        ...config,
-        [key]: {
-          ...config[key],
-          ...data,
-        },
-      })),
-    []
+      setConfig(config => {
+        const newConfig = {
+          ...config,
+          [key]: {
+            ...config[key],
+            ...data,
+          },
+        }
+        onSaveConfig(newConfig)
+        return newConfig
+      }),
+    [onSaveConfig]
   )
 
-  const handleStartDeployment = useCallback(() => {
-    setStatus(STATUS_GARDEN_DEPLOYMENT)
-  }, [])
+  const handleReset = useCallback(() => {
+    setStatus(STATUS_GARDEN_SETUP)
+    setStep(0)
+    setSteps(Screens)
+    setConfig(DEFAULT_CONFIG)
+    setDeployTransactions([])
+    setGardenAddress('')
+    onClearProgress()
+  }, [onClearProgress])
 
   const handleGardenCreated = useCallback(() => {
     setStatus(STATUS_GARDEN_CREATED)
+  }, [])
+
+  const handleStartDeployment = useCallback(() => {
+    setStatus(STATUS_GARDEN_DEPLOYMENT)
   }, [])
 
   const publishGardenMetadata = useCallback(
@@ -135,36 +158,38 @@ function OnboardingProvider({ children }) {
         setGardenAddress(gardenAddress.toLowerCase())
 
         // Publish metadata to github
-        await publishNewDao(gardenAddress, config.garden)
+        await publishNewDao(gardenAddress, config.garden, chainId)
       } catch (err) {
         console.error(`Error publishing garden metadata ${err}`)
       }
     },
-    [config, ethers]
+    [chainId, config, ethers]
   )
 
   const getTransactions = useCallback(
     async (covenantIpfsHash, account) => {
       // Token approvals
-      const txs = [...(await createPreTransactions(config, account))]
+      const txs = [
+        ...(await createPreTransactions(config, account, { chainId })),
+      ]
 
       // Tx one
-      txs.push(createGardenTxOne(config))
+      txs.push(createGardenTxOne(config, { chainId }))
 
       if (config.garden.type === NATIVE_TYPE) {
         // Mint seeds balances
-        txs.push(createTokenHoldersTx(config))
+        txs.push(createTokenHoldersTx(config, { chainId }))
       }
 
       // Tx two, tx three
-      txs.push(createGardenTxTwo(config), {
-        ...createGardenTxThree(config, covenantIpfsHash),
+      txs.push(createGardenTxTwo(config, { chainId }), {
+        ...createGardenTxThree(config, covenantIpfsHash, { chainId }),
         onDone: publishGardenMetadata,
       })
 
       return txs
     },
-    [config, publishGardenMetadata]
+    [chainId, config, publishGardenMetadata]
   )
 
   // Navigation
@@ -173,8 +198,12 @@ function OnboardingProvider({ children }) {
   }, [])
 
   const handleNext = useCallback(() => {
-    setStep(index => Math.min(steps.length - 1, index + 1))
-  }, [steps.length])
+    setStep(index => {
+      const nextStep = Math.min(steps.length - 1, index + 1)
+      onSaveStep(nextStep)
+      return nextStep
+    })
+  }, [onSaveStep, steps.length])
 
   useEffect(() => {
     if (config.garden.type !== -1) {
@@ -203,7 +232,7 @@ function OnboardingProvider({ children }) {
     buildDeployTransactions()
   }, [account, covenantIpfs, getTransactions])
 
-  useGardenPoll(gardenAddress, handleGardenCreated)
+  useGardenPoll(gardenAddress, chainId, handleGardenCreated)
 
   return (
     <OnboardingContext.Provider
@@ -214,7 +243,9 @@ function OnboardingProvider({ children }) {
         onBack: handleBack,
         onConfigChange: handleConfigChange,
         onNext: handleNext,
+        onReset: handleReset,
         onStartDeployment: handleStartDeployment,
+        progress: { hasSavedProgress, onResume, resumed },
         status,
         step,
         steps,

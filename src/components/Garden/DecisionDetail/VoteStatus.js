@@ -46,8 +46,9 @@ export const getStatusAttributes = (vote, theme) => {
     }
   }
   if (statusData.pendingExecution) {
+    const subStatus = vote.isDelayed ? 'delayed' : 'pending'
     return {
-      label: 'Passed (pending)',
+      label: `Passed (${subStatus})`,
       Icon: IconCheck,
       color: theme.positive,
     }

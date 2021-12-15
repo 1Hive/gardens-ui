@@ -1,17 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useMemo, useState, useEffect } from 'react'
 import connectAgreement from '@1hive/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
-import { getAgreementConnectorConfig } from '../networks'
-import { useWallet } from './Wallet'
-import { useMounted } from '@hooks/useMounted'
+
+import { useConnectedGarden } from './ConnectedGarden'
 import { useGardenState } from './GardenState'
+import { useMounted } from '@hooks/useMounted'
+import { useWallet } from './Wallet'
+
+import { getAgreementConnectorConfig } from '../networks'
 import { getAppByName } from '@utils/data-utils'
 import env from '../environment'
 
 const AgreementSubscriptionContext = React.createContext()
 
 function AgreementSubscriptionProvider({ children }) {
-  const { account, chainId } = useWallet()
+  const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
   const { installedApps } = useGardenState()
   const useAgreement = createAppHook(
     connectAgreement,
@@ -75,7 +80,6 @@ function AgreementSubscriptionProvider({ children }) {
       },
       { loading, error },
     ]
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, [
     currentVersionUpdateValue,
     appsWithRequirements,
@@ -84,7 +88,6 @@ function AgreementSubscriptionProvider({ children }) {
     loading,
     error,
   ])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <AgreementSubscriptionContext.Provider value={AgreementSubscriptionState}>
@@ -155,9 +158,7 @@ function useAppsWithRequirements(disputableApps) {
     if (disputableApps) {
       processAppRequirements()
     }
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, [disputableAppsUpdateValue])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [appsWithRequirements, status]
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMounted } from '@hooks/useMounted'
-import { useWallet } from '@providers/Wallet'
+import { getDefaultProvider } from '@utils/web3-utils'
 import { getNetwork } from '../networks'
 
 const NETWORK_TIMES = new Map([
@@ -13,20 +13,24 @@ const NETWORK_TIMES = new Map([
   ['xdai', 5],
 ])
 
-export function useLatestBlock() {
+function useProvider(chainId) {
+  return useMemo(() => getDefaultProvider(chainId), [chainId])
+}
+
+export function useLatestBlock(chainId) {
   const mounted = useMounted()
-  const { ethers } = useWallet()
   const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
-  const blockTime = useBlockTime()
+  const blockTime = useBlockTime(chainId)
   const blockNumberRef = useRef(block.number)
+  const provider = useProvider(chainId)
 
   useEffect(() => {
     let timeoutId
 
     const pollBlock = async () => {
       try {
-        const { number, timestamp } = await ethers.getBlock('latest')
+        const { number, timestamp } = await provider.getBlock('latest')
 
         if (number !== blockNumberRef.current) {
           setBlock({ number, timestamp })
@@ -45,19 +49,19 @@ export function useLatestBlock() {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [blockTime, ethers, mounted])
+  }, [blockTime, provider, mounted])
 
   return block
 }
 
-export function useBlockTimeStamp(blockNumber) {
-  const { ethers } = useWallet()
+export function useBlockTimeStamp(blockNumber, chainId) {
   const [timestamp, setTimestamp] = useState(0)
+  const provider = useProvider(chainId)
 
   useEffect(() => {
     let cancelled = false
     const fetchBlock = async () => {
-      const block = await ethers.getBlock(blockNumber)
+      const block = await provider.getBlock(blockNumber)
 
       if (block && !cancelled) {
         setTimestamp(block.timestamp * 1000)
@@ -69,13 +73,13 @@ export function useBlockTimeStamp(blockNumber) {
     return () => {
       cancelled = true
     }
-  }, [blockNumber, ethers])
+  }, [blockNumber, provider])
 
   return timestamp
 }
 
-export function useBlockTime() {
-  const network = getNetwork()
+export function useBlockTime(chainId) {
+  const network = getNetwork(chainId)
 
   return useMemo(() => (network ? NETWORK_TIMES.get(network.type) : null), [
     network,

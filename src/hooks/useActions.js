@@ -14,7 +14,7 @@ import { getContract, useContract } from './useContract'
 import env from '@/environment'
 
 import actions from '../actions/garden-action-types'
-import { encodeFunctionData } from '@utils/web3-utils'
+import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
 
@@ -22,6 +22,7 @@ import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
+const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
@@ -32,13 +33,13 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { incentivisedPriceOracle, unipool } = useConnectedGarden()
-  const { installedApps, wrappableToken, mainToken } = useGardenState()
+  const { chainId, incentivisedPriceOracle, unipool } = useConnectedGarden()
+  const { installedApps, mainToken, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
-  const { stableToken } = getNetwork()
+  const { stableToken } = getNetwork(chainId)
 
   const priceOracleContract = useContract(
     incentivisedPriceOracle,
@@ -363,7 +364,7 @@ export default function useActions() {
       { actionId, settlementOffer, challengerFinishedEvidence, context },
       onDone = noop
     ) => {
-      const intent = await agreementApp.intent(
+      let intent = await agreementApp.intent(
         'challengeAction',
         [actionId, settlementOffer, challengerFinishedEvidence, context],
         {
@@ -371,6 +372,7 @@ export default function useActions() {
         }
       )
 
+      intent = imposeGasLimit(intent, CHALLENGE_GAS_LIMIT)
       const description = radspec[actions.CHALLENGE_ACTION]({
         actionId,
       })
@@ -413,7 +415,11 @@ export default function useActions() {
 
   const approveTokenAmount = useCallback(
     async (tokenAddress, depositAmount, onDone = noop) => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!tokenContract || !agreementApp) {
         return
       }
@@ -433,7 +439,7 @@ export default function useActions() {
         onDone(transactions)
       }
     },
-    [agreementApp, approve, mounted]
+    [agreementApp, approve, chainId, mounted]
   )
 
   const getAllowance = useCallback(
@@ -451,13 +457,17 @@ export default function useActions() {
 
   const getAgreementTokenAllowance = useCallback(
     tokenAddress => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!agreementApp || !tokenContract) {
         return
       }
       return getAllowance(tokenContract, agreementApp.address)
     },
-    [agreementApp, getAllowance]
+    [agreementApp, chainId, getAllowance]
   )
 
   // TODO- we need to start using modal flow for all the transactions

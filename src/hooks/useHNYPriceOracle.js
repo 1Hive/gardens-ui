@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react'
 import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
+import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '../networks'
 import { fromDecimals } from '@utils/math-utils'
 
 import priceOracleAbi from '@abis/priceOracle.json'
 
-const { stableToken, honeyToken, honeyPriceOracle } = getNetwork()
-
 export default function useHNYPriceOracle(amount) {
   const [convertedAmount, setConvertedAmount] = useState(-1)
   const [loading, setLoading] = useState(true)
+  const { chainId } = useWallet()
+
+  const { stableToken, honeyToken, honeyPriceOracle } = getNetwork(chainId)
 
   const mounted = useMounted()
 
   const priceOracleContract = useContractReadOnly(
     honeyPriceOracle,
-    priceOracleAbi
+    priceOracleAbi,
+    chainId
   )
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function useHNYPriceOracle(amount) {
     }
 
     fetchConvertedAmount()
-  }, [amount, mounted, priceOracleContract])
+  }, [amount, honeyToken, mounted, priceOracleContract, stableToken])
 
   return [convertedAmount, loading]
 }

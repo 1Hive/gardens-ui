@@ -16,10 +16,12 @@ import {
 } from '@components/Stepper/stepper-statuses'
 import { TransactionStatusType } from '@/prop-types'
 import { getNetwork } from '@/networks'
+import { useWallet } from 'use-wallet'
 
 function DeploymentStepsItem({ index, name, status, txHash }) {
   const theme = useTheme()
-  const network = getNetwork()
+  const { chainId } = useWallet()
+  const network = getNetwork(chainId)
 
   const { icon, label, styles } = useMemo(() => {
     if (status === STEP_PROMPTING) {

@@ -11,6 +11,7 @@ import {
 } from '@1hive/1hive-ui'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
 import { useWallet } from '@providers/Wallet'
@@ -28,10 +29,11 @@ function ChallengeRequirements({
   collateralTokenAccountBalance,
   disputeFees,
 }) {
+  const history = useHistory()
   const { account } = useWallet()
   const { next } = useMultiModal()
+  const { chainId } = useConnectedGarden()
   const { disputableAppsWithRequirements } = agreement
-  const history = useHistory()
 
   const convictionAppRequirements = getDisputableAppByName(
     disputableAppsWithRequirements,
@@ -40,8 +42,12 @@ function ChallengeRequirements({
   const { challengeAmount, token } = convictionAppRequirements
 
   // Dispute fee token data
-  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token)
-  const feeTokenAccountBalance = useTokenBalanceOf(disputeFees.token, account)
+  const [feeToken, loadingFeeToken] = useTokenData(disputeFees.token, chainId)
+  const feeTokenAccountBalance = useTokenBalanceOf(
+    disputeFees.token,
+    account,
+    chainId
+  )
 
   const error = useMemo(() => {
     return (

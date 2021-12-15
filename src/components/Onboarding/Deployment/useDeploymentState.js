@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import { useWallet } from '@providers/Wallet'
@@ -19,7 +20,12 @@ const DEFAULT_TX_PROGRESS = {
 
 export default function useDeploymentState() {
   const { account, ethers } = useWallet()
-  const { deployTransactions, gardenAddress, status } = useOnboardingState()
+  const {
+    deployTransactions,
+    gardenAddress,
+    onReset,
+    status,
+  } = useOnboardingState()
 
   const [attempts, setAttempts] = useState(0)
   const [transactionProgress, setTransactionProgress] = useState(
@@ -94,7 +100,6 @@ export default function useDeploymentState() {
     return () => {
       cancelled = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, attempts, deployTransactions])
 
   // Statuses
@@ -134,6 +139,7 @@ export default function useDeploymentState() {
     gardenAddress,
     isFinalized: status === STATUS_GARDEN_CREATED,
     onNextAttempt: handleNextAttempt,
+    onReset,
     readyToStart: deployTransactions.length > 0,
     transactionsStatus,
   }

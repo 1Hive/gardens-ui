@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useBlockTimeStamp } from './useBlock'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
 import usePromise from './usePromise'
@@ -17,6 +18,7 @@ const emptyPromise = defaultValue =>
   new Promise(resolve => resolve(defaultValue))
 
 export default function useExtendedVoteData(vote) {
+  const { chainId } = useConnectedGarden()
   const { canExecute, canExecutePromise } = useCanExecute(vote)
   // Can user vote
   const { canUserVote, canUserVotePromise } = useCanUserVote(vote)
@@ -39,7 +41,7 @@ export default function useExtendedVoteData(vote) {
     userBalanceNowPromise,
   } = useUserBalance(vote)
 
-  const startTimestamp = useBlockTimeStamp(vote.startBlock)
+  const startTimestamp = useBlockTimeStamp(vote.startBlock, chainId)
 
   return {
     canExecute,
@@ -61,9 +63,10 @@ export default function useExtendedVoteData(vote) {
 
 function useCanExecute(vote) {
   const { config } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const { id: votingAddress } = config.voting
 
-  const votingContract = useContractReadOnly(votingAddress, votingAbi)
+  const votingContract = useContractReadOnly(votingAddress, votingAbi, chainId)
   // Can execute
   const canExecutePromise = useMemo(() => {
     if (!votingContract) {
@@ -78,10 +81,11 @@ function useCanExecute(vote) {
 
 export function useCanUserVote(vote) {
   const { config } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const { id: votingAddress } = config?.voting || {}
 
-  const votingContract = useContractReadOnly(votingAddress, votingAbi)
+  const votingContract = useContractReadOnly(votingAddress, votingAbi, chainId)
 
   const canUserVotePromise = useMemo(() => {
     return getCanUserVote(votingContract, vote.id, connectedAccount)
@@ -94,10 +98,12 @@ export function useCanUserVote(vote) {
 
 function useCanUserVoteOnBehalfOf(vote) {
   const { config } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const { id: votingAddress } = config?.voting || {}
+
   const principals = useUserPrincipalsByGarden(config.id, vote)
-  const votingContract = useContractReadOnly(votingAddress, votingAbi)
+  const votingContract = useContractReadOnly(votingAddress, votingAbi, chainId)
 
   const canUserVoteOnBehalfOfPromise = useMemo(() => {
     return getCanUserVoteOnBehalfOf(
@@ -119,9 +125,11 @@ function useCanUserVoteOnBehalfOf(vote) {
 
 function usePrincipals(vote) {
   const { config } = useGardenState()
+  const { chainId } = useConnectedGarden()
   const { token } = config.voting
+
   const principals = useUserPrincipalsByGarden(config.id, vote)
-  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
+  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi, chainId)
 
   // User balance
   const principalsBalancePromise = useMemo(() => {
@@ -154,10 +162,12 @@ function usePrincipals(vote) {
 }
 
 function useUserBalance(vote) {
-  const { account: connectedAccount } = useWallet()
   const { config } = useGardenState()
+  const { chainId } = useConnectedGarden()
+  const { account: connectedAccount } = useWallet()
   const { token } = config.voting
-  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi)
+
+  const tokenContract = useContractReadOnly(token.id, minimeTokenAbi, chainId)
 
   // User balance
   const userBalancePromise = useMemo(() => {

@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useContractReadOnly } from './useContract'
+import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
-import { useGardenState } from '@providers/GardenState'
-import BigNumber from '@lib/bigNumber'
-import { useContractReadOnly } from './useContract'
-
 import actions from '../actions/garden-action-types'
-import radspec from '../radspec'
+import BigNumber from '@lib/bigNumber'
 import { encodeFunctionData } from '@utils/web3-utils'
+import radspec from '../radspec'
 
 import stakingFactoryAbi from '@abis/StakingFactory.json'
 import stakingAbi from '@abis/Staking.json'
@@ -21,6 +22,7 @@ const STAKE_GAS_LIMIT = 500000
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
@@ -34,18 +36,21 @@ export function useStaking() {
   const stakingMovementsSubscription = useRef(null)
 
   const stakingFactoryContract = useContractReadOnly(
-    stakeManagement && stakeManagement.stakingFactory,
-    stakingFactoryAbi
+    stakeManagement?.stakingFactory,
+    stakingFactoryAbi,
+    chainId
   )
 
   const stakingContract = useContractReadOnly(
-    stakeManagement && stakeManagement.stakingInstance,
-    stakingAbi
+    stakeManagement?.stakingInstance,
+    stakingAbi,
+    chainId
   )
 
   const tokenContract = useContractReadOnly(
-    stakeManagement && stakeManagement.token && stakeManagement.token.id,
-    minimeTokenAbi
+    stakeManagement?.token?.id,
+    minimeTokenAbi,
+    chainId
   )
 
   const handleReFetchTotalBalance = useCallback(() => {
@@ -225,6 +230,7 @@ export function useStaking() {
       setLoadingStakingDataFromContract(false)
     }
     if (
+      account &&
       stakingContract &&
       stakeManagement &&
       connectedAgreementApp &&

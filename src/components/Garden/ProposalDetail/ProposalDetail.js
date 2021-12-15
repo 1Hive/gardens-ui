@@ -42,8 +42,9 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
-import { useWallet } from '@providers/Wallet'
 import useChallenge from '@hooks/useChallenge'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
@@ -76,8 +77,9 @@ function ProposalDetail({
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
 
+  const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
-  const network = getNetwork()
+  const network = getNetwork(chainId)
 
   const {
     name,
@@ -328,7 +330,7 @@ function ProposalDetail({
                   />
                 </section>
               </Box>
-              {(statusData.challenged || statusData.settled) && (
+              {proposal.pausedAt > 0 && (
                 <Box
                   padding={2.4 * GU}
                   css={`
@@ -459,8 +461,8 @@ function ArgumentBox({ proposal, connectedAccount }) {
         >
           <img src={warningIcon} width={30} height={30} />
           <h1>
-            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal
-            has been challenged
+            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal{' '}
+            {proposal.statusData.challenged ? 'has been' : 'was'} challenged
           </h1>
         </div>
         <div
@@ -639,7 +641,7 @@ const Amount = ({
               <Help hint="">
                 Converted to {requestToken.symbol} at time of execution. For
                 funding proposals denominated in {stableToken.symbol} to be made
-                successfully, this Garden's{' '}
+                successfully, this Garden&apos;s{' '}
                 <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
                   price oracle
                 </Link>{' '}

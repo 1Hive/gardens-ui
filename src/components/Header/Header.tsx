@@ -18,22 +18,27 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import { getDexTradeTokenUrl } from '@/endpoints'
-import { getNetwork } from '@/networks'
+import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
-function Header({ onOpenPreferences, onToggleSidebar }) {
+function Header({
+  onOpenPreferences,
+  onToggleSidebar,
+}: {
+  onOpenPreferences: any
+  onToggleSidebar: any
+}) {
   const theme = useTheme()
   const { pathname } = useLocation()
-  const { account } = useWallet()
-  const { below } = useViewport()
-  const mobileMode = below('medium')
-  const network = getNetwork()
-  const history = useHistory()
   const connectedGarden = useConnectedGarden()
+  const history = useHistory()
+  const { below } = useViewport()
+  const { account } = useWallet()
+
+  const mobileMode = below('medium')
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -66,7 +71,6 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
         <div
           css={`
             height: ${8 * GU}px;
-
             display: flex;
             align-items: center;
           `}
@@ -144,7 +148,7 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
                   )}
                   {!connectedGarden && (
                     <Link
-                      href={network.celesteUrl}
+                      href={CELESTE_URL}
                       css={`
                         text-decoration: none;
                         color: ${theme.contentSecondary};
@@ -207,7 +211,15 @@ function Header({ onOpenPreferences, onToggleSidebar }) {
   )
 }
 
-function GardenNavItems({ garden }) {
+type GardenNavItemsProps = {
+  garden: {
+    wrappableToken: any
+    token: any
+    wiki: any
+  }
+}
+
+function GardenNavItems({ garden }: GardenNavItemsProps) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token

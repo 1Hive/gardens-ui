@@ -10,23 +10,27 @@ import { getGardens } from '@1hive/connect-gardens'
 import { ConnectedGardenProvider } from './ConnectedGarden'
 import { useDebounce } from '@hooks/useDebounce'
 import useGardenFilters from '@hooks/useGardenFilters'
+import { useGardenRoute } from '@hooks/useRouting'
 import { useWallet } from './Wallet'
 
 import { fetchFileContent } from '../services/github'
 import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { mergeGardenMetadata } from '@utils/garden-utils'
 import { testNameFilter } from '@utils/garden-filters-utils'
-import { getNetwork } from '@/networks'
+import { getNetwork, getNetworkChainIdByType } from '@/networks'
 
 const DAOContext = React.createContext()
 
 export function GardensProvider({ children }) {
   const { preferredNetwork } = useWallet()
+  const [networkType] = useGardenRoute()
+  const chainId = getNetworkChainIdByType(networkType)
+
   const [queryFilters, filters] = useGardenFilters()
   const [gardens, gardensMetadata, gardensLoading, reload] = useGardensList(
     queryFilters,
     filters,
-    preferredNetwork
+    chainId || preferredNetwork
   )
 
   return (

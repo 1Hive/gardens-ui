@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useGardenState } from '@providers/GardenState'
 import {
   transformConfigData,
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { useGardenState } from '@providers/GardenState'
 
 export function useConfigSubscription(garden) {
   const [config, setConfig] = useState(null)
