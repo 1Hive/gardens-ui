@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { GU, useToast } from '@1hive/1hive-ui'
-import { useGardens } from '@/providers/Gardens'
+import { useGardens } from '@providers/Gardens'
 import { useNodeHeight } from '@hooks/useNodeHeight'
-
 import GardensFilters from './GardensFilters'
 import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
@@ -13,8 +12,19 @@ import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreen
 import Loader from './Loader'
 import Onboarding from './Onboarding'
 
+const DynamicSection = styled.div<{
+  marginTop: any
+}>`
+  margin-top: ${props => props.marginTop}px;
+  padding: 0 ${2 * GU}px;
+`
+
+const LoadingSection = styled.div`
+  margin: ${5 * GU}px 0;
+`
+
 function Home() {
-  const [height, ref] = useNodeHeight()
+  const { height, customRef } = useNodeHeight()
   const { externalFilters, internalFilters, gardens, loading } = useGardens()
   const [onboardingVisible, setOnboardingVisible] = useState(false)
   const [connectModalVisible, setConnectModalVisible] = useState(false)
@@ -41,13 +51,8 @@ function Home() {
 
   return (
     <div>
-      <LandingBanner ref={ref} onCreateGarden={handleOnboardingOpen} />
-      <DynamicDiv
-        marginTop={height + 3 * GU}
-        css={`
-          padding: 0 ${2 * GU}px;
-        `}
-      >
+      <LandingBanner ref={customRef} onCreateGarden={handleOnboardingOpen} />
+      <DynamicSection marginTop={height + 3 * GU}>
         <GardensFilters
           itemsSorting={externalFilters.sorting.items}
           nameFilter={internalFilters.name.filter}
@@ -55,14 +60,10 @@ function Home() {
           onNameFilterChange={internalFilters.name.onChange}
           onSortingFilterChange={externalFilters.sorting.onChange}
         />
-        <div
-          css={`
-            margin: ${5 * GU}px 0;
-          `}
-        >
+        <LoadingSection>
           {!loading ? <GardensList gardens={gardens} /> : <Loader />}
-        </div>
-      </DynamicDiv>
+        </LoadingSection>
+      </DynamicSection>
       <Onboarding onClose={handleOnboardingClose} visible={onboardingVisible} />
       <MultiModal visible={connectModalVisible} onClose={handleCloseModal}>
         <ConnectWalletScreens
@@ -73,9 +74,5 @@ function Home() {
     </div>
   )
 }
-
-const DynamicDiv = styled.div.attrs(props => ({
-  style: { marginTop: props.marginTop + 'px' },
-}))``
 
 export default Home

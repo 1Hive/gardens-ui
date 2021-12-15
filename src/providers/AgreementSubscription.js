@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useMemo, useState, useEffect } from 'react'
 import connectAgreement from '@1hive/connect-agreement'
 import { createAppHook } from '@1hive/connect-react'
@@ -79,7 +80,6 @@ function AgreementSubscriptionProvider({ children }) {
       },
       { loading, error },
     ]
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, [
     currentVersionUpdateValue,
     appsWithRequirements,
@@ -88,7 +88,6 @@ function AgreementSubscriptionProvider({ children }) {
     loading,
     error,
   ])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <AgreementSubscriptionContext.Provider value={AgreementSubscriptionState}>
@@ -159,9 +158,7 @@ function useAppsWithRequirements(disputableApps) {
     if (disputableApps) {
       processAppRequirements()
     }
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, [disputableAppsUpdateValue])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [appsWithRequirements, status]
 }

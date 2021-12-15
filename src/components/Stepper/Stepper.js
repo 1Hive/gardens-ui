@@ -151,13 +151,11 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     updateHash,
   ])
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (steps.length > 0) {
       handleSign()
     }
   }, [stepperStage])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const completed =
     stepperStage === stepsCount &&

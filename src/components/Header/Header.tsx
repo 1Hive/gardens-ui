@@ -16,7 +16,7 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
-function Header({ onOpenPreferences }) {
+function Header({ onOpenPreferences }: { onOpenPreferences: any }) {
   const theme = useTheme()
   const connectedGarden = useConnectedGarden()
   const history = useHistory()
@@ -155,7 +155,15 @@ function Header({ onOpenPreferences }) {
   )
 }
 
-function GardenNavItems({ garden }) {
+type GardenNavItemsProps = {
+  garden: {
+    wrappableToken: any
+    token: any
+    wiki: any
+  }
+}
+
+function GardenNavItems({ garden }: GardenNavItemsProps) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
