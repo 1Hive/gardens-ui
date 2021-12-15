@@ -79,7 +79,7 @@ function Header({
           {showMenu && (
             <div
               css={`
-                width: ${13 * GU}px;
+                width: 88px;
                 border-right: 1px solid ${theme.border};
                 display: flex;
                 align-self: stretch;
