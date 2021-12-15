@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
 import {
   Button,
@@ -185,7 +186,6 @@ function ConvictionVotingSettings() {
       DEFAULT_CONVICTION_CONFIG.minThresholdStakePct,
     ])
     updateField(['requestToken', config.tokens.address])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.tokens.address, updateField])
 
   const handleNextClick = event => {
@@ -244,9 +244,9 @@ function ConvictionVotingSettings() {
                   <strong>Conviction Growth</strong> is the number of days it
                   takes to accumulate or reduce voting power by 50%. For
                   example, if the conviction growth is set to 1 day your tokens
-                  must support a proposal for 1 day to reach 50% of those
-                  tokens' max voting power, 2 days to reach 75%, 3 days to reach
-                  87.5%, etc.
+                  must support a proposal for 1 day to reach 50% of those tokens
+                  max voting power, 2 days to reach 75%, 3 days to reach 87.5%,
+                  etc.
                 </Help>
               </Fragment>
             }

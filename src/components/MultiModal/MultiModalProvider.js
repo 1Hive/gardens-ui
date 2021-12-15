@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useMemo, useCallback } from 'react'
 import { useWallet } from '../../providers/Wallet'
 import PropTypes from 'prop-types'
@@ -14,11 +15,9 @@ function MultiModalProvider({ screens, onClose, children }) {
 
   const handleClose = useCallback(() => onClose(), [onClose])
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setStep(0)
   }, [account])
-  /* -enable react-hooks/exhaustive-deps */
 
   const multiModalState = useMemo(
     () => ({

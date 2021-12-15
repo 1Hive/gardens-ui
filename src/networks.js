@@ -120,8 +120,8 @@ export function getNetworkChainIdByType(networkType) {
   return networks.find(network => network.type === networkType)?.chainId || null
 }
 
-export function getEthersNetwork() {
-  const { type, chainId, ensRegistry } = getNetwork()
+export function getEthersNetwork(chainId) {
+  const { type, ensRegistry } = getNetwork(chainId)
   return {
     name: type,
     chainId: chainId,

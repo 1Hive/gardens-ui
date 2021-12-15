@@ -21,7 +21,6 @@ function MainView({ children }) {
   let loadingGardenState = true
   if (connectedGarden) {
     // TODO: Refactor
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { loading } = useGardenState()
     loadingGardenState = loading
   }

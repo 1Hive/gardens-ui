@@ -68,5 +68,6 @@ export function getAppPresentation(app) {
 }
 
 export function getDisputableAppByName(apps, appName) {
-  return apps?.find(app => app.appName === appName)
+  const regex = new RegExp(`^${appName}.*$`)
+  return apps?.find(app => app?.appName?.match(regex))
 }

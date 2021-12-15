@@ -140,10 +140,18 @@ function GnosisSafeField({
                 `}
               >
                 Using a Gnosis Safe will require for you to set the FundsManager
-                contract as a module on your Safe so that it allows it to
-                transfer funds after execution of Conviction Voting proposals.
-                You can find the FundsManager address in the settings page of
-                your garden.
+                contract as a{' '}
+                <Link
+                  href="https://help.gnosis-safe.io/en/articles/4934427-add-a-module"
+                  css={`
+                    text-decoration: none;
+                  `}
+                >
+                  module
+                </Link>{' '}
+                on your Safe so that it allows it to transfer funds after
+                execution of Conviction Voting proposals. You can find the
+                FundsManager address in the settings page of your garden.
               </Info>
             )}
           </div>
