@@ -6,17 +6,15 @@ const SIDEBAR_WIDTH = `${9 * GU}px`
 
 const Sidebar = () => {
   return (
-    <RootPortal>
-      <div
-        css={`
-          position: absolute;
-          height: 100vh;
-          z-index: 3;
-        `}
-      >
-        <InnerGardensSidebar applyDelay width={SIDEBAR_WIDTH} />
-      </div>
-    </RootPortal>
+    <div
+      css={`
+        position: absolute;
+        height: 100vh;
+        z-index: 3;
+      `}
+    >
+      <InnerGardensSidebar applyDelay width={SIDEBAR_WIDTH} />
+    </div>
   )
 }
 
