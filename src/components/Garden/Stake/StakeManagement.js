@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
+import { GardenLoader } from '@components/Loader'
 import LayoutColumns from '../Layout/LayoutColumns'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
-import Loader from '@components/Loader'
 import MultiModal from '@components/MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
@@ -39,7 +39,9 @@ const StakeManagement = React.memo(function StakeManagement() {
 
     return stakeManagement.stakingMovements.sort(
       (movement1, movement2) =>
-        movement1.disputableActionId - movement2.disputableActionId
+        movement2.disputableActionId +
+        movement2.createdAt -
+        (movement1.disputableActionId + movement1.createdAt)
     )
   }, [stakeManagement])
 
@@ -50,7 +52,7 @@ const StakeManagement = React.memo(function StakeManagement() {
   return (
     <>
       {loading ? (
-        <Loader />
+        <GardenLoader />
       ) : (
         <LayoutGutter>
           <LayoutLimiter>

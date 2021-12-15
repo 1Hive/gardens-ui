@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import loadingRing from './assets/loading-ring.svg'
 
@@ -17,7 +18,8 @@ const spin = keyframes`
 
 const AccountModuleActionScreen = React.memo(function({ onCancel }) {
   const theme = useTheme()
-  const { image, name } = getNetwork()
+  const connectedGarden = useConnectedGarden()
+  const { image, name } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network
 
   return (
     <section
@@ -26,7 +28,7 @@ const AccountModuleActionScreen = React.memo(function({ onCancel }) {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: ${2 * GU}px;
+        padding: ${3 * GU}px;
         height: 100%;
       `}
     >
@@ -86,10 +88,11 @@ const AccountModuleActionScreen = React.memo(function({ onCancel }) {
         <p
           css={`
             width: ${36 * GU}px;
+            margin-top: ${1 * GU}px;
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          {`Create the ${name} network in your provider and switch to it. You may be temporarily redirected to a new screen.`}
+          {`Create and/or switch to the ${name} network in your provider. You may be temporarily redirected to a new screen.`}
         </p>
       </div>
       <div

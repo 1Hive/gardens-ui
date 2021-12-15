@@ -48,10 +48,10 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'settlement-offer': [
     'Settlement Offer',
     <>
-      The <strong>Settlement Offer</strong> (denominated in your Garden's token)
-      is the amount of tokens you stand to receive from the proposal author, if
-      he or she chooses to withdraw their proposal before it is raised to
-      Celeste.
+      The <strong>Settlement Offer</strong> (denominated in your Garden&apos;s
+      token) is the amount of tokens you stand to receive from the proposal
+      author, if he or she chooses to withdraw their proposal before it is
+      raised to Celeste.
     </>,
   ],
   'common-pool': [
@@ -64,8 +64,15 @@ const KNOWN_HELP_DESCRIPTIONS = {
   'total-supply': [
     'Total Supply',
     <>
-      The <strong>Total Supply</strong> is the the total amount of tokens in
+      The <strong>Total Supply</strong> is the total amount of tokens in
       circulation, including the common pool.
+    </>,
+  ],
+  'total-wrapped-supply': [
+    'Wrapped Supply',
+    <>
+      The <strong>Wrapped Supply</strong> is the amount of wrapped tokens in
+      circulation.
     </>,
   ],
   'total-support': [
@@ -89,7 +96,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
   decision: [
     'Decision proposals',
     <>
-      Decisions are proposals which seek to update the DAO's DNA (i.e. the
+      Decisions are proposals which seek to update the DAO&apos;s DNA (i.e. the
       metagovernance parameters)
     </>,
   ],

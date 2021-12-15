@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import {
-  TransactionBadge,
-  textStyle,
-  useTheme,
-  // RADIUS,
-  GU,
-} from '@1hive/1hive-ui'
+import { TransactionBadge, textStyle, useTheme, GU } from '@1hive/1hive-ui'
 import Divider from './Divider'
+import { useWallet } from '@providers/Wallet'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { getNetwork } from '@/networks'
+import { springs } from '@/style/springs'
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -18,9 +15,6 @@ import {
   STEP_WORKING,
 } from '../stepper-statuses'
 import StatusVisual from './StatusVisual'
-
-import { springs } from '@/style/springs'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const AnimatedSpan = animated.span
 
@@ -35,7 +29,8 @@ function Step({
   ...props
 }) {
   const theme = useTheme()
-  const network = getNetwork()
+  const { chainId } = useWallet()
+  const network = getNetwork(chainId)
   const [animationDisabled, enableAnimation] = useDisableAnimation()
 
   const { visualColor, descColor } = useMemo(() => {
@@ -45,7 +40,7 @@ function Step({
         descColor: theme.contentSecondary,
       },
       [STEP_PROMPTING]: {
-        visualColor: '#FFE862',
+        visualColor: '#7CE0D6',
         descColor: theme.contentSecondary,
       },
       [STEP_WORKING]: {

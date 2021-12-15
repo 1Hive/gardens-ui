@@ -1,14 +1,14 @@
 import React, { useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-import { useWallet } from '@providers/Wallet'
 import {
   useCommonPool,
   useGardenData,
   useTokenBalances,
 } from '@hooks/useGardenHooks'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from './ConnectedGarden'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
+import { useWallet } from '@providers/Wallet'
 import { getGardenTokenIcon } from '@utils/token-utils'
 
 const GardenStateContext = React.createContext()
@@ -25,7 +25,7 @@ function GardenStateProvider({ children }) {
   const [tokens, tokensLoading] = useTokens(config)
   const commonPool = useCommonPool(
     config?.conviction.fundsManager,
-    (tokens.wrappableToken || tokens.token).data
+    config?.conviction.requestToken
   )
   const effectiveSupply = useEffectiveSupply(tokens.token.totalSupply, config)
 
@@ -56,8 +56,7 @@ function GardenStateProvider({ children }) {
 
 function useTokens() {
   const { account } = useWallet()
-  const { connectedGarden } = useGardens()
-  const { token, wrappableToken } = connectedGarden
+  const { token, wrappableToken } = useConnectedGarden()
 
   const {
     balance: gardenTokenAccountBalance,
@@ -105,7 +104,7 @@ function useTokens() {
 }
 
 function useNewConfig(config, effectiveSupply, loading) {
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   return useMemo(() => {
     if (loading) {

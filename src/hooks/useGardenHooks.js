@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { connectGarden } from '@1hive/connect-gardens'
-import connectAgreement from '@aragon/connect-agreement'
+import connectAgreement from '@1hive/connect-agreement'
 import {
   createAppHook,
   useApps,
   useOrganization,
   usePermissions,
 } from '@1hive/connect-react'
-import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
@@ -17,7 +17,7 @@ import env from '@/environment'
 import BigNumber from '@lib/bigNumber'
 import { addressesEqual } from '@utils/web3-utils'
 import { getAppByName } from '@utils/data-utils'
-import { getAgreementConnectorConfig } from '@/networks'
+import { getAgreementConnectorConfig, getNetwork } from '@/networks'
 
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
@@ -26,10 +26,12 @@ import fundsManagerAbi from '@abis/FundsManager.json'
 const INITIAL_TIMER = 2000
 
 export function useGardenData() {
-  const { chainId } = useWallet()
   const [connector, setConnector] = useState(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
+
+  const { chainId } = useConnectedGarden()
+  const { subgraphs } = getNetwork(chainId)
 
   const useAgreementHook = createAppHook(
     connectAgreement,
@@ -68,7 +70,9 @@ export function useGardenData() {
 
     const fetchGardenConnector = async () => {
       try {
-        const gardenConnector = await connectGarden(organization)
+        const gardenConnector = await connectGarden(organization, {
+          subgraphUrl: subgraphs.gardens,
+        })
 
         if (!cancelled) {
           setConnector(gardenConnector)
@@ -83,7 +87,7 @@ export function useGardenData() {
     return () => {
       cancelled = true
     }
-  }, [organization])
+  }, [organization, subgraphs.gardens])
 
   const config = useConfigSubscription(connector)
 
@@ -114,11 +118,14 @@ export function useGardenData() {
 }
 
 export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
+  const [commonPool, setCommonPool] = useState(new BigNumber(-1))
+
+  const { chainId } = useConnectedGarden()
   const fundsManagerContract = useContractReadOnly(
     fundsManagerAddress,
-    fundsManagerAbi
+    fundsManagerAbi,
+    chainId
   )
-  const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   useEffect(() => {
     let cancelled = false
@@ -164,7 +171,8 @@ export function useTokenBalances(account, token, timeout = 5000) {
     totalSupply: new BigNumber(-1),
   })
 
-  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi)
+  const { chainId } = useConnectedGarden()
+  const tokenContract = useContractReadOnly(token?.id, minimeTokenAbi, chainId)
 
   useEffect(() => {
     if (!token?.id || !tokenContract) {

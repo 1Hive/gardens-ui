@@ -236,9 +236,9 @@ function GardenMetadata() {
   const ForumTooltip = (
     <div>
       Add the URL to your discussion platform - we recommend{' '}
-      <Link href="https://www.discourse.org">discourse</Link>. If you don't, the{' '}
-      <Link href="https://forum.1hive.org">1Hive forum</Link> will be assigned
-      by default.
+      <Link href="https://www.discourse.org">discourse</Link>. If you
+      don&apos;t, the <Link href="https://forum.1hive.org">1Hive forum</Link>{' '}
+      will be assigned by default.
     </div>
   )
 

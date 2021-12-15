@@ -7,6 +7,7 @@ import { getPreferredChain } from './local-settings'
 import env from './environment'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
+const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
 const networks = {
   rinkeby: {
@@ -14,10 +15,11 @@ const networks = {
     ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
     name: 'Rinkeby',
     type: 'rinkeby',
+
+    hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
-    template: '0xA28c03923385e31E506e749e64Ce4CfC14d93459',
-    celesteUrl: 'https://celeste-rinkeby.1hive.org/#',
+    template: '0xF8A030177865356E2Be8fb5F95a19962E6b57E3e',
     explorer: 'etherscan',
 
     honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
@@ -29,8 +31,7 @@ const networks = {
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
-      organizations:
-        'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby',
     },
     legacyNetworkType: 'rinkeby',
   },
@@ -40,10 +41,11 @@ const networks = {
     name: 'xDai',
     type: 'xdai',
     defaultEthNode: XDAI_ETH_NODE,
+
+    hiveGarden: '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0x6D68156D6D75bAe0CDABfAFDdE2DD16a75e1eB8A',
-    celesteUrl: 'https://celeste.1hive.org/#',
+    template: '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844',
     explorer: 'blockscout',
 
     honeyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
@@ -54,8 +56,7 @@ const networks = {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
-      organizations:
-        'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai',
     },
 
     eip3085: {
@@ -69,6 +70,40 @@ const networks = {
       blockExplorerUrls: ['https://blockscout.com/poa/xdai/'],
     },
   },
+  polygon: {
+    chainId: 137,
+    ensRegistry: '0x7EdE100965B1E870d726cD480dD41F2af1Ca0130',
+    name: 'Polygon',
+    type: 'matic',
+    defaultEthNode: POLYGON_ETH_NODE,
+    arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
+    disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
+    template: '0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9',
+    explorer: 'polygonscan',
+
+    honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
+    honeyPriceOracle: '0x15f627B9C47BbFBbC2194C9a8dB2E722E090a690',
+    stableToken: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+
+    subgraphs: {
+      agreement:
+        'https://api.thegraph.com/subgraphs/name/1hive/agreement-polygon',
+      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-polygon',
+      celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-polygon',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon',
+    },
+
+    eip3085: {
+      chainId: '0x89',
+      chainName: 'Polygon',
+      rpcUrls: ['https://polygon-rpc.com'],
+      iconUrls: [
+        'https://raw.githubusercontent.com/maticnetwork/polygon-token-assets/main/icons/matic.svg',
+      ],
+      nativeCurrency: { name: 'Matic Token', symbol: 'MATIC', decimals: 18 },
+      blockExplorerUrls: ['https://polygonscan.com/'],
+    },
+  },
 }
 
 function getNetworkInternalName(chainId = getPreferredChain()) {
@@ -79,8 +114,13 @@ export function getNetwork(chainId = getPreferredChain()) {
   return networks[getNetworkInternalName(chainId)]
 }
 
-export function getEthersNetwork() {
-  const { type, chainId, ensRegistry } = getNetwork()
+export function getNetworkChainIdByType(networkType) {
+  const networks = getAvailableNetworks()
+  return networks.find(network => network.type === networkType)?.chainId || null
+}
+
+export function getEthersNetwork(chainId) {
+  const { type, ensRegistry } = getNetwork(chainId)
   return {
     name: type,
     chainId: chainId,
@@ -88,8 +128,8 @@ export function getEthersNetwork() {
   }
 }
 
-export const addEthereumChain = () => {
-  const { eip3085 } = getNetwork()
+export const addEthereumChain = chainId => {
+  const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
   }
@@ -106,12 +146,13 @@ export const switchNetwork = async chainId => {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: chainIdHex }],
     })
-  } catch (switchError) {
-    // This error code indicates that the chain has not been added to Injected provider.
-    if (switchError.code === 4902) {
-      await addEthereumChain()
+  } catch (error) {
+    if (error.code === 4902) {
+      await addEthereumChain(chainId)
+      return
     }
-    console.error(switchError)
+
+    throw new Error(error.message)
   }
 }
 
@@ -133,7 +174,7 @@ export function getAgreementConnectorConfig(chainId) {
   }
 }
 
-export const SUPPORTED_CHAINS = [4, 100] // Add  polygon and arbitrum  chains id + fill the network json with the data
+export const SUPPORTED_CHAINS = [4, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
 
 export function isSupportedChain(chainId) {
   return SUPPORTED_CHAINS.includes(chainId)

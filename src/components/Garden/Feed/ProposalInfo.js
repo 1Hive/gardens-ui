@@ -1,5 +1,5 @@
 import React from 'react'
-import { GU, Help, LoadingRing, useTheme } from '@1hive/1hive-ui'
+import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
 import Balance from '../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
@@ -69,7 +69,16 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
                     {requestToken.symbol}
                   </span>
                   <Help hint="">
-                    Converted to {requestToken.symbol} at time of execution
+                    Converted to {requestToken.symbol} at time of execution. For
+                    funding proposals denominated in {stableToken.symbol} to be
+                    made successfully, this Garden&apos;s{' '}
+                    <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                      price oracle
+                    </Link>{' '}
+                    must be called consistently. Contact your Garden
+                    administrator or development team if the proposal execution
+                    transaction is continually failing or if the request stable
+                    amount is not accurate.
                   </Help>
                 </div>
               )}

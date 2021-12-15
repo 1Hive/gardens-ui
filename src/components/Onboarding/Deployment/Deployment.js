@@ -2,39 +2,45 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
 import { animated, Transition } from 'react-spring/renderprops'
+
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 import ErrorModal from './ErrorModal'
 
 import useDeploymentState from './useDeploymentState'
+import { useWallet } from '@/providers/Wallet'
 
-import flowersLeavesSvg from './assets/flowers-leaves.svg'
-import gardensLogo from '@assets/gardensLogoMark.svg'
-
+import { getNetworkType } from '@/utils/web3-utils'
 import {
   STEP_WORKING,
   STEP_SUCCESS,
   STEP_PROMPTING,
 } from '@components/Stepper/stepper-statuses'
 
+import flowersLeavesSvg from './assets/flowers-leaves.svg'
+import gardensLogo from '@assets/gardensLogoMark.svg'
+
 const Deployment = React.memo(function Deployment() {
   const { above } = useViewport()
   const history = useHistory()
+  const { chainId } = useWallet()
 
   const {
     erroredTransactions,
     gardenAddress,
     isFinalized,
     onNextAttempt,
+    onReset,
     readyToStart,
     transactionsStatus,
   } = useDeploymentState()
 
-  const handleOpenGarden = useCallback(() => {
+  const handleGetStarted = useCallback(() => {
     if (gardenAddress && isFinalized) {
-      history.push(`/garden/${gardenAddress}`)
+      history.push(`/${getNetworkType(chainId)}/garden/${gardenAddress}`)
+      onReset()
     }
-  }, [gardenAddress, history, isFinalized])
+  }, [chainId, gardenAddress, history, isFinalized, onReset])
 
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
@@ -130,7 +136,7 @@ const Deployment = React.memo(function Deployment() {
                 allSuccess ? (
                   <BoxReady
                     isFinalized={isFinalized}
-                    onOpenGarden={handleOpenGarden}
+                    onGetStarted={handleGetStarted}
                     opacity={opacity}
                     boxTransform={transform}
                   />
@@ -183,8 +189,8 @@ const Deployment = React.memo(function Deployment() {
         }
         content={
           <p>
-            An error has occurred during the signature process. Don't worry, you
-            can try to send the transaction again.
+            An error has occurred during the signature process. Don&apos;t
+            worry, you can try to send the transaction again.
           </p>
         }
         header="Something went wrong"

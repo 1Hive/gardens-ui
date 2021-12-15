@@ -9,13 +9,15 @@ import {
   GU,
   textStyle,
   useTheme,
-  IdentityBadge,
 } from '@1hive/1hive-ui'
+import IdentityBadge from '@components/IdentityBadge'
 import TimeTag from './TimeTag'
 import TransactionProgress from './TransactionProgress'
 import { useActivity } from '@providers/ActivityProvider'
+import { useAsset } from '@hooks/useAsset'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
-import { getNetworkType, transformAddresses } from '@utils/web3-utils'
+import { transformAddresses } from '@utils/web3-utils'
 import {
   ACTIVITY_STATUS_PENDING,
   ACTIVITY_STATUS_CONFIRMED,
@@ -25,27 +27,27 @@ import {
 import { getActivityData } from './activity-types'
 import { getNetwork } from '../../networks'
 
-import GARDEN_LOGO from '@assets/gardensLogoMark.svg'
-
 function ActivityItem({ activity }) {
   const theme = useTheme()
   const { removeActivity } = useActivity()
+  const { chainId } = useConnectedGarden()
 
-  const { title } = getActivityData(activity.type)
-  const iconSrc = GARDEN_LOGO
+  const { title, icon } = getActivityData(activity.type)
+  const iconSrc = useAsset(icon)
 
   const handleOpen = useCallback(() => {
+    const network = getNetwork(chainId)
     if (activity.transactionHash) {
       window.open(
         blockExplorerUrl('transaction', activity.transactionHash, {
-          networkType: getNetworkType(),
-          provider: getNetwork().explorer,
+          networkType: network.type,
+          provider: network.explorer,
         }),
         '_blank',
         'noopener'
       )
     }
-  }, [activity])
+  }, [activity, chainId])
 
   const canClear = activity.status !== ACTIVITY_STATUS_PENDING
 

@@ -5,6 +5,7 @@ import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
 import useActions from '@hooks/useActions'
 import { useCelesteSynced } from '@hooks/useCeleste'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDisputeFees } from '@hooks/useDispute'
 import BigNumber from '@lib/bigNumber'
 
@@ -12,8 +13,10 @@ const ZERO_BN = new BigNumber('0')
 
 function RaiseDisputeScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
-  const [celesteSynced, celesteSyncLoading] = useCelesteSynced()
-  const disputeFees = useDisputeFees()
+
+  const { chainId } = useConnectedGarden()
+  const [celesteSynced, celesteSyncLoading] = useCelesteSynced(chainId)
+  const disputeFees = useDisputeFees(chainId)
   const { agreementActions } = useActions()
 
   const temporatyTrx = useRef([])

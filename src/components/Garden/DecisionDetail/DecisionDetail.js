@@ -8,6 +8,7 @@ import {
   LoadingRing,
   Split,
   textStyle,
+  TransactionBadge,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -27,25 +28,29 @@ import SummaryBar from './SummaryBar'
 import SummaryRow from './SummaryRow'
 import VoteActions from './VoteActions'
 import VoteCasted from './VoteCasted'
+import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDescribeVote } from '@hooks/useDescribeVote'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
-import { getConnectedAccountVote, getQuorumProgress } from '@utils/vote-utils'
+import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
+import { getNetwork } from '@/networks'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false)
-  const [modalMode, setModalMode] = useState(null)
+  const [modalData, setModalData] = useState({ mode: '' })
   const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account: connectedAccount } = useWallet()
+  const { chainId } = useConnectedGarden()
   const {
     config: { voting: votingConfig },
   } = useGardenState()
@@ -56,8 +61,10 @@ function DecisionDetail({ proposal, actions }) {
     loading: descriptionLoading,
   } = useDescribeVote(proposal.script, proposal.id)
 
+  const network = getNetwork(chainId)
+
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
-  const connectedAccountVote = getConnectedAccountVote(
+  const connectedAccountCast = getConnectedAccountCast(
     proposal,
     connectedAccount
   )
@@ -65,7 +72,8 @@ function DecisionDetail({ proposal, actions }) {
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const youVoted =
-    connectedAccountVote === VOTE_YEA || connectedAccountVote === VOTE_NAY
+    connectedAccountCast.vote === VOTE_YEA ||
+    connectedAccountCast.vote === VOTE_NAY
 
   const { creator, minAcceptQuorum, nay, number, statusData, yea } =
     proposal || {}
@@ -79,13 +87,10 @@ function DecisionDetail({ proposal, actions }) {
     history.goBack()
   }, [history])
 
-  const handleVoteNo = useCallback(() => {
-    actions.voteOnDecision(proposal.number, VOTE_NAY)
-  }, [actions, proposal.number])
-
-  const handleVoteYes = useCallback(() => {
-    actions.voteOnDecision(proposal.number, VOTE_YEA)
-  }, [actions, proposal.number])
+  const handleVote = useCallback(data => {
+    setModalVisible(true)
+    setModalData({ mode: 'vote', ...data })
+  }, [])
 
   const handleExecute = useCallback(() => {
     actions.executeDecision(proposal.number, proposal.script)
@@ -97,7 +102,15 @@ function DecisionDetail({ proposal, actions }) {
 
   const handleShowModal = useCallback(mode => {
     setModalVisible(true)
-    setModalMode(mode)
+    setModalData({ mode })
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setModalVisible(false)
+  }, [])
+
+  const handleModalClosed = useCallback(() => {
+    setModalData({ mode: '' })
   }, [])
 
   return (
@@ -145,6 +158,17 @@ function DecisionDetail({ proposal, actions }) {
                   >
                     {`Vote #${number}`}
                   </h1>
+                  <div
+                    css={`
+                      margin-top: ${1 * GU}px;
+                    `}
+                  >
+                    <TransactionBadge
+                      transaction={proposal.txHash}
+                      networkType={network.type}
+                      explorerProvider={network.explorer}
+                    />
+                  </div>
                 </div>
                 <div
                   css={`
@@ -224,7 +248,8 @@ function DecisionDetail({ proposal, actions }) {
                 {youVoted && (
                   <VoteCasted
                     account={connectedAccount}
-                    accountVote={connectedAccountVote}
+                    accountVote={connectedAccountCast.vote}
+                    caster={connectedAccountCast.caster}
                     vote={proposal}
                   />
                 )}
@@ -233,8 +258,7 @@ function DecisionDetail({ proposal, actions }) {
               {(statusData.open || statusData.pendingExecution) && (
                 <VoteActions
                   onExecute={handleExecute}
-                  onVoteNo={handleVoteNo}
-                  onVoteYes={handleVoteYes}
+                  onVote={handleVote}
                   vote={proposal}
                 />
               )}
@@ -310,10 +334,10 @@ function DecisionDetail({ proposal, actions }) {
       </div>
       <MultiModal
         visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onClosed={() => setModalMode(null)}
+        onClose={handleCloseModal}
+        onClosed={handleModalClosed}
       >
-        {modalMode === 'challenge' && (
+        {modalData.mode === 'challenge' && (
           <ChallengeProposalScreens
             agreementActions={{
               challengeAction: actions.challengeAction,
@@ -323,10 +347,15 @@ function DecisionDetail({ proposal, actions }) {
             proposal={proposal}
           />
         )}
-        {modalMode === 'settle' && (
+        {modalData.mode === 'settle' && (
           <SettleProposalScreens proposal={proposal} />
         )}
-        {modalMode === 'dispute' && <RaiseDisputeScreens proposal={proposal} />}
+        {modalData.mode === 'dispute' && (
+          <RaiseDisputeScreens proposal={proposal} />
+        )}
+        {modalData.mode === 'vote' && (
+          <VoteOnDecisionScreens proposal={proposal} {...modalData} />
+        )}
       </MultiModal>
     </div>
   )

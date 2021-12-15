@@ -48,7 +48,7 @@ export const Screens = [
   },
   {
     parent: STEPS[3],
-    title: 'Tao voting',
+    title: 'Decision voting',
     Screen: VotingSettings,
   },
   {

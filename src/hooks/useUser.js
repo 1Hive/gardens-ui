@@ -3,12 +3,16 @@ import { getUser } from '@1hive/connect-gardens'
 import { useMounted } from './useMounted'
 import { getNetwork } from '../networks'
 import { transformUserData } from '@utils/data-utils'
+import { useWallet } from '@/providers/Wallet'
 
 export default function useUser(address) {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
   const mounted = useMounted()
+  const { preferredNetwork } = useWallet()
+
+  const { subgraphs } = getNetwork(preferredNetwork)
 
   const reload = useCallback(() => {
     setRefetchTriger(triger => setRefetchTriger(!triger))
@@ -22,6 +26,7 @@ export default function useUser(address) {
 
   useEffect(() => {
     if (!address) {
+      setLoading(false)
       return
     }
 
@@ -29,7 +34,7 @@ export default function useUser(address) {
       setLoading(true)
       try {
         const user = await getUser(
-          { network: getNetwork().chainId },
+          { network: preferredNetwork, subgraphUrl: subgraphs.gardens },
           { id: address.toLowerCase() }
         )
         if (mounted()) {
@@ -42,7 +47,7 @@ export default function useUser(address) {
       setLoading(false)
     }
     fetchUser()
-  }, [address, mounted, refetchTriger])
+  }, [address, mounted, preferredNetwork, refetchTriger, subgraphs.gardens])
 
   return [user, loading, reload]
 }

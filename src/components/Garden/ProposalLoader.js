@@ -1,6 +1,6 @@
 import React from 'react'
+import { GardenLoader } from '../Loader'
 import ProposalDetail from './ProposalDetail/ProposalDetail'
-import Loader from '../Loader'
 import useProposalLogic from '../../logic/proposal-logic'
 import { useProposalWithThreshold } from '@hooks/useProposals'
 import { ProposalTypes } from '@/types'
@@ -17,7 +17,7 @@ function ProposalLoader({ match }) {
   } = useProposalLogic(match)
 
   if (!proposal || loading) {
-    return <Loader />
+    return <GardenLoader />
   }
 
   return proposal.type === ProposalTypes.Proposal ? (
@@ -45,7 +45,7 @@ function WithThreshold({ proposal, ...props }) {
   const [proposalWithThreshold, loading] = useProposalWithThreshold(proposal)
 
   if (loading) {
-    return <Loader />
+    return <GardenLoader />
   }
 
   return <ProposalDetail proposal={proposalWithThreshold} {...props} />

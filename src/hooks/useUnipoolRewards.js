@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from '@hooks/useContract'
-import { useGardens } from '@providers/Gardens'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
@@ -12,14 +12,14 @@ export default function useUnipoolRewards() {
   const mounted = useMounted()
 
   const { account } = useWallet()
-
-  const {
-    connectedGarden: { unipool, rewardsLink },
-  } = useGardens()
-
-  const unipoolContract = useContractReadOnly(unipool, unipoolAbi)
+  const { chainId, rewardsLink, unipool } = useConnectedGarden()
+  const unipoolContract = useContractReadOnly(unipool, unipoolAbi, chainId)
 
   useEffect(() => {
+    if (!unipoolContract || !account) {
+      return
+    }
+
     let timer
     const fetchEarned = async () => {
       try {

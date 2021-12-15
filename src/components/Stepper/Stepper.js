@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { Button, GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
+import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import Step from './Step/Step'
 
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
@@ -151,29 +151,25 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
     updateHash,
   ])
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (steps.length > 0) {
       handleSign()
     }
   }, [stepperStage])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const completed =
     stepperStage === stepsCount &&
     stepState[stepperStage].status === STEP_SUCCESS
 
-  // Commented just in case we want to add again the auto close
-
-  // useEffect(() => {
-  //   let timeout
-  //   if (completed && !onCompleteActions) {
-  //     timeout = setTimeout(() => close(), 2000)
-  //   }
-  //   return () => {
-  //     clearTimeout(timeout)
-  //   }
-  // }, [close, completed, onCompleteActions])
+  useEffect(() => {
+    let timeout
+    if (completed && !onCompleteActions) {
+      timeout = setTimeout(() => close(), 2500)
+    }
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [close, completed, onCompleteActions])
 
   return (
     <div
@@ -262,7 +258,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           >
             You might need to wait a few seconds for the UI to update
           </Info>
-          {onCompleteActions ? (
+          {onCompleteActions && (
             <div
               css={`
                 margin-top: ${3 * GU}px;
@@ -270,16 +266,6 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
             >
               {onCompleteActions}
             </div>
-          ) : (
-            <Button
-              label="Close"
-              mode="strong"
-              onClick={close}
-              wide
-              css={`
-                margin-top: ${5 * GU}px;
-              `}
-            />
           )}
         </div>
       )}

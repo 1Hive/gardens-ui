@@ -2,7 +2,7 @@ import { ethers, providers as Providers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
 import env from '@/environment'
 import { getPreferredChain } from '@/local-settings'
-import { getEthersNetwork, getNetwork } from '@/networks'
+import { getNetwork } from '@/networks'
 
 const DEFAULT_LOCAL_CHAIN = ''
 
@@ -15,12 +15,12 @@ function getBackendServicesKeys() {
   }
 }
 
-export function getDefaultProvider() {
-  const { defaultEthNode } = getNetwork(getPreferredChain())
+export function getDefaultProvider(chainId = getPreferredChain()) {
+  const { defaultEthNode, type } = getNetwork(chainId)
 
   return defaultEthNode
     ? new Providers.StaticJsonRpcProvider(defaultEthNode)
-    : ethers.getDefaultProvider(getEthersNetwork(), getBackendServicesKeys())
+    : ethers.getDefaultProvider(type, getBackendServicesKeys())
 }
 
 export function encodeFunctionData(contract, functionName, params) {
@@ -33,6 +33,7 @@ export function getNetworkType(chainId = getPreferredChain()) {
   if (chainId === '1') return 'mainnet'
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
+  if (chainId === '137') return 'polygon'
 
   return DEFAULT_LOCAL_CHAIN
 }
@@ -43,6 +44,7 @@ export function getNetworkName(chainId = getPreferredChain()) {
   if (chainId === '1') return 'Mainnet'
   if (chainId === '4') return 'Rinkeby'
   if (chainId === '100') return 'xDai'
+  if (chainId === '137') return 'Polygon'
 
   return 'unknown'
 }

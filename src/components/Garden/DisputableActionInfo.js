@@ -13,18 +13,18 @@ import {
 } from '@1hive/1hive-ui'
 import { ConvictionCountdown } from './ConvictionVisuals'
 
-import { useWallet } from '@providers/Wallet'
 import { useDisputeState } from '@hooks/useDispute'
+import { useWallet } from '@providers/Wallet'
 
-import { ProposalTypes } from '@/types'
+import { CELESTE_URL } from '@/endpoints'
 import { dateFormat } from '@utils/date-utils'
-import { formatTokenAmount } from '@utils/token-utils'
 import {
   DisputeStates,
   DISPUTE_STATE_RULED,
   RoundStates,
 } from '@utils/dispute-utils'
-import { getNetwork } from '@/networks'
+import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalTypes } from '@/types'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -140,8 +140,42 @@ function DisputableActionInfo({
 }
 
 function VotingPeriod({ proposal }) {
+  const voteEndPeriodNode = usePeriod(proposal, proposal.endDate)
+  const delegatedVotingEndPeriodNode = usePeriod(
+    proposal,
+    proposal.delegatedVotingEndDate
+  )
+  const executionDelayEndPeriodNode = usePeriod(
+    proposal,
+    proposal.executionDelayEndDate
+  )
+
+  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
+
+  return (
+    <>
+      {proposal.isDelayed && (
+        <DataField
+          label="Execution delay"
+          value={executionDelayEndPeriodNode}
+        />
+      )}
+      <DataField
+        label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
+        value={voteEndPeriodNode}
+      />
+      <DataField
+        label="Delegated voting period"
+        value={delegatedVotingEndPeriodNode}
+      />
+    </>
+  )
+}
+
+function usePeriod(proposal, periodEndDate) {
   const theme = useTheme()
-  const periodNode = useMemo(() => {
+
+  return useMemo(() => {
     if (
       proposal.statusData.challenged ||
       proposal.statusData.disputed ||
@@ -161,7 +195,7 @@ function VotingPeriod({ proposal }) {
       )
     }
 
-    return proposal.endDate < Date.now() ? (
+    return periodEndDate < Date.now() ? (
       <span>
         Ended{' '}
         <span
@@ -169,22 +203,13 @@ function VotingPeriod({ proposal }) {
             color: ${theme.contentSecondary};
           `}
         >
-          ({dateFormat(proposal.endDate, DATE_FORMAT)})
+          ({dateFormat(periodEndDate, DATE_FORMAT)})
         </span>
       </span>
     ) : (
-      <Timer end={proposal.endDate} />
+      <Timer end={periodEndDate} />
     )
-  }, [proposal.endDate, proposal.pausedAt, proposal.statusData, theme])
-
-  const isResumed = proposal.statusData.open && proposal.pausedAt > 0
-
-  return (
-    <DataField
-      label={`Voting period${isResumed ? ` (Resumed)` : ''}`}
-      value={periodNode}
-    />
-  )
+  }, [periodEndDate, proposal.pausedAt, proposal.statusData, theme])
 }
 
 function Conviction({ proposal }) {
@@ -253,7 +278,6 @@ function Settlement({ proposal }) {
 function Dispute({ onResolveAction, proposal }) {
   const theme = useTheme()
   const { account } = useWallet()
-  const celesteUrl = getNetwork().celesteUrl
   const [disputeState, roundState] = useDisputeState(proposal.disputeId)
 
   return (
@@ -268,7 +292,7 @@ function Dispute({ onResolveAction, proposal }) {
             `}
           >
             <Link
-              href={`${celesteUrl}/disputes/${proposal.disputeId}`}
+              href={`${CELESTE_URL}/disputes/${proposal.disputeId}`}
               css={`
                 margin-right: ${0.5 * GU}px;
               `}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function usePromise(fn, memoParams, defaultValue, number) {
+export default function usePromise(fn, memoParams, defaultValue) {
   const [result, setResult] = useState(defaultValue)
   useEffect(() => {
     let cancelled = false
@@ -13,8 +13,6 @@ export default function usePromise(fn, memoParams, defaultValue, number) {
     return () => {
       cancelled = true
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...memoParams, fn])
   return result
 }

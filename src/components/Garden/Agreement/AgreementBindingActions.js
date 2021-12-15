@@ -3,11 +3,13 @@ import styled from 'styled-components'
 import { Accordion, AppBadge, Box, useTheme, GU } from '@1hive/1hive-ui'
 import HelpTip from '@components/HelpTip'
 import InfoField from '../InfoField'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import { formatTokenAmount } from '@utils/token-utils'
 
 function AgreementBindingActions({ apps }) {
-  const network = getNetwork()
+  const { chainId } = useConnectedGarden()
+  const network = getNetwork(chainId)
 
   const items = apps.map(
     ({

@@ -14,6 +14,7 @@ import {
   Split,
   Tag,
   textStyle,
+  TransactionBadge,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
@@ -41,8 +42,9 @@ import SupportersDistribution from '../SupportersDistribution'
 import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
-import { useWallet } from '@providers/Wallet'
 import useChallenge from '@hooks/useChallenge'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
@@ -51,6 +53,7 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '@utils/web3-utils'
+import { getNetwork } from '@/networks'
 import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
 
@@ -74,7 +77,9 @@ function ProposalDetail({
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
 
+  const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
+  const network = getNetwork(chainId)
 
   const {
     name,
@@ -87,6 +92,7 @@ function ProposalDetail({
     stakes = [],
     statusData,
     totalTokensStaked,
+    txHash,
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
@@ -177,6 +183,17 @@ function ProposalDetail({
                     >
                       {name}
                     </h1>
+                    <div
+                      css={`
+                        margin-top: ${1 * GU}px;
+                      `}
+                    >
+                      <TransactionBadge
+                        transaction={txHash}
+                        networkType={network.type}
+                        explorerProvider={network.explorer}
+                      />
+                    </div>
                     <div
                       css={`
                         margin-top: ${2 * GU}px;
@@ -313,7 +330,7 @@ function ProposalDetail({
                   />
                 </section>
               </Box>
-              {(statusData.challenged || statusData.settled) && (
+              {proposal.pausedAt > 0 && (
                 <Box
                   padding={2.4 * GU}
                   css={`
@@ -444,8 +461,8 @@ function ArgumentBox({ proposal, connectedAccount }) {
         >
           <img src={warningIcon} width={30} height={30} />
           <h1>
-            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal
-            has been challenged
+            {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal{' '}
+            {proposal.statusData.challenged ? 'has been' : 'was'} challenged
           </h1>
         </div>
         <div
@@ -622,7 +639,16 @@ const Amount = ({
                 {requestToken.symbol}
               </span>
               <Help hint="">
-                Converted to {requestToken.symbol} at time of execution
+                Converted to {requestToken.symbol} at time of execution. For
+                funding proposals denominated in {stableToken.symbol} to be made
+                successfully, this Garden&apos;s{' '}
+                <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                  price oracle
+                </Link>{' '}
+                must be called consistently. Contact your Garden administrator
+                or development team if the proposal execution transaction is
+                continually failing or if the request stable amount is not
+                accurate.
               </Help>
             </div>
           )}

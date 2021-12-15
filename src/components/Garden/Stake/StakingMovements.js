@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react'
+/* eslint-disable no-redeclare */
+import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   GU,
@@ -67,25 +68,11 @@ function getCollateralAttributes(status, theme) {
   const collateralAttributes = {
     [COLLATERAL_LOCKED]: {
       color: theme.surfaceOpened,
-      icon: (
-        <IconLock
-          size="small"
-          css={`
-            margin-right: ${1 * GU}px;
-          `}
-        />
-      ),
+      icon: <IconLock size="small" />,
     },
     [COLLATERAL_CHALLENGED]: {
       color: theme.surfaceOpened,
-      icon: (
-        <IconLock
-          size="small"
-          css={`
-            margin-right: ${1 * GU}px;
-          `}
-        />
-      ),
+      icon: <IconLock size="small" />,
     },
     [COLLATERAL_AVAILABLE]: {
       color: theme.content,
@@ -102,6 +89,12 @@ function StakingMovements({ stakingMovements, token }) {
   const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
+
+  const [selectedPage, setSelectedPage] = useState(0)
+
+  const handlePageChange = useCallback(page => {
+    setSelectedPage(page)
+  }, [])
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
@@ -179,7 +172,7 @@ function StakingMovements({ stakingMovements, token }) {
             </Link>
           </div>,
           <div>{collateralState}</div>,
-          <span
+          <div
             css={`
               font-weight: 600;
               color: ${amountAttributes.color};
@@ -188,10 +181,20 @@ function StakingMovements({ stakingMovements, token }) {
             `}
           >
             {amountAttributes.icon}
-            {formatTokenAmount(amount, tokenDecimals, { symbol: token.symbol })}
-          </span>,
+            <span
+              css={`
+                margin-left: ${1 * GU}px;
+              `}
+            >
+              {formatTokenAmount(amount, tokenDecimals, {
+                symbol: token.symbol,
+              })}
+            </span>
+          </div>,
         ]
       }}
+      onPageChange={handlePageChange}
+      page={selectedPage}
     />
   )
 }

@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { noop } from '@1hive/1hive-ui'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useContractReadOnly } from './useContract'
+import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
-import { useGardenState } from '@providers/GardenState'
-import BigNumber from '@lib/bigNumber'
-import { useContract, useContractReadOnly } from './useContract'
-
 import actions from '../actions/garden-action-types'
-import radspec from '../radspec'
+import BigNumber from '@lib/bigNumber'
 import { encodeFunctionData } from '@utils/web3-utils'
+import radspec from '../radspec'
 
 import stakingFactoryAbi from '@abis/StakingFactory.json'
 import stakingAbi from '@abis/Staking.json'
@@ -21,6 +22,7 @@ const STAKE_GAS_LIMIT = 500000
 export function useStaking() {
   const mounted = useMounted()
   const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
 
   const [stakeManagement, setStakeManagement] = useState(null)
@@ -34,33 +36,41 @@ export function useStaking() {
   const stakingMovementsSubscription = useRef(null)
 
   const stakingFactoryContract = useContractReadOnly(
-    stakeManagement && stakeManagement.stakingFactory,
-    stakingFactoryAbi
+    stakeManagement?.stakingFactory,
+    stakingFactoryAbi,
+    chainId
   )
 
-  const stakingContract = useContract(
-    stakeManagement && stakeManagement.stakingInstance,
-    stakingAbi
+  const stakingContract = useContractReadOnly(
+    stakeManagement?.stakingInstance,
+    stakingAbi,
+    chainId
   )
 
-  const tokenContract = useContract(
-    stakeManagement && stakeManagement.token && stakeManagement.token.id,
-    minimeTokenAbi
+  const tokenContract = useContractReadOnly(
+    stakeManagement?.token?.id,
+    minimeTokenAbi,
+    chainId
   )
 
   const handleReFetchTotalBalance = useCallback(() => {
     setReFetchTotalBalance(true)
   }, [])
 
-  const handleStakingMovementsData = useCallback((error, data = []) => {
-    if (error || !data) {
-      return
-    }
-    setStakeManagement(stakeManagement => ({
-      ...stakeManagement,
-      stakingMovements: data,
-    }))
-  }, [])
+  const handleStakingMovementsData = useCallback(
+    (error, data = []) => {
+      if (error || !data) {
+        return
+      }
+      if (mounted()) {
+        setStakeManagement(stakeManagement => ({
+          ...stakeManagement,
+          stakingMovements: data,
+        }))
+      }
+    },
+    [mounted]
+  )
 
   useEffect(() => {
     setLoadingStakingDataFromContract(true)
@@ -122,11 +132,9 @@ export function useStaking() {
               stakingFactory: stakingFactory,
               stakingInstance: null,
             }))
-            setLoading(false)
           }
         } else {
           setStakeManagement(null)
-          setLoading(false)
         }
       } catch (err) {
         setStakeManagement({
@@ -134,9 +142,9 @@ export function useStaking() {
           stakingMovements: null,
           stakingInstance: null,
         })
-        setLoading(false)
         console.error(err)
       }
+      setLoading(false)
     }
 
     if (connectedAgreementApp && account) {
@@ -222,6 +230,7 @@ export function useStaking() {
       setLoadingStakingDataFromContract(false)
     }
     if (
+      account &&
       stakingContract &&
       stakeManagement &&
       connectedAgreementApp &&
@@ -371,12 +380,16 @@ export function useStaking() {
           [connectedAgreementApp.address, MAX_INT.toString(10), '0x']
         )
 
+        const description = radspec[actions.ALLOW_MANAGER]()
+        const type = actions.ALLOW_MANAGER
+
         const intent = [
           {
             data: allowManagerData,
             from: account,
             to: stakeManagement.stakingInstance,
-            description: 'Give Permission',
+            description,
+            type,
           },
         ]
         if (mounted()) {

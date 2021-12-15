@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { GU, IdentityBadge, textStyle, useLayout } from '@1hive/1hive-ui'
+import { GU, textStyle, useLayout } from '@1hive/1hive-ui'
+import IdentityBadge from '@components/IdentityBadge'
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
 import { formatTokenAmount } from '@utils/token-utils'

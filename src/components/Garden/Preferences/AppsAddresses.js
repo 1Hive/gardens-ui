@@ -8,6 +8,7 @@ import {
   LoadingRing,
   useLayout,
 } from '@1hive/1hive-ui'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@/providers/GardenState'
 import { useGardens } from '@/providers/Gardens'
 import { getNetwork } from '@/networks'
@@ -15,24 +16,22 @@ import { getNetwork } from '@/networks'
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 function AppsAddresses() {
+  const { address, chainId } = useConnectedGarden()
+  const { loading: loadingGardens } = useGardens()
+  const { config, installedApps, loading } = useGardenState()
   const { layoutName } = useLayout()
 
-  const { connectedGarden, loading: loadingGarden } = useGardens()
-
-  const gardenState = useGardenState()
-
-  const { explorer, type } = getNetwork()
-
   const shortAddresses = layoutName === 'small'
+  const { explorer, type } = getNetwork(chainId)
 
-  if (!gardenState || !connectedGarden) {
+  if (loading) {
     return null
   }
   return (
     <div>
       <React.Fragment>
         <Box heading="Garden address">
-          {!connectedGarden || loadingGarden ? (
+          {loadingGardens ? (
             <div
               css={`
                 display: flex;
@@ -45,7 +44,7 @@ function AppsAddresses() {
           ) : (
             <>
               <IdentityBadge
-                entity={connectedGarden.address}
+                entity={address}
                 shorten={shortAddresses}
                 explorerProvider={explorer}
                 networkType={type}
@@ -64,7 +63,7 @@ function AppsAddresses() {
           )}
         </Box>
         <Box heading="Apps">
-          {!gardenState || gardenState.loading ? (
+          {loading ? (
             <div
               css={`
                 display: flex;
@@ -83,21 +82,23 @@ function AppsAddresses() {
                 text-align: center;
               `}
             >
-              {gardenState.config?.conviction.fundsManager && (
+              {config?.conviction.fundsManager && (
                 <AppField
+                  address={config.conviction.fundsManager}
+                  chainId={chainId}
                   name="Funds Manager"
-                  address={gardenState.config.conviction.fundsManager}
                 />
               )}
-              {gardenState.installedApps.map((app, index) => {
+              {installedApps.map((app, index) => {
                 if (app.appId) {
                   return (
                     <AppField
+                      key={index}
+                      address={app.address}
+                      chainId={chainId}
                       name={
                         app?.name || KNOWN_SYSTEM_APPS.get(app.appId).humanName
                       }
-                      address={app.address}
-                      key={index}
                     />
                   )
                 }
@@ -110,14 +111,13 @@ function AppsAddresses() {
   )
 }
 
-function AppField({ name, address, index }) {
+function AppField({ address, chainId, name }) {
   const { layoutName } = useLayout()
-  const { explorer, type } = getNetwork()
+  const { explorer, type } = getNetwork(chainId)
   const shortAddresses = layoutName === 'small'
 
   return (
     <div
-      key={index}
       css={`
         display: flex;
       `}

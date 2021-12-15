@@ -1,11 +1,14 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { addressesEqual } from '@1hive/1hive-ui'
-import ModalFlowBase from '../ModalFlowBase'
-import ChallengeRequirements from './ChallengeRequirements'
 import ChallengeForm from './ChallengeForm'
-import { useGardenState } from '@providers/GardenState'
-import { useDisputeFees } from '@hooks/useDispute'
+import ChallengeRequirements from './ChallengeRequirements'
+import ModalFlowBase from '../ModalFlowBase'
+
 import { useAgreement } from '@hooks/useAgreement'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useDisputeFees } from '@hooks/useDispute'
+import { useGardenState } from '@providers/GardenState'
+
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 
@@ -13,9 +16,11 @@ const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function ChallengeProposalScreens({ agreementActions, proposal }) {
   const [transactions, setTransactions] = useState([])
+
+  const { chainId } = useConnectedGarden()
   const [agreement, loading] = useAgreement()
   const { mainToken: collateralToken } = useGardenState()
-  const disputeFees = useDisputeFees()
+  const disputeFees = useDisputeFees(chainId)
 
   const temporatyTrx = useRef([])
 

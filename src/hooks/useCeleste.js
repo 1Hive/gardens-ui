@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import gql from 'graphql-tag'
 import { Client } from 'urql'
 
-import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '../networks'
 
 const RETRY_EVERY = 3000
@@ -23,9 +22,8 @@ const COURT_CONFIG_QUERY = gql`
   }
 `
 
-function useCelesteConfigPoll() {
+function useCelesteConfigPoll(chainId) {
   const [config, setConfig] = useState(null)
-  const { chainId } = useWallet()
   const network = getNetwork(chainId)
   const arbitratorAddress = network.arbitrator
 
@@ -72,8 +70,8 @@ function useCelesteConfigPoll() {
   return config
 }
 
-export function useCelesteSynced() {
-  const config = useCelesteConfigPoll()
+export function useCelesteSynced(chainId) {
+  const config = useCelesteConfigPoll(chainId)
 
   return useMemo(() => {
     if (!config || config.terms.length === 0) {

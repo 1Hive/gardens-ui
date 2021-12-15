@@ -32,7 +32,7 @@ function validationError(
   gnosisSafeChecked
 ) {
   if (!tokenAddress) {
-    return 'Please, provide a token address'
+    return 'Please, provide a token address.'
   }
   if (!isAddress(tokenAddress)) {
     return 'The token address you provided is invalid.'
@@ -110,22 +110,23 @@ function TokenSettingsBYOT() {
         gnosisSafeAddress,
         gnosisSafeChecked
       )
-      setFormError(error)
-
-      if (!error) {
-        onConfigChange('tokens', {
-          address: tokenAddress,
-          name: gardenTokenName,
-          symbol: gardenTokenSymbol,
-          decimals: tokenData.decimals,
-          existingTokenSymbol: tokenData.symbol,
-          gnosisSafe: gnosisSafeAddress,
-        })
-        onConfigChange('conviction', {
-          requestToken: tokenAddress,
-        })
-        onNext()
+      if (error) {
+        setFormError(error)
+        return
       }
+
+      onConfigChange('tokens', {
+        address: tokenAddress,
+        name: gardenTokenName,
+        symbol: gardenTokenSymbol,
+        decimals: tokenData.decimals,
+        existingTokenSymbol: tokenData.symbol,
+        gnosisSafe: gnosisSafeAddress,
+      })
+      onConfigChange('conviction', {
+        requestToken: tokenAddress,
+      })
+      onNext()
     },
     [
       gardenTokenName,

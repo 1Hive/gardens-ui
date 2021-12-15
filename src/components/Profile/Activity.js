@@ -12,15 +12,21 @@ import {
 import ProposalIcon from '../ProposalIcon'
 import { useGardens } from '@/providers/Gardens'
 import useUser from '@hooks/useUser'
+import { useWallet } from '@providers/Wallet'
 
 import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
 import { getGardenLabel } from '@utils/garden-utils'
+import { getNetworkType } from '@utils/web3-utils'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
   const [user] = useUser(account)
-  const { gardens } = useGardens()
+
+  const { gardensMetadata } = useGardens()
+  const { preferredNetwork } = useWallet()
+
+  const networkType = getNetworkType(preferredNetwork)
 
   const dedupedStakes = useMemo(() => {
     if (!user?.supports.length) {
@@ -57,9 +63,9 @@ function Activity({ account, isConnectedAccount, profileName }) {
           {dedupedStakes.length ? (
             dedupedStakes.map(({ createdAt, proposal }, index) => {
               const gardenAddress = proposal.organization.id
-              const gardenPath = `/#/garden/${gardenAddress}`
+              const gardenPath = `/#/${networkType}/garden/${gardenAddress}`
               // TODO: evaluate a more efficient way to handle this
-              const gardenLabel = getGardenLabel(gardenAddress, gardens)
+              const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata)
 
               return (
                 <div

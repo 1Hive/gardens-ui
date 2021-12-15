@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
-import { useGardens } from '@providers/Gardens'
 import { useMounted } from './useMounted'
 
 import BigNumber from '@lib/bigNumber'
@@ -13,12 +13,15 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const [loading, setLoading] = useState(true)
   const [canUpdate, setCanUpdate] = useState(false)
 
-  const { connectedGarden } = useGardens()
-  const { incentivisedPriceOracle: priceOracleAddress } = connectedGarden
+  const {
+    chainId,
+    incentivisedPriceOracle: priceOracleAddress,
+  } = useConnectedGarden()
 
   const priceOracleContract = useContractReadOnly(
     priceOracleAddress,
-    priceOracleAbi
+    priceOracleAbi,
+    chainId
   )
 
   useEffect(() => {
@@ -42,7 +45,8 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
           setConvertedAmount(new BigNumber(result.toString()))
         }
       } catch (err) {
-        console.error(`Error consulting converted amount: ${err}`)
+        // The consult of the Oracle price can error if it hasn´t been updated in the configured period.
+        // For this reason we´ll not log the error to avoid confusion from actual errors.
       }
       setLoading(false)
     }

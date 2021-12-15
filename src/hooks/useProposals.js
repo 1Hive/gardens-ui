@@ -2,7 +2,8 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakesByGarden } from './useStakes'
-import { useGardenState } from '../providers/GardenState'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
 import useProposalFilters, {
   INITIAL_PROPOSAL_COUNT,
 } from './useProposalFilters'
@@ -30,6 +31,8 @@ import {
   hasProposalEnded,
 } from '@utils/proposal-utils'
 import {
+  getDelegatedVotingEndDate,
+  getExecutionDelayEndDate,
   getVoteEndDate,
   getVoteStatusData,
   hasVoteEnded,
@@ -41,8 +44,9 @@ const TIME_UNIT = (60 * 60 * 24) / 15
 
 export function useProposals() {
   const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
 
-  const latestBlock = useLatestBlock()
+  const latestBlock = useLatestBlock(chainId)
 
   const filters = useProposalFilters()
   const [proposals, proposalsFetchedCount] = useFilteredProposals(
@@ -120,7 +124,8 @@ export function useProposal(proposalId, appAddress) {
     proposalId,
     appAddress
   )
-  const latestBlock = useLatestBlock()
+  const { chainId } = useConnectedGarden()
+  const latestBlock = useLatestBlock(chainId)
   const { config, loading } = useGardenState()
 
   const blockHasLoaded = latestBlock.number !== 0
@@ -201,8 +206,10 @@ export function useProposalWithThreshold(proposal) {
 }
 
 export function useProposalEndDate(proposal) {
-  const blockTime = useBlockTime()
-  const latestBlock = useLatestBlock()
+  const { chainId } = useConnectedGarden()
+
+  const blockTime = useBlockTime(chainId)
+  const latestBlock = useLatestBlock(chainId)
   const { type, remainingBlocksToPass } = proposal
 
   let endDate = 0
@@ -271,7 +278,10 @@ function processProposal(proposal, latestBlock, account, config) {
 }
 
 function processDecision(proposal) {
+  const delegatedVotingEndDate = getDelegatedVotingEndDate(proposal)
   const endDate = getVoteEndDate(proposal)
+  const executionDelayEndDate = getExecutionDelayEndDate(proposal, endDate)
+
   const hasEnded = hasVoteEnded(
     proposal.status,
     endDate,
@@ -281,8 +291,11 @@ function processDecision(proposal) {
 
   return {
     ...proposal,
+    executionDelayEndDate,
+    delegatedVotingEndDate,
     endDate,
     hasEnded,
+    isDelayed: hasEnded && executionDelayEndDate > Date.now(),
     statusData,
   }
 }

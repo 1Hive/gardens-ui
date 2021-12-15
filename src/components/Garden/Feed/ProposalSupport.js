@@ -9,7 +9,7 @@ import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 import { ProposalTypes } from '@/types'
 import { safeDiv } from '@utils/math-utils'
-import { getConnectedAccountVote } from '@utils/vote-utils'
+import { getConnectedAccountCast } from '@utils/vote-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function ProposalSupport({ proposal }) {
@@ -54,7 +54,7 @@ function DecisionSummaryBar({ proposal }) {
   const yeasPct = safeDiv(parseFloat(yea), totalVotes)
   const naysPct = safeDiv(parseFloat(nay), totalVotes)
 
-  const connectedAccountVote = getConnectedAccountVote(
+  const connectedAccountCast = getConnectedAccountCast(
     proposal,
     connectedAccount
   )
@@ -95,7 +95,7 @@ function DecisionSummaryBar({ proposal }) {
               margin-right: ${1 * GU}px;
             `}
           />
-          {connectedAccountVote === VOTE_YEA && YouTag}
+          {connectedAccountCast.vote === VOTE_YEA && YouTag}
         </div>
         <div
           css={`
@@ -104,7 +104,7 @@ function DecisionSummaryBar({ proposal }) {
             width: auto;
           `}
         >
-          {connectedAccountVote === VOTE_NAY && YouTag}
+          {connectedAccountCast.vote === VOTE_NAY && YouTag}
           <SummaryRow
             color={theme.negative}
             label="No"

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-const ClaimRewards = React.memo(function ExecuteProposal({ getTransactions }) {
+const ClaimRewards = React.memo(function ClaimRewards({ getTransactions }) {
   const { next } = useMultiModal()
 
   useEffect(() => {

@@ -77,11 +77,7 @@ const ActivityButton = React.memo(function ActivityButton() {
               line-height: 0;
             `}
           >
-            <IconAlert
-              css={`
-                color: ${theme.hint};
-              `}
-            />
+            <IconAlert color={theme.hint} />
             <Spring
               native
               from={{ opacity: 0, size: 0 }}
@@ -94,6 +90,9 @@ const ActivityButton = React.memo(function ActivityButton() {
               {({ opacity, size }) => (
                 <animated.div
                   style={{
+                    position: 'absolute',
+                    top: `-${0.5 * GU}px`,
+                    right: `-${0.5 * GU}px`,
                     opacity,
                     transform: size
                       .interpolate(
@@ -102,11 +101,6 @@ const ActivityButton = React.memo(function ActivityButton() {
                       )
                       .interpolate(s => `scale3d(${s}, ${s}, 1)`),
                   }}
-                  css={`
-                    position: absolute;
-                    top: -${0.5 * GU}px;
-                    right: -${0.5 * GU}px;
-                  `}
                 >
                   <Tag limitDigits mode="activity" label={unreadCount} />
                 </animated.div>

@@ -4,6 +4,7 @@ import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
 
 import Activity from './Activity'
+import Delegates from './Delegates'
 import EditProfile from './EditProfile'
 import InactiveProposalsStake from './InactiveProposalsStake'
 import MainProfile from './MainProfile'
@@ -136,6 +137,7 @@ function Profile() {
               secondary={
                 <>
                   <MainProfile profile={selectedProfile} />
+                  <Delegates account={selectedAccount} />
                   <StakingTokens myStakes={accountStakes} />
                   {accountInactiveStakes.length > 0 && (
                     <InactiveProposalsStake

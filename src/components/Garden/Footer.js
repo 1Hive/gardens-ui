@@ -14,17 +14,16 @@ import styled from 'styled-components'
 import Layout from '../Layout'
 import MultiModal from '../MultiModal/MultiModal'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import { getHoneyswapTradeTokenUrl } from '@/endpoints'
+import { getDexTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
-import gardensLogoType from '@assets/gardensLogoType.svg'
 
 const defaultFooterData = {
   links: {
@@ -53,7 +52,7 @@ const defaultFooterData = {
       },
     ],
   },
-  logo: gardensLogoType,
+  logo: gardenSvg,
   garden: false,
 }
 
@@ -63,15 +62,15 @@ function Footer() {
   const compactMode = below('medium')
   const [footerData, setFooterData] = useState(defaultFooterData)
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
 
   useEffect(() => {
     if (connectedGarden) {
       // eslint-disable-next-line camelcase
-      const { links, logo_type, token, wrappableToken } = connectedGarden
+      const { links, logo, token, wrappableToken } = connectedGarden
       setFooterData({
         links,
-        logo: logo_type,
+        logo,
         token,
         wrappableToken,
         garden: true,
@@ -111,8 +110,11 @@ function Footer() {
           >
             <div>
               <img
+                css={`
+                  border-radius: 100%;
+                `}
                 src={logoSvg}
-                height={footerData.garden ? '60' : '40'}
+                height="60"
                 alt=""
               />
             </div>
@@ -166,6 +168,7 @@ function FixedFooter({ token }) {
   const history = useHistory()
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  const { chainId } = useConnectedGarden()
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
@@ -236,7 +239,7 @@ function FixedFooter({ token }) {
               onClick={() => setCreateProposalModalVisible(true)}
             />
             <FooterItem
-              href={getHoneyswapTradeTokenUrl(token.id)}
+              href={getDexTradeTokenUrl(chainId, token.id)}
               icon={<img src={getHoneySvg} alt="" />}
               label={`Get ${token.name}`}
               external

@@ -9,7 +9,6 @@ const AdvancedSettingsModal = ({
   handleMinThresholdStakePctChange,
   visible,
   onClose,
-  onDone,
 }) => {
   const handleDone = () => {
     onClose()

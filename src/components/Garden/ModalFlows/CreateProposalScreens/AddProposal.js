@@ -5,6 +5,7 @@ import {
   DropDown,
   Field,
   GU,
+  Help,
   Info,
   isAddress,
   Link,
@@ -13,13 +14,13 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
-import { formatTokenAmount } from '@utils/token-utils'
+import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 import { useHistory } from 'react-router-dom'
@@ -55,7 +56,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     weight,
   } = config.conviction
 
-  const { connectedGarden } = useGardens()
+  const connectedGarden = useConnectedGarden()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
@@ -209,12 +210,12 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
-        All proposals are bound by this community's{' '}
+        All proposals are bound by this community&apos;s{' '}
         <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
           Covenant
         </Link>{' '}
-        . If you haven't taken the time to read through it yet, please make sure
-        you do so.
+        . If you haven&apos;t taken the time to read through it yet, please make
+        sure you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
         <Link href={connectedGarden.forumURL}>
@@ -339,6 +340,8 @@ function RequestedAmount({
   const theme = useTheme()
   const { stable, value } = amount
 
+  const isRequestTokenStable = isStableToken(requestToken)
+
   return (
     <>
       <Field label="Requested Amount" onFocus={onFocus} onBlur={onBlur}>
@@ -363,34 +366,52 @@ function RequestedAmount({
           adornmentPosition="end"
           adornmentSettings={{ padding: 1 }}
         />
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: ${theme.contentSecondary};
-            margin-top: ${0.75 * GU}px;
-          `}
-        >
-          {stable ? (
-            <ConvertedAmount
-              amount={convertedAmount}
-              loading={loadingAmount}
-              requestToken={requestToken}
-            />
-          ) : (
-            <div />
-          )}
+        {!isRequestTokenStable && (
           <div
             css={`
               display: flex;
               align-items: center;
+              justify-content: space-between;
+              color: ${theme.contentSecondary};
+              margin-top: ${0.75 * GU}px;
             `}
           >
-            <Checkbox checked={stable} onChange={onIsStableChange} />
-            <span>Stable amount ({stableToken.symbol})</span>
+            {stable ? (
+              <ConvertedAmount
+                amount={convertedAmount}
+                loading={loadingAmount}
+                requestToken={requestToken}
+              />
+            ) : (
+              <div />
+            )}
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <Checkbox checked={stable} onChange={onIsStableChange} />
+              <span>Stable amount ({stableToken.symbol})</span>
+              <div
+                css={`
+                  margin-left: ${1 * GU}px;
+                `}
+              >
+                <Help hint="">
+                  For funding proposals denominated in {stableToken.symbol} to
+                  be made successfully, this Garden&apos;s{' '}
+                  <Link href="https://1hive.gitbook.io/gardens/garden-creators/price-oracle">
+                    price oracle
+                  </Link>{' '}
+                  must be called consistently. Contact your Garden administrator
+                  or development team if the requested stable amount is not
+                  accurate.
+                </Help>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </Field>
       <Info
         css={`
@@ -398,9 +419,10 @@ function RequestedAmount({
         `}
       >
         The larger the requested amount, the more support required for the
-        proposal to pass. If you specify the proposal amount in {` `}
-        {stableToken.symbol} it will be converted to {requestToken.symbol}{' '}
-        if/when it is passed.{' '}
+        proposal to pass.{' '}
+        {isRequestTokenStable
+          ? ''
+          : `If you specify the proposal amount in ${stableToken.symbol} it will be converted to ${requestToken.symbol} if/when it is passed.`}{' '}
         {neededThreshold
           ? `The conviction
         required in order for the proposal to pass with the requested amount is

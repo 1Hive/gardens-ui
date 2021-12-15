@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
-import { useGardens } from '@providers/Gardens'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
 import { getNetwork } from '@/networks'
@@ -14,8 +14,7 @@ import { getContract, useContract } from './useContract'
 import env from '@/environment'
 
 import actions from '../actions/garden-action-types'
-import { VOTE_YEA } from '@/constants'
-import { encodeFunctionData } from '@utils/web3-utils'
+import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
 
@@ -23,6 +22,7 @@ import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
+const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
 const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
@@ -33,15 +33,13 @@ export default function useActions() {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const {
-    connectedGarden: { incentivisedPriceOracle, unipool },
-  } = useGardens()
-  const { installedApps, wrappableToken, mainToken } = useGardenState()
+  const { chainId, incentivisedPriceOracle, unipool } = useConnectedGarden()
+  const { installedApps, mainToken, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
     env('CONVICTION_APP_NAME')
   )
-  const { stableToken } = getNetwork()
+  const { stableToken } = getNetwork(chainId)
 
   const priceOracleContract = useContract(
     incentivisedPriceOracle,
@@ -248,15 +246,57 @@ export default function useActions() {
   }, [account, ethers, issuanceApp])
 
   // Vote actions
-  // TODO- we need to start using modal flow for all the transactions
   const voteOnDecision = useCallback(
-    (voteId, voteType) => {
-      sendIntent(votingApp, 'vote', [voteId, voteType === VOTE_YEA], {
-        ethers,
-        from: account,
+    async (voteId, supports, onDone = noop) => {
+      let intent = await votingApp.intent('vote', [voteId, supports], {
+        actAs: account,
       })
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_DECISION]({
+        voteId,
+        supports,
+      })
+      const type = actions.VOTE_ON_DECISION
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
     },
-    [account, ethers, votingApp]
+    [account, votingApp]
+  )
+  const voteOnBehalfOf = useCallback(
+    async (voteId, supports, voters, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'voteOnBehalfOf',
+        [voteId, supports, voters],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.VOTE_ON_BEHALF_OF]({
+        voteId,
+        supports,
+      })
+      const type = actions.VOTE_ON_BEHALF_OF
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
   )
   // TODO- we need to start using modal flow for all the transactions
   const executeDecision = useCallback(
@@ -267,6 +307,33 @@ export default function useActions() {
       })
     },
     [account, ethers, votingApp]
+  )
+  const delegateVoting = useCallback(
+    async (representative, onDone = noop) => {
+      let intent = await votingApp.intent(
+        'setRepresentative',
+        [representative],
+        {
+          actAs: account,
+        }
+      )
+
+      intent = imposeGasLimit(intent, GAS_LIMIT)
+
+      const description = radspec[actions.DELEGATE_VOTING]({
+        representative,
+      })
+      const type = actions.DELEGATE_VOTING
+
+      const transactions = attachTrxMetadata(
+        intent.transactions,
+        description,
+        type
+      )
+
+      onDone(transactions)
+    },
+    [account, votingApp]
   )
 
   // Agreement actions
@@ -297,7 +364,7 @@ export default function useActions() {
       { actionId, settlementOffer, challengerFinishedEvidence, context },
       onDone = noop
     ) => {
-      const intent = await agreementApp.intent(
+      let intent = await agreementApp.intent(
         'challengeAction',
         [actionId, settlementOffer, challengerFinishedEvidence, context],
         {
@@ -305,6 +372,7 @@ export default function useActions() {
         }
       )
 
+      intent = imposeGasLimit(intent, CHALLENGE_GAS_LIMIT)
       const description = radspec[actions.CHALLENGE_ACTION]({
         actionId,
       })
@@ -347,7 +415,11 @@ export default function useActions() {
 
   const approveTokenAmount = useCallback(
     async (tokenAddress, depositAmount, onDone = noop) => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!tokenContract || !agreementApp) {
         return
       }
@@ -367,7 +439,7 @@ export default function useActions() {
         onDone(transactions)
       }
     },
-    [agreementApp, approve, mounted]
+    [agreementApp, approve, chainId, mounted]
   )
 
   const getAllowance = useCallback(
@@ -385,13 +457,17 @@ export default function useActions() {
 
   const getAgreementTokenAllowance = useCallback(
     tokenAddress => {
-      const tokenContract = getContract(tokenAddress, tokenAbi)
+      const tokenContract = getContract(
+        tokenAddress,
+        tokenAbi,
+        getDefaultProvider(chainId)
+      )
       if (!agreementApp || !tokenContract) {
         return
       }
       return getAllowance(tokenContract, agreementApp.address)
     },
-    [agreementApp, getAllowance]
+    [agreementApp, chainId, getAllowance]
   )
 
   // TODO- we need to start using modal flow for all the transactions
@@ -627,33 +703,37 @@ export default function useActions() {
       priceOracleActions: { updatePriceOracle },
       unipoolActions: { claimRewards },
       votingActions: {
+        delegateVoting,
         executeDecision,
         voteOnDecision,
+        voteOnBehalfOf,
       },
     }),
     [
       approveTokenAmount,
+      approveWrappableTokenAmount,
+      cancelProposal,
       challengeAction,
+      claimRewards,
+      delegateVoting,
       disputeAction,
+      executeDecision,
+      executeIssuance,
+      executeProposal,
       getAgreementTokenAllowance,
+      getHookedTokenManagerAllowance,
+      newProposal,
+      newSignalingProposal,
       resolveAction,
       settleAction,
       signAgreement,
-      executeProposal,
-      cancelProposal,
-      newProposal,
-      newSignalingProposal,
       stakeToProposal,
-      withdrawFromProposal,
-      approveWrappableTokenAmount,
-      getHookedTokenManagerAllowance,
-      wrap,
       unwrap,
-      executeIssuance,
       updatePriceOracle,
-      claimRewards,
-      executeDecision,
+      voteOnBehalfOf,
       voteOnDecision,
+      withdrawFromProposal,
+      wrap,
     ]
   )
 }

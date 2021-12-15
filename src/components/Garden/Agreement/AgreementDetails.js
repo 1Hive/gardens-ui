@@ -9,8 +9,10 @@ import {
   GU,
   RADIUS,
 } from '@1hive/1hive-ui'
-import { dateFormat } from '@utils/date-utils'
 import InfoField from '../InfoField'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { CELESTE_URL } from '@/endpoints'
+import { dateFormat } from '@utils/date-utils'
 import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
 import { getNetwork } from '@/networks'
 
@@ -23,9 +25,13 @@ function AgreementDetails({
 }) {
   const theme = useTheme()
   const { layoutName } = useLayout()
+  const mobileMode = layoutName === 'small'
   const multiColumnsMode = layoutName === 'max' || layoutName === 'medium'
 
-  const celesteUrl = getNetwork().celesteUrl
+  const { chainId } = useConnectedGarden()
+  const network = getNetwork(chainId)
+
+  const ipfsCID = getIpfsCidFromUri(ipfsUri)
 
   return (
     <>
@@ -49,7 +55,9 @@ function AgreementDetails({
                 text-align: left;
               `}
             >
-              {getIpfsCidFromUri(ipfsUri)}
+              {mobileMode
+                ? `${ipfsCID.slice(0, 4)}...${ipfsCID.slice(-4)}`
+                : ipfsCID}
             </span>
           </Link>
         </InfoField>
@@ -62,13 +70,21 @@ function AgreementDetails({
         `}
       >
         <InfoField label="Arbitrator">
-          <Link href={celesteUrl}>Celeste</Link>
+          <Link href={CELESTE_URL}>Celeste</Link>
         </InfoField>
         <InfoField label="Staking Pool">
-          <IdentityBadge entity={stakingAddress} />
+          <IdentityBadge
+            entity={stakingAddress}
+            explorerProvider={network.explorer}
+            networkType={network.type}
+          />
         </InfoField>
         <InfoField label="Covenant Contract">
-          <IdentityBadge entity={contractAddress} />
+          <IdentityBadge
+            entity={contractAddress}
+            explorerProvider={network.explorer}
+            networkType={network.type}
+          />
         </InfoField>
         <InfoField label="Creation Date">{dateFormat(creationDate)}</InfoField>
       </div>

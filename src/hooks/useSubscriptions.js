@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useGardenState } from '@providers/GardenState'
 import {
   transformConfigData,
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { useGardenState } from '@providers/GardenState'
 
 export function useConfigSubscription(garden) {
   const [config, setConfig] = useState(null)
@@ -104,7 +104,7 @@ export function useProposalSubscription(proposalId, appAddress) {
   const onProposalHandler = useCallback(
     async (err, proposal) => {
       if (err || !proposal) {
-        setLoading(true)
+        setLoading(false)
         return
       }
 
@@ -138,8 +138,10 @@ export function useProposalSubscription(proposalId, appAddress) {
   return [proposal, loading]
 }
 
-export function useSupporterSubscription(connector, account) {
+export function useSupporterSubscription(account) {
+  const { connector } = useGardenState()
   const [supporter, setSupporter] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const rawSupporterRef = useRef(null)
   const supporterSubscription = useRef(null)
@@ -147,6 +149,7 @@ export function useSupporterSubscription(connector, account) {
   const onSupporterHandler = useCallback((err, supporter) => {
     if (err || !supporter) {
       setSupporter(null)
+      setLoading(false)
       return
     }
 
@@ -159,6 +162,7 @@ export function useSupporterSubscription(connector, account) {
 
     const transformedSupported = transformSupporterData(supporter)
     setSupporter(transformedSupported)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -176,5 +180,5 @@ export function useSupporterSubscription(connector, account) {
     }
   }, [account, connector, onSupporterHandler])
 
-  return supporter
+  return [supporter, loading]
 }

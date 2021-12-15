@@ -35,3 +35,20 @@ export const VOTE_STATUS_DISPUTED = Symbol('VOTE_STATUS_DISPUTED')
 export const VOTE_STATUS_SETTLED = Symbol('VOTE_STATUS_SETTLED')
 
 export const DEFAULT_CHAIN_ID = 100
+
+export const TERMINAL_EXECUTOR_MESSAGE = `# Available commands:
+
+install <repo> [...initParams]
+grant <entity> <app> <role> [permissionManager]
+revoke <entity> <app> <role>
+exec <app> <methodName> [...params]
+act <agent> <targetAddr> <methodSignature> [...params]
+
+# Example (unwrap wxDAI):
+
+install agent:new-agent
+grant voting agent:new-agent TRANSFER_ROLE voting
+exec vault transfer -token:tokens.honeyswap.org:WXDAI agent:new-agent 100e18
+act agent:new-agent -token:tokens.honeyswap.org:WXDAI withdraw(uint256) 100e18
+exec agent:new-agent transfer -token:XDAI vault 100e18
+`

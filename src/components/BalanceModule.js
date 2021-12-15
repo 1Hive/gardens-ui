@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import HeaderModule from './Header/HeaderModule'
@@ -7,7 +6,6 @@ import useAccountTokens from '@hooks/useAccountTokens'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { safeDivBN } from '@utils/math-utils'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
@@ -15,18 +13,12 @@ import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 function BalanceModule() {
   const theme = useTheme()
   const wallet = useWallet()
-  const history = useHistory()
   const { token } = useGardenState()
 
   const { inactiveTokens } = useAccountTokens(
     wallet.account,
     token.accountBalance
   )
-
-  const handleOnClick = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral')
-    history.push(path)
-  }, [history])
 
   const inactivePct = safeDivBN(
     inactiveTokens.times('100'),
@@ -84,7 +76,6 @@ function BalanceModule() {
         </div>
       }
       hasPopover={false}
-      onClick={handleOnClick}
     />
   )
 }

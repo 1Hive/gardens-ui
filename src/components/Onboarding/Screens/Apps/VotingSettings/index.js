@@ -18,6 +18,8 @@ import { useOnboardingState } from '@providers/Onboarding'
 
 const validateVotingSettings = (
   voteDuration,
+  voteSupportRequired,
+  voteMinAcceptanceQuorum,
   voteDelegatedVotingPeriod,
   voteQuietEndingPeriod,
   voteQuietEndingExtension,
@@ -26,11 +28,21 @@ const validateVotingSettings = (
   if (!voteDuration) {
     return 'Please add a vote duration.'
   }
+  if (!voteSupportRequired) {
+    return 'Support cannot be zero.'
+  }
+  if (!voteMinAcceptanceQuorum) {
+    return 'Minimum approval cannot be zero.'
+  }
   if (!voteDelegatedVotingPeriod) {
     return 'Please add a delegated voting period.'
+  } else if (voteDelegatedVotingPeriod > voteDuration) {
+    return 'Delegated voting period cannot be grater than vote duration.'
   }
   if (!voteQuietEndingPeriod) {
     return 'Please add a vote quite ending period.'
+  } else if (voteQuietEndingPeriod > voteDuration) {
+    return 'Quiet ending period cannot be greater than vote duration.'
   }
   if (!voteQuietEndingExtension) {
     return 'Please add a vote quite ending extension period.'
@@ -122,6 +134,7 @@ function VotingSettings() {
 
   const handleSupportChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteSupportRequired', value])
     },
     [updateField]
@@ -129,6 +142,7 @@ function VotingSettings() {
 
   const handleQuorumChange = useCallback(
     value => {
+      setFormError(null)
       updateField(['voteMinAcceptanceQuorum', value])
     },
     [updateField]
@@ -181,32 +195,36 @@ function VotingSettings() {
   const handleNextClick = () => {
     const error = validateVotingSettings(
       voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
       voteDelegatedVotingPeriod,
       voteQuietEndingPeriod,
       voteQuietEndingExtension,
       voteExecutionDelay
     )
-    setFormError(error)
 
-    if (!error) {
-      onConfigChange('voting', {
-        voteDuration,
-        voteSupportRequired,
-        voteMinAcceptanceQuorum,
-        voteDelegatedVotingPeriod,
-        voteQuietEndingPeriod,
-        voteQuietEndingExtension,
-        voteExecutionDelay,
-      })
-      onNext()
+    if (error) {
+      setFormError(error)
+      return
     }
+
+    onConfigChange('voting', {
+      voteDuration,
+      voteSupportRequired,
+      voteMinAcceptanceQuorum,
+      voteDelegatedVotingPeriod,
+      voteQuietEndingPeriod,
+      voteQuietEndingExtension,
+      voteExecutionDelay,
+    })
+    onNext()
   }
 
   return (
     <div>
       <Header
         title="Configure Governance"
-        subtitle="Tao voting"
+        subtitle="Decision voting"
         thirdtitle="Set parameters to take decisions as a community"
       />
       <PercentageField

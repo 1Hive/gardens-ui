@@ -7,10 +7,12 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import EmptyResults from './EmptyResults'
+import { useWallet } from '@providers/Wallet'
+import { getNetwork } from '@/networks'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-import EmptyResults from './EmptyResults'
 
 const GARDENS_PER_PAGE = 10
 
@@ -77,9 +79,12 @@ function GardensList({ gardens }) {
 function GardenCard({ garden }) {
   const theme = useTheme()
   const history = useHistory()
+  const { preferredNetwork } = useWallet()
   const handleSelectGarden = useCallback(() => {
-    history.push(`/garden/${garden.address}`)
-  }, [garden, history])
+    history.push(
+      `${getNetwork(preferredNetwork).type}/garden/${garden.address}`
+    )
+  }, [garden, history, preferredNetwork])
 
   const token = garden.wrappableToken || garden.token
 
@@ -107,7 +112,14 @@ function GardenCard({ garden }) {
           justify-content: center;
         `}
       >
-        <img src={garden.logo || defaultGardenLogo} alt="" height="72" />
+        <img
+          css={`
+            border-radius: 100%;
+          `}
+          src={garden.logo || defaultGardenLogo}
+          alt=""
+          height="72"
+        />
       </div>
       <div
         css={`

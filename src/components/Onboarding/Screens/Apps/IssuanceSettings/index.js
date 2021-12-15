@@ -1,4 +1,5 @@
-import React, { Fragment, useCallback, useReducer } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { Fragment, useCallback, useReducer, useState } from 'react'
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
 import IssuanceChart from './IssuanceChart'
 import { Header, PercentageField } from '@components/Onboarding/kit'
@@ -7,6 +8,16 @@ import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
 
 const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '100%'
+
+function validationError(targetRatio, maxAdjustmentRatioPerYear) {
+  if (targetRatio === '0') {
+    return 'Target ratio cannot be zero.'
+  }
+  if (maxAdjustmentRatioPerYear === '0') {
+    return 'Issuance throttle cannot be zero.'
+  }
+  return null
+}
 
 function reduceFields(fields, [field, value]) {
   switch (field) {
@@ -30,6 +41,8 @@ function IssuanceSettings() {
     step,
     steps,
   } = useOnboardingState()
+
+  const [formError, setFormError] = useState(null)
   const [
     { initialRatio, targetRatio, maxAdjustmentRatioPerYear },
     updateField,
@@ -65,11 +78,17 @@ function IssuanceSettings() {
       'maxAdjustmentRatioPerYear',
       DEFAULT_ISSUANCE_CONFIG.maxAdjustmentRatioPerYear,
     ])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateField])
 
-  const handleNextClick = () => {
-    // TODO: Validate data if necessary
+  const handleNext = event => {
+    event.preventDefault()
+
+    const error = validationError(targetRatio, maxAdjustmentRatioPerYear)
+    if (error) {
+      setFormError(error)
+      return
+    }
+
     onConfigChange('issuance', {
       initialRatio,
       targetRatio,
@@ -172,12 +191,22 @@ function IssuanceSettings() {
           through conviction voting.
         </Info>
       </div>
+      {formError && (
+        <Info
+          mode="error"
+          css={`
+            margin-bottom: ${3 * GU}px;
+          `}
+        >
+          {formError}
+        </Info>
+      )}
       <Navigation
         backEnabled
         nextEnabled
         nextLabel={`Next: ${steps[step + 1].title}`}
         onBack={onBack}
-        onNext={handleNextClick}
+        onNext={handleNext}
       />
     </div>
   )
