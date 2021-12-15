@@ -4,6 +4,8 @@ declare module '@1hive/1hive-ui' {
   const useToast: any
   const useTheme: any
   const Button: any
+  const ButtonBase: any
+  const IconMenu: any
   const useLayout: () => {
     layoutName: 'small' | 'medium' | 'large' | 'max'
   }
@@ -18,6 +20,8 @@ declare module '@1hive/1hive-ui' {
     useToast,
     useTheme,
     Button,
+    ButtonBase,
+    IconMenu,
     useLayout,
     useViewport,
     Link,
