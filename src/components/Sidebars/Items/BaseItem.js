@@ -1,5 +1,6 @@
-import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import React, { useCallback } from 'react'
+import { useHistory } from 'react-router'
+import { GU, Link, useTheme } from '@1hive/1hive-ui'
 
 const BaseItem = ({
   active,
@@ -10,6 +11,14 @@ const BaseItem = ({
   onClick = () => {},
 }) => {
   const theme = useTheme()
+  const history = useHistory()
+
+  const handleClickItem = useCallback(() => {
+    if (path) {
+      history.push(path)
+    }
+    onClick()
+  }, [history, onClick, path])
 
   return (
     <li
@@ -49,27 +58,28 @@ const BaseItem = ({
           `}
         />
       )}
-      <div
+      <Link
+        external={false}
+        onClick={handleClickItem}
         css={`
-          display: flex;
-          padding: ${1.5 * GU}px;
-          ${!active &&
-            `&:hover {
-            background: rgb(246, 246, 247);
-          }`}
+          display: block;
+          width: 100%;
+          color: inherit;
         `}
       >
-        <Link
-          external={false}
-          href={path}
+        <div
           css={`
-            display: block;
-            color: inherit;
+            display: flex;
+            padding: ${1.5 * GU}px;
+            ${!active &&
+              `&:hover {
+                background: rgb(246, 246, 247);
+              }`}
           `}
         >
           {children}
-        </Link>
-      </div>
+        </div>
+      </Link>
     </li>
   )
 }

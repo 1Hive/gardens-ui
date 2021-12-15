@@ -57,6 +57,7 @@ function Header({
   }`
 
   const showBalance = connectedGarden && account && !mobileMode
+  const showMenu = pathname !== '/home' && mobileMode
 
   return (
     <header
@@ -75,10 +76,10 @@ function Header({
             align-items: center;
           `}
         >
-          {mobileMode && pathname !== '/home' && (
+          {showMenu && (
             <div
               css={`
-                width: ${13 * GU}px;
+                width: 88px;
                 border-right: 1px solid ${theme.border};
                 display: flex;
                 align-self: stretch;
@@ -94,10 +95,10 @@ function Header({
                 `}
               >
                 <IconMenu
+                  color="grey"
                   css={`
                     width: ${4 * GU}px;
                     height: ${4 * GU}px;
-                    color: grey;
                   `}
                 />
               </ButtonBase>

@@ -18,18 +18,16 @@ function MainView({ children }) {
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
-  const mobileMode = below('medium')
-  const compactMode = below('large')
-  const [showSidebar, setShowSidebar] = useState(!mobileMode)
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
     false
   )
-  let loadingGardenState = true
 
   const handleToggleSidebar = useCallback(() => {
-    setShowSidebar(prevShowSidebar => (!mobileMode ? true : !prevShowSidebar))
-  }, [mobileMode])
+    setShowMobileSidebar(prevShowMobileSidebar => !prevShowMobileSidebar)
+  }, [])
 
+  let loadingGardenState = true
   if (connectedGarden) {
     // TODO: Refactor
     const { loading } = useGardenState()
@@ -46,6 +44,10 @@ function MainView({ children }) {
     )
   }
 
+  const mobileMode = below('medium')
+  const compactMode = below('large')
+  const hasSidebar = pathname !== '/home'
+
   return (
     <ToastHub
       threshold={1}
@@ -61,10 +63,10 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {pathname !== '/home' ? (
+        {hasSidebar ? (
           mobileMode ? (
             <MobileSidebar
-              show={showSidebar}
+              show={showMobileSidebar}
               onToggle={handleToggleSidebar}
               onOpenCreateProposal={() => setCreateProposalModalVisible(true)}
             />
@@ -85,9 +87,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
-              ${connectedGarden && !mobileMode
-                ? `margin-left: ${9 * GU}px;`
-                : ''}
+              ${hasSidebar && !mobileMode ? `margin-left: ${9 * GU}px;` : ''}
             `}
           >
             <div

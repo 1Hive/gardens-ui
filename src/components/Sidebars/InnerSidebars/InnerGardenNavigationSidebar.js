@@ -1,14 +1,10 @@
 import React from 'react'
-import { useLocation } from 'react-router'
-
-import { useWallet } from '@/providers/Wallet'
-import { useConnectedGarden } from '@/providers/ConnectedGarden'
-import { buildGardenPath } from '@/utils/routing-utils'
-import { getNetworkType } from '@/utils/web3-utils'
+import { useHistory } from 'react-router'
 
 import NavigationItem from '../Items/NavigationItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
 
+import { buildGardenPath } from '@utils/routing-utils'
 import covenantIcon from '@assets/covenantIcon.svg'
 import createProposalIcon from '@assets/createProposal.svg'
 import feedIcon from '@assets/feedIcon.svg'
@@ -18,25 +14,19 @@ const InnerGardenNavigationSidebar = ({
   onToggle,
   onOpenCreateProposal,
 }) => {
-  const location = useLocation()
-  const { preferredNetwork } = useWallet()
-
-  const connectedGarden = useConnectedGarden()
-  const networkType = getNetworkType(
-    connectedGarden?.chainId || preferredNetwork
-  )
+  const history = useHistory()
 
   const gardenNavigationItems = [
     {
       icon: feedIcon,
       label: 'Feed',
-      path: `#/${networkType}/garden/${connectedGarden.address}`,
+      path: buildGardenPath(history.location, ''),
       onClick: onToggle,
     },
     {
       icon: covenantIcon,
       label: 'Covenant',
-      path: `#/${networkType}/garden/${connectedGarden.address}/covenant`,
+      path: buildGardenPath(history.location, 'covenant'),
       onClick: onToggle,
     },
     {
@@ -56,7 +46,7 @@ const InnerGardenNavigationSidebar = ({
         {gardenNavigationItems.map(({ icon, label, path, onClick }) => (
           <NavigationItem
             key={path}
-            active={location.pathname === path}
+            active={history.location.pathname === path}
             label={label}
             path={path}
             src={icon}

@@ -4,6 +4,7 @@ import { GU, RootPortal, useTheme } from '@1hive/1hive-ui'
 
 import InnerGardensSidebar from './InnerSidebars/InnerGardensSidebar'
 import InnerGardenNavigationSidebar from './InnerSidebars/InnerGardenNavigationSidebar'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 const GARDENS_SIDEBAR_WIDTH = 9 * GU
 const NAVIGATION_SIDEBAR_WIDTH = screen.width - 18 * GU
@@ -40,6 +41,7 @@ const AnimatedSidebar = ({
 
 const MobileSidebar = ({ show, onToggle, onOpenCreateProposal }) => {
   const theme = useTheme()
+  const connectedGarden = useConnectedGarden()
 
   const sidebarTransition = useTransition(show, null, {
     from: {
@@ -73,20 +75,22 @@ const MobileSidebar = ({ show, onToggle, onOpenCreateProposal }) => {
             onToggle={onToggle}
           />
         </AnimatedSidebar>
-        <AnimatedSidebar
-          animationKey={key.concat(1)}
-          animationProps={props}
-          width={`${NAVIGATION_SIDEBAR_WIDTH}px`}
-          left={`${GARDENS_SIDEBAR_WIDTH}px`}
-          top={`${8 * GU}px`}
-          zIndex={3}
-        >
-          <InnerGardenNavigationSidebar
+        {connectedGarden && (
+          <AnimatedSidebar
+            animationKey={key.concat(1)}
+            animationProps={props}
             width={`${NAVIGATION_SIDEBAR_WIDTH}px`}
-            onToggle={onToggle}
-            onOpenCreateProposal={onOpenCreateProposal}
-          />
-        </AnimatedSidebar>
+            left={`${GARDENS_SIDEBAR_WIDTH}px`}
+            top={`${8 * GU}px`}
+            zIndex={3}
+          >
+            <InnerGardenNavigationSidebar
+              width={`${NAVIGATION_SIDEBAR_WIDTH}px`}
+              onToggle={onToggle}
+              onOpenCreateProposal={onOpenCreateProposal}
+            />
+          </AnimatedSidebar>
+        )}
         {/* Opaque background */}
         <animated.div
           css={`
