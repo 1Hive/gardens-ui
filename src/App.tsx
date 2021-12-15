@@ -11,6 +11,7 @@ import { GardensProvider } from './providers/Gardens'
 import { ProfileProvider } from './providers/Profile'
 import { UserProvider } from './providers/User'
 import { WalletProvider } from './providers/Wallet'
+import { ProfileCeramicProvider } from './providers/ProfileCeramic'
 
 function App() {
   return (
@@ -18,16 +19,18 @@ function App() {
       <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
         <WalletProvider>
           <GlobalErrorHandler>
-            <ProfileProvider>
-              <UserProvider>
-                <GardensProvider>
-                  <WelcomeLoader />
-                  <MainView>
-                    <Routes />
-                  </MainView>
-                </GardensProvider>
-              </UserProvider>
-            </ProfileProvider>
+            <ProfileCeramicProvider>
+              <ProfileProvider>
+                <UserProvider>
+                  <GardensProvider>
+                    <WelcomeLoader />
+                    <MainView>
+                      <Routes />
+                    </MainView>
+                  </GardensProvider>
+                </UserProvider>
+              </ProfileProvider>
+            </ProfileCeramicProvider>
           </GlobalErrorHandler>
         </WalletProvider>
       </Main>
