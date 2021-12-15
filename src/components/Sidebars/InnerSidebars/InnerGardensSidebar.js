@@ -1,19 +1,25 @@
 import React, { useMemo } from 'react'
-import { useRouteMatch } from 'react-router'
 import { animated, useTrail } from 'react-spring'
 import { GU, Link, LoadingRing } from '@1hive/1hive-ui'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import { addressesEqual } from '@/utils/web3-utils'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 import { useUserState } from '@/providers/User'
 import { useGardens } from '@/providers/Gardens'
+import { useWallet } from '@/providers/Wallet'
 import GardenItem from '../Items/GardenItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
 
 const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
+  const { preferredNetwork } = useWallet()
   const { user: connectedUser, loading: userLoading } = useUserState()
   const { gardensMetadata } = useGardens()
-  const match = useRouteMatch('/garden/:daoId')
+
+  const connectedGarden = useConnectedGarden()
+  const networkType = getNetworkType(
+    connectedGarden?.chainId || preferredNetwork
+  )
 
   const sidebarGardens = useMemo(() => {
     if (!connectedUser?.gardensSigned) {
@@ -29,13 +35,13 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return {
         address: gardenSignedAddress,
         name,
-        path: `/garden/${gardenSignedAddress}`,
+        path: `#/${networkType}/garden/${gardenSignedAddress}`,
         src: logo || defaultGardenLogo,
       }
     })
 
     return result
-  }, [connectedUser, gardensMetadata])
+  }, [connectedUser, gardensMetadata, networkType])
 
   const startTrail = sidebarGardens.length > 0
   const gardensTrail = useTrail(sidebarGardens.length, {
@@ -82,7 +88,10 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
           {disableAnimation
             ? sidebarGardens.map(({ address, name, path, src }) => (
                 <GardenItem
-                  active={addressesEqual(address, match?.params.daoId)}
+                  active={
+                    Boolean(connectedGarden) &&
+                    addressesEqual(address, connectedGarden.address)
+                  }
                   label={name || address}
                   path={path}
                   src={src}
@@ -94,7 +103,10 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
                 return (
                   <animated.div key={address} style={style}>
                     <GardenItem
-                      active={addressesEqual(address, match?.params.daoId)}
+                      active={
+                        Boolean(connectedGarden) &&
+                        addressesEqual(address, connectedGarden.address)
+                      }
                       label={name || address}
                       path={path}
                       src={src}
