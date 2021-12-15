@@ -17,7 +17,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
   const { gardensMetadata } = useGardens()
 
   const connectedGarden = useConnectedGarden()
-  const networkType = getNetworkType()
+  const networkType = getNetworkType(connectedGarden?.chainId)
 
   const sidebarGardens = useMemo(() => {
     if (!connectedUser?.gardensSigned) {
@@ -33,7 +33,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return {
         address: gardenSignedAddress,
         name,
-        path: `#/${networkType}/garden/${gardenSignedAddress}`,
+        path: `/${networkType}/garden/${gardenSignedAddress}`,
         src: logo || defaultGardenLogo,
       }
     })
