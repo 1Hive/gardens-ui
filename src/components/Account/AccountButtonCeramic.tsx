@@ -1,5 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect } from 'react'
 import {
   EthIdenticon,
   GU,
@@ -9,21 +8,28 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useProfile } from '@providers/Profile'
 import HeaderModule from '../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@/providers/Wallet'
 import { useProfileCeramicState } from '@/providers/ProfileCeramic'
 
-type AccountButton = {
-  onClick: () => void
-}
-
 function AccountButtonCeramic() {
   const theme = useTheme()
-  const {} = useProfileCeramicState()
+  const {
+    connectDID,
+    disconnectDID,
+    profileDID,
+    account,
+  } = useProfileCeramicState()
   const { chainId } = useWallet()
+
+  const image = 'A'
+  const name = 'C'
+
+  useEffect(() => {
+    console.log({ connectDID, disconnectDID, profileDID })
+  }, [])
 
   const onClick = () => {
     console.log(`AccountButtonCeramic click something`)
