@@ -96,6 +96,10 @@ function HoneyswapLiquidity() {
           denom === HNY_DENOMINATION
             ? String(denominatedAmount * hnyPrice)
             : denominatedAmount,
+        honeyTokenLiquidityStableBN:
+          denom === HNY_DENOMINATION
+            ? bigNum(denominatedAmount).multipliedBy(hnyPrice)
+            : bigNum(denominatedAmount),
         tokenLiquidity: tokenAmount,
       })
 

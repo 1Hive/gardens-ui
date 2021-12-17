@@ -30,6 +30,8 @@ import { DAY_IN_SECONDS } from '@utils/kit-utils'
 
 import { publishNewDao } from '@/services/github'
 
+import { bigNum } from '@/lib/bigNumber'
+
 import { useWallet } from './Wallet'
 
 const OnboardingContext = React.createContext()
@@ -74,7 +76,9 @@ const DEFAULT_CONFIG = {
   liquidity: {
     denomination: 0,
     honeyTokenLiquidity: '',
+    honeyTokenLiquidityBN: bigNum(0),
     honeyTokenLiquidityStable: '',
+    honeyTokenLiquidityStableBN: bigNum(0),
     tokenLiquidity: '',
   },
   tokens: {
