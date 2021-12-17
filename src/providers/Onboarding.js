@@ -21,6 +21,7 @@ import {
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import PropTypes from 'prop-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { bigNum } from '@/lib/bigNumber'
 
 const OnboardingContext = React.createContext()
 
@@ -64,7 +65,9 @@ const DEFAULT_CONFIG = {
   liquidity: {
     denomination: 0,
     honeyTokenLiquidity: '',
+    honeyTokenLiquidityBN: bigNum(0),
     honeyTokenLiquidityStable: '',
+    honeyTokenLiquidityStableBN: bigNum(0),
     tokenLiquidity: '',
   },
   tokens: {

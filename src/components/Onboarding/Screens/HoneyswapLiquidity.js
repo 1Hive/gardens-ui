@@ -23,6 +23,7 @@ import { getNetwork } from '@/networks'
 import { toDecimals } from '@utils/math-utils'
 import { BYOT_TYPE } from '../constants'
 import { bigNum } from '@/lib/bigNumber'
+import BigNumber from '@lib/bigNumber'
 
 const MIN_HNY_USD = 100
 const HNY_DENOMINATION = 0
@@ -97,6 +98,10 @@ function HoneyswapLiquidity() {
           denom === HNY_DENOMINATION
             ? String(denominatedAmount * hnyPrice)
             : denominatedAmount,
+        honeyTokenLiquidityStableBN:
+          denom === HNY_DENOMINATION
+            ? bigNum(denominatedAmount).multipliedBy(hnyPrice)
+            : bigNum(denominatedAmount),
         tokenLiquidity: tokenAmount,
       })
 
