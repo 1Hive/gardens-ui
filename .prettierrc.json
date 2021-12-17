@@ -7,7 +7,9 @@
   "tabSize": 2,
   "importOrder": [
     "^react(.*)$",
+    "<THIRD_PARTY_MODULES>",
     "^@1hive/(.*)$",
+    "^@components/(.*)$",
     "^@abis/(.*)$",
     "^@assets/(.*)$",
     "^@hooks/(.*)$",

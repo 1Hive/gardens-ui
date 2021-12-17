@@ -1,5 +1,7 @@
 import React from 'react'
+
 import styled, { css } from 'styled-components'
+
 import {
   ButtonBase,
   GU,
@@ -20,7 +22,7 @@ export const HoverIndicator = styled.span`
   `}
 `
 
-const ArrowButton = props => {
+const ArrowButton = (props) => {
   const theme = useTheme()
   return (
     <ButtonBase
@@ -50,10 +52,10 @@ const SelectorWrapper = styled.div`
     ${({ small, theme }) => css`
       ${textStyle(small ? 'label2' : 'body2')};
       ${small &&
-        css`
-          color: ${theme.hint};
-          font-weight: 600;
-        `}
+      css`
+        color: ${theme.hint};
+        font-weight: 600;
+      `}
     `}
   }
 `
