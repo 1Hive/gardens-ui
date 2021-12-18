@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+// @ts-nocheck
 
+import { useEffect, useMemo, useState } from 'react'
 import gql from 'graphql-tag'
 import { Client } from 'urql'
-
 import { getNetwork } from '../networks'
 
 const RETRY_EVERY = 3000
@@ -22,7 +22,7 @@ const COURT_CONFIG_QUERY = gql`
   }
 `
 
-function useCelesteConfigPoll(chainId) {
+function useCelesteConfigPoll(chainId: number) {
   const [config, setConfig] = useState(null)
   const network = getNetwork(chainId)
   const arbitratorAddress = network.arbitrator
@@ -70,8 +70,10 @@ function useCelesteConfigPoll(chainId) {
   return config
 }
 
-export function useCelesteSynced(chainId) {
+export function useCelesteSynced(chainId: number) {
   const config = useCelesteConfigPoll(chainId)
+
+  console.log(`config`, config)
 
   return useMemo(() => {
     if (!config || config.terms.length === 0) {
@@ -82,6 +84,12 @@ export function useCelesteSynced(chainId) {
 
     const nowS = Date.now() / 1000
     const expectedCurrentTerm = getExpectedCurrentTermId(nowS, {
+      terms,
+      termDuration,
+    })
+
+    console.log(`expectedCurrentTerm`, expectedCurrentTerm)
+    console.log(nowS, {
       terms,
       termDuration,
     })

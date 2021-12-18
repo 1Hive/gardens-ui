@@ -1,4 +1,4 @@
-import actions from '../../actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 
 // The different types of activity
 const ACTIVITY_TYPES = {

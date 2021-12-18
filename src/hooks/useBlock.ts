@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-
 import { useMounted } from '@hooks/useMounted'
 import { getDefaultProvider } from '@utils/web3-utils'
 import { getNetwork } from '../networks'
@@ -13,20 +12,20 @@ const NETWORK_TIMES = new Map([
   ['xdai', 5],
 ])
 
-function useProvider(chainId) {
+function useProvider(chainId: number) {
   return useMemo(() => getDefaultProvider(chainId), [chainId])
 }
 
-export function useLatestBlock(chainId) {
+export function useLatestBlock(chainId: number) {
   const mounted = useMounted()
   const [block, setBlock] = useState({ number: 0, timestamp: 0 })
 
-  const blockTime = useBlockTime(chainId)
+  const blockTime = useBlockTime(chainId) ?? 0
   const blockNumberRef = useRef(block.number)
   const provider = useProvider(chainId)
 
   useEffect(() => {
-    let timeoutId
+    let timeoutId: number
 
     const pollBlock = async () => {
       try {
@@ -40,7 +39,7 @@ export function useLatestBlock(chainId) {
       }
 
       if (mounted()) {
-        timeoutId = setTimeout(pollBlock, blockTime * 1000)
+        timeoutId = window.setTimeout(pollBlock, blockTime * 1000)
       }
     }
 
@@ -54,7 +53,7 @@ export function useLatestBlock(chainId) {
   return block
 }
 
-export function useBlockTimeStamp(blockNumber, chainId) {
+export function useBlockTimeStamp(blockNumber: any, chainId: number) {
   const [timestamp, setTimestamp] = useState(0)
   const provider = useProvider(chainId)
 
@@ -78,7 +77,7 @@ export function useBlockTimeStamp(blockNumber, chainId) {
   return timestamp
 }
 
-export function useBlockTime(chainId) {
+export function useBlockTime(chainId: number) {
   const network = getNetwork(chainId)
 
   return useMemo(() => (network ? NETWORK_TIMES.get(network.type) : null), [

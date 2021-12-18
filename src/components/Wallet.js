@@ -12,6 +12,8 @@ function Wallet({ account }) {
   const { decimals, logo, symbol } = token.data
   const { inactiveTokens } = useAccountTokens(account, token.accountBalance)
 
+  console.log(`Wallet component`)
+
   return (
     <Box padding={0}>
       <div

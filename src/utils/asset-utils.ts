@@ -23,9 +23,17 @@ import WithdrawFromProposalLight from '@assets/activity/light/withdrawFromPropos
 import WithdrawFundsLight from '@assets/activity/light/withdrawFunds.svg'
 import WrapTokenLigh from '@assets/activity/light/wrapToken.svg'
 
-import actions from '@/actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 
-export default {
+export type AssetsType = Record<
+  string,
+  {
+    light?: string | null
+    dark?: string | null
+  }
+>
+
+const assets: AssetsType = {
   [actions.ADD_FUNDS]: {
     light: AddFundsLight,
     dark: null,
@@ -127,3 +135,5 @@ export default {
     dark: null,
   },
 }
+
+export default assets

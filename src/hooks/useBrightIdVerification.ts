@@ -13,22 +13,34 @@ import {
 
 const REQUEST_TIMEOUT = 60000
 
-const VERIFICATION_INFO_DEFAULT = {
-  addressExist: false,
-  addressUnique: false,
-  signature: null,
-  timestamp: 0,
-  userAddresses: [],
-  userSponsored: false,
-  userVerified: false,
-  error: null,
-  fetching: true,
+export async function fetchWithTimeout(
+  resource: RequestInfo,
+  options: RequestInit | undefined
+) {
+  const controller = new AbortController()
+  const id = setTimeout(() => controller.abort(), REQUEST_TIMEOUT)
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal,
+  })
+
+  clearTimeout(id)
+
+  return response
 }
 
-export function useBrightIdVerification(account) {
-  const [verificationInfo, setVerificationInfo] = useState(
-    VERIFICATION_INFO_DEFAULT
-  )
+export function useBrightIdVerification(account: string) {
+  const [verificationInfo, setVerificationInfo] = useState({
+    addressExist: false,
+    addressUnique: false,
+    signature: null,
+    timestamp: 0,
+    userAddresses: [],
+    userSponsored: false,
+    userVerified: false,
+    error: null,
+    fetching: true,
+  })
   const [sponsorshipInfo, setSponsorshipInfo] = useState({
     availableSponsorships: 0,
     error: false,
@@ -36,7 +48,7 @@ export function useBrightIdVerification(account) {
 
   useEffect(() => {
     let cancelled = false
-    let retryTimer
+    let retryTimer: number
 
     const fetchSponsorshipInfo = async () => {
       if (!account) {
@@ -44,17 +56,20 @@ export function useBrightIdVerification(account) {
       }
 
       try {
-        const rawResponse = await fetch(BRIGHTID_1HIVE_INFO_ENDPOINT, {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          timeout: REQUEST_TIMEOUT,
-        })
+        const rawResponse = await fetchWithTimeout(
+          BRIGHTID_1HIVE_INFO_ENDPOINT,
+          {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        )
 
         if (!rawResponse.ok) {
           setSponsorshipInfo({
+            ...sponsorshipInfo,
             error: true,
           })
         }
@@ -68,6 +83,7 @@ export function useBrightIdVerification(account) {
         }
       } catch (err) {
         setSponsorshipInfo({
+          ...sponsorshipInfo,
           error: true,
         })
       }
@@ -77,13 +93,13 @@ export function useBrightIdVerification(account) {
 
     return () => {
       cancelled = true
-      clearTimeout(retryTimer)
+      window.clearTimeout(retryTimer)
     }
   }, [account])
 
   useEffect(() => {
     let cancelled = false
-    let retryTimer
+    let retryTimer: number
 
     if (!account) {
       return setVerificationInfo(info => ({ ...info, fetching: false }))
@@ -96,13 +112,12 @@ export function useBrightIdVerification(account) {
 
       const endpoint = `${BRIGHTID_VERIFICATION_ENDPOINT}/${CONTEXT_ID}/${account}?signed=eth&timestamp=seconds`
       try {
-        const rawResponse = await fetch(endpoint, {
+        const rawResponse = await fetchWithTimeout(endpoint, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          timeout: REQUEST_TIMEOUT,
         })
 
         const response = await rawResponse.json()
@@ -111,6 +126,7 @@ export function useBrightIdVerification(account) {
           switch (response.code) {
             case ERROR_CODE:
               setVerificationInfo({
+                ...verificationInfo,
                 error: response.errorMessage,
                 fetching: false,
               })
@@ -119,6 +135,7 @@ export function useBrightIdVerification(account) {
             case NOT_FOUND_CODE:
               // If the users didn't link their address to the their BrightId account or cannot be verified for the context (meaning is unverified on the BrightId app)
               setVerificationInfo({
+                ...verificationInfo,
                 addressExist: response.errorNum === CAN_NOT_BE_VERIFIED,
                 addressUnique: false,
                 timestamp: 0,
@@ -131,6 +148,7 @@ export function useBrightIdVerification(account) {
 
             case NOT_SPONSORED_CODE:
               setVerificationInfo({
+                ...verificationInfo,
                 addressExist: true,
                 addressUnique: false,
                 timestamp: 0,
@@ -143,6 +161,7 @@ export function useBrightIdVerification(account) {
 
             default:
               setVerificationInfo({
+                ...verificationInfo,
                 addressExist: true,
                 addressUnique: response.data?.unique,
                 signature: { ...response.data?.sig },

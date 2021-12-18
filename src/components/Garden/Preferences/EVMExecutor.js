@@ -22,7 +22,7 @@ import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 
 import env from '@/environment'
 import { getAppByName } from '@utils/data-utils'
-import actions from '@/actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import radspec from '@/radspec'
 import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'
 

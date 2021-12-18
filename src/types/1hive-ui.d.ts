@@ -14,6 +14,7 @@ declare module '@1hive/1hive-ui' {
     below: any
   }
   const DataView: any
+  const noop: any
   export {
     Main,
     GU,
@@ -26,5 +27,6 @@ declare module '@1hive/1hive-ui' {
     useViewport,
     Link,
     DataView,
+    noop,
   }
 }

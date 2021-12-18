@@ -13,7 +13,7 @@ import { getContract, useContract } from './useContract'
 
 import env from '@/environment'
 
-import actions from '../actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'

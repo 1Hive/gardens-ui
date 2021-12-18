@@ -17,7 +17,7 @@ import {
   ACTIVITY_STATUS_PENDING,
   ACTIVITY_STATUS_TIMED_OUT,
 } from '../components/Activity/activity-statuses'
-import actions from '../actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import { getNetworkType } from '@utils/web3-utils'
 import { MINUTE } from '@utils/date-utils'
 
