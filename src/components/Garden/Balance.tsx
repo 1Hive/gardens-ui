@@ -1,15 +1,26 @@
 import React from 'react'
 import BalanceToken from '../BalanceToken'
+import BigNumber from '@lib/bigNumber'
+
+type BalanceProps = {
+  amount: BigNumber
+  decimals: number
+  symbol: string
+  icon: string
+  verified: any
+  color: any
+  size: any
+}
 
 function Balance({
-  amount = 0,
+  amount,
   decimals,
   symbol,
   icon,
   verified,
   color,
   size,
-}) {
+}: BalanceProps) {
   return (
     <section>
       <BalanceToken

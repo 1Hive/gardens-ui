@@ -5,7 +5,7 @@ import { getNetwork } from '../networks'
 import { transformUserData } from '@utils/data-utils'
 import { useWallet } from '@/providers/Wallet'
 
-export default function useUser(address) {
+export default function useUser(address: string) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
@@ -15,7 +15,7 @@ export default function useUser(address) {
   const { subgraphs } = getNetwork(preferredNetwork)
 
   const reload = useCallback(() => {
-    setRefetchTriger(triger => setRefetchTriger(!triger))
+    setRefetchTriger(!refetchTriger)
   }, [])
 
   useEffect(() => {

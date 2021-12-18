@@ -3,7 +3,6 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from '@hooks/useContract'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
-
 import BigNumber from '@lib/bigNumber'
 import unipoolAbi from '@abis/Unipool.json'
 
@@ -20,7 +19,7 @@ export default function useUnipoolRewards() {
       return
     }
 
-    let timer
+    let timer: number
     const fetchEarned = async () => {
       try {
         const earned = await unipoolContract.earned(account)
@@ -31,7 +30,7 @@ export default function useUnipoolRewards() {
         console.error(`Error fetching earned rewards: ${err}`)
       }
 
-      timer = setTimeout(fetchEarned, 5000)
+      timer = window.setTimeout(fetchEarned, 5000)
     }
 
     fetchEarned()

@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { GU } from '@1hive/1hive-ui'
-
 import { formatTokenAmount } from '@utils/token-utils'
+import BigNumber from '@lib/bigNumber'
 
-const splitAmount = (amount, decimals) => {
+const splitAmount = (amount: BigNumber, decimals: number) => {
   const [integer, fractional] = formatTokenAmount(amount, decimals).split('.')
   return (
     <span
@@ -18,7 +18,24 @@ const splitAmount = (amount, decimals) => {
   )
 }
 
-const BalanceToken = ({ amount, color, decimals, icon, size, symbol }) => {
+type BalanceTokenProps = {
+  amount: BigNumber
+  color: any
+  decimals: number
+  icon: string
+  size: any
+  symbol: string
+  verified?: any
+}
+
+const BalanceToken = ({
+  amount,
+  color,
+  decimals,
+  icon,
+  size,
+  symbol,
+}: BalanceTokenProps) => {
   return (
     <div
       css={`
