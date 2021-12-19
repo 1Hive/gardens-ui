@@ -1,16 +1,20 @@
 import React from 'react'
-import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { ConvictionBar } from '../ConvictionVisuals'
-import SummaryBar from '../DecisionDetail/SummaryBar' // TODO: Move to root component folder
-import SummaryRow from '../DecisionDetail/SummaryRow'
+import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
-import { ProposalTypes } from '@/types'
+
 import { safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast } from '@utils/vote-utils'
+
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
+import { ProposalTypes } from '@/types'
+
+import { ConvictionBar } from '../ConvictionVisuals'
+import SummaryBar from '../DecisionDetail/SummaryBar'
+// TODO: Move to root component folder
+import SummaryRow from '../DecisionDetail/SummaryRow'
 
 function ProposalSupport({ proposal }) {
   const theme = useTheme()

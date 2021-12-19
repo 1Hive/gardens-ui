@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from 'react'
+
 import {
   Button,
   Field,
   GU,
-  isAddress,
   LoadingRing,
   TextInput,
+  isAddress,
   textStyle,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '@components/IdentityBadge'
 
+import IdentityBadge from '@components/IdentityBadge'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
+
 import { useWallet } from '@providers/Wallet'
 
 const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
@@ -21,13 +24,13 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
   const [representative, setRepresentative] = useState('')
   const [supporter, loading] = useSupporterSubscription(account)
 
-  const handleRepresentativeChange = useCallback(event => {
+  const handleRepresentativeChange = useCallback((event) => {
     setRepresentative(event.target.value)
   }, [])
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

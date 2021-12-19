@@ -1,5 +1,8 @@
 import React from 'react'
+import { animated } from 'react-spring/renderprops'
+
 import PropTypes from 'prop-types'
+
 import {
   Button,
   GU,
@@ -8,11 +11,12 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { animated } from 'react-spring/renderprops'
+
+import gardensLogoMark from '@assets/gardensLogoMark.svg'
 
 import { TransactionStatusType } from '@/prop-types'
+
 import flowerSvg from './assets/flower.svg'
-import gardensLogoMark from '@assets/gardensLogoMark.svg'
 import linesSvg from './assets/lines.svg'
 
 const AnimDiv = animated.div

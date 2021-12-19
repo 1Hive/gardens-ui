@@ -1,21 +1,25 @@
 import React from 'react'
+
 import {
   Box,
   GU,
-  isAddress,
   Link,
   LoadingRing,
+  isAddress,
   shortenAddress,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import IdentityBadge from '@components/IdentityBadge'
-import { useGardens } from '@providers/Gardens'
+
 import useUser from '@hooks/useUser'
+
+import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
 
-import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import { getGardenLabel } from '@utils/garden-utils'
+import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 
 function Delegates({ account }) {
   const [user, loading] = useUser(account)

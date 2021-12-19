@@ -1,5 +1,7 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   EthIdenticon,
   GU,
@@ -10,10 +12,12 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useProfile } from '@providers/Profile'
-import HeaderModule from '../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
+
 import { useWallet } from '@/providers/Wallet'
+
+import HeaderModule from '../Header/HeaderModule'
 
 function AccountButton({ onClick }) {
   const theme = useTheme()

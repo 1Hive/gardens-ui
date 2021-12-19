@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react'
+
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
-import { useTheme, textStyle, GU } from '@1hive/1hive-ui'
+
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { HoverIndicator } from './components'
 
 function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
@@ -27,45 +30,41 @@ function MonthDay({ children, disabled, selected, today, weekDay, ...props }) {
         user-select: none;
         margin-bottom: 1px;
 
-        ${
-          disabled
-            ? `
+        ${disabled
+          ? `
                 pointer-events: none;
                 opacity: 0;
               `
-            : ''
-        };
+          : ''};
 
-        ${
-          selected && !disabled
-            ? `
+        ${selected && !disabled
+          ? `
                 &&& {
                   background: ${theme.selected};
                   color: ${theme.positiveContent};
                 }
               `
-            : ''
-        }
+          : ''}
 
         ${isHovered &&
-          css`
-            > * {
-              z-index: 1;
-            }
-          `}
+        css`
+          > * {
+            z-index: 1;
+          }
+        `}
 
         ${today &&
-          css`
-            color: ${theme.selected};
-            font-weight: 600;
-          `}
+        css`
+          color: ${theme.selected};
+          font-weight: 600;
+        `}
 
         ${weekDay &&
-          css`
-            pointer-events: none;
-            color: ${theme.contentSecondary};
-            text-transform: uppercase;
-          `}
+        css`
+          pointer-events: none;
+          color: ${theme.contentSecondary};
+          text-transform: uppercase;
+        `}
 
         &:after {
           display: block;

@@ -1,7 +1,11 @@
 import React from 'react'
+
 import styled from 'styled-components'
+
 import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import useAccountTokens from '@hooks/useAccountTokens'
+
 import { useGardenState } from '@providers/GardenState'
 
 import { formatTokenAmount } from '@utils/token-utils'

@@ -1,5 +1,7 @@
-import { GU, useTheme } from '@1hive/1hive-ui'
 import React from 'react'
+
+import { GU, useTheme } from '@1hive/1hive-ui'
+
 import BaseItem from './BaseItem'
 
 const NavigationItem = ({ active, src, label, path, onClick }) => {

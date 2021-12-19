@@ -1,16 +1,19 @@
 import React, { useCallback, useState } from 'react'
 import { useLocation } from 'react-router'
+
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
-import Footer from './Garden/Footer'
-import Header from './Header/Header'
-import Layout from './Layout'
-import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
+import usePreferences from '@hooks/usePreferences'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
-import usePreferences from '@hooks/usePreferences'
-import MultiModal from './MultiModal/MultiModal'
+
+import Footer from './Garden/Footer'
 import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
+import Header from './Header/Header'
+import Layout from './Layout'
+import MultiModal from './MultiModal/MultiModal'
 import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
@@ -19,12 +22,11 @@ function MainView({ children }) {
   const connectedGarden = useConnectedGarden()
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [createProposalModalVisible, setCreateProposalModalVisible] =
+    useState(false)
 
   const handleToggleSidebar = useCallback(() => {
-    setShowMobileSidebar(prevShowMobileSidebar => !prevShowMobileSidebar)
+    setShowMobileSidebar((prevShowMobileSidebar) => !prevShowMobileSidebar)
   }, [])
 
   let loadingGardenState = true

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
+
 import {
   GU,
   Pagination,
@@ -7,12 +8,15 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import EmptyResults from './EmptyResults'
-import { useWallet } from '@providers/Wallet'
-import { getNetwork } from '@/networks'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+
+import { useWallet } from '@providers/Wallet'
+
+import { getNetwork } from '@/networks'
+
+import EmptyResults from './EmptyResults'
 
 const GARDENS_PER_PAGE = 10
 
@@ -35,7 +39,7 @@ function GardensList({ gardens }) {
     [gardens, selectedPage]
   )
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 
@@ -57,7 +61,7 @@ function GardensList({ gardens }) {
               margin-bottom: ${2 * GU}px;
             `}
           >
-            {currentGardens.map(garden => (
+            {currentGardens.map((garden) => (
               <GardenCard key={garden.id} garden={garden} />
             ))}
           </div>

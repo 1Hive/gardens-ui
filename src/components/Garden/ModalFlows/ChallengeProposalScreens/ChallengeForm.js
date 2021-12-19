@@ -1,26 +1,27 @@
-import React, { useState, useCallback, useMemo } from 'react'
-import { TextInput, Field, textStyle, useTheme, GU } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { toHex } from 'web3-utils'
+
+import { Field, GU, TextInput, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import HelpTip from '@components/HelpTip'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import BigNumber from '@lib/bigNumber'
+
 import { durationToHours, toMs } from '@utils/date-utils'
-import { formatTokenAmount } from '@utils/token-utils'
 import { toDecimals } from '@utils/math-utils'
-import { toHex } from 'web3-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+
+import InfoField from '../../InfoField'
+import ModalButton from '../ModalButton'
 
 function ChallengeRequirements({ getTransactions, proposal }) {
   const theme = useTheme()
 
   const { collateralRequirement, actionId } = proposal
-  const {
-    challengeDuration,
-    tokenDecimals,
-    tokenSymbol,
-    challengeAmount,
-  } = collateralRequirement
+  const { challengeDuration, tokenDecimals, tokenSymbol, challengeAmount } =
+    collateralRequirement
 
   const settlementPeriodHours = durationToHours(toMs(challengeDuration))
   const maxChallengeAmountFormatted = useMemo(
@@ -36,7 +37,7 @@ function ChallengeRequirements({ getTransactions, proposal }) {
   const { next } = useMultiModal()
 
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
       const amountBN = new BigNumber(
         toDecimals(settlementAmount, tokenDecimals)

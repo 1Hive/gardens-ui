@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
+
 import {
   Button,
   GU,
@@ -9,20 +10,23 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import AdvancedSettingsModal from './AdvancedSettingsModal'
-import ConvictionVotingCharts from './ConvictionVotingCharts'
+
 import Navigation from '@components/Onboarding/Navigation'
 import {
   Header,
   PercentageField,
   SliderField,
 } from '@components/Onboarding/kit'
+
 import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
 
 import {
   calculateDecay,
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
+
+import AdvancedSettingsModal from './AdvancedSettingsModal'
+import ConvictionVotingCharts from './ConvictionVotingCharts'
 
 const MAX_HALF_LIFE_DAYS = 60
 const DEFAULT_REQUESTED_AMOUNT = 2
@@ -96,14 +100,8 @@ const reduceFields = (fields, [field, value]) => {
 
 function ConvictionVotingSettings() {
   const theme = useTheme()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
 
   const [formError, setFormError] = useState(null)
   const [
@@ -131,20 +129,20 @@ function ConvictionVotingSettings() {
   const DEFAULT_CONVICTION_CONFIG = DEFAULT_CONFIG.conviction
 
   const handleHalflifeDaysChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['halflifeDays', value])
     },
     [updateField]
   )
 
-  const handleMaxRatioChange = useCallback(value => {
+  const handleMaxRatioChange = useCallback((value) => {
     setFormError(null)
     updateField(['maxRatio', value])
   }, [])
 
   const handleMinThresholdChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['minThreshold', value])
     },
@@ -152,14 +150,14 @@ function ConvictionVotingSettings() {
   )
 
   const handleRequestedAmountChange = useCallback(
-    value => {
+    (value) => {
       updateField(['requestedAmount', value])
     },
     [updateField]
   )
 
   const handleMinThresholdStakePctChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['minThresholdStakePct', value])
     },
@@ -167,7 +165,7 @@ function ConvictionVotingSettings() {
   )
 
   const handleRequestTokenChange = useCallback(
-    event => {
+    (event) => {
       updateField(['requestToken', event.target.value])
     },
     [updateField]
@@ -188,7 +186,7 @@ function ConvictionVotingSettings() {
     updateField(['requestToken', config.tokens.address])
   }, [config.tokens.address, updateField])
 
-  const handleNextClick = event => {
+  const handleNextClick = (event) => {
     event.preventDefault()
     const error = validationError(
       halflifeDays,

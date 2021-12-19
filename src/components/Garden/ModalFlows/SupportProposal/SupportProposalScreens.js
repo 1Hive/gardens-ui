@@ -1,9 +1,10 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import useActions from '@hooks/useActions'
+
 import ModalFlowBase from '../ModalFlowBase'
 import ChangeSupport from './ChangeSupport'
 import SupportProposal from './SupportProposal'
-
-import useActions from '@hooks/useActions'
 
 function SupportProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
@@ -15,7 +16,7 @@ function SupportProposalScreens({ proposal, mode }) {
     async (onComplete, amount) => {
       await convictionActions.stakeToProposal(
         { proposalId, amount },
-        trxData => {
+        (trxData) => {
           setTransactions(trxData)
           onComplete()
         }
@@ -29,7 +30,7 @@ function SupportProposalScreens({ proposal, mode }) {
       if (changeMode === 'stake') {
         await convictionActions.stakeToProposal(
           { proposalId, amount },
-          intent => {
+          (intent) => {
             setTransactions(intent)
             onComplete()
           }
@@ -38,7 +39,7 @@ function SupportProposalScreens({ proposal, mode }) {
       if (changeMode === 'withdraw') {
         await convictionActions.withdrawFromProposal(
           { proposalId, amount },
-          intent => {
+          (intent) => {
             setTransactions(intent)
             onComplete()
           }

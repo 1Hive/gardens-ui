@@ -1,5 +1,7 @@
-import { useTheme } from '@1hive/1hive-ui'
 import React from 'react'
+
+import { useTheme } from '@1hive/1hive-ui'
+
 import BaseItem from './BaseItem'
 
 const GardenItem = ({ active, label, path, src, onClick = () => {} }) => {

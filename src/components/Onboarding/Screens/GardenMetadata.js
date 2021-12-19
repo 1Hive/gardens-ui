@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import {
   Button,
   Field,
@@ -12,12 +13,15 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { FileUploaderField, Header } from '../kit'
-import Navigation from '../Navigation'
-import useGardenNameResolver from '@hooks/useGardenNameResolver'
-import { useOnboardingState } from '@providers/Onboarding'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
+
+import useGardenNameResolver from '@hooks/useGardenNameResolver'
+
+import { useOnboardingState } from '@providers/Onboarding'
+
+import Navigation from '../Navigation'
+import { FileUploaderField, Header } from '../kit'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
@@ -34,14 +38,8 @@ const URL_REGEX = new RegExp(
 
 function GardenMetadata() {
   const theme = useTheme()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    steps,
-    step,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, steps, step } =
+    useOnboardingState()
   const [formData, setFormData] = useState(config.garden)
   const [displayErrors, setDisplayErrors] = useState(false)
   const [formatValidationColor, setFormatValidationColor] = useState(
@@ -49,23 +47,23 @@ function GardenMetadata() {
   )
   const resolvedAddress = useGardenNameResolver(formData.name)
 
-  const handleGardenNameChange = useCallback(event => {
+  const handleGardenNameChange = useCallback((event) => {
     const value = event.target.value
-    setFormData(formData => ({ ...formData, name: value }))
+    setFormData((formData) => ({ ...formData, name: value }))
   }, [])
 
-  const handleGardenDescriptionChange = useCallback(event => {
+  const handleGardenDescriptionChange = useCallback((event) => {
     const value = event.target.value
-    setFormData(formData => ({ ...formData, description: value }))
+    setFormData((formData) => ({ ...formData, description: value }))
   }, [])
 
-  const handleForumChange = useCallback(event => {
+  const handleForumChange = useCallback((event) => {
     const value = event.target.value
-    setFormData(formData => ({ ...formData, forum: value }))
+    setFormData((formData) => ({ ...formData, forum: value }))
   }, [])
 
   const addLink = useCallback(
-    type => {
+    (type) => {
       const linksObject =
         type === COMMUNITY_LINK_TYPE
           ? {
@@ -79,7 +77,7 @@ function GardenMetadata() {
                 { link: '', label: '' },
               ],
             }
-      setFormData(formData => {
+      setFormData((formData) => {
         return {
           ...formData,
           links: linksObject,
@@ -108,7 +106,7 @@ function GardenMetadata() {
                   : formData.links.documentation.filter((_, i) => i !== index),
             }
 
-      setFormData(formData => {
+      setFormData((formData) => {
         return {
           ...formData,
           links: linksObject,
@@ -135,7 +133,7 @@ function GardenMetadata() {
               ),
             }
 
-      setFormData(formData => {
+      setFormData((formData) => {
         return {
           ...formData,
           links: linksObject,
@@ -146,7 +144,7 @@ function GardenMetadata() {
   )
 
   const handleOnAssetUpdated = useCallback((type, file) => {
-    setFormData(formData => {
+    setFormData((formData) => {
       return {
         ...formData,
         [type]: file
@@ -161,21 +159,21 @@ function GardenMetadata() {
   }, [])
 
   const handleOnGardenLogoTypeUpdated = useCallback(
-    file => {
+    (file) => {
       handleOnAssetUpdated(GARDEN_LOGO_TYPE, file)
     },
     [handleOnAssetUpdated]
   )
 
   const handleOnGardenLogoUpdated = useCallback(
-    file => {
+    (file) => {
       handleOnAssetUpdated(GARDEN_LOGO, file)
     },
     [handleOnAssetUpdated]
   )
 
   const handleOnTokenLogoUpdated = useCallback(
-    file => {
+    (file) => {
       handleOnAssetUpdated(TOKEN_LOGO, file)
     },
     [handleOnAssetUpdated]
@@ -199,13 +197,13 @@ function GardenMetadata() {
       errors.push('Forum is not in a valid url format.')
     }
 
-    documentation.map(doc => {
+    documentation.map((doc) => {
       if (doc.link && !URL_REGEX.test(doc.link)) {
         errors.push(`${doc.label} is not in a valid url format.`)
       }
     })
 
-    community.map(com => {
+    community.map((com) => {
       if (com.link && !URL_REGEX.test(com.link)) {
         errors.push(`${com.label} is not in a valid url format.`)
       }
@@ -434,7 +432,7 @@ function LinksBox({
   )
 
   const handleRemoveLink = useCallback(
-    index => {
+    (index) => {
       onRemoveLink(linksType, index)
       focusLastLink()
     },
@@ -546,14 +544,14 @@ function LinkField({ index, item, hideRemoveButton, onUpdate, onRemove }) {
   }, [onRemove, index])
 
   const handleUrlChange = useCallback(
-    event => {
+    (event) => {
       onUpdate(index, event.target.value, label)
     },
     [onUpdate, label, index]
   )
 
   const handleLabelChange = useCallback(
-    event => {
+    (event) => {
       const value = event.target.value
       onUpdate(index, link, value)
     },

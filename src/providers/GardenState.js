@@ -1,15 +1,19 @@
 import React, { useContext, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
 
+import useEffectiveSupply from '@hooks/useEffectiveSupply'
 import {
   useCommonPool,
   useGardenData,
   useTokenBalances,
 } from '@hooks/useGardenHooks'
-import { useConnectedGarden } from './ConnectedGarden'
-import useEffectiveSupply from '@hooks/useEffectiveSupply'
+
 import { useWallet } from '@providers/Wallet'
+
 import { getGardenTokenIcon } from '@utils/token-utils'
+
+import { useConnectedGarden } from './ConnectedGarden'
 
 const GardenStateContext = React.createContext()
 

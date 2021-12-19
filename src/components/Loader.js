@@ -1,12 +1,16 @@
 import React from 'react'
 import Lottie from 'react-lottie-player'
+
 import styled from 'styled-components'
-import { useGardenRoute } from '@hooks/useRouting'
-import { getNetworkChainIdByType } from '@/networks'
-import { is1HiveGarden } from '@utils/garden-utils'
 
 import beeAnimation from '@assets/lotties/bee-animation.json'
 import gardensLoader from '@assets/lotties/gardens-loader.json'
+
+import { useGardenRoute } from '@hooks/useRouting'
+
+import { is1HiveGarden } from '@utils/garden-utils'
+
+import { getNetworkChainIdByType } from '@/networks'
 
 const Wrapper = styled.div`
   pointer-events: none;

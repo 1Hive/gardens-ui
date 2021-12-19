@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Help } from '@1hive/1hive-ui'
 
 const KNOWN_HELP_DESCRIPTIONS = {

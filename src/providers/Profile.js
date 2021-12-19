@@ -6,14 +6,16 @@ import React, {
   useRef,
   useState,
 } from 'react'
+
 import PropTypes from 'prop-types'
 
-import { useWallet } from './Wallet'
 import {
   getAccountPrivateData,
   getProfileForAccount,
   openBoxForAccount,
 } from '@lib/profile'
+
+import { useWallet } from './Wallet'
 
 const ProfileContext = React.createContext()
 
@@ -56,7 +58,7 @@ function ProfileProvider({ children }) {
         setBox(box)
       }
     } catch (err) {
-      setProfile(profile => ({
+      setProfile((profile) => ({
         ...profile,
         confirmationFailed: true,
       }))
@@ -66,12 +68,12 @@ function ProfileProvider({ children }) {
   }, [account, ethereum])
 
   // Fetch profile's public data
-  const fetchAccountProfile = useCallback(async account => {
+  const fetchAccountProfile = useCallback(async (account) => {
     setLoadingProfile(true)
     const publicProfile = await getProfileForAccount(account)
 
     if (!cancelled.current) {
-      setProfile(profile => ({
+      setProfile((profile) => ({
         ...profile,
         ...publicProfile,
       }))
@@ -80,11 +82,11 @@ function ProfileProvider({ children }) {
   }, [])
 
   // Fetch profile's private data
-  const fetchPrivateData = useCallback(async box => {
+  const fetchPrivateData = useCallback(async (box) => {
     const privateData = await getAccountPrivateData(box)
 
     if (!cancelled.current) {
-      setProfile(profile => ({ ...profile, ...privateData }))
+      setProfile((profile) => ({ ...profile, ...privateData }))
     }
   }, [])
 
@@ -136,7 +138,7 @@ function ProfileProvider({ children }) {
         await box.private.remove(key)
       }
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(
           () =>
             box.onSyncDone(async () => {

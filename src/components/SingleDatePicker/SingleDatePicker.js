@@ -1,10 +1,14 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import PropTypes from 'prop-types'
-import { Popover, GU, RADIUS, useTheme } from '@1hive/1hive-ui'
+
+import { GU, Popover, RADIUS, useTheme } from '@1hive/1hive-ui'
+
+import { dateFormat, dayjs } from '@utils/date-utils'
+
 import DatePicker from './DatePicker'
 import Labels from './Labels'
 import { SINGLE_DATE } from './consts'
-import { dayjs, dateFormat } from '@utils/date-utils'
 import handleSingleDateSelect from './utils'
 
 function SingleDatePicker({
@@ -20,11 +24,11 @@ function SingleDatePicker({
   const handlePopoverClose = useCallback(() => setShowPicker(false), [])
 
   const handleLabelsClick = useCallback(() => {
-    setShowPicker(show => !show)
+    setShowPicker((show) => !show)
   }, [])
 
   const handleDateClick = useCallback(
-    date => {
+    (date) => {
       setShowPicker(false)
       if (date) {
         const result = handleSingleDateSelect({

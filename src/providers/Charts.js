@@ -1,10 +1,12 @@
-import React, { useMemo, useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
+
 import { TEXT_STYLES, useTheme } from '@1hive/1hive-ui'
 
 const ChartsContext = React.createContext()
 
-const getAxisOffset = orient => {
+const getAxisOffset = (orient) => {
   switch (orient) {
     case 'bottom':
       return 36

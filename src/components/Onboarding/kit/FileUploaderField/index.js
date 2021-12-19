@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
+
+import PropTypes from 'prop-types'
+
 import {
   Card,
   Field,
@@ -9,7 +11,9 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import { mimeToExtension, readFile } from '@utils/kit-utils'
+
 import FilePreview from './FilePreview'
 
 const DEFAULT_MAX_FILE_SIZE = 1000000 // 1Mb
@@ -57,11 +61,11 @@ export const FileUploaderField = ({
 }) => {
   const theme = useTheme()
   const iconSize = 7 * GU
-  const validExtensions = allowedMIMETypes?.map(f =>
+  const validExtensions = allowedMIMETypes?.map((f) =>
     mimeToExtension(f).toUpperCase()
   )
   const onDrop = useCallback(
-    files => {
+    (files) => {
       const reader = new FileReader()
       const file = files[0]
 
@@ -76,17 +80,12 @@ export const FileUploaderField = ({
     },
     [maxFileSize, onFileUpdated]
   )
-  const {
-    getRootProps,
-    getInputProps,
-    isDragAccept,
-    isDragReject,
-    open,
-  } = useDropzone({
-    accept: allowedMIMETypes,
-    onDrop,
-    multiple: false,
-  })
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } =
+    useDropzone({
+      accept: allowedMIMETypes,
+      onDrop,
+      multiple: false,
+    })
   const { mainColor, backgroundColor } = getDropzoneColor(
     theme,
     isDragReject,
@@ -135,7 +134,7 @@ export const FileUploaderField = ({
         `}
       >
         <div
-          {...getRootProps({ onClick: e => e.stopPropagation() })}
+          {...getRootProps({ onClick: (e) => e.stopPropagation() })}
           css={`
             height: 100%;
             width: 100%;

@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+
 import {
   ButtonBase,
   GU,
@@ -8,26 +9,24 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '../IdentityBadge'
-import BrightIdModal from './BrightIdModal'
-
-import { useWallet } from '@providers/Wallet'
-import { useBrightIdVerification } from '@hooks/useBrightIdVerification'
 
 import verifiedCheck from '@assets/verifiedCheck.svg'
+
+import { useBrightIdVerification } from '@hooks/useBrightIdVerification'
+
+import { useWallet } from '@providers/Wallet'
+
+import IdentityBadge from '../IdentityBadge'
+import BrightIdModal from './BrightIdModal'
 
 function BrightIdStatus() {
   const [brightIdModalVisible, setBrightIdModalVisible] = useState(false)
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
-  const { sponsorshipInfo, brightIdVerificationInfo } = useBrightIdVerification(
-    connectedAccount
-  )
-  const {
-    userAddresses,
-    userSponsored,
-    userVerified,
-  } = brightIdVerificationInfo
+  const { sponsorshipInfo, brightIdVerificationInfo } =
+    useBrightIdVerification(connectedAccount)
+  const { userAddresses, userSponsored, userVerified } =
+    brightIdVerificationInfo
 
   const primaryAddress = userAddresses.length > 0 ? userAddresses[0] : ''
 

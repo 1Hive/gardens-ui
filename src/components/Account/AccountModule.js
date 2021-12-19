@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import { Button, GU, IconConnect } from '@1hive/1hive-ui'
+
 import { useWallet } from '@providers/Wallet'
 
-import ScreenError from './ScreenError'
+import HeaderPopover from '../Header/HeaderPopover'
 import AccountButton from './AccountButton'
-import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
+import ScreenError from './ScreenError'
 import ScreenPromptingAction from './ScreenPromptingAction'
-import HeaderPopover from '../Header/HeaderPopover'
+import ScreenProviders from './ScreenProviders'
 
 const SCREENS = [
   {
@@ -43,10 +45,10 @@ function AccountModule({ compact }) {
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
 
-  const toggle = useCallback(() => setOpened(opened => !opened), [])
+  const toggle = useCallback(() => setOpened((opened) => !opened), [])
 
   const activate = useCallback(
-    async providerId => {
+    async (providerId) => {
       try {
         await connect(providerId)
       } catch (error) {
@@ -87,7 +89,7 @@ function AccountModule({ compact }) {
       return 'providers'
     })()
 
-    const screenIndex = SCREENS.findIndex(screen => screen.id === screenId)
+    const screenIndex = SCREENS.findIndex((screen) => screen.id === screenId)
     const direction = previousScreenIndex.current > screenIndex ? -1 : 1
 
     previousScreenIndex.current = screenIndex
@@ -99,7 +101,7 @@ function AccountModule({ compact }) {
   const screenId = screen.id
 
   const handlePopoverClose = useCallback(
-    reject => {
+    (reject) => {
       if (
         screenId === 'connecting' ||
         screenId === 'error' ||

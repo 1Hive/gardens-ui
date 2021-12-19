@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 // Simple hook for checking a component is mounted prior to an async state update
 export function useMounted() {

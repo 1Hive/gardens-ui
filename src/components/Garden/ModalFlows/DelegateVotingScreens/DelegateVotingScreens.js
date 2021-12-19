@@ -1,7 +1,9 @@
-import React, { useMemo, useState, useCallback } from 'react'
-import DelegateVoting from './DelegateVoting'
-import ModalFlowBase from '../ModalFlowBase'
+import React, { useCallback, useMemo, useState } from 'react'
+
 import useActions from '@hooks/useActions'
+
+import ModalFlowBase from '../ModalFlowBase'
+import DelegateVoting from './DelegateVoting'
 import RemoveDelegate from './RemoveDelegate'
 
 function DelegateVotingScreens({ mode }) {
@@ -10,7 +12,7 @@ function DelegateVotingScreens({ mode }) {
 
   const getTransactions = useCallback(
     async (onComplete, representative) => {
-      await votingActions.delegateVoting(representative, intent => {
+      await votingActions.delegateVoting(representative, (intent) => {
         setTransactions(intent)
         onComplete()
       })

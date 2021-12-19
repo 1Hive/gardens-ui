@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
-import StepItem from './StepsItem'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
+import StepItem from './StepsItem'
 
 function Step({ currentStep, label, step, stepNumber, substeps }) {
   const { step: onboardingStep } = useOnboardingState()

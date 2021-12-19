@@ -1,13 +1,18 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
 import { useHistory } from 'react-router'
+
+import PropTypes from 'prop-types'
+
 import { Button } from '@1hive/1hive-ui'
-import ModalFlowBase from '../ModalFlowBase'
-import SignOverview from './SignOverview'
+
 import useActions from '@hooks/useActions'
+
 import { useUserState } from '@providers/User'
 
 import { buildGardenPath } from '@utils/routing-utils'
+
+import ModalFlowBase from '../ModalFlowBase'
+import SignOverview from './SignOverview'
 
 function SignAgreementScreens({ versionId }) {
   const actions = useActions()
@@ -35,10 +40,10 @@ function SignAgreementScreens({ versionId }) {
   }, [handleCreateProposal])
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       await actions.agreementActions.signAgreement(
         { versionId },
-        transactions => {
+        (transactions) => {
           setTransactions(transactions)
           onComplete()
         }

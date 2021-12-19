@@ -1,7 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
-import { springs, useTheme } from '@1hive/1hive-ui'
 import { Spring, animated } from 'react-spring/renderprops'
+
+import styled from 'styled-components'
+
+import { springs, useTheme } from '@1hive/1hive-ui'
 
 function SummaryBar({
   show = true,
@@ -29,7 +31,7 @@ function SummaryBar({
               style={{
                 backgroundColor: theme.accent,
                 transform: progress.interpolate(
-                  v => `scale3d(${firstSize * v}, 1, 1)`
+                  (v) => `scale3d(${firstSize * v}, 1, 1)`
                 ),
               }}
             />
@@ -37,7 +39,7 @@ function SummaryBar({
               style={{
                 backgroundColor: theme.accent,
                 transform: progress.interpolate(
-                  v => `
+                  (v) => `
                     translate3d(${100 * firstSize * v}%, 0, 0)
                     scale3d(${secondSize * v}, 1, 1)
                   `
@@ -49,7 +51,7 @@ function SummaryBar({
                 backgroundColor: thirdSize > 0 ? theme.accent : theme.negative,
                 opacity: thirdSize > 0 ? 0.2 : 0.8,
                 transform: progress.interpolate(
-                  v => `
+                  (v) => `
                     translate3d(
                       ${100 * thirdBegins * v}%, 0, 0)
                     scale3d(${Math.abs(thirdSize) * v}, 1, 1)
@@ -62,7 +64,7 @@ function SummaryBar({
             <RequiredSeparatorWrapper
               style={{
                 transform: progress.interpolate(
-                  v => `
+                  (v) => `
                     translate3d(${100 * requiredSize * v}%, 0, 0)
                     scale3d(1, ${requiredSize > 0 ? v : 0}, 1)
                   `

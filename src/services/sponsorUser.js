@@ -1,11 +1,11 @@
+import stringify from 'fast-json-stable-stringify'
 import tweetNacl from 'tweetnacl'
 import tweetNaclUtils from 'tweetnacl-util'
-import stringify from 'fast-json-stable-stringify'
 
 import { CONTEXT_ID } from '../constants'
 import { BRIGHTID_SUBSCRIPTION_ENDPOINT, UTC_API_ENDPOINT } from '../endpoints'
-import { NO_CONTENT } from './brightIdResponseCodes'
 import env from '../environment'
+import { NO_CONTENT } from './brightIdResponseCodes'
 
 export async function sponsorUser(account) {
   try {

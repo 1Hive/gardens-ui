@@ -1,4 +1,5 @@
 import { useTheme } from '@1hive/1hive-ui'
+
 import assets from '../utils/asset-utils'
 
 export function useAsset(iconType) {

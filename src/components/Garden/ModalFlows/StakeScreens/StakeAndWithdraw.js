@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+
 import {
   Button,
   Field,
@@ -8,10 +9,13 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
 import BigNumber from '@lib/bigNumber'
+
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const DEFAULT_AMOUNT_DATA = {
   value: '0',
@@ -32,10 +36,10 @@ function StakeAndWithdraw({
   const depositMode = mode === 'deposit'
 
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const amount = event.target.value
       const amountBN = new BigNumber(toDecimals(amount, decimals))
-      setAmountData(amountData => ({
+      setAmountData((amountData) => ({
         ...amountData,
         value: amount,
         valueBN: amountBN,
@@ -68,7 +72,7 @@ function StakeAndWithdraw({
   }, [accountBalance, decimals, depositMode, stakeManagement.staking.available])
 
   const handleFormSubmit = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault()
 
       getTransactions(() => {

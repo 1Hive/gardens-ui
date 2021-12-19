@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react'
+
 import {
   Button,
   ButtonBase,
@@ -13,9 +14,10 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import usePicture from '@hooks/usePicture'
+
 import ProfileForm from './ProfileForm'
 import Tabs from './Tabs'
-import usePicture from '@hooks/usePicture'
 
 const IMAGE_DIMENSION = 15 * GU
 const CONTENT = [ProfileForm]
@@ -34,9 +36,8 @@ const EditProfile = React.forwardRef(
     coverPicInputRef
   ) => {
     const [selectedTab, setSelectedTab] = useState(0)
-    const [profilePic, onProfilePicChange, onProfilePicRemoval] = usePicture(
-      true
-    )
+    const [profilePic, onProfilePicChange, onProfilePicRemoval] =
+      usePicture(true)
 
     const theme = useTheme()
     const { name: layout } = useLayout()

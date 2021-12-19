@@ -1,6 +1,7 @@
 import useActions from '@hooks/useActions'
-import { useGardenState } from '@providers/GardenState'
 import { useProposals } from '@hooks/useProposals'
+
+import { useGardenState } from '@providers/GardenState'
 
 // Handles the main logic of the app.
 export default function useGardenLogic() {
@@ -15,12 +16,8 @@ export default function useGardenLogic() {
   } = useGardenState()
 
   const actions = useActions()
-  const [
-    proposals,
-    filters,
-    proposalsFetchedCount,
-    blockHasLoaded,
-  ] = useProposals()
+  const [proposals, filters, proposalsFetchedCount, blockHasLoaded] =
+    useProposals()
 
   return {
     actions,

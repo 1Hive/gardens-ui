@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Button, GU, Info, textStyle } from '@1hive/1hive-ui'
 
 function InfoBox({ data }) {

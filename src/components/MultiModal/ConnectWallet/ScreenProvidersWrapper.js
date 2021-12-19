@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect } from 'react'
-import { useWallet } from '@providers/Wallet'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import ScreenProviders from '@components/Account/ScreenProviders'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
+import { useWallet } from '@providers/Wallet'
 
 function ScreenProvidersWrapper({ onError, onSuccess }) {
   const { account, connect, error } = useWallet()
   const { next } = useMultiModal()
 
   const activate = useCallback(
-    async providerId => {
+    async (providerId) => {
       try {
         await connect(providerId)
       } catch (error) {

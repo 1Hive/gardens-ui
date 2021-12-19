@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
+
 import {
   ButtonText,
   GU,
-  textStyle,
   springs,
+  textStyle,
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import ActivityItem from './ActivityItem'
-import { useActivity } from '@providers/ActivityProvider'
 
-import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
 // TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
 import noDataSvg from '@assets/noData.svg'
+
+import { useActivity } from '@providers/ActivityProvider'
+
+import ActivityItem from './ActivityItem'
+import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
 
 // 8GU for top bar, 4GU for activity heading,
 // 11GU for HelpScout beacon (3GU top/bottom padding, 5GU beacon)
@@ -89,7 +92,7 @@ function ActivityList() {
           <Transition
             native
             items={activityItems}
-            keys={activity => activity.transactionHash}
+            keys={(activity) => activity.transactionHash}
             trail={50}
             enter={{
               opacity: 1,
@@ -101,21 +104,22 @@ function ActivityList() {
             }}
             config={springs.smooth}
           >
-            {activity => transitionStyles => (
-              <div
-                css={`
-                  & + & {
-                    border-top: 1px solid ${theme.border};
-                  }
-                `}
-              >
-                <animated.div
-                  style={{ ...transitionStyles, overflow: 'hidden' }}
+            {(activity) => (transitionStyles) =>
+              (
+                <div
+                  css={`
+                    & + & {
+                      border-top: 1px solid ${theme.border};
+                    }
+                  `}
                 >
-                  <ActivityItem activity={activity} />
-                </animated.div>
-              </div>
-            )}
+                  <animated.div
+                    style={{ ...transitionStyles, overflow: 'hidden' }}
+                  >
+                    <ActivityItem activity={activity} />
+                  </animated.div>
+                </div>
+              )}
           </Transition>
         ) : (
           <div

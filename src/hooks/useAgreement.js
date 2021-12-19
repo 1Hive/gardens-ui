@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
+
 import { utils as ethersUtils } from 'ethers'
-import { addressesEqual } from '@utils/web3-utils'
-import { toMs, durationToHours } from '@utils/date-utils'
-import { getAppPresentation } from '@utils/app-utils'
-import { useGardenState } from '@providers/GardenState'
-import { useMounted } from './useMounted'
+
 import { useAgreementSubscription } from '@providers/AgreementSubscription'
+import { useGardenState } from '@providers/GardenState'
+
+import { getAppPresentation } from '@utils/app-utils'
 import { getAppByName } from '@utils/data-utils'
+import { durationToHours, toMs } from '@utils/date-utils'
+import { addressesEqual } from '@utils/web3-utils'
+
 import env from '../environment'
+import { useMounted } from './useMounted'
 
 export function useAgreement() {
   const mounted = useMounted()
@@ -24,12 +28,8 @@ export function useAgreement() {
     }
 
     async function processAgreementDetails() {
-      const {
-        currentVersion,
-        appsWithRequirements,
-        signer,
-        stakingFactory,
-      } = agreement
+      const { currentVersion, appsWithRequirements, signer, stakingFactory } =
+        agreement
       const { content, effectiveFrom, title, versionId } = currentVersion
 
       const signatures = signer ? await signer.signatures() : []
@@ -77,7 +77,7 @@ export function useAgreement() {
 
 function processDisputableApps(apps, disputableApps) {
   // Add presentation information and value formatting for each app
-  const processedDisputableApps = disputableApps.map(disputableApp => {
+  const processedDisputableApps = disputableApps.map((disputableApp) => {
     const {
       address: disputableAppAddress,
       actionAmount,

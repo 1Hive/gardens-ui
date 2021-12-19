@@ -1,9 +1,10 @@
 import React from 'react'
-import TokenSettingsNative from './TokenSettingsNative'
-import TokenSettingsBYOT from './TokenSettingsBYOT'
+
 import { useOnboardingState } from '@providers/Onboarding'
 
-import { NATIVE_TYPE, BYOT_TYPE } from '../../../constants'
+import { BYOT_TYPE, NATIVE_TYPE } from '../../../constants'
+import TokenSettingsBYOT from './TokenSettingsBYOT'
+import TokenSettingsNative from './TokenSettingsNative'
 
 function TokenSettings() {
   const { config } = useOnboardingState()

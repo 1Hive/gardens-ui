@@ -9,7 +9,7 @@ import {
 } from '../constants'
 
 export function getProposalSupportStatus(stakes, proposal) {
-  if (stakes.find(stake => stake.proposalId === proposal.id)) {
+  if (stakes.find((stake) => stake.proposalId === proposal.id)) {
     return PROPOSAL_SUPPORT_SUPPORTED
   }
 

@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import styled from 'styled-components'
+
 import {
   Button,
   GU,
@@ -11,12 +13,16 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
+
 import useExtendedVoteData from '@hooks/useExtendedVoteData'
+
+import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
-import { noop, dateFormat } from '@utils/date-utils'
-import { VOTE_NAY, VOTE_YEA } from '@/constants'
+
+import { dateFormat, noop } from '@utils/date-utils'
 import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils'
+
+import { VOTE_NAY, VOTE_YEA } from '@/constants'
 
 const VoteActions = React.memo(({ vote, onVote, onExecute }) => {
   const [ready, setReady] = useState(false)

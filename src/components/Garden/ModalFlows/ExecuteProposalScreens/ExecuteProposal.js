@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
+
 import { Button } from '@1hive/1hive-ui'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const ExecuteProposal = React.memo(function ExecuteProposal({
@@ -9,7 +11,7 @@ const ExecuteProposal = React.memo(function ExecuteProposal({
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

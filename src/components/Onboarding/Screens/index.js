@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { GU, springs } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
+
+import { GU, springs } from '@1hive/1hive-ui'
+
 import { useOnboardingState } from '@providers/Onboarding'
 
 const AnimatedDiv = animated.div
@@ -40,31 +42,33 @@ function OnboardingScreens() {
       }}
       config={springs.smooth}
     >
-      {({ Screen }) => ({ opacity, transform, position }) => (
-        <div
-          css={`
-            overflow: hidden;
-            position: relative;
-          `}
-        >
-          <AnimatedDiv
-            style={{ opacity, transform, position }}
-            css={`
-              top: 0;
-              left: 0;
-              right: 0;
-            `}
-          >
+      {({ Screen }) =>
+        ({ opacity, transform, position }) =>
+          (
             <div
               css={`
-                margin-bottom: ${2 * GU}px;
+                overflow: hidden;
+                position: relative;
               `}
             >
-              <Screen />
+              <AnimatedDiv
+                style={{ opacity, transform, position }}
+                css={`
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                `}
+              >
+                <div
+                  css={`
+                    margin-bottom: ${2 * GU}px;
+                  `}
+                >
+                  <Screen />
+                </div>
+              </AnimatedDiv>
             </div>
-          </AnimatedDiv>
-        </div>
-      )}
+          )}
     </Transition>
   )
 }

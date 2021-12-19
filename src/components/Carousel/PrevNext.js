@@ -1,6 +1,8 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
-import { GU, ButtonIcon, IconRight, IconLeft, useTheme } from '@1hive/1hive-ui'
+
+import { ButtonIcon, GU, IconLeft, IconRight, useTheme } from '@1hive/1hive-ui'
 
 function PrevNext({ onClick, type }) {
   const theme = useTheme()

@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react'
+
 import { ResponsiveLine } from '@nivo/line'
+
 import {
   ChartBase,
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
+
 import { useCharts } from '@providers/Charts'
+
 import {
   calculateThreshold,
   fromPercentage,
@@ -22,7 +26,7 @@ const generateRequestedAmountData = (maxRatioPct, weight, increment) => {
     increment
   )
     // Filter out any requested amount that needs more than 100% of conviction
-    .filter(requestedAmount => requestedAmount < maxRequestedAmount)
+    .filter((requestedAmount) => requestedAmount < maxRequestedAmount)
 
   return [...requestedAmountData, maxRequestedAmount]
 }
@@ -33,7 +37,7 @@ const computeChartData = (maxRatioPct, weight, increment) => {
     increment
   )
 
-  return requestedAmountData.map(requested => ({
+  return requestedAmountData.map((requested) => ({
     x: requested,
     y: toPercentage(calculateThreshold(weight, maxRatioPct, requested)),
   }))

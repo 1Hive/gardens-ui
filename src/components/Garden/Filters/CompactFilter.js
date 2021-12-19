@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
+
 import {
   BIG_RADIUS,
   DropDown,
@@ -12,6 +13,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+
 import arrowDownSvg from '@assets/arrowDown.svg'
 
 function CompactFilter({ ...props }) {
@@ -205,7 +207,7 @@ function AnimatedSlider({ children, visible }) {
         leave={{ opacity: 0, transform: 'translateY(100%)' }}
         config={{ ...springs.smooth, precision: 0.001 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ opacity, transform }) => (
             <div>
@@ -256,7 +258,7 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
   const [opened, setOpened] = useState(false)
 
   const handleFilterToggle = useCallback(() => {
-    setOpened(opened => !opened)
+    setOpened((opened) => !opened)
   }, [])
 
   return (
@@ -298,12 +300,12 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
         leave={{ height: 0 }}
         config={{ ...springs.smooth, precision: 0.1 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ height }) => (
             <animated.div
               style={{
-                height: height.interpolate(v => `${v}px`),
+                height: height.interpolate((v) => `${v}px`),
                 overflow: 'hidden',
                 borderBottom: `1px solid ${theme.border}`,
               }}
@@ -348,7 +350,7 @@ function ListItem({ index, item, onSelect, selected }) {
         color: ${isSelected ? theme.content : theme.contentSecondary};
         background: ${isSelected ? '#EAFAF9' : theme.surface};
         ${!isSelected &&
-          `
+        `
           &:hover {
             background: #EAFAF9;
           }

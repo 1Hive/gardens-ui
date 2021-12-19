@@ -1,5 +1,6 @@
 import React from 'react'
-import { useLayout, GU } from '@1hive/1hive-ui'
+
+import { GU, useLayout } from '@1hive/1hive-ui'
 
 function LayoutGutter({ children, collapseWhenSmall, ...props }) {
   const { layoutName } = useLayout()
