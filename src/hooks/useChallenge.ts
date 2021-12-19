@@ -1,5 +1,5 @@
 // @ts-nocheck
-// TODO: Cannot test it
+// TODO: Ask Gabi where I can test this
 
 import { useEffect, useState } from 'react'
 import { useConnectedGarden } from '@providers/ConnectedGarden'

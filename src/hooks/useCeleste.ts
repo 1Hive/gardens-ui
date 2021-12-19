@@ -1,5 +1,5 @@
 // @ts-nocheck
-// TODO: Cannot test it
+// TODO: Ask Gabi where I can test this
 
 import { useEffect, useMemo, useState } from 'react'
 import gql from 'graphql-tag'

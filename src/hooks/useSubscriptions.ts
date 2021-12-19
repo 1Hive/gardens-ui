@@ -1,3 +1,6 @@
+// @ts-nocheck
+// TODO: Ask Gabi  about the function with 2 params :(
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useGardenState } from '@providers/GardenState'
 import {
