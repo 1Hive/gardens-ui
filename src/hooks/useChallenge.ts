@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react'
+// @ts-nocheck
+// TODO: Cannot test it
 
+import { useEffect, useState } from 'react'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
-
 import { getProfileForAccount } from '@lib/profile'
 import { hexToUtf8 } from '@utils/web3-utils'
-
 import agreementAbi from '../abi/agreement.json'
 
 export default function useChallenge(proposal) {
+  console.log(`useChallenge`)
+  console.log(proposal)
   const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
   const mounted = useMounted()
@@ -21,7 +23,15 @@ export default function useChallenge(proposal) {
     chainId
   )
 
-  const [challenge, setChallenge] = useState()
+  console.log(`useChallenge`, agreementContract)
+
+  const [challenge, setChallenge] = useState<{
+    context: string | null
+    challenger: any
+  }>({
+    context: null,
+    challenger: null,
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

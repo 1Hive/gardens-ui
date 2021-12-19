@@ -10,7 +10,6 @@ export default function useAccountTokens(account: string, balance: BigNumber) {
       return new BigNumber('0')
     }
     return myStakes.reduce((acc: BigNumber, stake: { amount: number }) => {
-      console.log(`acc`, acc, stake)
       return acc.plus(stake.amount)
     }, new BigNumber('0'))
   }, [myStakes])

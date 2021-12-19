@@ -1,4 +1,5 @@
 // @ts-nocheck
+// TODO: Cannot test it
 
 import { useEffect, useMemo, useState } from 'react'
 import gql from 'graphql-tag'

@@ -6,11 +6,16 @@ import {
   transformSupporterData,
 } from '../utils/data-utils'
 
-export function useConfigSubscription(garden) {
+type Garden = {
+  onConfig: any
+}
+
+export function useConfigSubscription(garden: Garden) {
+  console.log(`useConfigSubscription`, garden)
   const [config, setConfig] = useState(null)
 
-  const rawConfigRef = useRef(null)
-  const configSubscription = useRef(null)
+  const rawConfigRef = useRef<unknown>(null)
+  const configSubscription = useRef<unknown>(null)
 
   const onConfigHandler = useCallback((err, config) => {
     if (err || !config) {
@@ -18,7 +23,7 @@ export function useConfigSubscription(garden) {
     }
 
     const rawConfig = JSON.stringify(config)
-    if (rawConfigRef?.current === rawConfig) {
+    if (rawConfigRef.current === rawConfig) {
       return
     }
 
@@ -35,16 +40,61 @@ export function useConfigSubscription(garden) {
 
     configSubscription.current = garden.onConfig(onConfigHandler)
 
-    return () => configSubscription.current.unsubscribe()
+    return () => {
+      configSubscription.current = null
+    }
   }, [garden, onConfigHandler])
 
   return config
 }
 
-export function useProposalsSubscription(filters) {
-  const { config, connector } = useGardenState()
-  const [proposals, setProposals] = useState([])
+type FiltersType = {
+  count: {
+    filter: number
+    onChange: () => void
+  }
+  isActive: boolean
+  name: {
+    filter: string
+    queryArgs: {
+      metadata: string
+    }
+    onChange: (name: string) => void
+  }
+  onClear: () => void
+  ranking: {
+    items: Array<string>
+    filter: number
+    queryArgs: { orderBy: string }
+    onChange: (index: any) => void
+  }
+  status: {
+    items: Array<string>
+    filter: number
+    queryArgs: {
+      statuses: Array<number>
+    }
+    onChange: (index: any) => void
+  }
+  support: {
+    items: Array<string>
+    filter: number
+    onChange: () => void
+  }
+  type: {
+    items: Array<string>
+    filter: number
+    queryArgs: any
+    onChange: (index: any) => void
+  }
+  proposalCount?: any
+}
 
+export function useProposalsSubscription(filters: FiltersType) {
+  const { config, connector } = useGardenState()
+  const [proposals, setProposals] = useState<any[]>([])
+
+  console.log(`useProposalsSubscription`, config)
   const proposalsSubscription = useRef(null)
 
   const onProposalsHandler = useCallback(
@@ -77,7 +127,9 @@ export function useProposalsSubscription(filters) {
       onProposalsHandler
     )
 
-    return () => proposalsSubscription.current.unsubscribe()
+    return () => {
+      proposalsSubscription.current = null
+    }
   }, [
     connector,
     filters.count,
@@ -93,13 +145,16 @@ export function useProposalsSubscription(filters) {
 }
 
 // TODO: Handle errors
-export function useProposalSubscription(proposalId, appAddress) {
+export function useProposalSubscription(
+  proposalId: number,
+  appAddress: string
+) {
   const { config, connector } = useGardenState()
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const rawProposalRef = useRef(null)
-  const proposalSubscription = useRef(null)
+  const rawProposalRef = useRef<unknown>(null)
+  const proposalSubscription = useRef<unknown>(null)
 
   const onProposalHandler = useCallback(
     async (err, proposal) => {
@@ -115,6 +170,7 @@ export function useProposalSubscription(proposalId, appAddress) {
 
       rawProposalRef.current = rawProposal
 
+      // TODO: Ask Gabi about this. It requires jusr one param
       const transformedProposal = await transformProposalData(proposal, config)
       setProposal(transformedProposal)
       setLoading(false)
@@ -132,19 +188,23 @@ export function useProposalSubscription(proposalId, appAddress) {
       onProposalHandler
     )
 
-    return () => proposalSubscription.current.unsubscribe()
+    return () => {
+      proposalSubscription.current = null
+    }
   }, [appAddress, connector, onProposalHandler, proposalId])
 
   return [proposal, loading]
 }
 
-export function useSupporterSubscription(account) {
+export function useSupporterSubscription(account: string) {
+  console.log(`useSupporterSubscription`, account)
+
   const { connector } = useGardenState()
   const [supporter, setSupporter] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const rawSupporterRef = useRef(null)
-  const supporterSubscription = useRef(null)
+  const rawSupporterRef = useRef<unknown>(null)
+  const supporterSubscription = useRef<unknown>(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {
     if (err || !supporter) {
@@ -176,7 +236,7 @@ export function useSupporterSubscription(account) {
     )
 
     return () => {
-      supporterSubscription.current.unsubscribe()
+      supporterSubscription.current = null
     }
   }, [account, connector, onSupporterHandler])
 

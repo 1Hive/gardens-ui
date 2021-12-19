@@ -8,6 +8,8 @@ import { useSteps } from '../../hooks/useSteps'
 const MultiModalContext = React.createContext({})
 
 function MultiModalProvider({ screens, onClose, children }) {
+  console.log(`MultiModalProvider`)
+
   const { account } = useWallet()
   const { direction, next, prev, setStep, step } = useSteps(screens.length)
   const getScreen = useCallback(step => screens[step], [screens])

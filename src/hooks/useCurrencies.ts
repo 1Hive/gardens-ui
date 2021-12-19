@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
+
 const CURRENCIES_URL = 'https://api.exchangeratesapi.io/latest?base=USD'
-const SYMBOL_MAP = {
+const RETRY_EVERY = 3000
+
+const CurrenciesMap: {
+  [key: string]: string
+} = {
   USD: '$',
   EUR: '€',
   CAD: 'CAD $',
@@ -13,13 +18,20 @@ const SYMBOL_MAP = {
   KRW: '₩',
   RUB: '₽',
 }
-const RETRY_EVERY = 3000
+
+type RateType = {
+  name: string
+  symbol: string
+  rate: any
+}
+
 export function useCurrencies() {
-  const [currencies, setCurrencies] = useState([])
+  const [currencies, setCurrencies] = useState<RateType[]>([])
 
   useEffect(() => {
     let cancelled = false
-    let retryTimer
+    let retryTimer: number
+
     async function fetchRates() {
       try {
         const result = await (await fetch(CURRENCIES_URL)).json()
@@ -30,15 +42,16 @@ export function useCurrencies() {
         const rates = Object.keys(result.rates)
           // To ensure the dropdown is not too big, we only
           // map currencies that we have mapped a symbol for
-          .filter(name => !!SYMBOL_MAP[name])
+          .filter(name => !!CurrenciesMap[name])
           .map(name => ({
             name,
-            symbol: SYMBOL_MAP[name],
+            symbol: CurrenciesMap[name],
             rate: result.rates[name],
           }))
+
         setCurrencies(rates)
       } catch (err) {
-        retryTimer = setTimeout(fetchRates, RETRY_EVERY)
+        retryTimer = window.setTimeout(fetchRates, RETRY_EVERY)
       }
     }
 
@@ -53,7 +66,7 @@ export function useCurrencies() {
 }
 
 // Always puts USD at index 0
-function orderCurrencies(currencies) {
+function orderCurrencies(currencies: RateType[]) {
   return currencies.sort(({ name }) => {
     if (name === 'USD') {
       return -1

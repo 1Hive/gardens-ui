@@ -1,9 +1,14 @@
 import { useMemo } from 'react'
-import { Contract as EthersContract } from 'ethers'
+import { Contract as EthersContract, ContractInterface } from 'ethers'
 import { useWallet } from '@providers/Wallet'
 import { getDefaultProvider } from '@utils/web3-utils'
 
-export function useContractReadOnly(address, abi, chainId) {
+// TODO: Ask Gabi to check if this works
+export function useContractReadOnly(
+  address: string,
+  abi: ContractInterface,
+  chainId: number
+): EthersContract | null {
   return useMemo(() => {
     if (!address) {
       return null
@@ -12,7 +17,11 @@ export function useContractReadOnly(address, abi, chainId) {
   }, [abi, address, chainId])
 }
 
-export function useContract(address, abi, signer = true) {
+export function useContract(
+  address: string,
+  abi: ContractInterface,
+  signer = true
+) {
   const { account, ethers } = useWallet()
 
   return useMemo(() => {
@@ -27,6 +36,10 @@ export function useContract(address, abi, signer = true) {
   }, [abi, account, address, ethers, signer])
 }
 
-export function getContract(address, abi, provider = getDefaultProvider()) {
+export function getContract(
+  address: string,
+  abi: ContractInterface,
+  provider = getDefaultProvider()
+) {
   return new EthersContract(address, abi, provider)
 }

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useProfile } from '@providers/Profile'
-
 import { addressesEqual } from '@utils/web3-utils'
 import { getProfileForAccount } from '@lib/profile'
 
-const profilesCache = new Map([])
+const profilesCache: Map<string, any> = new Map([])
 
-export default function useSelectedProfile(account) {
+export default function useSelectedProfile(account: string) {
   // Connected account's profile (if any)
   const profile = useProfile()
 
@@ -14,13 +13,13 @@ export default function useSelectedProfile(account) {
   const [selectedProfile, setSelectedProfile] = useState(null)
 
   useEffect(() => {
+    let cancelled = false
+
     // Selected account is same as connected account
     // We have already loaded the profile
     if (addressesEqual(account, profile.account)) {
       return setSelectedProfile(profile)
     }
-
-    let cancelled = false
 
     async function fetchProfile() {
       if (profilesCache.has(account)) {
@@ -37,7 +36,9 @@ export default function useSelectedProfile(account) {
 
     fetchProfile()
 
-    return () => (cancelled = true)
+    return () => {
+      cancelled = true
+    }
   }, [account, profile])
 
   return selectedProfile
