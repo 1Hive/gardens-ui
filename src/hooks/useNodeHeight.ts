@@ -1,8 +1,10 @@
+// TODO: Ask gabi how to test this one
+
 import { useCallback, useRef, useState } from 'react'
 
 export function useNodeHeight() {
   const [height, setHeight] = useState(0)
-  const nodeObserver = useRef(null)
+  const nodeObserver = useRef<ResizeObserver>(null)
 
   const customRef = useCallback(node => {
     if (nodeObserver.current) {
@@ -11,12 +13,12 @@ export function useNodeHeight() {
 
     if (node) {
       setHeight(node.clientHeight)
-      nodeObserver.current = new ResizeObserver(entries => {
+      new ResizeObserver(entries => {
         const { y } = entries[0].contentRect
         setHeight(y)
       })
 
-      nodeObserver.current.observe(node)
+      nodeObserver.current?.observe(node)
     }
   }, [])
 
