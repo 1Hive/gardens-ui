@@ -5,9 +5,9 @@ import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '@lib/bigNumber'
 
-import { useWallet } from '@providers/Wallet'
-
 import { stakesPercentages } from '@utils/math-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 

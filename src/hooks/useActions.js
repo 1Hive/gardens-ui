@@ -4,18 +4,18 @@ import { toHex } from 'web3-utils'
 
 import { noop } from '@1hive/1hive-ui'
 
-import unipoolAbi from '@abis/Unipool.json'
-import tokenAbi from '@abis/minimeToken.json'
-import priceOracleAbi from '@abis/priceOracle.json'
-
 import BigNumber from '@lib/bigNumber'
+
+import { getAppByName } from '@utils/data-utils'
+import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { getAppByName } from '@utils/data-utils'
-import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
+import unipoolAbi from '@abis/Unipool.json'
+import tokenAbi from '@abis/minimeToken.json'
+import priceOracleAbi from '@abis/priceOracle.json'
 
 import env from '@/environment'
 import { getNetwork } from '@/networks'

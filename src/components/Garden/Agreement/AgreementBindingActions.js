@@ -6,9 +6,9 @@ import { Accordion, AppBadge, Box, GU, useTheme } from '@1hive/1hive-ui'
 
 import HelpTip from '@components/HelpTip'
 
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-
 import { formatTokenAmount } from '@utils/token-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { getNetwork } from '@/networks'
 

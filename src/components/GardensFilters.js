@@ -4,9 +4,9 @@ import styled from 'styled-components'
 
 import { DropDown, GU, SearchInput, useLayout } from '@1hive/1hive-ui'
 
-import { useWallet } from '@providers/Wallet'
-
 import { getNetworkName } from '@utils/web3-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 import { SUPPORTED_CHAINS } from '@/networks'
 

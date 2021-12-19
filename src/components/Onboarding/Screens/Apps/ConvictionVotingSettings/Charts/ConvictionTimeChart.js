@@ -8,14 +8,14 @@ import {
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
 
-import { useCharts } from '@providers/Charts'
-
 import {
   calculateConviction,
   calculateMaxConviction,
   generateElements,
   toPercentage,
 } from '@utils/conviction-modelling-helpers'
+
+import { useCharts } from '@providers/Charts'
 
 const DEFAULT_INCREMENT = 1 / 2
 const DEFAULT_MAX_DAY = 20

@@ -7,9 +7,9 @@ import { Button } from '@1hive/1hive-ui'
 
 import useActions from '@hooks/useActions'
 
-import { useUserState } from '@providers/User'
-
 import { buildGardenPath } from '@utils/routing-utils'
+
+import { useUserState } from '@providers/User'
 
 import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'

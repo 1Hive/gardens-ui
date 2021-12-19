@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
-import priceOracleAbi from '@abis/priceOracle.json'
+import { fromDecimals } from '@utils/math-utils'
 
 import { useWallet } from '@providers/Wallet'
 
-import { fromDecimals } from '@utils/math-utils'
+import priceOracleAbi from '@abis/priceOracle.json'
 
 import { getNetwork } from '../networks'
 import { useContractReadOnly } from './useContract'

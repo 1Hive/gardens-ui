@@ -4,12 +4,12 @@ import { Button, Field, GU, textStyle, theme, useLayout } from '@1hive/1hive-ui'
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import iconFees from '@assets/iconFees.svg'
-
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 
 import { getDisputableAppByName } from '@utils/app-utils'
 import { formatTokenAmount } from '@utils/token-utils'
+
+import iconFees from '@assets/iconFees.svg'
 
 import env from '@/environment'
 

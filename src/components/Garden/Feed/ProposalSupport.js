@@ -2,11 +2,11 @@ import React from 'react'
 
 import { GU, Tag, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
 import { safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast } from '@utils/vote-utils'
+
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'

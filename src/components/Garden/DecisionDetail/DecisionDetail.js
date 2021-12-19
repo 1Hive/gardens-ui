@@ -20,13 +20,13 @@ import MultiModal from '@components/MultiModal/MultiModal'
 
 import { useDescribeVote } from '@hooks/useDescribeVote'
 
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
 import { round, safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 import { getNetwork } from '@/networks'

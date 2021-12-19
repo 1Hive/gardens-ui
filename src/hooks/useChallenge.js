@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { getProfileForAccount } from '@lib/profile'
 
+import { hexToUtf8 } from '@utils/web3-utils'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
-
-import { hexToUtf8 } from '@utils/web3-utils'
 
 import agreementAbi from '../abi/agreement.json'
 import { useContractReadOnly } from './useContract'

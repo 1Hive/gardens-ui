@@ -13,9 +13,9 @@ import {
 
 import { useMounted } from '@hooks/useMounted'
 
-import { useWallet } from '@providers/Wallet'
-
 import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 import ModalButton from '../ModalFlows/ModalButton'
 

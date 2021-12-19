@@ -6,10 +6,10 @@ import AccountNotConnected from '@components/AccountNotConnected'
 
 import BigNumber from '@lib/bigNumber'
 
+import { addressesEqual } from '@utils/web3-utils'
+
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
-
-import { addressesEqual } from '@utils/web3-utils'
 
 function ProposalActions({
   proposal,

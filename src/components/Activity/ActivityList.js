@@ -10,10 +10,10 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
+import { useActivity } from '@providers/ActivityProvider'
+
 // TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
 import noDataSvg from '@assets/noData.svg'
-
-import { useActivity } from '@providers/ActivityProvider'
 
 import ActivityItem from './ActivityItem'
 import { ACTIVITY_STATUS_PENDING } from './activity-statuses'

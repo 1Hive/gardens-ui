@@ -12,15 +12,15 @@ import {
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import iconCheck from '@assets/iconCheck.svg'
-import iconError from '@assets/iconError.svg'
-
 import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+
+import { formatTokenAmount } from '@utils/token-utils'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
-import { formatTokenAmount } from '@utils/token-utils'
+import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
 
 import { CELESTE_URL } from '@/endpoints'
 

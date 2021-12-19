@@ -2,9 +2,9 @@ import React from 'react'
 
 import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
 
-import { useGardenState } from '@providers/GardenState'
-
 import { formatTokenAmount } from '@utils/token-utils'
+
+import { useGardenState } from '@providers/GardenState'
 
 import { ProposalTypes } from '@/types'
 

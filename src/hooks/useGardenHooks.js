@@ -9,16 +9,16 @@ import {
   usePermissions,
 } from '@1hive/connect-react'
 
-import fundsManagerAbi from '@abis/FundsManager.json'
-// abis
-import minimeTokenAbi from '@abis/minimeToken.json'
-
 import BigNumber from '@lib/bigNumber'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { getAppByName } from '@utils/data-utils'
 import { addressesEqual } from '@utils/web3-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
+import fundsManagerAbi from '@abis/FundsManager.json'
+// abis
+import minimeTokenAbi from '@abis/minimeToken.json'
 
 // utils
 import env from '@/environment'

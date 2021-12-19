@@ -14,17 +14,17 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import challengeIconSvg from '@assets/challenge-icon.svg'
-
 import { useProposalEndDate } from '@hooks/useProposals'
 
 import BigNumber from '@lib/bigNumber'
 import { isEntitySupporting } from '@lib/conviction'
 
+import { formatTokenAmount } from '@utils/token-utils'
+
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { formatTokenAmount } from '@utils/token-utils'
+import challengeIconSvg from '@assets/challenge-icon.svg'
 
 import LineChart from './ModifiedLineChart'
 import SummaryBar from './SummaryBar'

@@ -2,11 +2,11 @@ import React from 'react'
 
 import { GU, IconCross, Tag, useTheme } from '@1hive/1hive-ui'
 
-import gardensLogo from '@assets/gardensLogoMark.svg'
+import { getNetworkName } from '@utils/web3-utils'
 
 import { useWallet } from '@providers/Wallet'
 
-import { getNetworkName } from '@utils/web3-utils'
+import gardensLogo from '@assets/gardensLogoMark.svg'
 
 import SavedProgress from './SavedProgress'
 import Screens from './Screens'

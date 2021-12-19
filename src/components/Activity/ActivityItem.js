@@ -17,10 +17,10 @@ import IdentityBadge from '@components/IdentityBadge'
 
 import { useAsset } from '@hooks/useAsset'
 
+import { transformAddresses } from '@utils/web3-utils'
+
 import { useActivity } from '@providers/ActivityProvider'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-
-import { transformAddresses } from '@utils/web3-utils'
 
 import { getNetwork } from '../../networks'
 import TimeTag from './TimeTag'
