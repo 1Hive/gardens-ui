@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import BigNumber from '@lib/bigNumber'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
+import BigNumber from '@lib/bigNumber'
 
 import priceOracleAbi from '@abis/priceOracle.json'
 

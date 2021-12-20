@@ -19,9 +19,9 @@ import {
 import { dateFormat } from '@utils/date-utils'
 import { validateEmail } from '@utils/validate-utils'
 
-import verifiedCheck from '@assets/verifiedCheck.svg'
-
 import { fetchPic } from '@/services'
+
+import verifiedCheck from '@assets/verifiedCheck.svg'
 
 import SingleDatePicker from '../SingleDatePicker/SingleDatePicker'
 import BrightIdStatus from './BrightIdStatus'

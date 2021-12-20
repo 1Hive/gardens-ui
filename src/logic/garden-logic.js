@@ -1,7 +1,7 @@
+import { useGardenState } from '@providers/GardenState'
+
 import useActions from '@hooks/useActions'
 import { useProposals } from '@hooks/useProposals'
-
-import { useGardenState } from '@providers/GardenState'
 
 // Handles the main logic of the app.
 export default function useGardenLogic() {

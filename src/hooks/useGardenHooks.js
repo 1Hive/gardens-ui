@@ -9,12 +9,12 @@ import {
   usePermissions,
 } from '@1hive/connect-react'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import BigNumber from '@lib/bigNumber'
 
 import { getAppByName } from '@utils/data-utils'
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import fundsManagerAbi from '@abis/FundsManager.json'
 // abis

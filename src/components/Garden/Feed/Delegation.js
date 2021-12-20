@@ -14,10 +14,10 @@ import {
 
 import IdentityBadge from '@components/IdentityBadge'
 
+import { useWallet } from '@providers/Wallet'
+
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
-
-import { useWallet } from '@providers/Wallet'
 
 function Delegation({ onRemoveDelegate, onSetDelegate }) {
   const { account } = useWallet()

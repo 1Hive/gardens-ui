@@ -5,9 +5,9 @@ import PropTypes from 'prop-types'
 
 import { GU, TransactionBadge, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
-
 import { useWallet } from '@providers/Wallet'
+
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 import { getNetwork } from '@/networks'
 import { springs } from '@/style/springs'

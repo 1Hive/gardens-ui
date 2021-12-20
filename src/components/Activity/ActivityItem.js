@@ -15,12 +15,12 @@ import {
 
 import IdentityBadge from '@components/IdentityBadge'
 
+import { useActivity } from '@providers/ActivityProvider'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { useAsset } from '@hooks/useAsset'
 
 import { transformAddresses } from '@utils/web3-utils'
-
-import { useActivity } from '@providers/ActivityProvider'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { getNetwork } from '../../networks'
 import TimeTag from './TimeTag'

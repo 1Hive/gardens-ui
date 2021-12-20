@@ -4,12 +4,12 @@ import { Button, GU, Info } from '@1hive/1hive-ui'
 
 import AccountNotConnected from '@components/AccountNotConnected'
 
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
 import BigNumber from '@lib/bigNumber'
 
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
 
 function ProposalActions({
   proposal,

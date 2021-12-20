@@ -7,13 +7,13 @@ import {
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
 
+import { useCharts } from '@providers/Charts'
+
 import {
   fromPercentage,
   generateElements,
   toPercentage,
 } from '@utils/conviction-modelling-helpers'
-
-import { useCharts } from '@providers/Charts'
 
 const DEFAULT_INCREMENT = 1
 const DEFAULT_MAX_PERCENTAGE = 100

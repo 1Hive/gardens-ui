@@ -3,10 +3,10 @@ import { useLocation } from 'react-router'
 
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
-import usePreferences from '@hooks/usePreferences'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
+
+import usePreferences from '@hooks/usePreferences'
 
 import Footer from './Garden/Footer'
 import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/CreateProposalScreens'

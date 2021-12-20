@@ -13,6 +13,8 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
 import { useDisputeState } from '@hooks/useDispute'
 
 import { dateFormat } from '@utils/date-utils'
@@ -22,8 +24,6 @@ import {
   RoundStates,
 } from '@utils/dispute-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import { useWallet } from '@providers/Wallet'
 
 import { CELESTE_URL } from '@/endpoints'
 import { ProposalTypes } from '@/types'

@@ -4,6 +4,8 @@ import { Spring, animated } from 'react-spring/renderprops'
 
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
 import usePicture from '@hooks/usePicture'
 import useSelectedProfile from '@hooks/useSelectedProfile'
 import {
@@ -12,8 +14,6 @@ import {
 } from '@hooks/useStakes'
 
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useWallet } from '@providers/Wallet'
 
 import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
 

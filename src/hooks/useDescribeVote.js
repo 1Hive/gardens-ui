@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useGardenState } from '@providers/GardenState'
+
 import { useMounted } from '@hooks/useMounted'
 
 import { getAppPresentationByAddress } from '@utils/app-utils'
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useGardenState } from '@providers/GardenState'
 
 const cachedDescriptions = new Map([])
 

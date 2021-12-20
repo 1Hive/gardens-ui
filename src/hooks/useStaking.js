@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { noop } from '@1hive/1hive-ui'
 
-import BigNumber from '@lib/bigNumber'
-
-import { encodeFunctionData } from '@utils/web3-utils'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
+
+import BigNumber from '@lib/bigNumber'
+
+import { encodeFunctionData } from '@utils/web3-utils'
 
 import stakingAbi from '@abis/Staking.json'
 import stakingFactoryAbi from '@abis/StakingFactory.json'

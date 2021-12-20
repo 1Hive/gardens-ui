@@ -12,15 +12,15 @@ import {
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
 import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
 
 import BigNumber from '@lib/bigNumber'
 
 import { pct, round, toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
 
 const SupportProposal = React.memo(function SupportProposal({
   getTransactions,

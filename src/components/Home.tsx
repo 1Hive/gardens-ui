@@ -4,10 +4,10 @@ import styled from 'styled-components'
 
 import { GU, useToast } from '@1hive/1hive-ui'
 
-import { useNodeHeight } from '@hooks/useNodeHeight'
-
 import { useGardens } from '@providers/Gardens'
 import { useWallet } from '@providers/Wallet'
+
+import { useNodeHeight } from '@hooks/useNodeHeight'
 
 import GardensFilters from './GardensFilters'
 import GardensList from './GardensList'

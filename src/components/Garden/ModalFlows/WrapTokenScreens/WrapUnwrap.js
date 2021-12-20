@@ -13,12 +13,12 @@ import {
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
+import { useGardenState } from '@providers/GardenState'
+
 import BigNumber from '@lib/bigNumber'
 
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import { useGardenState } from '@providers/GardenState'
 
 const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   const theme = useTheme()

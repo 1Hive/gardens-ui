@@ -11,9 +11,9 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { getNetworkName } from '@utils/web3-utils'
-
 import { useProfile } from '@providers/Profile'
+
+import { getNetworkName } from '@utils/web3-utils'
 
 import { useWallet } from '@/providers/Wallet'
 

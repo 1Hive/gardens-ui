@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom'
 
 import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui'
 
-import { getProfileForAccount } from '@lib/profile'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
+import { getProfileForAccount } from '@lib/profile'
 
 import { getNetwork } from '@/networks'
 

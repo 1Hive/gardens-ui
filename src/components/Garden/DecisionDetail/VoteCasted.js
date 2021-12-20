@@ -2,14 +2,14 @@ import React from 'react'
 
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import { useGardenState } from '@providers/GardenState'
+
 import { formatTokenAmount } from '@utils/token-utils'
 import {
   getAccountCastDelegatedStake,
   getAccountCastStake,
 } from '@utils/vote-utils'
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useGardenState } from '@providers/GardenState'
 
 import { VOTE_YEA } from '@/constants'
 

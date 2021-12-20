@@ -23,6 +23,9 @@ import {
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
+
 // Hooks
 import useChallenge from '@hooks/useChallenge'
 
@@ -34,9 +37,6 @@ import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '@utils/web3-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
 
 import LoadingRing from '@/components/LoadingRing'
 import { ZERO_ADDR } from '@/constants'

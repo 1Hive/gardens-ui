@@ -11,10 +11,10 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
-import { buildGardenPath } from '@utils/routing-utils'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
+
+import { buildGardenPath } from '@utils/routing-utils'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'

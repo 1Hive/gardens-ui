@@ -2,13 +2,13 @@ import React from 'react'
 
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
 import useAccountTokens from '@hooks/useAccountTokens'
 
 import { safeDivBN } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
 
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 

@@ -10,9 +10,9 @@ import {
   isAddress,
 } from '@1hive/1hive-ui'
 
-import { useTokenData } from '@hooks/useToken'
-
 import { useOnboardingState } from '@providers/Onboarding'
+
+import { useTokenData } from '@hooks/useToken'
 
 import iconCheck from '@assets/iconCheck.svg'
 import iconError from '@assets/iconError.svg'
