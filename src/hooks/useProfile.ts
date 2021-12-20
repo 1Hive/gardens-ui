@@ -4,7 +4,7 @@ import { getProfileForAccount } from '@lib/profile'
 
 const CACHE = new Map()
 
-export default function useProfile(account) {
+export default function useProfile(account: string) {
   const [profile, setProfile] = useState(null)
 
   useEffect(() => {

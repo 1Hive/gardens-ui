@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 
-const DEFAULT_STATE = {
+const DEFAULT_STATE: {
+  buffer: FormData | null
+  updated: boolean
+  removed: boolean
+} = {
   buffer: null,
   updated: false,
   removed: false,
 }
 
-export default function usePicture(refresh) {
+export default function usePicture(refresh: boolean) {
   const [picture, setPicture] = useState(DEFAULT_STATE)
   const handleProfilePicChange = useCallback(event => {
     const newPhotoFile = event.target.files[0]

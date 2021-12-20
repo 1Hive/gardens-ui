@@ -8,13 +8,13 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
+import { FiltersType } from './constants'
 
 type Garden = {
   onConfig: any
 }
 
 export function useConfigSubscription(garden: Garden) {
-  console.log(`useConfigSubscription`, garden)
   const [config, setConfig] = useState(null)
 
   const rawConfigRef = useRef<unknown>(null)
@@ -51,53 +51,9 @@ export function useConfigSubscription(garden: Garden) {
   return config
 }
 
-type FiltersType = {
-  count: {
-    filter: number
-    onChange: () => void
-  }
-  isActive: boolean
-  name: {
-    filter: string
-    queryArgs: {
-      metadata: string
-    }
-    onChange: (name: string) => void
-  }
-  onClear: () => void
-  ranking: {
-    items: Array<string>
-    filter: number
-    queryArgs: { orderBy: string }
-    onChange: (index: any) => void
-  }
-  status: {
-    items: Array<string>
-    filter: number
-    queryArgs: {
-      statuses: Array<number>
-    }
-    onChange: (index: any) => void
-  }
-  support: {
-    items: Array<string>
-    filter: number
-    onChange: () => void
-  }
-  type: {
-    items: Array<string>
-    filter: number
-    queryArgs: any
-    onChange: (index: any) => void
-  }
-  proposalCount?: any
-}
-
 export function useProposalsSubscription(filters: FiltersType) {
   const { config, connector } = useGardenState()
   const [proposals, setProposals] = useState<any[]>([])
-
-  console.log(`useProposalsSubscription`, config)
   const proposalsSubscription = useRef(null)
 
   const onProposalsHandler = useCallback(

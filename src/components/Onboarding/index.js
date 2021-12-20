@@ -5,8 +5,7 @@ import Deployment from './Deployment/Deployment'
 import { ChartsProvider } from '@providers/Charts'
 import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
 import Setup from './Setup'
-
-import { STATUS_GARDEN_SETUP } from './statuses'
+import { OnboardingStatusGarden } from './statuses'
 
 function Onboarding({ onClose, visible }) {
   return (
@@ -30,7 +29,7 @@ function Onboarding({ onClose, visible }) {
 function OnboardingPhases({ onClose }) {
   const { status } = useOnboardingState()
 
-  return status === STATUS_GARDEN_SETUP ? (
+  return status === OnboardingStatusGarden.STATUS_GARDEN_SETUP ? (
     <Setup onClose={onClose} />
   ) : (
     <Deployment />

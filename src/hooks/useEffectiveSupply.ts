@@ -1,7 +1,12 @@
+import BigNumber from '@lib/bigNumber'
 import { useMemo } from 'react'
 import { PCT_BASE } from '../constants'
+import { ConfigType } from './constants'
 
-export default function useEffectiveSupply(totalSupply, config) {
+export default function useEffectiveSupply(
+  totalSupply: BigNumber,
+  config: ConfigType
+) {
   return useMemo(() => {
     if (!config) {
       return null

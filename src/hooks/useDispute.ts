@@ -9,7 +9,7 @@ import { getNetwork } from '@/networks'
 import arbitratorAbi from '@abis/arbitrator.json'
 import disputeManagerAbi from '@abis/DisputeManager.json'
 
-export function useDisputeState(disputeId) {
+export function useDisputeState(disputeId: number) {
   const [disputeState, setDisputeState] = useState(null)
   const [roundState, setRoundState] = useState(null)
 
@@ -71,8 +71,12 @@ export function useDisputeState(disputeId) {
   return [disputeState, roundState]
 }
 
-export function useDisputeFees(chainId) {
-  const [fees, setFees] = useState({
+export function useDisputeFees(chainId: number) {
+  const [fees, setFees] = useState<{
+    token: any
+    amount: BigNumber | null
+    loading: boolean
+  }>({
     token: null,
     amount: null,
     loading: true,

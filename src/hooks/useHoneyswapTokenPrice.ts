@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
-
 import gql from 'graphql-tag'
 import { Client } from 'urql'
-
-const RETRY_EVERY = 3000
 
 const HONEYSWAP_URL =
   'https://api.thegraph.com/subgraphs/name/1hive/honeyswap-v2'
 
 const graphqlClient = new Client({ url: HONEYSWAP_URL })
-
-const TOKEN_PRICE_QUERY = tokenAddress => gql`
+const TOKEN_PRICE_QUERY = (tokenAddress: string) => gql`
   query {
     token(id: "${tokenAddress}") {
       derivedETH
@@ -18,12 +14,13 @@ const TOKEN_PRICE_QUERY = tokenAddress => gql`
   }
 `
 
-export function useHoneyswapTokenPrice(tokenAddress) {
-  const [tokenPrice, setTokenPrice] = useState(-1)
+export function useHoneyswapTokenPrice(tokenAddress: string) {
+  const [tokenPrice, setTokenPrice] = useState<number | string>(-1)
 
   useEffect(() => {
     let cancelled = false
-    let retryTimer
+    let retryTimer: number
+
     async function fetchPrice() {
       try {
         const result = await graphqlClient
@@ -41,7 +38,7 @@ export function useHoneyswapTokenPrice(tokenAddress) {
           setTokenPrice(parseFloat(tokenPrice).toFixed(2))
         }
       } catch (err) {
-        retryTimer = setTimeout(fetchPrice, RETRY_EVERY)
+        retryTimer = window.setTimeout(fetchPrice, 3000)
       }
     }
 

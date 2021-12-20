@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 // Preferences base query string
 const GLOBAL_PREFERENCES_QUERY_PARAM = '?preferences='
 
-export function getPreferencesSearch(screen) {
+export function getPreferencesSearch(screen: string | null) {
   return `${GLOBAL_PREFERENCES_QUERY_PARAM}${screen}`
 }
 

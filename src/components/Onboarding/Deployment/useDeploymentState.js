@@ -9,7 +9,7 @@ import {
   STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
-import { STATUS_GARDEN_CREATED } from '../statuses'
+import { OnboardingStatusGarden } from '../statuses'
 
 const DEFAULT_TX_PROGRESS = {
   signed: 0,
@@ -137,7 +137,7 @@ export default function useDeploymentState() {
   return {
     erroredTransactions: transactionProgress.errored,
     gardenAddress,
-    isFinalized: status === STATUS_GARDEN_CREATED,
+    isFinalized: status === OnboardingStatusGarden.STATUS_GARDEN_CREATED,
     onNextAttempt: handleNextAttempt,
     onReset,
     readyToStart: deployTransactions.length > 0,

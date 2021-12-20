@@ -5,7 +5,7 @@
  * tokens.forEach(token => console.log(`['${token.symbol}', '${token.address.toLowerCase()}'],`))
  */
 /* eslint-disable */
-const MYCRYPTO_VERIFIED_TOKENS = [
+const MYCRYPTO_VERIFIED_TOKENS: Array<[string, string]> = [
   ['$FFC', '0x4e84e9e5fb0a972628cf4568c403167ef1d40431'],
   ['$FXY', '0xa024e8057eec474a9b2356833707dd0579e26ef3'],
   ['$HUR', '0xcdb7ecfd3403eef3882c65b761ef9b5054890a47'],
@@ -1446,16 +1446,15 @@ const MYCRYPTO_VERIFIED_TOKENS = [
 ]
 
 // Additional tokens added for Aragon
-const ARAGON_VERIFIED_TOKENS = [
+const ARAGON_VERIFIED_TOKENS: Array<[string, string]> = [
   ['rDAI', '0x261b45d85ccfeabb11f022eba346ee8d1cd488c0'],
 ]
 
-const VERIFIED_TOKENS =[
-  ...MYCRYPTO_VERIFIED_TOKENS,
-  ...ARAGON_VERIFIED_TOKENS
-]
+const VERIFIED_TOKENS = [...MYCRYPTO_VERIFIED_TOKENS, ...ARAGON_VERIFIED_TOKENS]
 
-export const ETHER_TOKEN_VERIFIED_BY_SYMBOL = new Map(VERIFIED_TOKENS)
+export const ETHER_TOKEN_VERIFIED_BY_SYMBOL = new Map<string, string>(
+  VERIFIED_TOKENS
+)
 export const ETHER_TOKEN_VERIFIED_ADDRESSES = new Set(
   ETHER_TOKEN_VERIFIED_BY_SYMBOL.values()
 )

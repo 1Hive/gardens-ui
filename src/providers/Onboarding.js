@@ -20,11 +20,7 @@ import {
   extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
-import {
-  STATUS_GARDEN_CREATED,
-  STATUS_GARDEN_DEPLOYMENT,
-  STATUS_GARDEN_SETUP,
-} from '@components/Onboarding/statuses'
+import { OnboardingStatusGarden } from '@components/Onboarding/statuses'
 import { publishNewDao } from '@/services/github'
 
 const OnboardingContext = React.createContext()
@@ -93,7 +89,9 @@ const DEFAULT_CONFIG = {
 }
 
 function OnboardingProvider({ children }) {
-  const [status, setStatus] = useState(STATUS_GARDEN_SETUP)
+  const [status, setStatus] = useState(
+    OnboardingStatusGarden.STATUS_GARDEN_SETUP
+  )
   const [step, setStep] = useState(0)
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
@@ -113,7 +111,7 @@ function OnboardingProvider({ children }) {
   // Upload covenant content to ipfs when ready (starting deployment txs)
   const [covenantIpfs] = usePinataUploader(
     config.agreement.covenantFile?.blob,
-    status === STATUS_GARDEN_DEPLOYMENT
+    status === OnboardingStatusGarden.STATUS_GARDEN_DEPLOYMENT
   )
 
   const handleConfigChange = useCallback(
@@ -133,7 +131,7 @@ function OnboardingProvider({ children }) {
   )
 
   const handleReset = useCallback(() => {
-    setStatus(STATUS_GARDEN_SETUP)
+    setStatus(OnboardingStatusGarden.STATUS_GARDEN_SETUP)
     setStep(0)
     setSteps(Screens)
     setConfig(DEFAULT_CONFIG)
@@ -143,11 +141,11 @@ function OnboardingProvider({ children }) {
   }, [onClearProgress])
 
   const handleGardenCreated = useCallback(() => {
-    setStatus(STATUS_GARDEN_CREATED)
+    setStatus(OnboardingStatusGarden.STATUS_GARDEN_CREATED)
   }, [])
 
   const handleStartDeployment = useCallback(() => {
-    setStatus(STATUS_GARDEN_DEPLOYMENT)
+    setStatus(OnboardingStatusGarden.STATUS_GARDEN_DEPLOYMENT)
   }, [])
 
   const publishGardenMetadata = useCallback(
