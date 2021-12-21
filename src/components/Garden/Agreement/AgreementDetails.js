@@ -17,6 +17,7 @@ import { dateFormat } from '@utils/date-utils'
 import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
 
 import { CELESTE_URL } from '@/endpoints'
+
 import { getNetwork } from '@/networks'
 
 import InfoField from '../InfoField'
