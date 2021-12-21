@@ -293,13 +293,7 @@ function TokenSettingsNative() {
           ))}
         </div>
         <Button
-          icon={
-            <IconPlus
-              css={`
-                color: ${theme.accent};
-              `}
-            />
-          }
+          icon={<IconPlus color={theme.accent} />}
           label="Add more"
           onClick={addMember}
         />
