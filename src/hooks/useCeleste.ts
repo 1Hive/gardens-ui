@@ -21,13 +21,13 @@ const COURT_CONFIG_QUERY = gql`
 `
 
 type ConfigType = {
-  id: number
+  id: string
   terms: Array<{
-    id: number
-    startTime: number
+    id: string
+    startTime: string
   }>
   currentTerm: string
-  termDuration: number
+  termDuration: string
 } | null
 
 function useCelesteConfigPoll(chainId: number): ConfigType {
@@ -102,7 +102,9 @@ export function useCelesteSynced(chainId: number) {
 function getExpectedCurrentTermId(now: number, config: ConfigType) {
   if (config !== null) {
     const firstTermStartTime = config?.terms[0].startTime
-    return Math.floor((now - firstTermStartTime) / config?.termDuration)
+    return Math.floor(
+      (now - Number(firstTermStartTime)) / Number(config?.termDuration)
+    )
   }
 
   return null
