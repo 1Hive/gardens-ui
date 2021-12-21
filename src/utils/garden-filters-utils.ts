@@ -7,7 +7,11 @@ export const FILTER_KEY_SORTING = 'sorting'
 
 export const SORTING_ITEMS = ['Liquidity', 'Members', 'Proposals']
 
-export const filterArgsMapping = {
+export const filterArgsMapping: {
+  [x: string]: {
+    [y: string | number]: string
+  }
+} = {
   [FILTER_KEY_NAME]: {
     queryKey: '',
   },
@@ -19,7 +23,12 @@ export const filterArgsMapping = {
   },
 }
 
-export const testNameFilter = (filterName, garden) => {
+export const testNameFilter = (
+  filterName: string,
+  garden: {
+    name: string
+  }
+) => {
   return (
     garden.name && garden.name.toLowerCase().includes(filterName.toLowerCase())
   )

@@ -15,7 +15,7 @@ export default function useGardenFilters() {
     filtersCache.get(FILTER_KEY_NAME) || ''
   )
   // Subgraph query filters
-  const [sortingFilter, setSortingFilter] = useState(
+  const [sortingFilter, setSortingFilter] = useState<any>(
     filtersCache.get(FILTER_KEY_SORTING) || SORTING_FILTER_LIQUIDITY
   )
 
@@ -50,7 +50,7 @@ export default function useGardenFilters() {
   return [queryFilters, filters]
 }
 
-function getQueryArgsByFilter(key, filter) {
+function getQueryArgsByFilter(key: string, filter: string) {
   const { queryKey } = filterArgsMapping[key]
   return { [queryKey]: filterArgsMapping[key][filter] }
 }

@@ -70,6 +70,7 @@ function ProposalDetail({
   requestToken,
   stableToken,
 }) {
+  console.log(`ProposalDetail`)
   const theme = useTheme()
   const history = useHistory()
   const { layoutName } = useLayout()

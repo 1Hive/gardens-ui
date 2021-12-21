@@ -1,6 +1,3 @@
-// @ts-nocheck
-// TODO: Ask Gabi where I can test this
-
 import { useEffect, useMemo, useState } from 'react'
 import gql from 'graphql-tag'
 import { Client } from 'urql'
@@ -23,7 +20,17 @@ const COURT_CONFIG_QUERY = gql`
   }
 `
 
-function useCelesteConfigPoll(chainId: number) {
+type ConfigType = {
+  id: number
+  terms: Array<{
+    id: number
+    startTime: number
+  }>
+  currentTerm: string
+  termDuration: number
+} | null
+
+function useCelesteConfigPoll(chainId: number): ConfigType {
   const [config, setConfig] = useState(null)
   const network = getNetwork(chainId)
   const arbitratorAddress = network.arbitrator
@@ -79,25 +86,24 @@ export function useCelesteSynced(chainId: number) {
       return [!config, false]
     }
 
-    const { currentTerm, termDuration, terms } = config
+    const { currentTerm } = config
 
     const nowS = Date.now() / 1000
-    const expectedCurrentTerm = getExpectedCurrentTermId(nowS, {
-      terms,
-      termDuration,
-    })
+    const expectedCurrentTerm = getExpectedCurrentTermId(nowS, config)
 
-    console.log(`expectedCurrentTerm`, expectedCurrentTerm)
-    console.log(nowS, {
-      terms,
-      termDuration,
-    })
+    if (expectedCurrentTerm !== null) {
+      return [expectedCurrentTerm === parseInt(currentTerm), false]
+    }
 
-    return [parseInt(expectedCurrentTerm) === parseInt(currentTerm), false]
+    return null
   }, [config])
 }
 
-function getExpectedCurrentTermId(now, { terms, termDuration }) {
-  const firstTermStartTime = terms[0].startTime
-  return Math.floor((now - firstTermStartTime) / termDuration)
+function getExpectedCurrentTermId(now: number, config: ConfigType) {
+  if (config !== null) {
+    const firstTermStartTime = config?.terms[0].startTime
+    return Math.floor((now - firstTermStartTime) / config?.termDuration)
+  }
+
+  return null
 }

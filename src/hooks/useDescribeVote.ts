@@ -3,15 +3,31 @@ import { getAppPresentationByAddress } from '@utils/app-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { useMounted } from '@hooks/useMounted'
 import { useGardenState } from '@providers/GardenState'
+import { AppType } from './constants'
 
-const cachedDescriptions = new Map([])
+type Description = {
+  annotatedDescription: Array<{
+    type: string
+    value: string
+  }>
+  children: any
+  data: string
+  description: string
+  to: string
+  name: string
+  identifier: any
+}
 
-export function useDescribeVote(script, voteId) {
+const cachedDescriptions = new Map<number, any>([])
+
+export function useDescribeVote(script: string, voteId: number) {
   const mounted = useMounted()
 
   const { installedApps, organization } = useGardenState()
 
-  const [description, setDescription] = useState(null)
+  const [description, setDescription] = useState<Array<Description> | null>(
+    null
+  )
   const [loading, setLoading] = useState(true)
 
   const emptyScript = script === '0x00000001' || script === '0x00'
@@ -63,20 +79,20 @@ export function useDescribeVote(script, voteId) {
   return { description, emptyScript, loading, targetApp }
 }
 
-function targetDataFromTransactionRequest(apps, transactionRequest) {
+function targetDataFromTransactionRequest(
+  apps: Array<AppType>,
+  transactionRequest: Description
+) {
   const { to: targetAppAddress, name, identifier } = transactionRequest
 
   // Populate details via our apps list if it's available
   if (apps.some(({ address }) => addressesEqual(address, targetAppAddress))) {
-    const { humanName, iconSrc } = getAppPresentationByAddress(
-      apps,
-      targetAppAddress
-    )
+    const appPresentation = getAppPresentationByAddress(apps, targetAppAddress)
 
     return {
       address: targetAppAddress,
-      name: humanName,
-      icon: iconSrc,
+      name: appPresentation !== null ? appPresentation.humanName : '',
+      icon: appPresentation !== null ? appPresentation.iconSrc : '',
     }
   }
 

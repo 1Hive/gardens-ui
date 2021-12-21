@@ -2,6 +2,7 @@ import { getIpfsUrlFromUri } from './ipfs-utils'
 import iconAcl from '@assets/icon-acl.svg'
 import iconKernel from '@assets/icon-kernel.svg'
 import iconRegistry from '@assets/icon-registry.svg'
+import { AppType } from '@/hooks/constants'
 
 export const SHORTENED_APPS_NAMES = new Map([
   ['agent', 'agent'],
@@ -42,13 +43,21 @@ export const KNOWN_SYSTEM_APPS = new Map([
   ],
 ])
 
-export function getAppPresentationByAddress(apps, appAddress) {
+export function getAppPresentationByAddress(
+  apps: Array<AppType>,
+  appAddress: string
+) {
   const app = apps.find(({ address }) => address === appAddress)
-
-  return getAppPresentation(app)
+  return app !== undefined ? getAppPresentation(app) : null
 }
 
-export function getAppPresentation(app) {
+export function getAppPresentation(
+  app: AppType
+): {
+  humanName: string
+  iconSrc: string
+  name?: string
+} | null {
   const { contentUri, name, manifest, appId } = app
   // Get human readable name and icon from manifest if available
   if (manifest && contentUri) {
@@ -67,7 +76,7 @@ export function getAppPresentation(app) {
   return KNOWN_SYSTEM_APPS.get(appId) || null
 }
 
-export function getDisputableAppByName(apps, appName) {
+export function getDisputableAppByName(apps: Array<AppType>, appName: string) {
   const regex = new RegExp(`^${appName}.*$`)
   return apps?.find(app => app?.appName?.match(regex))
 }

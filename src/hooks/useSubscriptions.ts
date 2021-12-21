@@ -156,8 +156,6 @@ export function useProposalSubscription(
 }
 
 export function useSupporterSubscription(account: string) {
-  console.log(`useSupporterSubscription`, account)
-
   const { connector } = useGardenState()
   const [supporter, setSupporter] = useState(null)
   const [loading, setLoading] = useState(true)

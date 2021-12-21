@@ -86,8 +86,159 @@ type FiltersType = {
   proposalCount?: any
 }
 
+type AppType = {
+  appName: string
+  address: string
+  appId: string
+  codeAddress: any
+  contentUri: any
+  isForwarder: boolean
+  isUpgradeable: boolean
+  kernelAddress: string
+  name: string
+  manifest: any
+  organization: {
+    connection: {
+      actAs: any
+      ethereumProvider: any
+      ethersProvider: any
+      ipfs: any
+      network: {
+        chainId: number, ensAddress: string, name: string
+      }
+      orgAddress: string
+      orgConnector: any
+      orgLocation: string
+      verbose: boolean
+    }
+  }
+  registry: any
+  registryAddress: any
+  repoAddress: any
+  version: any
+}
+
+type StakeType = {
+  amount: BigNumber
+  createdAt: number
+  id: string
+  proposal: any
+  supporter: {
+    organization: Array<{
+      id: string
+      __typename: string
+    }>
+
+    user: {
+      id: string
+      address: string
+    }
+  }
+  type: string
+}
+
+type StakeHistoryType = {
+  conviction: BigNumber
+  createdAt: number
+  id: string
+  proposal: any
+  supporter: {
+    organization: Array<{
+      id: string
+      __typename: string
+    }>
+
+    user: {
+      id: string
+      address: string
+    }
+  }
+  time: string
+  tokensStaked: BigNumber
+  totalTokensStaked: BigNumber
+}
+
+type ProposalType = {
+  actionId: string
+  beneficiary: string
+  casts: Array<any>
+  challengeEndDate: number
+  challengeId: string
+  challenger: string
+  challengerArbitratorFee: any
+  challengerArbitratorFeeId: any
+  collateralRequirement: {
+    actionAmount: BigNumber
+    challengeAmount: BigNumber
+    challengeDuration: string
+    id: string
+    proposalId: string
+    tokenDecimals: number
+    tokenId: string
+    tokenSymbol: string
+  }
+  convictionTrend: BigNumber
+  createdAt: number
+  creator: string
+  currentConviction: BigNumber
+  disputeId: any
+  disputedAt: number
+  executedAt: number
+  futureConviction: BigNumber
+  futureStakedConviction: BigNumber
+  hasEnded: boolean
+  id: number | string
+  isAccepted: any
+  link: string
+  maxConviction: BigNumber
+  metadata: string
+  minTokensNeeded: BigNumber
+  name: string
+  nays: any
+  neededConviction: BigNumber
+  neededTokens: BigNumber
+  number: string | number
+  organization: {
+    id: string
+    __typename: string
+  }
+  pauseDuration: number
+  pausedAt: number
+  quietEndingExtensionDuration: any
+  quietEndingSnapshotSupport: any
+  remainingBlocksToPass: number
+  requestedAmount: BigNumber
+  requestedAmountConverted: BigNumber
+  script: any
+  setting: any
+  settledAt: 0
+  settlementOffer: any
+  snapshotBlock: string
+  stable: boolean
+  stakedConviction: BigNumber
+  stakes: Array<StakeType>
+  stakesHistory: Array<StakeHistoryType>
+  startDate: any
+  status: string
+  statusData: {
+    open: boolean
+  }
+  submitterArbitratorFee: any
+  submitterArbitratorFeeId: any
+  threshold: BigNumber
+  totalPower: any
+  totalTokensStaked: BigNumber
+  txHash: string
+  type: string
+  userConviction: BigNumber
+  userStakedConviction: BigNumber
+  yeas: any
+}
+
 export type {
   ConfigType,
   FiltersType,
-  TokenType
+  TokenType,
+  AppType,
+  ProposalType
 }
