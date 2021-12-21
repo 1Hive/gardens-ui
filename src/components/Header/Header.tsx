@@ -16,11 +16,11 @@ import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
 
+import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
+
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
-
-import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
 import AccountModule from '../Account/AccountModule'
 import ActivityButton from '../Activity/ActivityButton'

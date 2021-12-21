@@ -11,10 +11,10 @@ import {
 
 import { useWallet } from '@providers/Wallet'
 
+import { getNetwork } from '@/networks'
+
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-
-import { getNetwork } from '@/networks'
 
 import EmptyResults from './EmptyResults'
 

@@ -1,4 +1,5 @@
 import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
+
 import env from '@/environment'
 
 const PORTIS_ID = env('PORTIS_ID')

@@ -16,13 +16,13 @@ import BigNumber from '@lib/bigNumber'
 import { getAppByName } from '@utils/data-utils'
 import { addressesEqual } from '@utils/web3-utils'
 
-import fundsManagerAbi from '@abis/FundsManager.json'
-// abis
-import minimeTokenAbi from '@abis/minimeToken.json'
-
 // utils
 import env from '@/environment'
 import { getAgreementConnectorConfig, getNetwork } from '@/networks'
+
+import fundsManagerAbi from '@abis/FundsManager.json'
+// abis
+import minimeTokenAbi from '@abis/minimeToken.json'
 
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'

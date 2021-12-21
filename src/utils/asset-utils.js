@@ -1,3 +1,5 @@
+import actions from '@/actions/garden-action-types'
+
 import AddFundsLight from '@assets/activity/light/addFunds.svg'
 import ApproveTokenLight from '@assets/activity/light/approveToken.svg'
 import CancelProposalLight from '@assets/activity/light/cancelProposal.svg'
@@ -22,8 +24,6 @@ import VoteOnDecisionLight from '@assets/activity/light/voteOnDecision.svg'
 import WithdrawFromProposalLight from '@assets/activity/light/withdrawFromProposal.svg'
 import WithdrawFundsLight from '@assets/activity/light/withdrawFunds.svg'
 import WrapTokenLigh from '@assets/activity/light/wrapToken.svg'
-
-import actions from '@/actions/garden-action-types'
 
 export default {
   [actions.ADD_FUNDS]: {

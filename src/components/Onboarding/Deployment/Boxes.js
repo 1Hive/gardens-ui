@@ -12,9 +12,9 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
-import gardensLogoMark from '@assets/gardensLogoMark.svg'
-
 import { TransactionStatusType } from '@/prop-types'
+
+import gardensLogoMark from '@assets/gardensLogoMark.svg'
 
 import flowerSvg from './assets/flower.svg'
 import linesSvg from './assets/lines.svg'

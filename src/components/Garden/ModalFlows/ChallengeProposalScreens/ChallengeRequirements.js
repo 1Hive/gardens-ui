@@ -22,10 +22,10 @@ import { getDisputableAppByName } from '@utils/app-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 
+import env from '@/environment'
+
 import iconCheck from '@assets/iconCheck.svg'
 import iconError from '@assets/iconError.svg'
-
-import env from '@/environment'
 
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'

@@ -19,10 +19,10 @@ import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
+import { CELESTE_URL } from '@/endpoints'
+
 import iconCheck from '@assets/iconCheck.svg'
 import iconError from '@assets/iconError.svg'
-
-import { CELESTE_URL } from '@/endpoints'
 
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
