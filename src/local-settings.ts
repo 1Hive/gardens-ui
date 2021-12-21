@@ -1,15 +1,14 @@
-/* eslint-disable no-empty */
 import { DEFAULT_CHAIN_ID } from '@/constants'
 const APP_THEME = 'THEME'
 const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 
 // Get a setting from localStorage
-function getLocalStorageSetting(confKey) {
+function getLocalStorageSetting(confKey: string) {
   const storageKey = `${confKey}_KEY`
   return window.localStorage.getItem(storageKey)
 }
 
-function setLocalSetting(confKey, value) {
+function setLocalSetting(confKey: string, value: string) {
   const storageKey = `${confKey}_KEY`
   return window.localStorage.setItem(storageKey, value)
 }
@@ -21,7 +20,7 @@ export function getPreferredChain() {
 }
 
 export function setPreferredChain(chainId = 100) {
-  return setLocalSetting(PREFERRED_CHAIN_ID_KEY, chainId)
+  return setLocalSetting(PREFERRED_CHAIN_ID_KEY, String(chainId))
 }
 
 export function getAppTheme() {
@@ -40,6 +39,6 @@ export function getAppTheme() {
   }
 }
 
-export function setAppTheme(appearance, theme = null) {
+export function setAppTheme(appearance: string, theme = null) {
   return setLocalSetting(APP_THEME, JSON.stringify({ appearance, theme }))
 }

@@ -74,8 +74,6 @@ function useCelesteConfigPoll(chainId: number) {
 export function useCelesteSynced(chainId: number) {
   const config = useCelesteConfigPoll(chainId)
 
-  console.log(`config`, config)
-
   return useMemo(() => {
     if (!config || config.terms.length === 0) {
       return [!config, false]

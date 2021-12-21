@@ -11,11 +11,7 @@ import useDeploymentState from './useDeploymentState'
 import { useWallet } from '@/providers/Wallet'
 
 import { getNetworkType } from '@/utils/web3-utils'
-import {
-  STEP_WORKING,
-  STEP_SUCCESS,
-  STEP_PROMPTING,
-} from '@components/Stepper/stepper-statuses'
+import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 
 import flowersLeavesSvg from './assets/flowers-leaves.svg'
 import gardensLogo from '@assets/gardensLogoMark.svg'
@@ -48,9 +44,12 @@ const Deployment = React.memo(function Deployment() {
     }
     return [
       transactionsStatus.findIndex(
-        ({ status }) => status === STEP_WORKING || status === STEP_PROMPTING
+        ({ status }) =>
+          status === IndividualStepTypes.WORKING ||
+          status === IndividualStepTypes.STEP_PROMPTING
       ),
-      transactionsStatus[transactionsStatus.length - 1].status === STEP_SUCCESS,
+      transactionsStatus[transactionsStatus.length - 1].status ===
+        IndividualStepTypes.STEP_SUCCESS,
     ]
   }, [transactionsStatus])
 

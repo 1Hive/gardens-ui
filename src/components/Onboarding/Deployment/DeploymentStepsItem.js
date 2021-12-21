@@ -8,12 +8,7 @@ import {
   IconCross,
   TransactionBadge,
 } from '@1hive/1hive-ui'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WORKING,
-} from '@components/Stepper/stepper-statuses'
+import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import { TransactionStatusType } from '@/prop-types'
 import { getNetwork } from '@/networks'
 import { useWallet } from 'use-wallet'
@@ -24,7 +19,7 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
   const network = getNetwork(chainId)
 
   const { icon, label, styles } = useMemo(() => {
-    if (status === STEP_PROMPTING) {
+    if (status === IndividualStepTypes.STEP_PROMPTING) {
       return {
         label: 'Waiting for signature',
         styles: `
@@ -32,13 +27,13 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
     `,
       }
     }
-    if (status === STEP_WORKING) {
+    if (status === IndividualStepTypes.STEP_WORKING) {
       return {
         label: 'Transaction being processed…',
         styles: `background: ${theme.accent};`,
       }
     }
-    if (status === STEP_SUCCESS) {
+    if (status === IndividualStepTypes.STEP_SUCCESS) {
       return {
         icon: <IconCheck />,
         label: 'Transaction processed!',
@@ -49,7 +44,7 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
       }
     }
 
-    if (status === STEP_ERROR) {
+    if (status === IndividualStepTypes.STEP_ERROR) {
       return {
         icon: <IconCross />,
         label: 'An error has occured',
@@ -99,7 +94,9 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
         css={`
           margin-left: ${3 * GU}px;
           font-size: 18px;
-          font-weight: ${status === STEP_WORKING ? '600' : '400'};
+          font-weight: ${status === IndividualStepTypes.STEP_WORKING
+            ? '600'
+            : '400'};
           overflow: hidden;
           text-overflow: ellipsis;
         `}

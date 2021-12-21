@@ -7,13 +7,7 @@ import { useWallet } from '@providers/Wallet'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { getNetwork } from '@/networks'
 import { springs } from '@/style/springs'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '../stepper-statuses'
+import { IndividualStepTypes } from '../stepper-statuses'
 import StatusVisual from './StatusVisual'
 
 const AnimatedSpan = animated.span
@@ -35,23 +29,23 @@ function Step({
 
   const { visualColor, descColor } = useMemo(() => {
     const appearance = {
-      [STEP_WAITING]: {
+      [IndividualStepTypes.STEP_WAITING]: {
         visualColor: theme.accent,
         descColor: theme.contentSecondary,
       },
-      [STEP_PROMPTING]: {
+      [IndividualStepTypes.STEP_PROMPTING]: {
         visualColor: '#7CE0D6',
         descColor: theme.contentSecondary,
       },
-      [STEP_WORKING]: {
+      [IndividualStepTypes.STEP_WORKING]: {
         visualColor: '#FFE862',
         descColor: '#C3A22B',
       },
-      [STEP_SUCCESS]: {
+      [IndividualStepTypes.STEP_SUCCESS]: {
         visualColor: theme.positive,
         descColor: theme.positive,
       },
-      [STEP_ERROR]: {
+      [IndividualStepTypes.STEP_ERROR]: {
         visualColor: theme.negative,
         descColor: theme.negative,
       },
@@ -95,7 +89,9 @@ function Step({
             margin-bottom: ${1 * GU}px;
           `}
         >
-          {status === STEP_ERROR ? 'Transaction failed' : title}
+          {status === IndividualStepTypes.STEP_ERROR
+            ? 'Transaction failed'
+            : title}
         </h2>
 
         <p
@@ -219,11 +215,11 @@ Step.propTypes = {
   transactionHash: PropTypes.string,
   number: PropTypes.number,
   status: PropTypes.oneOf([
-    STEP_WAITING,
-    STEP_PROMPTING,
-    STEP_WORKING,
-    STEP_SUCCESS,
-    STEP_ERROR,
+    IndividualStepTypes.STEP_WAITING,
+    IndividualStepTypes.STEP_PROMPTING,
+    IndividualStepTypes.STEP_WORKING,
+    IndividualStepTypes.STEP_SUCCESS,
+    IndividualStepTypes.STEP_ERROR,
   ]).isRequired,
   showDivider: PropTypes.bool,
 }

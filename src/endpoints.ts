@@ -28,7 +28,7 @@ export const TWITTER_ENDPOINT = 'https://twitter.com/'
 
 export const CELESTE_URL = 'https://celeste.1hive.org/#'
 
-export const getDexTradeTokenUrl = (chainId, tokenAddress) => {
+export const getDexTradeTokenUrl = (chainId: number, tokenAddress: string) => {
   switch (chainId) {
     case 4:
       return `https://app.uniswap.org/#/swap?outputCurrency=${tokenAddress}`

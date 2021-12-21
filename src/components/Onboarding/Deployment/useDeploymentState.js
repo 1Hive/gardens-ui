@@ -2,13 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import { useWallet } from '@providers/Wallet'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '@components/Stepper/stepper-statuses'
+import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import { OnboardingStatusGarden } from '../statuses'
 
 const DEFAULT_TX_PROGRESS = {
@@ -111,18 +105,18 @@ export default function useDeploymentState() {
     const { signed, success, errored, hashes } = transactionProgress
     const status = index => {
       if (errored !== -1 && index >= errored) {
-        return STEP_ERROR
+        return IndividualStepTypes.STEP_ERROR
       }
       if (index === signed && index === success) {
-        return STEP_PROMPTING
+        return IndividualStepTypes.STEP_PROMPTING
       }
       if (index < signed) {
         if (index === success) {
-          return STEP_WORKING
+          return IndividualStepTypes.STEP_WORKING
         }
-        return STEP_SUCCESS
+        return IndividualStepTypes.STEP_SUCCESS
       }
-      return STEP_WAITING
+      return IndividualStepTypes.STEP_WAITING
     }
 
     return deployTransactions.map(({ name }, index) => ({

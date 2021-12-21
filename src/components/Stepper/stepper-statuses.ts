@@ -1,0 +1,18 @@
+// Stepper states
+export const STEPPER_WORKING = Symbol('STEPPER_WORKING')
+export const STEPPER_SUCCESS = Symbol('STEPPER_SUCCESS')
+export const STEPPER_ERROR = Symbol('STEPPER_ERROR')
+
+export enum StepperStatusTypes {
+  STEPPER_WORKING = 'STEPPER_WORKING',
+  STEPPER_SUCCESS = 'STEPPER_SUCCESS',
+  STEPPER_ERROR = 'STEPPER_ERROR',
+}
+
+export enum IndividualStepTypes {
+  STEP_PROMPTING = 'STEP_PROMPTING',
+  STEP_WAITING = 'STEP_WAITING',
+  STEP_WORKING = 'STEP_WORKING',
+  STEP_SUCCESS = 'STEP_SUCCESS',
+  STEP_ERROR = 'STEP_ERROR',
+}

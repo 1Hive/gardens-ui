@@ -12,7 +12,7 @@ import agreementAbi from '../abi/agreement.json'
 
 export default function useChallenge(proposal) {
   console.log(`useChallenge`)
-  console.log(proposal)
+  console.log(`proposal`, proposal)
   const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
   const mounted = useMounted()
@@ -23,7 +23,7 @@ export default function useChallenge(proposal) {
     chainId
   )
 
-  console.log(`useChallenge`, agreementContract)
+  console.log(`agreementContract`, agreementContract)
 
   const [challenge, setChallenge] = useState<{
     context: string | null

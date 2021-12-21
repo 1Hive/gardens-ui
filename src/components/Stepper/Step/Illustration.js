@@ -1,12 +1,7 @@
 import React from 'react'
 import { useTheme } from '@1hive/1hive-ui'
 
-import {
-  STEP_ERROR,
-  STEP_SUCCESS,
-  STEP_PROMPTING,
-  STEP_WORKING,
-} from '../stepper-statuses'
+import { IndividualStepTypes } from '../stepper-statuses'
 
 import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
 import signRequestFailIllustration from '@assets/signRequestFail.svg'
@@ -14,16 +9,16 @@ import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
 import blockIcon from '@assets/blockIcon.svg'
 
 const illustrations = {
-  [STEP_WORKING]: trxBeingMinedIllustration,
-  [STEP_SUCCESS]: signRequestSuccessIllustration,
-  [STEP_ERROR]: signRequestFailIllustration,
+  [IndividualStepTypes.STEP_WORKING]: trxBeingMinedIllustration,
+  [IndividualStepTypes.STEP_SUCCESS]: signRequestSuccessIllustration,
+  [IndividualStepTypes.STEP_ERROR]: signRequestFailIllustration,
 }
 
 function Illustration({ status, index }) {
   const theme = useTheme()
   return (
     <>
-      {status === STEP_PROMPTING ? (
+      {status === IndividualStepTypes.STEP_PROMPTING ? (
         <div
           css={`
             display: flex;

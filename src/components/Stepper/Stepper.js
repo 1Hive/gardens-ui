@@ -9,25 +9,19 @@ import { useMounted } from '@hooks/useMounted'
 import { useMultiModal } from '../MultiModal/MultiModalProvider'
 import useStepperLayout from './useStepperLayout'
 
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from './stepper-statuses'
+import { IndividualStepTypes } from './stepper-statuses'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
 
 const AnimatedDiv = animated.div
 
-const INITIAL_STATUS = STEP_PROMPTING
+const INITIAL_STATUS = IndividualStepTypes.STEP_PROMPTING
 
 const DEFAULT_DESCRIPTIONS = TRANSACTION_SIGNING_DESC
 
 function initialStepState(steps) {
   return steps.map((_, i) => {
     return {
-      status: i === 0 ? INITIAL_STATUS : STEP_WAITING,
+      status: i === 0 ? INITIAL_STATUS : IndividualStepTypes.STEP_WAITING,
       hash: null,
     }
   })
@@ -91,7 +85,8 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   const renderSteps = useCallback(() => {
     return steps.map((_, index) => {
       const showDivider =
-        index < stepsCount && stepState[index].status !== STEP_WAITING
+        index < stepsCount &&
+        stepState[index].status !== IndividualStepTypes.STEP_WAITING
 
       return renderStep(index, showDivider)
     })
@@ -122,13 +117,13 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
 
     // Pass state updates as render props to handleSign
     handleSign({
-      setPrompting: () => updateStepStatus(STEP_PROMPTING),
-      setWorking: () => updateStepStatus(STEP_WORKING),
+      setPrompting: () => updateStepStatus(IndividualStepTypes.STEP_PROMPTING),
+      setWorking: () => updateStepStatus(IndividualStepTypes.STEP_WORKING),
       setError: () => {
-        updateStepStatus(STEP_ERROR)
+        updateStepStatus(IndividualStepTypes.STEP_ERROR)
       },
       setSuccess: () => {
-        updateStepStatus(STEP_SUCCESS)
+        updateStepStatus(IndividualStepTypes.STEP_SUCCESS)
 
         // Advance to next step or fire complete callback
         if (mounted()) {
@@ -159,7 +154,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
 
   const completed =
     stepperStage === stepsCount &&
-    stepState[stepperStage].status === STEP_SUCCESS
+    stepState[stepperStage].status === IndividualStepTypes.STEP_SUCCESS
 
   useEffect(() => {
     let timeout
@@ -279,11 +274,11 @@ Stepper.propTypes = {
       title: PropTypes.string.isRequired,
       handleSign: PropTypes.func.isRequired,
       descriptions: PropTypes.shape({
-        [STEP_WAITING]: PropTypes.string,
-        [STEP_PROMPTING]: PropTypes.string,
-        [STEP_WORKING]: PropTypes.string,
-        [STEP_SUCCESS]: PropTypes.string,
-        [STEP_ERROR]: PropTypes.string,
+        [IndividualStepTypes.STEP_WAITING]: PropTypes.string,
+        [IndividualStepTypes.STEP_PROMPTING]: PropTypes.string,
+        [IndividualStepTypes.STEP_WORKING]: PropTypes.string,
+        [IndividualStepTypes.STEP_SUCCESS]: PropTypes.string,
+        [IndividualStepTypes.STEP_ERROR]: PropTypes.string,
       }),
     })
   ).isRequired,

@@ -4,19 +4,13 @@ import { Transition, animated } from 'react-spring/renderprops'
 import { css, keyframes } from 'styled-components'
 import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
 import Illustration from './Illustration'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '../stepper-statuses'
+import { IndividualStepTypes } from '../stepper-statuses'
 import { springs } from '@/style/springs'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 
 const STATUS_ICONS = {
-  [STEP_ERROR]: IconCross,
-  [STEP_SUCCESS]: IconCheck,
+  [IndividualStepTypes.STEP_ERROR]: IconCross,
+  [IndividualStepTypes.STEP_SUCCESS]: IconCheck,
 }
 
 const AnimatedDiv = animated.div
@@ -151,12 +145,18 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
 
             border-radius: 100%;
             border: 2px solid ${
-              status === STEP_WAITING ? 'transparent' : color
+              status === IndividualStepTypes.STEP_WAITING
+                ? 'transparent'
+                : color
             };
-            ${status === STEP_PROMPTING ? pulseAnimation : ''}
-            ${status === STEP_WORKING ? spinAnimation : ''}
             ${
-              status === STEP_PROMPTING
+              status === IndividualStepTypes.STEP_PROMPTING
+                ? pulseAnimation
+                : ''
+            }
+            ${status === IndividualStepTypes.STEP_WORKING ? spinAnimation : ''}
+            ${
+              status === IndividualStepTypesSTEP_PROMPTING
                 ? `background-color: ${theme.contentSecondary};`
                 : ''
             }
@@ -169,11 +169,11 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
 
 StatusVisual.propTypes = {
   status: PropTypes.oneOf([
-    STEP_WAITING,
-    STEP_PROMPTING,
-    STEP_WORKING,
-    STEP_SUCCESS,
-    STEP_ERROR,
+    IndividualStepTypes.STEP_WAITING,
+    IndividualStepTypes.STEP_PROMPTING,
+    IndividualStepTypes.STEP_WORKING,
+    IndividualStepTypes.STEP_SUCCESS,
+    IndividualStepTypes.STEP_ERROR,
   ]).isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
@@ -183,9 +183,9 @@ StatusVisual.propTypes = {
 function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme()
   const renderIllustration =
-    status === STEP_WORKING ||
-    status === STEP_ERROR ||
-    status === STEP_SUCCESS ||
+    status === IndividualStepTypes.STEP_WORKING ||
+    status === IndividualStepTypes.STEP_ERROR ||
+    status === IndividualStepTypes.STEP_SUCCESS ||
     withoutFirstStep
 
   return (
