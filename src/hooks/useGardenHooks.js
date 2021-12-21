@@ -9,6 +9,7 @@ import {
   usePermissions,
 } from '@1hive/connect-react'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
 // utils
