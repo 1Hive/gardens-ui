@@ -7,9 +7,7 @@ import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
 import useActions from '@hooks/useActions'
 import { useStakingState } from '@providers/Staking'
-import { Button } from '@1hive/1hive-ui'
 import confetti from 'canvas-confetti'
-import { useInside } from 'use-inside'
 
 function CreateProposalScreens({ onComplete }) {
   const [loading, setLoading] = useState(true)
@@ -18,7 +16,6 @@ function CreateProposalScreens({ onComplete }) {
   const [agreement, agreementLoading] = useAgreement()
   const { stakeManagement, loading: stakingLoading } = useStakingState()
   const { convictionActions } = useActions()
-  const [, { onClose }] = useInside('MultiModal')
 
   const proposalData = useRef()
 
@@ -47,30 +44,12 @@ function CreateProposalScreens({ onComplete }) {
     })
   }, [])
 
-  const handleCloseConfetti = useCallback(() => {
-    throwConfetti()
-    if (onClose) {
-      onClose()
-    }
-  }, [onClose, throwConfetti])
-
   const onCompleteMiddleware = useCallback(() => {
     throwConfetti()
     if (onComplete) {
       onComplete()
     }
   }, [onComplete, throwConfetti])
-
-  const onCompleteActions = useMemo(() => {
-    return (
-      <Button
-        label="Yay! (Close)"
-        mode="strong"
-        onClick={handleCloseConfetti}
-        wide
-      />
-    )
-  }, [handleCloseConfetti])
 
   const getTransactions = useCallback(
     async onComplete => {
@@ -154,7 +133,6 @@ function CreateProposalScreens({ onComplete }) {
       transactionTitle="Create proposal"
       screens={screens}
       onComplete={onCompleteMiddleware}
-      onCompleteActions={onCompleteActions}
     />
   )
 }
