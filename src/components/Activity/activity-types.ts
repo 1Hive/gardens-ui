@@ -1,7 +1,14 @@
 import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 
+type ActivityData = {
+  icon: actions
+  title: String
+}
+
 // The different types of activity
-const ACTIVITY_TYPES = {
+const ACTIVITY_TYPES: {
+  [key in actions]: ActivityData
+} = {
   [actions.ADD_FUNDS]: {
     icon: actions.ADD_FUNDS,
     title: 'Add funds to deposit manager',
@@ -104,6 +111,6 @@ const ACTIVITY_TYPES = {
   },
 }
 
-export function getActivityData(type) {
+export function getActivityData(type: actions): ActivityData {
   return ACTIVITY_TYPES[type]
 }

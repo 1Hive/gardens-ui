@@ -55,8 +55,6 @@ function DecisionDetail({ proposal, actions }) {
     config: { voting: votingConfig },
   } = useGardenState()
 
-  console.log(`DecisionDetail`, proposal)
-
   const {
     description,
     emptyScript,

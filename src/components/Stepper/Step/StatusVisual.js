@@ -156,7 +156,7 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             }
             ${status === IndividualStepTypes.STEP_WORKING ? spinAnimation : ''}
             ${
-              status === IndividualStepTypesSTEP_PROMPTING
+              status === IndividualStepTypes.STEP_PROMPTING
                 ? `background-color: ${theme.contentSecondary};`
                 : ''
             }

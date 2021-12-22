@@ -1,6 +1,3 @@
-// @ts-nocheck
-// TODO: Ask Gabi where I can test this
-
 import { useEffect, useState } from 'react'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useContractReadOnly } from './useContract'
@@ -9,10 +6,9 @@ import { useMounted } from './useMounted'
 import { getProfileForAccount } from '@lib/profile'
 import { hexToUtf8 } from '@utils/web3-utils'
 import agreementAbi from '../abi/agreement.json'
+import { ProposalType } from './constants'
 
-export default function useChallenge(proposal) {
-  console.log(`useChallenge`)
-  console.log(`proposal`, proposal)
+export default function useChallenge(proposal: ProposalType) {
   const { chainId } = useConnectedGarden()
   const { connectedAgreementApp } = useGardenState()
   const mounted = useMounted()
@@ -22,8 +18,6 @@ export default function useChallenge(proposal) {
     agreementAbi,
     chainId
   )
-
-  console.log(`agreementContract`, agreementContract)
 
   const [challenge, setChallenge] = useState<{
     context: string | null
@@ -39,6 +33,8 @@ export default function useChallenge(proposal) {
       return
     }
     async function getChallengeData() {
+      if (agreementContract === null) return
+
       const challengeData = await agreementContract.getChallenge(
         proposal.challengeId
       )
