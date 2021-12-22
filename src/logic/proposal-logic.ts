@@ -2,12 +2,14 @@ import useActions from '@hooks/useActions'
 import { useGardenState } from '@providers/GardenState'
 import { useProposal } from '@hooks/useProposals'
 
-export default function useProposalLogic(match: {
+type ProposalLogicProps = {
   params: {
     id: string
   }
   path: string
-}) {
+}
+
+export default function useProposalLogic(match: ProposalLogicProps) {
   const { params, path } = match
   const { id: proposalId } = params
 
