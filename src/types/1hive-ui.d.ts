@@ -12,11 +12,17 @@ declare module '@1hive/1hive-ui' {
   const Link: any
   const useViewport: () => {
     below: any
+    width: any
   }
   const DataView: any
   const noop: any
   const isAddress: any
   const springs: any
+  const Box: any
+  const LoadingRing: any
+  const textStyle: (style) => void
+  const Modal: any
+  const Layout: any
   export {
     Main,
     GU,
@@ -32,5 +38,10 @@ declare module '@1hive/1hive-ui' {
     noop,
     isAddress,
     springs,
+    textStyle,
+    Box,
+    LoadingRing,
+    Modal,
+    Layout,
   }
 }

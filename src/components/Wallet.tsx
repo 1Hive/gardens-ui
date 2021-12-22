@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
+import { GU, Box, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 import useAccountTokens from '@hooks/useAccountTokens'
 import { useGardenState } from '@providers/GardenState'
-
+import BigNumber from '@lib/bigNumber'
 import { formatTokenAmount } from '@utils/token-utils'
 
-function Wallet({ account }) {
+function Wallet({ account }: { account: string }) {
   const theme = useTheme()
   const { token } = useGardenState()
   const { decimals, logo, symbol } = token.data
@@ -43,6 +43,16 @@ function Wallet({ account }) {
   )
 }
 
+type BalanceProps = {
+  amount: BigNumber
+  decimals: number
+  icon: string
+  inactive?: boolean
+  label: string
+  loading?: boolean
+  symbol: any
+}
+
 const Balance = ({
   amount,
   decimals,
@@ -51,7 +61,7 @@ const Balance = ({
   label,
   loading,
   symbol,
-}) => {
+}: BalanceProps) => {
   const theme = useTheme()
 
   return (
@@ -100,7 +110,9 @@ const Balance = ({
   )
 }
 
-const LineSeparator = styled.div`
+const LineSeparator = styled.div<{
+  border: string
+}>`
   height: 1px;
   border-bottom: 0.5px solid ${({ border }) => border};
   margin: ${3 * GU}px 0;
