@@ -7,8 +7,8 @@ import { fromDecimals } from '@utils/math-utils'
 
 import priceOracleAbi from '@abis/priceOracle.json'
 
-export default function useHNYPriceOracle(amount) {
-  const [convertedAmount, setConvertedAmount] = useState(-1)
+export default function useHNYPriceOracle(amount: number) {
+  const [convertedAmount, setConvertedAmount] = useState<string | number>(-1)
   const [loading, setLoading] = useState(true)
   const { chainId } = useWallet()
 

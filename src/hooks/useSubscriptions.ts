@@ -14,7 +14,7 @@ type Garden = {
   onConfig: any
 }
 
-export function useConfigSubscription(garden: Garden) {
+export function useConfigSubscription(garden: Garden | null) {
   const [config, setConfig] = useState(null)
 
   const rawConfigRef = useRef<unknown>(null)

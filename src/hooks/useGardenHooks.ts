@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { connectGarden } from '@1hive/connect-gardens'
+import { connectGarden, Garden } from '@1hive/connect-gardens'
 import connectAgreement from '@1hive/connect-agreement'
 import {
   createAppHook,
@@ -22,11 +22,12 @@ import { getAgreementConnectorConfig, getNetwork } from '@/networks'
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
 import fundsManagerAbi from '@abis/FundsManager.json'
+import { TokenType } from './constants'
 
 const INITIAL_TIMER = 2000
 
 export function useGardenData() {
-  const [connector, setConnector] = useState(null)
+  const [connector, setConnector] = useState<Garden | null>(null)
   const [organization, orgStatus] = useOrganization()
   const [apps, appsStatus] = useApps()
 
@@ -70,7 +71,7 @@ export function useGardenData() {
 
     const fetchGardenConnector = async () => {
       try {
-        const gardenConnector = await connectGarden(organization, {
+        const gardenConnector: Garden = await connectGarden(organization, {
           subgraphUrl: subgraphs.gardens,
         })
 
@@ -117,7 +118,11 @@ export function useGardenData() {
   }
 }
 
-export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
+export function useCommonPool(
+  fundsManagerAddress: string,
+  token: TokenType,
+  timeout = 8000
+) {
   const [commonPool, setCommonPool] = useState(new BigNumber(-1))
 
   const { chainId } = useConnectedGarden()
@@ -129,7 +134,7 @@ export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
 
   useEffect(() => {
     let cancelled = false
-    let timeoutId
+    let timeoutId: number
 
     if (!fundsManagerContract || !token?.id) {
       return
@@ -150,11 +155,11 @@ export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
       }
 
       if (!cancelled) {
-        timeoutId = setTimeout(pollCommonPool, timeout)
+        timeoutId = window.setTimeout(pollCommonPool, timeout)
       }
     }
 
-    timeoutId = setTimeout(pollCommonPool, INITIAL_TIMER)
+    timeoutId = window.setTimeout(pollCommonPool, INITIAL_TIMER)
 
     return () => {
       cancelled = true
@@ -165,7 +170,11 @@ export function useCommonPool(fundsManagerAddress, token, timeout = 8000) {
   return commonPool
 }
 
-export function useTokenBalances(account, token, timeout = 5000) {
+export function useTokenBalances(
+  account: string,
+  token: TokenType,
+  timeout = 5000
+) {
   const [balances, setBalances] = useState({
     balance: new BigNumber(-1),
     totalSupply: new BigNumber(-1),
@@ -180,7 +189,7 @@ export function useTokenBalances(account, token, timeout = 5000) {
     }
 
     let cancelled = false
-    let timeoutId
+    let timeoutId: number
 
     const pollAccountBalance = async () => {
       try {
@@ -207,15 +216,15 @@ export function useTokenBalances(account, token, timeout = 5000) {
         console.error(`Error fetching balance: ${err} retrying...`)
       }
       if (!cancelled) {
-        timeoutId = setTimeout(pollAccountBalance, timeout)
+        timeoutId = window.setTimeout(pollAccountBalance, timeout)
       }
     }
 
-    timeoutId = setTimeout(pollAccountBalance, INITIAL_TIMER)
+    timeoutId = window.setTimeout(pollAccountBalance, INITIAL_TIMER)
 
     return () => {
       cancelled = true
-      clearTimeout(timeoutId)
+      window.clearTimeout(timeoutId)
     }
   }, [account, balances, timeout, tokenContract, token])
 

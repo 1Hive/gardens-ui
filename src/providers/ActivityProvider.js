@@ -18,7 +18,7 @@ import { MINUTE } from '@utils/date-utils'
 
 const ActivityContext = React.createContext()
 
-// Only used to serialize / deserialize the symbols
+// Only used to serialize / deserialize
 const StatusSymbolsByName = new Map([
   [ActivityStatus.ACTIVITY_STATUS_CONFIRMED, ''],
   [ActivityStatus.ACTIVITY_STATUS_FAILED, ''],

@@ -4,7 +4,7 @@ import { isAddress } from '@utils/web3-utils'
 
 const ARAGON_DOMAIN = 'aragonid.eth'
 
-export default function useGardenNameResolver(gardenId) {
+export default function useGardenNameResolver(gardenId: string) {
   const [gardenAddress, setGardenAddress] = useState('')
   const { ethers } = useWallet()
 
