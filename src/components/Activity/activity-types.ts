@@ -2,7 +2,7 @@ import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 
 type ActivityData = {
   icon: actions
-  title: String
+  title: string
 }
 
 // The different types of activity
