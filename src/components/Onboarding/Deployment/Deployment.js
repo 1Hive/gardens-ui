@@ -10,10 +10,10 @@ import {
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
 
-import gardensLogo from '@assets/gardensLogoMark.svg'
-
 import { useWallet } from '@/providers/Wallet'
 import { getNetworkType } from '@/utils/web3-utils'
+
+import gardensLogo from '@assets/gardensLogoMark.svg'
 
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'

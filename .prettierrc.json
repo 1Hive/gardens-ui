@@ -15,9 +15,10 @@
     "^@lib/(.*)$",
     "^@utils/(.*)$",
     "^@/services(.*)$",
+    "^@/endpoints(.*)$",
+    "^@/(.*)$",
     "^@abis/(.*)$",
     "^@assets/(.*)$",
-    "^@/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

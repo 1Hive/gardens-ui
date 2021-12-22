@@ -16,11 +16,11 @@ import { useGardenState } from '@providers/GardenState'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
+import useUnipoolRewards from '@/hooks/useUnipoolRewards'
+
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import wrappedIcon from '@assets/wrappedIcon.svg'
-
-import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 const modeAttributes = {
   wrap: { icon: unwrappedIcon, button: { mode: 'strong', label: 'Wrap' } },

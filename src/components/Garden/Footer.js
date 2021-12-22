@@ -19,13 +19,13 @@ import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
 
+import { getDexTradeTokenUrl } from '@/endpoints'
+
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
 import getHoneySvg from '@assets/getHoney.svg'
-
-import { getDexTradeTokenUrl } from '@/endpoints'
 
 import Layout from '../Layout'
 import MultiModal from '../MultiModal/MultiModal'

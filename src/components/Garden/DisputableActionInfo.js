@@ -26,6 +26,7 @@ import {
 import { formatTokenAmount } from '@utils/token-utils'
 
 import { CELESTE_URL } from '@/endpoints'
+
 import { ProposalTypes } from '@/types'
 
 import { ConvictionCountdown } from './ConvictionVisuals'

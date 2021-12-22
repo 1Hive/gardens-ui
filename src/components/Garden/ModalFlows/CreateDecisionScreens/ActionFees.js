@@ -9,9 +9,9 @@ import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { getDisputableAppByName } from '@utils/app-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 
-import iconFees from '@assets/iconFees.svg'
-
 import env from '@/environment'
+
+import iconFees from '@assets/iconFees.svg'
 
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const { next } = useMultiModal()

@@ -7,10 +7,10 @@ import { useGardenRoute } from '@hooks/useRouting'
 
 import { is1HiveGarden } from '@utils/garden-utils'
 
+import { getNetworkChainIdByType } from '@/networks'
+
 import beeAnimation from '@assets/lotties/bee-animation.json'
 import gardensLoader from '@assets/lotties/gardens-loader.json'
-
-import { getNetworkChainIdByType } from '@/networks'
 
 const Wrapper = styled.div`
   pointer-events: none;

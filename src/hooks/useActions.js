@@ -13,12 +13,12 @@ import BigNumber from '@lib/bigNumber'
 import { getAppByName } from '@utils/data-utils'
 import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 
+import env from '@/environment'
+import { getNetwork } from '@/networks'
+
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 import priceOracleAbi from '@abis/priceOracle.json'
-
-import env from '@/environment'
-import { getNetwork } from '@/networks'
 
 import actions from '../actions/garden-action-types'
 import radspec from '../radspec'

@@ -6,10 +6,10 @@ import BigNumber from '@lib/bigNumber'
 
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
 
+import { getNetwork } from '@/networks'
+
 import disputeManagerAbi from '@abis/DisputeManager.json'
 import arbitratorAbi from '@abis/arbitrator.json'
-
-import { getNetwork } from '@/networks'
 
 import { useContractReadOnly } from './useContract'
 
