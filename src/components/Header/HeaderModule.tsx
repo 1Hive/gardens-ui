@@ -31,7 +31,7 @@ function HeaderModule({
         padding: ${1 * GU}px;
         background: ${theme.surface};
 
-        ${!!onClick
+        ${onClick !== undefined
           ? `&:active { background: ${theme.surfacePressed}; }`
           : `cursor: auto;`}
       `}

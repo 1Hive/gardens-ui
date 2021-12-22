@@ -26,6 +26,7 @@ declare module '@1hive/1hive-ui' {
   const Layout: any
   const IconDown: any
   const Popover: any
+  const ProgressBar: any
   export {
     Main,
     GU,
@@ -48,5 +49,6 @@ declare module '@1hive/1hive-ui' {
     Layout,
     IconDown,
     Popover,
+    ProgressBar,
   }
 }

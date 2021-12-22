@@ -18,12 +18,7 @@ import { useAsset } from '@hooks/useAsset'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { transformAddresses } from '@utils/web3-utils'
-import {
-  ACTIVITY_STATUS_PENDING,
-  ACTIVITY_STATUS_CONFIRMED,
-  ACTIVITY_STATUS_FAILED,
-  ACTIVITY_STATUS_TIMED_OUT,
-} from './activity-statuses'
+import { ActivityStatus } from './activity-statuses'
 import { getActivityData } from './activity-types'
 import { getNetwork } from '../../networks'
 
@@ -49,7 +44,7 @@ function ActivityItem({ activity }) {
     }
   }, [activity, chainId])
 
-  const canClear = activity.status !== ACTIVITY_STATUS_PENDING
+  const canClear = activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING
 
   const handleClose = useCallback(() => {
     if (activity.transactionHash) {
@@ -115,7 +110,7 @@ function ActivityItem({ activity }) {
             >
               {title}
             </div>
-            {activity.status !== ACTIVITY_STATUS_PENDING && (
+            {activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING && (
               <TimeTag
                 date={activity.createdAt}
                 css={`
@@ -197,21 +192,21 @@ ItemContent.propTypes = {
 }
 
 function getStatusData(activity, theme) {
-  if (activity.status === ACTIVITY_STATUS_CONFIRMED) {
+  if (activity.status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED) {
     return [
       <IconCheck size="small" />,
       <span>Transaction confirmed</span>,
       theme.positive,
     ]
   }
-  if (activity.status === ACTIVITY_STATUS_FAILED) {
+  if (activity.status === ActivityStatus.ACTIVITY_STATUS_FAILED) {
     return [
       <IconCross size="small" />,
       <span>Transaction failed</span>,
       theme.negative,
     ]
   }
-  if (activity.status === ACTIVITY_STATUS_TIMED_OUT) {
+  if (activity.status === ActivityStatus.ACTIVITY_STATUS_TIMED_OUT) {
     return [
       <IconCross size="small" />,
       <span>Transaction timed out</span>,

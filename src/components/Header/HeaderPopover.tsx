@@ -19,7 +19,6 @@ type HeaderPopoverProps = {
   width: number | string
 }
 
-// @ts-ignore
 function HeaderPopover({
   children,
   direction,
@@ -102,7 +101,7 @@ function HeaderPopover({
                     setMeasuredHeight(false)
                   }
                 }}
-                onStart={(_, status) => {
+                onStart={() => {
                   setMeasuredHeight(true)
                 }}
               >

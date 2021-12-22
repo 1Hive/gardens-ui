@@ -11,12 +11,7 @@ import StoredList from '../StoredList'
 import { useConnectedGarden } from './ConnectedGarden'
 import { useWallet } from './Wallet'
 
-import {
-  ACTIVITY_STATUS_CONFIRMED,
-  ACTIVITY_STATUS_FAILED,
-  ACTIVITY_STATUS_PENDING,
-  ACTIVITY_STATUS_TIMED_OUT,
-} from '../components/Activity/activity-statuses'
+import { ActivityStatus } from '../components/Activity/activity-statuses'
 import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import { getNetworkType } from '@utils/web3-utils'
 import { MINUTE } from '@utils/date-utils'
@@ -24,14 +19,12 @@ import { MINUTE } from '@utils/date-utils'
 const ActivityContext = React.createContext()
 
 // Only used to serialize / deserialize the symbols
-const StatusSymbolsByName = new Map(
-  Object.entries({
-    ACTIVITY_STATUS_CONFIRMED,
-    ACTIVITY_STATUS_FAILED,
-    ACTIVITY_STATUS_PENDING,
-    ACTIVITY_STATUS_TIMED_OUT,
-  })
-)
+const StatusSymbolsByName = new Map([
+  [ActivityStatus.ACTIVITY_STATUS_CONFIRMED, ''],
+  [ActivityStatus.ACTIVITY_STATUS_FAILED, ''],
+  [ActivityStatus.ACTIVITY_STATUS_PENDING, ''],
+  [ActivityStatus.ACTIVITY_STATUS_TIMED_OUT, ''],
+])
 
 const TypeSymbolsByName = new Map(Object.entries(actions))
 
@@ -56,7 +49,7 @@ async function getActivityFinalStatus(
   ethers,
   { createdAt, transactionHash, status }
 ) {
-  if (status !== ACTIVITY_STATUS_PENDING) {
+  if (status !== ActivityStatus.ACTIVITY_STATUS_PENDING) {
     return status
   }
 
@@ -73,21 +66,21 @@ async function getActivityFinalStatus(
         }
         return tx.wait().then(receipt => {
           return receipt.blockNumber
-            ? ACTIVITY_STATUS_CONFIRMED
-            : ACTIVITY_STATUS_FAILED
+            ? ActivityStatus.ACTIVITY_STATUS_CONFIRMED
+            : ActivityStatus.ACTIVITY_STATUS_FAILED
         })
       })
       .catch(() => {
-        return ACTIVITY_STATUS_FAILED
+        return ActivityStatus.ACTIVITY_STATUS_FAILED
       }),
 
     // Timeout after 10 minutes
     new Promise(resolve => {
       if (now - createdAt > TIMEOUT_DURATION) {
-        return ACTIVITY_STATUS_TIMED_OUT
+        return ActivityStatus.ACTIVITY_STATUS_TIMED_OUT
       }
       setTimeout(() => {
-        resolve(ACTIVITY_STATUS_TIMED_OUT)
+        resolve(ActivityStatus.ACTIVITY_STATUS_TIMED_OUT)
       }, TIMEOUT_DURATION - (now - createdAt))
     }),
   ])
@@ -128,7 +121,7 @@ function ActivityProvider({ children }) {
           from: tx.from,
           nonce: tx.nonce,
           read: false,
-          status: ACTIVITY_STATUS_PENDING,
+          status: ActivityStatus.ACTIVITY_STATUS_PENDING,
           type,
           to: tx.to,
           transactionHash: tx.hash,
@@ -154,7 +147,9 @@ function ActivityProvider({ children }) {
   // pending because we’re awaiting state change.
   const clearActivities = useCallback(() => {
     updateActivities(activities =>
-      activities.filter(activity => activity.status === ACTIVITY_STATUS_PENDING)
+      activities.filter(
+        activity => activity.status === ActivityStatus.ACTIVITY_STATUS_PENDING
+      )
     )
   }, [updateActivities])
 

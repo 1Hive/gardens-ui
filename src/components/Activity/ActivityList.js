@@ -11,7 +11,7 @@ import {
 import ActivityItem from './ActivityItem'
 import { useActivity } from '@providers/ActivityProvider'
 
-import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
+import { ActivityStatus } from './activity-statuses'
 // TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
 import noDataSvg from '@assets/noData.svg'
 
@@ -32,7 +32,9 @@ function ActivityList() {
 
   const canClear = useMemo(
     () =>
-      activityItems.some(({ status }) => status !== ACTIVITY_STATUS_PENDING),
+      activityItems.some(
+        ({ status }) => status !== ActivityStatus.ACTIVITY_STATUS_PENDING
+      ),
     [activityItems]
   )
 
