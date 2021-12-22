@@ -11,11 +11,11 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
 import { useMounted } from '@hooks/useMounted'
 
 import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils'
-
-import { useWallet } from '@providers/Wallet'
 
 import ModalButton from '../ModalFlows/ModalButton'
 

@@ -14,10 +14,10 @@ import {
 
 import MultiModal from '@components/MultiModal/MultiModal'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
 import { getAppByName } from '@utils/data-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import actions from '@/actions/garden-action-types'
 import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'

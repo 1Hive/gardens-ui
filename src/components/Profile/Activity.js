@@ -10,13 +10,13 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
 import useUser from '@hooks/useUser'
 
 import { dateFormat } from '@utils/date-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 import { getNetworkType } from '@utils/web3-utils'
-
-import { useWallet } from '@providers/Wallet'
 
 import { useGardens } from '@/providers/Gardens'
 import { convertToString } from '@/types'

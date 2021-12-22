@@ -3,11 +3,11 @@ import { animated, useTrail } from 'react-spring'
 
 import { GU, Link, LoadingRing } from '@1hive/1hive-ui'
 
-import { addressesEqual, getNetworkType } from '@utils/web3-utils'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
+
+import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'

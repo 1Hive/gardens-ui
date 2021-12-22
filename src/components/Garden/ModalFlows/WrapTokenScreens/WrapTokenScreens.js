@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useGardenState } from '@providers/GardenState'
+
 import useActions from '@hooks/useActions'
 
 import BigNumber from '@lib/bigNumber'
-
-import { useGardenState } from '@providers/GardenState'
 
 import ModalFlowBase from '../ModalFlowBase'
 import WrapUnwrap from './WrapUnwrap'

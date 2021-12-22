@@ -19,6 +19,9 @@ import {
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+
 import { usePriceOracle } from '@hooks/usePriceOracle'
 
 import BigNumber from '@lib/bigNumber'
@@ -27,9 +30,6 @@ import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 import { toDecimals } from '@utils/math-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1

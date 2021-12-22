@@ -5,9 +5,9 @@ import { GU, Header, Info } from '@1hive/1hive-ui'
 import { GardenLoader } from '@components/Loader'
 import MultiModal from '@components/MultiModal/MultiModal'
 
-import { useAgreement } from '@hooks/useAgreement'
-
 import { useWallet } from '@providers/Wallet'
+
+import { useAgreement } from '@hooks/useAgreement'
 
 import LayoutBox from '../Layout/LayoutBox'
 import LayoutColumns from '../Layout/LayoutColumns'

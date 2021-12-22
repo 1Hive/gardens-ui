@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 
 import { Button } from '@1hive/1hive-ui'
 
+import { useUserState } from '@providers/User'
+
 import useActions from '@hooks/useActions'
 
 import { buildGardenPath } from '@utils/routing-utils'
-
-import { useUserState } from '@providers/User'
 
 import ModalFlowBase from '../ModalFlowBase'
 import SignOverview from './SignOverview'

@@ -13,14 +13,14 @@ import {
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
+
 import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
 
 import { getDisputableAppByName } from '@utils/app-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
 
 import iconCheck from '@assets/iconCheck.svg'
 import iconError from '@assets/iconError.svg'

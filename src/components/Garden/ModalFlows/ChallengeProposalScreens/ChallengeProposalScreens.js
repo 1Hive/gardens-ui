@@ -2,15 +2,15 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { addressesEqual } from '@1hive/1hive-ui'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+
 import { useAgreement } from '@hooks/useAgreement'
 import { useDisputeFees } from '@hooks/useDispute'
 
 import BigNumber from '@lib/bigNumber'
 
 import { toDecimals } from '@utils/math-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeForm from './ChallengeForm'

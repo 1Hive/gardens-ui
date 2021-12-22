@@ -2,13 +2,13 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import useActions from '@hooks/useActions'
 import { useCelesteSynced } from '@hooks/useCeleste'
 import { useDisputeFees } from '@hooks/useDispute'
 
 import BigNumber from '@lib/bigNumber'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import ModalFlowBase from '../ModalFlowBase'
 import RaiseDisputeRequirements from './RaiseDisputeRequirements'

@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { Contract as EthersContract } from 'ethers'
 
-import { getDefaultProvider } from '@utils/web3-utils'
-
 import { useWallet } from '@providers/Wallet'
+
+import { getDefaultProvider } from '@utils/web3-utils'
 
 export function useContractReadOnly(address, abi, chainId) {
   return useMemo(() => {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { fromDecimals } from '@utils/math-utils'
-
 import { useWallet } from '@providers/Wallet'
+
+import { fromDecimals } from '@utils/math-utils'
 
 import priceOracleAbi from '@abis/priceOracle.json'
 

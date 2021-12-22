@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import useActions from '@hooks/useActions'
-import { useAgreement } from '@hooks/useAgreement'
-
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
+
+import useActions from '@hooks/useActions'
+import { useAgreement } from '@hooks/useAgreement'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'

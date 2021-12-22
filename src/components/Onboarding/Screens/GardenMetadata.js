@@ -14,9 +14,9 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import useGardenNameResolver from '@hooks/useGardenNameResolver'
-
 import { useOnboardingState } from '@providers/Onboarding'
+
+import useGardenNameResolver from '@hooks/useGardenNameResolver'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
 

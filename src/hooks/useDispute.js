@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import BigNumber from '@lib/bigNumber'
 
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import disputeManagerAbi from '@abis/DisputeManager.json'
 import arbitratorAbi from '@abis/arbitrator.json'

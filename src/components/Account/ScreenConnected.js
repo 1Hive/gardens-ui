@@ -14,13 +14,13 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
+
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
 
 import profileButtonSvg from '@assets/profileButton.svg'
 import stakeButtonSvg from '@assets/stakeButton.svg'

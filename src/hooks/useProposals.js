@@ -1,5 +1,9 @@
 import { useEffect, useMemo } from 'react'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
 import {
   calculateThreshold,
   getConvictionTrend,
@@ -24,10 +28,6 @@ import {
   getVoteStatusData,
   hasVoteEnded,
 } from '@utils/vote-utils'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
 
 import { PCT_BASE } from '../constants'
 import BigNumber from '../lib/bigNumber'

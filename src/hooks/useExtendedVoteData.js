@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
-import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
-import { getCanUserVote, getCanUserVoteOnBehalfOf } from '@utils/vote-utils'
-import { addressesEqual } from '@utils/web3-utils'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useUserState } from '@providers/User'
 import { useWallet } from '@providers/Wallet'
+
+import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
+import { getCanUserVote, getCanUserVoteOnBehalfOf } from '@utils/vote-utils'
+import { addressesEqual } from '@utils/web3-utils'
 
 import minimeTokenAbi from '@abis/minimeToken.json'
 import votingAbi from '@abis/voting.json'

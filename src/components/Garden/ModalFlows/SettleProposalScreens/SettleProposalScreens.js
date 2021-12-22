@@ -2,9 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { addressesEqual } from '@1hive/1hive-ui'
 
-import useActions from '@hooks/useActions'
-
 import { useWallet } from '@providers/Wallet'
+
+import useActions from '@hooks/useActions'
 
 import ModalFlowBase from '../ModalFlowBase'
 import SettlementDetails from './SettlementDetails'

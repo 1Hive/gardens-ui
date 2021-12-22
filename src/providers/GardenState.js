@@ -2,6 +2,8 @@ import React, { useContext, useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
+import { useWallet } from '@providers/Wallet'
+
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
 import {
   useCommonPool,
@@ -10,8 +12,6 @@ import {
 } from '@hooks/useGardenHooks'
 
 import { getGardenTokenIcon } from '@utils/token-utils'
-
-import { useWallet } from '@providers/Wallet'
 
 import { useConnectedGarden } from './ConnectedGarden'
 

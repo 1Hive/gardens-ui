@@ -12,8 +12,9 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
-import { BRIGHT_ID_APP_DEEPLINK } from '@/endpoints'
 import { sponsorUser } from '@/services/sponsorUser'
+
+import { BRIGHT_ID_APP_DEEPLINK } from '@/endpoints'
 
 import LoadingRing from '../LoadingRing'
 

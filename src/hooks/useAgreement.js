@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 
 import { utils as ethersUtils } from 'ethers'
 
+import { useAgreementSubscription } from '@providers/AgreementSubscription'
+import { useGardenState } from '@providers/GardenState'
+
 import { getAppPresentation } from '@utils/app-utils'
 import { getAppByName } from '@utils/data-utils'
 import { durationToHours, toMs } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
-
-import { useAgreementSubscription } from '@providers/AgreementSubscription'
-import { useGardenState } from '@providers/GardenState'
 
 import env from '../environment'
 import { useMounted } from './useMounted'

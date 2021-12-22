@@ -3,9 +3,9 @@ import { useHistory } from 'react-router'
 
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
-import { buildGardenPath } from '@utils/routing-utils'
-
 import { useWallet } from '@providers/Wallet'
+
+import { buildGardenPath } from '@utils/routing-utils'
 
 import useGardenLogic from '@/logic/garden-logic'
 

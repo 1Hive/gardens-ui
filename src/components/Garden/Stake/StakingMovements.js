@@ -16,10 +16,10 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useGardenState } from '@providers/GardenState'
+
 import { dateFormat, toMs } from '@utils/date-utils'
 import { buildGardenPath } from '@utils/routing-utils'
-
-import { useGardenState } from '@providers/GardenState'
 
 import noDataIllustration from './assets/no-dataview-data.svg'
 import {
