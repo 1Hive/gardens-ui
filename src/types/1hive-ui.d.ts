@@ -16,6 +16,7 @@ declare module '@1hive/1hive-ui' {
   const DataView: any
   const noop: any
   const isAddress: any
+  const springs: any
   export {
     Main,
     GU,
@@ -30,5 +31,6 @@ declare module '@1hive/1hive-ui' {
     DataView,
     noop,
     isAddress,
+    springs,
   }
 }
