@@ -33,10 +33,6 @@ import { bigNum } from '@/lib/bigNumber'
 
 import { useWallet } from './Wallet'
 
-import { bigNum } from '@/lib/bigNumber'
-
-import { useWallet } from './Wallet'
-
 const OnboardingContext = React.createContext()
 
 const SKIPPED_SCREENS = ['Issuance policy']
