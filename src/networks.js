@@ -59,9 +59,10 @@ const networks = {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
-      gardens: z
-        ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
-        : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
+      gardens:
+        env('VERCEL_ENV') === 'production'
+          ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
+          : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
     },
 
     eip3085: {
