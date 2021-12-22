@@ -60,6 +60,9 @@ const ENV_VARS = {
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
+  VERCEL_ENV() {
+    return process.env.REACT_APP_VERCEL_ENV || null
+  },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
   },
