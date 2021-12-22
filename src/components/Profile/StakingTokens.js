@@ -1,9 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '@lib/bigNumber'
+
 import { useWallet } from '@providers/Wallet'
+
 import { stakesPercentages } from '@utils/math-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
@@ -65,7 +68,7 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
 
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
 
-  const adjustedStakes = stakes.map(stake => ({
+  const adjustedStakes = stakes.map((stake) => ({
     ...stake,
     percentage: Math.round(stake.percentage),
   }))
@@ -119,7 +122,7 @@ const DistributionItem = ({
         white-space: nowrap;
 
         ${proposalId &&
-          `cursor: pointer; &:hover {
+        `cursor: pointer; &:hover {
           background: ${theme.badge.alpha(0.7)}
         }`}
       `}
