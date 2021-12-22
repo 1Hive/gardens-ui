@@ -9,7 +9,8 @@
     "sync-assets": "copy-aragon-ui-assets ./public",
     "bundlewatch": "bundlewatch",
     "prettier": "./node_modules/.bin/prettier --write 'src/**/*.{ts,tsx,js}' --loglevel=error --ignore-path .prettier-imports-ignore",
-    "test": "react-app-rewired test --env=jsdom"
+    "test": "react-app-rewired test --env=jsdom",
+    "test2": "react-scripts test --env=jsdom"
   },
   "dependencies": {
     "3box": "^1.19.1",
@@ -57,6 +58,7 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
+    "@testing-library/react-hooks": "^7.0.2",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.12",
@@ -67,9 +69,11 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "24.9.0",
     "babel-plugin-styled-components": "^1.10.6",
     "bundlewatch": "^0.3.2",
     "cross-env": "^7.0.2",
+    "cross-fetch": "^3.1.4",
     "customize-cra": "^1.0.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
@@ -109,7 +113,8 @@
       "^@hooks(.*)$": "<rootDir>/src/hooks$1",
       "^@lib(.*)$": "<rootDir>/src/lib$1",
       "^@providers(.*)$": "<rootDir>/src/providers$1",
-      "^@utils(.*)$": "<rootDir>/src/utils$1"
+      "^@utils(.*)$": "<rootDir>/src/utils$1",
+      "^@/(.*)$": "<rootDir>/src/$1"
     }
   }
 }
