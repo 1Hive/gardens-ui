@@ -4,5 +4,19 @@
   "trailingComma": "es5",
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
-  "tabSize": 2
+  "tabSize": 2,
+  "importOrder": [
+    "^react(.*)$",
+    "^@1hive/(.*)$",
+    "^@abis/(.*)$",
+    "^@assets/(.*)$",
+    "^@hooks/(.*)$",
+    "^@lib/(.*)$",
+    "^@providers/(.*)$",
+    "^@utils/(.*)$",
+    "^@/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

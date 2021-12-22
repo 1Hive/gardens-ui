@@ -1,10 +1,11 @@
 import React from 'react'
+
 import { Connect } from '@1hive/connect-react'
 
-import { useConnectedGarden } from './ConnectedGarden'
 import useGardenNetworkEnsurance from '@hooks/useGardenNetworkEnsurance'
 
 import { getNetwork } from '../networks'
+import { useConnectedGarden } from './ConnectedGarden'
 
 function ConnectProvider({ children }) {
   useGardenNetworkEnsurance()
