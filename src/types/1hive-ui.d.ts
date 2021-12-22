@@ -13,6 +13,7 @@ declare module '@1hive/1hive-ui' {
   const useViewport: () => {
     below: any
     width: any
+    above: any
   }
   const DataView: any
   const noop: any
@@ -23,6 +24,8 @@ declare module '@1hive/1hive-ui' {
   const textStyle: (style) => void
   const Modal: any
   const Layout: any
+  const IconDown: any
+  const Popover: any
   export {
     Main,
     GU,
@@ -43,5 +46,7 @@ declare module '@1hive/1hive-ui' {
     LoadingRing,
     Modal,
     Layout,
+    IconDown,
+    Popover,
   }
 }

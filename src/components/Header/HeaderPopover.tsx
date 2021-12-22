@@ -1,10 +1,25 @@
+// @ts-nocheck
+// Added this because of lack of types from react-spring
+
 import React, { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import { GU, Popover, springs } from '@1hive/1hive-ui'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
 
 const AnimatedDiv = animated.div
 
+type HeaderPopoverProps = {
+  children: (screen: any) => any
+  direction: number
+  onClose: () => void
+  opener: any
+  screenData: any
+  screenId: number | string
+  screenKey: number | string
+  visible: boolean
+  width: number | string
+}
+
+// @ts-ignore
 function HeaderPopover({
   children,
   direction,
@@ -15,14 +30,14 @@ function HeaderPopover({
   screenKey,
   visible,
   width,
-}) {
+}: HeaderPopoverProps) {
   const [animate] = useState(true)
   const [height, setHeight] = useState(30 * GU)
   const [measuredHeight, setMeasuredHeight] = useState(true)
 
   // Prevents to lose the focus on the popover when a screen leaves while an
   // element inside is focused (e.g. when clicking on the “disconnect” button).
-  const popoverFocusElement = useRef()
+  const popoverFocusElement = useRef<any>()
   useEffect(() => {
     if (popoverFocusElement.current) {
       popoverFocusElement.current.focus()
@@ -57,7 +72,7 @@ function HeaderPopover({
           {({ height }) => (
             <AnimatedDiv
               ref={popoverFocusElement}
-              tabIndex="0"
+              tabIndex={0}
               style={{
                 height: measuredHeight ? height : 'auto',
                 position: 'relative',
@@ -117,13 +132,6 @@ function HeaderPopover({
       </section>
     </Popover>
   )
-}
-
-HeaderPopover.propTypes = {
-  children: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  opener: PropTypes.any,
-  visible: PropTypes.bool.isRequired,
 }
 
 export default HeaderPopover

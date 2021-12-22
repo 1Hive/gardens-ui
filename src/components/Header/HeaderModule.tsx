@@ -6,7 +6,20 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-function HeaderModule({ content, hasPopover = true, icon, onClick }) {
+
+type HeaderModuleProps = {
+  content: React.ReactNode
+  hasPopover: boolean
+  icon: string | React.ReactNode
+  onClick?: () => void
+}
+
+function HeaderModule({
+  content,
+  hasPopover = true,
+  icon,
+  onClick,
+}: HeaderModuleProps) {
   const { above } = useViewport()
   const theme = useTheme()
 
@@ -18,7 +31,7 @@ function HeaderModule({ content, hasPopover = true, icon, onClick }) {
         padding: ${1 * GU}px;
         background: ${theme.surface};
 
-        ${onClick
+        ${!!onClick
           ? `&:active { background: ${theme.surfacePressed}; }`
           : `cursor: auto;`}
       `}
