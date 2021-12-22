@@ -29,6 +29,9 @@ import {
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 
 import { publishNewDao } from '@/services/github'
+import { bigNum } from '@/lib/bigNumber'
+
+import { useWallet } from './Wallet'
 
 import { bigNum } from '@/lib/bigNumber'
 
