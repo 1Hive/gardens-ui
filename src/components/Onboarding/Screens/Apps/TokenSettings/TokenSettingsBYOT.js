@@ -10,12 +10,12 @@ import {
   isAddress,
 } from '@1hive/1hive-ui'
 
-import iconCheck from '@assets/iconCheck.svg'
-import iconError from '@assets/iconError.svg'
-
 import { useTokenData } from '@hooks/useToken'
 
 import { useOnboardingState } from '@providers/Onboarding'
+
+import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
 
 import Navigation from '../../../Navigation'
 import Header from '../../../kit/Header'

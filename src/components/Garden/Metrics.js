@@ -13,15 +13,15 @@ import {
 
 import HelpTip from '@components/HelpTip'
 
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { usePriceOracle } from '@hooks/usePriceOracle'
+
+import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 const Metrics = React.memo(function Metrics({
   commonPool,

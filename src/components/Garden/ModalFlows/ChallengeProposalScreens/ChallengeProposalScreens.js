@@ -7,10 +7,10 @@ import { useDisputeFees } from '@hooks/useDispute'
 
 import BigNumber from '@lib/bigNumber'
 
+import { toDecimals } from '@utils/math-utils'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
-
-import { toDecimals } from '@utils/math-utils'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ChallengeForm from './ChallengeForm'

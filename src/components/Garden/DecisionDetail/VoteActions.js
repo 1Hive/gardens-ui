@@ -16,11 +16,11 @@ import {
 
 import useExtendedVoteData from '@hooks/useExtendedVoteData'
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
 import { dateFormat, noop } from '@utils/date-utils'
 import { getConnectedAccountCast, isVoteAction } from '@utils/vote-utils'
+
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 

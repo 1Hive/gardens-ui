@@ -1,0 +1,2 @@
+# Ignore types definitions auto sort imports
+*.d.ts

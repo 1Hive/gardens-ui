@@ -2,9 +2,6 @@ import { utils } from 'ethers'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
-import tokenAbi from '@abis/erc20.json'
-import templateAbi from '@abis/gardensTemplate.json'
-
 import { getContract } from '@hooks/useContract'
 
 import { bigNum } from '@lib/bigNumber'
@@ -15,6 +12,9 @@ import {
   getDefaultProvider,
   toHex,
 } from '@utils/web3-utils'
+
+import tokenAbi from '@abis/erc20.json'
+import templateAbi from '@abis/gardensTemplate.json'
 
 import { ZERO_ADDR } from '@/constants'
 import { getNetwork } from '@/networks'

@@ -9,14 +9,14 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import noSupportIllustration from '@assets/noSupportIllustration.svg'
+import { stakesPercentages } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { stakesPercentages } from '@utils/math-utils'
-import { formatTokenAmount } from '@utils/token-utils'
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+import noSupportIllustration from '@assets/noSupportIllustration.svg'
 
 import IdentityBadge from '../IdentityBadge'
 

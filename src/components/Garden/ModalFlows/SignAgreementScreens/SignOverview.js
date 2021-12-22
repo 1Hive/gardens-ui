@@ -6,10 +6,10 @@ import { Checkbox, Field, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import signGraphic from '@assets/smart-contract.svg'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
+
+import signGraphic from '@assets/smart-contract.svg'
 
 import ModalButton from '../ModalButton'
 

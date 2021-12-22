@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { getProfileForAccount } from '@lib/profile'
 
-import { useProfile } from '@providers/Profile'
-
 import { addressesEqual } from '@utils/web3-utils'
+
+import { useProfile } from '@providers/Profile'
 
 const profilesCache = new Map([])
 

@@ -8,12 +8,12 @@ import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
 
 import BigNumber from '@lib/bigNumber'
 
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
 import { fromDecimals, pct, round, toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { addressesEqual } from '@utils/web3-utils'
+
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 // TODO - leaving this screen instead of doing the support and the change support in the same screen just in case fiore wants to change something
 const ChangeSupport = React.memo(function ChangeSupport({

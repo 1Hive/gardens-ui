@@ -18,12 +18,12 @@ import {
   SliderField,
 } from '@components/Onboarding/kit'
 
-import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
-
 import {
   calculateDecay,
   calculateWeight,
 } from '@utils/conviction-modelling-helpers'
+
+import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
 
 import AdvancedSettingsModal from './AdvancedSettingsModal'
 import ConvictionVotingCharts from './ConvictionVotingCharts'

@@ -14,11 +14,11 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import LinksTooltipImg from '@assets/linksTooltip.svg'
-
 import useGardenNameResolver from '@hooks/useGardenNameResolver'
 
 import { useOnboardingState } from '@providers/Onboarding'
+
+import LinksTooltipImg from '@assets/linksTooltip.svg'
 
 import Navigation from '../Navigation'
 import { FileUploaderField, Header } from '../kit'

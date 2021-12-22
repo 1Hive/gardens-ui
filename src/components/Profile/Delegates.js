@@ -15,11 +15,11 @@ import IdentityBadge from '@components/IdentityBadge'
 
 import useUser from '@hooks/useUser'
 
-import { useGardens } from '@providers/Gardens'
-import { useWallet } from '@providers/Wallet'
-
 import { getGardenLabel } from '@utils/garden-utils'
 import { addressesEqual, getNetworkType } from '@utils/web3-utils'
+
+import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
 
 function Delegates({ account }) {
   const [user, loading] = useUser(account)

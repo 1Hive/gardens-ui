@@ -9,9 +9,9 @@ import {
   useTokenBalances,
 } from '@hooks/useGardenHooks'
 
-import { useWallet } from '@providers/Wallet'
-
 import { getGardenTokenIcon } from '@utils/token-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 import { useConnectedGarden } from './ConnectedGarden'
 

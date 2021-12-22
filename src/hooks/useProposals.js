@@ -10,10 +10,6 @@ import {
   getRemainingTimeToPass,
 } from '@lib/conviction'
 
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
 import { testStatusFilter, testSupportFilter } from '@utils/filter-utils'
 import { safeDivBN } from '@utils/math-utils'
 import {
@@ -28,6 +24,10 @@ import {
   getVoteStatusData,
   hasVoteEnded,
 } from '@utils/vote-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import { PCT_BASE } from '../constants'
 import BigNumber from '../lib/bigNumber'

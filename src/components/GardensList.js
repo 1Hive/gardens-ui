@@ -9,10 +9,10 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-
-import { useWallet } from '@providers/Wallet'
 
 import { getNetwork } from '@/networks'
 

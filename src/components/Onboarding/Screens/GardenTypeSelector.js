@@ -3,10 +3,10 @@ import Lottie from 'react-lottie-player'
 
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import { useOnboardingState } from '@providers/Onboarding'
+
 import byotAnimation from '@assets/lotties/byotAnimation.json'
 import nativeAnimation from '@assets/lotties/nativeAnimation.json'
-
-import { useOnboardingState } from '@providers/Onboarding'
 
 import { BYOT_TYPE, NATIVE_TYPE } from '../constants'
 import { Header } from '../kit'

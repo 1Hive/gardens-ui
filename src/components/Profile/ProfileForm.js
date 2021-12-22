@@ -16,10 +16,10 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import verifiedCheck from '@assets/verifiedCheck.svg'
-
 import { dateFormat } from '@utils/date-utils'
 import { validateEmail } from '@utils/validate-utils'
+
+import verifiedCheck from '@assets/verifiedCheck.svg'
 
 import { fetchPic } from '@/services'
 

@@ -14,16 +14,16 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
+import { buildGardenPath } from '@utils/routing-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
+
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 // TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
 import getHoneySvg from '@assets/getHoney.svg'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
-
-import { buildGardenPath } from '@utils/routing-utils'
 
 import { getDexTradeTokenUrl } from '@/endpoints'
 

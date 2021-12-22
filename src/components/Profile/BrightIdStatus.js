@@ -10,11 +10,11 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import verifiedCheck from '@assets/verifiedCheck.svg'
-
 import { useBrightIdVerification } from '@hooks/useBrightIdVerification'
 
 import { useWallet } from '@providers/Wallet'
+
+import verifiedCheck from '@assets/verifiedCheck.svg'
 
 import IdentityBadge from '../IdentityBadge'
 import BrightIdModal from './BrightIdModal'

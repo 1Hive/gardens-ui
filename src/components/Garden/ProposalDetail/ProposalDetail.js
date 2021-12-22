@@ -29,14 +29,14 @@ import useChallenge from '@hooks/useChallenge'
 // utils
 import BigNumber from '@lib/bigNumber'
 
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
-
 import { formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '@utils/web3-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
 
 import LoadingRing from '@/components/LoadingRing'
 import { ZERO_ADDR } from '@/constants'

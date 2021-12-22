@@ -11,15 +11,15 @@ import {
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { useOnboardingState } from '@providers/Onboarding'
-import { useWallet } from '@providers/Wallet'
-
 import {
   DAY_IN_SECONDS,
   HOUR_IN_SECONDS,
   MINUTE_IN_SECONDS,
 } from '@utils/kit-utils'
 import { addressesEqual } from '@utils/web3-utils'
+
+import { useOnboardingState } from '@providers/Onboarding'
+import { useWallet } from '@providers/Wallet'
 
 import { ZERO_ADDR } from '@/constants'
 import { getNetwork } from '@/networks'

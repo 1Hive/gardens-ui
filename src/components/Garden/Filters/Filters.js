@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 
 import { Button, DropDown, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
-import { useWallet } from '@providers/Wallet'
-
 import { STATUS_FILTER_OPEN } from '@utils/filter-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 import CompactFilter from './CompactFilter'
 import ListFilter from './ListFilter'

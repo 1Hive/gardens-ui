@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { useWallet } from '@providers/Wallet'
-
 import { isAddress } from '@utils/web3-utils'
+
+import { useWallet } from '@providers/Wallet'
 
 const ARAGON_DOMAIN = 'aragonid.eth'
 

@@ -10,9 +10,9 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import { getNetwork } from '@/networks'
 import { useGardenState } from '@/providers/GardenState'

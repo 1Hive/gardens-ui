@@ -12,13 +12,13 @@ import {
 
 import Carousel from '@components/Carousel/Carousel'
 
-import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
-import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import wrappedIcon from '@assets/wrappedIcon.svg'
+import { formatTokenAmount } from '@utils/token-utils'
 
 import { useGardenState } from '@providers/GardenState'
 
-import { formatTokenAmount } from '@utils/token-utils'
+import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
+import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import wrappedIcon from '@assets/wrappedIcon.svg'
 
 import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 

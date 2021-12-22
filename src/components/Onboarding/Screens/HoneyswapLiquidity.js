@@ -13,14 +13,14 @@ import {
 import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
 import { useTokenBalanceOf } from '@hooks/useToken'
 
-import { useOnboardingState } from '@providers/Onboarding'
-import { useWallet } from '@providers/Wallet'
-
 import { toDecimals } from '@utils/math-utils'
 import {
   formatTokenAmount,
   getLocalTokenIconBySymbol,
 } from '@utils/token-utils'
+
+import { useOnboardingState } from '@providers/Onboarding'
+import { useWallet } from '@providers/Wallet'
 
 import { bigNum } from '@/lib/bigNumber'
 import { getNetwork } from '@/networks'
