@@ -160,12 +160,33 @@
     "@ethersproject/providers" "^5.1.2"
     "@ethersproject/solidity" "^5.1.0"
 
+"@1hive/connect-core@^0.9.9":
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.9.9.tgz#0ed07ea5cde1966b62e9898548a091f961898a51"
+  integrity sha512-CDh4gxLX7YbeHdWbhyZzaFEHhx0jGkouGHgMTtwT3Jray9vFnmpeI7hJo6e+kFkUN7tREVRK/173WasqO+c00w==
+  dependencies:
+    "@1hive/radspec" "^2.0.0"
+    "@ethersproject/abi" "^5.5.0"
+    "@ethersproject/address" "^5.5.0"
+    "@ethersproject/bignumber" "^5.5.0"
+    "@ethersproject/contracts" "^5.5.0"
+    "@ethersproject/hash" "^5.5.0"
+    "@ethersproject/providers" "^5.5.1"
+    "@ethersproject/solidity" "^5.5.0"
+
 "@1hive/connect-ethereum@^0.9.8":
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.8.tgz#f71ac325d4c69969358e2c21df9bb41e253ac9c1"
   integrity sha512-ML/TEfW6aZ7ZcxAbrBRPHzD7s+9OdRkLxx3t/0LQ3/C3sB7RruBQlfGYwo/JWlnQqLMauvoAD3IKpZ80ihwSiA==
   dependencies:
     "@1hive/connect-core" "^0.9.8"
+
+"@1hive/connect-ethereum@^0.9.9":
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.9.tgz#082c62b2389de2dd4acff2924bdf4b4e4430f2f8"
+  integrity sha512-iLFcs2u9A1QnAlHnZDWXmtjNXhtVvE0rEvgr3VU9kTpTh2skIZpYDNCAOxqfBu9PY1Cu1nX3XooNF+hRMJsRrQ==
+  dependencies:
+    "@1hive/connect-core" "^0.9.9"
 
 "@1hive/connect-gardens@^0.1.12":
   version "0.1.12"
@@ -177,12 +198,12 @@
     ethers "^5.5.1"
     graphql-tag "^2.10.3"
 
-"@1hive/connect-react@^0.9.8":
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.8.tgz#d1ee67e06ce90b686ea284d88f80cb93d4f2c8b2"
-  integrity sha512-tNRtl1SHJ1kjk+CyO1ZbX3dqh2M7sHEIrucLbPYP7RibSMkM5taEqzP7IzSgOMhXIzCY4IzS6SNuHcBvup9a1g==
+"@1hive/connect-react@^0.9.9":
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.9.tgz#6db53ac55c9c3f142e3e58cc9ca734a2d264d235"
+  integrity sha512-kMFkay56o2UyiNKVIM9ywUbMTv+gfk0Y2KpRwKx4/p9c6eh5mVjmKQsMk6qEElzZygoDuGGWNwmpIOREa6CNqA==
   dependencies:
-    "@1hive/connect" "^0.9.8"
+    "@1hive/connect" "^0.9.9"
 
 "@1hive/connect-thegraph@^0.9.3", "@1hive/connect-thegraph@^0.9.4":
   version "0.9.6"
@@ -210,7 +231,20 @@
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
 
-"@1hive/connect@^0.9.7", "@1hive/connect@^0.9.8":
+"@1hive/connect-thegraph@^0.9.9":
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.9.9.tgz#6048509d4eb3e013bbc6ddf2428a43843679cf36"
+  integrity sha512-0EhpDrwVUhK1lMmAQfoYF9iSrJyzACObrsfsSs4Rtn0M46mOWPozMlQ/9Ru+JxAxsx5i9g9UBgfJRLlOg9QrEw==
+  dependencies:
+    "@1hive/connect-core" "^0.9.9"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
+
+"@1hive/connect@^0.9.7":
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.8.tgz#537b94fff8dbccc53a4b0bf651ad397d0da9575e"
   integrity sha512-CpjGQw0CR98Ut6mqdI1a+gwAtr9ssntdif5/g8KV+zoBdUvY1LeoxVApvN7HSqIfJzT5lRqGclI0hXyjmtIFvA==
@@ -218,6 +252,15 @@
     "@1hive/connect-core" "^0.9.8"
     "@1hive/connect-ethereum" "^0.9.8"
     "@1hive/connect-thegraph" "^0.9.8"
+
+"@1hive/connect@^0.9.9":
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.9.tgz#a788311da82a525337f66b96b02825ed071a4d33"
+  integrity sha512-j8ief5IVhv3JdpyZB1c2xI/ltvDtHki5xJqCLUuMc1jF3FPeYgYWo8l2C8CD+iLGzDCdUgZ3RA310D5i31dCUg==
+  dependencies:
+    "@1hive/connect-core" "^0.9.9"
+    "@1hive/connect-ethereum" "^0.9.9"
+    "@1hive/connect-thegraph" "^0.9.9"
 
 "@1hive/evmcrispr@^0.3.2":
   version "0.3.2"
@@ -1866,7 +1909,7 @@
     "@ethersproject/properties" ">=5.0.0-beta.140"
     "@ethersproject/transactions" ">=5.0.0-beta.135"
 
-"@ethersproject/contracts@5.5.0", "@ethersproject/contracts@^5.0.1", "@ethersproject/contracts@^5.1.1":
+"@ethersproject/contracts@5.5.0", "@ethersproject/contracts@^5.0.1", "@ethersproject/contracts@^5.1.1", "@ethersproject/contracts@^5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.5.0.tgz#b735260d4bd61283a670a82d5275e2a38892c197"
   integrity sha512-2viY7NzyvJkh+Ug17v7g3/IJC8HqZBDcOjYARZLdzRxrfGlRgmYgl6xPRKVbEzy1dWKw/iv7chDcS83pg6cLxg==
@@ -2032,6 +2075,31 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
+"@ethersproject/providers@^5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.1.tgz#ba87e3c93219bbd2e2edf8b369873aee774abf04"
+  integrity sha512-2zdD5sltACDWhjUE12Kucg2PcgM6V2q9JMyVvObtVGnzJu+QSmibbP+BHQyLWZUBfLApx2942+7DC5D+n4wBQQ==
+  dependencies:
+    "@ethersproject/abstract-provider" "^5.5.0"
+    "@ethersproject/abstract-signer" "^5.5.0"
+    "@ethersproject/address" "^5.5.0"
+    "@ethersproject/basex" "^5.5.0"
+    "@ethersproject/bignumber" "^5.5.0"
+    "@ethersproject/bytes" "^5.5.0"
+    "@ethersproject/constants" "^5.5.0"
+    "@ethersproject/hash" "^5.5.0"
+    "@ethersproject/logger" "^5.5.0"
+    "@ethersproject/networks" "^5.5.0"
+    "@ethersproject/properties" "^5.5.0"
+    "@ethersproject/random" "^5.5.0"
+    "@ethersproject/rlp" "^5.5.0"
+    "@ethersproject/sha2" "^5.5.0"
+    "@ethersproject/strings" "^5.5.0"
+    "@ethersproject/transactions" "^5.5.0"
+    "@ethersproject/web" "^5.5.0"
+    bech32 "1.1.4"
+    ws "7.4.6"
+
 "@ethersproject/random@5.5.0", "@ethersproject/random@>=5.0.0-beta.128", "@ethersproject/random@^5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/random/-/random-5.5.0.tgz#305ed9e033ca537735365ac12eed88580b0f81f9"
@@ -2069,7 +2137,7 @@
     elliptic "6.5.4"
     hash.js "1.1.7"
 
-"@ethersproject/solidity@5.5.0", "@ethersproject/solidity@^5.1.0":
+"@ethersproject/solidity@5.5.0", "@ethersproject/solidity@^5.1.0", "@ethersproject/solidity@^5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/solidity/-/solidity-5.5.0.tgz#2662eb3e5da471b85a20531e420054278362f93f"
   integrity sha512-9NgZs9LhGMj6aCtHXhtmFQ4AN4sth5HuFXVvAQtzmm0jpSCNOTGtrHZJAeYTh7MBjRR8brylWZxBZR9zDStXbw==

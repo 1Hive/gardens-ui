@@ -1,7 +1,7 @@
 import { getNetworkType } from './utils/web3-utils'
 
 const POLYGON_VOIDED = []
-const XDAI_VOIDED = []
+const XDAI_VOIDED = [['0x9ceac080e12ab6700eef58c45fa02a50e8e2cd4b', '_']]
 const RINKEBY_VOIDED = []
 
 const VOIDED_GARDENS = {
