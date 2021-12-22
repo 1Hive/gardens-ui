@@ -1,24 +1,25 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
+import { Transition, animated } from 'react-spring/renderprops'
+
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
-import { animated, Transition } from 'react-spring/renderprops'
+
+import {
+  STEP_PROMPTING,
+  STEP_SUCCESS,
+  STEP_WORKING,
+} from '@components/Stepper/stepper-statuses'
+
+import gardensLogo from '@assets/gardensLogoMark.svg'
+
+import { useWallet } from '@/providers/Wallet'
+import { getNetworkType } from '@/utils/web3-utils'
 
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 import ErrorModal from './ErrorModal'
-
-import useDeploymentState from './useDeploymentState'
-import { useWallet } from '@/providers/Wallet'
-
-import { getNetworkType } from '@/utils/web3-utils'
-import {
-  STEP_WORKING,
-  STEP_SUCCESS,
-  STEP_PROMPTING,
-} from '@components/Stepper/stepper-statuses'
-
 import flowersLeavesSvg from './assets/flowers-leaves.svg'
-import gardensLogo from '@assets/gardensLogoMark.svg'
+import useDeploymentState from './useDeploymentState'
 
 const Deployment = React.memo(function Deployment() {
   const { above } = useViewport()
@@ -130,26 +131,27 @@ const Deployment = React.memo(function Deployment() {
             leave={{ opacity: 0, transform: `translate3d(-10%, 0, 0)` }}
             config={springs.smooth}
           >
-            {allSuccess =>
-              /* eslint-disable react/prop-types */
-              ({ opacity, transform }) =>
-                allSuccess ? (
-                  <BoxReady
-                    isFinalized={isFinalized}
-                    onGetStarted={handleGetStarted}
-                    opacity={opacity}
-                    boxTransform={transform}
-                  />
-                ) : (
-                  <BoxProgress
-                    allSuccess={allSuccess}
-                    boxTransform={transform}
-                    opacity={opacity}
-                    pending={pending}
-                    transactionsStatus={transactionsStatus}
-                  />
-                )
-            /* eslint-enable react/prop-types */
+            {
+              (allSuccess) =>
+                /* eslint-disable react/prop-types */
+                ({ opacity, transform }) =>
+                  allSuccess ? (
+                    <BoxReady
+                      isFinalized={isFinalized}
+                      onGetStarted={handleGetStarted}
+                      opacity={opacity}
+                      boxTransform={transform}
+                    />
+                  ) : (
+                    <BoxProgress
+                      allSuccess={allSuccess}
+                      boxTransform={transform}
+                      opacity={opacity}
+                      pending={pending}
+                      transactionsStatus={transactionsStatus}
+                    />
+                  )
+              /* eslint-enable react/prop-types */
             }
           </Transition>
         </div>
@@ -163,22 +165,23 @@ const Deployment = React.memo(function Deployment() {
           leave={{ opacity: 0, transform: `translate3d(0, 20%, 0)` }}
           config={springs.smooth}
         >
-          {isFinalized => ({ opacity, transform }) =>
-            !isFinalized && (
-              <animated.div
-                style={{ opacity, transform }}
-                css={`
-                  background: url(${flowersLeavesSvg});
-                  background-size: cover;
-                  background-repeat: no-repeat;
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  right: 0;
-                  aspect-ratio: 15 / 4;
-                `}
-              />
-            )}
+          {(isFinalized) =>
+            ({ opacity, transform }) =>
+              !isFinalized && (
+                <animated.div
+                  style={{ opacity, transform }}
+                  css={`
+                    background: url(${flowersLeavesSvg});
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    aspect-ratio: 15 / 4;
+                  `}
+                />
+              )}
         </Transition>
       </section>
       <ErrorModal

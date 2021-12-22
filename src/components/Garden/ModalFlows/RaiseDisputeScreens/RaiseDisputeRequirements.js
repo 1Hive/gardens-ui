@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
+
 import {
   Button,
   GU,
@@ -8,18 +9,23 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
+import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+
 import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
 import { CELESTE_URL } from '@/endpoints'
+
+import InfoField from '../../InfoField'
+import ModalButton from '../ModalButton'
 
 function RaiseDisputeRequirements({
   celesteSynced,

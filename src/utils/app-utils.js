@@ -1,7 +1,8 @@
-import { getIpfsUrlFromUri } from './ipfs-utils'
 import iconAcl from '@assets/icon-acl.svg'
 import iconKernel from '@assets/icon-kernel.svg'
 import iconRegistry from '@assets/icon-registry.svg'
+
+import { getIpfsUrlFromUri } from './ipfs-utils'
 
 export const SHORTENED_APPS_NAMES = new Map([
   ['agent', 'agent'],
@@ -69,5 +70,5 @@ export function getAppPresentation(app) {
 
 export function getDisputableAppByName(apps, appName) {
   const regex = new RegExp(`^${appName}.*$`)
-  return apps?.find(app => app?.appName?.match(regex))
+  return apps?.find((app) => app?.appName?.match(regex))
 }

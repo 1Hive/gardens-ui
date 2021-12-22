@@ -10,7 +10,7 @@ const HONEYSWAP_URL =
 
 const graphqlClient = new Client({ url: HONEYSWAP_URL })
 
-const TOKEN_PRICE_QUERY = tokenAddress => gql`
+const TOKEN_PRICE_QUERY = (tokenAddress) => gql`
   query {
     token(id: "${tokenAddress}") {
       derivedETH

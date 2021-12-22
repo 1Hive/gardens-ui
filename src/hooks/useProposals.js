@@ -1,28 +1,19 @@
 import { useEffect, useMemo } from 'react'
-import BigNumber from '../lib/bigNumber'
-import { useBlockTime, useLatestBlock } from './useBlock'
-import { useAccountStakesByGarden } from './useStakes'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import useProposalFilters, {
-  INITIAL_PROPOSAL_COUNT,
-} from './useProposalFilters'
-import {
-  useProposalSubscription,
-  useProposalsSubscription,
-} from './useSubscriptions'
-import { usePriceOracle } from './usePriceOracle'
-import { useWallet } from '@providers/Wallet'
 
 import {
+  calculateThreshold,
+  getConvictionTrend,
   getCurrentConviction,
   getCurrentConvictionByEntity,
-  getConvictionTrend,
   getMaxConviction,
-  calculateThreshold,
   getMinNeededStake,
   getRemainingTimeToPass,
 } from '@lib/conviction'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
 import { testStatusFilter, testSupportFilter } from '@utils/filter-utils'
 import { safeDivBN } from '@utils/math-utils'
 import {
@@ -37,8 +28,20 @@ import {
   getVoteStatusData,
   hasVoteEnded,
 } from '@utils/vote-utils'
-import { ProposalTypes } from '../types'
+
 import { PCT_BASE } from '../constants'
+import BigNumber from '../lib/bigNumber'
+import { ProposalTypes } from '../types'
+import { useBlockTime, useLatestBlock } from './useBlock'
+import { usePriceOracle } from './usePriceOracle'
+import useProposalFilters, {
+  INITIAL_PROPOSAL_COUNT,
+} from './useProposalFilters'
+import { useAccountStakesByGarden } from './useStakes'
+import {
+  useProposalSubscription,
+  useProposalsSubscription,
+} from './useSubscriptions'
 
 const TIME_UNIT = (60 * 60 * 24) / 15
 
@@ -81,7 +84,7 @@ function useFilteredProposals(filters, account, latestBlock) {
       return proposals
     }
 
-    return proposals.map(proposal =>
+    return proposals.map((proposal) =>
       proposal.type === ProposalTypes.Decision
         ? processDecision(proposal)
         : processProposal(proposal, latestBlock, account, config.conviction)
@@ -92,7 +95,7 @@ function useFilteredProposals(filters, account, latestBlock) {
     () =>
       loading
         ? proposalsWithData
-        : proposalsWithData?.filter(proposal => {
+        : proposalsWithData?.filter((proposal) => {
             const proposalSupportStatus = getProposalSupportStatus(
               myStakes,
               proposal

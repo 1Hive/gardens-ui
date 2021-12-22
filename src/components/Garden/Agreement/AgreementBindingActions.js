@@ -1,11 +1,18 @@
 import React from 'react'
+
 import styled from 'styled-components'
-import { Accordion, AppBadge, Box, useTheme, GU } from '@1hive/1hive-ui'
+
+import { Accordion, AppBadge, Box, GU, useTheme } from '@1hive/1hive-ui'
+
 import HelpTip from '@components/HelpTip'
-import InfoField from '../InfoField'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { getNetwork } from '@/networks'
+
 import { formatTokenAmount } from '@utils/token-utils'
+
+import { getNetwork } from '@/networks'
+
+import InfoField from '../InfoField'
 
 function AgreementBindingActions({ apps }) {
   const { chainId } = useConnectedGarden()

@@ -1,4 +1,5 @@
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
+
 import {
   Field,
   GU,
@@ -9,16 +10,19 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import CovenantModal from './CovenantModal'
-import {
-  DurationFields,
-  Header,
-  FileUploaderField,
-  TextFileUploader,
-  AmountField,
-} from '@components/Onboarding/kit'
+
 import Navigation from '@components/Onboarding/Navigation'
+import {
+  AmountField,
+  DurationFields,
+  FileUploaderField,
+  Header,
+  TextFileUploader,
+} from '@components/Onboarding/kit'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
+import CovenantModal from './CovenantModal'
 
 const MAX_TITLE_LENGTH = 50
 
@@ -66,14 +70,8 @@ const validateAgreementSettings = (
 
 function AgreementSettings() {
   const theme = useTheme()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
   const [formError, setFormError] = useState()
   const [
     { actionAmount, challengeAmount, challengePeriod, covenantFile, title },
@@ -85,7 +83,7 @@ function AgreementSettings() {
   )
 
   const handleActionAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['actionAmount', value])
     },
@@ -93,7 +91,7 @@ function AgreementSettings() {
   )
 
   const handleChallengeAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['challengeAmount', value])
     },
@@ -101,7 +99,7 @@ function AgreementSettings() {
   )
 
   const handleChallengePeriod = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['challengePeriod', value])
     },
@@ -109,7 +107,7 @@ function AgreementSettings() {
   )
 
   const handleCovenantFileChange = useCallback(
-    file => {
+    (file) => {
       setFormError(null)
       updateField(['covenantFile', file])
     },

@@ -1,8 +1,9 @@
-import React, { useMemo, useState, useCallback } from 'react'
-import ModalFlowBase from '../ModalFlowBase'
-import RemoveProposal from './RemoveProposal'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import useActions from '@hooks/useActions'
+
+import ModalFlowBase from '../ModalFlowBase'
+import RemoveProposal from './RemoveProposal'
 
 function RemoveProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
@@ -11,8 +12,8 @@ function RemoveProposalScreens({ proposal, mode }) {
   const { id: proposalId } = proposal
 
   const getTransactions = useCallback(
-    async onComplete => {
-      await convictionActions.cancelProposal(proposalId, intent => {
+    async (onComplete) => {
+      await convictionActions.cancelProposal(proposalId, (intent) => {
         setTransactions(intent)
         onComplete()
       })

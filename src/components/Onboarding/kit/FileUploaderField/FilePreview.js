@@ -1,9 +1,11 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Button, GU, IconClose, IconFile, textStyle } from '@1hive/1hive-ui'
 
 const FilePreview = ({ file, label, onCancel }) => {
-  const handleCancel = e => {
+  const handleCancel = (e) => {
     e.preventDefault()
     onCancel()
   }

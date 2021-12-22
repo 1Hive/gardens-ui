@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import { Box, Button, GU, textStyle } from '@1hive/1hive-ui'
+
 import { useOnboardingState } from '@providers/Onboarding'
 
 function SavedProgress() {

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
+
+import tokenAbi from '@abis/minimeToken.json'
+
+import BigNumber from '@lib/bigNumber'
+
 import { useContractReadOnly } from './useContract'
 import { useMounted } from './useMounted'
-import tokenAbi from '@abis/minimeToken.json'
-import BigNumber from '@lib/bigNumber'
 
 export function useTokenBalanceOf(tokenAddress, account, chainId) {
   const [balance, setBalance] = useState(new BigNumber(-1))

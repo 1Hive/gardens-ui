@@ -2,7 +2,7 @@ class StoredList {
   // name: the key used by StoredList to save the list in localStorage.
   // preStringify: use this to transform an item of the list before being saved.
   // postParse: use this to transform an item of the list after it got loaded.
-  constructor(name, { preStringify = v => v, postParse = v => v } = {}) {
+  constructor(name, { preStringify = (v) => v, postParse = (v) => v } = {}) {
     this.options = { preStringify, postParse }
     this.name = name
     this.items = this.loadItems()

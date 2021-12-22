@@ -40,7 +40,7 @@ export const CONNECTORS = [
         },
       }
     : null,
-].filter(p => p)
+].filter((p) => p)
 
 // the final data that we pass to use-wallet package.
 export const useWalletConnectors = CONNECTORS.reduce((current, connector) => {

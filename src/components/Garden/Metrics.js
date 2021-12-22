@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+
 import {
   Box,
   Button,
@@ -9,15 +10,18 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import HelpTip from '@components/HelpTip'
+
+import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
+
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { usePriceOracle } from '@hooks/usePriceOracle'
+
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
-
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 const Metrics = React.memo(function Metrics({
   commonPool,
@@ -98,7 +102,7 @@ function PriceSection({
   const [priceMode, setPriceMode] = useState(true)
 
   const handleTogglePriceMode = useCallback(() => {
-    setPriceMode(priceMode => !priceMode)
+    setPriceMode((priceMode) => !priceMode)
   }, [])
 
   return (
@@ -137,7 +141,7 @@ function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
   const [supplyMode, setSupplyMode] = useState(true)
 
   const handleToggleSupplyMode = useCallback(() => {
-    setSupplyMode(supplyMode => !supplyMode)
+    setSupplyMode((supplyMode) => !supplyMode)
   }, [])
 
   return (
@@ -374,7 +378,7 @@ function Dot({ isActive, onChange }) {
     <span
       onClick={
         !isActive
-          ? e => {
+          ? (e) => {
               e.preventDefault()
               onChange()
             }

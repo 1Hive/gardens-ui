@@ -1,4 +1,5 @@
 import React from 'react'
+
 import BalanceToken from '../BalanceToken'
 
 function Balance({

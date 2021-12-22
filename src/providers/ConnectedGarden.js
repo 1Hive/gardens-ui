@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
+
 import { getGarden } from '@1hive/connect-gardens'
 
+import { useMounted } from '@hooks/useMounted'
+import { useGardenRoute } from '@hooks/useRouting'
+
+import { mergeGardenMetadata } from '@utils/garden-utils'
+
+import { getNetwork, getNetworkChainIdByType } from '@/networks'
+
+import { DAONotFound } from '../errors'
 import { ActivityProvider } from './ActivityProvider'
 import { AgreementSubscriptionProvider } from './AgreementSubscription'
 import { ConnectProvider as Connect } from './Connect'
 import { GardenStateProvider } from './GardenState'
-import { StakingProvider } from './Staking'
-
 import { useGardens } from './Gardens'
-import { useGardenRoute } from '@hooks/useRouting'
-import { useMounted } from '@hooks/useMounted'
-
-import { DAONotFound } from '../errors'
-import { mergeGardenMetadata } from '@utils/garden-utils'
-import { getNetwork, getNetworkChainIdByType } from '@/networks'
+import { StakingProvider } from './Staking'
 
 const ConnectedGardenContext = React.createContext()
 

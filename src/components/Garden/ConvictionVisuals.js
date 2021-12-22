@@ -1,28 +1,33 @@
 import React, { useMemo } from 'react'
+
+import styled from 'styled-components'
+
 import {
   GU,
   IconCheck,
   IconCross,
   LoadingRing,
   Tag,
-  textStyle,
   Timer,
+  textStyle,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
-import styled from 'styled-components'
-import LineChart from './ModifiedLineChart'
-import SummaryBar from './SummaryBar'
-
-import { useGardenState } from '@providers/GardenState'
-import { useProposalEndDate } from '@hooks/useProposals'
-import { useWallet } from '@providers/Wallet'
-
-import BigNumber from '@lib/bigNumber'
-import { formatTokenAmount } from '@utils/token-utils'
-import { isEntitySupporting } from '@lib/conviction'
 
 import challengeIconSvg from '@assets/challenge-icon.svg'
+
+import { useProposalEndDate } from '@hooks/useProposals'
+
+import BigNumber from '@lib/bigNumber'
+import { isEntitySupporting } from '@lib/conviction'
+
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
+import { formatTokenAmount } from '@utils/token-utils'
+
+import LineChart from './ModifiedLineChart'
+import SummaryBar from './SummaryBar'
 
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
@@ -35,18 +40,18 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const theme = useTheme()
 
   // We want conviction and threhsold in percentages
-  const normalize = n => n / maxConviction
-  const normalizeLines = lines => {
-    return lines.map(line => line.map(normalize))
+  const normalize = (n) => n / maxConviction
+  const normalizeLines = (lines) => {
+    return lines.map((line) => line.map(normalize))
   }
 
   return (
     <LineChart
       lines={normalizeLines(lines)}
       total={lines[0] && lines[0].length}
-      label={i => i - Math.floor((lines[0].length - 1) / 2)}
+      label={(i) => i - Math.floor((lines[0].length - 1) / 2)}
       captionsHeight={20}
-      color={i => [theme.info, theme.infoSurfaceContent][i]}
+      color={(i) => [theme.info, theme.infoSurfaceContent][i]}
       threshold={
         withThreshold &&
         !Number.isNaN(threshold) &&
@@ -134,13 +139,8 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const { config } = useGardenState()
   const { maxRatio, stakeToken } = config.conviction
 
-  const {
-    currentConviction,
-    loading,
-    neededTokens,
-    statusData,
-    threshold,
-  } = proposal
+  const { currentConviction, loading, neededTokens, statusData, threshold } =
+    proposal
   const endDate = useProposalEndDate(proposal)
 
   const view = useMemo(() => {
@@ -272,8 +272,9 @@ const NegativeOutcome = ({ maxRatio, neededTokens, shorter, stakeToken }) => {
           >
             (
             {isNaN(neededTokens) ? (
-              `Funding requests must be below ${maxRatio *
-                100}% of organization total funds`
+              `Funding requests must be below ${
+                maxRatio * 100
+              }% of organization total funds`
             ) : (
               <React.Fragment>
                 At least{' '}

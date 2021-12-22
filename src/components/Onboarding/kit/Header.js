@@ -1,6 +1,8 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
-import { textStyle, useTheme, GU } from '@1hive/1hive-ui'
+
+import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
 function Header({
   title,

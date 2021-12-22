@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 const CURRENCIES_URL = 'https://api.exchangeratesapi.io/latest?base=USD'
 const SYMBOL_MAP = {
   USD: '$',
@@ -30,8 +31,8 @@ export function useCurrencies() {
         const rates = Object.keys(result.rates)
           // To ensure the dropdown is not too big, we only
           // map currencies that we have mapped a symbol for
-          .filter(name => !!SYMBOL_MAP[name])
-          .map(name => ({
+          .filter((name) => !!SYMBOL_MAP[name])
+          .map((name) => ({
             name,
             symbol: SYMBOL_MAP[name],
             rate: result.rates[name],

@@ -1,6 +1,8 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
-import { Button, Modal as OneHiveModal, GU, textStyle } from '@1hive/1hive-ui'
+
+import { Button, GU, Modal as OneHiveModal, textStyle } from '@1hive/1hive-ui'
 
 const Modal = ({
   children,

@@ -1,10 +1,11 @@
 import { getNetwork } from '@/networks'
+
 import { addressesEqual, isAddress } from './web3-utils'
 
 const DEFAULT_FORUM_URL = 'https://forum.1hive.org/'
 
 export function getGardenLabel(address, gardens) {
-  const garden = gardens?.find(garden =>
+  const garden = gardens?.find((garden) =>
     addressesEqual(garden.address, address)
   )
   return garden?.name || address
@@ -17,7 +18,7 @@ export function getGardenForumUrl(metadata) {
 
   if (metadata.links) {
     const forumItem = Object.values(metadata.links)
-      .map(linkTopic => Object.values(linkTopic))
+      .map((linkTopic) => Object.values(linkTopic))
       .flat()
       .find(({ label }) => label.toLowerCase() === 'forum')
 
@@ -29,7 +30,7 @@ export function getGardenForumUrl(metadata) {
 
 export function mergeGardenMetadata(garden, gardensMetadata) {
   const metadata =
-    gardensMetadata?.find(dao => addressesEqual(dao.address, garden.id)) || {}
+    gardensMetadata?.find((dao) => addressesEqual(dao.address, garden.id)) || {}
 
   const token = {
     ...garden.token,

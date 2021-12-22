@@ -1,13 +1,17 @@
 import React from 'react'
+
 import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
+
+import { useGardenState } from '@providers/GardenState'
+
+import { formatTokenAmount } from '@utils/token-utils'
+
+import { ProposalTypes } from '@/types'
+
 import Balance from '../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
-
-import { ProposalTypes } from '@/types'
-import { useGardenState } from '@providers/GardenState'
-import { formatTokenAmount } from '@utils/token-utils'
 
 function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const theme = useTheme()

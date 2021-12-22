@@ -5,7 +5,9 @@ import React, {
   useRef,
   useState,
 } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   Field,
   GU,
@@ -14,6 +16,7 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import { splitDecimalNumber } from '@utils/math-utils'
 
 function removeTrailingZeros(num) {
@@ -61,7 +64,7 @@ const SliderField = React.forwardRef(function SliderField(
   }, [value])
 
   const handleSliderChange = useCallback(
-    v => {
+    (v) => {
       const value = (v * maxValue).toFixed(precision)
       onChange(value < minValue ? minValue : removeTrailingZeros(value))
     },
@@ -69,7 +72,7 @@ const SliderField = React.forwardRef(function SliderField(
   )
 
   const handleInputChange = useCallback(
-    event => {
+    (event) => {
       const value = event.target.value
 
       // Allow empty values so it can be easier to update input

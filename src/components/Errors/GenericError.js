@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   Button,
   ButtonBase,
-  Link,
   GU,
   IconDown,
+  Link,
   RADIUS,
   textStyle,
   useTheme,

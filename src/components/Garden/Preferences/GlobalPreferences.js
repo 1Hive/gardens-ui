@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Transition, animated } from 'react-spring/renderprops'
+
 import {
   ButtonIcon,
   GU,
@@ -11,11 +13,12 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@/providers/Wallet'
-import { useEsc } from '../../../hooks/useKeyboardArrows'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
+import { useWallet } from '@/providers/Wallet'
+
+import { useEsc } from '../../../hooks/useKeyboardArrows'
 import AppsAddresses from './AppsAddresses'
 import EVMExecutor from './EVMExecutor'
 
@@ -97,7 +100,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
 function useGlobalPreferences({ path = '', onScreenChange }) {
   const [sectionIndex, setSectionIndex] = useState(null)
   const handleNavigation = useCallback(
-    index => {
+    (index) => {
       onScreenChange(PATHS[index])
     },
     [onScreenChange]
@@ -108,7 +111,7 @@ function useGlobalPreferences({ path = '', onScreenChange }) {
       setSectionIndex(null)
       return
     }
-    const index = PATHS.findIndex(item => path.startsWith(item))
+    const index = PATHS.findIndex((item) => path.startsWith(item))
 
     setSectionIndex(index === -1 ? null : index)
   }, [path, sectionIndex])
@@ -127,7 +130,7 @@ function Close({ compact, onClick }) {
         padding-right: ${3 * GU}px;
 
         ${compact &&
-          `
+        `
             padding-top: ${2 * GU}px;
             padding-right: ${1.5 * GU}px;
           `}
@@ -163,45 +166,46 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
       leave={{ opacity: 0, enterProgress: 1, blocking: false }}
       config={springs.smooth}
     >
-      {show =>
-        show &&
-        /* eslint-disable react/prop-types */
-        // z-index 1 on mobile keeps the menu above this preferences modal
-        (({ opacity, enterProgress, blocking }) => (
-          <AnimatedDiv
-            style={{
-              zIndex: 1,
-              pointerEvents: blocking ? 'auto' : 'none',
-              opacity,
-              transform: enterProgress.interpolate(
-                v => `
+      {
+        (show) =>
+          show &&
+          /* eslint-disable react/prop-types */
+          // z-index 1 on mobile keeps the menu above this preferences modal
+          (({ opacity, enterProgress, blocking }) => (
+            <AnimatedDiv
+              style={{
+                zIndex: 1,
+                pointerEvents: blocking ? 'auto' : 'none',
+                opacity,
+                transform: enterProgress.interpolate(
+                  (v) => `
                   translate3d(0, ${(1 - v) * 10}px, 0)
                   scale3d(${1 - (1 - v) * 0.03}, ${1 - (1 - v) * 0.03}, 1)
                 `
-              ),
-            }}
-            css={`
-              position: fixed;
-              top: 0;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              overflow: auto;
-              min-width: ${45 * GU}px;
-              padding-bottom: ${compact ? 2 : 0 * GU}px;
-              border-top: 2px solid ${theme.accent};
-              background: ${theme.surface};
-            `}
-          >
-            <GlobalPreferences
-              onClose={onClose}
-              compact={compact}
-              sectionIndex={sectionIndex}
-              onNavigation={handleNavigation}
-            />
-          </AnimatedDiv>
-        ))
-      /* eslint-enable react/prop-types */
+                ),
+              }}
+              css={`
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                overflow: auto;
+                min-width: ${45 * GU}px;
+                padding-bottom: ${compact ? 2 : 0 * GU}px;
+                border-top: 2px solid ${theme.accent};
+                background: ${theme.surface};
+              `}
+            >
+              <GlobalPreferences
+                onClose={onClose}
+                compact={compact}
+                sectionIndex={sectionIndex}
+                onNavigation={handleNavigation}
+              />
+            </AnimatedDiv>
+          ))
+        /* eslint-enable react/prop-types */
       }
     </Transition>
   )

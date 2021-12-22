@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 
 function stepsReducer(state, { type, value, steps }) {
   const { step } = state
@@ -43,7 +43,7 @@ export function useSteps(steps) {
   }, [steps])
 
   const setStep = useCallback(
-    value => {
+    (value) => {
       updateStep({ type: 'set', value, steps })
     },
     [steps]

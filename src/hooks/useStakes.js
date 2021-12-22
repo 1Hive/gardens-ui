@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import useUser from './useUser'
+
 import {
   PROPOSAL_STATUS_ACTIVE_STRING,
   PROPOSAL_STATUS_CANCELLED_STRING,
@@ -7,8 +7,9 @@ import {
   PROPOSAL_STATUS_DISPUTED_STRING,
   PROPOSAL_STATUS_EXECUTED_STRING,
 } from '../constants'
-import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
+import { useSupporterSubscription } from './useSubscriptions'
+import useUser from './useUser'
 
 export function useAccountStakes(account) {
   const [user] = useUser(account)
@@ -82,7 +83,7 @@ export function useInactiveProposalsWithStake(account) {
 
   const inactiveStakes = user.supports
     .flatMap(({ stakes }) => stakes)
-    .filter(stake => {
+    .filter((stake) => {
       return (
         stake.proposal.type !== ProposalTypes.Decision &&
         (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||

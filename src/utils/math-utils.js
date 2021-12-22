@@ -119,7 +119,7 @@ export function stakesPercentages(
 
   // Calculate the percentages of all the stakes
   const stakes = amounts
-    .filter(amount => !amount.isZero())
+    .filter((amount) => !amount.isZero())
     .map((amount, index) => ({
       amount,
       index,
@@ -128,7 +128,7 @@ export function stakesPercentages(
     .sort((a, b) => b.percentage.comparedTo(a.percentage))
 
   // convert the percentage back to a number
-  const stakePercentageAsNumber = stake => ({
+  const stakePercentageAsNumber = (stake) => ({
     ...stake,
     percentage: parseFloat(
       (stake.percentage.toNumber() / pctPrecision) * 100
@@ -157,12 +157,13 @@ export function stakesPercentages(
   const hasRest = amounts.length > maxIncluded
 
   // the stakes to be included (not adjusted yet)
-  const includedStakes = (hasRest
-    ? addCalculatedRest(
-        stakes.slice(0, maxIncluded - 1),
-        stakes.slice(maxIncluded - 1)
-      )
-    : stakes
+  const includedStakes = (
+    hasRest
+      ? addCalculatedRest(
+          stakes.slice(0, maxIncluded - 1),
+          stakes.slice(maxIncluded - 1)
+        )
+      : stakes
   ).map(stakePercentageAsNumber)
 
   // Check if there is any 0% item in the list

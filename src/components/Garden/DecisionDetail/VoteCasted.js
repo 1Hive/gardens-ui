@@ -1,13 +1,16 @@
 import React from 'react'
+
 import { GU, IconCheck, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { useGardenState } from '@providers/GardenState'
 
-import { addressesEqual } from '@utils/web3-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import {
   getAccountCastDelegatedStake,
   getAccountCastStake,
 } from '@utils/vote-utils'
+import { addressesEqual } from '@utils/web3-utils'
+
 import { VOTE_YEA } from '@/constants'
 
 function VoteCasted({ account, accountVote, caster, vote }) {
@@ -57,9 +60,9 @@ function VoteCasted({ account, accountVote, caster, vote }) {
         <div>
           <div
             css={`
-            ${textStyle('body1')}
-            margin-bottom: ${0.5 * GU}px;
-          `}
+              ${textStyle('body1')}
+              margin-bottom: ${0.5 * GU}px;
+            `}
           >
             {`Your ${
               addressesEqual(account, caster) ? '' : "delegate's"
@@ -67,9 +70,9 @@ function VoteCasted({ account, accountVote, caster, vote }) {
           </div>
           <div
             css={`
-            ${textStyle('body2')}
-            color: ${theme.surfaceContentSecondary};
-          `}
+              ${textStyle('body2')}
+              color: ${theme.surfaceContentSecondary};
+            `}
           >
             {addressesEqual(account, caster) ? 'You' : 'Your delegate'} voted{' '}
             <span

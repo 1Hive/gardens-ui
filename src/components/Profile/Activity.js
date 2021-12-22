@@ -1,23 +1,27 @@
 import React, { useMemo } from 'react'
+
 import {
   Box,
   GU,
-  isAddress,
   Link,
+  isAddress,
   shortenAddress,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
 
-import ProposalIcon from '../ProposalIcon'
-import { useGardens } from '@/providers/Gardens'
 import useUser from '@hooks/useUser'
+
 import { useWallet } from '@providers/Wallet'
 
-import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 import { getNetworkType } from '@utils/web3-utils'
+
+import { useGardens } from '@/providers/Gardens'
+import { convertToString } from '@/types'
+
+import ProposalIcon from '../ProposalIcon'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
@@ -37,7 +41,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
       .flatMap(({ stakesHistory }) => stakesHistory)
       .reduce((acc, stake) => {
         const index = acc.findIndex(
-          accStake => accStake.proposal.id === stake.proposal.id
+          (accStake) => accStake.proposal.id === stake.proposal.id
         )
 
         if (index >= 0) {

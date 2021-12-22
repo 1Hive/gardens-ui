@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
+
 import useUser from '@hooks/useUser'
+
 import { useWallet } from './Wallet'
 
 const UserContext = React.createContext()

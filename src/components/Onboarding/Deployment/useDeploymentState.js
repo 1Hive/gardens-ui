@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useOnboardingState } from '@providers/Onboarding'
-import { useWallet } from '@providers/Wallet'
+
 import {
   STEP_ERROR,
   STEP_PROMPTING,
@@ -9,6 +8,10 @@ import {
   STEP_WAITING,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
+
+import { useOnboardingState } from '@providers/Onboarding'
+import { useWallet } from '@providers/Wallet'
+
 import { STATUS_GARDEN_CREATED } from '../statuses'
 
 const DEFAULT_TX_PROGRESS = {
@@ -20,17 +23,12 @@ const DEFAULT_TX_PROGRESS = {
 
 export default function useDeploymentState() {
   const { account, ethers } = useWallet()
-  const {
-    deployTransactions,
-    gardenAddress,
-    onReset,
-    status,
-  } = useOnboardingState()
+  const { deployTransactions, gardenAddress, onReset, status } =
+    useOnboardingState()
 
   const [attempts, setAttempts] = useState(0)
-  const [transactionProgress, setTransactionProgress] = useState(
-    DEFAULT_TX_PROGRESS
-  )
+  const [transactionProgress, setTransactionProgress] =
+    useState(DEFAULT_TX_PROGRESS)
 
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
@@ -39,7 +37,7 @@ export default function useDeploymentState() {
     if (attempts === 0) {
       setTransactionProgress(DEFAULT_TX_PROGRESS)
     } else {
-      setTransactionProgress(txProgress => ({ ...txProgress, errored: -1 }))
+      setTransactionProgress((txProgress) => ({ ...txProgress, errored: -1 }))
     }
 
     if (!deployTransactions.length > 0) {
@@ -109,7 +107,7 @@ export default function useDeploymentState() {
     }
 
     const { signed, success, errored, hashes } = transactionProgress
-    const status = index => {
+    const status = (index) => {
       if (errored !== -1 && index >= errored) {
         return STEP_ERROR
       }
@@ -132,7 +130,7 @@ export default function useDeploymentState() {
     }))
   }, [deployTransactions, transactionProgress])
 
-  const handleNextAttempt = useCallback(() => setAttempts(a => a + 1), [])
+  const handleNextAttempt = useCallback(() => setAttempts((a) => a + 1), [])
 
   return {
     erroredTransactions: transactionProgress.errored,

@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
+
 import { GU, useLayout } from '@1hive/1hive-ui'
+
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
 
 import Delegation from './Delegation'
 import HeroBanner from './HeroBanner'
 import WrapToken from './WrapToken'
-
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
 
 function RightPanel({
   onClaimRewards,

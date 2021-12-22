@@ -1,17 +1,18 @@
 import React from 'react'
+
 import { useTheme } from '@1hive/1hive-ui'
+
+import blockIcon from '@assets/blockIcon.svg'
+import signRequestFailIllustration from '@assets/signRequestFail.svg'
+import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
+import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
 
 import {
   STEP_ERROR,
-  STEP_SUCCESS,
   STEP_PROMPTING,
+  STEP_SUCCESS,
   STEP_WORKING,
 } from '../stepper-statuses'
-
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
-import blockIcon from '@assets/blockIcon.svg'
 
 const illustrations = {
   [STEP_WORKING]: trxBeingMinedIllustration,

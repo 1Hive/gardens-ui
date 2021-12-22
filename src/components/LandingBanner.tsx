@@ -1,9 +1,12 @@
 import React from 'react'
+
+import styled from 'styled-components'
+
 import { Button, useLayout, useTheme } from '@1hive/1hive-ui'
-import desktopBanner from '@assets/landingBanner.png'
+
 import mobileBanner from '@assets/landingBanner-mobile.png'
 import tabletBanner from '@assets/landingBanner-tablet.png'
-import styled from 'styled-components'
+import desktopBanner from '@assets/landingBanner.png'
 
 const BANNERS = {
   small: {
@@ -36,13 +39,13 @@ const Wrapper = styled.div<{
   image: string
   aspectRatio: any
 }>`
-  background: url(${props => props.image}) no-repeat;
+  background: url(${(props) => props.image}) no-repeat;
   background-size: contain;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding-top: ${props => props.aspectRatio};
+  padding-top: ${(props) => props.aspectRatio};
 `
 
 const Container = styled.div`
@@ -64,7 +67,7 @@ const ContainerChild = styled.div`
 const Title = styled.h1<{
   hFontSize: string
 }>`
-  font-size: ${props => props.hFontSize};
+  font-size: ${(props) => props.hFontSize};
   font-weight: bold;
   color: #048333;
 `
@@ -73,8 +76,8 @@ const Subtitle = styled.p<{
   pFontSize: string
   color: any
 }>`
-  font-size: ${props => props.pFontSize};
-  color: ${props => props.color};
+  font-size: ${(props) => props.pFontSize};
+  color: ${(props) => props.color};
 `
 
 type PropsType = {

@@ -1,17 +1,19 @@
 import React from 'react'
+
 import { Box, GU, Info, Link, textStyle, useTheme } from '@1hive/1hive-ui'
-
-import { useWallet } from '@providers/Wallet'
-
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
-import { CELESTE_URL } from '@/endpoints'
-import { dateFormat } from '@utils/date-utils'
-import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalTypes } from '@/types'
 
 import celesteStarIconSvg from '@assets/icon-celeste-star.svg'
 import coinsIconSvg from '@assets/icon-coins.svg'
 import warningIconSvg from '@assets/icon-warning.svg'
+
+import { useWallet } from '@providers/Wallet'
+
+import { dateFormat } from '@utils/date-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+
+import { CELESTE_URL } from '@/endpoints'
+import { ProposalTypes } from '@/types'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 

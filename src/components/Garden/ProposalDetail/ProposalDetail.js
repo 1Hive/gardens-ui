@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import {
   BackButton,
   Box,
@@ -10,55 +11,58 @@ import {
   IconDown,
   IconUp,
   Link,
-  shortenAddress,
   Split,
   Tag,
-  textStyle,
   TransactionBadge,
+  shortenAddress,
+  textStyle,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 
-// Components
-import ActionCollateral from '../ActionCollateral'
-import Balance from '../Balance'
-import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
-import { ConvictionBar } from '../ConvictionVisuals'
-import DisputableActionInfo from '../DisputableActionInfo'
-import DisputableInfo from '../DisputableInfo'
-import DisputeFees from '../DisputeFees'
-import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
-import LoadingRing from '@/components/LoadingRing'
 import MultiModal from '@components/MultiModal/MultiModal'
-import ProposalActions from './ProposalActions'
-import ProposalComments from './ProposalComments'
-import ProposalHeader from './ProposalHeader'
-import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
-import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
-import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
-import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
-import SupportersDistribution from '../SupportersDistribution'
-import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
 
 // Hooks
 import useChallenge from '@hooks/useChallenge'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
 
 // utils
 import BigNumber from '@lib/bigNumber'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useWallet } from '@providers/Wallet'
+
 import { formatTokenAmount } from '@utils/token-utils'
 import {
   addressesEqualNoSum as addressesEqual,
   soliditySha3,
 } from '@utils/web3-utils'
+
+import LoadingRing from '@/components/LoadingRing'
+import { ZERO_ADDR } from '@/constants'
 import { getNetwork } from '@/networks'
 import { ProposalTypes } from '@/types'
-import { ZERO_ADDR } from '@/constants'
 
+// Components
+import ActionCollateral from '../ActionCollateral'
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
+import Balance from '../Balance'
+import { ConvictionBar } from '../ConvictionVisuals'
+import DisputableActionInfo from '../DisputableActionInfo'
+import DisputableInfo from '../DisputableInfo'
+import DisputeFees from '../DisputeFees'
+import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
+import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
+import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
+import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
+import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
+import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposalScreens'
+import SupportersDistribution from '../SupportersDistribution'
+import ProposalActions from './ProposalActions'
+import ProposalComments from './ProposalComments'
+import ProposalHeader from './ProposalHeader'
+import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -105,7 +109,7 @@ function ProposalDetail({
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])

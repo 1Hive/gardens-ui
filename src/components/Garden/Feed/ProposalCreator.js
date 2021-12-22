@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import {
   EthIdenticon,
   GU,
@@ -6,13 +7,16 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import ProposalIcon from '@components/ProposalIcon'
 
-import { convertToString } from '@/types'
 import { getProfileForAccount } from '@lib/profile'
+
 import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
+
 import { ZERO_ADDR } from '@/constants'
+import { convertToString } from '@/types'
 
 const addressCache = new Map()
 

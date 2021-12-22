@@ -1,10 +1,14 @@
 import React, { useMemo, useRef } from 'react'
+
 import PropTypes from 'prop-types'
-import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ChainUnsupportedError } from 'use-wallet'
-import { SUPPORTED_CHAINS } from '@/networks'
+
+import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { getNetworkName } from '@utils/web3-utils'
+
 import connectionError from '@/assets/connection-error.svg'
+import { SUPPORTED_CHAINS } from '@/networks'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()

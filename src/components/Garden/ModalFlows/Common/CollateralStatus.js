@@ -1,14 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { useTheme } from '@1hive/1hive-ui'
 
-import InfoBox from './InfoBox'
+import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
+import InfoBox from './InfoBox'
 
 function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const theme = useTheme()

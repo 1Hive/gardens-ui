@@ -1,18 +1,23 @@
 import { utils } from 'ethers'
-import { bigNum } from '@lib/bigNumber'
-import { getNetwork } from '@/networks'
-import { ZERO_ADDR } from '@/constants'
+
+import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+
+import tokenAbi from '@abis/erc20.json'
+import templateAbi from '@abis/gardensTemplate.json'
+
 import { getContract } from '@hooks/useContract'
+
+import { bigNum } from '@lib/bigNumber'
+
 import { YEARS_IN_SECONDS } from '@utils/kit-utils'
 import {
   encodeFunctionData,
   getDefaultProvider,
   toHex,
 } from '@utils/web3-utils'
-import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
 
-import tokenAbi from '@abis/erc20.json'
-import templateAbi from '@abis/gardensTemplate.json'
+import { ZERO_ADDR } from '@/constants'
+import { getNetwork } from '@/networks'
 
 const C_V_ONE_HUNDRED_PERCENT = 1e7
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
@@ -213,7 +218,7 @@ export function createGardenTxTwo(
     decay,
     maxRatio,
     weight,
-  ].map(value => Math.floor(value * C_V_ONE_HUNDRED_PERCENT).toString(10))
+  ].map((value) => Math.floor(value * C_V_ONE_HUNDRED_PERCENT).toString(10))
 
   const adjustedMinThresholdStakePct = (
     conviction.minThresholdStakePct * ONE_HUNDRED_PCT

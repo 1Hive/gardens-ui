@@ -1,13 +1,14 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 
-import NavigationItem from '../Items/NavigationItem'
-import BaseInnerSidebar from './BaseInnerSidebar'
-
-import { buildGardenPath } from '@utils/routing-utils'
 import covenantIcon from '@assets/covenantIcon.svg'
 import createProposalIcon from '@assets/createProposal.svg'
 import feedIcon from '@assets/feedIcon.svg'
+
+import { buildGardenPath } from '@utils/routing-utils'
+
+import NavigationItem from '../Items/NavigationItem'
+import BaseInnerSidebar from './BaseInnerSidebar'
 
 const InnerGardenNavigationSidebar = ({
   width,

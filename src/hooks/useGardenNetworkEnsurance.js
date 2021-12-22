@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 

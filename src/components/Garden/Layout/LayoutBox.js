@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
-import { Box, useLayout, useTheme, GU } from '@1hive/1hive-ui'
+
+import { Box, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 
 function LayoutBox({ children, heading, primary, mode, ...props }) {
   const { layoutName } = useLayout()

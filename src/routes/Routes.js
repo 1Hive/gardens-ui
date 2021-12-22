@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+
 import Garden from '@components/Garden'
 import Home from '@components/Home'
 import Profile from '@components/Profile/Profile'

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
+
 import {
   Box,
   Button,
@@ -10,9 +11,12 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import IdentityBadge from '@components/IdentityBadge'
+
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
+
 import { useWallet } from '@providers/Wallet'
 
 function Delegation({ onRemoveDelegate, onSetDelegate }) {

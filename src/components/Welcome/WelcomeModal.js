@@ -1,5 +1,7 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Button, GU, Modal, Viewport } from '@1hive/1hive-ui'
 
 const EMBED_ID = '1ZvXNsLEPAg'

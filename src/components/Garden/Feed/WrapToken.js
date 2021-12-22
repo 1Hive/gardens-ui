@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+
 import {
   Box,
   Button,
@@ -10,22 +11,23 @@ import {
 } from '@1hive/1hive-ui'
 
 import Carousel from '@components/Carousel/Carousel'
+
+import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
+import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import wrappedIcon from '@assets/wrappedIcon.svg'
+
 import { useGardenState } from '@providers/GardenState'
-import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-import wrappedIcon from '@assets/wrappedIcon.svg'
-import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
+import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 const modeAttributes = {
   wrap: { icon: unwrappedIcon, button: { mode: 'strong', label: 'Wrap' } },
   unwrap: {
     icon: wrappedIcon,
     button: { mode: 'strong', label: 'Unwrap' },
-    hint:
-      'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
   },
   claim: {
     button: { mode: 'normal', label: 'Claim' },
@@ -75,7 +77,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   ]
 
   const handleItemSelected = useCallback(
-    index => {
+    (index) => {
       // eslint-disable-next-line no-empty
       if (index === carouselItems.length - 1) {
       }

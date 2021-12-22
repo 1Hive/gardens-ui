@@ -1,12 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
+
 import { Button, GU, Info } from '@1hive/1hive-ui'
+
+import AccountNotConnected from '@components/AccountNotConnected'
+
+import BigNumber from '@lib/bigNumber'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import AccountNotConnected from '@components/AccountNotConnected'
 import { addressesEqual } from '@utils/web3-utils'
-import BigNumber from '@lib/bigNumber'
 
 function ProposalActions({
   proposal,

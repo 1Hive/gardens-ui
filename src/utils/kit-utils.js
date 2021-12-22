@@ -23,7 +23,7 @@ export const toOxford = (arr, conjunction = 'and', ifempty = '') => {
   return arr.join(', ')
 }
 
-export const mimeToExtension = mime => {
+export const mimeToExtension = (mime) => {
   switch (mime) {
     case 'text/markdown':
       return '.md'

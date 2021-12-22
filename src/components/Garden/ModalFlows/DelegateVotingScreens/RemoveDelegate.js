@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
 import { ZERO_ADDR } from '@/constants'
 
 const RemoveDelegate = React.memo(function RemoveDelegate({ getTransactions }) {

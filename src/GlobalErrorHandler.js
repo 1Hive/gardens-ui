@@ -1,5 +1,7 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import DAONotFoundError from '@components/Errors/DAONotFoundError'
 import GenericError from '@components/Errors/GenericError'
 import GlobalErrorScreen from '@components/Errors/GlobalErrorScreen'

@@ -1,10 +1,12 @@
 import React from 'react'
 import { animated, useTransition } from 'react-spring'
+
 import { GU, RootPortal, useTheme } from '@1hive/1hive-ui'
 
-import InnerGardensSidebar from './InnerSidebars/InnerGardensSidebar'
-import InnerGardenNavigationSidebar from './InnerSidebars/InnerGardenNavigationSidebar'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
+import InnerGardenNavigationSidebar from './InnerSidebars/InnerGardenNavigationSidebar'
+import InnerGardensSidebar from './InnerSidebars/InnerGardensSidebar'
 
 const GARDENS_SIDEBAR_WIDTH = 9 * GU
 const NAVIGATION_SIDEBAR_WIDTH = screen.width - 18 * GU

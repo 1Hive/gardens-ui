@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import BigNumber from '@lib/bigNumber'
+
 import {
   Button,
   ButtonBase,
@@ -10,8 +10,12 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
+import BigNumber from '@lib/bigNumber'
+
+import { useGardenState } from '@providers/GardenState'
 
 import { toDecimals } from '@utils/math-utils'
 import { formatTokenAmount } from '@utils/token-utils'
@@ -38,8 +42,8 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
   }, [token, wrappableToken, wrapMode])
 
   const handleEditMode = useCallback(
-    editMode => {
-      setAmount(amount => {
+    (editMode) => {
+      setAmount((amount) => {
         const newValue = amount.valueBN.gte(0)
           ? formatTokenAmount(
               amount.valueBN,
@@ -65,7 +69,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
 
   // Amount change handler
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
@@ -97,7 +101,7 @@ const WrapUnwrap = React.memo(function WrapUnwrap({ mode, getTransactions }) {
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

@@ -1,10 +1,11 @@
 import {
+  getNetworkName,
   getNetworkType,
   isLocalOrUnknownNetwork,
-  getNetworkName,
 } from '@utils/web3-utils'
-import { getPreferredChain } from './local-settings'
+
 import env from './environment'
+import { getPreferredChain } from './local-settings'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
@@ -117,7 +118,9 @@ export function getNetwork(chainId = getPreferredChain()) {
 
 export function getNetworkChainIdByType(networkType) {
   const networks = getAvailableNetworks()
-  return networks.find(network => network.type === networkType)?.chainId || null
+  return (
+    networks.find((network) => network.type === networkType)?.chainId || null
+  )
 }
 
 export function getEthersNetwork(chainId) {
@@ -129,7 +132,7 @@ export function getEthersNetwork(chainId) {
   }
 }
 
-export const addEthereumChain = chainId => {
+export const addEthereumChain = (chainId) => {
   const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
@@ -140,7 +143,7 @@ export const addEthereumChain = chainId => {
   })
 }
 
-export const switchNetwork = async chainId => {
+export const switchNetwork = async (chainId) => {
   const chainIdHex = `0x${chainId.toString(16)}`
   try {
     await window?.ethereum?.request({
