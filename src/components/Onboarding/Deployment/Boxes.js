@@ -1,5 +1,8 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
+import { animated } from 'react-spring/renderprops'
+
 import PropTypes from 'prop-types'
+
 import {
   Button,
   GU,
@@ -8,13 +11,14 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { animated } from 'react-spring/renderprops'
 
-import { TransactionStatusType } from '@/prop-types'
 import { throwConfetti } from '@utils/confetti-utils'
 
-import flowerSvg from './assets/flower.svg'
+import { TransactionStatusType } from '@/prop-types'
+
 import gardensLogoMark from '@assets/gardensLogoMark.svg'
+
+import flowerSvg from './assets/flower.svg'
 import linesSvg from './assets/lines.svg'
 
 const AnimDiv = animated.div
