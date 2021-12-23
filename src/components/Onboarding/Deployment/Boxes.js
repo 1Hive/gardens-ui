@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -9,7 +9,6 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 import { animated } from 'react-spring/renderprops'
-import PageVisibility from 'react-page-visibility'
 
 import { TransactionStatusType } from '@/prop-types'
 import { throwConfetti } from '@utils/confetti-utils'
@@ -236,11 +235,10 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
   const fullWidth = below('large')
   const small = below('medium')
 
-  useEffect(() => {
-    if (isFinalized) {
-      throwConfetti()
-    }
-  }, [isFinalized])
+  const onGetStartedMiddleware = useCallback(() => {
+    throwConfetti()
+    if (onGetStarted) onGetStarted()
+  }, [onGetStarted, throwConfetti])
 
   return (
     <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
@@ -268,7 +266,6 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
         >
           {isFinalized ? (
             <div>
-              <PageVisibility onChange={throwConfetti} />
               <p>
                 <strong>All done!</strong>
               </p>
@@ -276,7 +273,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
               <Button
                 label="Get started"
                 mode="strong"
-                onClick={onGetStarted}
+                onClick={onGetStartedMiddleware}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}
