@@ -42,8 +42,8 @@ export function useCurrencies() {
         const rates = Object.keys(result.rates)
           // To ensure the dropdown is not too big, we only
           // map currencies that we have mapped a symbol for
-          .filter(name => !!CurrenciesMap[name])
-          .map(name => ({
+          .filter((name) => !!CurrenciesMap[name])
+          .map((name) => ({
             name,
             symbol: CurrenciesMap[name],
             rate: result.rates[name],

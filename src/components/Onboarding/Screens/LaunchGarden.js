@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
 import Navigation from '../Navigation'
 
 function LaunchGarden({ title }) {

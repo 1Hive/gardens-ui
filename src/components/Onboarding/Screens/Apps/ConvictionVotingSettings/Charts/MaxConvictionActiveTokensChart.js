@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react'
+
 import { ResponsiveLine } from '@nivo/line'
+
 import {
   ChartBase,
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
+
 import { useCharts } from '@providers/Charts'
+
 import {
   fromPercentage,
   generateElements,
@@ -37,7 +41,7 @@ const computeChartData = (
 ) => {
   const activeTokensData = generateElements(maxPercentage, increment)
 
-  return activeTokensData.map(activeTokensPct => ({
+  return activeTokensData.map((activeTokensPct) => ({
     x: activeTokensPct,
     y: computeMaxConviction(
       activeTokensPct,

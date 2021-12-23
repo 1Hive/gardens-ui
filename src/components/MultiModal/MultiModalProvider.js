@@ -1,16 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useMemo, useCallback } from 'react'
-import { useWallet } from '../../providers/Wallet'
+import React, { useCallback, useContext, useEffect, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
+
 import { noop } from '@1hive/1hive-ui'
+
 import { useSteps } from '../../hooks/useSteps'
+import { useWallet } from '../../providers/Wallet'
 
 const MultiModalContext = React.createContext({})
 
 function MultiModalProvider({ screens, onClose, children }) {
   const { account } = useWallet()
   const { direction, next, prev, setStep, step } = useSteps(screens.length)
-  const getScreen = useCallback(step => screens[step], [screens])
+  const getScreen = useCallback((step) => screens[step], [screens])
   const currentScreen = useMemo(() => getScreen(step), [getScreen, step])
 
   const handleClose = useCallback(() => onClose(), [onClose])

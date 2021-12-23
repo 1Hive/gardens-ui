@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GU, RootPortal } from '@1hive/1hive-ui'
+
 import InnerGardensSidebar from './InnerSidebars/InnerGardensSidebar'
 
 const SIDEBAR_WIDTH = `${9 * GU}px`

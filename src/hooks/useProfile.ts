@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+
 import { isAddress } from '@1hive/1hive-ui'
+
 import { getProfileForAccount } from '@lib/profile'
 
 const CACHE = new Map()

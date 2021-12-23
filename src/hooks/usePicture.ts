@@ -12,7 +12,7 @@ const DEFAULT_STATE: {
 
 export default function usePicture(refresh: boolean) {
   const [picture, setPicture] = useState(DEFAULT_STATE)
-  const handleProfilePicChange = useCallback(event => {
+  const handleProfilePicChange = useCallback((event) => {
     const newPhotoFile = event.target.files[0]
 
     if (newPhotoFile.size >= 2500000) {

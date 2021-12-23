@@ -1,13 +1,19 @@
 import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
-import { TransactionBadge, textStyle, useTheme, GU } from '@1hive/1hive-ui'
-import Divider from './Divider'
+
+import PropTypes from 'prop-types'
+
+import { GU, TransactionBadge, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { useWallet } from '@providers/Wallet'
+
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
+
 import { getNetwork } from '@/networks'
 import { springs } from '@/style/springs'
+
 import { IndividualStepTypes } from '../stepper-statuses'
+import Divider from './Divider'
 import StatusVisual from './StatusVisual'
 
 const AnimatedSpan = animated.span
@@ -124,9 +130,9 @@ function Step({
             }}
             native
           >
-            {item =>
+            {(item) =>
               item &&
-              (transitionProps => (
+              ((transitionProps) => (
                 <AnimatedSpan
                   css={`
                     display: flex;
@@ -172,7 +178,7 @@ function Step({
             }}
             native
           >
-            {currentHash => transitionProps =>
+            {(currentHash) => (transitionProps) =>
               currentHash ? (
                 <AnimatedSpan
                   style={transitionProps}

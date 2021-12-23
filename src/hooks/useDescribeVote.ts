@@ -1,8 +1,12 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+import { useGardenState } from '@providers/GardenState'
+
+import { useMounted } from '@hooks/useMounted'
+
 import { getAppPresentationByAddress } from '@utils/app-utils'
 import { addressesEqual } from '@utils/web3-utils'
-import { useMounted } from '@hooks/useMounted'
-import { useGardenState } from '@providers/GardenState'
+
 import { AppType } from './constants'
 
 type Description = {

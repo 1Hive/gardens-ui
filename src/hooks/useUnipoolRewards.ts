@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from '@hooks/useContract'
-import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
+
+import { useContractReadOnly } from '@hooks/useContract'
+
 import BigNumber from '@lib/bigNumber'
+
 import unipoolAbi from '@abis/Unipool.json'
+
+import { useMounted } from './useMounted'
 
 export default function useUnipoolRewards() {
   const [earned, setEarned] = useState(new BigNumber(0))

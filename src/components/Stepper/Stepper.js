@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { PropTypes } from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
+
+import { PropTypes } from 'prop-types'
+
 import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
-import Step from './Step/Step'
 
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useMounted } from '@hooks/useMounted'
-import { useMultiModal } from '../MultiModal/MultiModalProvider'
-import useStepperLayout from './useStepperLayout'
 
-import { IndividualStepTypes } from './stepper-statuses'
+import { useMultiModal } from '../MultiModal/MultiModalProvider'
+import Step from './Step/Step'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
+import { IndividualStepTypes } from './stepper-statuses'
+import useStepperLayout from './useStepperLayout'
 
 const AnimatedDiv = animated.div
 
@@ -93,7 +95,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   }, [renderStep, steps, stepsCount, stepState])
 
   const updateStepStatus = useCallback(
-    status => {
+    (status) => {
       if (mounted()) {
         updateStep(['setStatus', stepperStage, status])
       }
@@ -102,7 +104,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   )
 
   const updateHash = useCallback(
-    hash => {
+    (hash) => {
       if (mounted()) {
         updateStep(['setHash', stepperStage, hash])
       }
@@ -134,7 +136,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           }
         }
       },
-      setHash: hash => updateHash(hash),
+      setHash: (hash) => updateHash(hash),
     })
   }, [
     mounted,
@@ -226,17 +228,20 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
                   }}
                   native
                 >
-                  {currentStage => animProps => (
-                    <AnimatedDiv
-                      style={{
-                        position:
-                          currentStage === stepperStage ? 'static' : 'absolute',
-                        ...animProps,
-                      }}
-                    >
-                      {renderStep(currentStage)}
-                    </AnimatedDiv>
-                  )}
+                  {(currentStage) => (animProps) =>
+                    (
+                      <AnimatedDiv
+                        style={{
+                          position:
+                            currentStage === stepperStage
+                              ? 'static'
+                              : 'absolute',
+                          ...animProps,
+                        }}
+                      >
+                        {renderStep(currentStage)}
+                      </AnimatedDiv>
+                    )}
                 </Transition>
               </div>
             </>

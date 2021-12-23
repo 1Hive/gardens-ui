@@ -1,12 +1,17 @@
 import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { Transition, animated } from 'react-spring/renderprops'
+
+import PropTypes from 'prop-types'
 import { css, keyframes } from 'styled-components'
-import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
-import Illustration from './Illustration'
-import { IndividualStepTypes } from '../stepper-statuses'
-import { springs } from '@/style/springs'
+
+import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
+
+import { springs } from '@/style/springs'
+
+import { IndividualStepTypes } from '../stepper-statuses'
+import Illustration from './Illustration'
 
 const STATUS_ICONS = {
   [IndividualStepTypes.STEP_ERROR]: IconCross,
@@ -108,9 +113,9 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
               }}
               native
             >
-              {currentStatusIcon =>
+              {(currentStatusIcon) =>
                 currentStatusIcon &&
-                (animProps => (
+                ((animProps) => (
                   <AnimatedDiv
                     css={`
                       display: flex;
@@ -144,22 +149,17 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${
-              status === IndividualStepTypes.STEP_WAITING
+            border: 2px solid
+              ${status === IndividualStepTypes.STEP_WAITING
                 ? 'transparent'
-                : color
-            };
-            ${
-              status === IndividualStepTypes.STEP_PROMPTING
-                ? pulseAnimation
-                : ''
-            }
+                : color};
+            ${status === IndividualStepTypes.STEP_PROMPTING
+              ? pulseAnimation
+              : ''}
             ${status === IndividualStepTypes.STEP_WORKING ? spinAnimation : ''}
-            ${
-              status === IndividualStepTypes.STEP_PROMPTING
-                ? `background-color: ${theme.contentSecondary};`
-                : ''
-            }
+            ${status === IndividualStepTypes.STEP_PROMPTING
+              ? `background-color: ${theme.contentSecondary};`
+              : ''}
           `}
         />
       </div>

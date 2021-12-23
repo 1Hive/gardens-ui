@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
+
 import { CONTEXT_ID } from '../constants'
 import {
   BRIGHTID_1HIVE_INFO_ENDPOINT,
   BRIGHTID_VERIFICATION_ENDPOINT,
 } from '../endpoints'
 import {
+  CAN_NOT_BE_VERIFIED,
   ERROR_CODE,
   NOT_FOUND_CODE,
-  CAN_NOT_BE_VERIFIED,
   NOT_SPONSORED_CODE,
 } from '../services/brightIdResponseCodes'
 
@@ -102,7 +103,7 @@ export function useBrightIdVerification(account: string) {
     let retryTimer: number
 
     if (!account) {
-      return setVerificationInfo(info => ({ ...info, fetching: false }))
+      return setVerificationInfo((info) => ({ ...info, fetching: false }))
     }
 
     const fetchVerificationInfo = async () => {

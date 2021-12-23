@@ -1,12 +1,15 @@
 import React from 'react'
-import { ProgressBar, GU } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import TimeTag from './TimeTag'
+
+import { GU, ProgressBar } from '@1hive/1hive-ui'
 
 import useNow from '@hooks/useNow'
-import { ActivityStatus } from './activity-statuses'
-import { norm } from '@utils/math-utils'
+
 import { MINUTE } from '@utils/date-utils'
+import { norm } from '@utils/math-utils'
+
+import TimeTag from './TimeTag'
+import { ActivityStatus } from './activity-statuses'
 
 const DELAY_BEFORE_HIDE = 1000
 const TX_DURATION_AVERAGE = 3 * MINUTE
@@ -54,9 +57,9 @@ function TransactionProgress({ createdAt, status }: TransactionProgressProps) {
       enter={{ height: 28, opacity: 1 }}
       leave={{ height: 0, opacity: 0 }}
     >
-      {show =>
+      {(show) =>
         show &&
-        (transition => (
+        ((transition) => (
           <animated.div
             style={{
               display: 'flex',

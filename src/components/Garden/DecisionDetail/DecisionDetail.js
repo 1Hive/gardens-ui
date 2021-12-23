@@ -1,47 +1,51 @@
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import styled from 'styled-components'
+
 import {
   BackButton,
   Box,
   GU,
   LoadingRing,
   Split,
-  textStyle,
   TransactionBadge,
+  textStyle,
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
 
+import IdentityBadge from '@components/IdentityBadge'
+import MultiModal from '@components/MultiModal/MultiModal'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
+import { useDescribeVote } from '@hooks/useDescribeVote'
+
+import { round, safeDiv } from '@utils/math-utils'
+import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
+import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
+
+import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
+import { getNetwork } from '@/networks'
+
 import ActionCollateral from '../ActionCollateral'
-import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
 import Description from '../Description'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
-import IdentityBadge from '@components/IdentityBadge'
-import MultiModal from '@components/MultiModal/MultiModal'
-import ProposalHeader from '../ProposalDetail/ProposalHeader'
+import ChallengeProposalScreens from '../ModalFlows/ChallengeProposalScreens/ChallengeProposalScreens'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
+import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens'
+import ProposalHeader from '../ProposalDetail/ProposalHeader'
 import SummaryBar from './SummaryBar'
 import SummaryRow from './SummaryRow'
 import VoteActions from './VoteActions'
 import VoteCasted from './VoteCasted'
-import VoteOnDecisionScreens from '../ModalFlows/VoteOnDecisionScreens/VoteOnDecisionScreens'
 import VoteStatus, { getStatusAttributes } from './VoteStatus'
-
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useDescribeVote } from '@hooks/useDescribeVote'
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
-
-import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
-import { round, safeDiv } from '@utils/math-utils'
-import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
-import { getNetwork } from '@/networks'
-
-import { PCT_BASE, VOTE_NAY, VOTE_YEA } from '@/constants'
 
 function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false)
@@ -87,7 +91,7 @@ function DecisionDetail({ proposal, actions }) {
     history.goBack()
   }, [history])
 
-  const handleVote = useCallback(data => {
+  const handleVote = useCallback((data) => {
     setModalVisible(true)
     setModalData({ mode: 'vote', ...data })
   }, [])
@@ -100,7 +104,7 @@ function DecisionDetail({ proposal, actions }) {
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalData({ mode })
   }, [])

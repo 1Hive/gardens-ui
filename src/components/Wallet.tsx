@@ -1,9 +1,15 @@
 import React from 'react'
+
 import styled from 'styled-components'
-import { GU, Box, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
-import useAccountTokens from '@hooks/useAccountTokens'
+
+import { Box, GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import { useGardenState } from '@providers/GardenState'
+
+import useAccountTokens from '@hooks/useAccountTokens'
+
 import BigNumber from '@lib/bigNumber'
+
 import { formatTokenAmount } from '@utils/token-utils'
 
 function Wallet({ account }: { account: string }) {

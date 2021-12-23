@@ -1,6 +1,8 @@
-import React, { useRef, useImperativeHandle } from 'react'
+import React, { useImperativeHandle, useRef } from 'react'
+
 import PropTypes from 'prop-types'
-import { Button, IconArrowLeft, GU, useTheme } from '@1hive/1hive-ui'
+
+import { Button, GU, IconArrowLeft, useTheme } from '@1hive/1hive-ui'
 
 const Navigation = React.forwardRef(function Navigation(
   { backEnabled, backLabel, nextEnabled, nextLabel, onBack, onNext },
@@ -32,13 +34,7 @@ const Navigation = React.forwardRef(function Navigation(
     >
       <Button
         disabled={!backEnabled}
-        icon={
-          <IconArrowLeft
-            css={`
-              color: ${theme.accent};
-            `}
-          />
-        }
+        icon={<IconArrowLeft color={theme.accent} />}
         label={backLabel}
         onClick={onBack}
       />

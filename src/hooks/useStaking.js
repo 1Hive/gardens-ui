@@ -1,20 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import { noop } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
-import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
-import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import BigNumber from '@lib/bigNumber'
-import { encodeFunctionData } from '@utils/web3-utils'
-import radspec from '../radspec'
 
-import stakingFactoryAbi from '@abis/StakingFactory.json'
+import { encodeFunctionData } from '@utils/web3-utils'
+
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
+
 import stakingAbi from '@abis/Staking.json'
+import stakingFactoryAbi from '@abis/StakingFactory.json'
 import minimeTokenAbi from '@abis/minimeToken.json'
+
+import radspec from '../radspec'
+import { useContractReadOnly } from './useContract'
+import { useMounted } from './useMounted'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
@@ -27,10 +31,8 @@ export function useStaking() {
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [
-    loadingStakingDataFromContract,
-    setLoadingStakingDataFromContract,
-  ] = useState(true)
+  const [loadingStakingDataFromContract, setLoadingStakingDataFromContract] =
+    useState(true)
   const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
 
   const stakingMovementsSubscription = useRef(null)
@@ -63,7 +65,7 @@ export function useStaking() {
         return
       }
       if (mounted()) {
-        setStakeManagement(stakeManagement => ({
+        setStakeManagement((stakeManagement) => ({
           ...stakeManagement,
           stakingMovements: data,
         }))
@@ -94,11 +96,11 @@ export function useStaking() {
           const stakingFactory = await connectedAgreementApp.stakingFactory()
 
           const allRequirements = await Promise.all(
-            disputableApps.map(app => app.collateralRequirement())
+            disputableApps.map((app) => app.collateralRequirement())
           )
 
           const allTokens = await Promise.all(
-            allRequirements.map(collateral => collateral.token())
+            allRequirements.map((collateral) => collateral.token())
           )
 
           const staking = await connectedAgreementApp.staking(
@@ -106,17 +108,18 @@ export function useStaking() {
             account
           )
 
-          stakingMovementsSubscription.current = await connectedAgreementApp.onStakingMovements(
-            allTokens[1].id,
-            account,
-            {},
-            handleStakingMovementsData
-          )
+          stakingMovementsSubscription.current =
+            await connectedAgreementApp.onStakingMovements(
+              allTokens[1].id,
+              account,
+              {},
+              handleStakingMovementsData
+            )
 
           const accountBalance = await tokenContract?.balanceOf(account)
 
           if (mounted()) {
-            setStakeManagement(stakeManagement => ({
+            setStakeManagement((stakeManagement) => ({
               ...stakeManagement,
               token: allTokens[1],
               accountBalance,
@@ -165,7 +168,7 @@ export function useStaking() {
         stakeManagement.token.id
       )
       if (mounted()) {
-        setStakeManagement(stakeManagement => {
+        setStakeManagement((stakeManagement) => {
           return {
             ...stakeManagement,
             stakingInstance: stakingInstanceAddress,
@@ -200,7 +203,7 @@ export function useStaking() {
           !stakedBN.eq(stakeManagement.staking.total) ||
           reFetchTotalBalance
         ) {
-          setStakeManagement(stakeManagement => {
+          setStakeManagement((stakeManagement) => {
             return {
               ...stakeManagement,
               staking: {
@@ -215,7 +218,7 @@ export function useStaking() {
           setReFetchTotalBalance(false)
         }
         if (!allowanceBN.eq(stakeManagement.staking.allowance)) {
-          setStakeManagement(stakeManagement => {
+          setStakeManagement((stakeManagement) => {
             return {
               ...stakeManagement,
               staking: {
@@ -368,7 +371,7 @@ export function useStaking() {
   }, [stakingContract, account])
 
   const allowManager = useCallback(
-    async onDone => {
+    async (onDone) => {
       if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
         return
       }

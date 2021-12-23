@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react'
-import { ChartBase } from '@components/Onboarding/kit/ChartComponents'
+
 import { ResponsiveLine } from '@nivo/line'
+
+import { ChartBase } from '@components/Onboarding/kit/ChartComponents'
+
 import { useCharts } from '@/providers/Charts'
 import { generateElements } from '@/utils/conviction-modelling-helpers'
 
@@ -75,7 +78,7 @@ const IssuanceChart = ({
   return (
     <div>
       <ChartBase
-        title="Ratio of tokens in the common pool during the first year"
+        title="Ratio of tokens in the common pool (compared to the total supply)  during the first year"
         height={height}
         width={width}
       >

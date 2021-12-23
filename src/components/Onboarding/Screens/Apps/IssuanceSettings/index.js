@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
+
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
-import IssuanceChart from './IssuanceChart'
-import { Header, PercentageField } from '@components/Onboarding/kit'
+
 import Navigation from '@components/Onboarding/Navigation'
+import { Header, PercentageField } from '@components/Onboarding/kit'
+
 import { DEFAULT_CONFIG, useOnboardingState } from '@providers/Onboarding'
+
+import IssuanceChart from './IssuanceChart'
 
 const CHART_HEIGHT = '350px'
 const CHART_WIDTH = '100%'
@@ -33,14 +37,8 @@ function reduceFields(fields, [field, value]) {
 }
 
 function IssuanceSettings() {
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
 
   const [formError, setFormError] = useState(null)
   const [
@@ -51,21 +49,21 @@ function IssuanceSettings() {
   const { issuance: DEFAULT_ISSUANCE_CONFIG } = DEFAULT_CONFIG
 
   const handleInitialRatioChange = useCallback(
-    value => {
+    (value) => {
       updateField(['initialRatio', value])
     },
     [updateField]
   )
 
   const handleTargetRatioChange = useCallback(
-    value => {
+    (value) => {
       updateField(['targetRatio', value])
     },
     [updateField]
   )
 
   const handleMaxAdjustmentRatioPerYear = useCallback(
-    value => {
+    (value) => {
       updateField(['maxAdjustmentRatioPerYear', value])
     },
     [updateField]
@@ -80,7 +78,7 @@ function IssuanceSettings() {
     ])
   }, [updateField])
 
-  const handleNext = event => {
+  const handleNext = (event) => {
     event.preventDefault()
 
     const error = validationError(targetRatio, maxAdjustmentRatioPerYear)
@@ -162,7 +160,7 @@ function IssuanceSettings() {
         <Button
           size="mini"
           onClick={handleReset}
-          label="Reset Defaults"
+          label="Restore Defaults"
           css={`
             align-self: flex-end;
           `}
@@ -187,8 +185,8 @@ function IssuanceSettings() {
           `}
         >
           The initial ratio refers to the ratio of tokens to be minted and sent
-          to the Common Pool. These will then be available to be distributed
-          through conviction voting.
+          to the Common Pool. These tokens will then be available to be
+          distributed through conviction voting.
         </Info>
       </div>
       {formError && (

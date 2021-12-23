@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from './useContract'
-import { useMounted } from './useMounted'
 
 import BigNumber from '@lib/bigNumber'
 
 import priceOracleAbi from '@abis/priceOracle.json'
+
+import { useContractReadOnly } from './useContract'
+import { useMounted } from './useMounted'
 
 export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const mounted = useMounted()
@@ -13,10 +15,8 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const [loading, setLoading] = useState(true)
   const [canUpdate, setCanUpdate] = useState(false)
 
-  const {
-    chainId,
-    incentivisedPriceOracle: priceOracleAddress,
-  } = useConnectedGarden()
+  const { chainId, incentivisedPriceOracle: priceOracleAddress } =
+    useConnectedGarden()
 
   const priceOracleContract = useContractReadOnly(
     priceOracleAddress,

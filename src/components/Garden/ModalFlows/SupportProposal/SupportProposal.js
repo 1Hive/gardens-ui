@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+
 import {
   Button,
   ButtonBase,
@@ -8,14 +9,18 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
-import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
-import { useGardenState } from '@providers/GardenState'
-import { useWallet } from '@providers/Wallet'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import { toDecimals, round, pct } from '@utils/math-utils'
-import { formatTokenAmount } from '@utils/token-utils'
+import { useGardenState } from '@providers/GardenState'
+import { useWallet } from '@providers/Wallet'
+
+import useAccountTotalStaked from '@hooks/useAccountTotalStaked'
+
 import BigNumber from '@lib/bigNumber'
+
+import { pct, round, toDecimals } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
 const SupportProposal = React.memo(function SupportProposal({
   getTransactions,
@@ -35,8 +40,8 @@ const SupportProposal = React.memo(function SupportProposal({
   const nonStakedTokens = token.accountBalance.minus(totalStaked)
 
   const handleEditMode = useCallback(
-    editMode => {
-      setAmount(amount => {
+    (editMode) => {
+      setAmount((amount) => {
         const newValue = amount.valueBN.gte(0)
           ? formatTokenAmount(
               amount.valueBN,
@@ -62,7 +67,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Amount change handler
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const newAmount = event.target.value.replace(/,/g, '.').replace(/-/g, '')
 
       const newAmountBN = new BigNumber(
@@ -94,7 +99,7 @@ const SupportProposal = React.memo(function SupportProposal({
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

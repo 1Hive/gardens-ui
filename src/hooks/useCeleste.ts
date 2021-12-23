@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import gql from 'graphql-tag'
 import { Client } from 'urql'
+
 import { getNetwork } from '../networks'
 
 const RETRY_EVERY = 3000

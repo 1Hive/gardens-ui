@@ -1,29 +1,35 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+
+import styled from 'styled-components'
+
 import {
+  Link as AragonLink,
   ButtonBase,
   GU,
   IconWrite,
-  Link as AragonLink,
   textStyle,
   useLayout,
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import styled from 'styled-components'
-import Layout from '../Layout'
-import MultiModal from '../MultiModal/MultiModal'
-import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
+
 import { getDexTradeTokenUrl } from '@/endpoints'
 
 import createSvg from '@assets/create.svg'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
+// TODO: Update
 import gardenSvg from '@assets/gardensLogoMark.svg'
+import getHoneySvg from '@assets/getHoney.svg'
+
+import Layout from '../Layout'
+import MultiModal from '../MultiModal/MultiModal'
+import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 
 const defaultFooterData = {
   links: {
@@ -163,9 +169,8 @@ export function FixedFooter({ token }) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const { chainId } = useConnectedGarden()
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [createProposalModalVisible, setCreateProposalModalVisible] =
+    useState(false)
 
   const handleOnGoToCovenant = useCallback(() => {
     const path = buildGardenPath(history.location, 'covenant')
@@ -271,7 +276,7 @@ function FooterItem({
         border-radius: 0;
 
         ${!disabled &&
-          `&:active {
+        `&:active {
           background: ${theme.surfacePressed};
           }`}
       `}

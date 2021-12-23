@@ -1,9 +1,12 @@
 import React from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops'
+
 import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
-import Deployment from './Deployment/Deployment'
+
 import { ChartsProvider } from '@providers/Charts'
 import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
+
+import Deployment from './Deployment/Deployment'
 import Setup from './Setup'
 import { OnboardingStatusGarden } from './statuses'
 
@@ -48,7 +51,7 @@ function AnimatedSlider({ children, visible }) {
         leave={{ opacity: 0, transform: 'translateY(100%)' }}
         config={{ ...springs.smooth, precision: 0.001 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ opacity, transform }) => (
             <div>

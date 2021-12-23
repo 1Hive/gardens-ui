@@ -52,7 +52,7 @@ export default function useArrows({
 
 export function useEsc(callback: () => void) {
   const handlekeyDown = useCallback(
-    e => {
+    (e) => {
       if (e.keyCode === KEYCODES.esc) {
         callback()
       }

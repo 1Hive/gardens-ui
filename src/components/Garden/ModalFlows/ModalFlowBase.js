@@ -1,13 +1,17 @@
 import React, { useEffect, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
-import { useTheme, GU } from '@1hive/1hive-ui'
+
+import { GU, useTheme } from '@1hive/1hive-ui'
+
 import LoadingRing from '@components/LoadingRing'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import MultiModalScreens from '@components/MultiModal/MultiModalScreens'
 import Stepper from '@components/Stepper/Stepper'
+
 import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const indexNumber = {
   0: 'First',

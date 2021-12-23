@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import Lottie from 'react-lottie-player'
+
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useOnboardingState } from '@providers/Onboarding'
+
 import byotAnimation from '@assets/lotties/byotAnimation.json'
 import nativeAnimation from '@assets/lotties/nativeAnimation.json'
 
@@ -14,7 +16,7 @@ function GardenTypeSelector() {
   const [selectedType] = useState(config.garden.type)
 
   const handleNext = useCallback(
-    selectedType => {
+    (selectedType) => {
       onConfigChange('garden', { type: selectedType })
       onNext()
     },
@@ -50,7 +52,7 @@ function GardenTypeSelector() {
           title="Veneto Garden"
         />
         <Card
-          paragraph="Use an existing ERC-20 token to within your garden."
+          paragraph="Use an existing ERC-20 token within your garden."
           onSelect={handleSelectBYOT}
           selected={selectedType === BYOT_TYPE}
           animationData={byotAnimation}

@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 
 export enum StepActionType {
   SET = 'SET',
@@ -64,7 +64,7 @@ export function useSteps(steps: number) {
   }, [steps])
 
   const setStep = useCallback(
-    value => {
+    (value) => {
       dispatch({ type: StepActionType.SET, value, steps })
     },
     [steps]

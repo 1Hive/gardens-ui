@@ -1,28 +1,32 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { connectGarden, Garden } from '@1hive/connect-gardens'
 import connectAgreement from '@1hive/connect-agreement'
+import { Garden, connectGarden } from '@1hive/connect-gardens'
 import {
   createAppHook,
   useApps,
   useOrganization,
   usePermissions,
 } from '@1hive/connect-react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 
-import { useContractReadOnly } from './useContract'
-import { useConfigSubscription } from './useSubscriptions'
+import BigNumber from '@lib/bigNumber'
+
+import { getAppByName } from '@utils/data-utils'
+import { addressesEqual } from '@utils/web3-utils'
+
 // utils
 import env from '@/environment'
-import BigNumber from '@lib/bigNumber'
-import { addressesEqual } from '@utils/web3-utils'
-import { getAppByName } from '@utils/data-utils'
 import { getAgreementConnectorConfig, getNetwork } from '@/networks'
 
+import fundsManagerAbi from '@abis/FundsManager.json'
 // abis
 import minimeTokenAbi from '@abis/minimeToken.json'
-import fundsManagerAbi from '@abis/FundsManager.json'
+
 import { TokenType } from './constants'
+import { useContractReadOnly } from './useContract'
+import { useConfigSubscription } from './useSubscriptions'
 
 const INITIAL_TIMER = 2000
 

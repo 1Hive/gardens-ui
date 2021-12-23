@@ -1,10 +1,11 @@
 import {
+  getNetworkName,
   getNetworkType,
   isLocalOrUnknownNetwork,
-  getNetworkName,
 } from '@utils/web3-utils'
-import { getPreferredChain } from './local-settings'
+
 import env from './environment'
+import { getPreferredChain } from './local-settings'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
@@ -45,7 +46,10 @@ const networks = {
     hiveGarden: '0x8ccbeab14b5ac4a431fffc39f4bec4089020a155',
     arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
-    template: '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844',
+    template:
+      env('VERCEL_ENV') === 'production'
+        ? '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844'
+        : '0x82a127b5Be3E04cd06AA034c1616b4d098616E9D',
     explorer: 'blockscout',
 
     honeyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
@@ -56,7 +60,10 @@ const networks = {
       agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
-      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai',
+      gardens:
+        env('VERCEL_ENV') === 'production'
+          ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
+          : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
     },
 
     eip3085: {
@@ -116,7 +123,9 @@ export function getNetwork(chainId = getPreferredChain()) {
 
 export function getNetworkChainIdByType(networkType) {
   const networks = getAvailableNetworks()
-  return networks.find(network => network.type === networkType)?.chainId || null
+  return (
+    networks.find((network) => network.type === networkType)?.chainId || null
+  )
 }
 
 export function getEthersNetwork(chainId) {
@@ -128,7 +137,7 @@ export function getEthersNetwork(chainId) {
   }
 }
 
-export const addEthereumChain = chainId => {
+export const addEthereumChain = (chainId) => {
   const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
@@ -139,7 +148,7 @@ export const addEthereumChain = chainId => {
   })
 }
 
-export const switchNetwork = async chainId => {
+export const switchNetwork = async (chainId) => {
   const chainIdHex = `0x${chainId.toString(16)}`
   try {
     await window?.ethereum?.request({

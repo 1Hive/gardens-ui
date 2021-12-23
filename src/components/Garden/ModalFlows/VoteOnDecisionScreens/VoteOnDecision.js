@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 const VoteOnDecision = React.memo(function VoteOnDecision({ getTransactions }) {

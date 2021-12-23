@@ -1,4 +1,5 @@
 import { isLocalOrUnknownNetwork } from '@utils/web3-utils'
+
 import { CONTEXT_ID } from './constants'
 
 export const NODE_URL = 'http:%2f%2fnode.brightid.org'

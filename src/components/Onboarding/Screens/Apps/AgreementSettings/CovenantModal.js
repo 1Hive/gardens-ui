@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import {
   Button,
   GU,
@@ -16,7 +17,7 @@ const CovenantModal = ({ open, file, onClose }) => {
   const modalRef = useRef()
 
   const handleScrollChange = useCallback(
-    e => {
+    (e) => {
       /**
        * Can't get modal ref directly from modal because it doesn't
        * implement ref forwarding so we get it from the event target.
@@ -35,7 +36,7 @@ const CovenantModal = ({ open, file, onClose }) => {
   )
 
   const handleCloseModal = useCallback(
-    e => {
+    (e) => {
       /**
        * Hide modal only when clicking the close button to
        * avoid closing it when clicking the "back to top" button

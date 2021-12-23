@@ -1,15 +1,17 @@
 import React, { forwardRef } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   ButtonBase,
-  IconCalendar,
   GU,
+  IconCalendar,
   RADIUS,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
 
-import { SINGLE_DATE, INPUT_BORDER } from './consts'
+import { INPUT_BORDER, SINGLE_DATE } from './consts'
 
 const Labels = forwardRef(function Labels(
   { enabled, startText, hasSetDates, onClick, ...props },

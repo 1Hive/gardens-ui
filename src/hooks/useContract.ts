@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
-import { Contract as EthersContract, ContractInterface } from 'ethers'
+
+import { ContractInterface, Contract as EthersContract } from 'ethers'
+
 import { useWallet } from '@providers/Wallet'
+
 import { getDefaultProvider } from '@utils/web3-utils'
 
 // TODO: Ask Gabi to check if this works

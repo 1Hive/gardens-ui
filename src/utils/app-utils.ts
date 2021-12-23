@@ -1,8 +1,10 @@
-import { getIpfsUrlFromUri } from './ipfs-utils'
+import { AppType } from '@/hooks/constants'
+
 import iconAcl from '@assets/icon-acl.svg'
 import iconKernel from '@assets/icon-kernel.svg'
 import iconRegistry from '@assets/icon-registry.svg'
-import { AppType } from '@/hooks/constants'
+
+import { getIpfsUrlFromUri } from './ipfs-utils'
 
 export const SHORTENED_APPS_NAMES = new Map([
   ['agent', 'agent'],
@@ -51,9 +53,7 @@ export function getAppPresentationByAddress(
   return app !== undefined ? getAppPresentation(app) : null
 }
 
-export function getAppPresentation(
-  app: AppType
-): {
+export function getAppPresentation(app: AppType): {
   humanName: string
   iconSrc: string
   name?: string
@@ -78,5 +78,5 @@ export function getAppPresentation(
 
 export function getDisputableAppByName(apps: Array<AppType>, appName: string) {
   const regex = new RegExp(`^${appName}.*$`)
-  return apps?.find(app => app?.appName?.match(regex))
+  return apps?.find((app) => app?.appName?.match(regex))
 }

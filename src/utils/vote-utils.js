@@ -1,16 +1,17 @@
-import { addressesEqual } from './web3-utils'
+import { bigNum } from '@lib/bigNumber'
+
 import {
+  PROPOSAL_STATUS_ACTIVE_STRING,
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_CHALLENGED_STRING,
+  PROPOSAL_STATUS_DISPUTED_STRING,
+  PROPOSAL_STATUS_EXECUTED_STRING,
+  PROPOSAL_STATUS_SETTLED_STRING,
   VOTE_ABSENT,
   VOTE_NAY,
   VOTE_YEA,
-  PROPOSAL_STATUS_ACTIVE_STRING,
-  PROPOSAL_STATUS_EXECUTED_STRING,
-  PROPOSAL_STATUS_CANCELLED_STRING,
-  PROPOSAL_STATUS_SETTLED_STRING,
-  PROPOSAL_STATUS_CHALLENGED_STRING,
-  PROPOSAL_STATUS_DISPUTED_STRING,
 } from '../constants'
-import { bigNum } from '@lib/bigNumber'
+import { addressesEqual } from './web3-utils'
 
 const EMPTY_SCRIPTS = ['0x00000001', '0x00']
 
@@ -19,7 +20,7 @@ export function isVoteAction(vote) {
 }
 
 export function getAccountCastStake(vote, account) {
-  const userCast = vote.casts.find(cast =>
+  const userCast = vote.casts.find((cast) =>
     addressesEqual(cast.supporter.user.address, account)
   )
 
@@ -30,7 +31,7 @@ export function getAccountCastDelegatedStake(vote, account) {
   // Takes into account delegated cast stakes (casts done by account where account === caster !== supporter, supporter being caster´s principal)
   const totalDelegatedStake = vote.casts
     .filter(
-      cast =>
+      (cast) =>
         addressesEqual(cast.caster, account) &&
         !addressesEqual(cast.supporter.user.address, account)
     )
@@ -40,7 +41,7 @@ export function getAccountCastDelegatedStake(vote, account) {
 }
 
 export function getConnectedAccountCast(vote, account) {
-  const userCast = vote.casts.find(cast =>
+  const userCast = vote.casts.find((cast) =>
     addressesEqual(cast.supporter.user.address, account)
   )
 

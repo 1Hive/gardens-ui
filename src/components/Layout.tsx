@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { Layout, useViewport } from '@1hive/1hive-ui'
+
 import { BREAKPOINTS } from '@/style/breakpoints'
 
 type CustomLayoutProps = {

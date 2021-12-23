@@ -1,8 +1,12 @@
 import React from 'react'
+
 import styled from 'styled-components'
+
 import { GU } from '@1hive/1hive-ui'
-import { formatTokenAmount } from '@utils/token-utils'
+
 import BigNumber from '@lib/bigNumber'
+
+import { formatTokenAmount } from '@utils/token-utils'
 
 const splitAmount = (amount: BigNumber, decimals: number) => {
   const [integer, fractional] = formatTokenAmount(amount, decimals).split('.')

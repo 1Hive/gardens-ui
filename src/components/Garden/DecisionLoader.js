@@ -1,7 +1,8 @@
 import React from 'react'
-import DecisionDetail from './DecisionDetail/DecisionDetail'
-import { GardenLoader } from '../Loader'
+
 import useProposalLogic from '../../logic/proposal-logic'
+import { GardenLoader } from '../Loader'
+import DecisionDetail from './DecisionDetail/DecisionDetail'
 
 function DecisionLoader({ match }) {
   const {

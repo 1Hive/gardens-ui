@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   Box,
   Field,
@@ -8,12 +9,14 @@ import {
   LoadingRing,
   useLayout,
 } from '@1hive/1hive-ui'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@/providers/GardenState'
-import { useGardens } from '@/providers/Gardens'
-import { getNetwork } from '@/networks'
 
 import { KNOWN_SYSTEM_APPS, SHORTENED_APPS_NAMES } from '@utils/app-utils'
+
+import { getNetwork } from '@/networks'
+import { useGardenState } from '@/providers/GardenState'
+import { useGardens } from '@/providers/Gardens'
 
 function AppsAddresses() {
   const { address, chainId } = useConnectedGarden()

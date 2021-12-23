@@ -1,4 +1,5 @@
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { getGardenTokenIcon } from '../utils/token-utils'
 import { TokenType } from './constants'
 

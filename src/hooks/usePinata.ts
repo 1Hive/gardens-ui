@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+
 import { uploadToPinata } from '@/services/pinata'
+
 import { useMounted } from './useMounted'
 
 const RETRY_EVERY = 2000

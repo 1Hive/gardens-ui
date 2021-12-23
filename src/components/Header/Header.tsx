@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory, useLocation } from 'react-router'
+
 import {
   Button,
   ButtonBase,
@@ -9,20 +10,23 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import AccountModule from '../Account/AccountModule'
-import ActivityButton from '../Activity/ActivityButton'
-import BalanceModule from '../BalanceModule'
-import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
-import Layout from '../Layout'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
+
 import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
+
+import AccountModule from '../Account/AccountModule'
+import ActivityButton from '../Activity/ActivityButton'
+import BalanceModule from '../BalanceModule'
+import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
+import Layout from '../Layout'
 
 function Header({
   onOpenPreferences,

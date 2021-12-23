@@ -1,12 +1,13 @@
 import React from 'react'
+
 import { useTheme } from '@1hive/1hive-ui'
 
-import { IndividualStepTypes } from '../stepper-statuses'
-
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
 import blockIcon from '@assets/blockIcon.svg'
+import signRequestFailIllustration from '@assets/signRequestFail.svg'
+import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
+import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
+
+import { IndividualStepTypes } from '../stepper-statuses'
 
 const illustrations = {
   [IndividualStepTypes.STEP_WORKING]: trxBeingMinedIllustration,

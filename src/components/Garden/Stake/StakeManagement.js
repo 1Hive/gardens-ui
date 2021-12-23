@@ -1,18 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router'
+
 import { Header } from '@1hive/1hive-ui'
-import EmptyState from './EmptyState'
+
 import { GardenLoader } from '@components/Loader'
+import MultiModal from '@components/MultiModal/MultiModal'
+
+import { useStakingState } from '@providers/Staking'
+import { useWallet } from '@providers/Wallet'
+
 import LayoutColumns from '../Layout/LayoutColumns'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
-import MultiModal from '@components/MultiModal/MultiModal'
-import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
+import EmptyState from './EmptyState'
+import SideBar from './SideBar'
 import StakingMovements from './StakingMovements'
 import stakingEmpty from './assets/no-dataview-data.svg'
-import { useStakingState } from '@providers/Staking'
-import { useWallet } from '@providers/Wallet'
 
 const StakeManagement = React.memo(function StakeManagement() {
   const { account } = useWallet()

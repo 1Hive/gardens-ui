@@ -1,6 +1,8 @@
 import React from 'react'
-import BalanceToken from '../BalanceToken'
+
 import BigNumber from '@lib/bigNumber'
+
+import BalanceToken from '../BalanceToken'
 
 type BalanceProps = {
   amount: BigNumber

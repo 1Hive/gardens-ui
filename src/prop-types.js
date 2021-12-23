@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 
 export const TransactionStatusType = PropTypes.oneOf([

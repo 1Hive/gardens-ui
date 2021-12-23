@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { round } from './math-utils'
 
@@ -30,7 +30,7 @@ function dateFormat(date, format = 'onlyDate') {
 function durationTime(seconds) {
   return dayjs.duration(seconds, 'seconds').humanize()
 }
-const toMs = seconds => seconds * 1000
+const toMs = (seconds) => seconds * 1000
 
 function durationToHours(duration) {
   return round(dayjs.duration(duration).asHours())

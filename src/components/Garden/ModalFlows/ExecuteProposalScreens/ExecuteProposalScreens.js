@@ -1,8 +1,9 @@
-import React, { useMemo, useState, useCallback } from 'react'
-import ModalFlowBase from '../ModalFlowBase'
-import ExecuteProposal from './ExecuteProposal'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import useActions from '@hooks/useActions'
+
+import ModalFlowBase from '../ModalFlowBase'
+import ExecuteProposal from './ExecuteProposal'
 
 function ExecuteProposalScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
@@ -11,8 +12,8 @@ function ExecuteProposalScreens({ proposal }) {
   const { id: proposalId } = proposal
 
   const getTransactions = useCallback(
-    async onComplete => {
-      await convictionActions.executeProposal(proposalId, intent => {
+    async (onComplete) => {
+      await convictionActions.executeProposal(proposalId, (intent) => {
         setTransactions(intent)
         onComplete()
       })

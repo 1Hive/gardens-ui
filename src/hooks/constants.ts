@@ -104,7 +104,9 @@ type AppType = {
       ethersProvider: any
       ipfs: any
       network: {
-        chainId: number, ensAddress: string, name: string
+        chainId: number
+        ensAddress: string
+        name: string
       }
       orgAddress: string
       orgConnector: any
@@ -235,10 +237,4 @@ type ProposalType = {
   yeas: any
 }
 
-export type {
-  ConfigType,
-  FiltersType,
-  TokenType,
-  AppType,
-  ProposalType
-}
+export type { ConfigType, FiltersType, TokenType, AppType, ProposalType }

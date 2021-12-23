@@ -1,5 +1,7 @@
-import BigNumber from '@lib/bigNumber'
 import { useMemo } from 'react'
+
+import BigNumber from '@lib/bigNumber'
+
 import { PCT_BASE } from '../constants'
 import { ConfigType } from './constants'
 

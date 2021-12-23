@@ -1,9 +1,12 @@
 import React from 'react'
+
+import { useProposalWithThreshold } from '@hooks/useProposals'
+
+import { ProposalTypes } from '@/types'
+
+import useProposalLogic from '../../logic/proposal-logic'
 import { GardenLoader } from '../Loader'
 import ProposalDetail from './ProposalDetail/ProposalDetail'
-import useProposalLogic from '../../logic/proposal-logic'
-import { useProposalWithThreshold } from '@hooks/useProposals'
-import { ProposalTypes } from '@/types'
 
 function ProposalLoader({ match }) {
   const {
