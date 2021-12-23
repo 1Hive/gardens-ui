@@ -1,6 +1,3 @@
-// @ts-nocheck
-// TODO: Ask Gabi  about the function with 2 params :(
-
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useGardenState } from '@providers/GardenState'
 import {
@@ -63,7 +60,7 @@ export function useProposalsSubscription(filters: FiltersType) {
       }
 
       const transformedProposals = await Promise.all(
-        proposals.map(p => transformProposalData(p, config))
+        proposals.map((p: any) => transformProposalData(p))
       )
       setProposals(transformedProposals)
     },
@@ -129,8 +126,7 @@ export function useProposalSubscription(
 
       rawProposalRef.current = rawProposal
 
-      // TODO: Ask Gabi about this. It requires jusr one param
-      const transformedProposal = await transformProposalData(proposal, config)
+      const transformedProposal = await transformProposalData(proposal)
       setProposal(transformedProposal)
       setLoading(false)
     },
