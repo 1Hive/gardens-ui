@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import gql from 'graphql-tag'
 import { Client } from 'urql'
 
+const RETRY_EVERY = 3000
 const HONEYSWAP_URL =
   'https://api.thegraph.com/subgraphs/name/1hive/honeyswap-v2'
 
@@ -38,7 +39,7 @@ export function useHoneyswapTokenPrice(tokenAddress: string) {
           setTokenPrice(parseFloat(tokenPrice).toFixed(2))
         }
       } catch (err) {
-        retryTimer = window.setTimeout(fetchPrice, 3000)
+        retryTimer = window.setTimeout(fetchPrice, RETRY_EVERY)
       }
     }
 
