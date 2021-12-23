@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -11,6 +11,8 @@ import {
 import { animated } from 'react-spring/renderprops'
 
 import { TransactionStatusType } from '@/prop-types'
+import { throwConfetti } from '@utils/confetti-utils'
+
 import flowerSvg from './assets/flower.svg'
 import gardensLogoMark from '@assets/gardensLogoMark.svg'
 import linesSvg from './assets/lines.svg'
@@ -233,6 +235,11 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
   const fullWidth = below('large')
   const small = below('medium')
 
+  const onGetStartedMiddleware = useCallback(() => {
+    throwConfetti()
+    if (onGetStarted) onGetStarted()
+  }, [onGetStarted, throwConfetti])
+
   return (
     <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
       <div
@@ -266,7 +273,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
               <Button
                 label="Get started"
                 mode="strong"
-                onClick={onGetStarted}
+                onClick={onGetStartedMiddleware}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}
