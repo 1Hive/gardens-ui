@@ -51,4 +51,12 @@ declare module '@1hive/1hive-ui' {
     href?: any
     external?: any
   }): JSX.Element
+
+  export declare function IconMenu({
+    size,
+    ...props
+  }: {
+    [x: string]: any
+    size?: any
+  }): JSX.Element
 }
