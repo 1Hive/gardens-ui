@@ -59,4 +59,10 @@ declare module '@1hive/1hive-ui' {
     [x: string]: any
     size?: any
   }): JSX.Element
+
+  type LayoutType = {
+    layoutName: 'small' | 'medium' | 'large' | 'max'
+    layoutWidth: string
+  }
+  export declare function useLayout(): LayoutType
 }
