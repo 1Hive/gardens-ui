@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import { MINUTE } from '@utils/date-utils'
 import { getNetworkType } from '@utils/web3-utils'
 
-import { GardenActionTypes as actions } from '@/actions/garden-action-types'
+import { GardenActionTypes } from '@/actions/garden-action-types'
 
 import StoredList from '../StoredList'
 import { ActivityStatus } from '../components/Activity/activity-statuses'
@@ -20,16 +20,6 @@ import { useConnectedGarden } from './ConnectedGarden'
 import { useWallet } from './Wallet'
 
 const ActivityContext = React.createContext()
-
-// Only used to serialize / deserialize
-const StatusSymbolsByName = new Map([
-  [ActivityStatus.ACTIVITY_STATUS_CONFIRMED, ''],
-  [ActivityStatus.ACTIVITY_STATUS_FAILED, ''],
-  [ActivityStatus.ACTIVITY_STATUS_PENDING, ''],
-  [ActivityStatus.ACTIVITY_STATUS_TIMED_OUT, ''],
-])
-
-const TypeSymbolsByName = new Map(Object.entries(actions))
 
 const TIMEOUT_DURATION = 10 * MINUTE
 
@@ -42,8 +32,8 @@ function getStoredList(account, chainId) {
     }),
     postParse: (activity) => ({
       ...activity,
-      status: StatusSymbolsByName.get(`ACTIVITY_STATUS_${activity.status}`),
-      type: TypeSymbolsByName.get(activity.type),
+      status: ActivityStatus[`ACTIVITY_STATUS_${activity.status}`],
+      type: GardenActionTypes[activity.type],
     }),
   })
 }
