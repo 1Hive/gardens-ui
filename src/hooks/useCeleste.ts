@@ -103,9 +103,9 @@ export function useCelesteSynced(chainId: number) {
 
 function getExpectedCurrentTermId(now: number, config: ConfigType) {
   if (config !== null) {
-    const firstTermStartTime = config?.terms[0].startTime
+    const firstTermStartTime = config.terms[0].startTime
     return Math.floor(
-      (now - Number(firstTermStartTime)) / Number(config?.termDuration)
+      (now - Number(firstTermStartTime)) / Number(config.termDuration)
     )
   }
 
