@@ -73,9 +73,9 @@ export function useGardenData() {
 
     let cancelled = false
 
-    const fetchGardenConnector = () => {
+    const fetchGardenConnector = async () => {
       try {
-        const gardenConnector: Garden = connectGarden(organization, {
+        const gardenConnector: Garden = await connectGarden(organization, {
           subgraphUrl: subgraphs.gardens,
         })
 
