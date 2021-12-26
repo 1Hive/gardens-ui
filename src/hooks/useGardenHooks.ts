@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import connectAgreement from '@1hive/connect-agreement'
-import { Garden, connectGarden } from '@1hive/connect-gardens'
+import connectGarden, { Garden } from '@1hive/connect-gardens'
 import {
   createAppHook,
   useApps,
@@ -73,9 +73,9 @@ export function useGardenData() {
 
     let cancelled = false
 
-    const fetchGardenConnector = async () => {
+    const fetchGardenConnector = () => {
       try {
-        const gardenConnector: Garden = await connectGarden(organization, {
+        const gardenConnector: Garden = connectGarden(organization, {
           subgraphUrl: subgraphs.gardens,
         })
 
