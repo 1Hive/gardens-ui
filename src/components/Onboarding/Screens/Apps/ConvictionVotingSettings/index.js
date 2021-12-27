@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useReducer, useState } from 'react'
 
 import {
@@ -184,6 +183,7 @@ function ConvictionVotingSettings() {
       DEFAULT_CONVICTION_CONFIG.minThresholdStakePct,
     ])
     updateField(['requestToken', config.tokens.address])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.tokens.address, updateField])
 
   const handleNextClick = (event) => {
