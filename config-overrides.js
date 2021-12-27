@@ -11,8 +11,8 @@ const {
 
 module.exports = override(
   useBabelRc(),
-  useEslintRc(path.resolve(__dirname, '.eslintrc.js')),
-  enableEslintTypescript(),
+  // useEslintRc(path.resolve(__dirname, '.eslintrc.js')),
+  // enableEslintTypescript(),
   addWebpackAlias({
     '@': path.resolve(__dirname, './src'),
     '@abis': path.resolve(__dirname, './src/abi'),
