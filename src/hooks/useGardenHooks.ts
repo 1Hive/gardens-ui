@@ -2,7 +2,7 @@ import { TokenType } from './constants'
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
 import connectAgreement from '@1hive/connect-agreement'
-import { connectGarden, Garden } from '@1hive/connect-gardens'
+import connectGarden, { Garden } from '@1hive/connect-gardens'
 import {
   createAppHook,
   useApps,
