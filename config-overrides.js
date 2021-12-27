@@ -1,18 +1,10 @@
 /* config-overrides.js */
 
 const path = require('path')
-const {
-  addWebpackAlias,
-  useBabelRc,
-  override,
-  useEslintRc,
-  enableEslintTypescript,
-} = require('customize-cra')
+const { addWebpackAlias, useBabelRc, override } = require('customize-cra')
 
 module.exports = override(
   useBabelRc(),
-  // useEslintRc(path.resolve(__dirname, '.eslintrc.js')),
-  // enableEslintTypescript(),
   addWebpackAlias({
     '@': path.resolve(__dirname, './src'),
     '@abis': path.resolve(__dirname, './src/abi'),
