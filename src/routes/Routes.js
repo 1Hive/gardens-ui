@@ -3,10 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 
 import { LoadingRing, Main } from '@1hive/1hive-ui'
 
-// import Garden from '@components/Garden'
-// import Home from '@components/Home'
-// import Profile from '@components/Profile/Profile'
-
 const Home = lazy(() => import('@components/Home'))
 const Garden = lazy(() => import('@components/Garden'))
 const Profile = lazy(() => import('@components/Profile/Profile'))
