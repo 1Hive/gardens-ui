@@ -1,9 +1,10 @@
+/* eslint-disable no-unexpected-multiline */
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { eachDayOfInterval, GU } from '@1hive/1hive-ui'
+import { dayjs } from '@utils/date-utils'
 import MonthDay from './MonthDay'
 import { Selector } from './components'
-import { dayjs } from '@utils/date-utils'
 
 function DatePicker({
   initialDate,
@@ -20,18 +21,18 @@ function DatePicker({
 }) {
   const [selectedDate, setSelectedDate] = useState(initialDate)
 
-  const setDate = ({ year, add }) => event => {
-    setSelectedDate(
-      dayjs(selectedDate)
-        .startOf('month')
-        [add ? 'add' : 'subtract'](1, year ? 'year' : 'month')
-        .toDate()
-    )
-  }
+  const setDate =
+    ({ year, add }) =>
+    event => {
+      setSelectedDate(
+        dayjs(selectedDate)
+          .startOf('month')
+          [add ? 'add' : 'subtract'](1, year ? 'year' : 'month')
+          .toDate()
+      )
+    }
 
-  const today = dayjs()
-    .startOf('day')
-    .toDate()
+  const today = dayjs().startOf('day').toDate()
 
   const selectedDayjs = dayjs(selectedDate || today)
 
