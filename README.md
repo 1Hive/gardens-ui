@@ -1,4 +1,4 @@
-# Gardens UI  <a href="https://gardens.1hive.org/"><img align="right" src=".github/assets/gardens.svg" height="80px" /></a>
+# Gardens UI <a href="https://gardens.1hive.org/"><img align="right" src=".github/assets/gardens.svg" height="80px" /></a>
 
 ## Gardens are secure digital economies run by the community members that make them valuable.
 
@@ -7,22 +7,26 @@
 ## How to run locally
 
 #### Clone the repository
+
 ```
 git clone https://github.com/1Hive/gardens-ui.git
 ```
 
 #### Install dependencies
+
 ```
 cd gardens-ui
 yarn
 ```
 
 #### Start UI
+
 ```
 yarn start
 ```
 
 ### Environment variables
+
 ```
 REACT_APP_GITHUB_API_TOKEN # API token for GitHub used to fetch Gardens metadata.
 REACT_APP_PINATA_API_TOKEN # API token for Pinata used to pin IPFS content.
