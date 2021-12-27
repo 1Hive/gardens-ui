@@ -13,6 +13,18 @@ import {
 
 const REQUEST_TIMEOUT = 60000
 
+const VERIFICATION_INFO_DEFAULT = {
+  addressExist: false,
+  addressUnique: false,
+  signature: null,
+  timestamp: 0,
+  userAddresses: [],
+  userSponsored: false,
+  userVerified: false,
+  error: null,
+  fetching: true,
+}
+
 export async function fetchWithTimeout(
   resource: RequestInfo,
   options: RequestInit | undefined
@@ -30,17 +42,9 @@ export async function fetchWithTimeout(
 }
 
 export function useBrightIdVerification(account: string) {
-  const [verificationInfo, setVerificationInfo] = useState({
-    addressExist: false,
-    addressUnique: false,
-    signature: null,
-    timestamp: 0,
-    userAddresses: [],
-    userSponsored: false,
-    userVerified: false,
-    error: null,
-    fetching: true,
-  })
+  const [verificationInfo, setVerificationInfo] = useState(
+    VERIFICATION_INFO_DEFAULT
+  )
   const [sponsorshipInfo, setSponsorshipInfo] = useState({
     availableSponsorships: 0,
     error: false,

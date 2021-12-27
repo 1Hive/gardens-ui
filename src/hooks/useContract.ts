@@ -3,7 +3,6 @@ import { Contract as EthersContract, ContractInterface } from 'ethers'
 import { useWallet } from '@providers/Wallet'
 import { getDefaultProvider } from '@utils/web3-utils'
 
-// TODO: Ask Gabi to check if this works
 export function useContractReadOnly(
   address: string,
   abi: ContractInterface,
