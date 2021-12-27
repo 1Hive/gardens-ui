@@ -40,9 +40,10 @@ module.exports = override(
       http: require.resolve('stream-http'),
       path: require.resolve('path-browserify'),
       https: require.resolve('https-browserify'),
-      os: require.resolve('os-browserify/browser'),
+      crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
       timers: require.resolve('timers-browserify'),
+      os: require.resolve('os-browserify/browser'),
     },
   })
 )
