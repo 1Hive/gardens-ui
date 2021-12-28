@@ -1,15 +1,19 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
-  textStyle,
   GU,
-  Link,
-  useTheme,
-  ProgressBar,
   Info,
+  Link,
+  ProgressBar,
+  textStyle,
+  useTheme,
 } from '@1hive/1hive-ui'
-import DeploymentStepsItem from './DeploymentStepsItem'
+
 import { TransactionStatusType } from '@/prop-types'
+
+import DeploymentStepsItem from './DeploymentStepsItem'
 
 function DeploymentStepsPanel({ transactionsStatus, pending, allSuccess }) {
   const theme = useTheme()

@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   GU,
   Modal,
@@ -8,6 +10,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+
 import CheckDisc from './CheckDisc'
 
 function ErrorModal({ action, content, header, onClose, visible }) {

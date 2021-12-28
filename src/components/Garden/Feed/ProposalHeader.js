@@ -1,11 +1,13 @@
 import React from 'react'
+
 import {
-  GU,
-  IconInfo,
   ContextMenu,
   ContextMenuItem,
+  GU,
+  IconInfo,
   useLayout,
 } from '@1hive/1hive-ui'
+
 import ProposalCreator from './ProposalCreator'
 
 function ProposalHeader({ proposal, onSelectProposal }) {

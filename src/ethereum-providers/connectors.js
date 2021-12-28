@@ -1,4 +1,5 @@
 import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
+
 import env from '@/environment'
 
 const PORTIS_ID = env('PORTIS_ID')
@@ -40,7 +41,7 @@ export const CONNECTORS = [
         },
       }
     : null,
-].filter(p => p)
+].filter((p) => p)
 
 // the final data that we pass to use-wallet package.
 export const useWalletConnectors = CONNECTORS.reduce((current, connector) => {

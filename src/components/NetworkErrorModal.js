@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
+
 import flowerError from '@assets/flowerError.svg'
 
 function NetworkErrorModal({ visible }) {

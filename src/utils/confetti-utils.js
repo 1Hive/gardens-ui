@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti'
 
-export const throwConfetti = origin => {
+export const throwConfetti = (origin) => {
   origin = origin || {
     x: 0.6,
     y: 0.7,

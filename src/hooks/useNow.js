@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { dayjs } from '@utils/date-utils'
 
 export default function useNow(updateEvery = 1000) {

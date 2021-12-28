@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
+
+import { buildGardenPath } from '@utils/routing-utils'
 
 import ProposalFooter from './ProposalFooter'
 import ProposalInfo from './ProposalInfo'
-
-import { buildGardenPath } from '@utils/routing-utils'
 
 function AbstainCard({ proposal }) {
   const theme = useTheme()
@@ -31,7 +32,7 @@ function AbstainCard({ proposal }) {
         border-radius: ${2 * GU}px;
 
         ${below('medium') &&
-          `
+        `
           padding-left: ${2 * GU}px;
           padding-right: ${2 * GU}px;
           border-left: 0;

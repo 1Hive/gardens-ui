@@ -1,9 +1,13 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+
 import { addressesEqual } from '@1hive/1hive-ui'
+
+import { useWallet } from '@providers/Wallet'
+
+import useActions from '@hooks/useActions'
+
 import ModalFlowBase from '../ModalFlowBase'
 import SettlementDetails from './SettlementDetails'
-import useActions from '@hooks/useActions'
-import { useWallet } from '@providers/Wallet'
 
 function SettleProposalScreens({ proposal }) {
   const [transactions, setTransactions] = useState([])
@@ -14,10 +18,10 @@ function SettleProposalScreens({ proposal }) {
   const isChallenger = addressesEqual(account, proposal.challenger)
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       await agreementActions.settleAction(
         { actionId: proposal.actionId },
-        intent => {
+        (intent) => {
           setTransactions(intent)
           onComplete()
         }

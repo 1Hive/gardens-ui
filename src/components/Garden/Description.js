@@ -1,7 +1,10 @@
 import React from 'react'
+
 import { GU, Tag, useTheme } from '@1hive/1hive-ui'
-import GardenAppBadge from './GardenAppBadge'
+
 import IdentityBadge from '@components/IdentityBadge'
+
+import GardenAppBadge from './GardenAppBadge'
 
 function Description({ disableBadgeInteraction, path, ...props }) {
   return (

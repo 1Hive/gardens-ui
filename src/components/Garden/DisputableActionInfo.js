@@ -1,30 +1,35 @@
 import React, { useMemo } from 'react'
+
 import {
-  addressesEqual,
   Box,
   Button,
   GU,
   Info,
   Link,
   LoadingRing,
-  textStyle,
   Timer,
+  addressesEqual,
+  textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import { ConvictionCountdown } from './ConvictionVisuals'
 
-import { useDisputeState } from '@hooks/useDispute'
 import { useWallet } from '@providers/Wallet'
 
-import { CELESTE_URL } from '@/endpoints'
+import { useDisputeState } from '@hooks/useDispute'
+
 import { dateFormat } from '@utils/date-utils'
 import {
-  DisputeStates,
   DISPUTE_STATE_RULED,
+  DisputeStates,
   RoundStates,
 } from '@utils/dispute-utils'
 import { formatTokenAmount } from '@utils/token-utils'
+
+import { CELESTE_URL } from '@/endpoints'
+
 import { ProposalTypes } from '@/types'
+
+import { ConvictionCountdown } from './ConvictionVisuals'
 
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
@@ -65,8 +70,7 @@ function getInfoActionContent(proposal, account, actions) {
 
   if (proposal.statusData.challenged && isSubmitter) {
     return {
-      info:
-        "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
+      info: "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
       actions: [
         {
           label: 'Accept settlement',
@@ -86,8 +90,7 @@ function getInfoActionContent(proposal, account, actions) {
   if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
-        info:
-          'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
+        info: 'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
         actions: [
           {
             label: 'Claim collateral',

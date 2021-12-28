@@ -1,16 +1,17 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import ClaimRewards from './ClaimRewards'
-import ModalFlowBase from '../ModalFlowBase'
 
 import useActions from '@hooks/useActions'
+
+import ModalFlowBase from '../ModalFlowBase'
+import ClaimRewards from './ClaimRewards'
 
 function ClaimRewardsScreens() {
   const [transactions, setTransactions] = useState([])
   const { unipoolActions } = useActions()
 
   const getTransactions = useCallback(
-    async onComplete => {
-      await unipoolActions.claimRewards(intent => {
+    async (onComplete) => {
+      await unipoolActions.claimRewards((intent) => {
         setTransactions(intent)
         onComplete()
       })

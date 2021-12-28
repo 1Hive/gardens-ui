@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
+
 import { getUser } from '@1hive/connect-gardens'
-import { useMounted } from './useMounted'
-import { getNetwork } from '../networks'
+
 import { transformUserData } from '@utils/data-utils'
+
 import { useWallet } from '@/providers/Wallet'
+
+import { getNetwork } from '../networks'
+import { useMounted } from './useMounted'
 
 export default function useUser(address) {
   const [user, setUser] = useState(null)
@@ -15,7 +19,7 @@ export default function useUser(address) {
   const { subgraphs } = getNetwork(preferredNetwork)
 
   const reload = useCallback(() => {
-    setRefetchTriger(triger => setRefetchTriger(!triger))
+    setRefetchTriger((triger) => setRefetchTriger(!triger))
   }, [])
 
   useEffect(() => {

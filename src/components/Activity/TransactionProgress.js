@@ -1,17 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { ProgressBar, GU } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import { ActivityStatusType } from './prop-types'
-import TimeTag from './TimeTag'
+
+import PropTypes from 'prop-types'
+
+import { GU, ProgressBar } from '@1hive/1hive-ui'
 
 import useNow from '@hooks/useNow'
+
+import { MINUTE } from '@utils/date-utils'
+import { norm } from '@utils/math-utils'
+
+import TimeTag from './TimeTag'
 import {
   ACTIVITY_STATUS_CONFIRMED,
   ACTIVITY_STATUS_PENDING,
 } from './activity-statuses'
-import { norm } from '@utils/math-utils'
-import { MINUTE } from '@utils/date-utils'
+import { ActivityStatusType } from './prop-types'
 
 const DELAY_BEFORE_HIDE = 1000
 const TX_DURATION_AVERAGE = 3 * MINUTE
@@ -50,9 +54,9 @@ const TransactionProgress = React.memo(function TransactionProgress({
       enter={{ height: 28, opacity: 1 }}
       leave={{ height: 0, opacity: 0 }}
     >
-      {show =>
+      {(show) =>
         show &&
-        (transition => (
+        ((transition) => (
           <animated.div
             style={{
               display: 'flex',

@@ -1,18 +1,21 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { GU, Link } from '@1hive/1hive-ui'
-import AgreementStatus from '../Common/AgreementStatus'
-import CollateralStatus from '../Common/CollateralStatus'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
 
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import { buildGardenPath } from '@utils/routing-utils'
-import { dateFormat } from '@utils/date-utils'
-import env from '@/environment'
-import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
+import { dateFormat } from '@utils/date-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+import { formatTokenAmount } from '@utils/token-utils'
+
+import env from '@/environment'
+
+import InfoField from '../../InfoField'
+import AgreementStatus from '../Common/AgreementStatus'
+import CollateralStatus from '../Common/CollateralStatus'
+import ModalButton from '../ModalButton'
 
 function CreateDecisionRequirements({ agreement, staking }) {
   const history = useHistory()

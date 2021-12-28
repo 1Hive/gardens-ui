@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react'
-import { ChartBase } from '@components/Onboarding/kit/ChartComponents'
+
 import { ResponsiveLine } from '@nivo/line'
+
+import { ChartBase } from '@components/Onboarding/kit/ChartComponents'
+
 import { useCharts } from '@/providers/Charts'
 import { generateElements } from '@/utils/conviction-modelling-helpers'
 

@@ -1,9 +1,12 @@
 import React from 'react'
+
 import { GU, LoadingRing, textStyle } from '@1hive/1hive-ui'
-import Description from '../Description'
 
 import { useDescribeVote } from '@hooks/useDescribeVote'
+
 import { ProposalTypes } from '@/types'
+
+import Description from '../Description'
 
 function ProposalDescription({ proposal, onSelectProposal }) {
   return (

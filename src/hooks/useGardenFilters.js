@@ -1,11 +1,12 @@
+import { useCallback, useMemo, useState } from 'react'
+
 import {
-  filterArgsMapping,
   FILTER_KEY_NAME,
   FILTER_KEY_SORTING,
   SORTING_FILTER_LIQUIDITY,
   SORTING_ITEMS,
+  filterArgsMapping,
 } from '@/utils/garden-filters-utils'
-import { useCallback, useMemo, useState } from 'react'
 
 const filtersCache = new Map([])
 
@@ -19,12 +20,12 @@ export default function useGardenFilters() {
     filtersCache.get(FILTER_KEY_SORTING) || SORTING_FILTER_LIQUIDITY
   )
 
-  const handleNameFilterChange = useCallback(newName => {
+  const handleNameFilterChange = useCallback((newName) => {
     setNameFilter(newName)
     filtersCache.set(FILTER_KEY_NAME, newName)
   }, [])
 
-  const handleSortingFilterChange = useCallback(index => {
+  const handleSortingFilterChange = useCallback((index) => {
     setSortingFilter(index)
     filtersCache.set(FILTER_KEY_SORTING, index)
   }, [])

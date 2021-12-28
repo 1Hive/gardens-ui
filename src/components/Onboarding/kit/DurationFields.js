@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Field, GU, TextInput, useTheme, useViewport } from '@1hive/1hive-ui'
+
 import {
   DAY_IN_SECONDS,
   HOUR_IN_SECONDS,
@@ -58,15 +61,15 @@ const DurationFields = ({
   }, [])
 
   const handleDaysChange = useCallback(
-    event => updateLocalUnit(event, setDays),
+    (event) => updateLocalUnit(event, setDays),
     [updateLocalUnit]
   )
   const handleHoursChange = useCallback(
-    event => updateLocalUnit(event, setHours),
+    (event) => updateLocalUnit(event, setHours),
     [updateLocalUnit]
   )
   const handleMinutesChange = useCallback(
-    event => updateLocalUnit(event, setMinutes),
+    (event) => updateLocalUnit(event, setMinutes),
     [updateLocalUnit]
   )
 

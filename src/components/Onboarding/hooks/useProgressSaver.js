@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+
 import { useWallet } from '@providers/Wallet'
 
 import {
@@ -21,7 +22,7 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
   }, [])
 
   const handleSaveConfig = useCallback(
-    config => {
+    (config) => {
       const progress = getItem(account, chainId)
       setItem(account, chainId, { ...progress, config })
     },
@@ -29,7 +30,7 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
   )
 
   const handleSaveStep = useCallback(
-    step => {
+    (step) => {
       const progress = getItem(account, chainId)
       setItem(account, chainId, { ...progress, step })
     },

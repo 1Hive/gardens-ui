@@ -30,7 +30,7 @@ export default function usePreferences() {
   const preferenceScreen = useRef(screen)
 
   const handleOpenPreferences = useCallback(
-    screen => {
+    (screen) => {
       preferenceScreen.current = screen
       const fullPath = basePath + getPreferencesSearch(preferenceScreen.current)
       history.push(fullPath)

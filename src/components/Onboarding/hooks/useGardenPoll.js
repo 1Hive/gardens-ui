@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
+
 import { getGarden } from '@1hive/connect-gardens'
+
 import { getNetwork } from '@/networks'
 
 const noop = () => {}

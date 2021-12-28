@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { Button, GU } from '@1hive/1hive-ui'
+
 import LoadingSpinner from '@components/LoadingRing'
 
 function ModalButton({ children, loading, ...props }) {

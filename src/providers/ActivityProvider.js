@@ -6,20 +6,22 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import PropTypes from 'prop-types'
-import StoredList from '../StoredList'
-import { useConnectedGarden } from './ConnectedGarden'
-import { useWallet } from './Wallet'
 
+import PropTypes from 'prop-types'
+
+import { MINUTE } from '@utils/date-utils'
+import { getNetworkType } from '@utils/web3-utils'
+
+import StoredList from '../StoredList'
+import actions from '../actions/garden-action-types'
 import {
   ACTIVITY_STATUS_CONFIRMED,
   ACTIVITY_STATUS_FAILED,
   ACTIVITY_STATUS_PENDING,
   ACTIVITY_STATUS_TIMED_OUT,
 } from '../components/Activity/activity-statuses'
-import actions from '../actions/garden-action-types'
-import { getNetworkType } from '@utils/web3-utils'
-import { MINUTE } from '@utils/date-utils'
+import { useConnectedGarden } from './ConnectedGarden'
+import { useWallet } from './Wallet'
 
 const ActivityContext = React.createContext()
 
@@ -39,12 +41,12 @@ const TIMEOUT_DURATION = 10 * MINUTE
 
 function getStoredList(account, chainId) {
   return new StoredList(`activity:${getNetworkType(chainId)}:${account}`, {
-    preStringify: activity => ({
+    preStringify: (activity) => ({
       ...activity,
       status: activity.status.description.replace('ACTIVITY_STATUS_', ''),
       type: activity.type?.description,
     }),
-    postParse: activity => ({
+    postParse: (activity) => ({
       ...activity,
       status: StatusSymbolsByName.get(`ACTIVITY_STATUS_${activity.status}`),
       type: TypeSymbolsByName.get(activity.type),
@@ -66,12 +68,12 @@ async function getActivityFinalStatus(
     // Get the transaction status once mined
     ethers
       .getTransaction(String(transactionHash))
-      .then(tx => {
+      .then((tx) => {
         // tx is null if no tx was found
         if (!tx) {
           throw new Error('No transaction found')
         }
-        return tx.wait().then(receipt => {
+        return tx.wait().then((receipt) => {
           return receipt.blockNumber
             ? ACTIVITY_STATUS_CONFIRMED
             : ACTIVITY_STATUS_FAILED
@@ -82,7 +84,7 @@ async function getActivityFinalStatus(
       }),
 
     // Timeout after 10 minutes
-    new Promise(resolve => {
+    new Promise((resolve) => {
       if (now - createdAt > TIMEOUT_DURATION) {
         return ACTIVITY_STATUS_TIMED_OUT
       }
@@ -102,7 +104,7 @@ function ActivityProvider({ children }) {
   // Update the activities, ensuring the activities
   // are updated in the stored list and in the state.
   const updateActivities = useCallback(
-    cb => {
+    (cb) => {
       const newActivities = cb(activities)
       if (storedList.current) {
         storedList.current.update(newActivities)
@@ -120,7 +122,7 @@ function ActivityProvider({ children }) {
       type,
       description = ''
     ) => {
-      updateActivities(activities => [
+      updateActivities((activities) => [
         ...activities,
         {
           createdAt: Date.now(),
@@ -140,10 +142,10 @@ function ActivityProvider({ children }) {
 
   // Clear a single activity
   const removeActivity = useCallback(
-    transactionHash => {
-      updateActivities(activities =>
+    (transactionHash) => {
+      updateActivities((activities) =>
         activities.filter(
-          activity => activity.transactionHash !== transactionHash
+          (activity) => activity.transactionHash !== transactionHash
         )
       )
     },
@@ -153,8 +155,10 @@ function ActivityProvider({ children }) {
   // Clear all non pending activities − we don’t clear
   // pending because we’re awaiting state change.
   const clearActivities = useCallback(() => {
-    updateActivities(activities =>
-      activities.filter(activity => activity.status === ACTIVITY_STATUS_PENDING)
+    updateActivities((activities) =>
+      activities.filter(
+        (activity) => activity.status === ACTIVITY_STATUS_PENDING
+      )
     )
   }, [updateActivities])
 
@@ -162,8 +166,8 @@ function ActivityProvider({ children }) {
   // using its transaction hash.
   const updateActivityStatus = useCallback(
     (hash, status) => {
-      updateActivities(activities =>
-        activities.map(activity => {
+      updateActivities((activities) =>
+        activities.map((activity) => {
           if (activity.transactionHash !== hash) {
             return activity
           }
@@ -176,8 +180,8 @@ function ActivityProvider({ children }) {
 
   // Mark the current user’s activities as read
   const markActivitiesRead = useCallback(() => {
-    updateActivities(activities =>
-      activities.map(activity => ({ ...activity, read: true }))
+    updateActivities((activities) =>
+      activities.map((activity) => ({ ...activity, read: true }))
     )
   }, [updateActivities])
 
@@ -199,7 +203,7 @@ function ActivityProvider({ children }) {
       activitiesFromStorage.filter(
         ({ transactionHash }) =>
           activities.findIndex(
-            activity => activity.transactionHash === transactionHash
+            (activity) => activity.transactionHash === transactionHash
           ) === -1
       ) > 0
 
@@ -218,7 +222,7 @@ function ActivityProvider({ children }) {
     storedList.current = getStoredList(account, chainId)
     updateActivitiesFromStorage()
 
-    activities.forEach(async activity => {
+    activities.forEach(async (activity) => {
       const status = await getActivityFinalStatus(ethers, activity)
       if (!cancelled && status !== activity.status) {
         updateActivityStatus(activity.transactionHash, status)

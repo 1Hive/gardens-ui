@@ -1,17 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import styled from 'styled-components'
+
 import {
   Box,
+  GU,
   Markdown,
   textStyle,
-  useTheme,
   useLayout,
-  GU,
+  useTheme,
 } from '@1hive/1hive-ui'
-import ModalButton from '../ModalFlows/ModalButton'
-import { useMounted } from '@hooks/useMounted'
+
 import { useWallet } from '@providers/Wallet'
+
+import { useMounted } from '@hooks/useMounted'
+
 import { getIpfsCidFromUri, ipfsGet } from '@utils/ipfs-utils'
+
+import ModalButton from '../ModalFlows/ModalButton'
 
 function AgreementDocument({
   ipfsUri,

@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import ModalFlowBase from '../ModalFlowBase'
-import VoteOnDecision from './VoteOnDecision'
 
 import useActions from '@hooks/useActions'
+
+import ModalFlowBase from '../ModalFlowBase'
+import VoteOnDecision from './VoteOnDecision'
 
 function VoteOnDecisionScreens({
   canUserVote,
@@ -18,7 +19,7 @@ function VoteOnDecisionScreens({
 
   const vote = useCallback(
     async (voteId, supports) => {
-      await votingActions.voteOnDecision(voteId, supports, intent => {
+      await votingActions.voteOnDecision(voteId, supports, (intent) => {
         temporatyTrx.current = temporatyTrx.current.concat(intent)
       })
     },
@@ -26,7 +27,7 @@ function VoteOnDecisionScreens({
   )
   const voteOnBehalfOf = useCallback(
     async (voteId, supports, voters) => {
-      await votingActions.voteOnBehalfOf(voteId, supports, voters, intent => {
+      await votingActions.voteOnBehalfOf(voteId, supports, voters, (intent) => {
         temporatyTrx.current = temporatyTrx.current.concat(intent)
       })
     },
@@ -34,7 +35,7 @@ function VoteOnDecisionScreens({
   )
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       if (canUserVote) {
         await vote(proposal.number, supports)
       }

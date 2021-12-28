@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { getProviderFromUseWalletId } from 'use-wallet'
+
 import {
   Button,
   ButtonBase,
@@ -11,16 +13,19 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '../IdentityBadge'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
 import { useWallet } from '@providers/Wallet'
+
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
 import profileButtonSvg from '@assets/profileButton.svg'
 import stakeButtonSvg from '@assets/stakeButton.svg'
+
+import IdentityBadge from '../IdentityBadge'
 
 function AccountScreenConnected({ providerId, onClosePopover }) {
   const theme = useTheme()

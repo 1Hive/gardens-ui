@@ -1,14 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useStakingState } from '@providers/Staking'
+import { useWallet } from '@providers/Wallet'
+
+import useActions from '@hooks/useActions'
+import { useAgreement } from '@hooks/useAgreement'
+
+import { throwConfetti } from '@utils/confetti-utils'
+
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
-import { useAgreement } from '@hooks/useAgreement'
-import { useWallet } from '@providers/Wallet'
-import useActions from '@hooks/useActions'
-import { useStakingState } from '@providers/Staking'
-import { throwConfetti } from '@utils/confetti-utils'
 
 function CreateProposalScreens({ onComplete }) {
   const [loading, setLoading] = useState(true)
@@ -30,7 +33,7 @@ function CreateProposalScreens({ onComplete }) {
     setLoading(agreementLoading || stakingLoading)
   }, [agreementLoading, stakingLoading])
 
-  const handleSetProposalData = useCallback(data => {
+  const handleSetProposalData = useCallback((data) => {
     proposalData.current = data
   }, [])
 
@@ -45,7 +48,7 @@ function CreateProposalScreens({ onComplete }) {
   }, [onComplete])
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current
 
       let params
@@ -70,7 +73,7 @@ function CreateProposalScreens({ onComplete }) {
         }
       }
 
-      await convictionActions[fn](params, intent => {
+      await convictionActions[fn](params, (intent) => {
         setTransactions(intent)
         onComplete()
       })

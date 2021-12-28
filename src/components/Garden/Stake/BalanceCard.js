@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+
 import {
   Button,
   Card,
@@ -8,8 +9,10 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
+
 import { formatTokenAmount } from '@utils/token-utils'
 
 function BalanceCard({

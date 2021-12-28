@@ -1,16 +1,18 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import ConnectWallet from './ConnectWallet'
-import ScreenProvidersWrapper from './ScreenProvidersWrapper'
-import MultiModalScreens from '@/components/MultiModal/MultiModalScreens'
-import ScreenErrorWrapper from './ScreenErrorWrapper'
 import { useWallet } from '@providers/Wallet'
+
+import MultiModalScreens from '@/components/MultiModal/MultiModalScreens'
+
+import ConnectWallet from './ConnectWallet'
+import ScreenErrorWrapper from './ScreenErrorWrapper'
+import ScreenProvidersWrapper from './ScreenProvidersWrapper'
 
 function ConectWalletScreens({ onSuccess, onClose }) {
   const [error, setError] = useState(null)
   const { resetConnection } = useWallet()
 
-  const handleOnError = useCallback(e => {
+  const handleOnError = useCallback((e) => {
     setError(e)
   }, [])
 

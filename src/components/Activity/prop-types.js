@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import {
   ACTIVITY_STATUS_CONFIRMED,
   ACTIVITY_STATUS_FAILED,

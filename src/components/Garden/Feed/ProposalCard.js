@@ -1,14 +1,17 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
+
+import { useProposalWithThreshold } from '@hooks/useProposals'
+
+import { buildGardenPath } from '@utils/routing-utils'
+
+import { ProposalTypes } from '@/types'
 
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
 import ProposalInfo from './ProposalInfo'
-import { useProposalWithThreshold } from '@hooks/useProposals'
-
-import { buildGardenPath } from '@utils/routing-utils'
-import { ProposalTypes } from '@/types'
 
 function ProposalCard({ proposal, ...props }) {
   return proposal.type === ProposalTypes.Decision ? (
@@ -50,7 +53,7 @@ function Card({ loading = false, proposal }) {
         border-radius: ${2 * GU}px;
 
         ${below('medium') &&
-          `
+        `
           padding-left: ${2 * GU}px;
           padding-right: ${2 * GU}px;
           border-left: 0;

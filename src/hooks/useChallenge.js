@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
-import { useMounted } from './useMounted'
 
 import { getProfileForAccount } from '@lib/profile'
+
 import { hexToUtf8 } from '@utils/web3-utils'
 
 import agreementAbi from '../abi/agreement.json'
+import { useContractReadOnly } from './useContract'
+import { useMounted } from './useMounted'
 
 export default function useChallenge(proposal) {
   const { chainId } = useConnectedGarden()

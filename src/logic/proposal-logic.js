@@ -1,5 +1,6 @@
-import useActions from '@hooks/useActions'
 import { useGardenState } from '@providers/GardenState'
+
+import useActions from '@hooks/useActions'
 import { useProposal } from '@hooks/useProposals'
 
 export default function useProposalLogic(match) {

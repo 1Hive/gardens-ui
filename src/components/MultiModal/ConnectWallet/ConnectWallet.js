@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react'
-import { GU, textStyle, Button } from '@1hive/1hive-ui'
+
+import { Button, GU, textStyle } from '@1hive/1hive-ui'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
 import connectionError from '@/assets/connection-error.svg'
 
 function ConectWallet({ onDismiss }) {

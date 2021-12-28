@@ -1,31 +1,37 @@
 import React, { useCallback } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
-  blockExplorerUrl,
   ButtonBase,
   ButtonIcon,
-  IconCross,
-  IconCheck,
   GU,
+  IconCheck,
+  IconCross,
+  blockExplorerUrl,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+
 import IdentityBadge from '@components/IdentityBadge'
-import TimeTag from './TimeTag'
-import TransactionProgress from './TransactionProgress'
+
 import { useActivity } from '@providers/ActivityProvider'
-import { useAsset } from '@hooks/useAsset'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 
+import { useAsset } from '@hooks/useAsset'
+
 import { transformAddresses } from '@utils/web3-utils'
+
+import { getNetwork } from '../../networks'
+import TimeTag from './TimeTag'
+import TransactionProgress from './TransactionProgress'
 import {
-  ACTIVITY_STATUS_PENDING,
   ACTIVITY_STATUS_CONFIRMED,
   ACTIVITY_STATUS_FAILED,
+  ACTIVITY_STATUS_PENDING,
   ACTIVITY_STATUS_TIMED_OUT,
 } from './activity-statuses'
 import { getActivityData } from './activity-types'
-import { getNetwork } from '../../networks'
 
 function ActivityItem({ activity }) {
   const theme = useTheme()

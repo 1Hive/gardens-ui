@@ -5,18 +5,20 @@ import React, {
   useMemo,
   useState,
 } from 'react'
+
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from 'use-wallet'
 
 import { getDefaultProvider } from '@utils/web3-utils'
+
+import { useWalletConnectors } from '@/ethereum-providers/connectors'
+import { getPreferredChain, setPreferredChain } from '@/local-settings'
 import {
+  SUPPORTED_CHAINS,
   getEthersNetwork,
   isSupportedChain,
-  SUPPORTED_CHAINS,
   switchNetwork,
 } from '@/networks'
-import { getPreferredChain, setPreferredChain } from '@/local-settings'
-import { useWalletConnectors } from '@/ethereum-providers/connectors'
 
 const WalletAugmentedContext = React.createContext()
 
@@ -105,7 +107,7 @@ function useConnection() {
   const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
   const connect = useCallback(
-    async connector => {
+    async (connector) => {
       try {
         await connectWallet(connector)
       } catch (err) {
@@ -130,13 +132,13 @@ function useConnection() {
     await reset()
   }, [reset])
 
-  const handlePreferredNetworkChange = useCallback(chainId => {
+  const handlePreferredNetworkChange = useCallback((chainId) => {
     setPreferredNetwork(chainId)
     setPreferredChain(chainId)
   }, [])
 
   const handleNetworkSwtich = useCallback(
-    async chainId => {
+    async (chainId) => {
       if (connector === 'injected') {
         try {
           setSwitchingNetworks(true)
@@ -160,7 +162,7 @@ function useConnection() {
         setPreferredNetwork(chainId)
       }
     }
-  }, [chainId, isConnected]) // eslint-disable-line 
+  }, [chainId, isConnected]) // eslint-disable-line
 
   return {
     connect,

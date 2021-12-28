@@ -1,5 +1,5 @@
-import { getNetworkType } from '@utils/web3-utils'
 import { dataURLtoFile, textToFile } from '@utils/kit-utils'
+import { getNetworkType } from '@utils/web3-utils'
 
 const getStorageKey = (account, chainId) =>
   `onboarding:${getNetworkType(chainId)}:${account}`
@@ -9,7 +9,7 @@ export const getItem = (account, chainId) => {
   return item ? JSON.parse(item) : null
 }
 
-export const removeItem = account => {
+export const removeItem = (account) => {
   window.localStorage.removeItem(getStorageKey(account))
 }
 
@@ -32,7 +32,7 @@ function recoverBlob(file, type = 'dataUrl') {
 }
 
 export function recoverAssets(config) {
-  GARDEN_ASSETS.forEach(assetType => {
+  GARDEN_ASSETS.forEach((assetType) => {
     const asset = config.garden[assetType]
     if (asset) {
       asset.blob = recoverBlob(asset)

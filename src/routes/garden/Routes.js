@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+
 import Agreement from '@components/Garden/Agreement/Agreement'
 import DecisionLoader from '@components/Garden/DecisionLoader'
 import Home from '@components/Garden/Home'

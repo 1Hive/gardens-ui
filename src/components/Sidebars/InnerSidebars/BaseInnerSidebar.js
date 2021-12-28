@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { GU, useTheme } from '@1hive/1hive-ui'
 
 const BaseInnerSidebar = ({ children, width, topElement }) => {

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 import AccountModuleErrorScreen from '@/components/Account/ScreenError'

@@ -1,8 +1,8 @@
-export const toPercentage = value => value * 100
+export const toPercentage = (value) => value * 100
 
-export const fromPercentage = pct => pct / 100
+export const fromPercentage = (pct) => pct / 100
 
-export const calculateDecay = halflifeDays => (1 / 2) ** (1 / halflifeDays)
+export const calculateDecay = (halflifeDays) => (1 / 2) ** (1 / halflifeDays)
 
 export const calculateConviction = (initialConviction, amount, time, decay) =>
   initialConviction * decay ** time +
@@ -28,5 +28,5 @@ export const calculateWeight = (minThresholdPct, maxRatioPct) => {
 
 export const generateElements = (maxElement, increment) =>
   [...Array(parseInt(maxElement / increment) + 1).keys()].map(
-    i => i * increment
+    (i) => i * increment
   )

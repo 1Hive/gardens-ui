@@ -1,14 +1,15 @@
 import React, { useCallback } from 'react'
+
 import {
   Checkbox,
   EthIdenticon,
   Field,
   GU,
   Info,
-  isAddress,
   Link,
   RADIUS,
   TextInput,
+  isAddress,
   useTheme,
 } from '@1hive/1hive-ui'
 
@@ -21,7 +22,7 @@ function GnosisSafeField({
   const theme = useTheme()
 
   const hanleGnosisSafeCheckChanged = useCallback(
-    checked => {
+    (checked) => {
       if (!checked) {
         onGnosisSafeAddressChange('')
       }
@@ -32,7 +33,7 @@ function GnosisSafeField({
   )
 
   const handleGnosisSafeAddressChange = useCallback(
-    event => {
+    (event) => {
       onGnosisSafeAddressChange(event.target.value)
     },
     [onGnosisSafeAddressChange]

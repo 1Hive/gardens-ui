@@ -1,5 +1,6 @@
 /* eslint-disable no-empty */
 import { DEFAULT_CHAIN_ID } from '@/constants'
+
 const APP_THEME = 'THEME'
 const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 

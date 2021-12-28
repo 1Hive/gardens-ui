@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import { formatTokenAmount } from '@utils/token-utils'
@@ -17,7 +18,7 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   )
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>
-      {myInactiveStakes.map(stake => {
+      {myInactiveStakes.map((stake) => {
         return (
           <ProposalItem
             amount={stake.amount}
@@ -85,7 +86,7 @@ const ProposalItem = ({
             white-space: nowrap;
 
             ${proposalId &&
-              `cursor: pointer; &:hover {
+            `cursor: pointer; &:hover {
             background: ${theme.badge.alpha(0.7)}
           }`}
           `}

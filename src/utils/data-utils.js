@@ -1,5 +1,6 @@
-import { convertFromString, ProposalTypes } from '../types'
 import BigNumber from '@lib/bigNumber'
+
+import { ProposalTypes, convertFromString } from '../types'
 import { toMilliseconds } from './date-utils'
 
 export function transformConfigData(config) {
@@ -172,7 +173,7 @@ function transformStakeHistoryData(stake) {
 export function transformUserData(user) {
   return {
     ...user,
-    supports: user.supports.map(support => ({
+    supports: user.supports.map((support) => ({
       ...support,
       casts: support.casts.map(transformCastData),
       stakes: support.stakes.map(transformStakeData),
@@ -182,10 +183,10 @@ export function transformUserData(user) {
 }
 
 export function getAppAddressByName(apps, appName) {
-  return apps?.find(app => app.name === appName)?.address || ''
+  return apps?.find((app) => app.name === appName)?.address || ''
 }
 
 export function getAppByName(apps, appName) {
   const regex = new RegExp(`^${appName}.*$`)
-  return apps?.find(app => app?.name?.match(regex))
+  return apps?.find((app) => app?.name?.match(regex))
 }

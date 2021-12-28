@@ -5,16 +5,19 @@ import React, {
   useRef,
   useState,
 } from 'react'
+
 import { Button, GU, Help, Info } from '@1hive/1hive-ui'
 
-import AdvancedSettingsModal from './AdvancedSettingsModal'
 import Navigation from '@components/Onboarding/Navigation'
 import {
   DurationFields,
   Header,
   PercentageField,
 } from '@components/Onboarding/kit'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
+import AdvancedSettingsModal from './AdvancedSettingsModal'
 
 const validateVotingSettings = (
   voteDuration,
@@ -101,14 +104,8 @@ const reduceFields = (fields, [field, value]) => {
 }
 
 function VotingSettings() {
-  const {
-    config,
-    onBack,
-    onNext,
-    onConfigChange,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onNext, onConfigChange, step, steps } =
+    useOnboardingState()
   const [formError, setFormError] = useState()
   const [
     {
@@ -125,7 +122,7 @@ function VotingSettings() {
   const supportRef = useRef()
   const [openSettingsModal, setOpenSettingsModal] = useState(false)
 
-  const handleSupportRef = useCallback(ref => {
+  const handleSupportRef = useCallback((ref) => {
     supportRef.current = ref
     if (ref) {
       ref.focus()
@@ -133,7 +130,7 @@ function VotingSettings() {
   }, [])
 
   const handleSupportChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteSupportRequired', value])
     },
@@ -141,7 +138,7 @@ function VotingSettings() {
   )
 
   const handleQuorumChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteMinAcceptanceQuorum', value])
     },
@@ -149,7 +146,7 @@ function VotingSettings() {
   )
 
   const handleDurationChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteDuration', value])
     },
@@ -157,7 +154,7 @@ function VotingSettings() {
   )
 
   const handleQuiteEndingPeriodChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteQuietEndingPeriod', value])
     },
@@ -165,7 +162,7 @@ function VotingSettings() {
   )
 
   const handleExecutionDelayPeriodChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteExecutionDelay', value])
     },
@@ -173,7 +170,7 @@ function VotingSettings() {
   )
 
   const handleDelegatedVotingPeriodChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteDelegatedVotingPeriod', value])
     },
@@ -181,7 +178,7 @@ function VotingSettings() {
   )
 
   const handleQuiteEndingExtensionPeriodChange = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['voteQuietEndingExtension', value])
     },

@@ -1,6 +1,7 @@
-import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Spring } from 'react-spring/renderprops'
-import { unselectable, springs } from '@1hive/1hive-ui'
+
+import { springs, unselectable } from '@1hive/1hive-ui'
 
 const LABELS_HEIGHT = 30
 const WIDTH_DEFAULT = 300
@@ -16,7 +17,7 @@ function useMeasuredWidth() {
   }, [])
 
   const onRef = useCallback(
-    element => {
+    (element) => {
       ref.current = element
       onResize()
     },
@@ -51,7 +52,7 @@ const ModifiedLineChart = ({
 
   // the total amount of values
   const lines = useMemo(() => {
-    return linesProps.map(lineOrValues =>
+    return linesProps.map((lineOrValues) =>
       Array.isArray(lineOrValues) ? { values: lineOrValues } : lineOrValues
     )
   }, [linesProps])
@@ -69,7 +70,7 @@ const ModifiedLineChart = ({
   }, [valuesCount, total])
 
   const getX = useCallback(
-    index => {
+    (index) => {
       return (width / Math.max(1, totalCount - 1)) * index
     },
     [width, totalCount]
@@ -259,7 +260,7 @@ ModifiedLineChart.defaultProps = {
   borderColor: 'rgba(209, 209, 209, 0.5)',
   labelColor: '#6d777b',
   lines: [],
-  label: index => index + 1,
+  label: (index) => index + 1,
   color: (index, { lines }) =>
     `hsl(${(index * (360 / lines.length) + 40) % 360}, 60%, 70%)`,
 }
