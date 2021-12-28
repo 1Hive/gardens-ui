@@ -1,16 +1,19 @@
 import React, { useMemo } from 'react'
 import { animated, useTrail } from 'react-spring'
+
 import { GU, Link, LoadingRing } from '@1hive/1hive-ui'
-import BaseInnerSidebar from './BaseInnerSidebar'
-import GardenItem from '../Items/GardenItem'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
 import { addressesEqual, getNetworkType } from '@utils/web3-utils'
+
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
+
+import GardenItem from '../Items/GardenItem'
+import BaseInnerSidebar from './BaseInnerSidebar'
 
 const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
   const { user: connectedUser, loading: userLoading } = useUserState()
@@ -24,9 +27,9 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return []
     }
 
-    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
+    const result = connectedUser.gardensSigned.map((gardenSignedAddress) => {
       const { name, logo } =
-        gardensMetadata?.find(g =>
+        gardensMetadata?.find((g) =>
           addressesEqual(g.address, gardenSignedAddress)
         ) || {}
 
@@ -57,6 +60,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
         <Link
           href="#/home"
           external={false}
+          disabled
           css={`
             display: block;
           `}

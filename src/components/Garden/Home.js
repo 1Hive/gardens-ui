@@ -1,23 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+
+import { buildGardenPath } from '@utils/routing-utils'
+
+import useGardenLogic from '@/logic/garden-logic'
+
+import { GardenLoader } from '../Loader'
+import MultiModal from '../MultiModal/MultiModal'
+import NetworkErrorModal from '../NetworkErrorModal'
+import ProposalsList from './Feed/ProposalsList'
+import RightPanel from './Feed/RightPanel'
+import Filters from './Filters/Filters'
+import Metrics from './Metrics'
 import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens'
-import Filters from './Filters/Filters'
-import { GardenLoader } from '../Loader'
-import Metrics from './Metrics'
-import MultiModal from '../MultiModal/MultiModal'
-import NetworkErrorModal from '../NetworkErrorModal'
 import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
-import ProposalsList from './Feed/ProposalsList'
-import RightPanel from './Feed/RightPanel'
 import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
-
-import useGardenLogic from '@/logic/garden-logic'
-import { useWallet } from '@providers/Wallet'
-import { buildGardenPath } from '@utils/routing-utils'
 
 const Home = function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
@@ -51,10 +54,10 @@ const Home = function Home() {
   }, [history])
 
   const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible)
+    setFilterSidlerVisible((visible) => !visible)
   }, [])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])
