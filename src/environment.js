@@ -7,6 +7,8 @@ const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
 
+const DEFAULT_VERCEL_ENV = 'localhost'
+
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
     return (
@@ -60,8 +62,11 @@ const ENV_VARS = {
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
+  SENTRY_DSN() {
+    return process.env.REACT_APP_SENTRY_DSN || null
+  },
   VERCEL_ENV() {
-    return process.env.REACT_APP_VERCEL_ENV || null
+    return process.env.REACT_APP_VERCEL_ENV || DEFAULT_VERCEL_ENV
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME

@@ -20,6 +20,8 @@
     "@juggle/resize-observer": "^3.2.0",
     "@nivo/core": "^0.73.0",
     "@nivo/line": "^0.73.0",
+    "@sentry/react": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.4.0",
     "clipboard-polyfill": "^3.0.0-pre5",
