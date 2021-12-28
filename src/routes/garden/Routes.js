@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Agreement from '@components/Garden/Agreement/Agreement'
-import DecisionLoader from '@components/Garden/DecisionLoader'
-import Home from '@components/Garden/Home'
-import ProposalLoader from '@components/Garden/ProposalLoader'
-import StakeManagement from '@components/Garden/Stake/StakeManagement'
+
+const Home = lazy(() => import('@components/Garden/Home'))
+const ProposalLoader = lazy(() => import('@components/Garden/ProposalLoader'))
+const DecisionLoader = lazy(() => import('@components/Garden/DecisionLoader'))
+const Agreement = lazy(() => import('@components/Garden/Agreement/Agreement'))
+const StakeManagement = lazy(() =>
+  import('@components/Garden/Stake/StakeManagement')
+)
 
 export default function Routes() {
   return (
