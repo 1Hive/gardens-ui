@@ -72,3 +72,4 @@ export async function extractProposalId(ethers, txHash, proposalType) {
 
   return proposalId.toNumber()
 }
+//test
