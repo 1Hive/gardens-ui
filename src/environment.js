@@ -6,6 +6,8 @@ const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
 const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
+const DEFAULT_MUMBAI_ETH_NODE_ENDPOINT =
+  'https://matic-testnet-archive-rpc.bwarelabs.com'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -21,16 +23,9 @@ const ENV_VARS = {
       process.env.REACT_APP_CONVICTION_APP_NAME || DEFAULT_CONVICTION_APP_NAME
     )
   },
-  RINKEBY_ETH_NODE() {
-    return process.env.REACT_APP_XDAI_ETH_NODE || ''
-  },
-  XDAI_ETH_NODE() {
-    return process.env.REACT_APP_XDAI_ETH_NODE || DEFAULT_XDAI_ETH_NODE_ENDPOINT
-  },
-  POLYGON_ETH_NODE() {
+  MUMBAI_ETH_NODE() {
     return (
-      process.env.REACT_APP_POLYGON_ETH_NODE ||
-      DEFAULT_POLYGON_ETH_NODE_ENDPOINT
+      process.env.REACT_APP_MUMBAI_ETH_NODE || DEFAULT_MUMBAI_ETH_NODE_ENDPOINT
     )
   },
   ETHERSCAN_API_KEY() {
@@ -60,11 +55,23 @@ const ENV_VARS = {
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
+  POLYGON_ETH_NODE() {
+    return (
+      process.env.REACT_APP_POLYGON_ETH_NODE ||
+      DEFAULT_POLYGON_ETH_NODE_ENDPOINT
+    )
+  },
+  RINKEBY_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || ''
+  },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || null
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
+  },
+  XDAI_ETH_NODE() {
+    return process.env.REACT_APP_XDAI_ETH_NODE || DEFAULT_XDAI_ETH_NODE_ENDPOINT
   },
 }
 

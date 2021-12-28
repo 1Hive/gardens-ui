@@ -1,14 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useTheme } from '@1hive/1hive-ui'
 
-import InfoBox from './InfoBox'
+import { useTheme } from '@1hive/1hive-ui'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+
+import InfoBox from './InfoBox'
 
 function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const theme = useTheme()
@@ -33,7 +34,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
         text: `Your enabled account does not have sufficient balance to deposit the ${formatTokenAmount(
           actionAmount,
           token.decimals
-        )} ${token.symbol} required for a decision.`,
+        )} ${token.symbol} required for a proposal.`,
         actionButton: 'Add funds',
         buttonOnClick: goToStakeManagerDeposit,
       }
@@ -57,7 +58,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
       text: `Your enabled account has sufficient balance to deposit the ${formatTokenAmount(
         actionAmount,
         token.decimals
-      )} ${token.symbol} required for a decision.`,
+      )} ${token.symbol} required for a proposal.`,
     }
   }, [
     actionAmount,

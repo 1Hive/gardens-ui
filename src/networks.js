@@ -9,6 +9,7 @@ import { getPreferredChain } from './local-settings'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
+const MUMBAI_ETH_NODE = env('MUMBAI_ETH_NODE')
 
 const networks = {
   rinkeby: {
@@ -116,7 +117,7 @@ const networks = {
     ensRegistry: '0x7EdE100965B1E870d726cD480dD41F2af1Ca0130',
     name: 'Mumbai',
     type: 'mumbai',
-    defaultEthNode: 'https://matic-testnet-archive-rpc.bwarelabs.com',
+    defaultEthNode: MUMBAI_ETH_NODE,
     arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
     template: '0x6a8f393eDCDd596CB3d19a5E348e89825cA07CcC',
@@ -128,7 +129,7 @@ const networks = {
 
     subgraphs: {
       agreement:
-        'https://api.thegraph.com/subgraphs/name/1hive/agreement-polygon',
+        'https://api.thegraph.com/subgraphs/name/1hive/agreement-mumbai',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-mumbai',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-polygon',
       gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mumbai',
@@ -137,7 +138,7 @@ const networks = {
     eip3085: {
       chainId: '0x13881',
       chainName: 'Mumbai',
-      rpcUrls: ['https://polygon-rpc.com'],
+      rpcUrls: [MUMBAI_ETH_NODE],
       iconUrls: [
         'https://raw.githubusercontent.com/maticnetwork/polygon-token-assets/main/icons/matic.svg',
       ],
