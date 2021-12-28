@@ -1,5 +1,6 @@
-import { ethers, providers as Providers } from 'ethers'
+import { providers as Providers, ethers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
+
 import env from '@/environment'
 import { getPreferredChain } from '@/local-settings'
 import { getNetwork } from '@/networks'
@@ -34,6 +35,7 @@ export function getNetworkType(chainId = getPreferredChain()) {
   if (chainId === '4') return 'rinkeby'
   if (chainId === '100') return 'xdai'
   if (chainId === '137') return 'polygon'
+  if (chainId === '80001') return 'mumbai'
 
   return DEFAULT_LOCAL_CHAIN
 }
@@ -45,6 +47,7 @@ export function getNetworkName(chainId = getPreferredChain()) {
   if (chainId === '4') return 'Rinkeby'
   if (chainId === '100') return 'xDai'
   if (chainId === '137') return 'Polygon'
+  if (chainId === '80001') return 'Mumbai'
 
   return 'unknown'
 }

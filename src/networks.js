@@ -1,10 +1,11 @@
 import {
+  getNetworkName,
   getNetworkType,
   isLocalOrUnknownNetwork,
-  getNetworkName,
 } from '@utils/web3-utils'
-import { getPreferredChain } from './local-settings'
+
 import env from './environment'
+import { getPreferredChain } from './local-settings'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
@@ -110,6 +111,40 @@ const networks = {
       blockExplorerUrls: ['https://polygonscan.com/'],
     },
   },
+  mumbai: {
+    chainId: 80001,
+    ensRegistry: '0x7EdE100965B1E870d726cD480dD41F2af1Ca0130',
+    name: 'Mumbai',
+    type: 'mumbai',
+    defaultEthNode: 'https://matic-testnet-archive-rpc.bwarelabs.com',
+    arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
+    disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
+    template: '0x6a8f393eDCDd596CB3d19a5E348e89825cA07CcC',
+    explorer: 'polygonscan',
+
+    honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
+    honeyPriceOracle: '0x15f627B9C47BbFBbC2194C9a8dB2E722E090a690',
+    stableToken: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+
+    subgraphs: {
+      agreement:
+        'https://api.thegraph.com/subgraphs/name/1hive/agreement-polygon',
+      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-mumbai',
+      celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-polygon',
+      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mumbai',
+    },
+
+    eip3085: {
+      chainId: '0x13881',
+      chainName: 'Mumbai',
+      rpcUrls: ['https://polygon-rpc.com'],
+      iconUrls: [
+        'https://raw.githubusercontent.com/maticnetwork/polygon-token-assets/main/icons/matic.svg',
+      ],
+      nativeCurrency: { name: 'Matic Token', symbol: 'MATIC', decimals: 18 },
+      blockExplorerUrls: ['https://polygonscan.com/'],
+    },
+  },
 }
 
 function getNetworkInternalName(chainId = getPreferredChain()) {
@@ -122,7 +157,9 @@ export function getNetwork(chainId = getPreferredChain()) {
 
 export function getNetworkChainIdByType(networkType) {
   const networks = getAvailableNetworks()
-  return networks.find(network => network.type === networkType)?.chainId || null
+  return (
+    networks.find((network) => network.type === networkType)?.chainId || null
+  )
 }
 
 export function getEthersNetwork(chainId) {
@@ -134,7 +171,7 @@ export function getEthersNetwork(chainId) {
   }
 }
 
-export const addEthereumChain = chainId => {
+export const addEthereumChain = (chainId) => {
   const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
@@ -145,7 +182,7 @@ export const addEthereumChain = chainId => {
   })
 }
 
-export const switchNetwork = async chainId => {
+export const switchNetwork = async (chainId) => {
   const chainIdHex = `0x${chainId.toString(16)}`
   try {
     await window?.ethereum?.request({
@@ -180,7 +217,7 @@ export function getAgreementConnectorConfig(chainId) {
   }
 }
 
-export const SUPPORTED_CHAINS = [4, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
+export const SUPPORTED_CHAINS = [80001]
 
 export function isSupportedChain(chainId) {
   return SUPPORTED_CHAINS.includes(chainId)

@@ -34,7 +34,7 @@ export const VOTE_STATUS_CHALLENGED = Symbol('VOTE_STATUS_CHALLENGED')
 export const VOTE_STATUS_DISPUTED = Symbol('VOTE_STATUS_DISPUTED')
 export const VOTE_STATUS_SETTLED = Symbol('VOTE_STATUS_SETTLED')
 
-export const DEFAULT_CHAIN_ID = 100
+export const DEFAULT_CHAIN_ID = 80001
 
 export const TERMINAL_EXECUTOR_MESSAGE = `# Available commands:
 
