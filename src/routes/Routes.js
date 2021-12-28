@@ -10,6 +10,8 @@ const Profile = lazy(() => import('@components/Profile/Profile'))
 export default function Routes() {
   return (
     <Switch>
+      <Redirect exact from="/" to="/home" />
+
       <Suspense
         fallback={
           <Main>
@@ -17,12 +19,12 @@ export default function Routes() {
           </Main>
         }
       >
-        <Redirect exact from="/" to="/home" />
         <Route path="/home" component={Home} />
         <Route exact path="/profile" component={Profile} />
         <Route path="/:networkType/garden/:gardenAddress" component={Garden} />
-        <Redirect to="/home" />
       </Suspense>
+
+      <Redirect to="/home" />
     </Switch>
   )
 }
