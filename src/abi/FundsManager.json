@@ -1,3 +1,1 @@
-[
-  "function balance(address _token) public view returns (uint256)"
-]
+["function balance(address _token) public view returns (uint256)"]

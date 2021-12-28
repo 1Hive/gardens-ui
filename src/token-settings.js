@@ -20,13 +20,13 @@ export function loadTokenSettings(token) {
     tokenSettings.map(([name, key]) =>
       token[name]()
         .toPromise()
-        .then(value => ({ [key]: value }))
+        .then((value) => ({ [key]: value }))
     )
   )
-    .then(settings =>
+    .then((settings) =>
       settings.reduce((acc, setting) => ({ ...acc, ...setting }), {})
     )
-    .catch(err => {
+    .catch((err) => {
       console.error("Failed to load token's settings", err)
       // Return an empty object to try again later
       return {}

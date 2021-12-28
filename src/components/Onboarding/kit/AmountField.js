@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import { Field, GU, TextInput, textStyle, useTheme } from '@1hive/1hive-ui'
 
 // matches a number up to two decimals
@@ -22,7 +23,7 @@ const AmountField = ({
   }, [value])
 
   const handleInputChange = useCallback(
-    e => {
+    (e) => {
       const value = parseFloat(e.target.value)
 
       // Allow empty values so it can be easier to update input

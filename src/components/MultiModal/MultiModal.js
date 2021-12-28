@@ -1,7 +1,9 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+
 import PropTypes from 'prop-types'
-import { noop } from '@1hive/1hive-ui'
 import { Inside } from 'use-inside'
+
+import { noop } from '@1hive/1hive-ui'
 
 function MultiModal({ visible, onClose, onClosed, children }) {
   const [render, setRender] = useState(visible)

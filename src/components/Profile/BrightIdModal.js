@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+
 import QRCode from 'qrcode.react'
+
 import {
   GU,
   Info,
@@ -9,9 +11,12 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import LoadingRing from '../LoadingRing'
-import { BRIGHT_ID_APP_DEEPLINK } from '@/endpoints'
+
 import { sponsorUser } from '@/services/sponsorUser'
+
+import { BRIGHT_ID_APP_DEEPLINK } from '@/endpoints'
+
+import LoadingRing from '../LoadingRing'
 
 function BrightIdModal({ account, addressExist, visible, onClose }) {
   const [error, setError] = useState(null)

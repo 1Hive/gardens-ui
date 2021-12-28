@@ -1,12 +1,17 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
+
 import PropTypes from 'prop-types'
-import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui'
-import ModalButton from '../ModalButton'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
+
+import { Checkbox, Field, GU, useLayout, useTheme } from '@1hive/1hive-ui'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenState } from '@providers/GardenState'
+
 import signGraphic from '@assets/smart-contract.svg'
+
+import ModalButton from '../ModalButton'
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)
@@ -29,7 +34,7 @@ function SignOverview({ getTransactions }) {
   }, [getTransactions, next])
 
   const handleAcceptTerms = useCallback(
-    checked => setAcceptedTerms(checked),
+    (checked) => setAcceptedTerms(checked),
     []
   )
 

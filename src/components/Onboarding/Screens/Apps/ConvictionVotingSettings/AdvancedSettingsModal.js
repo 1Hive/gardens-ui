@@ -1,5 +1,7 @@
-import { Field, Help, TextInput } from '@1hive/1hive-ui'
 import React, { Fragment } from 'react'
+
+import { Field, Help, TextInput } from '@1hive/1hive-ui'
+
 import { Modal, PercentageField } from '@components/Onboarding//kit'
 
 const AdvancedSettingsModal = ({

@@ -1,7 +1,9 @@
 import React from 'react'
-import { springs, useTheme, RADIUS } from '@1hive/1hive-ui'
 import { Spring, animated } from 'react-spring/renderprops'
+
 import styled from 'styled-components'
+
+import { RADIUS, springs, useTheme } from '@1hive/1hive-ui'
 
 function SummaryBar({
   disabledProgressBars,
@@ -29,7 +31,7 @@ function SummaryBar({
                     ? theme.surfaceOpened
                     : theme.positive,
                   transform: progress.interpolate(
-                    v => `scale3d(${positiveSize * v}, 1, 1)`
+                    (v) => `scale3d(${positiveSize * v}, 1, 1)`
                   ),
                 }}
               />
@@ -41,7 +43,7 @@ function SummaryBar({
                     ? theme.controlUnder
                     : theme.negative,
                   transform: progress.interpolate(
-                    v => `
+                    (v) => `
                     translate3d(${100 * positiveSize * v}%, 0, 0)
                     scale3d(${negativeSize * v}, 1, 1)
                   `
@@ -54,7 +56,7 @@ function SummaryBar({
             <RequiredSeparatorWrapper
               style={{
                 transform: progress.interpolate(
-                  v => `
+                  (v) => `
                   translate3d(${100 * requiredSize * v}%, 0, 0)
                   scale3d(1, ${requiredSize > 0 ? v : 0}, 1)
                 `
@@ -88,7 +90,7 @@ const Main = styled.div`
   height: 25px;
 `
 
-const CombinedBar = props => {
+const CombinedBar = (props) => {
   const theme = useTheme()
   return (
     <div

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { GU, IconConnect, RADIUS, textStyle, useTheme } from '@1hive/1hive-ui'
 
 function AccountNotConnected() {

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   ButtonBase,
   GU,
@@ -6,6 +7,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+
 function HeaderModule({ content, hasPopover = true, icon, onClick }) {
   const { above } = useViewport()
   const theme = useTheme()

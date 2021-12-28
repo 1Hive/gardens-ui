@@ -1,6 +1,8 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
-import { useTheme, GU, IconCross, IconCheck } from '@1hive/1hive-ui'
+
+import { GU, IconCheck, IconCross, useTheme } from '@1hive/1hive-ui'
 
 function CheckDisc({ mode, size }) {
   const theme = useTheme()

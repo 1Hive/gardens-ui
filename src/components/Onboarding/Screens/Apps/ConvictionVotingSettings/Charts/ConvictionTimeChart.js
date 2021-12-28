@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react'
+
+import { ResponsiveLine } from '@nivo/line'
 import PropTypes from 'prop-types'
+
 import {
   ChartBase,
   ChartTooltip,
 } from '@components/Onboarding/kit/ChartComponents'
-import { ResponsiveLine } from '@nivo/line'
+
 import { useCharts } from '@providers/Charts'
 
 import {
@@ -33,7 +36,7 @@ const computeChartData = (
   )
   const maxConviction = calculateMaxConviction(totalStakePct, decay)
 
-  return timeData.map(time => ({
+  return timeData.map((time) => ({
     x: time,
     y: toPercentage(
       calculateConviction(0, stakeOnProposal, time, decay) / maxConviction

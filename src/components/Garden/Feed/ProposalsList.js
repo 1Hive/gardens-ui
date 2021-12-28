@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import {
   BIG_RADIUS,
   Button,
@@ -8,12 +9,12 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
+import filterToggleSvg from '@assets/filter.svg'
 import noProposalsYetLogo from '@assets/noProposalsYet.svg'
+
 import EmptyResults from '../../EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
-
-import filterToggleSvg from '@assets/filter.svg'
 
 function ProposalsList({
   activeFilters,

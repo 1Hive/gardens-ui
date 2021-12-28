@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from 'react'
-import PropTypes from 'prop-types'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
+
+import PropTypes from 'prop-types'
+import { useInside } from 'use-inside'
+
 import {
   ButtonIcon,
   GU,
@@ -8,17 +11,16 @@ import {
   Modal,
   RADIUS,
   Root,
+  Viewport,
   textStyle,
   useLayout,
   useTheme,
-  Viewport,
 } from '@1hive/1hive-ui'
-import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
-import { springs } from '../../style/springs'
-import { useDisableAnimation } from '../../hooks/useDisableAnimation'
-import { useInside } from 'use-inside'
 
 import headerBackground from '../../assets/modal-background.svg'
+import { useDisableAnimation } from '../../hooks/useDisableAnimation'
+import { springs } from '../../style/springs'
+import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
@@ -151,7 +153,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   }, [animationDisabled, enableAnimation])
 
   const renderScreen = useCallback(
-    screen => {
+    (screen) => {
       const { title, content, graphicHeader, width } = screen
       const standardPadding = smallMode ? 3 * GU : 5 * GU
 
@@ -162,9 +164,9 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
               css={`
                 position: relative;
                 overflow: hidden;
-                padding: ${1.5 * GU}px ${standardPadding}px
-                  ${1.5 * GU}px ${standardPadding}px;
-                background-image: url("${headerBackground}");
+                padding: ${1.5 * GU}px ${standardPadding}px ${1.5 * GU}px
+                  ${standardPadding}px;
+                background-image: url('${headerBackground}');
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
               `}
             >
@@ -266,14 +268,14 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
             onStart={onStart}
             native
           >
-            {step => animProps => {
+            {(step) => (animProps) => {
               const stepScreen = getScreen(step)
 
               return (
                 <>
                   {stepScreen && (
                     <AnimatedDiv
-                      ref={elt => {
+                      ref={(elt) => {
                         if (elt) {
                           setHeight(elt.clientHeight)
                         }

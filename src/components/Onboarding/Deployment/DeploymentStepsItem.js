@@ -1,22 +1,26 @@
 import React, { useMemo } from 'react'
+
 import PropTypes from 'prop-types'
+import { useWallet } from 'use-wallet'
+
 import {
-  textStyle,
   GU,
   IconCheck,
-  useTheme,
   IconCross,
   TransactionBadge,
+  textStyle,
+  useTheme,
 } from '@1hive/1hive-ui'
+
 import {
   STEP_ERROR,
   STEP_PROMPTING,
   STEP_SUCCESS,
   STEP_WORKING,
 } from '@components/Stepper/stepper-statuses'
-import { TransactionStatusType } from '@/prop-types'
+
 import { getNetwork } from '@/networks'
-import { useWallet } from 'use-wallet'
+import { TransactionStatusType } from '@/prop-types'
 
 function DeploymentStepsItem({ index, name, status, txHash }) {
   const theme = useTheme()

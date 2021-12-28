@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import ModalFlowBase from '../ModalFlowBase'
-import WrapUnwrap from './WrapUnwrap'
 
 import { useGardenState } from '@providers/GardenState'
+
 import useActions from '@hooks/useActions'
 
 import BigNumber from '@lib/bigNumber'
+
+import ModalFlowBase from '../ModalFlowBase'
+import WrapUnwrap from './WrapUnwrap'
 
 const ZERO_BN = new BigNumber(0)
 
@@ -24,26 +26,26 @@ function WrapTokenScreens({ mode }) {
           if (!allowance.eq(0)) {
             await hookedTokenManagerActions.approveWrappableTokenAmount(
               ZERO_BN,
-              intent => {
+              (intent) => {
                 temporatyTrx.current = temporatyTrx.current.concat(intent)
               }
             )
           }
           await hookedTokenManagerActions.approveWrappableTokenAmount(
             amount,
-            intent => {
+            (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
         }
-        await hookedTokenManagerActions.wrap({ amount }, intent => {
+        await hookedTokenManagerActions.wrap({ amount }, (intent) => {
           temporatyTrx.current = temporatyTrx.current.concat(intent)
         })
         setTransactions(temporatyTrx.current)
         onComplete()
       }
       if (mode === 'unwrap') {
-        await hookedTokenManagerActions.unwrap({ amount }, intent => {
+        await hookedTokenManagerActions.unwrap({ amount }, (intent) => {
           setTransactions(intent)
           onComplete()
         })

@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
-import { useAccountStakesByGarden } from './useStakes'
 
 import BigNumber from '@lib/bigNumber'
+
+import { useAccountStakesByGarden } from './useStakes'
 
 export default function useAccountTotalStaked(account) {
   const stakes = useAccountStakesByGarden(account)

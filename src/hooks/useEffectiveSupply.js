@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+
 import { PCT_BASE } from '../constants'
 
 export default function useEffectiveSupply(totalSupply, config) {

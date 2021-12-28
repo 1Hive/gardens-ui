@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react'
+
 import { CircleGraph, GU, useTheme } from '@1hive/1hive-ui'
-import Step from './Step'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
+import Step from './Step'
 
 function StepsPanel() {
   const theme = useTheme()

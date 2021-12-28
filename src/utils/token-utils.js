@@ -1,8 +1,10 @@
 import { addressesEqual } from '@1hive/1hive-ui'
-import { round } from './math-utils'
+
 import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'
 import stableTokenSvg from '@assets/stable-token.svg'
+
+import { round } from './math-utils'
 
 const LOCAL_STABLE_ICONS = ['DAI', 'XDAI', 'WXDAI', 'USDC', 'USDT', 'LUSD']
 

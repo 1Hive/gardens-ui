@@ -1,13 +1,13 @@
 import AgreementSettings from './Apps/AgreementSettings'
 import ConvictionVotingSettings from './Apps/ConvictionVotingSettings'
+import IssuanceSettings from './Apps/IssuanceSettings'
+import TokenSettings from './Apps/TokenSettings'
+import VotingSettings from './Apps/VotingSettings'
 import GardenMetadata from './GardenMetadata'
 import GardenTypeSelector from './GardenTypeSelector'
 import HoneyswapLiquidity from './HoneyswapLiquidity'
-import IssuanceSettings from './Apps/IssuanceSettings'
 import LaunchGarden from './LaunchGarden'
 import ReviewInformation from './ReviewInformation'
-import TokenSettings from './Apps/TokenSettings'
-import VotingSettings from './Apps/VotingSettings'
 
 const STEPS = [
   'Select type',

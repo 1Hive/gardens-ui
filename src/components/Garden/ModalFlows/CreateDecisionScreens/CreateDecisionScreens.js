@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import ActionFees from './ActionFees'
-import CreateDecisionRequirements from './CreateDecisionRequirements'
-import ModalFlowBase from '../ModalFlowBase'
 
-import { useAgreement } from '@hooks/useAgreement'
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
+
+import { useAgreement } from '@hooks/useAgreement'
+
+import ModalFlowBase from '../ModalFlowBase'
+import ActionFees from './ActionFees'
+import CreateDecisionRequirements from './CreateDecisionRequirements'
 
 function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
   const [loading, setLoading] = useState(true)
@@ -24,7 +26,7 @@ function CreateDecisionScreens({ onComplete, onCreateTransaction }) {
   }, [agreementLoading, stakingLoading])
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       const intent = await onCreateTransaction()
       setTransactions(intent)
       onComplete()

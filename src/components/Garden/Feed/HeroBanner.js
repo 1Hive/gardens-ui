@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   BIG_RADIUS,
   Button,
@@ -7,12 +8,13 @@ import {
   textStyle,
   useLayout,
 } from '@1hive/1hive-ui'
+
 import { useWallet } from '@providers/Wallet'
 
-import desktopBanner from '@assets/banner.png'
 import mobileBanner from '@assets/banner-mobile.png'
-import tabletBanner from '@assets/banner-tablet.png'
 import tabletBannerFull from '@assets/banner-tablet-full.png'
+import tabletBanner from '@assets/banner-tablet.png'
+import desktopBanner from '@assets/banner.png'
 
 const BANNERS = {
   small: { image: mobileBanner, aspectRatio: '54%' },

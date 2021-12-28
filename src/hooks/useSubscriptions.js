@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+
 import { useGardenState } from '@providers/GardenState'
+
 import {
   transformConfigData,
   transformProposalData,
@@ -54,7 +56,7 @@ export function useProposalsSubscription(filters) {
       }
 
       const transformedProposals = await Promise.all(
-        proposals.map(p => transformProposalData(p, config))
+        proposals.map((p) => transformProposalData(p, config))
       )
       setProposals(transformedProposals)
     },

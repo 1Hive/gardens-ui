@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { getNetwork } from '@/networks'
+
 import { getProfileForAccount } from '@lib/profile'
+
+import { getNetwork } from '@/networks'
 
 const addressCache = new Map()
 

@@ -1,10 +1,14 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
-import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
+
+import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { getNetwork } from '@/networks'
+
 import loadingRing from './assets/loading-ring.svg'
 
 const spin = keyframes`
@@ -16,7 +20,7 @@ const spin = keyframes`
   }
 `
 
-const AccountModuleActionScreen = React.memo(function({ onCancel }) {
+const AccountModuleActionScreen = React.memo(function ({ onCancel }) {
   const theme = useTheme()
   const connectedGarden = useConnectedGarden()
   const { image, name } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network

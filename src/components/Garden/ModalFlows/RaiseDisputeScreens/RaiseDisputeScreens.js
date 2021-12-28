@@ -1,13 +1,17 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import PropTypes from 'prop-types'
-import ModalFlowBase from '../ModalFlowBase'
-import RaiseDisputeRequirements from './RaiseDisputeRequirements'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 import useActions from '@hooks/useActions'
 import { useCelesteSynced } from '@hooks/useCeleste'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDisputeFees } from '@hooks/useDispute'
+
 import BigNumber from '@lib/bigNumber'
+
+import ModalFlowBase from '../ModalFlowBase'
+import RaiseDisputeRequirements from './RaiseDisputeRequirements'
 
 const ZERO_BN = new BigNumber('0')
 
@@ -29,7 +33,7 @@ function RaiseDisputeScreens({ proposal }) {
           await agreementActions.approveTokenAmount(
             tokenAddress,
             ZERO_BN,
-            intent => {
+            (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
@@ -37,7 +41,7 @@ function RaiseDisputeScreens({ proposal }) {
         await agreementActions.approveTokenAmount(
           tokenAddress,
           amount,
-          intent => {
+          (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
         )
@@ -47,12 +51,12 @@ function RaiseDisputeScreens({ proposal }) {
   )
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       await approveTokenAmount(disputeFees.token, disputeFees.amount)
 
       await agreementActions.disputeAction(
         { actionId: proposal.actionId, submitterFinishedEvidence: true },
-        intent => {
+        (intent) => {
           const trxList = temporatyTrx.current.concat(intent)
           setTransactions(trxList)
           onComplete()

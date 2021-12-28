@@ -1,20 +1,26 @@
 import React from 'react'
+
 import {
-  textStyle,
+  GU,
+  IconCheck,
   IdentityBadge,
   Link,
-  IconCheck,
+  RADIUS,
+  textStyle,
   useLayout,
   useTheme,
-  GU,
-  RADIUS,
 } from '@1hive/1hive-ui'
-import InfoField from '../InfoField'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { CELESTE_URL } from '@/endpoints'
+
 import { dateFormat } from '@utils/date-utils'
 import { getIpfsCidFromUri, getIpfsUrlFromUri } from '@utils/ipfs-utils'
+
+import { CELESTE_URL } from '@/endpoints'
+
 import { getNetwork } from '@/networks'
+
+import InfoField from '../InfoField'
 
 function AgreementDetails({
   creationDate,

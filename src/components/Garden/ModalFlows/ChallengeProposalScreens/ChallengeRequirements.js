@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import {
   Button,
   GU,
@@ -9,20 +10,25 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import InfoField from '../../InfoField'
-import ModalButton from '../ModalButton'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
-import env from '@/environment'
-import { formatTokenAmount } from '@utils/token-utils'
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+
 import { getDisputableAppByName } from '@utils/app-utils'
 import { buildGardenPath } from '@utils/routing-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '@assets/iconError.svg'
+import env from '@/environment'
+
 import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+
+import InfoField from '../../InfoField'
+import ModalButton from '../ModalButton'
 
 function ChallengeRequirements({
   agreement,

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
+
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 
 const BaseItem = ({
@@ -29,7 +30,7 @@ const BaseItem = ({
         width: 100%;
         border-right: 1px solid ${theme.border};
         ${label &&
-          ` &:hover:after {
+        ` &:hover:after {
             max-width: ${27 * GU}px;
             white-space: nowrap;
             overflow: hidden;
@@ -72,7 +73,7 @@ const BaseItem = ({
             display: flex;
             padding: ${1.5 * GU}px;
             ${!active &&
-              `&:hover {
+            `&:hover {
                 background: rgb(246, 246, 247);
               }`}
           `}

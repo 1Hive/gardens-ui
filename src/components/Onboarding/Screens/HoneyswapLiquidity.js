@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+
 import {
   Box,
   DropDown,
@@ -8,21 +9,25 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-import Header from '../kit/Header'
-import Navigation from '../Navigation'
-import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
+
 import { useOnboardingState } from '@providers/Onboarding'
-import { useTokenBalanceOf } from '@hooks/useToken'
 import { useWallet } from '@providers/Wallet'
 
+import useHNYPriceOracle from '@hooks/useHNYPriceOracle'
+import { useTokenBalanceOf } from '@hooks/useToken'
+
+import { toDecimals } from '@utils/math-utils'
 import {
   formatTokenAmount,
   getLocalTokenIconBySymbol,
 } from '@utils/token-utils'
-import { getNetwork } from '@/networks'
-import { toDecimals } from '@utils/math-utils'
-import { BYOT_TYPE } from '../constants'
+
 import { bigNum } from '@/lib/bigNumber'
+import { getNetwork } from '@/networks'
+
+import Navigation from '../Navigation'
+import { BYOT_TYPE } from '../constants'
+import Header from '../kit/Header'
 
 const MIN_HNY_USD = 100
 const HNY_DENOMINATION = 0
@@ -30,14 +35,8 @@ const HNY_DENOMINATION = 0
 function HoneyswapLiquidity() {
   const theme = useTheme()
   const { account, chainId } = useWallet()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
   const {
     denomination,
     honeyTokenLiquidity,
@@ -65,7 +64,7 @@ function HoneyswapLiquidity() {
   )
 
   // Callback functions
-  const handleDenominatedAmountChange = useCallback(event => {
+  const handleDenominatedAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -74,7 +73,7 @@ function HoneyswapLiquidity() {
     setDenominatedAmount(newAmount)
   }, [])
 
-  const handleTokenAmountChange = useCallback(event => {
+  const handleTokenAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -84,7 +83,7 @@ function HoneyswapLiquidity() {
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       onConfigChange('liquidity', {

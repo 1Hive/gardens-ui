@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { GU, Popover, springs } from '@1hive/1hive-ui'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
+
+import PropTypes from 'prop-types'
+
+import { GU, Popover, springs } from '@1hive/1hive-ui'
 
 const AnimatedDiv = animated.div
 
@@ -91,25 +93,27 @@ function HeaderPopover({
                   setMeasuredHeight(true)
                 }}
               >
-                {screenData => ({ opacity, transform }) => (
-                  <AnimatedDiv
-                    ref={elt => {
-                      if (elt) {
-                        setHeight(elt.clientHeight)
-                      }
-                    }}
-                    style={{
-                      opacity,
-                      transform,
-                      position: measuredHeight ? 'absolute' : 'static',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                    }}
-                  >
-                    {children(screenData)}
-                  </AnimatedDiv>
-                )}
+                {(screenData) =>
+                  ({ opacity, transform }) =>
+                    (
+                      <AnimatedDiv
+                        ref={(elt) => {
+                          if (elt) {
+                            setHeight(elt.clientHeight)
+                          }
+                        }}
+                        style={{
+                          opacity,
+                          transform,
+                          position: measuredHeight ? 'absolute' : 'static',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                        }}
+                      >
+                        {children(screenData)}
+                      </AnimatedDiv>
+                    )}
               </Transition>
             </AnimatedDiv>
           )}

@@ -1,14 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { useTheme } from '@1hive/1hive-ui'
 
-import InfoBox from './InfoBox'
-
-import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat } from '@utils/date-utils'
+import { buildGardenPath } from '@utils/routing-utils'
 
-import iconError from '@assets/iconError.svg'
 import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+
+import InfoBox from './InfoBox'
 
 function AgreementStatus({ agreement }) {
   const history = useHistory()

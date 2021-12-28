@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMounted } from '@hooks/useMounted'
+
 import { getDefaultProvider } from '@utils/web3-utils'
+
 import { getNetwork } from '../networks'
 
 const NETWORK_TIMES = new Map([
@@ -81,7 +83,8 @@ export function useBlockTimeStamp(blockNumber, chainId) {
 export function useBlockTime(chainId) {
   const network = getNetwork(chainId)
 
-  return useMemo(() => (network ? NETWORK_TIMES.get(network.type) : null), [
-    network,
-  ])
+  return useMemo(
+    () => (network ? NETWORK_TIMES.get(network.type) : null),
+    [network]
+  )
 }

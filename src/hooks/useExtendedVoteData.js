@@ -1,21 +1,23 @@
 import { useMemo } from 'react'
 
-import { useBlockTimeStamp } from './useBlock'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from './useContract'
 import { useGardenState } from '@providers/GardenState'
-import usePromise from './usePromise'
 import { useUserState } from '@providers/User'
 import { useWallet } from '@providers/Wallet'
 
-import { addressesEqual } from '@utils/web3-utils'
-import { getCanUserVote, getCanUserVoteOnBehalfOf } from '@utils/vote-utils'
 import { getUserBalanceAt, getUserBalanceNow } from '@utils/token-utils'
+import { getCanUserVote, getCanUserVoteOnBehalfOf } from '@utils/vote-utils'
+import { addressesEqual } from '@utils/web3-utils'
+
 import minimeTokenAbi from '@abis/minimeToken.json'
 import votingAbi from '@abis/voting.json'
 
-const emptyPromise = defaultValue =>
-  new Promise(resolve => resolve(defaultValue))
+import { useBlockTimeStamp } from './useBlock'
+import { useContractReadOnly } from './useContract'
+import usePromise from './usePromise'
+
+const emptyPromise = (defaultValue) =>
+  new Promise((resolve) => resolve(defaultValue))
 
 export default function useExtendedVoteData(vote) {
   const { chainId } = useConnectedGarden()
@@ -23,16 +25,11 @@ export default function useExtendedVoteData(vote) {
   // Can user vote
   const { canUserVote, canUserVotePromise } = useCanUserVote(vote)
   // Can user vote on behalf of
-  const {
-    canUserVoteOnBehalfOf,
-    canUserVoteOnBehalfOfPromise,
-  } = useCanUserVoteOnBehalfOf(vote)
+  const { canUserVoteOnBehalfOf, canUserVoteOnBehalfOfPromise } =
+    useCanUserVoteOnBehalfOf(vote)
   // Princiapls balances
-  const {
-    principals,
-    principalsBalance,
-    principalsBalancePromise,
-  } = usePrincipals(vote)
+  const { principals, principalsBalance, principalsBalancePromise } =
+    usePrincipals(vote)
   // User balance
   const {
     userBalance,
@@ -137,7 +134,7 @@ function usePrincipals(vote) {
       return emptyPromise([])
     }
     return Promise.all(
-      principals.map(principal =>
+      principals.map((principal) =>
         getUserBalanceAt(
           principal,
           vote.snapshotBlock,
@@ -212,13 +209,13 @@ function useUserPrincipalsByGarden(gardenAddress, vote) {
     () =>
       user?.representativeFor
         .filter(
-          principal =>
+          (principal) =>
             addressesEqual(principal.organization.id, gardenAddress) &&
             vote.casts.findIndex(
-              cast => cast.caster === principal.user.address
+              (cast) => cast.caster === principal.user.address
             ) === -1
         )
-        .map(principal => principal.user.address) || [],
+        .map((principal) => principal.user.address) || [],
     [gardenAddress, user, vote]
   )
 

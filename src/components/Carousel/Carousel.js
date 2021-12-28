@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
-import PropTypes from 'prop-types'
-import { GU, useViewport, unselectable, springs } from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { animated, useSpring } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+
+import PropTypes from 'prop-types'
+
+import { GU, springs, unselectable, useViewport } from '@1hive/1hive-ui'
+
 import PrevNext from './PrevNext'
 
 // TODO:
@@ -37,12 +40,12 @@ function Carousel({
     const lastSelectionableItem = items.length - visibleItems
 
     setVisibleItems(visibleItems)
-    setSelected(selected =>
+    setSelected((selected) =>
       selected > lastSelectionableItem ? lastSelectionableItem : selected
     )
   }, [containerWidth, itemSpacing, itemWidth, items])
 
-  const updateContainerWidth = useCallback(element => {
+  const updateContainerWidth = useCallback((element) => {
     setContainerWidth(element ? element.clientWidth : 0)
   }, [])
 
@@ -53,7 +56,7 @@ function Carousel({
   }, [vw, updateContainerWidth])
 
   const handleContainerRef = useCallback(
-    element => {
+    (element) => {
       container.current = element
       updateContainerWidth(element)
     },
@@ -61,11 +64,11 @@ function Carousel({
   )
 
   const prev = useCallback(() => {
-    setSelected(selected => Math.max(0, selected - visibleItems))
+    setSelected((selected) => Math.max(0, selected - visibleItems))
   }, [visibleItems])
 
   const next = useCallback(() => {
-    setSelected(selected =>
+    setSelected((selected) =>
       Math.min(items.length - visibleItems, selected + visibleItems)
     )
   }, [items.length, visibleItems])
@@ -79,7 +82,7 @@ function Carousel({
 
   // Get the container x position from an item index
   const xFromItem = useCallback(
-    index => sideSpace - (itemWidth + itemSpacing) * index,
+    (index) => sideSpace - (itemWidth + itemSpacing) * index,
     [sideSpace, itemWidth, itemSpacing]
   )
 
@@ -152,7 +155,7 @@ function Carousel({
         {...bindDrag()}
         style={{
           // es-lint skip next line
-          transform: x.interpolate(x => `translate3d(${(0, x)}px, 0, 0)`),
+          transform: x.interpolate((x) => `translate3d(${(0, x)}px, 0, 0)`),
         }}
         css={`
           display: flex;
@@ -165,7 +168,7 @@ function Carousel({
           <AnimatedDiv
             key={i}
             style={{
-              opacity: drag.interpolate(drag => {
+              opacity: drag.interpolate((drag) => {
                 return drag || (i >= selected && i < selected + visibleItems)
                   ? 1
                   : 0.25

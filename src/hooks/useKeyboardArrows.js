@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+
 import keycodes from '../keycodes'
 
 export default function useArrows({ onUp, onLeft, onDown, onRight } = {}) {
@@ -9,7 +10,7 @@ export default function useArrows({ onUp, onLeft, onDown, onRight } = {}) {
       [keycodes.down, onDown],
       [keycodes.right, onRight],
     ]
-    const onKeyDown = e => {
+    const onKeyDown = (e) => {
       for (const [keyCode, cb] of actions) {
         if (cb && e.keyCode === keyCode) {
           e.preventDefault()
@@ -27,7 +28,7 @@ export default function useArrows({ onUp, onLeft, onDown, onRight } = {}) {
 
 export function useEsc(cb) {
   const handlekeyDown = useCallback(
-    e => {
+    (e) => {
       if (e.keyCode === keycodes.esc) {
         cb()
       }

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+
 import {
   Box,
   Distribution,
@@ -7,15 +8,17 @@ import {
   useLayout,
   useTheme,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '../IdentityBadge'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
-import { formatTokenAmount } from '@utils/token-utils'
+
 import { stakesPercentages } from '@utils/math-utils'
+import { formatTokenAmount } from '@utils/token-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
 import noSupportIllustration from '@assets/noSupportIllustration.svg'
+
+import IdentityBadge from '../IdentityBadge'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -26,7 +29,7 @@ function displayedStakes(stakes, total, stakeToken) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map(stake => ({
+  ).map((stake) => ({
     item: {
       entity:
         stake.index === -1
@@ -122,7 +125,7 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
     [theme]
   )
 
-  const adjustedStakes = stakes.map(stake => ({
+  const adjustedStakes = stakes.map((stake) => ({
     ...stake,
     percentage: Math.round(stake.percentage),
   }))

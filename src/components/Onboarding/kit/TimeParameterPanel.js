@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { Box, GU, textStyle } from '@1hive/1hive-ui'
+
 import { DurationFields } from '.'
 
 const TimeParameterPanel = ({ title, description, value, onUpdate }) => {

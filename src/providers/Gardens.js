@@ -5,19 +5,22 @@ import React, {
   useMemo,
   useState,
 } from 'react'
+
 import { getGardens } from '@1hive/connect-gardens'
 
-import { ConnectedGardenProvider } from './ConnectedGarden'
 import { useDebounce } from '@hooks/useDebounce'
 import useGardenFilters from '@hooks/useGardenFilters'
 import { useGardenRoute } from '@hooks/useRouting'
-import { useWallet } from './Wallet'
+
+import { testNameFilter } from '@utils/garden-filters-utils'
+import { mergeGardenMetadata } from '@utils/garden-utils'
+
+import { getNetwork, getNetworkChainIdByType } from '@/networks'
 
 import { fetchFileContent } from '../services/github'
 import { getVoidedGardensByNetwork } from '../voided-gardens'
-import { mergeGardenMetadata } from '@utils/garden-utils'
-import { testNameFilter } from '@utils/garden-filters-utils'
-import { getNetwork, getNetworkChainIdByType } from '@/networks'
+import { ConnectedGardenProvider } from './ConnectedGarden'
+import { useWallet } from './Wallet'
 
 const DAOContext = React.createContext()
 
@@ -57,13 +60,13 @@ function useFilteredGardens(gardens, gardensMetadata, filters) {
   const debouncedNameFilter = useDebounce(filters.name.filter, 300)
 
   return useMemo(() => {
-    const mergedGardens = gardens.map(garden =>
+    const mergedGardens = gardens.map((garden) =>
       mergeGardenMetadata(garden, gardensMetadata)
     )
     if (!debouncedNameFilter) {
       return mergedGardens
     }
-    return mergedGardens.filter(garden =>
+    return mergedGardens.filter((garden) =>
       testNameFilter(debouncedNameFilter, garden)
     )
   }, [debouncedNameFilter, gardens, gardensMetadata])
@@ -108,7 +111,7 @@ function useGardensList(queryFilters, filters, chainId) {
   const filteredGardens = useFilteredGardens(gardens, gardensMetadata, filters)
 
   const reload = useCallback(() => {
-    setRefetchTriger(triger => setRefetchTriger(!triger))
+    setRefetchTriger((triger) => setRefetchTriger(!triger))
   }, [])
 
   useEffect(() => {
@@ -121,7 +124,7 @@ function useGardensList(queryFilters, filters, chainId) {
         )
 
         setGardens(
-          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+          result.filter((garden) => !getVoidedGardensByNetwork().get(garden.id))
         )
       } catch (err) {
         setGardens([])

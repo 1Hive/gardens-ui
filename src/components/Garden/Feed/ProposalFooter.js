@@ -1,16 +1,20 @@
 import React, { useMemo } from 'react'
+
 import styled from 'styled-components'
+
 import { textStyle, useTheme } from '@1hive/1hive-ui'
-import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 
-import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
+import { formatTokenAmount } from '@utils/token-utils'
+
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
-import { formatTokenAmount } from '@utils/token-utils'
+
 import { getConnectedAccountCast } from '../../../utils/vote-utils'
+import { getStatusAttributes } from '../DecisionDetail/VoteStatus'
+import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
 
 function ProposalCardFooter({ proposal }) {
   if (proposal.type === ProposalTypes.Decision) {

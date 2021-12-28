@@ -5,7 +5,7 @@ export default function usePromise(fn, memoParams, defaultValue) {
   useEffect(() => {
     let cancelled = false
     const promise = typeof fn === 'function' ? fn() : fn
-    promise.then(value => {
+    promise.then((value) => {
       if (!cancelled) {
         setResult(value)
       }

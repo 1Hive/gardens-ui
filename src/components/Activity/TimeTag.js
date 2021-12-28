@@ -1,8 +1,12 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
-import { getRelativeTime } from '@utils/date-utils'
+
 import useNow from '@hooks/useNow'
+
+import { getRelativeTime } from '@utils/date-utils'
 
 function TimeTag({ date, label, ...props }) {
   const theme = useTheme()

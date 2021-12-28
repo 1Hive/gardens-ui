@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import PropTypes from 'prop-types'
+
 import {
   Button,
   EthIdenticon,
@@ -9,15 +11,17 @@ import {
   IconPlus,
   IconTrash,
   Info,
-  isAddress,
   RADIUS,
   TextInput,
+  isAddress,
   useTheme,
 } from '@1hive/1hive-ui'
-import GnosisSafeField from './GnosisSafeField'
-import Header from '../../../kit/Header'
-import Navigation from '../../../Navigation'
+
 import { useOnboardingState } from '@providers/Onboarding'
+
+import Navigation from '../../../Navigation'
+import Header from '../../../kit/Header'
+import GnosisSafeField from './GnosisSafeField'
 
 function useFieldsLayout() {
   return `
@@ -30,7 +34,7 @@ function useFieldsLayout() {
 function validateDuplicateAddresses(members) {
   const validAddresses = members
     .map(([address]) => address.toLowerCase())
-    .filter(address => isAddress(address))
+    .filter((address) => isAddress(address))
 
   return validAddresses.length === new Set(validAddresses).size
 }
@@ -67,14 +71,8 @@ function TokenSettingsNative() {
   const theme = useTheme()
   const fieldsLayout = useFieldsLayout()
 
-  const {
-    config,
-    onBack,
-    onNext,
-    steps,
-    step,
-    onConfigChange,
-  } = useOnboardingState()
+  const { config, onBack, onNext, steps, step, onConfigChange } =
+    useOnboardingState()
 
   const [formError, setFormError] = useState()
   const [tokenName, setTokenName] = useState(config.tokens.name)
@@ -89,12 +87,12 @@ function TokenSettingsNative() {
     Boolean(config.tokens.gnosisSafe)
   )
 
-  const handleTokenNameChange = useCallback(event => {
+  const handleTokenNameChange = useCallback((event) => {
     setFormError(null)
     setTokenName(event.target.value)
   }, [])
 
-  const handleTokenSymbolChange = useCallback(event => {
+  const handleTokenSymbolChange = useCallback((event) => {
     setFormError(null)
     setTokenSymbol(event.target.value.trim().toUpperCase())
   }, [])
@@ -128,14 +126,14 @@ function TokenSettingsNative() {
 
   const addMember = useCallback(() => {
     setFormError(null)
-    setMembers(members => [...members, ['', 0]])
+    setMembers((members) => [...members, ['', 0]])
     focusLastMember()
   }, [focusLastMember])
 
   const removeMember = useCallback(
-    index => {
+    (index) => {
       setFormError(null)
-      setMembers(members =>
+      setMembers((members) =>
         members.length < 2
           ? // When the remove button of the last field
             // gets clicked, we only empty the field.
@@ -149,24 +147,24 @@ function TokenSettingsNative() {
 
   const updateMember = useCallback((index, updatedAccount, updatedStake) => {
     setFormError(null)
-    setMembers(members =>
+    setMembers((members) =>
       members.map((member, i) =>
         i === index ? [updatedAccount, updatedStake] : member
       )
     )
   }, [])
 
-  const handleGnosisSafeAddressChange = useCallback(newAddress => {
+  const handleGnosisSafeAddressChange = useCallback((newAddress) => {
     setFormError(null)
     setGnosisSafeAddress(newAddress)
   }, [])
 
-  const handleGnosisSafeCheckChange = useCallback(checked => {
+  const handleGnosisSafeCheckChange = useCallback((checked) => {
     setGnosisSafeChecked(checked)
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       const error = validationError(
@@ -354,14 +352,14 @@ function MemberField({
   }, [onRemove, index])
 
   const handleAccountChange = useCallback(
-    event => {
+    (event) => {
       onUpdate(index, event.target.value, stake)
     },
     [onUpdate, stake, index]
   )
 
   const handleStakeChange = useCallback(
-    event => {
+    (event) => {
       const value = parseInt(event.target.value, 10)
       onUpdate(index, account, isNaN(value) ? -1 : value)
     },

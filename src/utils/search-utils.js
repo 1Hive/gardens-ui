@@ -12,7 +12,7 @@ export function checkInitialLetters(text, searchTerm) {
 
   const pattern = searchTerm
     .split('')
-    .map(char => `(?=.*${char})`)
+    .map((char) => `(?=.*${char})`)
     .join('')
   const regex = new RegExp(`${pattern}`, 'g')
 

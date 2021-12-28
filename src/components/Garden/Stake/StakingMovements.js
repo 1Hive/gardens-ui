@@ -1,36 +1,40 @@
 /* eslint-disable no-redeclare */
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import {
+  DataView,
   GU,
   IconAttention,
   IconCheck,
   IconClock,
   IconCross,
   IconLock,
-  formatTokenAmount,
   Link,
   Tag,
+  formatTokenAmount,
   useTheme,
-  DataView,
 } from '@1hive/1hive-ui'
+
 import { useGardenState } from '@providers/GardenState'
+
+import { dateFormat, toMs } from '@utils/date-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+
+import noDataIllustration from './assets/no-dataview-data.svg'
 import {
-  STAKING_SCHEDULED,
+  COLLATERAL_AVAILABLE,
+  COLLATERAL_CHALLENGED,
+  COLLATERAL_LOCKED,
+  COLLATERAL_SLASHED,
+  COLLATERAL_STATUSES,
+  STAKING_CANCELLED,
   STAKING_CHALLENGED,
   STAKING_COMPLETED,
-  STAKING_CANCELLED,
+  STAKING_SCHEDULED,
   STAKING_SETTLED,
-  COLLATERAL_LOCKED,
-  COLLATERAL_CHALLENGED,
-  COLLATERAL_AVAILABLE,
-  COLLATERAL_SLASHED,
   STAKING_STATUSES,
-  COLLATERAL_STATUSES,
 } from './staking-management-statuses'
-import { buildGardenPath } from '@utils/routing-utils'
-import { dateFormat, toMs } from '@utils/date-utils'
-import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
@@ -92,7 +96,7 @@ function StakingMovements({ stakingMovements, token }) {
 
   const [selectedPage, setSelectedPage] = useState(0)
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 

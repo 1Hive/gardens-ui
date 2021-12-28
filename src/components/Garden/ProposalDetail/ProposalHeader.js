@@ -1,7 +1,11 @@
 import React from 'react'
+
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+
 import ProposalIcon from '@components/ProposalIcon'
+
 import { dateFormat } from '@utils/date-utils'
+
 import { convertToString } from '@/types'
 
 function ProposalHeader({ proposal }) {

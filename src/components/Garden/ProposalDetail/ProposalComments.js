@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GU, Split, useLayout } from '@1hive/1hive-ui'
+
 import DiscourseComments from '@/components/DiscourseComments'
 
 function ProposalComments({ link }) {

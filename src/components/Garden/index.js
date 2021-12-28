@@ -1,6 +1,8 @@
 import React from 'react'
-import Routes from '../../routes/garden/Routes'
+
 import { useConnectedGarden } from '@/providers/ConnectedGarden'
+
+import Routes from '../../routes/garden/Routes'
 
 function Garden() {
   const connectedGarden = useConnectedGarden()

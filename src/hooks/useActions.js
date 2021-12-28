@@ -1,26 +1,29 @@
 import { useCallback, useMemo } from 'react'
-import { noop } from '@1hive/1hive-ui'
+
 import { toHex } from 'web3-utils'
+
+import { noop } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
-import { useMounted } from './useMounted'
-import { getNetwork } from '@/networks'
 import { useWallet } from '@providers/Wallet'
 
+import BigNumber from '@lib/bigNumber'
+
 import { getAppByName } from '@utils/data-utils'
-import { getContract, useContract } from './useContract'
+import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 
 import env from '@/environment'
+import { getNetwork } from '@/networks'
 
-import actions from '../actions/garden-action-types'
-import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
-import BigNumber from '@lib/bigNumber'
-import radspec from '../radspec'
-
-import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
+import priceOracleAbi from '@abis/priceOracle.json'
+
+import actions from '../actions/garden-action-types'
+import radspec from '../radspec'
+import { getContract, useContract } from './useContract'
+import { useMounted } from './useMounted'
 
 const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
@@ -456,7 +459,7 @@ export default function useActions() {
   )
 
   const getAgreementTokenAllowance = useCallback(
-    tokenAddress => {
+    (tokenAddress) => {
       const tokenContract = getContract(
         tokenAddress,
         tokenAbi,
@@ -472,7 +475,7 @@ export default function useActions() {
 
   // TODO- we need to start using modal flow for all the transactions
   const resolveAction = useCallback(
-    disputeId => {
+    (disputeId) => {
       sendIntent(agreementApp, 'resolve', [disputeId], {
         ethers,
         from: account,
@@ -757,10 +760,10 @@ async function sendIntent(
 function imposeGasLimit(intent, gasLimit) {
   return {
     ...intent,
-    transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx) => ({ ...tx, gasLimit })),
   }
 }
 
 function attachTrxMetadata(transactions, description, type) {
-  return transactions.map(tx => ({ ...tx, description, type }))
+  return transactions.map((tx) => ({ ...tx, description, type }))
 }

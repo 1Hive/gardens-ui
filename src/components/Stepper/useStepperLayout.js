@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
+
 import { ResizeObserver } from '@juggle/resize-observer'
 
 function useStepperLayout() {

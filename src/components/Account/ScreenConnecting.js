@@ -1,8 +1,10 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 import { getProviderFromUseWalletId } from 'use-wallet'
-import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
+
+import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import loadingRing from './assets/loading-ring.svg'
 
@@ -15,7 +17,7 @@ const spin = keyframes`
   }
 `
 
-const AccountModuleConnectingScreen = React.memo(function({
+const AccountModuleConnectingScreen = React.memo(function ({
   onCancel,
   providerId,
 }) {

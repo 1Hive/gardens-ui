@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Field, GU } from '@1hive/1hive-ui'
 
 function InfoField({ label, children, ...props }) {

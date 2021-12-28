@@ -1,5 +1,7 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Card, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import flowerError from '../../assets/flowerError.svg'

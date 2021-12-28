@@ -1,5 +1,6 @@
-import { ethers, providers as Providers } from 'ethers'
+import { providers as Providers, ethers } from 'ethers'
 import { toChecksumAddress } from 'web3-utils'
+
 import env from '@/environment'
 import { getPreferredChain } from '@/local-settings'
 import { getNetwork } from '@/networks'

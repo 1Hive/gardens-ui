@@ -1,12 +1,14 @@
 import React from 'react'
+
 import {
+  GU,
   IconCheck,
   Tag,
   textStyle,
   useLayout,
   useTheme,
-  GU,
 } from '@1hive/1hive-ui'
+
 import icon from './assets/icon.svg'
 
 function AgreementHeader({ title }) {

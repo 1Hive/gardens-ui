@@ -1,16 +1,20 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { addressesEqual } from '@1hive/1hive-ui'
-import ChallengeForm from './ChallengeForm'
-import ChallengeRequirements from './ChallengeRequirements'
-import ModalFlowBase from '../ModalFlowBase'
 
-import { useAgreement } from '@hooks/useAgreement'
+import { addressesEqual } from '@1hive/1hive-ui'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useDisputeFees } from '@hooks/useDispute'
 import { useGardenState } from '@providers/GardenState'
 
+import { useAgreement } from '@hooks/useAgreement'
+import { useDisputeFees } from '@hooks/useDispute'
+
 import BigNumber from '@lib/bigNumber'
+
 import { toDecimals } from '@utils/math-utils'
+
+import ModalFlowBase from '../ModalFlowBase'
+import ChallengeForm from './ChallengeForm'
+import ChallengeRequirements from './ChallengeRequirements'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
@@ -32,7 +36,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
           await agreementActions.approveTokenAmount(
             tokenAddress,
             ZERO_BN,
-            intent => {
+            (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             }
           )
@@ -40,7 +44,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
         await agreementActions.approveTokenAmount(
           tokenAddress,
           amount,
-          intent => {
+          (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           }
         )
@@ -74,7 +78,7 @@ function ChallengeProposalScreens({ agreementActions, proposal }) {
 
       await agreementActions.challengeAction(
         { actionId, settlementOffer, challengerFinishedEvidence, context },
-        intent => {
+        (intent) => {
           const trxList = temporatyTrx.current.concat(intent)
           setTransactions(trxList)
           onComplete()

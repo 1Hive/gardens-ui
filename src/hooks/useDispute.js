@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useContractReadOnly } from './useContract'
 
 import BigNumber from '@lib/bigNumber'
+
 import { DISPUTE_STATE_ADJUDICATING } from '@utils/dispute-utils'
+
 import { getNetwork } from '@/networks'
 
-import arbitratorAbi from '@abis/arbitrator.json'
 import disputeManagerAbi from '@abis/DisputeManager.json'
+import arbitratorAbi from '@abis/arbitrator.json'
+
+import { useContractReadOnly } from './useContract'
 
 export function useDisputeState(disputeId) {
   const [disputeState, setDisputeState] = useState(null)
@@ -87,7 +91,7 @@ export function useDisputeFees(chainId) {
 
   useEffect(() => {
     if (!arbitratorContract) {
-      setFees(fees => ({ ...fees, loading: false }))
+      setFees((fees) => ({ ...fees, loading: false }))
       return
     }
 

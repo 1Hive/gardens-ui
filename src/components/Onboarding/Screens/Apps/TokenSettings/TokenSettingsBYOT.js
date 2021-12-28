@@ -1,21 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import {
   Field,
   GU,
   Help,
   Info,
-  isAddress,
   LoadingRing,
   TextInput,
+  isAddress,
 } from '@1hive/1hive-ui'
-import GnosisSafeField from './GnosisSafeField'
-import Header from '../../../kit/Header'
-import Navigation from '../../../Navigation'
-import { useTokenData } from '@hooks/useToken'
+
 import { useOnboardingState } from '@providers/Onboarding'
 
-import iconError from '@assets/iconError.svg'
+import { useTokenData } from '@hooks/useToken'
+
 import iconCheck from '@assets/iconCheck.svg'
+import iconError from '@assets/iconError.svg'
+
+import Navigation from '../../../Navigation'
+import Header from '../../../kit/Header'
+import GnosisSafeField from './GnosisSafeField'
 
 function useFieldsLayout() {
   return `
@@ -52,14 +56,8 @@ function validationError(
 function TokenSettingsBYOT() {
   const fieldsLayout = useFieldsLayout()
 
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    steps,
-    step,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, steps, step } =
+    useOnboardingState()
 
   const [formError, setFormError] = useState(null)
   const [tokenAddress, setTokenAddress] = useState(config.tokens.address)
@@ -77,30 +75,30 @@ function TokenSettingsBYOT() {
     Boolean(config.tokens.gnosisSafe)
   )
 
-  const handleTokenAddressChange = useCallback(event => {
+  const handleTokenAddressChange = useCallback((event) => {
     setFormError(null)
     setTokenAddress(event.target.value)
   }, [])
-  const handleTokenNameChange = useCallback(event => {
+  const handleTokenNameChange = useCallback((event) => {
     setFormError(null)
     setGardenTokenName(event.target.value)
   }, [])
-  const handleTokenSymbolChange = useCallback(event => {
+  const handleTokenSymbolChange = useCallback((event) => {
     setFormError(null)
     setGardenTokenSymbol(event.target.value.trim().toUpperCase())
   }, [])
 
-  const handleGnosisSafeAddressChange = useCallback(newAddress => {
+  const handleGnosisSafeAddressChange = useCallback((newAddress) => {
     setFormError(null)
     setGnosisSafeAddress(newAddress)
   }, [])
 
-  const handleGnosisSafeCheckChange = useCallback(checked => {
+  const handleGnosisSafeCheckChange = useCallback((checked) => {
     setGnosisSafeChecked(checked)
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       const error = validationError(

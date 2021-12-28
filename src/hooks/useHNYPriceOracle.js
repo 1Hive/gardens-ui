@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useContractReadOnly } from './useContract'
-import { useMounted } from './useMounted'
+
 import { useWallet } from '@providers/Wallet'
-import { getNetwork } from '../networks'
+
 import { fromDecimals } from '@utils/math-utils'
 
 import priceOracleAbi from '@abis/priceOracle.json'
+
+import { getNetwork } from '../networks'
+import { useContractReadOnly } from './useContract'
+import { useMounted } from './useMounted'
 
 export default function useHNYPriceOracle(amount) {
   const [convertedAmount, setConvertedAmount] = useState(-1)

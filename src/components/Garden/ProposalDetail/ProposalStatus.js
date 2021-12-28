@@ -1,5 +1,7 @@
 import React from 'react'
+
 import styled from 'styled-components'
+
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import celesteIconSvg from '@assets/celeste-icon.svg'

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 export default function DiscourseComments({ topicId }) {
