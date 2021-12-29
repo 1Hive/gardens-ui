@@ -10,6 +10,8 @@ const {
 } = require('customize-cra')
 const webpack = require('webpack')
 
+const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+
 module.exports = override(
   useBabelRc(),
   addWebpackAlias({
@@ -25,6 +27,17 @@ module.exports = override(
   addWebpackPlugin(
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
+    })
+  ),
+  addWebpackPlugin(
+    new SentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      include: './build',
+      debug: true,
+      validate: true,
+      release: process.env.VERCEL_GIT_COMMIT_SHA,
     })
   ),
   addWebpackPlugin(
