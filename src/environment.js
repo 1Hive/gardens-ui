@@ -63,7 +63,7 @@ const ENV_VARS = {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
   SENTRY_DSN() {
-    return process.env.REACT_APP_SENTRY_DSN || null
+    return process.env.REACT_APP_SENTRY_DSN || process.env.SENTRY_DSN || null
   },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || DEFAULT_VERCEL_ENV
