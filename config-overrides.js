@@ -35,7 +35,9 @@ module.exports = override(
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       include: './build',
-      debug: true,
+      debug: false,
+      // ignore: ['node_modules', 'webpack.config.js'],
+      configFile: path.resolve(__dirname, '.sentryclirc'),
       validate: true,
       release: process.env.VERCEL_GIT_COMMIT_SHA,
     })

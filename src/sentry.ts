@@ -8,12 +8,13 @@ import { getNetworkType } from './utils/web3-utils'
 export const sentryEnabled = Boolean(env('SENTRY_DSN'))
 
 export default function initializeSentry() {
+  console.log(`sentryEnabled: ${sentryEnabled}`)
   if (sentryEnabled) {
     Sentry.init({
       dsn: env('SENTRY_DSN'),
       integrations: [new Integrations.BrowserTracing()],
       environment: `${env('VERCEL_ENV')}@${getNetworkType()}`,
-      //   release: 'gardens-ui@' + env('VERCEL_ENV'),
+      release: env('VERCEL_GIT_COMMIT_SHA'),
 
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.

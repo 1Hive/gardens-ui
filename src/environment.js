@@ -8,6 +8,7 @@ const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
 
 const DEFAULT_VERCEL_ENV = 'localhost'
+const DEFAULT_VERCEL_GIT_COMMIT_SHA = 'bababa'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -67,6 +68,9 @@ const ENV_VARS = {
   },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || DEFAULT_VERCEL_ENV
+  },
+  VERCEL_GIT_COMMIT_SHA() {
+    return process.env.VERCEL_GIT_COMMIT_SHA || DEFAULT_VERCEL_GIT_COMMIT_SHA
   },
   VOTING_APP_NAME() {
     return process.env.REACT_APP_VOTING_APP_NAME || DEFAULT_VOTING_APP_NAME
