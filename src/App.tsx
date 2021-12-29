@@ -12,9 +12,10 @@ import { ProfileProvider } from './providers/Profile'
 import { UserProvider } from './providers/User'
 import { WalletProvider } from './providers/Wallet'
 import Routes from './routes/Routes'
-import initializeSentry from './sentry'
+import initializeSentry, { logWithSentry } from './sentry'
 
 initializeSentry()
+logWithSentry('Init App.tsx')
 function App() {
   return (
     <HashRouter>

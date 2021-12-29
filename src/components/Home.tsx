@@ -1,21 +1,28 @@
 import React, { useCallback, useState } from 'react'
+
 import styled from 'styled-components'
+
 import { GU, useToast } from '@1hive/1hive-ui'
+
 import { useGardens } from '@providers/Gardens'
+import { useWallet } from '@providers/Wallet'
+
 import { useNodeHeight } from '@hooks/useNodeHeight'
+
+import { logWithSentry } from '@/sentry'
+
 import GardensFilters from './GardensFilters'
 import GardensList from './GardensList'
 import LandingBanner from './LandingBanner'
-import { useWallet } from '@providers/Wallet'
-import MultiModal from './MultiModal/MultiModal'
-import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreens'
 import Loader from './Loader'
+import ConnectWalletScreens from './MultiModal/ConnectWallet/ConnectWalletScreens'
+import MultiModal from './MultiModal/MultiModal'
 import Onboarding from './Onboarding'
 
 const DynamicSection = styled.div<{
   marginTop: any
 }>`
-  margin-top: ${props => props.marginTop}px;
+  margin-top: ${(props) => props.marginTop}px;
   padding: 0 ${2 * GU}px;
 `
 
@@ -38,10 +45,12 @@ function Home() {
       return
     }
     setOnboardingVisible(true)
+    logWithSentry('Opened Onboarding')
   }, [account])
 
   const handleOnboardingClose = useCallback(() => {
     setOnboardingVisible(false)
+    logWithSentry('Closed Onboarding')
     toast('Saved!')
   }, [toast])
 
