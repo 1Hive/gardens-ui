@@ -1,14 +1,59 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+
+import { Button } from '@1hive/1hive-ui'
+
+import { useStakingState } from '@providers/Staking'
+import { useWallet } from '@providers/Wallet'
+
+import useActions from '@hooks/useActions'
+import { useAgreement } from '@hooks/useAgreement'
+import { useMounted } from '@hooks/useMounted'
+
+import { throwConfetti } from '@utils/confetti-utils'
+import { fromDecimals } from '@utils/math-utils'
+import { extractProposalId } from '@utils/proposal-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+
+import { getAccountSetting } from '@/local-settings'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
-import { useAgreement } from '@hooks/useAgreement'
-import { useWallet } from '@providers/Wallet'
-import useActions from '@hooks/useActions'
-import { useStakingState } from '@providers/Staking'
-import { throwConfetti } from '@utils/confetti-utils'
+
+function GoToProposal() {
+  const history = useHistory()
+  const [proposalId, setProposalId] = useState()
+  const { account, chainId, ethers } = useWallet()
+  const mounted = useMounted()
+  const txHash = getAccountSetting('lastTxHash', account, chainId)
+
+  useEffect(() => {
+    async function getProposalId() {
+      const id = await extractProposalId(ethers, txHash, 'conviction')
+
+      if (mounted) {
+        setProposalId(fromDecimals(id.toString(), 18))
+      }
+    }
+    getProposalId()
+  }, [extractProposalId, ethers, txHash])
+
+  const handleGoToProposal = useCallback(() => {
+    const path = buildGardenPath(history.location, `proposal/${proposalId}`)
+    history.push(path)
+  }, [history, proposalId])
+
+  return (
+    <Button
+      label="Go to proposal"
+      mode="strong"
+      onClick={handleGoToProposal}
+      wide
+    />
+  )
+}
 
 function CreateProposalScreens({ onComplete }) {
   const [loading, setLoading] = useState(true)
@@ -30,7 +75,7 @@ function CreateProposalScreens({ onComplete }) {
     setLoading(agreementLoading || stakingLoading)
   }, [agreementLoading, stakingLoading])
 
-  const handleSetProposalData = useCallback(data => {
+  const handleSetProposalData = useCallback((data) => {
     proposalData.current = data
   }, [])
 
@@ -45,7 +90,7 @@ function CreateProposalScreens({ onComplete }) {
   }, [onComplete])
 
   const getTransactions = useCallback(
-    async onComplete => {
+    async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current
 
       let params
@@ -70,7 +115,7 @@ function CreateProposalScreens({ onComplete }) {
         }
       }
 
-      await convictionActions[fn](params, intent => {
+      await convictionActions[fn](params, (intent) => {
         setTransactions(intent)
         onComplete()
       })
@@ -126,6 +171,7 @@ function CreateProposalScreens({ onComplete }) {
       transactionTitle="Create proposal"
       screens={screens}
       onComplete={onCompleteMiddleware}
+      onCompleteActions={<GoToProposal />}
     />
   )
 }
