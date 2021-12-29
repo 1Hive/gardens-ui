@@ -75,7 +75,7 @@ const IssuanceChart = ({
   return (
     <div>
       <ChartBase
-        title="Ratio of tokens in the common pool during the first year"
+        title="Ratio of tokens in the common pool (compared to the total supply)  during the first year"
         height={height}
         width={width}
       >

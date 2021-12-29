@@ -1,6 +1,14 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router'
-import { Button, GU, Link, useTheme, useViewport } from '@1hive/1hive-ui'
+import { useHistory, useLocation } from 'react-router'
+import {
+  Button,
+  ButtonBase,
+  GU,
+  IconMenu,
+  Link,
+  useTheme,
+  useViewport,
+} from '@1hive/1hive-ui'
 import AccountModule from '../Account/AccountModule'
 import ActivityButton from '../Activity/ActivityButton'
 import BalanceModule from '../BalanceModule'
@@ -16,14 +24,21 @@ import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
 
-function Header({ onOpenPreferences }: { onOpenPreferences: any }) {
+function Header({
+  onOpenPreferences,
+  onToggleSidebar,
+}: {
+  onOpenPreferences: any
+  onToggleSidebar: any
+}) {
   const theme = useTheme()
+  const { pathname } = useLocation()
   const connectedGarden = useConnectedGarden()
   const history = useHistory()
   const { below } = useViewport()
   const { account } = useWallet()
 
-  const layoutSmall = below('medium')
+  const mobileMode = below('medium')
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
@@ -36,12 +51,13 @@ function Header({ onOpenPreferences }: { onOpenPreferences: any }) {
     }
   }, [connectedGarden])
 
-  const Logo = <img src={logo} height={layoutSmall ? 40 : 60} alt="" />
+  const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
   const logoLink = `#${
     connectedGarden ? buildGardenPath(history.location, '') : '/home'
   }`
 
-  const showBalance = connectedGarden && account && !layoutSmall
+  const showBalance = connectedGarden && account && !mobileMode
+  const showMenu = pathname !== '/home' && mobileMode
 
   return (
     <header
@@ -56,98 +72,139 @@ function Header({ onOpenPreferences }: { onOpenPreferences: any }) {
         <div
           css={`
             height: ${8 * GU}px;
-            margin: 0 ${3 * GU}px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
           `}
         >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <Link
-              href={logoLink}
-              external={false}
+          {showMenu && (
+            <div
               css={`
+                width: 88px;
+                border-right: 1px solid ${theme.border};
                 display: flex;
+                align-self: stretch;
+                justify-content: center;
+                align-items: center;
               `}
             >
-              {layoutSmall ? (
-                Logo
-              ) : (
-                <img src={logotype} height={connectedGarden ? 40 : 38} alt="" />
-              )}
-            </Link>
-            {!below('medium') && (
-              <nav
+              <ButtonBase
+                onClick={onToggleSidebar}
                 css={`
                   display: flex;
                   align-items: center;
-                  height: 100%;
-                  margin-left: ${6.5 * GU}px;
                 `}
               >
-                {connectedGarden && <GardenNavItems garden={connectedGarden} />}
-                {!connectedGarden && (
-                  <Link
-                    href={CELESTE_URL}
-                    css={`
-                      text-decoration: none;
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    Become a Keeper
-                  </Link>
-                )}
-              </nav>
-            )}
-          </div>
-
-          <div
-            css={`
-              height: 100%;
-              display: flex;
-              align-items: center;
-              ${showBalance && `min-width: ${42.5 * GU}px`};
-            `}
-          >
-            <AccountModule compact={layoutSmall} />
-            {showBalance && (
-              <>
-                <div
+                <IconMenu
+                  color="grey"
                   css={`
-                    width: 0.5px;
-                    height: ${3.5 * GU}px;
-                    border-left: 0.5px solid ${theme.border};
+                    width: ${4 * GU}px;
+                    height: ${4 * GU}px;
                   `}
                 />
-                <BalanceModule />
-              </>
-            )}
-            {connectedGarden && (
-              <div
+              </ButtonBase>
+            </div>
+          )}
+          <div
+            css={`
+              width: 100%;
+              margin: 0 ${3 * GU}px;
+              display: flex;
+              justify-content: space-between;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <Link
+                href={logoLink}
+                external={false}
                 css={`
                   display: flex;
-                  height: 100%;
-                  margin-left: ${2 * GU}px;
                 `}
               >
-                <GlobalPreferencesButton onOpen={onOpenPreferences} />
-              </div>
-            )}
-            {connectedGarden && account && (
-              <div
-                css={`
-                  display: flex;
-                  height: 100%;
-                `}
-              >
-                <ActivityButton />
-              </div>
-            )}
+                {mobileMode ? (
+                  Logo
+                ) : (
+                  <img
+                    src={logotype}
+                    height={connectedGarden ? 40 : 38}
+                    alt=""
+                  />
+                )}
+              </Link>
+              {!mobileMode && (
+                <nav
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    margin-left: ${6.5 * GU}px;
+                  `}
+                >
+                  {connectedGarden && (
+                    <GardenNavItems garden={connectedGarden} />
+                  )}
+                  {!connectedGarden && (
+                    <Link
+                      href={CELESTE_URL}
+                      css={`
+                        text-decoration: none;
+                        color: ${theme.contentSecondary};
+                      `}
+                    >
+                      Become a Keeper
+                    </Link>
+                  )}
+                </nav>
+              )}
+            </div>
+
+            <div
+              css={`
+                height: 100%;
+                display: flex;
+                align-items: center;
+                ${showBalance && `min-width: ${42.5 * GU}px`};
+              `}
+            >
+              <AccountModule compact={mobileMode} />
+              {showBalance && (
+                <>
+                  <div
+                    css={`
+                      width: 0.5px;
+                      height: ${3.5 * GU}px;
+                      border-left: 0.5px solid ${theme.border};
+                    `}
+                  />
+                  <BalanceModule />
+                </>
+              )}
+              {connectedGarden && (
+                <div
+                  css={`
+                    display: flex;
+                    height: 100%;
+                    margin-left: ${2 * GU}px;
+                  `}
+                >
+                  <GlobalPreferencesButton onOpen={onOpenPreferences} />
+                </div>
+              )}
+              {connectedGarden && account && (
+                <div
+                  css={`
+                    display: flex;
+                    height: 100%;
+                  `}
+                >
+                  <ActivityButton />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Layout>

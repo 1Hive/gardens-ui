@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { useLocation } from 'react-router'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
@@ -6,17 +6,26 @@ import Footer from './Garden/Footer'
 import Header from './Header/Header'
 import Layout from './Layout'
 import GlobalPreferences from './Garden/Preferences/GlobalPreferences'
-import Sidebar from './Sidebar/Sidebar'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import usePreferences from '@hooks/usePreferences'
+import MultiModal from './MultiModal/MultiModal'
+import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
   const { pathname } = useLocation()
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
-
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
+    false
+  )
+
+  const handleToggleSidebar = useCallback(() => {
+    setShowMobileSidebar(prevShowMobileSidebar => !prevShowMobileSidebar)
+  }, [])
 
   let loadingGardenState = true
   if (connectedGarden) {
@@ -24,9 +33,6 @@ function MainView({ children }) {
     const { loading } = useGardenState()
     loadingGardenState = loading
   }
-
-  const mobileMode = below('medium')
-  const compactMode = below('large')
 
   if (preferenceOption) {
     return (
@@ -37,6 +43,10 @@ function MainView({ children }) {
       />
     )
   }
+
+  const mobileMode = below('medium')
+  const compactMode = below('large')
+  const hasSidebar = pathname !== '/home'
 
   return (
     <ToastHub
@@ -53,7 +63,17 @@ function MainView({ children }) {
     `}
     >
       <div css="display: flex">
-        {pathname !== '/home' && !below('medium') && <Sidebar />}
+        {hasSidebar ? (
+          mobileMode ? (
+            <MobileSidebar
+              show={showMobileSidebar}
+              onToggle={handleToggleSidebar}
+              onOpenCreateProposal={() => setCreateProposalModalVisible(true)}
+            />
+          ) : (
+            <Sidebar />
+          )
+        ) : null}
         <div
           css={`
             display: flex;
@@ -67,7 +87,7 @@ function MainView({ children }) {
               flex-grow: 1;
               height: 100%;
               position: relative;
-              ${connectedGarden && !mobileMode && `margin-left: ${9 * GU}px;`}
+              ${hasSidebar && !mobileMode ? `margin-left: ${9 * GU}px;` : ''}
             `}
           >
             <div
@@ -75,7 +95,10 @@ function MainView({ children }) {
                 flex-shrink: 0;
               `}
             >
-              <Header onOpenPreferences={openPreferences} />
+              <Header
+                onOpenPreferences={openPreferences}
+                onToggleSidebar={handleToggleSidebar}
+              />
             </div>
             <ScrollView>
               <div
@@ -100,6 +123,12 @@ function MainView({ children }) {
                 )}
               </div>
             </ScrollView>
+            <MultiModal
+              visible={createProposalModalVisible}
+              onClose={() => setCreateProposalModalVisible(false)}
+            >
+              <CreateProposalScreens />
+            </MultiModal>
           </Root.Provider>
         </div>
       </div>

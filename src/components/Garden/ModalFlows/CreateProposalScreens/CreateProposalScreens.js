@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
@@ -7,6 +8,7 @@ import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
 import useActions from '@hooks/useActions'
 import { useStakingState } from '@providers/Staking'
+import { throwConfetti } from '@utils/confetti-utils'
 
 function CreateProposalScreens({ onComplete }) {
   const [loading, setLoading] = useState(true)
@@ -31,6 +33,16 @@ function CreateProposalScreens({ onComplete }) {
   const handleSetProposalData = useCallback(data => {
     proposalData.current = data
   }, [])
+
+  const onCompleteMiddleware = useCallback(() => {
+    throwConfetti({
+      x: 0.5,
+      y: 0.7,
+    })
+    if (onComplete) {
+      onComplete()
+    }
+  }, [onComplete])
 
   const getTransactions = useCallback(
     async onComplete => {
@@ -113,7 +125,7 @@ function CreateProposalScreens({ onComplete }) {
       transactions={transactions}
       transactionTitle="Create proposal"
       screens={screens}
-      onComplete={onComplete}
+      onComplete={onCompleteMiddleware}
     />
   )
 }
