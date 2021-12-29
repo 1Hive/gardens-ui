@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,18 +14,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types"
-    ],
-    "noFallthroughCasesInSwitch": true
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "/"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "src/**/*.js",
-    "src/**/*.jsx"
-  ],
+  "include": ["src"],
+  "exclude": ["src/**/*.js", "src/**/*.jsx"],
   "extends": "./paths-tsconfig.json"
 }

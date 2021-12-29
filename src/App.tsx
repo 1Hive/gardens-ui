@@ -1,17 +1,21 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
+
 import { Main } from '@1hive/1hive-ui'
 
-import GlobalErrorHandler from './GlobalErrorHandler'
 import MainView from '@components/MainView'
-import Routes from './routes/Routes'
 import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 
+import GlobalErrorHandler from './GlobalErrorHandler'
 import { GardensProvider } from './providers/Gardens'
 import { ProfileProvider } from './providers/Profile'
 import { UserProvider } from './providers/User'
 import { WalletProvider } from './providers/Wallet'
+import Routes from './routes/Routes'
+import initializeSentry, { logWithSentry } from './sentry'
 
+initializeSentry()
+logWithSentry('Init App.tsx')
 function App() {
   return (
     <HashRouter>
