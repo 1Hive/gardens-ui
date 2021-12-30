@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
-import { css, keyframes } from 'styled-components'
-import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
-import Illustration from './Illustration'
 import { IndividualStepTypes } from '../stepper-statuses'
+import Illustration from './Illustration'
+import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
 import { springs } from '@/style/springs'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import PropTypes from 'prop-types'
+import React, { useMemo } from 'react'
+import { Transition, animated } from 'react-spring/renderprops'
+import { css, keyframes } from 'styled-components'
 
 const STATUS_ICONS = {
-  [IndividualStepTypes.STEP_ERROR]: IconCross,
-  [IndividualStepTypes.STEP_SUCCESS]: IconCheck,
+  [IndividualStepTypes.Error]: IconCross,
+  [IndividualStepTypes.Success]: IconCheck,
 }
 
 const AnimatedDiv = animated.div
@@ -108,9 +108,9 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
               }}
               native
             >
-              {currentStatusIcon =>
+              {(currentStatusIcon) =>
                 currentStatusIcon &&
-                (animProps => (
+                ((animProps) => (
                   <AnimatedDiv
                     css={`
                       display: flex;
@@ -144,22 +144,13 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${
-              status === IndividualStepTypes.STEP_WAITING
-                ? 'transparent'
-                : color
-            };
-            ${
-              status === IndividualStepTypes.STEP_PROMPTING
-                ? pulseAnimation
-                : ''
-            }
-            ${status === IndividualStepTypes.STEP_WORKING ? spinAnimation : ''}
-            ${
-              status === IndividualStepTypes.STEP_PROMPTING
-                ? `background-color: ${theme.contentSecondary};`
-                : ''
-            }
+            border: 2px solid
+              ${status === IndividualStepTypes.Waiting ? 'transparent' : color};
+            ${status === IndividualStepTypes.Prompting ? pulseAnimation : ''}
+            ${status === IndividualStepTypes.Working ? spinAnimation : ''}
+            ${status === IndividualStepTypes.Prompting
+              ? `background-color: ${theme.contentSecondary};`
+              : ''}
           `}
         />
       </div>
@@ -169,11 +160,11 @@ function StatusVisual({ status, color, number, withoutFirstStep, ...props }) {
 
 StatusVisual.propTypes = {
   status: PropTypes.oneOf([
-    IndividualStepTypes.STEP_WAITING,
-    IndividualStepTypes.STEP_PROMPTING,
-    IndividualStepTypes.STEP_WORKING,
-    IndividualStepTypes.STEP_SUCCESS,
-    IndividualStepTypes.STEP_ERROR,
+    IndividualStepTypes.Waiting,
+    IndividualStepTypes.Prompting,
+    IndividualStepTypes.Working,
+    IndividualStepTypes.Success,
+    IndividualStepTypes.Error,
   ]).isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
@@ -183,9 +174,9 @@ StatusVisual.propTypes = {
 function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme()
   const renderIllustration =
-    status === IndividualStepTypes.STEP_WORKING ||
-    status === IndividualStepTypes.STEP_ERROR ||
-    status === IndividualStepTypes.STEP_SUCCESS ||
+    status === IndividualStepTypes.Working ||
+    status === IndividualStepTypes.Error ||
+    status === IndividualStepTypes.Success ||
     withoutFirstStep
 
   return (

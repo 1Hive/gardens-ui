@@ -8,7 +8,7 @@ module.exports = {
   ],
   plugins: ['react-hooks'],
   rules: {
-    'prettier/prettier': 0,
+    // 'prettier/prettier': 0,
   },
   overrides: [
     // typescript

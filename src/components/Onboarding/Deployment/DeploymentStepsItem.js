@@ -1,5 +1,3 @@
-import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
 import {
   textStyle,
   GU,
@@ -8,9 +6,11 @@ import {
   IconCross,
   TransactionBadge,
 } from '@1hive/1hive-ui'
-import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
-import { TransactionStatusType } from '@/prop-types'
 import { getNetwork } from '@/networks'
+import { TransactionStatusType } from '@/prop-types'
+import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
+import PropTypes from 'prop-types'
+import React, { useMemo } from 'react'
 import { useWallet } from 'use-wallet'
 
 function DeploymentStepsItem({ index, name, status, txHash }) {
@@ -19,7 +19,7 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
   const network = getNetwork(chainId)
 
   const { icon, label, styles } = useMemo(() => {
-    if (status === IndividualStepTypes.STEP_PROMPTING) {
+    if (status === IndividualStepTypes.Prompting) {
       return {
         label: 'Waiting for signature',
         styles: `
@@ -27,13 +27,13 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
     `,
       }
     }
-    if (status === IndividualStepTypes.STEP_WORKING) {
+    if (status === IndividualStepTypes.Working) {
       return {
         label: 'Transaction being processed…',
         styles: `background: ${theme.accent};`,
       }
     }
-    if (status === IndividualStepTypes.STEP_SUCCESS) {
+    if (status === IndividualStepTypes.Success) {
       return {
         icon: <IconCheck />,
         label: 'Transaction processed!',
@@ -44,7 +44,7 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
       }
     }
 
-    if (status === IndividualStepTypes.STEP_ERROR) {
+    if (status === IndividualStepTypes.Error) {
       return {
         icon: <IconCross />,
         label: 'An error has occured',
@@ -94,7 +94,7 @@ function DeploymentStepsItem({ index, name, status, txHash }) {
         css={`
           margin-left: ${3 * GU}px;
           font-size: 18px;
-          font-weight: ${status === IndividualStepTypes.STEP_WORKING
+          font-weight: ${status === IndividualStepTypes.Working
             ? '600'
             : '400'};
           overflow: hidden;

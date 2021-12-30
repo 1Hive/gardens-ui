@@ -1,19 +1,19 @@
 import { IndividualStepTypes } from './stepper-statuses'
 
 export const TRANSACTION_SIGNING_DESC = {
-  [IndividualStepTypes.STEP_WAITING]: 'Waiting for signature',
-  [IndividualStepTypes.STEP_PROMPTING]: 'Waiting for signature',
-  [IndividualStepTypes.STEP_WORKING]:
+  [IndividualStepTypes.Waiting]: 'Waiting for signature',
+  [IndividualStepTypes.Prompting]: 'Waiting for signature',
+  [IndividualStepTypes.Working]:
     'Hang tight. Your transaction is being processed by the network…',
-  [IndividualStepTypes.STEP_SUCCESS]:
+  [IndividualStepTypes.Success]:
     'Your transaction has successfully been processed!',
-  [IndividualStepTypes.STEP_ERROR]: 'An error has occured',
+  [IndividualStepTypes.Error]: 'An error has occured',
 }
 
 export const MESSAGE_SIGNING_DESC = {
-  [IndividualStepTypes.STEP_WAITING]: 'Waiting for signature',
-  [IndividualStepTypes.STEP_PROMPTING]: 'Waiting for signature',
-  [IndividualStepTypes.STEP_WORKING]: 'Message being signed',
-  [IndividualStepTypes.STEP_SUCCESS]: 'Message signed',
-  [IndividualStepTypes.STEP_ERROR]: 'An error has occured',
+  [IndividualStepTypes.Waiting]: 'Waiting for signature',
+  [IndividualStepTypes.Prompting]: 'Waiting for signature',
+  [IndividualStepTypes.Working]: 'Message being signed',
+  [IndividualStepTypes.Success]: 'Message signed',
+  [IndividualStepTypes.Error]: 'An error has occured',
 }

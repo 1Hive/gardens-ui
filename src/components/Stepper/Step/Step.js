@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
-import { TransactionBadge, textStyle, useTheme, GU } from '@1hive/1hive-ui'
+import { IndividualStepTypes } from '../stepper-statuses'
 import Divider from './Divider'
-import { useWallet } from '@providers/Wallet'
-import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import StatusVisual from './StatusVisual'
+import { TransactionBadge, textStyle, useTheme, GU } from '@1hive/1hive-ui'
 import { getNetwork } from '@/networks'
 import { springs } from '@/style/springs'
-import { IndividualStepTypes } from '../stepper-statuses'
-import StatusVisual from './StatusVisual'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
+import { useWallet } from '@providers/Wallet'
+import PropTypes from 'prop-types'
+import React, { useMemo } from 'react'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const AnimatedSpan = animated.span
 
@@ -29,23 +29,23 @@ function Step({
 
   const { visualColor, descColor } = useMemo(() => {
     const appearance = {
-      [IndividualStepTypes.STEP_WAITING]: {
+      [IndividualStepTypes.Waiting]: {
         visualColor: theme.accent,
         descColor: theme.contentSecondary,
       },
-      [IndividualStepTypes.STEP_PROMPTING]: {
+      [IndividualStepTypes.Prompting]: {
         visualColor: '#7CE0D6',
         descColor: theme.contentSecondary,
       },
-      [IndividualStepTypes.STEP_WORKING]: {
+      [IndividualStepTypes.Working]: {
         visualColor: '#FFE862',
         descColor: '#C3A22B',
       },
-      [IndividualStepTypes.STEP_SUCCESS]: {
+      [IndividualStepTypes.Success]: {
         visualColor: theme.positive,
         descColor: theme.positive,
       },
-      [IndividualStepTypes.STEP_ERROR]: {
+      [IndividualStepTypes.Error]: {
         visualColor: theme.negative,
         descColor: theme.negative,
       },
@@ -89,9 +89,7 @@ function Step({
             margin-bottom: ${1 * GU}px;
           `}
         >
-          {status === IndividualStepTypes.STEP_ERROR
-            ? 'Transaction failed'
-            : title}
+          {status === IndividualStepTypes.Error ? 'Transaction failed' : title}
         </h2>
 
         <p
@@ -124,9 +122,9 @@ function Step({
             }}
             native
           >
-            {item =>
+            {(item) =>
               item &&
-              (transitionProps => (
+              ((transitionProps) => (
                 <AnimatedSpan
                   css={`
                     display: flex;
@@ -172,7 +170,7 @@ function Step({
             }}
             native
           >
-            {currentHash => transitionProps =>
+            {(currentHash) => (transitionProps) =>
               currentHash ? (
                 <AnimatedSpan
                   style={transitionProps}
@@ -215,11 +213,11 @@ Step.propTypes = {
   transactionHash: PropTypes.string,
   number: PropTypes.number,
   status: PropTypes.oneOf([
-    IndividualStepTypes.STEP_WAITING,
-    IndividualStepTypes.STEP_PROMPTING,
-    IndividualStepTypes.STEP_WORKING,
-    IndividualStepTypes.STEP_SUCCESS,
-    IndividualStepTypes.STEP_ERROR,
+    IndividualStepTypes.Waiting,
+    IndividualStepTypes.Prompting,
+    IndividualStepTypes.Working,
+    IndividualStepTypes.Success,
+    IndividualStepTypes.Error,
   ]).isRequired,
   showDivider: PropTypes.bool,
 }

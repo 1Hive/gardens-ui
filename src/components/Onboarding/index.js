@@ -1,11 +1,11 @@
-import React from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
-import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import Deployment from './Deployment/Deployment'
-import { ChartsProvider } from '@providers/Charts'
-import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
 import Setup from './Setup'
 import { OnboardingStatusGarden } from './statuses'
+import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
+import { ChartsProvider } from '@providers/Charts'
+import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
+import React from 'react'
+import { animated, Transition } from 'react-spring/renderprops'
 
 function Onboarding({ onClose, visible }) {
   return (
@@ -29,7 +29,7 @@ function Onboarding({ onClose, visible }) {
 function OnboardingPhases({ onClose }) {
   const { status } = useOnboardingState()
 
-  return status === OnboardingStatusGarden.STATUS_GARDEN_SETUP ? (
+  return status === OnboardingStatusGarden.Setup ? (
     <Setup onClose={onClose} />
   ) : (
     <Deployment />
@@ -48,7 +48,7 @@ function AnimatedSlider({ children, visible }) {
         leave={{ opacity: 0, transform: 'translateY(100%)' }}
         config={{ ...springs.smooth, precision: 0.001 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ opacity, transform }) => (
             <div>

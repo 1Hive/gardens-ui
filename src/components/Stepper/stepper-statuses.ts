@@ -1,13 +1,13 @@
 export enum StepperStatusTypes {
-  STEPPER_WORKING = 'STEPPER_WORKING',
-  STEPPER_SUCCESS = 'STEPPER_SUCCESS',
-  STEPPER_ERROR = 'STEPPER_ERROR',
+  Working = 'STEPPER_WORKING',
+  Success = 'STEPPER_SUCCESS',
+  Error = 'STEPPER_ERROR',
 }
 
 export enum IndividualStepTypes {
-  STEP_PROMPTING = 'STEP_PROMPTING',
-  STEP_WAITING = 'STEP_WAITING',
-  STEP_WORKING = 'STEP_WORKING',
-  STEP_SUCCESS = 'STEP_SUCCESS',
-  STEP_ERROR = 'STEP_ERROR',
+  Prompting = 'STEP_PROMPTING',
+  Waiting = 'STEP_WAITING',
+  Working = 'STEP_WORKING',
+  Success = 'STEP_SUCCESS',
+  Error = 'STEP_ERROR',
 }

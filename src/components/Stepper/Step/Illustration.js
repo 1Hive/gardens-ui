@@ -1,24 +1,22 @@
-import React from 'react'
-import { useTheme } from '@1hive/1hive-ui'
-
 import { IndividualStepTypes } from '../stepper-statuses'
-
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
+import { useTheme } from '@1hive/1hive-ui'
 import blockIcon from '@assets/blockIcon.svg'
+import signRequestFailIllustration from '@assets/signRequestFail.svg'
+import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
+import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
+import React from 'react'
 
 const illustrations = {
-  [IndividualStepTypes.STEP_WORKING]: trxBeingMinedIllustration,
-  [IndividualStepTypes.STEP_SUCCESS]: signRequestSuccessIllustration,
-  [IndividualStepTypes.STEP_ERROR]: signRequestFailIllustration,
+  [IndividualStepTypes.Working]: trxBeingMinedIllustration,
+  [IndividualStepTypes.Success]: signRequestSuccessIllustration,
+  [IndividualStepTypes.Error]: signRequestFailIllustration,
 }
 
 function Illustration({ status, index }) {
   const theme = useTheme()
   return (
     <>
-      {status === IndividualStepTypes.STEP_PROMPTING ? (
+      {status === IndividualStepTypes.Prompting ? (
         <div
           css={`
             display: flex;
