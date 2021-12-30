@@ -1,4 +1,4 @@
-enum StakingType {
+export enum StakingType {
   Scheduled = 'STAKING_SCHEDULED',
   Challenged = 'STAKING_CHALLENGED',
   Completed = 'STAKING_COMPLETED',
@@ -6,7 +6,7 @@ enum StakingType {
   Settled = 'STAKING_SETTLED',
 }
 
-enum StakingCollateralType {
+export enum StakingCollateralType {
   Locked = 'COLLATERAL_LOCKED',
   Challenged = 'COLLATERAL_CHALLENGED',
   Available = 'COLLATERAL_AVAILABLE',
