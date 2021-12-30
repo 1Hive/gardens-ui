@@ -44,7 +44,7 @@ function ActivityItem({ activity }) {
     }
   }, [activity, chainId])
 
-  const canClear = activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING
+  const canClear = activity.status !== ActivityStatus.Pending
 
   const handleClose = useCallback(() => {
     if (activity.transactionHash) {
@@ -110,7 +110,7 @@ function ActivityItem({ activity }) {
             >
               {title}
             </div>
-            {activity.status !== ActivityStatus.ACTIVITY_STATUS_PENDING && (
+            {activity.status !== ActivityStatus.Pending && (
               <TimeTag
                 date={activity.createdAt}
                 css={`
@@ -192,21 +192,21 @@ ItemContent.propTypes = {
 }
 
 function getStatusData(activity, theme) {
-  if (activity.status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED) {
+  if (activity.status === ActivityStatus.Confirmed) {
     return [
       <IconCheck size="small" />,
       <span>Transaction confirmed</span>,
       theme.positive,
     ]
   }
-  if (activity.status === ActivityStatus.ACTIVITY_STATUS_FAILED) {
+  if (activity.status === ActivityStatus.Failed) {
     return [
       <IconCross size="small" />,
       <span>Transaction failed</span>,
       theme.negative,
     ]
   }
-  if (activity.status === ActivityStatus.ACTIVITY_STATUS_TIMED_OUT) {
+  if (activity.status === ActivityStatus.TimedOut) {
     return [
       <IconCross size="small" />,
       <span>Transaction timed out</span>,

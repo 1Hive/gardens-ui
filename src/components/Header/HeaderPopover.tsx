@@ -105,25 +105,27 @@ function HeaderPopover({
                   setMeasuredHeight(true)
                 }}
               >
-                {screenData => ({ opacity, transform }) => (
-                  <AnimatedDiv
-                    ref={elt => {
-                      if (elt) {
-                        setHeight(elt.clientHeight)
-                      }
-                    }}
-                    style={{
-                      opacity,
-                      transform,
-                      position: measuredHeight ? 'absolute' : 'static',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                    }}
-                  >
-                    {children(screenData)}
-                  </AnimatedDiv>
-                )}
+                {(screenData) =>
+                  ({ opacity, transform }) =>
+                    (
+                      <AnimatedDiv
+                        ref={(elt) => {
+                          if (elt) {
+                            setHeight(elt.clientHeight)
+                          }
+                        }}
+                        style={{
+                          opacity,
+                          transform,
+                          position: measuredHeight ? 'absolute' : 'static',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                        }}
+                      >
+                        {children(screenData)}
+                      </AnimatedDiv>
+                    )}
               </Transition>
             </AnimatedDiv>
           )}

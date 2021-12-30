@@ -21,7 +21,7 @@ function getProgress(
   threshold: number,
   now: number
 ) {
-  if (status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED) {
+  if (status === ActivityStatus.Confirmed) {
     return 1
   }
   return now > threshold ? -1 : norm(now, createdAt, estimate)
@@ -40,23 +40,21 @@ function TransactionProgress({ createdAt, status }: TransactionProgressProps) {
   const threshold = createdAt + TX_DURATION_THRESHOLD
 
   const progress = getProgress(status, createdAt, estimate, threshold, now)
-  const showConfirmed = status === ActivityStatus.ACTIVITY_STATUS_CONFIRMED
+  const showConfirmed = status === ActivityStatus.Confirmed
   const showTimer =
-    !showConfirmed &&
-    now < threshold &&
-    status === ActivityStatus.ACTIVITY_STATUS_PENDING
+    !showConfirmed && now < threshold && status === ActivityStatus.Pending
 
   return (
     <Transition
       native
       delay={DELAY_BEFORE_HIDE}
-      items={status === ActivityStatus.ACTIVITY_STATUS_PENDING}
+      items={status === ActivityStatus.Pending}
       enter={{ height: 28, opacity: 1 }}
       leave={{ height: 0, opacity: 0 }}
     >
-      {show =>
+      {(show) =>
         show &&
-        (transition => (
+        ((transition) => (
           <animated.div
             style={{
               display: 'flex',

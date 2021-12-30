@@ -2,7 +2,7 @@ import StoredList from '../StoredList'
 import { ActivityStatus } from '../components/Activity/activity-statuses'
 import { useConnectedGarden } from './ConnectedGarden'
 import { useWallet } from './Wallet'
-import { GardenActionTypes as actions } from '@/actions/garden-action-types'
+import { GardenActionTypes } from '@/actions/garden-action-types'
 import { MINUTE } from '@utils/date-utils'
 import { getNetworkType } from '@utils/web3-utils'
 import PropTypes from 'prop-types'
@@ -38,7 +38,7 @@ async function getActivityFinalStatus(
   ethers,
   { createdAt, transactionHash, status }
 ) {
-  if (status !== ActivityStatus.ACTIVITY_STATUS_PENDING) {
+  if (status !== ActivityStatus.Pending) {
     return status
   }
 
@@ -55,21 +55,21 @@ async function getActivityFinalStatus(
         }
         return tx.wait().then((receipt) => {
           return receipt.blockNumber
-            ? ActivityStatus.ACTIVITY_STATUS_CONFIRMED
-            : ActivityStatus.ACTIVITY_STATUS_FAILED
+            ? ActivityStatus.Confirmed
+            : ActivityStatus.Failed
         })
       })
       .catch(() => {
-        return ActivityStatus.ACTIVITY_STATUS_FAILED
+        return ActivityStatus.Failed
       }),
 
     // Timeout after 10 minutes
     new Promise((resolve) => {
       if (now - createdAt > TIMEOUT_DURATION) {
-        return ActivityStatus.ACTIVITY_STATUS_TIMED_OUT
+        return ActivityStatus.TimedOut
       }
       setTimeout(() => {
-        resolve(ActivityStatus.ACTIVITY_STATUS_TIMED_OUT)
+        resolve(ActivityStatus.TimedOut)
       }, TIMEOUT_DURATION - (now - createdAt))
     }),
   ])
@@ -110,7 +110,7 @@ function ActivityProvider({ children }) {
           from: tx.from,
           nonce: tx.nonce,
           read: false,
-          status: ActivityStatus.ACTIVITY_STATUS_PENDING,
+          status: ActivityStatus.Pending,
           type,
           to: tx.to,
           transactionHash: tx.hash,
@@ -137,7 +137,7 @@ function ActivityProvider({ children }) {
   const clearActivities = useCallback(() => {
     updateActivities((activities) =>
       activities.filter(
-        (activity) => activity.status === ActivityStatus.ACTIVITY_STATUS_PENDING
+        (activity) => activity.status === ActivityStatus.Pending
       )
     )
   }, [updateActivities])

@@ -31,10 +31,7 @@ function ActivityList() {
   )
 
   const canClear = useMemo(
-    () =>
-      activityItems.some(
-        ({ status }) => status !== ActivityStatus.ACTIVITY_STATUS_PENDING
-      ),
+    () => activityItems.some(({ status }) => status !== ActivityStatus.Pending),
     [activityItems]
   )
 
@@ -91,7 +88,7 @@ function ActivityList() {
           <Transition
             native
             items={activityItems}
-            keys={activity => activity.transactionHash}
+            keys={(activity) => activity.transactionHash}
             trail={50}
             enter={{
               opacity: 1,
@@ -103,21 +100,22 @@ function ActivityList() {
             }}
             config={springs.smooth}
           >
-            {activity => transitionStyles => (
-              <div
-                css={`
-                  & + & {
-                    border-top: 1px solid ${theme.border};
-                  }
-                `}
-              >
-                <animated.div
-                  style={{ ...transitionStyles, overflow: 'hidden' }}
+            {(activity) => (transitionStyles) =>
+              (
+                <div
+                  css={`
+                    & + & {
+                      border-top: 1px solid ${theme.border};
+                    }
+                  `}
                 >
-                  <ActivityItem activity={activity} />
-                </animated.div>
-              </div>
-            )}
+                  <animated.div
+                    style={{ ...transitionStyles, overflow: 'hidden' }}
+                  >
+                    <ActivityItem activity={activity} />
+                  </animated.div>
+                </div>
+              )}
           </Transition>
         ) : (
           <div

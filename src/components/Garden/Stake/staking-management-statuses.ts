@@ -1,29 +1,29 @@
-export enum StakingType {
-  STAKING_SCHEDULED = 'STAKING_SCHEDULED',
-  STAKING_CHALLENGED = 'STAKING_CHALLENGED',
-  STAKING_COMPLETED = 'STAKING_COMPLETED',
-  STAKING_CANCELLED = 'STAKING_CANCELLED',
-  STAKING_SETTLED = 'STAKING_SETTLED',
+enum StakingType {
+  Scheduled = 'STAKING_SCHEDULED',
+  Challenged = 'STAKING_CHALLENGED',
+  Completed = 'STAKING_COMPLETED',
+  Cancelled = 'STAKING_CANCELLED',
+  Settled = 'STAKING_SETTLED',
 }
 
-export enum StakingCollateralType {
-  COLLATERAL_LOCKED = 'COLLATERAL_LOCKED',
-  COLLATERAL_CHALLENGED = 'COLLATERAL_CHALLENGED',
-  COLLATERAL_AVAILABLE = 'COLLATERAL_AVAILABLE',
-  COLLATERAL_SLASHED = 'COLLATERAL_SLASHED',
+enum StakingCollateralType {
+  Locked = 'COLLATERAL_LOCKED',
+  Challenged = 'COLLATERAL_CHALLENGED',
+  Available = 'COLLATERAL_AVAILABLE',
+  Slashed = 'COLLATERAL_SLASHED',
 }
 
 export const StakingStatusesMap = new Map([
-  ['Scheduled', StakingType.STAKING_SCHEDULED],
-  ['Settled', StakingType.STAKING_SETTLED],
-  ['Challenged', StakingType.STAKING_CHALLENGED],
-  ['Completed', StakingType.STAKING_COMPLETED],
-  ['Cancelled', StakingType.STAKING_CANCELLED],
+  ['Scheduled', StakingType.Scheduled],
+  ['Settled', StakingType.Settled],
+  ['Challenged', StakingType.Challenged],
+  ['Completed', StakingType.Completed],
+  ['Cancelled', StakingType.Cancelled],
 ])
 
 export const CollateralStatusesMap = new Map([
-  ['Locked', StakingCollateralType.COLLATERAL_LOCKED],
-  ['Challenged', StakingCollateralType.COLLATERAL_CHALLENGED],
-  ['Available', StakingCollateralType.COLLATERAL_AVAILABLE],
-  ['Slashed', StakingCollateralType.COLLATERAL_SLASHED],
+  ['Locked', StakingCollateralType.Locked],
+  ['Challenged', StakingCollateralType.Challenged],
+  ['Available', StakingCollateralType.Available],
+  ['Slashed', StakingCollateralType.Slashed],
 ])
