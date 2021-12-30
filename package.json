@@ -68,7 +68,6 @@
     "@babel/plugin-proposal-class-properties": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
-    "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@react-spring/types": "^9.3.2",
     "@types/node": "^16.11.12",
     "@types/react": "^17.0.37",
