@@ -1,13 +1,19 @@
 import React, { useEffect, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
-import { useTheme, GU } from '@1hive/1hive-ui'
+
+import { GU, useTheme } from '@1hive/1hive-ui'
+
 import LoadingRing from '@components/LoadingRing'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import MultiModalScreens from '@components/MultiModal/MultiModalScreens'
 import Stepper from '@components/Stepper/Stepper'
+
 import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+
+import { setAccountSetting } from '@/local-settings'
 
 const indexNumber = {
   0: 'First',
@@ -27,7 +33,7 @@ function ModalFlowBase({
   onCompleteActions,
 }) {
   const { addActivity } = useActivity()
-  const { ethers } = useWallet()
+  const { account, chainId, ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
   const transactionSteps = useMemo(
@@ -70,6 +76,8 @@ function ModalFlowBase({
                   // We need to wait for pre-transactions to mine before asking for the next signature
                   // TODO: Provide a better user experience than waiting on all transactions
                   await tx.wait()
+
+                  setAccountSetting('lastTxHash', account, chainId, tx.hash)
 
                   setSuccess()
                 } catch (err) {

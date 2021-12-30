@@ -1,5 +1,8 @@
 /* eslint-disable no-empty */
+import { getNetworkType } from '@utils/web3-utils'
+
 import { DEFAULT_CHAIN_ID } from '@/constants'
+
 const APP_THEME = 'THEME'
 const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 
@@ -38,6 +41,21 @@ export function getAppTheme() {
       : 'light',
     theme: null,
   }
+}
+
+function getStorageKey(action: string, account: string, chainId: number) {
+  return `${action}:${getNetworkType(chainId)}:${account}`
+}
+
+export function setAccountSetting(action: string, account:string, chainId: number, value: any) {
+  window.localStorage.setItem(getStorageKey(action, account, chainId), value)
+}
+
+export function getAccountSetting(action: string, account: string, chainId: number) {
+  const item = window.localStorage.getItem(
+    getStorageKey(action, account, chainId)
+  )
+  return item
 }
 
 export function setAppTheme(appearance: string, theme = null) {
