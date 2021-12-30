@@ -13,6 +13,7 @@ enum StakingCollateralType {
   Slashed = 'COLLATERAL_SLASHED',
 }
 
+// TODO: _tiago deal with this map, its not need anymore with the enum
 export const StakingStatusesMap = new Map([
   ['Scheduled', StakingType.Scheduled],
   ['Settled', StakingType.Settled],

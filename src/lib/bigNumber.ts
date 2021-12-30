@@ -1,4 +1,4 @@
-// export type BigNumber in types.ts
+// TODO: _tiago export type BigNumber in types.ts
 
 import BigNumber from 'bignumber.js'
 
