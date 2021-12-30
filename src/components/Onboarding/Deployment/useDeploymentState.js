@@ -126,7 +126,7 @@ export default function useDeploymentState() {
   return {
     erroredTransactions: transactionProgress.errored,
     gardenAddress,
-    isFinalized: status === OnboardingStatusGarden.STATUS_GARDEN_CREATED,
+    isFinalized: status === OnboardingStatusGarden.Created,
     onNextAttempt: handleNextAttempt,
     onReset,
     readyToStart: deployTransactions.length > 0,
