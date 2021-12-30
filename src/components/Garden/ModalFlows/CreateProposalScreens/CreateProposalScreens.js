@@ -79,6 +79,16 @@ function CreateProposalScreens({ onComplete }) {
     proposalData.current = data
   }, [])
 
+  const onCompleteMiddleware = useCallback(() => {
+    throwConfetti({
+      x: 0.5,
+      y: 0.7,
+    })
+    if (onComplete) {
+      onComplete()
+    }
+  }, [onComplete])
+
   const getTransactions = useCallback(
     async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current

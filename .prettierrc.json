@@ -4,5 +4,23 @@
   "trailingComma": "es5",
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
-  "tabSize": 2
+  "tabSize": 2,
+  "importOrder": [
+    "^react(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^@1hive/(.*)$",
+    "^@components/(.*)$",
+    "^@providers/(.*)$",
+    "^@hooks/(.*)$",
+    "^@lib/(.*)$",
+    "^@utils/(.*)$",
+    "^@/services(.*)$",
+    "^@/endpoints(.*)$",
+    "^@/(.*)$",
+    "^@abis/(.*)$",
+    "^@assets/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

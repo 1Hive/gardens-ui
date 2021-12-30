@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { animated } from 'react-spring/renderprops'
+
 import PropTypes from 'prop-types'
+
 import {
   Button,
   GU,
@@ -8,11 +11,14 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { animated } from 'react-spring/renderprops'
+
+import { throwConfetti } from '@utils/confetti-utils'
 
 import { TransactionStatusType } from '@/prop-types'
-import flowerSvg from './assets/flower.svg'
+
 import gardensLogoMark from '@assets/gardensLogoMark.svg'
+
+import flowerSvg from './assets/flower.svg'
 import linesSvg from './assets/lines.svg'
 
 const AnimDiv = animated.div
@@ -233,6 +239,11 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
   const fullWidth = below('large')
   const small = below('medium')
 
+  const onGetStartedMiddleware = useCallback(() => {
+    throwConfetti()
+    if (onGetStarted) onGetStarted()
+  }, [onGetStarted, throwConfetti])
+
   return (
     <BoxBase background="#8DE995" opacity={opacity} boxTransform={boxTransform}>
       <div
@@ -266,7 +277,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
               <Button
                 label="Get started"
                 mode="strong"
-                onClick={onGetStarted}
+                onClick={onGetStartedMiddleware}
                 css={`
                   margin-top: ${2 * GU}px;
                 `}

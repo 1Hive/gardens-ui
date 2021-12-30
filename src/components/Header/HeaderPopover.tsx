@@ -1,8 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 // Added this because of lack of types from react-spring
-import { GU, Popover, springs } from '@1hive/1hive-ui'
 import React, { useEffect, useRef, useState } from 'react'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
+
+import { GU, Popover, springs } from '@1hive/1hive-ui'
 
 const AnimatedDiv = animated.div
 
