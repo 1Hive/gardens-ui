@@ -1,3 +1,5 @@
+// export type BigNumber in types.ts
+
 import BigNumber from 'bignumber.js'
 
 BigNumber.config({ POW_PRECISION: 100 })
