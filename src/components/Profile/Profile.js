@@ -104,15 +104,15 @@ function Profile() {
 
                   ${oneColumn
                     ? `
-                            left: 0;
-                            right: 0;
-                            text-align: center;
-                            top: 50px;
-                            `
+                      left: 0;
+                      right: 0;
+                      text-align: center;
+                      top: 50px;
+                      `
                     : `
-                            top: -54px;
-                            right: 0;
-                          `}
+                      top: -54px;
+                      right: 0;
+                    `}
                 `}
               >
                 <Button
