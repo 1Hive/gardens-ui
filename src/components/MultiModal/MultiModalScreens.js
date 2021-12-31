@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import { Spring, Transition, animated } from 'react-spring'
 import {
   ButtonIcon,
   GU,
@@ -151,7 +151,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   }, [animationDisabled, enableAnimation])
 
   const renderScreen = useCallback(
-    screen => {
+    (screen) => {
       const { title, content, graphicHeader, width } = screen
       const standardPadding = smallMode ? 3 * GU : 5 * GU
 
@@ -162,9 +162,9 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
               css={`
                 position: relative;
                 overflow: hidden;
-                padding: ${1.5 * GU}px ${standardPadding}px
-                  ${1.5 * GU}px ${standardPadding}px;
-                background-image: url("${headerBackground}");
+                padding: ${1.5 * GU}px ${standardPadding}px ${1.5 * GU}px
+                  ${standardPadding}px;
+                background-image: url('${headerBackground}');
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
               `}
             >
@@ -266,14 +266,14 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
             onStart={onStart}
             native
           >
-            {step => animProps => {
+            {(step) => (animProps) => {
               const stepScreen = getScreen(step)
 
               return (
                 <>
                   {stepScreen && (
                     <AnimatedDiv
-                      ref={elt => {
+                      ref={(elt) => {
                         if (elt) {
                           setHeight(elt.clientHeight)
                         }

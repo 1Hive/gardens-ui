@@ -8,7 +8,7 @@ import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useMounted } from '@hooks/useMounted'
 import { PropTypes } from 'prop-types'
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring'
 
 const AnimatedDiv = animated.div
 

@@ -1,4 +1,6 @@
+import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
+import { ethers } from 'ethers'
 
 type TokenType = {
   decimals: number
@@ -90,32 +92,25 @@ type AppType = {
   appName: string
   address: string
   appId: string
-  codeAddress: any
-  contentUri: any
+  codeAddress: string
+  contentUri: string
   isForwarder: boolean
   isUpgradeable: boolean
   kernelAddress: string
   name: string
-  manifest: any
-  organization: {
-    connection: {
-      actAs: any
-      ethereumProvider: any
-      ethersProvider: any
-      ipfs: any
-      network: {
-        chainId: number, ensAddress: string, name: string
-      }
-      orgAddress: string
-      orgConnector: any
-      orgLocation: string
-      verbose: boolean
-    }
+  manifest: {
+    name: string
+    icons: Array<{
+      src: string
+    }>
   }
-  registry: any
-  registryAddress: any
-  repoAddress: any
-  version: any
+  organization: {
+    connection: ConnectionContext
+  }
+  registry: string
+  registryAddress: string
+  repoAddress: string
+  version: string
 }
 
 type StakeType = {
@@ -141,7 +136,7 @@ type StakeHistoryType = {
   conviction: BigNumber
   createdAt: number
   id: string
-  proposal: any
+  proposal: ProposalType
   supporter: {
     organization: Array<{
       id: string
@@ -235,10 +230,4 @@ type ProposalType = {
   yeas: any
 }
 
-export type {
-  ConfigType,
-  FiltersType,
-  TokenType,
-  AppType,
-  ProposalType
-}
+export type { ConfigType, FiltersType, TokenType, AppType, ProposalType }

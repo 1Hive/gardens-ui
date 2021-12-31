@@ -9,9 +9,14 @@ import {
 } from '../constants'
 import { useSupporterSubscription } from './useSubscriptions'
 import { ProposalTypes } from '../types'
+import { StakeData } from '@1hive/connect-gardens/dist/cjs/types'
 
-export function useAccountStakes(account) {
-  const [user] = useUser(account)
+type StakeType = {
+  amount: any
+} & StakeData
+
+export function useAccountStakes(account: string) {
+  const { user } = useUser(account)
 
   return useMemo(() => {
     if (!user?.supports.length) {
@@ -20,7 +25,7 @@ export function useAccountStakes(account) {
 
     return user.supports
       .flatMap(({ stakes }) => stakes)
-      .reduce((acc, stake) => {
+      .reduce((acc: any, stake: StakeType) => {
         if (
           stake.amount.eq(0) ||
           (stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING &&
@@ -36,22 +41,22 @@ export function useAccountStakes(account) {
             amount: stake.amount,
             gardenId: stake.proposal.organization.id,
             proposalId: stake.proposal.id,
-            proposalName: stake.proposal.name,
+            proposalName: stake.proposal.beneficiary,
           },
         ]
       }, [])
   }, [user])
 }
 
-export function useAccountStakesByGarden(account) {
-  const [supporter] = useSupporterSubscription(account)
+export function useAccountStakesByGarden(account: string) {
+  const { supporter } = useSupporterSubscription(account)
 
   return useMemo(() => {
     if (!supporter) {
       return []
     }
 
-    return supporter.stakes.reduce((acc, stake) => {
+    return supporter.stakes.reduce((acc: any, stake: StakeType) => {
       if (
         stake.amount.eq(0) ||
         (stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING &&
@@ -66,15 +71,15 @@ export function useAccountStakesByGarden(account) {
         {
           amount: stake.amount,
           proposalId: stake.proposal.id,
-          proposalName: stake.proposal.name,
+          proposalName: stake.proposal.beneficiary,
         },
       ]
     }, [])
   }, [supporter])
 }
 
-export function useInactiveProposalsWithStake(account) {
-  const [user] = useUser(account)
+export function useInactiveProposalsWithStake(account: string) {
+  const { user } = useUser(account)
 
   if (!user?.supports.length) {
     return []
@@ -82,7 +87,7 @@ export function useInactiveProposalsWithStake(account) {
 
   const inactiveStakes = user.supports
     .flatMap(({ stakes }) => stakes)
-    .filter(stake => {
+    .filter((stake: StakeType) => {
       return (
         stake.proposal.type !== ProposalTypes.Decision &&
         (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||

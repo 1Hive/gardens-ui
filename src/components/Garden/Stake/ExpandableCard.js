@@ -10,7 +10,7 @@ import {
   springs,
   useTheme,
 } from '@1hive/1hive-ui'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import { Spring, Transition, animated } from 'react-spring'
 
 const AnimatedDiv = animated.div
 
@@ -19,7 +19,7 @@ function ExpandableCard({ content, expansion }) {
   const theme = useTheme()
 
   const toggleButton = useCallback(() => {
-    setOpened(opened => !opened)
+    setOpened((opened) => !opened)
   }, [])
 
   return (
@@ -53,9 +53,9 @@ function ExpandableCard({ content, expansion }) {
           enter={{ height: 'auto' }}
           leave={{ height: 0 }}
         >
-          {show =>
+          {(show) =>
             show &&
-            (props => (
+            ((props) => (
               <AnimatedDiv
                 css={`
                   background: ${theme.surfaceUnder};
@@ -161,7 +161,7 @@ function OpenedSurfaceBorder({ opened }) {
               transform-origin: 0 0;
             `}
             style={{
-              transform: width.interpolate(v => `scale3d(${v}, 1, 1)`),
+              transform: width.interpolate((v) => `scale3d(${v}, 1, 1)`),
             }}
           />
         </div>

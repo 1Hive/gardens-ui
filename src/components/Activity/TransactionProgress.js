@@ -1,6 +1,6 @@
 import React from 'react'
 import { ProgressBar, GU } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring'
 import TimeTag from './TimeTag'
 
 import useNow from '@hooks/useNow'
@@ -14,25 +14,19 @@ const TX_DURATION_AVERAGE = 3 * MINUTE
 // bar, so that the user doesn’t get confused by a completed progress bar.
 const TX_DURATION_THRESHOLD = TX_DURATION_AVERAGE - MINUTE / 2
 
-function getProgress(
-  status: string,
-  createdAt: number,
-  estimate: number,
-  threshold: number,
-  now: number
-) {
+function getProgress(status, createdAt, estimate, threshold, now) {
   if (status === ActivityStatus.Confirmed) {
     return 1
   }
   return now > threshold ? -1 : norm(now, createdAt, estimate)
 }
 
-type TransactionProgressProps = {
+/*type TransactionProgressProps = {
   createdAt: number
   status: ActivityStatus
-}
+}*/
 
-function TransactionProgress({ createdAt, status }: TransactionProgressProps) {
+function TransactionProgress({ createdAt, status }) {
   const now = useNow().valueOf()
 
   // Only animate things if the panel is ready (opened).

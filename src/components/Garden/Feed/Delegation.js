@@ -18,7 +18,7 @@ import { useWallet } from '@providers/Wallet'
 function Delegation({ onRemoveDelegate, onSetDelegate }) {
   const { account } = useWallet()
   const theme = useTheme()
-  const [supporter, loading] = useSupporterSubscription(account)
+  const { supporter, loading } = useSupporterSubscription(account)
 
   return (
     <Box>

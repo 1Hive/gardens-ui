@@ -1,4 +1,3 @@
-import { Organization } from '@1hive/connect-core'
 import { Garden } from '@1hive/connect-gardens'
 
 declare module '@1hive/connect-gardens' {

@@ -3,6 +3,8 @@ import { ReactNode } from 'react'
 import '@1hive/1hive-ui'
 
 declare module '@1hive/1hive-ui' {
+  export declare const ProgressBar: any
+
   export declare function Box({
     heading,
     children,

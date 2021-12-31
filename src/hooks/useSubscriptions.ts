@@ -6,6 +6,7 @@ import {
   transformSupporterData,
 } from '../utils/data-utils'
 import { FiltersType } from './constants'
+import { SupporterData } from '@1hive/connect-gardens/dist/cjs/types'
 
 type Garden = {
   onConfig: any
@@ -153,11 +154,11 @@ export function useProposalSubscription(
 
 export function useSupporterSubscription(account: string) {
   const { connector } = useGardenState()
-  const [supporter, setSupporter] = useState(null)
+  const [supporter, setSupporter] = useState<SupporterData | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const rawSupporterRef = useRef<unknown>(null)
-  const supporterSubscription = useRef<unknown>(null)
+  const rawSupporterRef = useRef<any>(null)
+  const supporterSubscription = useRef<any>(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {
     if (err || !supporter) {
@@ -189,9 +190,9 @@ export function useSupporterSubscription(account: string) {
     )
 
     return () => {
-      supporterSubscription.current = null
+      supporterSubscription.current?.unsubscribe()
     }
   }, [account, connector, onSupporterHandler])
 
-  return [supporter, loading]
+  return { supporter, loading }
 }

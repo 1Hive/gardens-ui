@@ -53,7 +53,7 @@ export function useLatestBlock(chainId: number) {
   return block
 }
 
-export function useBlockTimeStamp(blockNumber: any, chainId: number) {
+export function useBlockTimeStamp(blockNumber: number, chainId: number) {
   const [timestamp, setTimestamp] = useState(0)
   const provider = useProvider(chainId)
 
@@ -80,7 +80,8 @@ export function useBlockTimeStamp(blockNumber: any, chainId: number) {
 export function useBlockTime(chainId: number) {
   const network = getNetwork(chainId)
 
-  return useMemo(() => (network ? NETWORK_TIMES.get(network.type) : null), [
-    network,
-  ])
+  return useMemo(
+    () => (network ? NETWORK_TIMES.get(network.type) : null),
+    [network]
+  )
 }

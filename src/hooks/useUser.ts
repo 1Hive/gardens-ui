@@ -4,9 +4,10 @@ import { useMounted } from './useMounted'
 import { getNetwork } from '../networks'
 import { transformUserData } from '@utils/data-utils'
 import { useWallet } from '@/providers/Wallet'
+import { UserData } from '@1hive/connect-gardens/dist/cjs/types'
 
 export default function useUser(address: string) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
   const mounted = useMounted()
@@ -49,5 +50,5 @@ export default function useUser(address: string) {
     fetchUser()
   }, [address, mounted, preferredNetwork, refetchTriger, subgraphs.gardens])
 
-  return [user, loading, reload]
+  return { user, loading, reload }
 }
