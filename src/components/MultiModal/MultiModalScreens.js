@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Spring, Transition, animated } from 'react-spring'
+import { Spring, Transition, animated } from 'react-spring/renderprops'
 import {
   ButtonIcon,
   GU,

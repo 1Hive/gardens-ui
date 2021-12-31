@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { useMultiModal } from '../MultiModal/MultiModalProvider'
 import Step from './Step/Step'
 import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
@@ -7,8 +8,7 @@ import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useMounted } from '@hooks/useMounted'
 import { PropTypes } from 'prop-types'
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { Transition, animated } from 'react-spring'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const AnimatedDiv = animated.div
 

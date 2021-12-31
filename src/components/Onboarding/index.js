@@ -1,11 +1,11 @@
+import React from 'react'
 import Deployment from './Deployment/Deployment'
 import Setup from './Setup'
 import { OnboardingStatusGarden } from './statuses'
 import { RootPortal, springs, useTheme } from '@1hive/1hive-ui'
 import { ChartsProvider } from '@providers/Charts'
 import { OnboardingProvider, useOnboardingState } from '@providers/Onboarding'
-import React from 'react'
-import { animated, Transition } from 'react-spring'
+import { animated, Transition } from 'react-spring/renderprops'
 
 function Onboarding({ onClose, visible }) {
   return (

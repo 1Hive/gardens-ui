@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Transition, animated } from 'react-spring'
+import { Transition, animated } from 'react-spring/renderprops'
 import {
   ButtonText,
   GU,

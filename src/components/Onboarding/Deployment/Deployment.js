@@ -10,7 +10,7 @@ import gardensLogo from '@assets/gardensLogoMark.svg'
 import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router'
-import { animated, Transition } from 'react-spring'
+import { animated, Transition } from 'react-spring/renderprops'
 
 const Deployment = React.memo(function Deployment() {
   const { above } = useViewport()
