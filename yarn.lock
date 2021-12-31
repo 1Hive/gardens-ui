@@ -121,6 +121,8 @@
     react-onclickout "^2.0.8"
     react-spring "7.2.10"
     recursive-copy "^2.0.9"
+    react "16.3.1"
+    react-dom "16.3.1"
     use-inside "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "@1hive/connect-agreement@^0.9.5":
