@@ -100,10 +100,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.15.tgz#9f1c402e5dc0a14b7d0863938c49034e572af4a5"
-  integrity sha512-eGfhtjOeDKHaqiXvdsrpPK9aBnBbj8Kba9U4jmVx+qqDQNiuZ/gP2bxijXQghisOqIQ7HVQyDvIn/9++Z8Qi5A==
+"@1hive/1hive-ui@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.16.tgz#6bf5d106cf10a77f84699ad7587c37f8696dc30b"
+  integrity sha512-BFqruurG2a84NU/PDQxb7jo6HgQudA+AjrwTMg9nXCs1mhgUu+1Kcu5e2gns8xWQi24XysQ0lZC78z3me/2egQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"
@@ -119,7 +119,7 @@
     react-blockies "^1.4.0"
     react-display-name "^0.2.3"
     react-onclickout "^2.0.8"
-    react-spring "7.2.10"
+    react-spring "8.0.27"
     recursive-copy "^2.0.9"
     use-inside "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
@@ -1233,7 +1233,7 @@
     core-js-pure "^3.19.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
   integrity sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==
@@ -17498,14 +17498,7 @@ react-scripts@^5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-spring@7.2.10:
-  version "7.2.10"
-  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-7.2.10.tgz#eacbf429327bea058677c3a01af87b9c387f4aa6"
-  integrity sha512-bsbgQh1DzTqjwuD1tDZ7Nu04G5JhNNXdezkcJ5xXNboedN/MPe0K+X/MtypUxXBUCLYT0r5oKT3zj4STqVpnPA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-react-spring@^8.0.27:
+react-spring@8.0.27, react-spring@^8.0.27:
   version "8.0.27"
   resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-8.0.27.tgz#97d4dee677f41e0b2adcb696f3839680a3aa356a"
   integrity sha512-nDpWBe3ZVezukNRandTeLSPcwwTMjNVu1IDq9qA/AMiUqHuRN4BeSWvKr3eIxxg1vtiYiOLy4FqdfCP5IoP77g==
@@ -20151,9 +20144,9 @@ ursa-optional@~0.10.0:
     bindings "^1.5.0"
     nan "^2.14.2"
 
-"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
   version "0.2.0"
-  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@0.13.1":
   version "0.13.1"
