@@ -1,5 +1,5 @@
 import { shortenAddress } from '@1hive/1hive-ui'
-import actions from './actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import { ZERO_ADDR } from './constants'
 
 export default {

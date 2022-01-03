@@ -16,17 +16,10 @@ import {
 } from '@1hive/1hive-ui'
 import { useGardenState } from '@providers/GardenState'
 import {
-  STAKING_SCHEDULED,
-  STAKING_CHALLENGED,
-  STAKING_COMPLETED,
-  STAKING_CANCELLED,
-  STAKING_SETTLED,
-  COLLATERAL_LOCKED,
-  COLLATERAL_CHALLENGED,
-  COLLATERAL_AVAILABLE,
-  COLLATERAL_SLASHED,
-  STAKING_STATUSES,
-  COLLATERAL_STATUSES,
+  StakingType,
+  StakingCollateralType,
+  StakingStatusesMap,
+  CollateralStatusesMap,
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat, toMs } from '@utils/date-utils'
@@ -34,27 +27,27 @@ import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
-    [STAKING_SCHEDULED]: {
+    [StakingType.STAKING_SCHEDULED]: {
       background: theme.infoSurface,
       color: theme.tagIndicatorContent,
       icon: <IconClock size="small" />,
     },
-    [STAKING_CHALLENGED]: {
+    [StakingType.STAKING_CHALLENGED]: {
       background: theme.warningSurface,
       color: theme.warningSurfaceContent,
       icon: <IconAttention size="small" />,
     },
-    [STAKING_COMPLETED]: {
+    [StakingType.STAKING_COMPLETED]: {
       background: theme.positiveSurface,
       color: theme.positiveSurfaceContent,
       icon: <IconCheck size="small" />,
     },
-    [STAKING_CANCELLED]: {
+    [StakingType.STAKING_CANCELLED]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
     },
-    [STAKING_SETTLED]: {
+    [StakingType.STAKING_SETTLED]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
@@ -66,18 +59,18 @@ function getActionAttributes(status, theme) {
 
 function getCollateralAttributes(status, theme) {
   const collateralAttributes = {
-    [COLLATERAL_LOCKED]: {
+    [StakingCollateralType.COLLATERAL_LOCKED]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [COLLATERAL_CHALLENGED]: {
+    [StakingCollateralType.COLLATERAL_CHALLENGED]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [COLLATERAL_AVAILABLE]: {
+    [StakingCollateralType.COLLATERAL_AVAILABLE]: {
       color: theme.content,
     },
-    [COLLATERAL_SLASHED]: {
+    [StakingCollateralType.COLLATERAL_SLASHED]: {
       color: theme.negative,
     },
   }
@@ -135,10 +128,10 @@ function StakingMovements({ stakingMovements, token }) {
         disputableActionId,
         disputableAddress,
       }) => {
-        const stakingStatus = STAKING_STATUSES.get(actionState)
+        const stakingStatus = StakingStatusesMap.get(actionState)
         const actionAttributes = getActionAttributes(stakingStatus, theme)
 
-        const collateralStatus = COLLATERAL_STATUSES.get(collateralState)
+        const collateralStatus = CollateralStatusesMap.get(collateralState)
         const amountAttributes = getCollateralAttributes(
           collateralStatus,
           theme

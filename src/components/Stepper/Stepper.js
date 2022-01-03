@@ -1,33 +1,25 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { PropTypes } from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
-import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
+import { useMultiModal } from '../MultiModal/MultiModalProvider'
 import Step from './Step/Step'
-
+import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
+import { IndividualStepTypes } from './stepper-statuses'
+import useStepperLayout from './useStepperLayout'
+import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useMounted } from '@hooks/useMounted'
-import { useMultiModal } from '../MultiModal/MultiModalProvider'
-import useStepperLayout from './useStepperLayout'
-
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from './stepper-statuses'
-import { TRANSACTION_SIGNING_DESC } from './stepper-descriptions'
+import { PropTypes } from 'prop-types'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const AnimatedDiv = animated.div
 
-const INITIAL_STATUS = STEP_PROMPTING
+const INITIAL_STATUS = IndividualStepTypes.Prompting
 
 const DEFAULT_DESCRIPTIONS = TRANSACTION_SIGNING_DESC
 
 function initialStepState(steps) {
   return steps.map((_, i) => {
     return {
-      status: i === 0 ? INITIAL_STATUS : STEP_WAITING,
+      status: i === 0 ? INITIAL_STATUS : IndividualStepTypes.Waiting,
       hash: null,
     }
   })
@@ -91,14 +83,15 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   const renderSteps = useCallback(() => {
     return steps.map((_, index) => {
       const showDivider =
-        index < stepsCount && stepState[index].status !== STEP_WAITING
+        index < stepsCount &&
+        stepState[index].status !== IndividualStepTypes.Waiting
 
       return renderStep(index, showDivider)
     })
   }, [renderStep, steps, stepsCount, stepState])
 
   const updateStepStatus = useCallback(
-    status => {
+    (status) => {
       if (mounted()) {
         updateStep(['setStatus', stepperStage, status])
       }
@@ -107,7 +100,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
   )
 
   const updateHash = useCallback(
-    hash => {
+    (hash) => {
       if (mounted()) {
         updateStep(['setHash', stepperStage, hash])
       }
@@ -122,13 +115,13 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
 
     // Pass state updates as render props to handleSign
     handleSign({
-      setPrompting: () => updateStepStatus(STEP_PROMPTING),
-      setWorking: () => updateStepStatus(STEP_WORKING),
+      setPrompting: () => updateStepStatus(IndividualStepTypes.Prompting),
+      setWorking: () => updateStepStatus(IndividualStepTypes.Working),
       setError: () => {
-        updateStepStatus(STEP_ERROR)
+        updateStepStatus(IndividualStepTypes.Error)
       },
       setSuccess: () => {
-        updateStepStatus(STEP_SUCCESS)
+        updateStepStatus(IndividualStepTypes.Success)
 
         // Advance to next step or fire complete callback
         if (mounted()) {
@@ -139,7 +132,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
           }
         }
       },
-      setHash: hash => updateHash(hash),
+      setHash: (hash) => updateHash(hash),
     })
   }, [
     mounted,
@@ -159,7 +152,7 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
 
   const completed =
     stepperStage === stepsCount &&
-    stepState[stepperStage].status === STEP_SUCCESS
+    stepState[stepperStage].status === IndividualStepTypes.Success
 
   useEffect(() => {
     let timeout
@@ -231,17 +224,20 @@ function Stepper({ steps, onComplete, onCompleteActions }) {
                   }}
                   native
                 >
-                  {currentStage => animProps => (
-                    <AnimatedDiv
-                      style={{
-                        position:
-                          currentStage === stepperStage ? 'static' : 'absolute',
-                        ...animProps,
-                      }}
-                    >
-                      {renderStep(currentStage)}
-                    </AnimatedDiv>
-                  )}
+                  {(currentStage) => (animProps) =>
+                    (
+                      <AnimatedDiv
+                        style={{
+                          position:
+                            currentStage === stepperStage
+                              ? 'static'
+                              : 'absolute',
+                          ...animProps,
+                        }}
+                      >
+                        {renderStep(currentStage)}
+                      </AnimatedDiv>
+                    )}
                 </Transition>
               </div>
             </>
@@ -279,11 +275,11 @@ Stepper.propTypes = {
       title: PropTypes.string.isRequired,
       handleSign: PropTypes.func.isRequired,
       descriptions: PropTypes.shape({
-        [STEP_WAITING]: PropTypes.string,
-        [STEP_PROMPTING]: PropTypes.string,
-        [STEP_WORKING]: PropTypes.string,
-        [STEP_SUCCESS]: PropTypes.string,
-        [STEP_ERROR]: PropTypes.string,
+        [IndividualStepTypes.Waiting]: PropTypes.string,
+        [IndividualStepTypes.Prompting]: PropTypes.string,
+        [IndividualStepTypes.Working]: PropTypes.string,
+        [IndividualStepTypes.Success]: PropTypes.string,
+        [IndividualStepTypes.Error]: PropTypes.string,
       }),
     })
   ).isRequired,

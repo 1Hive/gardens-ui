@@ -1,15 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { ProgressBar, GU } from '@1hive/1hive-ui'
 import { Transition, animated } from 'react-spring/renderprops'
-import { ActivityStatusType } from './prop-types'
 import TimeTag from './TimeTag'
 
 import useNow from '@hooks/useNow'
-import {
-  ACTIVITY_STATUS_CONFIRMED,
-  ACTIVITY_STATUS_PENDING,
-} from './activity-statuses'
+import { ActivityStatus } from './activity-statuses'
 import { norm } from '@utils/math-utils'
 import { MINUTE } from '@utils/date-utils'
 
@@ -20,17 +15,18 @@ const TX_DURATION_AVERAGE = 3 * MINUTE
 const TX_DURATION_THRESHOLD = TX_DURATION_AVERAGE - MINUTE / 2
 
 function getProgress(status, createdAt, estimate, threshold, now) {
-  if (status === ACTIVITY_STATUS_CONFIRMED) {
+  if (status === ActivityStatus.Confirmed) {
     return 1
   }
   return now > threshold ? -1 : norm(now, createdAt, estimate)
 }
 
-const TransactionProgress = React.memo(function TransactionProgress({
-  createdAt,
-  minedAtEstimate,
-  status,
-}) {
+/*type TransactionProgressProps = {
+  createdAt: number
+  status: ActivityStatus
+}*/
+
+function TransactionProgress({ createdAt, status }) {
   const now = useNow().valueOf()
 
   // Only animate things if the panel is ready (opened).
@@ -38,21 +34,21 @@ const TransactionProgress = React.memo(function TransactionProgress({
   const threshold = createdAt + TX_DURATION_THRESHOLD
 
   const progress = getProgress(status, createdAt, estimate, threshold, now)
-  const showConfirmed = status === ACTIVITY_STATUS_CONFIRMED
+  const showConfirmed = status === ActivityStatus.Confirmed
   const showTimer =
-    !showConfirmed && now < threshold && status === ACTIVITY_STATUS_PENDING
+    !showConfirmed && now < threshold && status === ActivityStatus.Pending
 
   return (
     <Transition
       native
       delay={DELAY_BEFORE_HIDE}
-      items={status === ACTIVITY_STATUS_PENDING}
+      items={status === ActivityStatus.Pending}
       enter={{ height: 28, opacity: 1 }}
       leave={{ height: 0, opacity: 0 }}
     >
-      {show =>
+      {(show) =>
         show &&
-        (transition => (
+        ((transition) => (
           <animated.div
             style={{
               display: 'flex',
@@ -78,17 +74,6 @@ const TransactionProgress = React.memo(function TransactionProgress({
       }
     </Transition>
   )
-})
-
-TransactionProgress.propTypes = {
-  // unix timestamps
-  createdAt: PropTypes.number.isRequired,
-  minedAtEstimate: PropTypes.number,
-  status: ActivityStatusType.isRequired,
 }
 
-TransactionProgress.defaultProps = {
-  minedAtEstimate: -1,
-}
-
-export default TransactionProgress
+export default React.memo(TransactionProgress)

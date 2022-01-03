@@ -6,7 +6,7 @@ const UserContext = React.createContext()
 
 function UserProvider({ children }) {
   const { account } = useWallet()
-  const [user, loading, reload] = useUser(account)
+  const { user, loading, reload } = useUser(account)
 
   return (
     <UserContext.Provider value={{ user, loading, reload }}>

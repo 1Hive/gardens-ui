@@ -21,7 +21,7 @@ import { getNetworkType } from '@utils/web3-utils'
 
 function Activity({ account, isConnectedAccount, profileName }) {
   const theme = useTheme()
-  const [user] = useUser(account)
+  const { user } = useUser(account)
 
   const { gardensMetadata } = useGardens()
   const { preferredNetwork } = useWallet()
@@ -37,7 +37,7 @@ function Activity({ account, isConnectedAccount, profileName }) {
       .flatMap(({ stakesHistory }) => stakesHistory)
       .reduce((acc, stake) => {
         const index = acc.findIndex(
-          accStake => accStake.proposal.id === stake.proposal.id
+          (accStake) => accStake.proposal.id === stake.proposal.id
         )
 
         if (index >= 0) {
