@@ -1,6 +1,5 @@
 import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
-import { ethers } from 'ethers'
 
 type TokenType = {
   decimals: number
