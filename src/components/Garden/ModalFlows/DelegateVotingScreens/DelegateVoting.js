@@ -19,15 +19,15 @@ const DelegateVoting = React.memo(function DelegateVoting({ getTransactions }) {
   const { account } = useWallet()
   const { next } = useMultiModal()
   const [representative, setRepresentative] = useState('')
-  const [supporter, loading] = useSupporterSubscription(account)
+  const { supporter, loading } = useSupporterSubscription(account)
 
-  const handleRepresentativeChange = useCallback(event => {
+  const handleRepresentativeChange = useCallback((event) => {
     setRepresentative(event.target.value)
   }, [])
 
   // Form submit handler
   const handleSubmit = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       getTransactions(() => {

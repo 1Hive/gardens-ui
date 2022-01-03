@@ -21,7 +21,7 @@ const ActivityButton = React.memo(function ActivityButton() {
 
   const handleToggle = useCallback(
     () =>
-      setOpened(opened => {
+      setOpened((opened) => {
         if (opened) {
           markActivitiesRead()
         }
@@ -99,7 +99,7 @@ const ActivityButton = React.memo(function ActivityButton() {
                         [0, 0.2, 0.4, 0.6, 0.8, 1],
                         [1.5, 1, 1.5, 1, 1.5, 1]
                       )
-                      .interpolate(s => `scale3d(${s}, ${s}, 1)`),
+                      .interpolate((s) => `scale3d(${s}, ${s}, 1)`),
                   }}
                 >
                   <Tag limitDigits mode="activity" label={unreadCount} />

@@ -18,7 +18,7 @@ import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 
 function Delegates({ account }) {
-  const [user, loading] = useUser(account)
+  const { user, loading } = useUser(account)
 
   return (
     <Box heading="Delegate voting" padding={0}>

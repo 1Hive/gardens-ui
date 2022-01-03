@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { animated } from 'react-spring/renderprops'
+import { animated } from 'react-spring'
 
 import PropTypes from 'prop-types'
 

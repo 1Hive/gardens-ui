@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
 import { animated, Spring } from 'react-spring/renderprops'
-
 import Activity from './Activity'
 import Delegates from './Delegates'
 import EditProfile from './EditProfile'
@@ -52,7 +51,7 @@ function Profile() {
   }, [connectedAccount])
 
   const toggleEditMode = useCallback(() => {
-    setEditMode(mode => !mode)
+    setEditMode((mode) => !mode)
   }, [])
 
   const coverSrc = useMemo(() => {
@@ -104,15 +103,15 @@ function Profile() {
 
                   ${oneColumn
                     ? `
-                            left: 0;
-                            right: 0;
-                            text-align: center;
-                            top: 50px;
-                            `
+                      left: 0;
+                      right: 0;
+                      text-align: center;
+                      top: 50px;
+                      `
                     : `
-                            top: -54px;
-                            right: 0;
-                          `}
+                      top: -54px;
+                      right: 0;
+                    `}
                 `}
               >
                 <Button
