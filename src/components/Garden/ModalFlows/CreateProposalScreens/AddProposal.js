@@ -467,4 +467,4 @@ function ConvertedAmount({ amount, loading, requestToken }) {
   )
 }
 
-export default AddProposalPanel
+export default React.memo(AddProposalPanel)
