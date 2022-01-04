@@ -1,3 +1,5 @@
+// TODO: We could improve this types in the future
+
 import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
 
@@ -300,6 +302,19 @@ type ActionsType = {
   }
 }
 
+type TransactionType = {
+  data: any
+  from: string | undefined
+  to: string | undefined
+  description?: string
+  type?: string
+  gasLimit?: number
+}
+
+type IntentType = {
+  transactions: Array<TransactionType>
+}
+
 export type {
   ConfigType,
   FiltersType,
@@ -307,4 +322,6 @@ export type {
   AppType,
   ProposalType,
   ActionsType,
+  TransactionType,
+  IntentType,
 }

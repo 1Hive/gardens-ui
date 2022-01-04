@@ -21,7 +21,7 @@ import radspec from '../radspec'
 import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
-import { ActionsType } from './constants'
+import { ActionsType, IntentType, TransactionType } from './constants'
 
 const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
@@ -765,23 +765,14 @@ async function sendIntent(
   }
 }
 
-function imposeGasLimit(intent: any, gasLimit: number) {
-  console.log(`Intent`, intent)
-  console.log(`gasLimit`, gasLimit)
-
+function imposeGasLimit(intent: IntentType, gasLimit: number) {
   return {
     ...intent,
-    transactions: intent.transactions.map((tx: any) => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx: TransactionType) => ({
+      ...tx,
+      gasLimit,
+    })),
   }
-}
-
-export type TransactionType = {
-  data: any
-  from: string | undefined
-  to: string | undefined
-  description?: string
-  type?: string
-  gasLimit?: number
 }
 
 function attachTrxMetadata(
@@ -789,10 +780,6 @@ function attachTrxMetadata(
   description: string,
   type: string
 ): any {
-  console.log(`transactions`, transactions)
-  console.log(`description`, description)
-  console.log(`type`, type)
-
   return transactions?.map((tx: TransactionType) => ({
     ...tx,
     description,

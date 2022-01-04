@@ -12,7 +12,7 @@ import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
 
 import { setAccountSetting } from '@/local-settings'
-import { TransactionType } from '@/hooks/useActions'
+import { TransactionType } from '@/hooks/constants'
 
 const indexNumber = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
 
