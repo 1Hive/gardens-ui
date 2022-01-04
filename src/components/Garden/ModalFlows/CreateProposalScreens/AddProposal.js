@@ -43,7 +43,7 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
-const AddProposalPanel = React.memo(({ setProposalData }) => {
+const AddProposalPanel = ({ setProposalData }) => {
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
@@ -64,8 +64,8 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   const forumRegex = new RegExp(connectedGarden.forumURL)
 
   const handleAmountEditMode = useCallback(
-    editMode => {
-      setFormData(formData => {
+    (editMode) => {
+      setFormData((formData) => {
         const { amount } = formData
 
         const newValue = amount.valueBN.gte(0)
@@ -94,20 +94,20 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     [stakeToken]
   )
 
-  const handleIsStableChange = useCallback(checked => {
-    setFormData(formData => ({
+  const handleIsStableChange = useCallback((checked) => {
+    setFormData((formData) => ({
       ...formData,
       amount: { ...formData.amount, stable: checked },
     }))
   }, [])
 
-  const handleTitleChange = useCallback(event => {
+  const handleTitleChange = useCallback((event) => {
     const updatedTitle = event.target.value
-    setFormData(formData => ({ ...formData, title: updatedTitle }))
+    setFormData((formData) => ({ ...formData, title: updatedTitle }))
   }, [])
 
   const handleAmountChange = useCallback(
-    event => {
+    (event) => {
       const updatedAmount = event.target.value
 
       const newAmountBN = new BigNumber(
@@ -116,7 +116,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
           : toDecimals(updatedAmount, stakeToken.decimals)
       )
 
-      setFormData(formData => ({
+      setFormData((formData) => ({
         ...formData,
         amount: {
           ...formData.amount,
@@ -128,26 +128,29 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
     [stakeToken.decimals]
   )
 
-  const handleProposalTypeChange = useCallback(selected => {
-    setFormData(formData => ({
+  const handleProposalTypeChange = useCallback((selected) => {
+    setFormData((formData) => ({
       ...formData,
       proposalType: selected,
     }))
   }, [])
 
-  const handleBeneficiaryChange = useCallback(event => {
+  const handleBeneficiaryChange = useCallback((event) => {
     const updatedBeneficiary = event.target.value
 
-    setFormData(formData => ({ ...formData, beneficiary: updatedBeneficiary }))
+    setFormData((formData) => ({
+      ...formData,
+      beneficiary: updatedBeneficiary,
+    }))
   }, [])
 
-  const handleLinkChange = useCallback(event => {
+  const handleLinkChange = useCallback((event) => {
     const updatedLink = event.target.value
-    setFormData(formData => ({ ...formData, link: updatedLink }))
+    setFormData((formData) => ({ ...formData, link: updatedLink }))
   }, [])
 
   const handleOnContinue = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       setProposalData(formData)
@@ -323,7 +326,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       )}
     </form>
   )
-})
+}
 
 function RequestedAmount({
   amount,

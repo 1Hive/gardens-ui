@@ -24,7 +24,7 @@ import CreateProposalRequirements from './CreateProposalRequirements'
 
 function GoToProposal() {
   const history = useHistory()
-  const [proposalId, setProposalId] = useState()
+  const [proposalId, setProposalId] = useState<string>()
   const { account, chainId, ethers } = useWallet()
   const mounted = useMounted()
   const txHash = getAccountSetting('lastTxHash', account, chainId)
@@ -33,7 +33,7 @@ function GoToProposal() {
     async function getProposalId() {
       const id = await extractProposalId(ethers, txHash, 'conviction')
 
-      if (mounted) {
+      if (mounted()) {
         setProposalId(fromDecimals(id.toString(), 18))
       }
     }
@@ -55,7 +55,7 @@ function GoToProposal() {
   )
 }
 
-function CreateProposalScreens({ onComplete }) {
+function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
   const [loading, setLoading] = useState(true)
   const [transactions, setTransactions] = useState([])
   const { account } = useWallet()
@@ -63,7 +63,7 @@ function CreateProposalScreens({ onComplete }) {
   const { stakeManagement, loading: stakingLoading } = useStakingState()
   const { convictionActions } = useActions()
 
-  const proposalData = useRef()
+  const proposalData = useRef<any>()
 
   useEffect(() => {
     setLoading(true)
@@ -75,9 +75,9 @@ function CreateProposalScreens({ onComplete }) {
     setLoading(agreementLoading || stakingLoading)
   }, [agreementLoading, stakingLoading])
 
-  const handleSetProposalData = useCallback((data) => {
+  const handleSetProposalData = (data: any) => {
     proposalData.current = data
-  }, [])
+  }
 
   const onCompleteMiddleware = useCallback(() => {
     throwConfetti({
@@ -115,7 +115,7 @@ function CreateProposalScreens({ onComplete }) {
         }
       }
 
-      await convictionActions[fn](params, (intent) => {
+      await convictionActions[fn](params, (intent: any) => {
         setTransactions(intent)
         onComplete()
       })

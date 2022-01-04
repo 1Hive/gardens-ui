@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
@@ -21,6 +21,7 @@ import radspec from '../radspec'
 import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
+import { ActionsType } from './constants'
 
 const CHALLENGE_GAS_LIMIT = 1000000
 const GAS_LIMIT = 450000
@@ -29,7 +30,9 @@ const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
 const WRAP_GAS_LIMIT = 1000000
 
-export default function useActions() {
+export default function useActions(): {
+  [x: string]: any
+} {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
@@ -456,7 +459,7 @@ export default function useActions() {
   )
 
   const getAgreementTokenAllowance = useCallback(
-    tokenAddress => {
+    (tokenAddress) => {
       const tokenContract = getContract(
         tokenAddress,
         tokenAbi,
@@ -472,7 +475,7 @@ export default function useActions() {
 
   // TODO- we need to start using modal flow for all the transactions
   const resolveAction = useCallback(
-    disputeId => {
+    (disputeId) => {
       sendIntent(agreementApp, 'resolve', [disputeId], {
         ethers,
         from: account,
@@ -635,7 +638,7 @@ export default function useActions() {
         {
           data: updatePriceOracleData,
           from: account,
-          to: priceOracleContract.address,
+          to: priceOracleContract?.address,
         },
       ]
 
@@ -658,7 +661,7 @@ export default function useActions() {
         {
           data: getRewardData,
           from: account,
-          to: unipoolContract.address,
+          to: unipoolContract?.address,
         },
       ]
 
@@ -674,7 +677,7 @@ export default function useActions() {
     [account, mounted, unipoolContract]
   )
 
-  return useMemo(
+  return useMemo<ActionsType>(
     () => ({
       agreementActions: {
         approveTokenAmount,
@@ -739,10 +742,18 @@ export default function useActions() {
 }
 
 async function sendIntent(
-  app,
-  fn,
-  params,
-  { ethers, from, gasLimit = GAS_LIMIT }
+  app: any,
+  fn: any,
+  params: any,
+  {
+    ethers,
+    from,
+    gasLimit = GAS_LIMIT,
+  }: {
+    ethers: any
+    from: string
+    gasLimit?: number
+  }
 ) {
   try {
     const intent = await app.intent(fn, params, { actAs: from })
@@ -754,13 +765,37 @@ async function sendIntent(
   }
 }
 
-function imposeGasLimit(intent, gasLimit) {
+function imposeGasLimit(intent: any, gasLimit: number) {
+  console.log(`Intent`, intent)
+  console.log(`gasLimit`, gasLimit)
+
   return {
     ...intent,
-    transactions: intent.transactions.map(tx => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx: any) => ({ ...tx, gasLimit })),
   }
 }
 
-function attachTrxMetadata(transactions, description, type) {
-  return transactions.map(tx => ({ ...tx, description, type }))
+export type TransactionType = {
+  data: any
+  from: string | undefined
+  to: string | undefined
+  description?: string
+  type?: string
+  gasLimit?: number
+}
+
+function attachTrxMetadata(
+  transactions: Array<TransactionType> | undefined,
+  description: string,
+  type: string
+): any {
+  console.log(`transactions`, transactions)
+  console.log(`description`, description)
+  console.log(`type`, type)
+
+  return transactions?.map((tx: TransactionType) => ({
+    ...tx,
+    description,
+    type,
+  }))
 }

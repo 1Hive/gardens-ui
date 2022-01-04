@@ -1,12 +1,19 @@
 import React, { useContext, useMemo } from 'react'
 import { useStaking } from '@hooks/useStaking'
 
-const StakingContext = React.createContext({
-  staking: {},
-  loading: true,
+type State = {
+  stakeManagement: any
+  stakeActions: any
+  loading: any
+}
+
+const StakingContext = React.createContext<State>({
+  stakeManagement: null,
+  stakeActions: null,
+  loading: false,
 })
 
-function StakingProvider({ children }) {
+function StakingProvider({ children }: { children: React.ReactNode }) {
   const [stakeManagement, stakeActions, loading] = useStaking()
 
   const Staking = useMemo(
@@ -25,7 +32,7 @@ function StakingProvider({ children }) {
   )
 }
 
-function useStakingState() {
+function useStakingState(): React.ContextType<typeof StakingContext> {
   return useContext(StakingContext)
 }
 

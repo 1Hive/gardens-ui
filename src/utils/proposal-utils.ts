@@ -1,7 +1,5 @@
 import { utils } from 'ethers'
-
 import { bigNum } from '@lib/bigNumber'
-
 import {
   PROPOSAL_STATUS_CANCELLED_STRING,
   PROPOSAL_STATUS_CHALLENGED_STRING,
@@ -12,7 +10,14 @@ import {
   PROPOSAL_SUPPORT_SUPPORTED,
 } from '../constants'
 
-export function getProposalSupportStatus(stakes, proposal) {
+export function getProposalSupportStatus(
+  stakes: Array<{
+    proposalId: number
+  }>,
+  proposal: {
+    id: number
+  }
+) {
   if (stakes.find((stake) => stake.proposalId === proposal.id)) {
     return PROPOSAL_SUPPORT_SUPPORTED
   }
@@ -20,7 +25,7 @@ export function getProposalSupportStatus(stakes, proposal) {
   return PROPOSAL_SUPPORT_NOT_SUPPORTED
 }
 
-export function hasProposalEnded(status, challengeEndDate) {
+export function hasProposalEnded(status: string, challengeEndDate: Date | any) {
   return (
     status === PROPOSAL_STATUS_EXECUTED_STRING ||
     status === PROPOSAL_STATUS_CANCELLED_STRING ||
@@ -30,30 +35,37 @@ export function hasProposalEnded(status, challengeEndDate) {
   )
 }
 
-export function getProposalStatusData(proposal) {
-  const statusData = {}
+export function getProposalStatusData(proposal: {
+  status: string
+  challengeEndDate: Date | any
+}) {
+  let statusData = {}
   if (proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) {
-    statusData.executed = true
+    statusData = { ...statusData, executed: true }
   } else if (proposal.status === PROPOSAL_STATUS_CANCELLED_STRING) {
-    statusData.cancelled = true
+    statusData = { ...statusData, cancelled: true }
   } else if (
     proposal.status === PROPOSAL_STATUS_SETTLED_STRING ||
     (proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING &&
       Date.now() > proposal.challengeEndDate)
   ) {
-    statusData.settled = true
+    statusData = { ...statusData, settled: true }
   } else if (proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING) {
-    statusData.challenged = true
+    statusData = { ...statusData, challenged: true }
   } else if (proposal.status === PROPOSAL_STATUS_DISPUTED_STRING) {
-    statusData.disputed = true
+    statusData = { ...statusData, disputed: true }
   } else {
-    statusData.open = true
+    statusData = { ...statusData, open: true }
   }
 
   return statusData
 }
 
-export async function extractProposalId(ethers, txHash, proposalType) {
+export async function extractProposalId(
+  ethers: any,
+  txHash: any,
+  proposalType: string
+) {
   const receipt = await ethers.getTransactionReceipt(txHash)
   const iface = new utils.Interface([
     proposalType === 'conviction'
@@ -62,14 +74,11 @@ export async function extractProposalId(ethers, txHash, proposalType) {
   ])
 
   const logs = receipt.logs
-
   const log = iface.parseLog(logs[logs.length - 1])
 
-  const proposalId =
-    proposalType === 'conviction'
-      ? new bigNum(log.args.id)
-      : new bigNum(log.args.voteId)
+  const proposalId = bigNum(
+    proposalType === 'conviction' ? log.args.id : log.args.voteId
+  )
 
   return proposalId.toNumber()
 }
-//test

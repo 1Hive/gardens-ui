@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo } from 'react'
-
-import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 
 import { GU, useTheme } from '@1hive/1hive-ui'
@@ -14,13 +12,18 @@ import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
 
 import { setAccountSetting } from '@/local-settings'
+import { TransactionType } from '@/hooks/useActions'
 
-const indexNumber = {
-  0: 'First',
-  1: 'Second',
-  2: 'Third',
-  3: 'Fourth',
-  4: 'Fifth',
+const indexNumber = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
+
+type ModalFlowBaseType = {
+  frontLoad: boolean
+  loading: boolean
+  screens: Array<any>
+  transactions: Array<any>
+  transactionTitle: string
+  onComplete: () => void
+  onCompleteActions: React.ReactNode
 }
 
 function ModalFlowBase({
@@ -31,7 +34,7 @@ function ModalFlowBase({
   transactionTitle,
   onComplete,
   onCompleteActions,
-}) {
+}: ModalFlowBaseType) {
   const { addActivity } = useActivity()
   const { account, chainId, ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
@@ -39,7 +42,7 @@ function ModalFlowBase({
   const transactionSteps = useMemo(
     () =>
       transactions
-        ? transactions.map((transaction, index) => {
+        ? transactions.map((transaction: TransactionType, index: number) => {
             const title = transaction.description
               ? transaction.description
               : transactions.length === 1
@@ -54,6 +57,11 @@ function ModalFlowBase({
                 setWorking,
                 setError,
                 setHash,
+              }: {
+                setSuccess: () => void
+                setWorking: () => void
+                setError: () => void
+                setHash: (hash: any) => void
               }) => {
                 try {
                   const trx = {
@@ -135,17 +143,16 @@ function ModalFlowBase({
   return <MultiModalScreens screens={extendedScreens} />
 }
 
-/* eslint-disable react/prop-types */
-function LoadingScreen({ loading }) {
+function LoadingScreen({ loading }: { loading: boolean }) {
   const theme = useTheme()
   const { next } = useMultiModal()
 
   useEffect(() => {
-    let timeout
+    let timeout: number
 
     if (!loading) {
       // Provide a minimum appearance duration to avoid visual confusion on very fast requests
-      timeout = setTimeout(() => {
+      timeout = window.setTimeout(() => {
         next()
       }, 100)
     }
@@ -186,9 +193,8 @@ function LoadingScreen({ loading }) {
     </div>
   )
 }
-/* eslint-enable react/prop-types */
 
-function modalWidthFromCount(count) {
+function modalWidthFromCount(count: number) {
   if (count >= 3) {
     return 865
   }
@@ -199,14 +205,6 @@ function modalWidthFromCount(count) {
 
   // Modal will fallback to the default
   return null
-}
-
-ModalFlowBase.propTypes = {
-  frontLoad: PropTypes.bool,
-  loading: PropTypes.bool,
-  screens: PropTypes.array,
-  transactions: PropTypes.array,
-  transactionTitle: PropTypes.string,
 }
 
 ModalFlowBase.defaultProps = {
