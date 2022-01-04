@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { noop } from '@1hive/1hive-ui'
 import { toHex } from 'web3-utils'
 
