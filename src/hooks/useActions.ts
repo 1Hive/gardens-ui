@@ -30,9 +30,7 @@ const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 250000
 const WRAP_GAS_LIMIT = 1000000
 
-export default function useActions(): {
-  [x: string]: any
-} {
+export default function useActions(): ActionsType {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
@@ -741,19 +739,17 @@ export default function useActions(): {
   )
 }
 
+type AppFunctions = 'executeAdjustment' | 'executeVote' | 'resolve'
+type OptionsIntent = {
+  ethers: any
+  from: string
+  gasLimit?: number
+}
 async function sendIntent(
   app: any,
-  fn: any,
+  fn: AppFunctions,
   params: any,
-  {
-    ethers,
-    from,
-    gasLimit = GAS_LIMIT,
-  }: {
-    ethers: any
-    from: string
-    gasLimit?: number
-  }
+  { ethers, from, gasLimit = GAS_LIMIT }: OptionsIntent
 ) {
   try {
     const intent = await app.intent(fn, params, { actAs: from })

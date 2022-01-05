@@ -13,7 +13,9 @@ const StakingContext = React.createContext<State>({
   loading: false,
 })
 
-function StakingProvider({ children }: { children: React.ReactNode }) {
+type StakingProviderProps = { children: React.ReactNode }
+
+function StakingProvider({ children }: StakingProviderProps) {
   const [stakeManagement, stakeActions, loading] = useStaking()
 
   const Staking = useMemo(

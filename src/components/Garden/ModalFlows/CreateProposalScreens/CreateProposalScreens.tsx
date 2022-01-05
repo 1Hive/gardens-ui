@@ -93,32 +93,35 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
     async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current
 
-      let params
-      let fn
       if (amount.valueBN.eq(0)) {
-        fn = 'newSignalingProposal'
-        params = {
-          title,
-          link,
-        }
+        await convictionActions.newSignalingProposal(
+          {
+            title,
+            link,
+          },
+          (intent: any) => {
+            setTransactions(intent)
+            onComplete()
+          }
+        )
       } else {
         const convertedAmount = amount.valueBN.toString(10)
         const stableRequestAmount = amount.stable
 
-        fn = 'newProposal'
-        params = {
-          title,
-          link,
-          amount: convertedAmount,
-          stableRequestAmount,
-          beneficiary,
-        }
+        await convictionActions.newProposal(
+          {
+            title,
+            link,
+            amount: convertedAmount,
+            stableRequestAmount,
+            beneficiary,
+          },
+          (intent: any) => {
+            setTransactions(intent)
+            onComplete()
+          }
+        )
       }
-
-      await convictionActions[fn](params, (intent: any) => {
-        setTransactions(intent)
-        onComplete()
-      })
     },
     [convictionActions, proposalData]
   )
