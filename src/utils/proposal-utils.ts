@@ -39,26 +39,34 @@ export function getProposalStatusData(proposal: {
   status: string
   challengeEndDate: Date | any
 }) {
-  let statusData = {}
-  if (proposal.status === PROPOSAL_STATUS_EXECUTED_STRING) {
-    statusData = { ...statusData, executed: true }
-  } else if (proposal.status === PROPOSAL_STATUS_CANCELLED_STRING) {
-    statusData = { ...statusData, cancelled: true }
-  } else if (
-    proposal.status === PROPOSAL_STATUS_SETTLED_STRING ||
-    (proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING &&
-      Date.now() > proposal.challengeEndDate)
-  ) {
-    statusData = { ...statusData, settled: true }
-  } else if (proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING) {
-    statusData = { ...statusData, challenged: true }
-  } else if (proposal.status === PROPOSAL_STATUS_DISPUTED_STRING) {
-    statusData = { ...statusData, disputed: true }
-  } else {
-    statusData = { ...statusData, open: true }
+  switch (proposal.status) {
+    case PROPOSAL_STATUS_EXECUTED_STRING:
+      return {
+        executed: true,
+      }
+    case PROPOSAL_STATUS_CANCELLED_STRING:
+      return {
+        cancelled: true,
+      }
+    case PROPOSAL_STATUS_SETTLED_STRING ||
+      (PROPOSAL_STATUS_CHALLENGED_STRING &&
+        Date.now() > proposal.challengeEndDate):
+      return {
+        settled: true,
+      }
+    case PROPOSAL_STATUS_CHALLENGED_STRING:
+      return {
+        challenged: true,
+      }
+    case PROPOSAL_STATUS_DISPUTED_STRING:
+      return {
+        disputed: true,
+      }
+    default:
+      return {
+        open: true,
+      }
   }
-
-  return statusData
 }
 
 export async function extractProposalId(
