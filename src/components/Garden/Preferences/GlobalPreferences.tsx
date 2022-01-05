@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import {
   ButtonIcon,
   GU,
@@ -7,11 +7,11 @@ import {
   Layout,
   Root,
   Tabs,
-  springs,
+  // springs,
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
+import { animated, interpolate, Transition  } from 'react-spring/renderprops'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@/providers/Wallet'
 import { useEsc } from '../../../hooks/useKeyboardArrows'
@@ -19,19 +19,27 @@ import { useEsc } from '../../../hooks/useKeyboardArrows'
 import AppsAddresses from './AppsAddresses'
 import EVMExecutor from './EVMExecutor'
 
-const SECTIONS = new Map([
+const SECTIONS = new Map<string,string>([
   ['generalInfo', 'General Info'],
   ['evmExecutor', 'EVM Executor'],
 ])
-const PATHS = Array.from(SECTIONS.keys())
-const VALUES = Array.from(SECTIONS.values())
+const PATHS: string[] = Array.from(SECTIONS.keys())
+const VALUES: string[] = Array.from(SECTIONS.values())
 
 const GENERAL_INFO_INDEX = 0
 const EVM_EXECUTOR_INDEX = 1
 
 const AnimatedDiv = animated.div
 
-function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
+interface GlobalPreferencesProps{
+  compact: boolean
+  onClose: () => void
+  onNavigation
+  sectionIndex
+
+}
+
+function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex } : GlobalPreferencesProps) {
   const [evmcrispr, setEvmcrispr] = useState(null)
   const connectedGarden = useConnectedGarden()
   const { account, ethers } = useWallet()
@@ -39,7 +47,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
-  const container = useRef()
+  const container = useRef<HTMLHeadingElement>()
   useEffect(() => {
     if (container.current) {
       container.current.focus()
@@ -54,7 +62,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
 
       if (!isSafari) {
         const { EVMcrispr } = await import('@1hive/evmcrispr')
-        const crispr = await EVMcrispr.create(
+        const crispr: any = await EVMcrispr.create(
           connectedGarden.address,
           ethers.getSigner()
         )
@@ -144,7 +152,13 @@ function Close({ compact, onClick }) {
   )
 }
 
-function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
+interface AnimatedGlobalPreferencesProps{
+  path: string | undefined
+  onScreenChange: () => void
+  onClose: () => void
+}
+
+function AnimatedGlobalPreferences({ path, onScreenChange, onClose }: AnimatedGlobalPreferencesProps) {
   const { sectionIndex, handleNavigation } = useGlobalPreferences({
     path,
     onScreenChange,
@@ -161,7 +175,7 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
       from={{ opacity: 0, enterProgress: 0, blocking: false }}
       enter={{ opacity: 1, enterProgress: 1, blocking: true }}
       leave={{ opacity: 0, enterProgress: 1, blocking: false }}
-      config={springs.smooth}
+      // config={springs.smooth}
     >
       {show =>
         show &&
@@ -173,7 +187,8 @@ function AnimatedGlobalPreferences({ path, onScreenChange, onClose }) {
               zIndex: 1,
               pointerEvents: blocking ? 'auto' : 'none',
               opacity,
-              transform: enterProgress.interpolate(
+              transform: interpolate(
+                [enterProgress],
                 v => `
                   translate3d(0, ${(1 - v) * 10}px, 0)
                   scale3d(${1 - (1 - v) * 0.03}, ${1 - (1 - v) * 0.03}, 1)
