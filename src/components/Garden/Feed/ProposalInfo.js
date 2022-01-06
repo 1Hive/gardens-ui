@@ -16,11 +16,8 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
   const primaryToken = proposal.stable ? stableToken : requestToken
 
   return (
-    <div>
-      <ProposalDescription
-        proposal={proposal}
-        onSelectProposal={onSelectProposal}
-      />
+    <div onClick={onSelectProposal}>
+      <ProposalDescription proposal={proposal} />
       {proposal.type !== ProposalTypes.Decision && (
         <div
           css={`

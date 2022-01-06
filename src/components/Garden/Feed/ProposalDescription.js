@@ -5,10 +5,9 @@ import Description from '../Description'
 import { useDescribeVote } from '@hooks/useDescribeVote'
 import { ProposalTypes } from '@/types'
 
-function ProposalDescription({ proposal, onSelectProposal }) {
+function ProposalDescription({ proposal }) {
   return (
     <div
-      onClick={onSelectProposal}
       css={`
         cursor: pointer;
         margin-bottom: ${3 * GU}px;

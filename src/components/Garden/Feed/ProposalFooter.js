@@ -12,15 +12,19 @@ import { ProposalTypes } from '@/types'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getConnectedAccountCast } from '../../../utils/vote-utils'
 
-function ProposalCardFooter({ proposal }) {
+function ProposalCardFooter({ proposal, onSelectProposal }) {
   if (proposal.type === ProposalTypes.Decision) {
-    return <DecisionFooter proposal={proposal} />
+    return (
+      <DecisionFooter proposal={proposal} onSelectProposal={onSelectProposal} />
+    )
   }
 
-  return <ProposalFooter proposal={proposal} />
+  return (
+    <ProposalFooter proposal={proposal} onSelectProposal={onSelectProposal} />
+  )
 }
 
-function ProposalFooter({ proposal }) {
+function ProposalFooter({ proposal, onSelectProposal }) {
   const { config } = useGardenState()
   const { stakeToken } = config.conviction
   const theme = useTheme()
@@ -74,12 +78,14 @@ function ProposalFooter({ proposal }) {
           {stakeToken.symbol} needed to pass: {formattedNeededTokens}
         </div>
       )}
-      <div>Status: {proposalStatusLabel}</div>
+      <div onClick={onSelectProposal} style={{ cursor: 'pointer' }}>
+        Status: {proposalStatusLabel}
+      </div>
     </Main>
   )
 }
 
-function DecisionFooter({ proposal }) {
+function DecisionFooter({ proposal, onSelectProposal }) {
   const theme = useTheme()
   const { account } = useWallet()
   const { label: statusLabel } = getStatusAttributes(proposal, theme)
@@ -99,7 +105,9 @@ function DecisionFooter({ proposal }) {
           {votesCount} Vote{votesCount === 1 ? '' : 's'}
         </div>
       </div>
-      <div>Status: {statusLabel}</div>
+      <div onClick={onSelectProposal} style={{ cursor: 'pointer' }}>
+        Status: {statusLabel}
+      </div>
     </Main>
   )
 }

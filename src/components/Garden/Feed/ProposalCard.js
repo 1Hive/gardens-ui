@@ -9,6 +9,7 @@ import { useProposalWithThreshold } from '@hooks/useProposals'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
+import { useWallet } from 'use-wallet'
 
 function ProposalCard({ proposal, ...props }) {
   return proposal.type === ProposalTypes.Decision ? (
@@ -28,6 +29,7 @@ function Card({ loading = false, proposal }) {
   const history = useHistory()
 
   const { below } = useViewport()
+  const { account } = useWallet()
 
   const handleSelectProposal = useCallback(() => {
     const entityPath =
@@ -40,6 +42,10 @@ function Card({ loading = false, proposal }) {
     history.push(path)
   }, [history, proposal.number, proposal.type])
 
+  const handleViewProfile = useCallback(() => {
+    history.push(`/profile?account=${account}`)
+  }, [account, history])
+
   return (
     <div
       css={`
@@ -50,7 +56,7 @@ function Card({ loading = false, proposal }) {
         border-radius: ${2 * GU}px;
 
         ${below('medium') &&
-          `
+        `
           padding-left: ${2 * GU}px;
           padding-right: ${2 * GU}px;
           border-left: 0;
@@ -62,13 +68,17 @@ function Card({ loading = false, proposal }) {
       <ProposalHeader
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
+        onViewProfile={handleViewProfile}
       />
       <ProposalInfo
         loading={loading}
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
       />
-      <ProposalFooter proposal={proposal} />
+      <ProposalFooter
+        proposal={proposal}
+        onSelectProposal={handleSelectProposal}
+      />
     </div>
   )
 }

@@ -8,7 +8,7 @@ import {
 } from '@1hive/1hive-ui'
 import ProposalCreator from './ProposalCreator'
 
-function ProposalHeader({ proposal, onSelectProposal }) {
+function ProposalHeader({ proposal, onSelectProposal, onViewProfile }) {
   const { layoutName } = useLayout()
 
   return (
@@ -20,7 +20,7 @@ function ProposalHeader({ proposal, onSelectProposal }) {
         justify-content: space-between;
       `}
     >
-      <ProposalCreator proposal={proposal} />
+      <ProposalCreator proposal={proposal} onViewProfile={onViewProfile} />
       {layoutName !== 'small' && (
         <ContextMenu>
           <ContextMenuItem onClick={onSelectProposal}>

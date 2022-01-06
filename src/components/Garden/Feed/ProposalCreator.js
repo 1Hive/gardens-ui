@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   EthIdenticon,
   GU,
@@ -13,20 +13,12 @@ import { getProfileForAccount } from '@lib/profile'
 import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
-import { useHistory } from 'react-router-dom'
-import { useWallet } from 'use-wallet'
 
 const addressCache = new Map()
 
-/*type ProposalCreatorProps = {
-  proposal: ProposalType
-}*/
-
-function ProposalCreator({ proposal }) {
-  const history = useHistory()
+function ProposalCreator({ proposal, onViewProfile }) {
   const theme = useTheme()
   const [profile, setProfile] = useState(null)
-  const { account } = useWallet()
 
   useEffect(() => {
     let cancelled = false
@@ -50,10 +42,6 @@ function ProposalCreator({ proposal }) {
     }
   }, [proposal.creator])
 
-  const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${account}`)
-  }, [account, history])
-
   const ProposalType = (
     <>
       <ProposalIcon type={proposal.type} /> {convertToString(proposal.type)}
@@ -66,9 +54,8 @@ function ProposalCreator({ proposal }) {
         display: flex;
         cursor: pointer;
       `}
-      className="proposal-header"
     >
-      <div onClick={handleViewProfile} style={{ cursor: 'pointer' }}>
+      <div onClick={onViewProfile} style={{ cursor: 'pointer' }}>
         {profile?.image ? (
           <img
             src={profile.image}
@@ -104,7 +91,7 @@ function ProposalCreator({ proposal }) {
                 css={`
                   margin-right: ${1 * GU}px;
                 `}
-                onClick={handleViewProfile}
+                onClick={onViewProfile}
                 style={{ cursor: 'pointer' }}
               >
                 {profile?.name
