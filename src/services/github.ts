@@ -150,9 +150,9 @@ const createFileContent = async (
   const endpoint = `${ANOTHER_ENDPOINT_BASE}/v1/daoAssets`
 
   const bodyData = {
-    path: fileName,
-    message: commitMsg,
-    content: base64,
+    pathFileName: fileName,
+    commitMessage: commitMsg,
+    contentBase64: base64,
     folderName,
   }
 
