@@ -145,7 +145,9 @@ export function useProposalSubscription(
       onProposalHandler
     )
 
-    return () => proposalSubscription.current.unsubscribe()
+    return () => {
+      proposalSubscription.current.unsubscribe()
+    }
   }, [appAddress, connector, onProposalHandler, proposalId])
 
   return [proposal, loading]
