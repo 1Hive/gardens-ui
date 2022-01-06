@@ -85,7 +85,9 @@ export function useProposalsSubscription(filters: FiltersType) {
       onProposalsHandler
     )
 
-    return () => proposalsSubscription.current.unsubscribe()
+    return () => {
+      proposalsSubscription.current.unsubscribe()
+    }
   }, [
     connector,
     filters.count,
