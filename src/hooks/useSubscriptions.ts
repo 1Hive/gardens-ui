@@ -41,7 +41,9 @@ export function useConfigSubscription(garden: Garden | null) {
 
     configSubscription.current = garden.onConfig(onConfigHandler)
 
-    return () => configSubscription.current.unsubscribe()
+    return () => {
+      configSubscription.current.unsubscribe()
+    }
   }, [garden, onConfigHandler])
 
   return config
