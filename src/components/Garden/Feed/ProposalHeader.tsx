@@ -7,8 +7,19 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 import ProposalCreator from './ProposalCreator'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalHeader({ proposal, onSelectProposal, onViewProfile }) {
+type ProposalHeaderProps = {
+  proposal: ProposalType
+  onSelectProposal: () => void
+  onViewProfile: () => void
+}
+
+function ProposalHeader({
+  proposal,
+  onSelectProposal,
+  onViewProfile,
+}: ProposalHeaderProps) {
   const { layoutName } = useLayout()
 
   return (

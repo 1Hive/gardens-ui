@@ -8,8 +8,19 @@ import ProposalSupport from './ProposalSupport'
 import { ProposalTypes } from '@/types'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalInfo({ loading, proposal, onSelectProposal }) {
+type ProposalInfoProps = {
+  loading: boolean
+  proposal: ProposalType
+  onSelectProposal: () => void
+}
+
+function ProposalInfo({
+  loading,
+  proposal,
+  onSelectProposal,
+}: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken, stableToken } = config.conviction
@@ -39,6 +50,9 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
             decimals={primaryToken.decimals}
             icon={primaryToken.icon}
             symbol={primaryToken.symbol}
+            verified={undefined}
+            color={undefined}
+            size={undefined}
           />
           {proposal.stable && (
             <>

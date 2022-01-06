@@ -181,7 +181,7 @@ type ProposalType = {
   futureConviction: BigNumber
   futureStakedConviction: BigNumber
   hasEnded: boolean
-  id: number | string
+  id: number
   isAccepted: any
   link: string
   maxConviction: BigNumber
