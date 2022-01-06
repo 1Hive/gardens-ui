@@ -15,7 +15,7 @@ type Garden = {
 export function useConfigSubscription(garden: Garden | null) {
   const [config, setConfig] = useState(null)
 
-  const rawConfigRef = useRef<any>(null)
+  const rawConfigRef = useRef<unknown>(null)
   const configSubscription = useRef<any>(null)
 
   const onConfigHandler = useCallback((err, config) => {
@@ -51,8 +51,7 @@ export function useConfigSubscription(garden: Garden | null) {
 
 export function useProposalsSubscription(filters: FiltersType) {
   const { config, connector } = useGardenState()
-  const [proposals, setProposals] = useState<any>([])
-
+  const [proposals, setProposals] = useState<unknown>([])
   const proposalsSubscription = useRef<any>(null)
 
   const onProposalsHandler = useCallback(
@@ -111,7 +110,7 @@ export function useProposalSubscription(
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const rawProposalRef = useRef<any>(null)
+  const rawProposalRef = useRef<unknown>(null)
   const proposalSubscription = useRef<any>(null)
 
   const onProposalHandler = useCallback(
@@ -158,7 +157,7 @@ export function useSupporterSubscription(account: string) {
   const [supporter, setSupporter] = useState<SupporterData | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const rawSupporterRef = useRef<any>(null)
+  const rawSupporterRef = useRef<unknown>(null)
   const supporterSubscription = useRef<any>(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {
