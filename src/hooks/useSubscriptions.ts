@@ -5,8 +5,8 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { FiltersType } from './constants'
 import { SupporterData } from '@1hive/connect-gardens/dist/cjs/types'
+import { FiltersType } from './constants'
 
 type Garden = {
   onConfig: any
@@ -15,8 +15,8 @@ type Garden = {
 export function useConfigSubscription(garden: Garden | null) {
   const [config, setConfig] = useState(null)
 
-  const rawConfigRef = useRef<unknown>(null)
-  const configSubscription = useRef<unknown>(null)
+  const rawConfigRef = useRef<any>(null)
+  const configSubscription = useRef<any>(null)
 
   const onConfigHandler = useCallback((err, config) => {
     if (err || !config) {
@@ -24,7 +24,7 @@ export function useConfigSubscription(garden: Garden | null) {
     }
 
     const rawConfig = JSON.stringify(config)
-    if (rawConfigRef.current === rawConfig) {
+    if (rawConfigRef?.current === rawConfig) {
       return
     }
 
@@ -41,9 +41,7 @@ export function useConfigSubscription(garden: Garden | null) {
 
     configSubscription.current = garden.onConfig(onConfigHandler)
 
-    return () => {
-      configSubscription.current = null
-    }
+    return () => configSubscription.current.unsubscribe()
   }, [garden, onConfigHandler])
 
   return config
@@ -51,8 +49,9 @@ export function useConfigSubscription(garden: Garden | null) {
 
 export function useProposalsSubscription(filters: FiltersType) {
   const { config, connector } = useGardenState()
-  const [proposals, setProposals] = useState<any[]>([])
-  const proposalsSubscription = useRef(null)
+  const [proposals, setProposals] = useState<any>([])
+
+  const proposalsSubscription = useRef<any>(null)
 
   const onProposalsHandler = useCallback(
     async (err, proposals = []) => {
@@ -84,9 +83,7 @@ export function useProposalsSubscription(filters: FiltersType) {
       onProposalsHandler
     )
 
-    return () => {
-      proposalsSubscription.current = null
-    }
+    return () => proposalsSubscription.current.unsubscribe()
   }, [
     connector,
     filters.count,
@@ -110,8 +107,8 @@ export function useProposalSubscription(
   const [proposal, setProposal] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const rawProposalRef = useRef<unknown>(null)
-  const proposalSubscription = useRef<unknown>(null)
+  const rawProposalRef = useRef<any>(null)
+  const proposalSubscription = useRef<any>(null)
 
   const onProposalHandler = useCallback(
     async (err, proposal) => {
@@ -144,9 +141,7 @@ export function useProposalSubscription(
       onProposalHandler
     )
 
-    return () => {
-      proposalSubscription.current = null
-    }
+    return () => proposalSubscription.current.unsubscribe()
   }, [appAddress, connector, onProposalHandler, proposalId])
 
   return [proposal, loading]
