@@ -85,7 +85,7 @@ function StakingMovements({ stakingMovements, token }) {
 
   const [selectedPage, setSelectedPage] = useState(0)
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 
@@ -102,6 +102,19 @@ function StakingMovements({ stakingMovements, token }) {
     },
     [config, history]
   )
+
+  const getTermByStatus = (status, actionId) => {
+    switch (status) {
+      case `Scheduled`:
+        return ``
+      case 'Settled':
+        return ``
+      case 'Challenged':
+        return ``
+      default:
+        return `Proposal #${actionId}`
+    }
+  }
 
   return (
     <DataView
@@ -137,6 +150,9 @@ function StakingMovements({ stakingMovements, token }) {
           theme
         )
 
+        console.log(disputableActionId)
+        console.log(actionState)
+
         return [
           <time
             dateTime={dateFormat(toMs(createdAt), 'standard')}
@@ -161,7 +177,7 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              Proposal #{disputableActionId}
+              {getTermByStatus(actionState, disputableActionId)}
             </Link>
           </div>,
           <div>{collateralState}</div>,
