@@ -39,6 +39,7 @@ module.exports = override(
   updateWebpackModuleRules,
   useBabelRc(),
   addWebpackAlias({
+    'bn.js': 'fork-bn.js',
     '@': path.resolve(__dirname, './src'),
     '@abis': path.resolve(__dirname, './src/abi'),
     '@assets': path.resolve(__dirname, './src/assets'),

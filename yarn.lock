@@ -9397,6 +9397,11 @@ forever-agent@~0.6.1:
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
 
+fork-bn.js@^4.11.8:
+  version "4.11.8"
+  resolved "https://registry.yarnpkg.com/fork-bn.js/-/fork-bn.js-4.11.8.tgz#839e073b29c20f49035af5f30793081d2397692f"
+  integrity sha512-Z1mCv62QXqnc5aDzfKWNRma2nC8tkOE7HLRoqgBQFTu4jPsJ2DDBnRf3CHlfkrEOsxkQ7NgxVRKFhwttxkdrFA==
+
 fork-ts-checker-webpack-plugin@^6.5.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.0.tgz#0282b335fa495a97e167f69018f566ea7d2a2b5e"
