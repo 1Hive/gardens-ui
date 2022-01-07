@@ -5,8 +5,8 @@ import {
   transformProposalData,
   transformSupporterData,
 } from '../utils/data-utils'
-import { FiltersType } from './constants'
 import { SupporterData } from '@1hive/connect-gardens/dist/cjs/types'
+import { FiltersType } from './constants'
 
 type Garden = {
   onConfig: any
@@ -16,7 +16,7 @@ export function useConfigSubscription(garden: Garden | null) {
   const [config, setConfig] = useState(null)
 
   const rawConfigRef = useRef<unknown>(null)
-  const configSubscription = useRef<unknown>(null)
+  const configSubscription = useRef<any>(null)
 
   const onConfigHandler = useCallback((err, config) => {
     if (err || !config) {
@@ -24,7 +24,7 @@ export function useConfigSubscription(garden: Garden | null) {
     }
 
     const rawConfig = JSON.stringify(config)
-    if (rawConfigRef.current === rawConfig) {
+    if (rawConfigRef?.current === rawConfig) {
       return
     }
 
@@ -42,7 +42,7 @@ export function useConfigSubscription(garden: Garden | null) {
     configSubscription.current = garden.onConfig(onConfigHandler)
 
     return () => {
-      configSubscription.current = null
+      configSubscription.current.unsubscribe()
     }
   }, [garden, onConfigHandler])
 
@@ -51,8 +51,8 @@ export function useConfigSubscription(garden: Garden | null) {
 
 export function useProposalsSubscription(filters: FiltersType) {
   const { config, connector } = useGardenState()
-  const [proposals, setProposals] = useState<any[]>([])
-  const proposalsSubscription = useRef(null)
+  const [proposals, setProposals] = useState<unknown>([])
+  const proposalsSubscription = useRef<any>(null)
 
   const onProposalsHandler = useCallback(
     async (err, proposals = []) => {
@@ -85,7 +85,7 @@ export function useProposalsSubscription(filters: FiltersType) {
     )
 
     return () => {
-      proposalsSubscription.current = null
+      proposalsSubscription.current.unsubscribe()
     }
   }, [
     connector,
@@ -111,7 +111,7 @@ export function useProposalSubscription(
   const [loading, setLoading] = useState(true)
 
   const rawProposalRef = useRef<unknown>(null)
-  const proposalSubscription = useRef<unknown>(null)
+  const proposalSubscription = useRef<any>(null)
 
   const onProposalHandler = useCallback(
     async (err, proposal) => {
@@ -145,7 +145,7 @@ export function useProposalSubscription(
     )
 
     return () => {
-      proposalSubscription.current = null
+      proposalSubscription.current.unsubscribe()
     }
   }, [appAddress, connector, onProposalHandler, proposalId])
 
@@ -157,7 +157,7 @@ export function useSupporterSubscription(account: string) {
   const [supporter, setSupporter] = useState<SupporterData | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const rawSupporterRef = useRef<any>(null)
+  const rawSupporterRef = useRef<unknown>(null)
   const supporterSubscription = useRef<any>(null)
 
   const onSupporterHandler = useCallback((err, supporter) => {

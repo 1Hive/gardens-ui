@@ -15,12 +15,8 @@ export default function useGardenLogic() {
   } = useGardenState()
 
   const actions = useActions()
-  const [
-    proposals,
-    filters,
-    proposalsFetchedCount,
-    blockHasLoaded,
-  ] = useProposals()
+  const [proposals, filters, proposalsFetchedCount, blockHasLoaded] =
+    useProposals()
 
   return {
     actions,
