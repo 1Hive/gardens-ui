@@ -72,7 +72,7 @@ export function getProposalStatusData(proposal: {
 export async function extractProposalId(
   ethers: any,
   txHash: any,
-  proposalType: string
+  proposalType: 'conviction'
 ) {
   const receipt = await ethers.getTransactionReceipt(txHash)
   const iface = new utils.Interface([
