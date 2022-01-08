@@ -93,16 +93,18 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
     async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current
 
+      const onDone = (intent: any) => {
+        setTransactions(intent)
+        onComplete()
+      }
+
       if (amount.valueBN.eq(0)) {
         await convictionActions.newSignalingProposal(
           {
             title,
             link,
           },
-          (intent: any) => {
-            setTransactions(intent)
-            onComplete()
-          }
+          onDone
         )
       } else {
         const convertedAmount = amount.valueBN.toString(10)
@@ -116,10 +118,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
             stableRequestAmount,
             beneficiary,
           },
-          (intent: any) => {
-            setTransactions(intent)
-            onComplete()
-          }
+          onDone
         )
       }
     },
