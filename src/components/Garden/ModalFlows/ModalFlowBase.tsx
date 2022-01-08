@@ -17,23 +17,23 @@ import { TransactionType } from '@/hooks/constants'
 const indexNumber = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
 
 type ModalFlowBaseType = {
-  frontLoad: boolean
   loading: boolean
   screens: Array<any>
   transactions: Array<any>
-  transactionTitle: string
   onComplete: () => void
   onCompleteActions: React.ReactNode
+  frontLoad?: boolean
+  transactionTitle?: string
 }
 
 function ModalFlowBase({
-  frontLoad,
   loading,
   screens,
   transactions,
-  transactionTitle,
   onComplete,
   onCompleteActions,
+  frontLoad = true,
+  transactionTitle = 'Create transaction',
 }: ModalFlowBaseType) {
   const { addActivity } = useActivity()
   const { account, chainId, ethers } = useWallet()
@@ -205,11 +205,6 @@ function modalWidthFromCount(count: number) {
 
   // Modal will fallback to the default
   return null
-}
-
-ModalFlowBase.defaultProps = {
-  frontLoad: true,
-  transactionTitle: 'Create transaction',
 }
 
 export default ModalFlowBase
