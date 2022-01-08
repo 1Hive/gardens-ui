@@ -80,20 +80,6 @@ function getCollateralAttributes(status, theme) {
   return collateralAttributes[status]
 }
 
-const getTermByStatus = (status, actionId) => {
-  const term = (status) => `${status} #${actionId}`
-  switch (status) {
-    case `Scheduled`:
-      return term('a')
-    case 'Settled':
-      return term('b')
-    case 'Challenged':
-      return term('c')
-    default:
-      return term('Proposal')
-  }
-}
-
 function StakingMovements({ stakingMovements, token }) {
   const { config } = useGardenState()
   const theme = useTheme()
@@ -118,6 +104,8 @@ function StakingMovements({ stakingMovements, token }) {
     },
     [config, history]
   )
+
+  console.log(`stakingMovements`, stakingMovements)
 
   return (
     <DataView
@@ -153,8 +141,6 @@ function StakingMovements({ stakingMovements, token }) {
           theme
         )
 
-        console.log(collateralStatus)
-
         return [
           <time
             dateTime={dateFormat(toMs(createdAt), 'standard')}
@@ -179,7 +165,9 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              {getTermByStatus(actionState, disputableActionId)}
+              {`${
+                config.voting.id ? 'Decision' : 'Proposal'
+              } #${disputableActionId}`}
             </Link>
           </div>,
           <div>{collateralState}</div>,

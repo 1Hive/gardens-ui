@@ -95,8 +95,6 @@ function ProposalDetail({
     txHash,
   } = proposal || {}
 
-  console.log(`permissions`, permissions)
-
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {
