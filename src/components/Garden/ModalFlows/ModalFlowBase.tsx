@@ -26,6 +26,19 @@ type ModalFlowBaseType = {
   transactionTitle?: string
 }
 
+type HandleSignParamsType = {
+  setSuccess: () => void
+  setWorking: () => void
+  setError: () => void
+  setHash: (hash: any) => void
+}
+
+type TransactionStepsType = {
+  title: string
+  handleSign: (params: HandleSignParamsType) => Promise<void>
+}
+type ArrayTransactionStepsType = Array<TransactionStepsType> | null
+
 function ModalFlowBase({
   loading,
   screens,
@@ -39,7 +52,7 @@ function ModalFlowBase({
   const { account, chainId, ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
-  const transactionSteps = useMemo(
+  const transactionSteps: ArrayTransactionStepsType = useMemo(
     () =>
       transactions
         ? transactions.map((transaction: TransactionType, index: number) => {
@@ -57,12 +70,7 @@ function ModalFlowBase({
                 setWorking,
                 setError,
                 setHash,
-              }: {
-                setSuccess: () => void
-                setWorking: () => void
-                setError: () => void
-                setHash: (hash: any) => void
-              }) => {
+              }: HandleSignParamsType) => {
                 try {
                   const trx = {
                     from: transaction.from,
