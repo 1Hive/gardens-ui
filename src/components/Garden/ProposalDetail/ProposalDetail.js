@@ -95,6 +95,8 @@ function ProposalDetail({
     txHash,
   } = proposal || {}
 
+  console.log(`permissions`, permissions)
+
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {
@@ -105,7 +107,7 @@ function ProposalDetail({
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])

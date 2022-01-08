@@ -21,16 +21,22 @@ const TIMEOUT_DURATION = 10 * MINUTE
 
 function getStoredList(account, chainId) {
   return new StoredList(`activity:${getNetworkType(chainId)}:${account}`, {
-    preStringify: (activity) => ({
-      ...activity,
-      status: activity.status.replace('ACTIVITY_STATUS_', ''),
-      type: activity.type,
-    }),
-    postParse: (activity) => ({
-      ...activity,
-      status: ActivityStatus[`ACTIVITY_STATUS_${activity.status}`],
-      type: GardenActionTypes[activity.type],
-    }),
+    preStringify: (activity) => {
+      console.log(`preStringify`, activity)
+      return {
+        ...activity,
+        status: activity.status.replace('ACTIVITY_STATUS_', ''),
+        type: activity.type,
+      }
+    },
+    postParse: (activity) => {
+      console.log(`postParse`, activity)
+      return {
+        ...activity,
+        status: ActivityStatus[`ACTIVITY_STATUS_${activity.status}`],
+        type: GardenActionTypes[activity.type],
+      }
+    },
   })
 }
 
@@ -102,6 +108,17 @@ function ActivityProvider({ children }) {
       type,
       description = ''
     ) => {
+      console.log(`addActivity`, {
+        createdAt: Date.now(),
+        description,
+        from: tx.from,
+        nonce: tx.nonce,
+        read: false,
+        status: ActivityStatus.Pending,
+        type,
+        to: tx.to,
+        transactionHash: tx.hash,
+      })
       updateActivities((activities) => [
         ...activities,
         {
