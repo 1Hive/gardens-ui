@@ -51,10 +51,10 @@ const Home = function Home() {
   }, [history])
 
   const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible)
+    setFilterSidlerVisible((visible) => !visible)
   }, [])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])
