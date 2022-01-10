@@ -26,8 +26,6 @@ import { dateFormat, toMs } from '@utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
-  console.log(`status`, status)
-
   const actionAttributes = {
     [StakingType.Scheduled]: {
       background: theme.infoSurface,
@@ -107,8 +105,6 @@ function StakingMovements({ stakingMovements, token }) {
     },
     [config, history]
   )
-
-  console.log(`stakingMovements`, stakingMovements)
 
   return (
     <DataView

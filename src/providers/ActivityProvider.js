@@ -101,17 +101,6 @@ function ActivityProvider({ children }) {
       type,
       description = ''
     ) => {
-      console.log(`addActivity`, {
-        createdAt: Date.now(),
-        description,
-        from: tx.from,
-        nonce: tx.nonce,
-        read: false,
-        status: ActivityStatus.Pending,
-        type,
-        to: tx.to,
-        transactionHash: tx.hash,
-      })
       updateActivities((activities) => [
         ...activities,
         {
