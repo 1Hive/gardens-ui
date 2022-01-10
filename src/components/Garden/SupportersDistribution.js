@@ -26,7 +26,7 @@ function displayedStakes(stakes, total, stakeToken) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map(stake => ({
+  ).map((stake) => ({
     item: {
       entity:
         stake.index === -1
@@ -122,7 +122,7 @@ const MemoizedDistribution = React.memo(function MemoizedDistribution({
     [theme]
   )
 
-  const adjustedStakes = stakes.map(stake => ({
+  const adjustedStakes = stakes.map((stake) => ({
     ...stake,
     percentage: Math.round(stake.percentage),
   }))

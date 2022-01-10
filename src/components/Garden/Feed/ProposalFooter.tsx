@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { textStyle, useTheme } from '@1hive/1hive-ui'
 import { ThumbsDownIcon, ThumbsUpIcon } from '../Icons'
@@ -11,8 +11,18 @@ import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getConnectedAccountCast } from '../../../utils/vote-utils'
+import { ProposalType } from '@/hooks/constants'
+import ModalSupporters from './ProposalCardModalSupporters'
 
-function ProposalCardFooter({ proposal, onSelectProposal }) {
+type ProposalCardFooterProps = {
+  proposal: ProposalType
+  onSelectProposal: () => void
+}
+
+function ProposalCardFooter({
+  proposal,
+  onSelectProposal,
+}: ProposalCardFooterProps) {
   if (proposal.type === ProposalTypes.Decision) {
     return (
       <DecisionFooter proposal={proposal} onSelectProposal={onSelectProposal} />
@@ -24,10 +34,16 @@ function ProposalCardFooter({ proposal, onSelectProposal }) {
   )
 }
 
-function ProposalFooter({ proposal, onSelectProposal }) {
+type ProposalFooterProps = {
+  proposal: ProposalType
+  onSelectProposal: () => void
+}
+
+function ProposalFooter({ proposal, onSelectProposal }: ProposalFooterProps) {
   const { config } = useGardenState()
   const { stakeToken } = config.conviction
   const theme = useTheme()
+  const [showSupportersModal, setShowSupportersModal] = useState(false)
 
   const supportersCount = useMemo(
     () => proposal.stakes.filter(({ amount }) => amount.gt(0)).length,
@@ -71,13 +87,21 @@ function ProposalFooter({ proposal, onSelectProposal }) {
   return (
     <Main color={theme.contentSecondary}>
       <div>
-        {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
+        <span onClick={() => setShowSupportersModal(true)}>
+          {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
+        </span>
+        <ModalSupporters
+          proposal={proposal}
+          visible={showSupportersModal}
+          onClose={() => setShowSupportersModal(false)}
+        />
       </div>
-      {proposal.type === ProposalTypes.Proposal && proposal.neededTokens > 0 && (
-        <div>
-          {stakeToken.symbol} needed to pass: {formattedNeededTokens}
-        </div>
-      )}
+      {proposal.type === ProposalTypes.Proposal &&
+        Number(proposal.neededTokens) > 0 && (
+          <div>
+            {stakeToken.symbol} needed to pass: {formattedNeededTokens}
+          </div>
+        )}
       <div onClick={onSelectProposal} style={{ cursor: 'pointer' }}>
         Status: {proposalStatusLabel}
       </div>
@@ -85,10 +109,15 @@ function ProposalFooter({ proposal, onSelectProposal }) {
   )
 }
 
-function DecisionFooter({ proposal, onSelectProposal }) {
+type DecisionFooterProps = {
+  proposal: ProposalType
+  onSelectProposal: () => void
+}
+
+function DecisionFooter({ proposal, onSelectProposal }: DecisionFooterProps) {
   const theme = useTheme()
   const { account } = useWallet()
-  const { label: statusLabel } = getStatusAttributes(proposal, theme)
+  const StatusAttributes = getStatusAttributes(proposal, theme)
 
   const votesCount = proposal.casts.length
 
@@ -106,19 +135,24 @@ function DecisionFooter({ proposal, onSelectProposal }) {
         </div>
       </div>
       <div onClick={onSelectProposal} style={{ cursor: 'pointer' }}>
-        Status: {statusLabel}
+        Status: {StatusAttributes?.label}
       </div>
     </Main>
   )
 }
 
-function SupportIndicator({ account, vote }) {
+type SupportIndicatorProps = {
+  account: string
+  vote: unknown // TODO: Fix this when migrating vote-utils.js to ts
+}
+
+function SupportIndicator({ account, vote }: SupportIndicatorProps) {
   const accountCast = getConnectedAccountCast(vote, account)
 
   if (accountCast.vote === VOTE_YEA) {
     return <ThumbsUpIcon />
   } else if (accountCast.vote === VOTE_NAY) {
-    return <ThumbsDownIcon />
+    return <ThumbsDownIcon disabled={undefined} />
   }
 
   return null
@@ -127,7 +161,7 @@ function SupportIndicator({ account, vote }) {
 const Main = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between;d
 
   color: ${({ color }) => color};
   ${textStyle('body3')};

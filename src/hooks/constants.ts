@@ -216,6 +216,11 @@ type ProposalType = {
   status: string
   statusData: {
     open: boolean
+    rejected: boolean
+    cancelled: boolean
+    settled: boolean
+    challenged: boolean
+    disputed: boolean
   }
   submitterArbitratorFee: any
   submitterArbitratorFeeId: any

@@ -85,7 +85,7 @@ function StakingMovements({ stakingMovements, token }) {
 
   const [selectedPage, setSelectedPage] = useState(0)
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 
