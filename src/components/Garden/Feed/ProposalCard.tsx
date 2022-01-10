@@ -10,8 +10,14 @@ import { useProposalWithThreshold } from '@hooks/useProposals'
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
 import { useWallet } from 'use-wallet'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalCard({ proposal, ...props }) {
+type CardProps = {
+  loading?: boolean
+  proposal: ProposalType
+}
+
+function ProposalCard({ proposal, ...props }: CardProps) {
   return proposal.type === ProposalTypes.Decision ? (
     <Card proposal={proposal} {...props} />
   ) : (
@@ -19,12 +25,12 @@ function ProposalCard({ proposal, ...props }) {
   )
 }
 
-function ConvictionProposalCard({ proposal, ...props }) {
+function ConvictionProposalCard({ proposal, ...props }: CardProps) {
   const [proposalWithThreshold, loading] = useProposalWithThreshold(proposal)
   return <Card proposal={proposalWithThreshold} loading={loading} {...props} />
 }
 
-function Card({ loading = false, proposal }) {
+function Card({ loading = false, proposal }: CardProps) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -83,4 +89,4 @@ function Card({ loading = false, proposal }) {
   )
 }
 
-export default ProposalCard
+export default React.memo(ProposalCard)
