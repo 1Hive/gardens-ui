@@ -81,7 +81,7 @@ function getCollateralAttributes(status, theme) {
 }
 
 function StakingMovements({ stakingMovements, token }) {
-  const { config } = useGardenState()
+  const { config } = useGardenState() // This is global for the list
   const theme = useTheme()
   const history = useHistory()
 
@@ -90,6 +90,9 @@ function StakingMovements({ stakingMovements, token }) {
   const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
+
+  const getProposalType = (disputableAddress) =>
+    disputableAddress === config.voting.id ? 'Vote' : 'Decision'
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
@@ -165,9 +168,7 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              {`${
-                config.voting.id ? 'Decision' : 'Proposal'
-              } #${disputableActionId}`}
+              {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
           <div>{collateralState}</div>,
