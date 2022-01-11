@@ -133,7 +133,6 @@ export const createTreeCommitAndChangeHeads = async ({
       body: JSON.stringify(bodyData),
     })
     const data = await result.json()
-    console.log(data)
     return { data: data, error: !result.ok }
   } catch (err) {
     console.error(`Error requesting createTreeCommitAndChangeHeads`, err)
