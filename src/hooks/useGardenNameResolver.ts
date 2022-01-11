@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import {useGardens} from '@providers/Gardens'
-import { useWallet } from '@providers/Wallet'
-import { isAddress } from '@utils/web3-utils'
+// import { useWallet } from '@providers/Wallet'
+// import { isAddress } from '@utils/web3-utils'
 
-const ARAGON_DOMAIN = 'aragonid.eth'
+// const ARAGON_DOMAIN = 'aragonid.eth'
 
 
 // seems that the ens resolver is still no ready for L2 on ehters
