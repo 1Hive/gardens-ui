@@ -23,7 +23,7 @@ function DatePicker({
 
   const setDate =
     ({ year, add }) =>
-    event => {
+    (event) => {
       setSelectedDate(
         dayjs(selectedDate)
           .startOf('month')
@@ -36,7 +36,7 @@ function DatePicker({
 
   const selectedDayjs = dayjs(selectedDate || today)
 
-  const isSelected = day => {
+  const isSelected = (day) => {
     if (initialDate) {
       return day.isSame(initialDate, 'day')
     }
@@ -82,7 +82,7 @@ function DatePicker({
           eachDayOfInterval({
             start: selectedDayjs.startOf('week'),
             end: selectedDayjs.endOf('week'),
-          }).map(day => {
+          }).map((day) => {
             const dayJs = dayjs(day)
             return (
               <MonthDay key={dayJs.format('dd')} weekDay>
@@ -94,7 +94,7 @@ function DatePicker({
         {eachDayOfInterval({
           start: selectedDayjs.startOf('month').startOf('week'),
           end: selectedDayjs.endOf('month').endOf('week'),
-        }).map(day => {
+        }).map((day) => {
           const dayJs = dayjs(day)
           return (
             <MonthDay
