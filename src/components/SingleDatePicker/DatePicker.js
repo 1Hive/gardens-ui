@@ -1,3 +1,4 @@
+/* eslint-disable no-unexpected-multiline */
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { eachDayOfInterval, GU } from '@1hive/1hive-ui'
@@ -20,22 +21,22 @@ function DatePicker({
 }) {
   const [selectedDate, setSelectedDate] = useState(initialDate)
 
-  const setDate = ({ year, add }) => event => {
-    setSelectedDate(
-      dayjs(selectedDate)
-        .startOf('month')
-        [add ? 'add' : 'subtract'](1, year ? 'year' : 'month')
-        .toDate()
-    )
-  }
+  const setDate =
+    ({ year, add }) =>
+    (event) => {
+      setSelectedDate(
+        dayjs(selectedDate)
+          .startOf('month')
+          [add ? 'add' : 'subtract'](1, year ? 'year' : 'month')
+          .toDate()
+      )
+    }
 
-  const today = dayjs()
-    .startOf('day')
-    .toDate()
+  const today = dayjs().startOf('day').toDate()
 
   const selectedDayjs = dayjs(selectedDate || today)
 
-  const isSelected = day => {
+  const isSelected = (day) => {
     if (initialDate) {
       return day.isSame(initialDate, 'day')
     }
@@ -81,7 +82,7 @@ function DatePicker({
           eachDayOfInterval({
             start: selectedDayjs.startOf('week'),
             end: selectedDayjs.endOf('week'),
-          }).map(day => {
+          }).map((day) => {
             const dayJs = dayjs(day)
             return (
               <MonthDay key={dayJs.format('dd')} weekDay>
@@ -93,7 +94,7 @@ function DatePicker({
         {eachDayOfInterval({
           start: selectedDayjs.startOf('month').startOf('week'),
           end: selectedDayjs.endOf('month').endOf('week'),
-        }).map(day => {
+        }).map((day) => {
           const dayJs = dayjs(day)
           return (
             <MonthDay
