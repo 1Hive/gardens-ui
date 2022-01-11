@@ -5,7 +5,8 @@ const OWNER_REPO = env('OWNER_REPO_DAO_LIST') === null ? 'kamikazebr' : '1Hive' 
 
 const ASSETS_FOLDER_BASE = `https://raw.githubusercontent.com/${OWNER_REPO}/dao-list/master/assets`
 const ENDPOINT_BASE = `https://api.github.com/repos/${OWNER_REPO}/dao-list`
-const ANOTHER_ENDPOINT_BASE = 'http://localhost:3001' // TODO: Migrate to ENV vars and change the name the var.
+const MIDDLEWARE_ENDPOINT =
+  env('MIDDLEWARE_ENDPOINT') || 'http://localhost:3001' // TODO: Migrate to ENV vars and change the name the var.
 
 // This step must be called after the dao is published and we have the dao address
 export async function publishNewDao(
@@ -114,7 +115,7 @@ export const createTreeCommitAndChangeHeads = async ({
   newContent,
   networkName,
 }: TreeCommitParams) => {
-  const endpoint = `${ANOTHER_ENDPOINT_BASE}/v1/dao`
+  const endpoint = `${MIDDLEWARE_ENDPOINT}/v1/dao`
 
   const bodyData = {
     baseTreSha,
@@ -146,7 +147,7 @@ const createFileContent = async (
   base64: string,
   commitMsg: string
 ) => {
-  const endpoint = `${ANOTHER_ENDPOINT_BASE}/v1/daoAssets`
+  const endpoint = `${MIDDLEWARE_ENDPOINT}/v1/daoAssets`
 
   const bodyData = {
     pathFileName: fileName,
