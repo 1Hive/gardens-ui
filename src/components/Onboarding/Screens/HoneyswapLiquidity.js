@@ -23,7 +23,6 @@ import { getNetwork } from '@/networks'
 import { toDecimals } from '@utils/math-utils'
 import { BYOT_TYPE } from '../constants'
 import { bigNum } from '@/lib/bigNumber'
-import BigNumber from '@lib/bigNumber'
 
 const MIN_HNY_USD = 100
 const HNY_DENOMINATION = 0
@@ -31,14 +30,8 @@ const HNY_DENOMINATION = 0
 function HoneyswapLiquidity() {
   const theme = useTheme()
   const { account, chainId } = useWallet()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
   const {
     denomination,
     honeyTokenLiquidity,
@@ -66,7 +59,7 @@ function HoneyswapLiquidity() {
   )
 
   // Callback functions
-  const handleDenominatedAmountChange = useCallback(event => {
+  const handleDenominatedAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -75,7 +68,7 @@ function HoneyswapLiquidity() {
     setDenominatedAmount(newAmount)
   }, [])
 
-  const handleTokenAmountChange = useCallback(event => {
+  const handleTokenAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -85,7 +78,7 @@ function HoneyswapLiquidity() {
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       onConfigChange('liquidity', {
