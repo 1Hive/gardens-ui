@@ -79,7 +79,7 @@ function getCollateralAttributes(status, theme) {
 }
 
 function StakingMovements({ stakingMovements, token }) {
-  const { config } = useGardenState() // This is global for the list
+  const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
 
