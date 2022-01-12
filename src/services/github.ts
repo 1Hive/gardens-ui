@@ -56,6 +56,8 @@ export async function publishNewDao(
       daoMetadataName: daoMetadata.name,
       newContent,
       networkName,
+      ownerRepo: OWNER_REPO,
+      repo: REPO,
     })
   } catch (error) {
     console.error(error)
@@ -106,6 +108,8 @@ type TreeCommitParams = {
   daoMetadataName: string
   newContent: any
   networkName: string
+  ownerRepo: string
+  repo: string
 }
 
 export const createTreeCommitAndChangeHeads = async ({
@@ -114,6 +118,8 @@ export const createTreeCommitAndChangeHeads = async ({
   daoMetadataName,
   newContent,
   networkName,
+  ownerRepo,
+  repo,
 }: TreeCommitParams) => {
   const endpoint = `${MIDDLEWARE_ENDPOINT}/v1/dao`
 
@@ -123,6 +129,8 @@ export const createTreeCommitAndChangeHeads = async ({
     daoMetadataName,
     newContent,
     networkName,
+    ownerRepo,
+    repo,
   }
 
   try {
