@@ -1,8 +1,6 @@
 import env from '@/environment'
 
-const MIDDLEWARE_ENDPOINT =
-  env('MIDDLEWARE_ENDPOINT') || 'http://localhost:3001'
-
+const MIDDLEWARE_ENDPOINT = env('MIDDLEWARE_ENDPOINT')
 const ENDPOINT = `${MIDDLEWARE_ENDPOINT}/v1/pinata/pinFileToIPFS`
 
 export async function uploadToPinata(file) {

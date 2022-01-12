@@ -1,12 +1,12 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const OWNER_REPO = env('OWNER_REPO_DAO_LIST') === null ? 'kamikazebr' : '1Hive' //TODO: Change or remove it after tests
+const OWNER_REPO = env('OWNER_REPO_DAO_LIST') ?? 'kamikazebr' //TODO: Change or remove it after tests
+const REPO = 'dao-list'
 
-const ASSETS_FOLDER_BASE = `https://raw.githubusercontent.com/${OWNER_REPO}/dao-list/master/assets`
-const ENDPOINT_BASE = `https://api.github.com/repos/${OWNER_REPO}/dao-list`
-const MIDDLEWARE_ENDPOINT =
-  env('MIDDLEWARE_ENDPOINT') || 'http://localhost:3001' // TODO: Migrate to ENV vars and change the name the var.
+const ASSETS_FOLDER_BASE = `https://raw.githubusercontent.com/${OWNER_REPO}/${REPO}/master/assets`
+const ENDPOINT_BASE = `https://api.github.com/repos/${OWNER_REPO}/${REPO}`
+const MIDDLEWARE_ENDPOINT = env('MIDDLEWARE_ENDPOINT')
 
 // This step must be called after the dao is published and we have the dao address
 export async function publishNewDao(
@@ -154,6 +154,8 @@ const createFileContent = async (
     commitMessage: commitMsg,
     contentBase64: base64,
     folderName,
+    ownerRepo: OWNER_REPO,
+    repo: REPO,
   }
 
   try {
