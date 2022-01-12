@@ -30,14 +30,8 @@ const HNY_DENOMINATION = 0
 function HoneyswapLiquidity() {
   const theme = useTheme()
   const { account, chainId } = useWallet()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
   const {
     denomination,
     honeyTokenLiquidity,
@@ -65,7 +59,7 @@ function HoneyswapLiquidity() {
   )
 
   // Callback functions
-  const handleDenominatedAmountChange = useCallback(event => {
+  const handleDenominatedAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -74,7 +68,7 @@ function HoneyswapLiquidity() {
     setDenominatedAmount(newAmount)
   }, [])
 
-  const handleTokenAmountChange = useCallback(event => {
+  const handleTokenAmountChange = useCallback((event) => {
     const newAmount = event.target.value
     if (isNaN(newAmount) || newAmount < 0) {
       return
@@ -84,7 +78,7 @@ function HoneyswapLiquidity() {
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       onConfigChange('liquidity', {
@@ -97,6 +91,10 @@ function HoneyswapLiquidity() {
           denom === HNY_DENOMINATION
             ? String(denominatedAmount * hnyPrice)
             : denominatedAmount,
+        honeyTokenLiquidityStableBN:
+          denom === HNY_DENOMINATION
+            ? bigNum(denominatedAmount).multipliedBy(hnyPrice)
+            : bigNum(denominatedAmount),
         tokenLiquidity: tokenAmount,
       })
 

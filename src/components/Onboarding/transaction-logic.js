@@ -78,6 +78,7 @@ async function createTokenApproveTxs(
         }),
       })
     }
+
     txs.push({
       name: `Approve ${tokenSymbol}`,
       transaction: createTokenTx(tokenAddress, 'approve', [spender, amount], {
@@ -121,9 +122,9 @@ export function createGardenTxOne(
   }
 
   const adjustedCommonPool = bigNum(commonPool).toString(10)
-  const adjustedLiquidityStable = bigNum(
-    liquidity.honeyTokenLiquidityStable
-  ).toString(10)
+  const adjustedLiquidityStable = liquidity.honeyTokenLiquidityStableBN.toString(
+    10
+  )
   const adjustedGardenTokenLiquidity = bigNum(gardenTokenLiquidity).toString(10)
   const adjustedExistingTokenLiquidity = bigNum(
     existingTokenLiquidity,
