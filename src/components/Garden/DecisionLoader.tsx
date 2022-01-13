@@ -1,9 +1,7 @@
 import React from 'react'
 import DecisionDetail from './DecisionDetail/DecisionDetail'
 import { GardenLoader } from '../Loader'
-import useProposalLogic, {
-  ProposalLogicProps,
-} from '../../logic/proposal-logic'
+import useProposalLogic, { ProposalLogicProps } from '@/logic/proposal-logic'
 
 type DecisionLoaderProps = {
   match: ProposalLogicProps
