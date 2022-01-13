@@ -22,7 +22,7 @@ const ModalSupporters = ({
 
   return (
     <Modal
-      padding={7 * GU}
+      padding={5 * GU}
       visible={visible}
       width={Math.min(55 * GU, width - 40)}
       onClose={onClose}
@@ -42,6 +42,7 @@ const ModalSupporters = ({
           style={{
             overflowY: 'scroll',
             height: '300px',
+            paddingRight: '10px',
           }}
         >
           {proposal?.stakes.map((stake, i) => (
