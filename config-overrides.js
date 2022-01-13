@@ -10,9 +10,36 @@ const {
 } = require('customize-cra')
 const webpack = require('webpack')
 
+const updateWebpackModuleRules = (config) => {
+  const sourceMapLoader = {
+    enforce: 'pre',
+    exclude: /@babel(?:\/|\\{1,2})runtime/,
+    test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+    use: [
+      {
+        loader: 'source-map-loader',
+        options: {
+          filterSourceMappingUrl: (url, resourcePath) => {
+            if (/.*\/node_modules\/.*/.test(resourcePath)) {
+              return false
+            }
+            return true
+          },
+        },
+      },
+    ],
+  }
+
+  config.module.rules.splice(0, 1, sourceMapLoader)
+
+  return config
+}
+
 module.exports = override(
+  updateWebpackModuleRules,
   useBabelRc(),
   addWebpackAlias({
+    'bn.js': 'fork-bn.js',
     '@': path.resolve(__dirname, './src'),
     '@abis': path.resolve(__dirname, './src/abi'),
     '@assets': path.resolve(__dirname, './src/assets'),
