@@ -14,10 +14,14 @@ export const removeItem = (account: string, chainId: number) => {
 }
 
 export const setItem = (account: string, chainId: number, item: any) => {
-  window.localStorage.setItem(
-    getStorageKey(account, chainId),
-    JSON.stringify(item)
-  )
+  try {
+    window.localStorage.setItem(
+      getStorageKey(account, chainId),
+      JSON.stringify(item)
+    )
+  } catch (error) {
+    throw new Error('Disk space exceed. Clear your cache.')
+  }
 }
 
 const GARDEN_ASSETS = ['logo_type', 'logo', 'token_logo']
