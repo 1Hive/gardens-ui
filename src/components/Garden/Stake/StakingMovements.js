@@ -90,7 +90,7 @@ function StakingMovements({ stakingMovements, token }) {
   }, [])
 
   const getProposalType = (disputableAddress) =>
-    disputableAddress === config.voting.id ? 'Vote' : 'Decision'
+    disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
