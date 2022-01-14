@@ -739,17 +739,16 @@ export default function useActions(): ActionsType {
   )
 }
 
-type AppFunctions = 'executeAdjustment' | 'executeVote' | 'resolve'
-type OptionsIntent = {
+type IntentArguments = {
   ethers: any
   from: string
   gasLimit?: number
 }
 async function sendIntent(
   app: any,
-  fn: AppFunctions,
+  fn: string,
   params: any,
-  { ethers, from, gasLimit = GAS_LIMIT }: OptionsIntent
+  { ethers, from, gasLimit = GAS_LIMIT }: IntentArguments
 ) {
   try {
     const intent = await app.intent(fn, params, { actAs: from })
@@ -761,7 +760,7 @@ async function sendIntent(
   }
 }
 
-function imposeGasLimit(intent: IntentType, gasLimit: number) {
+function imposeGasLimit(intent: any, gasLimit: number) {
   return {
     ...intent,
     transactions: intent.transactions.map((tx: TransactionType) => ({

@@ -60,7 +60,7 @@ function ModalFlowBase({
               ? transaction.description
               : transactions.length === 1
               ? 'Sign transaction'
-              : `${indexNumber[index]} transaction`
+              : `${INDEX_NUMBER[index]} transaction`
 
             return {
               // TODO: Add titles from description
