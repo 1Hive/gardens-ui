@@ -21,14 +21,12 @@ const TIMEOUT_DURATION = 10 * MINUTE
 
 function getStoredList(account, chainId) {
   return new StoredList(`activity:${getNetworkType(chainId)}:${account}`, {
-    preStringify: (activity) => ( 
-     {
+    preStringify: (activity) => ({
       ...activity,
       status: activity.status.replace('ACTIVITY_STATUS_', ''),
       type: activity.type,
     }),
-    postParse: (activity) => (
-     {
+    postParse: (activity) => ({
       ...activity,
       type: GardenActionTypes[activity.type],
     }),
