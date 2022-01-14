@@ -14,7 +14,7 @@ import { useWallet } from '@providers/Wallet'
 import { setAccountSetting } from '@/local-settings'
 import { TransactionType } from '@/hooks/constants'
 
-const indexNumber = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
+const INDEX_NUMBER = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
 
 type ModalFlowBaseType = {
   loading: boolean
