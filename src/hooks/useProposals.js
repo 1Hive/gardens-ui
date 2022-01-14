@@ -81,18 +81,18 @@ function useFilteredProposals(filters, account, latestBlock) {
       return proposals
     }
 
-    return proposals.map(proposal =>
-      proposal.type === ProposalTypes.Decision
+    return proposals.map((proposal) => {
+      return proposal.type === ProposalTypes.Decision
         ? processDecision(proposal)
         : processProposal(proposal, latestBlock, account, config.conviction)
-    )
+    })
   }, [account, config, latestBlock, loading, proposals])
 
   const filteredProposals = useMemo(
     () =>
       loading
         ? proposalsWithData
-        : proposalsWithData?.filter(proposal => {
+        : proposalsWithData?.filter((proposal) => {
             const proposalSupportStatus = getProposalSupportStatus(
               myStakes,
               proposal
