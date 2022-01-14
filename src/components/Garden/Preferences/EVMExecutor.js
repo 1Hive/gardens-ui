@@ -207,7 +207,7 @@ function EVMExecutor({ evmcrispr }) {
       }
     }
 
-    return [{ ...intent.action, description: description, type: type }]
+    return [{ ...intent.action, description, type, gasLimit: 10000000 }]
   }, [
     forwarderName,
     interactionType,

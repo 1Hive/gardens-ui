@@ -192,10 +192,10 @@
     "@1hive/connect-ethereum" "^0.9.10"
     "@1hive/connect-thegraph" "^0.9.10"
 
-"@1hive/evmcrispr@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@1hive/evmcrispr/-/evmcrispr-0.3.2.tgz#d006a538e07bb5d9c5aeec4f24ef68a6c1ffdbb0"
-  integrity sha512-n/rebDdUQYMwEggbOY/t2Da1E0UZexGCxnhg16Z7MaNTScQX0qYfYxB/OXaAMmBGKJvGGNBqMVJxP3xVQEpkiA==
+"@1hive/evmcrispr@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@1hive/evmcrispr/-/evmcrispr-0.3.4.tgz#8258b8a698fc1d28eda80ca88ec37cb7246d4e8d"
+  integrity sha512-QwW340ClXUKyMF/tqZwsZebDFWZLe8QXiFL+MdvEakz5GV3IqbbAaY/ZOw9diTCyXAvxr0uy37v1/GY1pEfvxg==
   dependencies:
     "@1hive/connect" "^0.9.7"
     ethers "^5.0.17"
@@ -9396,6 +9396,11 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
+
+fork-bn.js@^4.11.8:
+  version "4.11.8"
+  resolved "https://registry.yarnpkg.com/fork-bn.js/-/fork-bn.js-4.11.8.tgz#839e073b29c20f49035af5f30793081d2397692f"
+  integrity sha512-Z1mCv62QXqnc5aDzfKWNRma2nC8tkOE7HLRoqgBQFTu4jPsJ2DDBnRf3CHlfkrEOsxkQ7NgxVRKFhwttxkdrFA==
 
 fork-ts-checker-webpack-plugin@^6.5.0:
   version "6.5.0"

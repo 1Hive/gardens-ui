@@ -10,13 +10,13 @@ export const CONNECTORS = [
   {
     id: 'injected',
     properties: {
-      chainId: [100, 4, 137, 80001, 31337], // add here to handle more injected chains
+      chainId: [100, 4, 137, 31337], // add here to handle more injected chains
     },
   },
   {
     id: 'frame',
     properties: {
-      chainId: [100, 4, 137, 80001, 31337],
+      chainId: [100, 4, 137, 31337],
     },
   },
   {
