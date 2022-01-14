@@ -17,6 +17,7 @@ import templateAbi from '@abis/gardensTemplate.json'
 const C_V_ONE_HUNDRED_PERCENT = 1e7
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const ONE_HUNDRED_PCT = 1e18
+const MAX_APPROVAL ='100000000000000000000000'
 
 export async function createPreTransactions(
   { garden, liquidity, tokens },
@@ -33,7 +34,7 @@ export async function createPreTransactions(
       honeyTokenAddress,
       account,
       templateAddress,
-      bigNum(liquidity.honeyTokenLiquidity).toString(10),
+      bigNum(MAX_APPROVAL).toString(10),
       'HNY',
       { chainId }
     ))
@@ -45,7 +46,7 @@ export async function createPreTransactions(
         tokens.address,
         account,
         templateAddress,
-        bigNum(liquidity.tokenLiquidity).toString(10),
+        bigNum(MAX_APPROVAL).toString(10),
         tokens.existingTokenSymbol,
         { chainId }
       ))
