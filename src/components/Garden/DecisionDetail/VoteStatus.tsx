@@ -123,19 +123,19 @@ type VoteStatus = {
 const VoteStatus = ({ vote }: VoteStatus) => {
   const theme = useTheme()
 
-  const StatusAttributes = getStatusAttributes(vote, theme)
-  const Icon = StatusAttributes?.Icon !== undefined && StatusAttributes?.Icon
+  const statusAttributes = getStatusAttributes(vote, theme)
+  const Icon = statusAttributes?.Icon !== undefined && statusAttributes?.Icon
 
   return (
     <Main
       css={`
         ${textStyle('body2')};
-        color: ${StatusAttributes?.color || theme.surfaceContentSecondary};
+        color: ${statusAttributes?.color || theme.surfaceContentSecondary};
       `}
     >
-      {StatusAttributes?.iconSrc ? (
+      {statusAttributes?.iconSrc ? (
         <img
-          src={StatusAttributes?.iconSrc}
+          src={statusAttributes?.iconSrc}
           alt=""
           width="24"
           height="24"
@@ -147,8 +147,8 @@ const VoteStatus = ({ vote }: VoteStatus) => {
       ) : (
         Icon
       )}
-      <StatusLabel spaced={Boolean(StatusAttributes?.Icon)}>
-        {StatusAttributes?.label}
+      <StatusLabel spaced={Boolean(statusAttributes?.Icon)}>
+        {statusAttributes?.label}
       </StatusLabel>
     </Main>
   )

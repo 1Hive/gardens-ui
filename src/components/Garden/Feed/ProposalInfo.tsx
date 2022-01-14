@@ -50,9 +50,6 @@ function ProposalInfo({
             decimals={primaryToken.decimals}
             icon={primaryToken.icon}
             symbol={primaryToken.symbol}
-            verified={undefined}
-            color={undefined}
-            size={undefined}
           />
           {proposal.stable && (
             <>

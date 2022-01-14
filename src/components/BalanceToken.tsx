@@ -20,10 +20,10 @@ const splitAmount = (amount: BigNumber, decimals: number) => {
 
 type BalanceTokenProps = {
   amount: BigNumber
-  color: any
+  color?: any
   decimals: number
   icon: string
-  size: any
+  size?: any
   symbol: string
   verified?: any
 }
