@@ -210,6 +210,7 @@ const Home = function Home() {
                           onRequestNewProposal={handleRequestNewProposal}
                           onWrapToken={handleWrapToken}
                           onUnwrapToken={handleUnwrapToken}
+                          onSetDelegate={handleSetDelegate}
                         />
                       </div>
                     )}
