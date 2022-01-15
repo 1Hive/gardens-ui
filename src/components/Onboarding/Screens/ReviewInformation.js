@@ -46,13 +46,6 @@ function ReviewInformation() {
           css={`
             margin-top: ${2 * GU}px;
           `}
-          children={undefined}
-          mode={undefined}
-          color={undefined}
-          titleColor={undefined}
-          background={undefined}
-          borderColor={undefined}
-          title={undefined}
         >
           Carefully review your configuration settings. If something doesn’t
           look right, you can always go back and change it before launching your
