@@ -9,6 +9,8 @@ const {
   override,
 } = require('customize-cra')
 const webpack = require('webpack')
+// const BundleAnalyzerPlugin =
+//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const updateWebpackModuleRules = (config) => {
   const sourceMapLoader = {
@@ -29,6 +31,8 @@ const updateWebpackModuleRules = (config) => {
       },
     ],
   }
+
+  // console.log(config)
 
   config.module.rules.splice(0, 1, sourceMapLoader)
 
@@ -54,6 +58,7 @@ module.exports = override(
       Buffer: ['buffer', 'Buffer'],
     })
   ),
+  // addWebpackPlugin(new BundleAnalyzerPlugin()),
   addWebpackPlugin(
     new webpack.ProvidePlugin({
       process: 'process/browser',

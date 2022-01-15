@@ -8,7 +8,7 @@ import { GU, Info, noop, springs, useTheme } from '@1hive/1hive-ui'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useMounted } from '@hooks/useMounted'
 import { PropTypes } from 'prop-types'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring'
 
 const AnimatedDiv = animated.div
 

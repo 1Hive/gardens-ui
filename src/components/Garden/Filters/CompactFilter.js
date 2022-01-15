@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring'
 import {
   BIG_RADIUS,
   DropDown,

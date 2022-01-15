@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
-import { animated, Spring } from 'react-spring/renderprops'
+import { animated, Spring } from 'react-spring'
 import Activity from './Activity'
 import Delegates from './Delegates'
 import EditProfile from './EditProfile'
