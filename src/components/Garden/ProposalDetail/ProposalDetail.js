@@ -105,7 +105,7 @@ function ProposalDetail({
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])

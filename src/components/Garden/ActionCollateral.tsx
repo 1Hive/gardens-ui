@@ -4,8 +4,13 @@ import { GU } from '@1hive/1hive-ui'
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { formatTokenAmount } from '@utils/token-utils'
 import lockIconSvg from '@assets/icon-lock.svg'
+import { ProposalType } from '@/hooks/constants'
 
-function ActionCollateral({ proposal }) {
+type ActionCollateralProps = {
+  proposal: ProposalType
+}
+
+function ActionCollateral({ proposal }: ActionCollateralProps) {
   const { collateralRequirement } = proposal
   const tokenIcon = useGardenTokenIcon({
     id: collateralRequirement.tokenId,

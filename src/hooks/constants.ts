@@ -4,11 +4,11 @@ import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
 
 type TokenType = {
-  decimals: number
+  decimals?: number
   id: string
-  name: string
+  name?: string
   symbol: string
-  __typename: string
+  __typename?: string
 }
 
 type ConfigType = {
