@@ -2,7 +2,11 @@ import React from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function LaunchGarden({ title }) {
+type LaunchGardenProps = {
+  title: string
+}
+
+function LaunchGarden({ title }: LaunchGardenProps) {
   const { onBack, onNext } = useOnboardingState()
 
   return (

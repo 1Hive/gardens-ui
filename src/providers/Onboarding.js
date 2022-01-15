@@ -94,6 +94,7 @@ function OnboardingProvider({ children }) {
   const [config, setConfig] = useState(DEFAULT_CONFIG)
   const [deployTransactions, setDeployTransactions] = useState([])
   const [gardenAddress, setGardenAddress] = useState('')
+  const connectedGarden = useConnectedGarden()
 
   const { account, chainId, ethers } = useWallet()
   const {
@@ -151,6 +152,11 @@ function OnboardingProvider({ children }) {
         // Fetch garden address
         const gardenAddress = await extractGardenAddress(ethers, txHash)
         setGardenAddress(gardenAddress.toLowerCase())
+
+        // is Brocolli set the token logo as the wrappableToken logo
+        if (config.garden.type === BYOT_TYPE) {
+          config.garden.token_logo = connectedGarden.wrappableToken.logo
+        }
 
         // Publish metadata to github
         await publishNewDao(gardenAddress, config.garden, chainId)
