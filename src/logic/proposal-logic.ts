@@ -2,7 +2,7 @@ import useActions from '@hooks/useActions'
 import { useGardenState } from '@providers/GardenState'
 import { useProposal } from '@hooks/useProposals'
 
-type ProposalLogicProps = {
+export type ProposalLogicProps = {
   params: {
     id: string
   }

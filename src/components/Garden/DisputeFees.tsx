@@ -7,8 +7,13 @@ import { useDisputeFees } from '@hooks/useDispute'
 import honeyIconSvg from '@assets/honey.svg'
 
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalType } from '@/hooks/constants'
 
-function DisputeFees({ proposal }) {
+type DisputeFeesProps = {
+  proposal: ProposalType
+}
+
+function DisputeFees({ proposal }: DisputeFeesProps) {
   const theme = useTheme()
   const { chainId } = useConnectedGarden()
   const fees = useDisputeFees(chainId)

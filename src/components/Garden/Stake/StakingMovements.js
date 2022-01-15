@@ -89,6 +89,9 @@ function StakingMovements({ stakingMovements, token }) {
     setSelectedPage(page)
   }, [])
 
+  const getProposalType = (disputableAddress) =>
+    disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
+
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
       const proposalType =
@@ -161,7 +164,7 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              Proposal #{disputableActionId}
+              {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
           <div>{collateralState}</div>,
