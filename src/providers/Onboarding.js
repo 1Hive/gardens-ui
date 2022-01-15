@@ -21,6 +21,7 @@ import {
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import PropTypes from 'prop-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 const OnboardingContext = React.createContext()
 
@@ -153,8 +154,15 @@ function OnboardingProvider({ children }) {
         const gardenAddress = await extractGardenAddress(ethers, txHash)
         setGardenAddress(gardenAddress.toLowerCase())
 
+        console.log(`publishGardenMetadata`)
+
         // is Brocolli set the token logo as the wrappableToken logo
         if (config.garden.type === BYOT_TYPE) {
+          console.log(
+            `SET BROCOLLI TOKEN AS TOKEN LOGO`,
+            config.garden,
+            connectedGarden.wrappableToken
+          )
           config.garden.token_logo = connectedGarden.wrappableToken.logo
         }
 
