@@ -150,9 +150,9 @@ function SupportIndicator({ account, vote }: SupportIndicatorProps) {
   const accountCast = getConnectedAccountCast(vote, account)
 
   if (accountCast.vote === VOTE_YEA) {
-    return <ThumbsUpIcon />
+    return <ThumbsUpIcon disabled={false} />
   } else if (accountCast.vote === VOTE_NAY) {
-    return <ThumbsDownIcon disabled={undefined} />
+    return <ThumbsDownIcon disabled={false} />
   }
 
   return null
