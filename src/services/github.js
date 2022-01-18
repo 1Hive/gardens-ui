@@ -12,6 +12,9 @@ export async function publishNewDao(daoAddress, daoMetadata, chainId) {
     const { data: fileContent } = await fetchFileContent(chainId)
     await publishDaoAssets(daoMetadata)
 
+    console.log(`publishNewDao`)
+    console.log(daoMetadata)
+
     const newDaoList = fileContent.gardens
     newDaoList.push({
       address: daoAddress,
@@ -75,7 +78,7 @@ const fetchLatestCommitSha = async () => {
   }
 }
 
-const fetchBaseTreeSha = async commitSha => {
+const fetchBaseTreeSha = async (commitSha) => {
   const endpoint = `${ENDPOINT_BASE}/git/commits/${commitSha}`
   try {
     const result = await fetch(endpoint, {
@@ -181,7 +184,7 @@ const createFileContent = async (folderName, fileName, base64, commitMsg) => {
   }
 }
 
-const changeHeadsCommitSha = async commitSha => {
+const changeHeadsCommitSha = async (commitSha) => {
   const endpoint = `${ENDPOINT_BASE}/git/refs/heads/master`
   const bodyData = {
     sha: commitSha,
@@ -204,7 +207,7 @@ const changeHeadsCommitSha = async commitSha => {
   }
 }
 
-export const fetchFileContent = async chainId => {
+export const fetchFileContent = async (chainId) => {
   const network = getNetworkName(chainId).toLowerCase()
   const endpoint = `${ENDPOINT_BASE}/contents/${network}.json`
 
@@ -232,7 +235,7 @@ export const fetchFileContent = async chainId => {
   }
 }
 
-const publishDaoAssets = async daoMetadata => {
+const publishDaoAssets = async (daoMetadata) => {
   try {
     if (daoMetadata.logo) {
       await createFileContent(

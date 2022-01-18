@@ -21,7 +21,8 @@ import {
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import PropTypes from 'prop-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useGardenData } from '@/hooks/useGardenHooks'
+import { getGardenData } from './ConnectedGarden'
 
 const OnboardingContext = React.createContext()
 
@@ -95,7 +96,6 @@ function OnboardingProvider({ children }) {
   const [config, setConfig] = useState(DEFAULT_CONFIG)
   const [deployTransactions, setDeployTransactions] = useState([])
   const [gardenAddress, setGardenAddress] = useState('')
-  const connectedGarden = useConnectedGarden()
 
   const { account, chainId, ethers } = useWallet()
   const {
@@ -154,16 +154,14 @@ function OnboardingProvider({ children }) {
         const gardenAddress = await extractGardenAddress(ethers, txHash)
         setGardenAddress(gardenAddress.toLowerCase())
 
-        console.log(`publishGardenMetadata`)
+        console.log(`gardenAddress`, gardenAddress)
 
         // is Brocolli set the token logo as the wrappableToken logo
         if (config.garden.type === BYOT_TYPE) {
-          console.log(
-            `SET BROCOLLI TOKEN AS TOKEN LOGO`,
-            config.garden,
-            connectedGarden.wrappableToken
-          )
-          config.garden.token_logo = connectedGarden.wrappableToken.logo
+          setConfig({
+            ...config,
+            token_logo: 'A',
+          })
         }
 
         // Publish metadata to github
