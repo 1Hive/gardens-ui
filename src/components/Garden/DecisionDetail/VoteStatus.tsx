@@ -5,7 +5,35 @@ import { IconCheck, IconCross, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import celesteIconSvg from '@assets/celeste-icon.svg'
 import challengeIconSvg from '@assets/challenge-icon.svg'
 
-export const getStatusAttributes = (vote, theme) => {
+type AttributesProps = {
+  label: string
+  Icon?: React.ReactNode
+  iconSrc?: any
+  color: string
+  background?: string
+  borderColor?: string
+}
+
+type VoteType = {
+  isAccepted: boolean
+  isDelayed: boolean
+  statusData: {
+    open: boolean
+    cancelled: boolean
+    rejected: boolean
+    accepted: boolean
+    pendingExecution: boolean
+    executed: boolean
+    challenged: boolean
+    settled: boolean
+    disputed: boolean
+  }
+}
+
+export const getStatusAttributes = (
+  vote: any,
+  theme: any
+): AttributesProps | undefined => {
   const { isAccepted, statusData } = vote
   if (statusData.open) {
     if (isAccepted) {
@@ -88,21 +116,26 @@ export const getStatusAttributes = (vote, theme) => {
   }
 }
 
-const VoteStatus = ({ vote }) => {
+type VoteStatus = {
+  vote: VoteType
+}
+
+const VoteStatus = ({ vote }: VoteStatus) => {
   const theme = useTheme()
 
-  const { Icon, iconSrc, color, label } = getStatusAttributes(vote, theme)
+  const statusAttributes = getStatusAttributes(vote, theme)
+  const Icon = statusAttributes?.Icon !== undefined && statusAttributes?.Icon
 
   return (
     <Main
       css={`
         ${textStyle('body2')};
-        color: ${color || theme.surfaceContentSecondary};
+        color: ${statusAttributes?.color || theme.surfaceContentSecondary};
       `}
     >
-      {iconSrc ? (
+      {statusAttributes?.iconSrc ? (
         <img
-          src={iconSrc}
+          src={statusAttributes?.iconSrc}
           alt=""
           width="24"
           height="24"
@@ -112,9 +145,11 @@ const VoteStatus = ({ vote }) => {
           `}
         />
       ) : (
-        Icon && <Icon />
+        Icon
       )}
-      <StatusLabel spaced={Boolean(Icon)}>{label}</StatusLabel>
+      <StatusLabel spaced={Boolean(statusAttributes?.Icon)}>
+        {statusAttributes?.label}
+      </StatusLabel>
     </Main>
   )
 }
@@ -124,7 +159,9 @@ const Main = styled.span`
   align-items: center;
 `
 
-const StatusLabel = styled.span`
+const StatusLabel = styled.span<{
+  spaced: boolean
+}>`
   margin-left: ${({ spaced }) => (spaced ? `${0.5 * GU}px` : '0')};
   text-transform: uppercase;
 `

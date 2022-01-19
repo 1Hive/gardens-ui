@@ -4,11 +4,15 @@ import Description from '../Description'
 
 import { useDescribeVote } from '@hooks/useDescribeVote'
 import { ProposalTypes } from '@/types'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalDescription({ proposal, onSelectProposal }) {
+type ProposalDescriptionProps = {
+  proposal: ProposalType
+}
+
+function ProposalDescription({ proposal }: ProposalDescriptionProps) {
   return (
     <div
-      onClick={onSelectProposal}
       css={`
         cursor: pointer;
         margin-bottom: ${3 * GU}px;
@@ -30,7 +34,11 @@ function ProposalDescription({ proposal, onSelectProposal }) {
   )
 }
 
-function DecisionDescription({ proposal }) {
+type DecisionDescriptionProps = {
+  proposal: ProposalType
+}
+
+function DecisionDescription({ proposal }: DecisionDescriptionProps) {
   const { description, emptyScript, loading } = useDescribeVote(
     proposal.script,
     proposal.id
@@ -55,6 +63,7 @@ function DecisionDescription({ proposal }) {
             -webkit-box-orient: vertical;
             display: -webkit-box;
           `}
+          disableBadgeInteraction={false}
         />
       )}
     </div>

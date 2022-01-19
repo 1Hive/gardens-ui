@@ -6,7 +6,13 @@ import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
 import iconNewSvg from '@assets/rankings/ranking-new.svg'
 import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
 
-const iconsMapping = {
+const iconsMapping: {
+  [x: string]: {
+    icon: any
+    iconSelected: any
+    label: string
+  }
+} = {
   top: {
     icon: iconTopSvg,
     iconSelected: iconTopSelectedSvg,
@@ -19,15 +25,33 @@ const iconsMapping = {
   },
 }
 
-function getRankingIcon(key, selected) {
+function getRankingIcon(key: string, selected: boolean) {
   return iconsMapping[key][selected ? 'iconSelected' : 'icon']
 }
 
-function getRankingLabel(key) {
+function getRankingLabel(key: string) {
   return iconsMapping[key].label
 }
 
-function ProposalRankings({ items, onChange, selected }) {
+type ItemProps = {
+  icon: any
+  index: number
+  label: string
+  onSelect: (index: number) => void
+  selected: boolean
+}
+
+type ProposalRankingsProps = {
+  items: Array<string>
+  onChange: () => void
+  selected?: number
+}
+
+function ProposalRankings({
+  items,
+  onChange,
+  selected,
+}: ProposalRankingsProps) {
   return (
     <div
       css={`
@@ -51,7 +75,7 @@ function ProposalRankings({ items, onChange, selected }) {
   )
 }
 
-function Item({ icon, index, label, onSelect, selected }) {
+function Item({ icon, index, label, onSelect, selected }: ItemProps) {
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
@@ -74,7 +98,7 @@ function Item({ icon, index, label, onSelect, selected }) {
         );
 
         ${!selected &&
-          `
+        `
           background: ${theme.surface};
           color: ${theme.contentSecondary};
           cursor: pointer;
