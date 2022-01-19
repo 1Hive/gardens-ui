@@ -87,7 +87,10 @@ function ProposalFooter({ proposal, onSelectProposal }: ProposalFooterProps) {
   return (
     <Main color={theme.contentSecondary}>
       <div>
-        <span onClick={() => setShowSupportersModal(true)}>
+        <span
+          onClick={() => setShowSupportersModal(true)}
+          style={{ cursor: 'pointer' }}
+        >
           {supportersCount} Supporter{supportersCount === 1 ? '' : 's'}
         </span>
         <ModalSupporters

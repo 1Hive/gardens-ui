@@ -20,12 +20,18 @@ const ModalSupporters = ({
   const { config } = useGardenState()
   const { requestToken } = config.conviction
 
-  // Show stakes with more than 0.01HNY
-  const filteredStakesByAmount = useMemo(() => {
-    return proposal?.stakes.filter(
-      (stake) =>
-        formatTokenAmount(stake?.amount, requestToken.decimals) > '0.01'
-    )
+  const formatAmount = (amount: any) =>
+    formatTokenAmount(amount, requestToken.decimals)
+
+  // Show stakes with more than 0.01HNY and DESC
+  const filteredSortedtakesByAmount = useMemo(() => {
+    return proposal?.stakes
+      .filter((stake) => formatAmount(stake?.amount) >= '0.01')
+      .sort(
+        (s1, s2) =>
+          parseFloat(formatAmount(s2?.amount)) -
+          parseFloat(formatAmount(s1?.amount))
+      )
   }, [])
 
   return (
@@ -53,7 +59,7 @@ const ModalSupporters = ({
             paddingRight: '10px',
           }}
         >
-          {filteredStakesByAmount.map((stake, i) => (
+          {filteredSortedtakesByAmount.map((stake, i) => (
             <div
               key={i}
               css={`
@@ -72,8 +78,7 @@ const ModalSupporters = ({
               />
 
               <span>
-                {formatTokenAmount(stake?.amount, requestToken.decimals)}{' '}
-                {requestToken.symbol}
+                {formatAmount(stake?.amount)} {requestToken.symbol}
               </span>
             </div>
           ))}
