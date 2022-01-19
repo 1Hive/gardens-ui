@@ -193,11 +193,17 @@ type LinksMetadadaType = {
   documentation?: Array<Record<string, unknown>>
 }
 
+type WrappableTokenMetadadaType = {
+  logo: string
+}
+
 type GardenMetadataType = {
   address: string
   name: string
   description: string
   forum: string
+  wiki?: string
+  wrappableToken?: WrappableTokenMetadadaType
   links?: LinksMetadadaType
   logo?: Base64ExtType
   logo_type?: Base64ExtType
