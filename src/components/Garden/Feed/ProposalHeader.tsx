@@ -12,7 +12,7 @@ import { ProposalType } from '@/hooks/constants'
 type ProposalHeaderProps = {
   proposal: ProposalType
   onSelectProposal: () => void
-  onViewProfile: () => void
+  onViewProfile: (proposalCreator: string) => void
 }
 
 function ProposalHeader({
@@ -31,7 +31,10 @@ function ProposalHeader({
         justify-content: space-between;
       `}
     >
-      <ProposalCreator proposal={proposal} onViewProfile={onViewProfile} />
+      <ProposalCreator
+        proposal={proposal}
+        onViewProfile={() => onViewProfile(proposal.creator)}
+      />
       {layoutName !== 'small' && (
         <ContextMenu>
           <ContextMenuItem onClick={onSelectProposal}>

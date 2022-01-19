@@ -9,7 +9,6 @@ import { useProposalWithThreshold } from '@hooks/useProposals'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
-import { useWallet } from 'use-wallet'
 import { ProposalType } from '@/hooks/constants'
 
 type CardProps = {
@@ -33,9 +32,7 @@ function ConvictionProposalCard({ proposal, ...props }: CardProps) {
 function Card({ loading = false, proposal }: CardProps) {
   const theme = useTheme()
   const history = useHistory()
-
   const { below } = useViewport()
-  const { account } = useWallet()
 
   const handleSelectProposal = useCallback(() => {
     const entityPath =
@@ -48,9 +45,12 @@ function Card({ loading = false, proposal }: CardProps) {
     history.push(path)
   }, [history, proposal.number, proposal.type])
 
-  const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${account}`)
-  }, [account, history])
+  const handleViewProfile = useCallback(
+    (proposalCreator) => {
+      history.push(`/profile?account=${proposalCreator}`)
+    },
+    [history]
+  )
 
   return (
     <div

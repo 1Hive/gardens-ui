@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
 import { ProposalType } from '@/hooks/constants'
 import { useGardenState } from '@/providers/GardenState'
@@ -19,6 +19,14 @@ const ModalSupporters = ({
   const { width } = useViewport()
   const { config } = useGardenState()
   const { requestToken } = config.conviction
+
+  // Show stakes with more than 0.01HNY
+  const filteredStakesByAmount = useMemo(() => {
+    return proposal?.stakes.filter(
+      (stake) =>
+        formatTokenAmount(stake?.amount, requestToken.decimals) > '0.01'
+    )
+  }, [])
 
   return (
     <Modal
@@ -45,7 +53,7 @@ const ModalSupporters = ({
             paddingRight: '10px',
           }}
         >
-          {proposal?.stakes.map((stake, i) => (
+          {filteredStakesByAmount.map((stake, i) => (
             <div
               key={i}
               css={`
