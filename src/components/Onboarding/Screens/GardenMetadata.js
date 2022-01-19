@@ -18,6 +18,7 @@ import useGardenNameResolver from '@hooks/useGardenNameResolver'
 import { useOnboardingState } from '@providers/Onboarding'
 
 import LinksTooltipImg from '@assets/linksTooltip.svg'
+import { BYOT_TYPE } from '../constants'
 
 const COMMUNITY_LINK_TYPE = 'community'
 const DOCUMENTATION_LINK_TYPE = 'documentation'
@@ -25,6 +26,7 @@ const DOCUMENTATION_LINK_TYPE = 'documentation'
 const GARDEN_LOGO_TYPE = 'logo_type'
 const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
+const WRAPPABLE_LOGO = 'wrappable_token_logo'
 
 const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
 
@@ -36,6 +38,7 @@ function GardenMetadata() {
   const theme = useTheme()
   const { config, onBack, onConfigChange, onNext, steps, step } =
     useOnboardingState()
+
   const [formData, setFormData] = useState(config.garden)
   const [displayErrors, setDisplayErrors] = useState(false)
   const [formatValidationColor, setFormatValidationColor] = useState(
@@ -171,6 +174,13 @@ function GardenMetadata() {
   const handleOnTokenLogoUpdated = useCallback(
     (file) => {
       handleOnAssetUpdated(TOKEN_LOGO, file)
+    },
+    [handleOnAssetUpdated]
+  )
+
+  const handleOnWrappableTokenLogoUpdated = useCallback(
+    (file) => {
+      handleOnAssetUpdated(WRAPPABLE_LOGO, file)
     },
     [handleOnAssetUpdated]
   )
@@ -342,6 +352,7 @@ function GardenMetadata() {
               <div
                 css={`
                   width: 100%;
+                  margin-right: ${1.5 * GU}px;
                 `}
               >
                 <FileUploaderField
@@ -354,6 +365,23 @@ function GardenMetadata() {
                   onFileUpdated={handleOnTokenLogoUpdated}
                 />
               </div>
+              {config.garden.type === BYOT_TYPE ? (
+                <div
+                  css={`
+                    width: 100%;
+                  `}
+                >
+                  <FileUploaderField
+                    allowedMIMETypes={['image/jpeg', 'image/png']}
+                    file={formData[WRAPPABLE_LOGO]}
+                    id="file-uploader-3"
+                    label="ERC20 LOGO"
+                    onDragAccepted={handleOnDragAccepted}
+                    onDragRejected={handleOnDragRejected}
+                    onFileUpdated={handleOnWrappableTokenLogoUpdated}
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
         </MetadataField>

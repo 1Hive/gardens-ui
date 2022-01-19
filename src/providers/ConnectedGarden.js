@@ -120,18 +120,3 @@ function useGarden(id, gardensMetadata, chainId) {
 
   return [garden, loading]
 }
-
-export const getGardenData = async (address, chainId) => {
-  const { subgraphs } = getNetwork(chainId)
-
-  try {
-    const result = await getGarden(
-      { network: chainId, subgraphUrl: subgraphs.gardens },
-      address
-    )
-
-    return result
-  } catch (err) {
-    return null
-  }
-}

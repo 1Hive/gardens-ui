@@ -12,11 +12,8 @@ export async function publishNewDao(daoAddress, daoMetadata, chainId) {
     const { data: fileContent } = await fetchFileContent(chainId)
     await publishDaoAssets(daoMetadata)
 
-    console.log(`publishNewDao`)
-    console.log(daoMetadata)
-
     const newDaoList = fileContent.gardens
-    newDaoList.push({
+    const newDaoItem = {
       address: daoAddress,
       name: daoMetadata.name,
       description: daoMetadata.description,
@@ -31,7 +28,17 @@ export async function publishNewDao(daoAddress, daoMetadata, chainId) {
       token_logo:
         daoMetadata.token_logo &&
         `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/token_logo.${daoMetadata.token_logo.imageExtension}`,
-    })
+    }
+
+    // if case it's a Boboli type we set the wrappableToken
+    if (daoMetadata.wrappable_token_logo !== null) {
+      newDaoItem.wrappableToken = {
+        logo: `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/wrappable_token_logo.${daoMetadata.wrappable_token_logo.imageExtension}`,
+      }
+    }
+
+    newDaoList.push(newDaoItem)
+
     const newContent = {
       ...fileContent,
       gardens: newDaoList,

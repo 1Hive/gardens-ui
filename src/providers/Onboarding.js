@@ -21,8 +21,6 @@ import {
 import { DAY_IN_SECONDS } from '@utils/kit-utils'
 import PropTypes from 'prop-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useGardenData } from '@/hooks/useGardenHooks'
-import { getGardenData } from './ConnectedGarden'
 
 const OnboardingContext = React.createContext()
 
@@ -35,6 +33,7 @@ const DEFAULT_CONFIG = {
     logo: null,
     logo_type: null,
     token_logo: null,
+    wrappable_token_logo: null,
     forum: '',
     links: {
       community: [{}],
@@ -153,16 +152,6 @@ function OnboardingProvider({ children }) {
         // Fetch garden address
         const gardenAddress = await extractGardenAddress(ethers, txHash)
         setGardenAddress(gardenAddress.toLowerCase())
-
-        console.log(`gardenAddress`, gardenAddress)
-
-        // is Brocolli set the token logo as the wrappableToken logo
-        if (config.garden.type === BYOT_TYPE) {
-          setConfig({
-            ...config,
-            token_logo: 'A',
-          })
-        }
 
         // Publish metadata to github
         await publishNewDao(gardenAddress, config.garden, chainId)
