@@ -6,8 +6,13 @@ import ProposalFooter from './ProposalFooter'
 import ProposalInfo from './ProposalInfo'
 
 import { buildGardenPath } from '@utils/routing-utils'
+import { ProposalType } from '@/hooks/constants'
 
-function AbstainCard({ proposal }) {
+type AbstainCardProps = {
+  proposal: ProposalType
+}
+
+function AbstainCard({ proposal }: AbstainCardProps) {
   const theme = useTheme()
   const history = useHistory()
 
@@ -31,7 +36,7 @@ function AbstainCard({ proposal }) {
         border-radius: ${2 * GU}px;
 
         ${below('medium') &&
-          `
+        `
           padding-left: ${2 * GU}px;
           padding-right: ${2 * GU}px;
           border-left: 0;
@@ -43,8 +48,12 @@ function AbstainCard({ proposal }) {
       <ProposalInfo
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
+        loading={false}
       />
-      <ProposalFooter proposal={proposal} />
+      <ProposalFooter
+        proposal={proposal}
+        onSelectProposal={handleSelectProposal}
+      />
     </div>
   )
 }

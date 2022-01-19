@@ -7,8 +7,19 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 import ProposalCreator from './ProposalCreator'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalHeader({ proposal, onSelectProposal }) {
+type ProposalHeaderProps = {
+  proposal: ProposalType
+  onSelectProposal: () => void
+  onViewProfile: (proposalCreator: string) => void
+}
+
+function ProposalHeader({
+  proposal,
+  onSelectProposal,
+  onViewProfile,
+}: ProposalHeaderProps) {
   const { layoutName } = useLayout()
 
   return (
@@ -20,7 +31,10 @@ function ProposalHeader({ proposal, onSelectProposal }) {
         justify-content: space-between;
       `}
     >
-      <ProposalCreator proposal={proposal} />
+      <ProposalCreator
+        proposal={proposal}
+        onViewProfile={() => onViewProfile(proposal.creator)}
+      />
       {layoutName !== 'small' && (
         <ContextMenu>
           <ContextMenuItem onClick={onSelectProposal}>

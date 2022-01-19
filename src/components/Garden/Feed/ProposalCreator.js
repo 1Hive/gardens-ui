@@ -16,7 +16,7 @@ import { ZERO_ADDR } from '@/constants'
 
 const addressCache = new Map()
 
-function ProposalCreator({ proposal }) {
+function ProposalCreator({ proposal, onViewProfile }) {
   const theme = useTheme()
   const [profile, setProfile] = useState(null)
 
@@ -52,9 +52,10 @@ function ProposalCreator({ proposal }) {
     <div
       css={`
         display: flex;
+        cursor: pointer;
       `}
     >
-      <div>
+      <div onClick={onViewProfile} style={{ cursor: 'pointer' }}>
         {profile?.image ? (
           <img
             src={profile.image}
@@ -64,7 +65,7 @@ function ProposalCreator({ proposal }) {
             css={`
               border-radius: 50%;
               display: block;
-              object-fit: cover;
+              object-fit: cover;§
             `}
           />
         ) : (
@@ -90,6 +91,8 @@ function ProposalCreator({ proposal }) {
                 css={`
                   margin-right: ${1 * GU}px;
                 `}
+                onClick={onViewProfile}
+                style={{ cursor: 'pointer' }}
               >
                 {profile?.name
                   ? profile.name
