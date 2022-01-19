@@ -40,12 +40,21 @@ export const CONNECTORS = [
         },
       }
     : null,
-].filter(p => p)
+].filter((p) => p)
+
+export const CONNECTORS_MOBILE = CONNECTORS.filter(
+  (p) => p?.id === 'walletconnect'
+)
+
+export const getConnectors = (isMobileView = false) =>
+  isMobileView ? CONNECTORS_MOBILE : CONNECTORS
 
 // the final data that we pass to use-wallet package.
-export const useWalletConnectors = CONNECTORS.reduce((acc, connector) => {
-  if (connector !== null) {
-    acc = { ...acc, [connector.id]: connector.properties ?? {} }
-  }
-  return acc
-}, {})
+export const useWalletConnectors = (isMobileView = false) => {
+  return getConnectors(isMobileView).reduce((acc, connector) => {
+    if (connector !== null) {
+      acc = { ...acc, [connector.id]: connector.properties ?? {} }
+    }
+    return acc
+  }, {})
+}

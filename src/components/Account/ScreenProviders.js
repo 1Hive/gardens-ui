@@ -8,18 +8,22 @@ import {
   RADIUS,
   textStyle,
   useTheme,
+  useViewport,
 } from '@1hive/1hive-ui'
-import { CONNECTORS } from '@/ethereum-providers/connectors'
+import { getConnectors } from '@/ethereum-providers/connectors'
 
 function ScreenProviders({ onActivate }) {
   const theme = useTheme()
+  const { below } = useViewport()
 
   const providersInfo = useMemo(() => {
-    return CONNECTORS.map(provider => [
+    const isMobileView = below('medium')
+    const connectors = getConnectors(isMobileView)
+    return connectors.map((provider) => [
       provider.id,
       getProviderFromUseWalletId(provider.id),
     ])
-  }, [])
+  }, [below])
 
   return (
     <div>
