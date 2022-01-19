@@ -9,8 +9,19 @@ type LaunchGardenProps = {
 function LaunchGarden({ title }: LaunchGardenProps) {
   const { onBack, onNext } = useOnboardingState()
 
+  useEffect(() => {
+    const onboardingWizardHeaderEl = document.getElementById(
+      'onboarding-wizard-header'
+    )
+
+    onboardingWizardHeaderEl.scrollIntoView({
+      behaviour: 'smooth',
+      block: 'start',
+    })
+  }, [])
+
   return (
-    <div>
+    <div id="onboarding-wizard-header">
       {title}
       <Navigation
         backEnabled

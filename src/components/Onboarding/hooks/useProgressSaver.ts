@@ -8,7 +8,10 @@ import {
   setItem,
 } from '../utils/progress-utils'
 
-export default function useProgressSaver(onConfigChange, onStepChange) {
+export default function useProgressSaver(
+  onConfigChange: any,
+  onStepChange: any
+) {
   const { account, chainId } = useWallet()
   const [resumed, setResumed] = useState(false)
 
@@ -21,7 +24,7 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
   }, [])
 
   const handleSaveConfig = useCallback(
-    config => {
+    (config) => {
       const progress = getItem(account, chainId)
       setItem(account, chainId, { ...progress, config })
     },
@@ -29,7 +32,7 @@ export default function useProgressSaver(onConfigChange, onStepChange) {
   )
 
   const handleSaveStep = useCallback(
-    step => {
+    (step) => {
       const progress = getItem(account, chainId)
       setItem(account, chainId, { ...progress, step })
     },
