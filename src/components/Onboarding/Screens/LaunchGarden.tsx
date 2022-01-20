@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useOnboardingState } from '@providers/Onboarding'
 import Navigation from '../Navigation'
 
-function LaunchGarden({ title }) {
+type LaunchGardenProps = {
+  title: string
+}
+
+function LaunchGarden({ title }: LaunchGardenProps) {
   const { onBack, onNext } = useOnboardingState()
 
   useEffect(() => {
@@ -10,8 +14,8 @@ function LaunchGarden({ title }) {
       'onboarding-wizard-header'
     )
 
-    onboardingWizardHeaderEl.scrollIntoView({
-      behaviour: 'smooth',
+    onboardingWizardHeaderEl?.scrollIntoView({
+      behavior: 'smooth',
       block: 'start',
     })
   }, [])
