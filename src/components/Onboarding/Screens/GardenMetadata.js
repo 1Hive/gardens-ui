@@ -180,7 +180,7 @@ function GardenMetadata() {
 
   const handleOnWrappableTokenLogoUpdated = useCallback(
     (file) => {
-      handleOnAssetUpdated(WRAPPABLE_LOGO, file)
+      handleOnAssetUpdated(GARDEN_TOKEN_ICON, file)
     },
     [handleOnAssetUpdated]
   )
