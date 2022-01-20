@@ -84,7 +84,10 @@ const networks = {
     defaultEthNode: POLYGON_ETH_NODE,
     arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
-    template: '0x060539E05eBCaA92af533Ad9Cb2121df23426BF3',
+    template:
+      env('VERCEL_ENV') === 'production'
+        ? '0x060539E05eBCaA92af533Ad9Cb2121df23426BF3'
+        : '0xA0E390917991c3D41332a0485510DcfbF502c5e5',
     explorer: 'polygonscan',
 
     honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
@@ -96,7 +99,10 @@ const networks = {
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-polygon',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-polygon',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-polygon',
-      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon',
+      gardens:
+        env('VERCEL_ENV') === 'production'
+          ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon'
+          : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon-staging',
     },
 
     eip3085: {
