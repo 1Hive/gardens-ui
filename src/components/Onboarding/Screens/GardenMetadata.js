@@ -359,7 +359,7 @@ function GardenMetadata() {
                   allowedMIMETypes={['image/jpeg', 'image/png']}
                   file={formData[TOKEN_LOGO]}
                   id="file-uploader-2"
-                  label="TOKEN ICON"
+                  label="GARDEN TOKEN ICON"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
