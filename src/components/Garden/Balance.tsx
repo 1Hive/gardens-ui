@@ -7,9 +7,9 @@ type BalanceProps = {
   decimals: number
   symbol: string
   icon: string
-  verified: any
-  color: any
-  size: any
+  verified?: any
+  color?: any
+  size?: any
 }
 
 function Balance({

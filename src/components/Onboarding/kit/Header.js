@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { textStyle, useTheme, GU } from '@1hive/1hive-ui'
 
@@ -10,12 +10,25 @@ function Header({
   bottomSpacing = 7 * GU,
 }) {
   const theme = useTheme()
+
+  useEffect(() => {
+    const onboardingWizardHeaderEl = document.getElementById(
+      'onboarding-wizard-header'
+    )
+
+    onboardingWizardHeaderEl.scrollIntoView({
+      behaviour: 'smooth',
+      block: 'start',
+    })
+  }, [])
+
   return (
     <header
       css={`
         padding: ${topSpacing}px ${2 * GU}px ${bottomSpacing}px;
         text-align: center;
       `}
+      id="onboarding-wizard-header"
     >
       <h1
         css={`

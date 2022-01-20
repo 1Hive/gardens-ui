@@ -22,7 +22,11 @@ const BANNERS = {
   max: { image: desktopBanner, aspectRatio: '159%' },
 }
 
-function HeroBanner({ onRequestNewProposal }) {
+type HeroBannerProps = {
+  onRequestNewProposal: () => void
+}
+
+function HeroBanner({ onRequestNewProposal }: HeroBannerProps) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
 

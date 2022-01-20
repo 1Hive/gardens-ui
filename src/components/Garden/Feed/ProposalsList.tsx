@@ -14,6 +14,19 @@ import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
 
 import filterToggleSvg from '@assets/filter.svg'
+import { ProposalType } from '@/hooks/constants'
+
+type ProposalsListProps = {
+  activeFilters: boolean
+  proposals: Array<ProposalType>
+  proposalsFetchedCount: number
+  proposalCountFilter: number
+  onProposalCountIncrease: () => void
+  onRankingFilterChange: () => void
+  onToggleFilterSlider: () => void
+  rankingItems: Array<any>
+  selectedRanking: number
+}
 
 function ProposalsList({
   activeFilters,
@@ -25,9 +38,9 @@ function ProposalsList({
   onToggleFilterSlider,
   rankingItems,
   selectedRanking,
-}) {
+}: ProposalsListProps) {
   const [fetching, setFetching] = useState(false)
-  const listRef = useRef()
+  const listRef = useRef<any>()
 
   const theme = useTheme()
   const { below } = useViewport()
@@ -118,7 +131,11 @@ function ProposalsList({
   )
 }
 
-function FilterToggle({ onToggle }) {
+type FilterToggleProps = {
+  onToggle: () => void
+}
+
+function FilterToggle({ onToggle }: FilterToggleProps) {
   return (
     <Button
       icon={<img src={filterToggleSvg} />}

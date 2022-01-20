@@ -181,7 +181,7 @@ type ProposalType = {
   futureConviction: BigNumber
   futureStakedConviction: BigNumber
   hasEnded: boolean
-  id: number | string
+  id: number
   isAccepted: any
   link: string
   maxConviction: BigNumber
@@ -216,6 +216,11 @@ type ProposalType = {
   status: string
   statusData: {
     open: boolean
+    rejected: boolean
+    cancelled: boolean
+    settled: boolean
+    challenged: boolean
+    disputed: boolean
   }
   submitterArbitratorFee: any
   submitterArbitratorFeeId: any
