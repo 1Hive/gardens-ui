@@ -40,31 +40,33 @@ function OnboardingScreens() {
       }}
       config={springs.smooth}
     >
-      {({ Screen }) => ({ opacity, transform, position }) => (
-        <div
-          css={`
-            overflow: hidden;
-            position: relative;
-          `}
-        >
-          <AnimatedDiv
-            style={{ opacity, transform, position }}
-            css={`
-              top: 0;
-              left: 0;
-              right: 0;
-            `}
-          >
+      {({ Screen }) =>
+        ({ opacity, transform, position }) =>
+          (
             <div
               css={`
-                margin-bottom: ${2 * GU}px;
+                overflow: hidden;
+                position: relative;
               `}
             >
-              <Screen />
+              <AnimatedDiv
+                style={{ opacity, transform, position }}
+                css={`
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                `}
+              >
+                <div
+                  css={`
+                    margin-bottom: ${2 * GU}px;
+                  `}
+                >
+                  <Screen />
+                </div>
+              </AnimatedDiv>
             </div>
-          </AnimatedDiv>
-        </div>
-      )}
+          )}
     </Transition>
   )
 }

@@ -7,7 +7,7 @@ import { useGardenState } from '@providers/GardenState'
 import { useMounted } from './useMounted'
 import { useWallet } from '@providers/Wallet'
 
-import actions from '../actions/garden-action-types'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 import BigNumber from '@lib/bigNumber'
 import { encodeFunctionData } from '@utils/web3-utils'
 import radspec from '../radspec'

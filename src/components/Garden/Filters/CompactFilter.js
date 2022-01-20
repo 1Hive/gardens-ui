@@ -205,7 +205,7 @@ function AnimatedSlider({ children, visible }) {
         leave={{ opacity: 0, transform: 'translateY(100%)' }}
         config={{ ...springs.smooth, precision: 0.001 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ opacity, transform }) => (
             <div>
@@ -228,6 +228,7 @@ function AnimatedSlider({ children, visible }) {
                     bottom: '0',
                     left: '0',
                     right: '0',
+                    top: '24px',
                     filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15))',
                   }}
                 >
@@ -256,7 +257,7 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
   const [opened, setOpened] = useState(false)
 
   const handleFilterToggle = useCallback(() => {
-    setOpened(opened => !opened)
+    setOpened((opened) => !opened)
   }, [])
 
   return (
@@ -298,12 +299,12 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
         leave={{ height: 0 }}
         config={{ ...springs.smooth, precision: 0.1 }}
       >
-        {show =>
+        {(show) =>
           show &&
           (({ height }) => (
             <animated.div
               style={{
-                height: height.interpolate(v => `${v}px`),
+                height: height.interpolate((v) => `${v}px`),
                 overflow: 'hidden',
                 borderBottom: `1px solid ${theme.border}`,
               }}
@@ -348,7 +349,7 @@ function ListItem({ index, item, onSelect, selected }) {
         color: ${isSelected ? theme.content : theme.contentSecondary};
         background: ${isSelected ? '#EAFAF9' : theme.surface};
         ${!isSelected &&
-          `
+        `
           &:hover {
             background: #EAFAF9;
           }

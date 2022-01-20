@@ -1,15 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { OnboardingStatusGarden } from '../statuses'
+import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import { useOnboardingState } from '@providers/Onboarding'
 import { useWallet } from '@providers/Wallet'
-import {
-  STEP_ERROR,
-  STEP_PROMPTING,
-  STEP_SUCCESS,
-  STEP_WAITING,
-  STEP_WORKING,
-} from '@components/Stepper/stepper-statuses'
-import { STATUS_GARDEN_CREATED } from '../statuses'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const DEFAULT_TX_PROGRESS = {
   signed: 0,
@@ -20,17 +14,12 @@ const DEFAULT_TX_PROGRESS = {
 
 export default function useDeploymentState() {
   const { account, ethers } = useWallet()
-  const {
-    deployTransactions,
-    gardenAddress,
-    onReset,
-    status,
-  } = useOnboardingState()
+  const { deployTransactions, gardenAddress, onReset, status } =
+    useOnboardingState()
 
   const [attempts, setAttempts] = useState(0)
-  const [transactionProgress, setTransactionProgress] = useState(
-    DEFAULT_TX_PROGRESS
-  )
+  const [transactionProgress, setTransactionProgress] =
+    useState(DEFAULT_TX_PROGRESS)
 
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
@@ -39,7 +28,7 @@ export default function useDeploymentState() {
     if (attempts === 0) {
       setTransactionProgress(DEFAULT_TX_PROGRESS)
     } else {
-      setTransactionProgress(txProgress => ({ ...txProgress, errored: -1 }))
+      setTransactionProgress((txProgress) => ({ ...txProgress, errored: -1 }))
     }
 
     if (!deployTransactions.length > 0) {
@@ -109,20 +98,20 @@ export default function useDeploymentState() {
     }
 
     const { signed, success, errored, hashes } = transactionProgress
-    const status = index => {
+    const status = (index) => {
       if (errored !== -1 && index >= errored) {
-        return STEP_ERROR
+        return IndividualStepTypes.Error
       }
       if (index === signed && index === success) {
-        return STEP_PROMPTING
+        return IndividualStepTypes.Prompting
       }
       if (index < signed) {
         if (index === success) {
-          return STEP_WORKING
+          return IndividualStepTypes.Working
         }
-        return STEP_SUCCESS
+        return IndividualStepTypes.Success
       }
-      return STEP_WAITING
+      return IndividualStepTypes.Waiting
     }
 
     return deployTransactions.map(({ name }, index) => ({
@@ -132,12 +121,12 @@ export default function useDeploymentState() {
     }))
   }, [deployTransactions, transactionProgress])
 
-  const handleNextAttempt = useCallback(() => setAttempts(a => a + 1), [])
+  const handleNextAttempt = useCallback(() => setAttempts((a) => a + 1), [])
 
   return {
     erroredTransactions: transactionProgress.errored,
     gardenAddress,
-    isFinalized: status === STATUS_GARDEN_CREATED,
+    isFinalized: status === OnboardingStatusGarden.Created,
     onNextAttempt: handleNextAttempt,
     onReset,
     readyToStart: deployTransactions.length > 0,

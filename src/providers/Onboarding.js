@@ -1,16 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import { Screens } from '@components/Onboarding/Screens/config'
-import useGardenPoll from '@components/Onboarding/hooks/useGardenPoll'
-import usePinataUploader from '@hooks/usePinata'
-import useProgressSaver from '@components/Onboarding/hooks/useProgressSaver'
 import { useWallet } from './Wallet'
-
-import { DAY_IN_SECONDS } from '@utils/kit-utils'
-import {
-  calculateDecay,
-  calculateWeight,
-} from '@utils/conviction-modelling-helpers'
+import { publishNewDao } from '@/services/github'
+import { Screens } from '@components/Onboarding/Screens/config'
+import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+import useGardenPoll from '@components/Onboarding/hooks/useGardenPoll'
+import useProgressSaver from '@components/Onboarding/hooks/useProgressSaver'
+import { OnboardingStatusGarden } from '@components/Onboarding/statuses'
 import {
   createGardenTxOne,
   createGardenTxThree,
@@ -19,13 +13,14 @@ import {
   createTokenHoldersTx,
   extractGardenAddress,
 } from '@components/Onboarding/transaction-logic'
-import { BYOT_TYPE, NATIVE_TYPE } from '@components/Onboarding/constants'
+import usePinataUploader from '@hooks/usePinata'
 import {
-  STATUS_GARDEN_CREATED,
-  STATUS_GARDEN_DEPLOYMENT,
-  STATUS_GARDEN_SETUP,
-} from '@components/Onboarding/statuses'
-import { publishNewDao } from '@/services/github'
+  calculateDecay,
+  calculateWeight,
+} from '@utils/conviction-modelling-helpers'
+import { DAY_IN_SECONDS } from '@utils/kit-utils'
+import PropTypes from 'prop-types'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 const OnboardingContext = React.createContext()
 
@@ -93,7 +88,7 @@ const DEFAULT_CONFIG = {
 }
 
 function OnboardingProvider({ children }) {
-  const [status, setStatus] = useState(STATUS_GARDEN_SETUP)
+  const [status, setStatus] = useState(OnboardingStatusGarden.Setup)
   const [step, setStep] = useState(0)
   const [steps, setSteps] = useState(Screens)
   const [config, setConfig] = useState(DEFAULT_CONFIG)
@@ -113,12 +108,12 @@ function OnboardingProvider({ children }) {
   // Upload covenant content to ipfs when ready (starting deployment txs)
   const [covenantIpfs] = usePinataUploader(
     config.agreement.covenantFile?.blob,
-    status === STATUS_GARDEN_DEPLOYMENT
+    status === OnboardingStatusGarden.Deployment
   )
 
   const handleConfigChange = useCallback(
     (key, data) =>
-      setConfig(config => {
+      setConfig((config) => {
         const newConfig = {
           ...config,
           [key]: {
@@ -133,7 +128,7 @@ function OnboardingProvider({ children }) {
   )
 
   const handleReset = useCallback(() => {
-    setStatus(STATUS_GARDEN_SETUP)
+    setStatus(OnboardingStatusGarden.Setup)
     setStep(0)
     setSteps(Screens)
     setConfig(DEFAULT_CONFIG)
@@ -143,15 +138,15 @@ function OnboardingProvider({ children }) {
   }, [onClearProgress])
 
   const handleGardenCreated = useCallback(() => {
-    setStatus(STATUS_GARDEN_CREATED)
+    setStatus(OnboardingStatusGarden.Created)
   }, [])
 
   const handleStartDeployment = useCallback(() => {
-    setStatus(STATUS_GARDEN_DEPLOYMENT)
+    setStatus(OnboardingStatusGarden.Deployment)
   }, [])
 
   const publishGardenMetadata = useCallback(
-    async txHash => {
+    async (txHash) => {
       try {
         // Fetch garden address
         const gardenAddress = await extractGardenAddress(ethers, txHash)
@@ -194,11 +189,11 @@ function OnboardingProvider({ children }) {
 
   // Navigation
   const handleBack = useCallback(() => {
-    setStep(index => Math.max(0, index - 1))
+    setStep((index) => Math.max(0, index - 1))
   }, [])
 
   const handleNext = useCallback(() => {
-    setStep(index => {
+    setStep((index) => {
       const nextStep = Math.min(steps.length - 1, index + 1)
       onSaveStep(nextStep)
       return nextStep
@@ -209,7 +204,7 @@ function OnboardingProvider({ children }) {
     if (config.garden.type !== -1) {
       config.garden.type === BYOT_TYPE
         ? setSteps(
-            Screens.filter(screen => !SKIPPED_SCREENS.includes(screen.title))
+            Screens.filter((screen) => !SKIPPED_SCREENS.includes(screen.title))
           )
         : setSteps(Screens)
     }

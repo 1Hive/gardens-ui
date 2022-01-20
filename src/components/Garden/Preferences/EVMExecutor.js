@@ -1,6 +1,6 @@
+/* eslint-disable no-unexpected-multiline */
 import React, { useCallback, useMemo, useState } from 'react'
 import { utils } from 'ethers'
-
 import {
   Box,
   Button,
@@ -10,21 +10,17 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
-
-import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 import MultiModal from '@components/MultiModal/MultiModal'
-
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
+import { getAppByName } from '@utils/data-utils'
+import { GardenActionTypes as actions } from '@/actions/garden-action-types'
+import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'
+import env from '@/environment'
 import { useGardenState } from '@/providers/GardenState'
 import { useWallet } from '@/providers/Wallet'
-
-import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
-
-import env from '@/environment'
-import { getAppByName } from '@utils/data-utils'
-import actions from '@/actions/garden-action-types'
 import radspec from '@/radspec'
-import { TERMINAL_EXECUTOR_MESSAGE } from '@/constants'
+import CreateDecisionScreens from '../ModalFlows/CreateDecisionScreens/CreateDecisionScreens'
 
 const INTERACTION_TYPES = ['Internal', 'External', 'Terminal']
 
@@ -37,9 +33,8 @@ function EVMExecutor({ evmcrispr }) {
   const gardenState = useGardenState()
 
   const connectedGarden = useConnectedGarden()
-  const [createDecisionModalVisible, setCreateDecisionModalVisible] = useState(
-    false
-  )
+  const [createDecisionModalVisible, setCreateDecisionModalVisible] =
+    useState(false)
   const [abi, setAbi] = useState()
   const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
@@ -212,7 +207,7 @@ function EVMExecutor({ evmcrispr }) {
       }
     }
 
-    return [{ ...intent.action, description: description, type: type }]
+    return [{ ...intent.action, description, type, gasLimit: 10000000 }]
   }, [
     forwarderName,
     interactionType,

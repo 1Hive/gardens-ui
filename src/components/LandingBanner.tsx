@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, useLayout, useTheme } from '@1hive/1hive-ui'
+import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 import desktopBanner from '@assets/landingBanner.png'
 import mobileBanner from '@assets/landingBanner-mobile.png'
 import tabletBanner from '@assets/landingBanner-tablet.png'
@@ -36,13 +36,13 @@ const Wrapper = styled.div<{
   image: string
   aspectRatio: any
 }>`
-  background: url(${props => props.image}) no-repeat;
+  background: url(${(props) => props.image}) no-repeat;
   background-size: contain;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding-top: ${props => props.aspectRatio};
+  padding-top: ${(props) => props.aspectRatio};
 `
 
 const Container = styled.div`
@@ -64,7 +64,7 @@ const ContainerChild = styled.div`
 const Title = styled.h1<{
   hFontSize: string
 }>`
-  font-size: ${props => props.hFontSize};
+  font-size: ${(props) => props.hFontSize};
   font-weight: bold;
   color: #048333;
 `
@@ -73,8 +73,8 @@ const Subtitle = styled.p<{
   pFontSize: string
   color: any
 }>`
-  font-size: ${props => props.pFontSize};
-  color: ${props => props.color};
+  font-size: ${(props) => props.pFontSize};
+  color: ${(props) => props.color};
 `
 
 type PropsType = {
@@ -97,7 +97,7 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
             }}
           >
             <div style={{ marginBottom: '7%' }}>
-              <Title hFontSize={hFontSize}>Find your tribe</Title>
+              <Title hFontSize={hFontSize}>Find your garden</Title>
               <Subtitle pFontSize={pFontSize} color={theme.contentSecondary}>
                 Gardens are digital economies that anyone can help shape
               </Subtitle>
@@ -114,6 +114,9 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
                 href="https://1hive.gitbook.io/gardens/"
                 target="_blank"
                 wide
+                css={`
+                  margin-right: ${2 * GU}px;
+                `}
               />
               <Button
                 label="Create a Garden"

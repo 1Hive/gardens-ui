@@ -16,17 +16,10 @@ import {
 } from '@1hive/1hive-ui'
 import { useGardenState } from '@providers/GardenState'
 import {
-  STAKING_SCHEDULED,
-  STAKING_CHALLENGED,
-  STAKING_COMPLETED,
-  STAKING_CANCELLED,
-  STAKING_SETTLED,
-  COLLATERAL_LOCKED,
-  COLLATERAL_CHALLENGED,
-  COLLATERAL_AVAILABLE,
-  COLLATERAL_SLASHED,
-  STAKING_STATUSES,
-  COLLATERAL_STATUSES,
+  StakingType,
+  StakingCollateralType,
+  StakingStatusesMap,
+  CollateralStatusesMap,
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat, toMs } from '@utils/date-utils'
@@ -34,27 +27,27 @@ import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
-    [STAKING_SCHEDULED]: {
+    [StakingType.Scheduled]: {
       background: theme.infoSurface,
       color: theme.tagIndicatorContent,
       icon: <IconClock size="small" />,
     },
-    [STAKING_CHALLENGED]: {
+    [StakingType.Challenged]: {
       background: theme.warningSurface,
       color: theme.warningSurfaceContent,
       icon: <IconAttention size="small" />,
     },
-    [STAKING_COMPLETED]: {
+    [StakingType.Completed]: {
       background: theme.positiveSurface,
       color: theme.positiveSurfaceContent,
       icon: <IconCheck size="small" />,
     },
-    [STAKING_CANCELLED]: {
+    [StakingType.Cancelled]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
     },
-    [STAKING_SETTLED]: {
+    [StakingType.Settled]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
@@ -66,18 +59,18 @@ function getActionAttributes(status, theme) {
 
 function getCollateralAttributes(status, theme) {
   const collateralAttributes = {
-    [COLLATERAL_LOCKED]: {
+    [StakingCollateralType.Locked]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [COLLATERAL_CHALLENGED]: {
+    [StakingCollateralType.Challenged]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [COLLATERAL_AVAILABLE]: {
+    [StakingCollateralType.Available]: {
       color: theme.content,
     },
-    [COLLATERAL_SLASHED]: {
+    [StakingCollateralType.Slashed]: {
       color: theme.negative,
     },
   }
@@ -92,9 +85,12 @@ function StakingMovements({ stakingMovements, token }) {
 
   const [selectedPage, setSelectedPage] = useState(0)
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
+
+  const getProposalType = (disputableAddress) =>
+    disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
@@ -135,10 +131,10 @@ function StakingMovements({ stakingMovements, token }) {
         disputableActionId,
         disputableAddress,
       }) => {
-        const stakingStatus = STAKING_STATUSES.get(actionState)
+        const stakingStatus = StakingStatusesMap.get(actionState)
         const actionAttributes = getActionAttributes(stakingStatus, theme)
 
-        const collateralStatus = COLLATERAL_STATUSES.get(collateralState)
+        const collateralStatus = CollateralStatusesMap.get(collateralState)
         const amountAttributes = getCollateralAttributes(
           collateralStatus,
           theme
@@ -168,7 +164,7 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              Proposal #{disputableActionId}
+              {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
           <div>{collateralState}</div>,

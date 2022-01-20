@@ -11,7 +11,7 @@ import {
 import ActivityItem from './ActivityItem'
 import { useActivity } from '@providers/ActivityProvider'
 
-import { ACTIVITY_STATUS_PENDING } from './activity-statuses'
+import { ActivityStatus } from './activity-statuses'
 // TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
 import noDataSvg from '@assets/noData.svg'
 
@@ -31,8 +31,7 @@ function ActivityList() {
   )
 
   const canClear = useMemo(
-    () =>
-      activityItems.some(({ status }) => status !== ACTIVITY_STATUS_PENDING),
+    () => activityItems.some(({ status }) => status !== ActivityStatus.Pending),
     [activityItems]
   )
 
@@ -89,7 +88,7 @@ function ActivityList() {
           <Transition
             native
             items={activityItems}
-            keys={activity => activity.transactionHash}
+            keys={(activity) => activity.transactionHash}
             trail={50}
             enter={{
               opacity: 1,
@@ -101,21 +100,22 @@ function ActivityList() {
             }}
             config={springs.smooth}
           >
-            {activity => transitionStyles => (
-              <div
-                css={`
-                  & + & {
-                    border-top: 1px solid ${theme.border};
-                  }
-                `}
-              >
-                <animated.div
-                  style={{ ...transitionStyles, overflow: 'hidden' }}
+            {(activity) => (transitionStyles) =>
+              (
+                <div
+                  css={`
+                    & + & {
+                      border-top: 1px solid ${theme.border};
+                    }
+                  `}
                 >
-                  <ActivityItem activity={activity} />
-                </animated.div>
-              </div>
-            )}
+                  <animated.div
+                    style={{ ...transitionStyles, overflow: 'hidden' }}
+                  >
+                    <ActivityItem activity={activity} />
+                  </animated.div>
+                </div>
+              )}
           </Transition>
         ) : (
           <div
