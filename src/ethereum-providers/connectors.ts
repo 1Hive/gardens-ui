@@ -6,7 +6,20 @@ const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
-export const CONNECTORS = [
+type ConnectorProviderType = {
+  [key: string]: any
+  id: string
+  properties: {
+    [key: string]: any
+    chainId?: number[]
+    dAppId?: any
+    rpc?: any
+    bridge?: string
+    pollingInterval?: number
+  }
+}
+
+export const CONNECTORS: Array<ConnectorProviderType> = [
   {
     id: 'injected',
     properties: {
@@ -31,19 +44,20 @@ export const CONNECTORS = [
       pollingInterval: 12000,
     },
   },
-  PORTIS_ID
-    ? {
-        id: 'portis',
-        properties: {
-          dAppId: PORTIS_ID,
-          chainId: [100, 4],
-        },
-      }
-    : null,
-].filter((p) => p)
+]
+
+if (PORTIS_ID) {
+  CONNECTORS.push({
+    id: 'portis',
+    properties: {
+      dAppId: PORTIS_ID,
+      chainId: [100, 4],
+    },
+  })
+}
 
 export const CONNECTORS_MOBILE = CONNECTORS.filter(
-  (p) => p?.id === 'walletconnect'
+  (connector) => connector.id === 'walletconnect'
 )
 
 export const getConnectors = (isMobileView = false) =>
