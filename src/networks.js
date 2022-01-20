@@ -86,8 +86,8 @@ const networks = {
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
     template:
       env('VERCEL_ENV') === 'production'
-        ? '0x060539E05eBCaA92af533Ad9Cb2121df23426BF3'
-        : '0xA0E390917991c3D41332a0485510DcfbF502c5e5',
+        ? '0x355649387E53A66246F1d5D70c1BCdE7E9428B79'
+        : '0x9e18a165995a69e45bc4adff7795c6ca032048a7',
     explorer: 'polygonscan',
 
     honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
