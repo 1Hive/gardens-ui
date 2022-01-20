@@ -26,7 +26,7 @@ const DOCUMENTATION_LINK_TYPE = 'documentation'
 const GARDEN_LOGO_TYPE = 'logo_type'
 const GARDEN_LOGO = 'logo'
 const TOKEN_LOGO = 'token_logo'
-const WRAPPABLE_LOGO = 'wrappable_token_logo'
+const GARDEN_TOKEN_ICON = 'wrappableToken'
 
 const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
 
@@ -373,9 +373,9 @@ function GardenMetadata() {
                 >
                   <FileUploaderField
                     allowedMIMETypes={['image/jpeg', 'image/png']}
-                    file={formData[WRAPPABLE_LOGO]}
+                    file={formData[GARDEN_TOKEN_ICON]}
                     id="file-uploader-3"
-                    label="ERC20 LOGO"
+                    label="EXISTING TOKEN ICON"
                     onDragAccepted={handleOnDragAccepted}
                     onDragRejected={handleOnDragRejected}
                     onFileUpdated={handleOnWrappableTokenLogoUpdated}

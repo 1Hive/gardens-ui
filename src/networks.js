@@ -19,7 +19,7 @@ const networks = {
     hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
     arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
     disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
-    template: '0xF8A030177865356E2Be8fb5F95a19962E6b57E3e',
+    template: '0x832a29b1d6c1dfca7075c62d222b40c05183aaae',
     explorer: 'etherscan',
 
     honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
@@ -47,7 +47,7 @@ const networks = {
     disputeManager: '0xec7904e20b69f60966d6c6b9dc534355614dd922',
     template:
       env('VERCEL_ENV') === 'production'
-        ? '0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844'
+        ? '0xd1fc61d57d7201c3645ef84d30df6da5ed2e21ee'
         : '0x82a127b5Be3E04cd06AA034c1616b4d098616E9D',
     explorer: 'blockscout',
 
@@ -84,7 +84,10 @@ const networks = {
     defaultEthNode: POLYGON_ETH_NODE,
     arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015',
     disputeManager: '0xbc9d027eb4b1d9622f217de10f07dc74b7c81eeb',
-    template: '0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9',
+    template:
+      env('VERCEL_ENV') === 'production'
+        ? '0x355649387E53A66246F1d5D70c1BCdE7E9428B79'
+        : '0x9e18a165995a69e45bc4adff7795c6ca032048a7',
     explorer: 'polygonscan',
 
     honeyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
@@ -96,7 +99,10 @@ const networks = {
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-polygon',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-polygon',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-polygon',
-      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon',
+      gardens:
+        env('VERCEL_ENV') === 'production'
+          ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon'
+          : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon-staging',
     },
 
     eip3085: {
@@ -122,7 +128,9 @@ export function getNetwork(chainId = getPreferredChain()) {
 
 export function getNetworkChainIdByType(networkType) {
   const networks = getAvailableNetworks()
-  return networks.find(network => network.type === networkType)?.chainId || null
+  return (
+    networks.find((network) => network.type === networkType)?.chainId || null
+  )
 }
 
 export function getEthersNetwork(chainId) {
@@ -134,7 +142,7 @@ export function getEthersNetwork(chainId) {
   }
 }
 
-export const addEthereumChain = chainId => {
+export const addEthereumChain = (chainId) => {
   const { eip3085 } = getNetwork(chainId)
   if (!eip3085) {
     return Promise.resolve(null) // Network is not custom
@@ -145,7 +153,7 @@ export const addEthereumChain = chainId => {
   })
 }
 
-export const switchNetwork = async chainId => {
+export const switchNetwork = async (chainId) => {
   const chainIdHex = `0x${chainId.toString(16)}`
   try {
     await window?.ethereum?.request({

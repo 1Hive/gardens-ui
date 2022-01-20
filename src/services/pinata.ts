@@ -1,9 +1,9 @@
 import env from '@/environment'
 
-const ENDPOINT = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
-const PINATA_API_TOKEN = env('PINATA_API_TOKEN')
+const MIDDLEWARE_ENDPOINT = env('MIDDLEWARE_ENDPOINT')
+const ENDPOINT = `${MIDDLEWARE_ENDPOINT}/v1/pinata/pinFileToIPFS`
 
-export async function uploadToPinata(file) {
+export async function uploadToPinata(file: Blob) {
   try {
     const formData = new FormData()
     formData.append('file', file)
@@ -11,9 +11,6 @@ export async function uploadToPinata(file) {
     const result = await fetch(ENDPOINT, {
       // Your POST endpoint
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${PINATA_API_TOKEN}`,
-      },
       body: formData,
     })
 

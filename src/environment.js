@@ -54,11 +54,17 @@ const ENV_VARS = {
   ISSUANCE_APP_NAME() {
     return process.env.REACT_APP_ISSUANCE_APP_NAME || DEFAULT_ISSUANCE_APP_NAME
   },
+  OWNER_REPO_DAO_LIST() {
+    return process.env.REACT_APP_OWNER_REPO_DAO_LIST || null
+  },
   PINATA_API_TOKEN() {
     return process.env.REACT_APP_PINATA_API_TOKEN || ''
   },
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null
+  },
+  MIDDLEWARE_ENDPOINT() {
+    return process.env.REACT_APP_MIDDLEWARE_ENDPOINT || null
   },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || null
