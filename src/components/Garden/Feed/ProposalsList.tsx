@@ -15,6 +15,7 @@ import ProposalRankings from './ProposalRankings'
 
 import filterToggleSvg from '@assets/filter.svg'
 import { ProposalType } from '@/hooks/constants'
+import AbstainCard from './AbstainCard'
 
 type ProposalsListProps = {
   activeFilters: boolean
@@ -95,7 +96,11 @@ function ProposalsList({
         {proposals.length ? (
           <>
             {proposals.map((proposal, index) => {
-              return <ProposalCard key={index} proposal={proposal} />
+              return proposal.metadata === 'Abstain proposal' ? (
+                <AbstainCard proposal={proposal} key={index} />
+              ) : (
+                <ProposalCard key={index} proposal={proposal} />
+              )
             })}
             {(proposalsFetchedCount === proposalCountFilter ||
               (proposalsFetchedCount < proposalCountFilter && fetching)) && (

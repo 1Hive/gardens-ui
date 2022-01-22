@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
-
-import ProposalFooter from './ProposalFooter'
-import ProposalInfo from './ProposalInfo'
-
+import { GU, Help, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalType } from '@/hooks/constants'
+import styled from 'styled-components'
+import AbstainIcon from '@assets/abstain-icon.svg'
+import ProposalSupport from './ProposalSupport'
 
 type AbstainCardProps = {
   proposal: ProposalType
@@ -29,7 +28,7 @@ function AbstainCard({ proposal }: AbstainCardProps) {
   return (
     <div
       css={`
-        border: 1px solid ${theme.border};
+        border: 1px solid #71eeb8;
         background: ${theme.surface};
         margin-bottom: ${2 * GU}px;
         padding: ${3 * GU}px;
@@ -45,17 +44,27 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         `}
       `}
     >
-      <ProposalInfo
-        proposal={proposal}
-        onSelectProposal={handleSelectProposal}
-        loading={false}
-      />
-      <ProposalFooter
-        proposal={proposal}
-        onSelectProposal={handleSelectProposal}
-      />
+      <HeaderCard onClick={handleSelectProposal}>
+        <img src={AbstainIcon} alt="" height="14" width="14" />
+        <span
+          css={`
+            ${textStyle('body3')}
+          `}
+        >
+          {proposal.name}
+        </span>
+        <Help hint="">111</Help>
+      </HeaderCard>
+      <ProposalSupport proposal={proposal} isAbstainCard={true} />
     </div>
   )
 }
+
+const HeaderCard = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 16px;
+`
 
 export default AbstainCard

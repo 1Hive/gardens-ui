@@ -11,8 +11,14 @@ import { ProposalTypes } from '@/types'
 import { safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast } from '@utils/vote-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalSupport({ proposal }) {
+type ProposalSupportProps = {
+  proposal: ProposalType
+  isAbstainCard?: boolean
+}
+
+function ProposalSupport({ proposal, isAbstainCard }: ProposalSupportProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken } = config.conviction
@@ -20,7 +26,7 @@ function ProposalSupport({ proposal }) {
   return (
     <div
       css={`
-        margin-bottom: ${2 * GU}px;
+        margin-bottom: ${isAbstainCard ? 0 : 2 * GU}px;
       `}
     >
       <div
@@ -36,6 +42,7 @@ function ProposalSupport({ proposal }) {
           <ConvictionBar
             proposal={proposal}
             withThreshold={Boolean(requestToken)}
+            isAbstainCard={isAbstainCard}
           />
         </div>
       ) : (
@@ -45,7 +52,11 @@ function ProposalSupport({ proposal }) {
   )
 }
 
-function DecisionSummaryBar({ proposal }) {
+type DecisionSummaryBarProps = {
+  proposal: ProposalType
+}
+
+function DecisionSummaryBar({ proposal }: DecisionSummaryBarProps) {
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
   const { minAcceptQuorum, nay, yea } = proposal
@@ -61,7 +72,18 @@ function DecisionSummaryBar({ proposal }) {
 
   const YouTag = (
     <div>
-      <Tag>You</Tag>
+      <Tag
+        background={undefined}
+        color={undefined}
+        limitDigits={undefined}
+        icon={undefined}
+        label={undefined}
+        mode={undefined}
+        size={undefined}
+        uppercase={undefined}
+      >
+        You
+      </Tag>
     </div>
   )
 
@@ -72,6 +94,7 @@ function DecisionSummaryBar({ proposal }) {
         negativeSize={naysPct}
         requiredSize={minAcceptQuorum}
         css="margin: 0; height: 24px;"
+        disabledProgressBars={false}
       />
       <div
         css={`
@@ -94,6 +117,7 @@ function DecisionSummaryBar({ proposal }) {
             css={`
               margin-right: ${1 * GU}px;
             `}
+            token={null}
           />
           {connectedAccountCast.vote === VOTE_YEA && YouTag}
         </div>
@@ -112,6 +136,7 @@ function DecisionSummaryBar({ proposal }) {
             css={`
               margin-left: ${1 * GU}px;
             `}
+            token={null}
           />
         </div>
       </div>
