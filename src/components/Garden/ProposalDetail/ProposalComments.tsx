@@ -2,7 +2,11 @@ import React from 'react'
 import { GU, Split, useLayout } from '@1hive/1hive-ui'
 import DiscourseComments from '@/components/DiscourseComments'
 
-function ProposalComments({ link }) {
+type ProposalComlinkmentsProps = {
+  link: string
+}
+
+function ProposalComments({ link }: ProposalComlinkmentsProps) {
   const { layoutName } = useLayout()
 
   // We take the last section of the link that includes the topicId

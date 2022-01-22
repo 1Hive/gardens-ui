@@ -33,6 +33,7 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         margin-bottom: ${2 * GU}px;
         padding: ${3 * GU}px;
         border-radius: ${2 * GU}px;
+        cursor: pointer;
 
         ${below('medium') &&
         `
@@ -44,7 +45,25 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         `}
       `}
     >
-      <HeaderCard onClick={handleSelectProposal}>
+      <div onClick={handleSelectProposal} style={{ marginTop: '16px' }}>
+        <ProposalSupport proposal={proposal} isAbstainCard={true} />
+      </div>
+    </div>
+  )
+}
+
+type AbstainCardHeaderProps = {
+  proposal: ProposalType
+  handleSelectProposal?: () => void
+}
+
+export const AbstainCardHeader = ({
+  proposal,
+  handleSelectProposal,
+}: AbstainCardHeaderProps) => {
+  return (
+    <HeaderCard>
+      <HeaderCardInfo onClick={handleSelectProposal}>
         <img src={AbstainIcon} alt="" height="14" width="14" />
         <span
           css={`
@@ -53,10 +72,9 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         >
           {proposal.name}
         </span>
-        <Help hint="">111</Help>
-      </HeaderCard>
-      <ProposalSupport proposal={proposal} isAbstainCard={true} />
-    </div>
+      </HeaderCardInfo>
+      <Help hint="">111</Help>
+    </HeaderCard>
   )
 }
 
@@ -64,7 +82,12 @@ const HeaderCard = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: 16px;
+`
+
+const HeaderCardInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `
 
 export default AbstainCard

@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   BIG_RADIUS,
   Button,
@@ -59,6 +65,14 @@ function ProposalsList({
     }
   }, [proposals.length]) //eslint-disable-line
 
+  // TODO: Need to be discussed
+  const Card = (proposal: ProposalType) =>
+    proposal.metadata === 'Abstain proposal' ? (
+      <AbstainCard proposal={proposal} />
+    ) : (
+      <ProposalCard proposal={proposal} />
+    )
+
   return (
     <div
       ref={listRef}
@@ -95,13 +109,9 @@ function ProposalsList({
       <div>
         {proposals.length ? (
           <>
-            {proposals.map((proposal, index) => {
-              return proposal.metadata === 'Abstain proposal' ? (
-                <AbstainCard proposal={proposal} key={index} />
-              ) : (
-                <ProposalCard key={index} proposal={proposal} />
-              )
-            })}
+            {proposals.map((proposal, index) => (
+              <Fragment key={index}>{Card(proposal)}</Fragment>
+            ))}
             {(proposalsFetchedCount === proposalCountFilter ||
               (proposalsFetchedCount < proposalCountFilter && fetching)) && (
               <div
