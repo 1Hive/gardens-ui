@@ -13,8 +13,8 @@ type StatusAttributes =
   | {
       label: string
       color: Colors
-      Icon?: any
-      iconSrc?: any
+      Icon?: typeof IconCheck | typeof IconCross
+      iconSrc?: string
       background?: string
       borderColor?: Colors
     }
@@ -93,7 +93,7 @@ const ProposalStatus = ({ proposal }: ProposalStatusProps) => {
     >
       {attributes?.iconSrc ? (
         <img
-          src={attributes?.iconSrc}
+          src={attributes.iconSrc}
           alt=""
           width="24"
           height="24"
