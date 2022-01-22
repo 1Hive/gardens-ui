@@ -12,6 +12,7 @@ import { safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast } from '@utils/vote-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalType } from '@/hooks/constants'
+import styled from 'styled-components'
 
 type ProposalSupportProps = {
   proposal: ProposalType
@@ -20,18 +21,14 @@ type ProposalSupportProps = {
 
 function ProposalSupport({
   proposal,
-  isAbstainProposal,
+  isAbstainProposal = false,
 }: ProposalSupportProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken } = config.conviction
 
   return (
-    <div
-      css={`
-        margin-bottom: ${isAbstainProposal ? 0 : 2 * GU}px;
-      `}
-    >
+    <ProposalSupportWrapper isAbstainProposal={isAbstainProposal}>
       <div
         css={`
           ${textStyle('label2')};
@@ -51,9 +48,16 @@ function ProposalSupport({
       ) : (
         <DecisionSummaryBar proposal={proposal} />
       )}
-    </div>
+    </ProposalSupportWrapper>
   )
 }
+
+const ProposalSupportWrapper = styled.div<{
+  isAbstainProposal: boolean
+}>`
+  margin-bottom: ${({ isAbstainProposal }) =>
+    isAbstainProposal ? 0 : 2 * GU}px;
+`
 
 type DecisionSummaryBarProps = {
   proposal: ProposalType
