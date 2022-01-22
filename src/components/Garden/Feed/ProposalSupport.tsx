@@ -15,10 +15,13 @@ import { ProposalType } from '@/hooks/constants'
 
 type ProposalSupportProps = {
   proposal: ProposalType
-  isAbstainCard?: boolean
+  isAbstainProposal?: boolean
 }
 
-function ProposalSupport({ proposal, isAbstainCard }: ProposalSupportProps) {
+function ProposalSupport({
+  proposal,
+  isAbstainProposal,
+}: ProposalSupportProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken } = config.conviction
@@ -26,7 +29,7 @@ function ProposalSupport({ proposal, isAbstainCard }: ProposalSupportProps) {
   return (
     <div
       css={`
-        margin-bottom: ${isAbstainCard ? 0 : 2 * GU}px;
+        margin-bottom: ${isAbstainProposal ? 0 : 2 * GU}px;
       `}
     >
       <div
@@ -42,7 +45,7 @@ function ProposalSupport({ proposal, isAbstainCard }: ProposalSupportProps) {
           <ConvictionBar
             proposal={proposal}
             withThreshold={Boolean(requestToken)}
-            isAbstainCard={isAbstainCard}
+            isAbstainProposal={isAbstainProposal}
           />
         </div>
       ) : (

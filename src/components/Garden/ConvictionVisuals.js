@@ -60,7 +60,7 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
 export function ConvictionBar({
   proposal,
   withThreshold = true,
-  isAbstainCard,
+  isAbstainProposal,
 }) {
   const theme = useTheme()
   const { account } = useWallet()
@@ -82,7 +82,7 @@ export function ConvictionBar({
   const percentageSupport = stakedConviction.eq(0)
     ? '0'
     : stakedConviction.multipliedBy(new BigNumber('100')).toFixed(2)
-  const totalSupportLabel = isAbstainCard
+  const totalSupportLabel = isAbstainProposal
     ? `${percentageSupport}%`
     : `${percentageSupport}% of the Total Support`
 

@@ -45,8 +45,12 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         `}
       `}
     >
+      <AbstainCardHeader
+        proposal={proposal}
+        handleSelectProposal={handleSelectProposal}
+      />
       <div onClick={handleSelectProposal} style={{ marginTop: '16px' }}>
-        <ProposalSupport proposal={proposal} isAbstainCard={true} />
+        <ProposalSupport proposal={proposal} isAbstainProposal={true} />
       </div>
     </div>
   )

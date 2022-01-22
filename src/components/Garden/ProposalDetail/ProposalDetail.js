@@ -82,7 +82,7 @@ function ProposalDetail({
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
 
-  const isAbstainCard = proposal.metadata === 'Abstain proposal'
+  const isAbstainProposal = proposal.metadata === 'Abstain proposal'
 
   const {
     name,
@@ -174,17 +174,17 @@ function ProposalDetail({
                   css={`
                     display: grid;
                     grid-template-rows: auto;
-                    grid-row-gap: ${(isAbstainCard ? 2 : 7) * GU}px;
+                    grid-row-gap: ${(isAbstainProposal ? 2 : 7) * GU}px;
                   `}
                 >
                   <div>
-                    {isAbstainCard ? (
+                    {isAbstainProposal ? (
                       <AbstainCardHeader proposal={proposal} />
                     ) : (
                       <ProposalHeader proposal={proposal} />
                     )}
 
-                    {!isAbstainCard ? (
+                    {!isAbstainProposal ? (
                       <>
                         <h1
                           css={`
@@ -243,7 +243,7 @@ function ProposalDetail({
                       </>
                     ) : null}
                   </div>
-                  {!isAbstainCard ? (
+                  {!isAbstainProposal ? (
                     <div
                       css={`
                         display: grid;
