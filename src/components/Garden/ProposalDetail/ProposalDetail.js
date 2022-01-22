@@ -34,7 +34,10 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalComments from './ProposalComments'
 import ProposalHeader from './ProposalHeader'
-import ProposalStatus, { getStatusAttributes } from './ProposalStatus'
+import ProposalStatus, {
+  ABSTAIN_PROPOSAL,
+  getStatusAttributes,
+} from './ProposalStatus'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import RemoveProposalScreens from '../ModalFlows/RemoveProposalScreens/RemoveProposalScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
@@ -82,7 +85,7 @@ function ProposalDetail({
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
 
-  const isAbstainProposal = proposal.metadata === 'Abstain proposal'
+  const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
 
   const {
     name,

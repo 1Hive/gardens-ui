@@ -22,6 +22,7 @@ import ProposalRankings from './ProposalRankings'
 import filterToggleSvg from '@assets/filter.svg'
 import { ProposalType } from '@/hooks/constants'
 import AbstainCard from './AbstainCard'
+import { ABSTAIN_PROPOSAL } from '../ProposalDetail/ProposalStatus'
 
 type ProposalsListProps = {
   activeFilters: boolean
@@ -67,7 +68,7 @@ function ProposalsList({
 
   // TODO: Need to be discussed
   const Card = (proposal: ProposalType) =>
-    proposal.metadata === 'Abstain proposal' ? (
+    proposal.metadata === ABSTAIN_PROPOSAL ? (
       <AbstainCard proposal={proposal} />
     ) : (
       <ProposalCard proposal={proposal} />

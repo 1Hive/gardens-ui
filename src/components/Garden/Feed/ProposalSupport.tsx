@@ -124,7 +124,6 @@ function DecisionSummaryBar({ proposal }: DecisionSummaryBarProps) {
             css={`
               margin-right: ${1 * GU}px;
             `}
-            token={null}
           />
           {connectedAccountCast.vote === VOTE_YEA && YouTag}
         </div>
@@ -143,7 +142,6 @@ function DecisionSummaryBar({ proposal }: DecisionSummaryBarProps) {
             css={`
               margin-left: ${1 * GU}px;
             `}
-            token={null}
           />
         </div>
       </div>

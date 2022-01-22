@@ -4,7 +4,7 @@ import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { formatTokenAmount } from '@utils/token-utils'
 
 /* eslint-disable react/prop-types */
-function SummaryRow({ color, label, pct, token, ...props }) {
+function SummaryRow({ color, label, pct, token = null, ...props }) {
   const theme = useTheme()
   return (
     <div

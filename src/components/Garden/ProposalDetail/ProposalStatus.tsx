@@ -7,6 +7,8 @@ import celesteIconSvg from '@assets/celeste-icon.svg'
 import challengeIconSvg from '@assets/challenge-icon.svg'
 import { ProposalType } from '@/hooks/constants'
 
+export const ABSTAIN_PROPOSAL = 'Abstain proposal'
+
 type StatusAttributes =
   | {
       label: string
