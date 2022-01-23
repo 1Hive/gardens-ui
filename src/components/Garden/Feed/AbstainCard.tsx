@@ -68,7 +68,7 @@ export const AbstainCardHeader = ({
   return (
     <HeaderCard>
       <HeaderCardInfo onClick={handleSelectProposal}>
-        <img src={AbstainIcon} alt="" height="14" width="14" />
+        <img src={AbstainIcon} alt="" height={2.5 * GU} width={2.5 * GU} />
         <span
           css={`
             ${textStyle('body3')}
