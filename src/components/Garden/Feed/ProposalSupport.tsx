@@ -16,19 +16,15 @@ import styled from 'styled-components'
 
 type ProposalSupportProps = {
   proposal: ProposalType
-  isAbstainProposal?: boolean
 }
 
-function ProposalSupport({
-  proposal,
-  isAbstainProposal = false,
-}: ProposalSupportProps) {
+function ProposalSupport({ proposal }: ProposalSupportProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken } = config.conviction
 
   return (
-    <ProposalSupportWrapper isAbstainProposal={isAbstainProposal}>
+    <ProposalSupportWrapper>
       <div
         css={`
           ${textStyle('label2')};
@@ -42,7 +38,6 @@ function ProposalSupport({
           <ConvictionBar
             proposal={proposal}
             withThreshold={Boolean(requestToken)}
-            isAbstainProposal={isAbstainProposal}
           />
         </div>
       ) : (
@@ -52,11 +47,8 @@ function ProposalSupport({
   )
 }
 
-const ProposalSupportWrapper = styled.div<{
-  isAbstainProposal: boolean
-}>`
-  margin-bottom: ${({ isAbstainProposal }) =>
-    isAbstainProposal ? 0 : 2 * GU}px;
+const ProposalSupportWrapper = styled.div`
+  margin-bottom: ${2 * GU}px;
 `
 
 type DecisionSummaryBarProps = {

@@ -9,6 +9,7 @@ import {
   Help,
   IconDown,
   IconUp,
+  Info,
   Link,
   shortenAddress,
   Split,
@@ -177,26 +178,26 @@ function ProposalDetail({
                   css={`
                     display: grid;
                     grid-template-rows: auto;
-                    grid-row-gap: ${(isAbstainProposal ? 2 : 7) * GU}px;
+                    grid-row-gap: ${7 * GU}px;
                   `}
                 >
                   <div>
                     {isAbstainProposal ? (
-                      <AbstainCardHeader proposal={proposal} />
+                      <AbstainCardHeader showHint={false} />
                     ) : (
                       <ProposalHeader proposal={proposal} />
                     )}
 
+                    <h1
+                      css={`
+                        ${textStyle('title2')};
+                      `}
+                    >
+                      {name}
+                    </h1>
+
                     {!isAbstainProposal ? (
                       <>
-                        <h1
-                          css={`
-                            ${textStyle('title2')};
-                          `}
-                        >
-                          {name}
-                        </h1>
-
                         <div
                           css={`
                             margin-top: ${1 * GU}px;
@@ -244,7 +245,32 @@ function ProposalDetail({
                           )}
                         </div>
                       </>
-                    ) : null}
+                    ) : (
+                      <Info
+                        mode="warning"
+                        css={`
+                          margin-top: ${2 * GU}px;
+                          display: grid;
+                          gap: ${1 * GU}px;
+                        `}
+                      >
+                        <div>
+                          This is a special kind of suggestion proposal that is
+                          always available. It serves the purpose of regulating
+                          the community&apos;s expenditure by increasing the
+                          amount of support required for all other funding
+                          proposals to pass.
+                        </div>
+                        <div>
+                          So if you think that the community is spending money
+                          unproductively supporting the abstain proposal, or
+                          creating a new signaling proposal that makes the case
+                          for how you think the community should actually be
+                          allocating resources have a meaningful influence on
+                          the behavior of the system.
+                        </div>
+                      </Info>
+                    )}
                   </div>
                   {!isAbstainProposal ? (
                     <div

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { GU, Help, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
+import { GU, Help, useTheme, useViewport } from '@1hive/1hive-ui'
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalType } from '@/hooks/constants'
 import styled from 'styled-components'
@@ -45,39 +45,37 @@ function AbstainCard({ proposal }: AbstainCardProps) {
         `}
       `}
     >
-      <AbstainCardHeader
-        proposal={proposal}
-        handleSelectProposal={handleSelectProposal}
-      />
-      <div onClick={handleSelectProposal} style={{ marginTop: '16px' }}>
-        <ProposalSupport proposal={proposal} isAbstainProposal={true} />
+      <AbstainCardHeader handleSelectProposal={handleSelectProposal} />
+      <div onClick={handleSelectProposal}>
+        <ProposalSupport proposal={proposal} />
       </div>
     </div>
   )
 }
 
 type AbstainCardHeaderProps = {
-  proposal: ProposalType
   handleSelectProposal?: () => void
+  showHint?: boolean
 }
 
 export const AbstainCardHeader = ({
-  proposal,
   handleSelectProposal,
+  showHint = true,
 }: AbstainCardHeaderProps) => {
   return (
     <HeaderCard>
       <HeaderCardInfo onClick={handleSelectProposal}>
         <img src={AbstainIcon} alt="" height={2.5 * GU} width={2.5 * GU} />
-        <span
-          css={`
-            ${textStyle('body3')}
-          `}
-        >
-          {proposal.name}
-        </span>
+        <span>Abstain</span>
       </HeaderCardInfo>
-      <Help hint="">111</Help>
+      {showHint ? (
+        <Help hint="">
+          This is a special kind of suggestion proposal that is always
+          available. It serves the purpose of regulating the community&apos;s
+          expenditure by increasing the amount of support required for all other
+          funding proposals to pass.
+        </Help>
+      ) : null}
     </HeaderCard>
   )
 }
@@ -86,6 +84,7 @@ const HeaderCard = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-bottom: 16px;
 `
 
 const HeaderCardInfo = styled.div`
