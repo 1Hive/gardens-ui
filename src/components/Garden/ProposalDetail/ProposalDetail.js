@@ -246,30 +246,27 @@ function ProposalDetail({
                         </div>
                       </>
                     ) : (
-                      <Info
-                        mode="warning"
+                      <div
                         css={`
                           margin-top: ${2 * GU}px;
-                          display: grid;
-                          gap: ${1 * GU}px;
+                          grid-column: span 2;
+                          min-width: ${40 * GU}px;
+                          color: ${theme.contentSecondary};
                         `}
                       >
-                        <div>
-                          This is a special kind of suggestion proposal that is
-                          always available. It serves the purpose of regulating
-                          the community&apos;s expenditure by increasing the
-                          amount of support required for all other funding
-                          proposals to pass.
-                        </div>
-                        <div>
-                          So if you think that the community is spending money
-                          unproductively supporting the abstain proposal, or
-                          creating a new signaling proposal that makes the case
-                          for how you think the community should actually be
-                          allocating resources have a meaningful influence on
-                          the behavior of the system.
-                        </div>
-                      </Info>
+                        This is a special kind of suggestion proposal that is
+                        always available. It serves the purpose of regulating
+                        the community&apos;s expenditure by increasing the
+                        amount of support required for all other funding
+                        proposals to pass.
+                        <br />
+                        So if you think that the community is spending money
+                        unproductively supporting the abstain proposal, or
+                        creating a new signaling proposal that makes the case
+                        for how you think the community should actually be
+                        allocating resources have a meaningful influence on the
+                        behavior of the system.
+                      </div>
                     )}
                   </div>
                   {!isAbstainProposal ? (
