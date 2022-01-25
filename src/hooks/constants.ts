@@ -153,10 +153,12 @@ type StakeHistoryType = {
 }
 
 type ProposalType = {
+  loading?: boolean
   actionId: string
   beneficiary: string
   casts: Array<any>
   challengeEndDate: number
+  minAcceptQuorum: BigNumber
   challengeId: string
   challenger: string
   challengerArbitratorFee: any
@@ -171,6 +173,8 @@ type ProposalType = {
     tokenId: string
     tokenSymbol: string
   }
+  nay: any
+  yea: any
   convictionTrend: BigNumber
   createdAt: number
   creator: string
@@ -221,6 +225,7 @@ type ProposalType = {
     settled: boolean
     challenged: boolean
     disputed: boolean
+    executed: boolean
   }
   submitterArbitratorFee: any
   submitterArbitratorFeeId: any

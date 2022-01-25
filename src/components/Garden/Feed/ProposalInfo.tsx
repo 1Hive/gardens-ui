@@ -26,10 +26,17 @@ function ProposalInfo({
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 
+  const formatedAmount = formatTokenAmount(
+    proposal.requestedAmountConverted,
+    requestToken.decimals
+  )
+
+  const hideRequestedInfo = Number(proposal.requestedAmount) === 0
+
   return (
     <div onClick={onSelectProposal}>
       <ProposalDescription proposal={proposal} />
-      {proposal.type !== ProposalTypes.Decision && (
+      {proposal.type !== ProposalTypes.Decision && !hideRequestedInfo && (
         <div
           css={`
             display: flex;
@@ -70,11 +77,7 @@ function ProposalInfo({
                       margin: 0px ${0.5 * GU}px;
                     `}
                   >
-                    {formatTokenAmount(
-                      proposal.requestedAmountConverted,
-                      requestToken.decimals
-                    )}{' '}
-                    {requestToken.symbol}
+                    {`${formatedAmount} ${requestToken.symbol}`}
                   </span>
                   <Help hint="">
                     Converted to {requestToken.symbol} at time of execution. For
