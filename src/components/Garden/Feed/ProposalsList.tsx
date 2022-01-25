@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   BIG_RADIUS,
   Button,
@@ -15,6 +22,8 @@ import ProposalRankings from './ProposalRankings'
 
 import filterToggleSvg from '@assets/filter.svg'
 import { ProposalType } from '@/hooks/constants'
+import AbstainCard from './AbstainCard'
+import { ABSTAIN_PROPOSAL } from '../ProposalDetail/ProposalStatus'
 
 type ProposalsListProps = {
   activeFilters: boolean
@@ -58,6 +67,22 @@ function ProposalsList({
     }
   }, [proposals.length]) //eslint-disable-line
 
+  const Card = (proposal: ProposalType) =>
+    proposal.metadata === ABSTAIN_PROPOSAL ? (
+      <AbstainCard proposal={proposal} />
+    ) : (
+      <ProposalCard proposal={proposal} />
+    )
+
+  // Sets Abstain Proposal always in the first place
+  const proposalsNewList: Array<ProposalType> = useMemo(
+    () => [
+      ...proposals.filter((proposal) => proposal.metadata === ABSTAIN_PROPOSAL),
+      ...proposals.filter((proposal) => proposal.metadata !== ABSTAIN_PROPOSAL),
+    ],
+    [proposals]
+  )
+
   return (
     <div
       ref={listRef}
@@ -92,11 +117,11 @@ function ProposalsList({
         </div>
       </div>
       <div>
-        {proposals.length ? (
+        {proposalsNewList.length ? (
           <>
-            {proposals.map((proposal, index) => {
-              return <ProposalCard key={index} proposal={proposal} />
-            })}
+            {proposalsNewList.map((proposal, index) => (
+              <Fragment key={index}>{Card(proposal)}</Fragment>
+            ))}
             {(proposalsFetchedCount === proposalCountFilter ||
               (proposalsFetchedCount < proposalCountFilter && fetching)) && (
               <div

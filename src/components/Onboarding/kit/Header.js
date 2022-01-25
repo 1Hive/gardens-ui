@@ -16,8 +16,8 @@ function Header({
       'onboarding-wizard-header'
     )
 
-    onboardingWizardHeaderEl.scrollIntoView({
-      behaviour: 'smooth',
+    onboardingWizardHeaderEl?.scrollIntoView({
+      behavior: 'smooth',
       block: 'start',
     })
   }, [])

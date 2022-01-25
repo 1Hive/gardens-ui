@@ -1,7 +1,7 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const OWNER_REPO = env('OWNER_REPO_DAO_LIST') ?? 'kamikazebr' //TODO: Change or remove it after tests
+const OWNER_REPO = env('OWNER_REPO_DAO_LIST') ?? '1Hive'
 const REPO = 'dao-list'
 
 const ASSETS_FOLDER_BASE = `https://raw.githubusercontent.com/${OWNER_REPO}/${REPO}/master/assets`
@@ -23,8 +23,7 @@ export async function publishNewDao(
     await publishDaoAssets(daoMetadata)
 
     const newDaoList = fileContent.gardens
-
-    newDaoList.push({
+    const newDaoItem = {
       address: daoAddress,
       name: daoMetadata.name,
       description: daoMetadata.description,
@@ -39,7 +38,19 @@ export async function publishNewDao(
       token_logo: daoMetadata.token_logo
         ? `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/token_logo.${daoMetadata.token_logo.imageExtension}`
         : null,
-    })
+    }
+
+    newDaoList.push(
+      daoMetadata.wrappableToken === null
+        ? newDaoItem
+        : {
+            ...newDaoItem,
+            wrappableToken: {
+              logo: `${ASSETS_FOLDER_BASE}/${daoMetadata.name}/wrappable_token_logo.${daoMetadata.wrappableToken?.imageExtension}`,
+            },
+          }
+    )
+
     const newContent = {
       ...fileContent,
       gardens: newDaoList,
@@ -193,30 +204,30 @@ type LinksMetadadaType = {
   documentation?: Array<Record<string, unknown>>
 }
 
-type WrappableTokenMetadadaType = {
-  logo: string
-}
-
+// This comes from the formData in the UI
 type GardenMetadataType = {
   address: string
   name: string
   description: string
   forum: string
   wiki?: string
-  wrappableToken?: WrappableTokenMetadadaType
   links?: LinksMetadadaType
   logo?: Base64ExtType
   logo_type?: Base64ExtType
   token_logo?: Base64ExtType
+  wrappableToken?: Base64ExtType
 }
 
 type GardenMetadataGithubType = Omit<
   GardenMetadataType,
-  'logo' | 'logo_type' | 'token_logo'
+  'logo' | 'logo_type' | 'token_logo' | 'wrappableToken'
 > & {
   logo: string | null
   logo_type: string | null
   token_logo: string | null
+  wrappableToken?: {
+    logo: string
+  }
 }
 
 type FileContentMetadataGithub = {
@@ -279,6 +290,14 @@ const publishDaoAssets = async (daoMetadata: GardenMetadataType) => {
         `token_logo.${daoMetadata.token_logo.imageExtension}`,
         daoMetadata.token_logo.base64,
         `Assets:${daoMetadata.name}-token_logo`
+      )
+    }
+    if (daoMetadata.wrappableToken) {
+      await createFileContent(
+        daoMetadata.name,
+        `wrappable_token_logo.${daoMetadata.wrappableToken.imageExtension}`,
+        daoMetadata.wrappableToken.base64,
+        `Assets:${daoMetadata.name}-wrappable_token_logo`
       )
     }
   } catch (error) {
