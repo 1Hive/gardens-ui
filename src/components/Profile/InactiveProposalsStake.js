@@ -2,22 +2,29 @@ import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
 
+import { useWallet } from '@/providers/Wallet'
 import { formatTokenAmount } from '@utils/token-utils'
+import { getNetworkType } from '@/utils/web3-utils'
 
 function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
+  const { preferredNetwork } = useWallet()
   const compact = below('large')
   const history = useHistory()
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(`garden/${gardenId}/proposal/${proposalId}`)
+      history.push(
+        `/${getNetworkType(
+          preferredNetwork
+        )}/garden/${gardenId}/proposal/${proposalId}`
+      )
     },
     [history]
   )
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>
-      {myInactiveStakes.map(stake => {
+      {myInactiveStakes.map((stake) => {
         return (
           <ProposalItem
             amount={stake.amount}
@@ -85,7 +92,7 @@ const ProposalItem = ({
             white-space: nowrap;
 
             ${proposalId &&
-              `cursor: pointer; &:hover {
+            `cursor: pointer; &:hover {
             background: ${theme.badge.alpha(0.7)}
           }`}
           `}
