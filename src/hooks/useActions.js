@@ -22,6 +22,7 @@ import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 
+const APPROVE_GAS_LIMIT = 250000
 const CHALLENGE_GAS_LIMIT = 1000000
 const CREATE_PROPOSAL_GAS_LIMIT = 1000000
 const GAS_LIMIT = 550000
@@ -405,15 +406,14 @@ export default function useActions() {
         appAddress,
         amount.toString(10),
       ])
-      let intent = [
+      const intent = [
         {
           data: approveData,
           from: account,
           to: tokenContract.address,
+          gasLimit: APPROVE_GAS_LIMIT,
         },
       ]
-
-      intent = imposeGasLimit(intent, GAS_LIMIT)
 
       return intent
     },
