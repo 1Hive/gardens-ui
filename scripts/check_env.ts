@@ -9,28 +9,33 @@ const THROW_ERROR_REQUIRED = true
 async function check_env() {
   let env: EnvVars | undefined
   let envTemplate: EnvVars | undefined
+
+  // Try load env example (template)
   try {
     envTemplate = await readSingle(ENV_TEMPLATE_PATH)
   } catch (error) {
     logCheckEnv(`'${ENV_TEMPLATE_PATH}' path not found`)
   }
+  // Try load env
   try {
-    env = await readSingle(ENV_PATH) // Attempts to read from ./.env
+    env = await readSingle(ENV_PATH)
   } catch (error) {
     logCheckEnv(`'${ENV_PATH}' path not found`)
   }
+
   if (envTemplate) {
     const keysNotOptionals = extractNotOptionals(envTemplate)
 
     const arrMissingEnvs: string[] = []
     if (env) {
-      const arrKeys = Object.keys(keysNotOptionals)
-      for (const keyNotOptional of arrKeys) {
+      for (const keyNotOptional of Object.keys(keysNotOptionals)) {
         const envKeys = Object.keys(env)
 
+        // Filter .env keys and collect those equals required but dont have value setted in .env
         arrMissingEnvs.push(
           ...envKeys.filter((ek) => ek === keyNotOptional && env && !env[ek])
         )
+        // Collect those required keys was setted but not found in .env
         if (!envKeys.includes(keyNotOptional)) {
           arrMissingEnvs.push(keyNotOptional)
         }
@@ -57,9 +62,13 @@ async function check_env() {
     )
   }
 }
-
+/**
+ * Look for key with value different of empty
+ * @param envTemplate - object representing EnvVars with key and values
+ * @returns object with key and value not empty
+ */
 function extractNotOptionals(envTemplate: EnvVars) {
-  let keysNotOptionals = {} as Record<string, string | undefined>
+  let keysNotOptionals: EnvVars = {}
 
   for (const keyTemplate of Object.keys(envTemplate)) {
     const valueTemplate = envTemplate[keyTemplate]
@@ -73,6 +82,10 @@ function extractNotOptionals(envTemplate: EnvVars) {
   return keysNotOptionals
 }
 
+/**
+ * Better associate to check-env script
+ * @param toLog - som info to log
+ */
 function logCheckEnv(toLog: string) {
   console.log(`[check-env]: ${toLog}`)
 }
