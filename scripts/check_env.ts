@@ -22,14 +22,13 @@ async function check_env() {
   if (envTemplate) {
     const keysNotOptionals = extractNotOptionals(envTemplate)
 
-    console.log(keysNotOptionals)
     let isFoundRequired = false
 
     if (env) {
       const arrKeys = Object.keys(keysNotOptionals)
       for (const keyNotOptional of arrKeys) {
         for (const envKey of Object.keys(env)) {
-          if (envKey === keyNotOptional) {
+          if (envKey === keyNotOptional && !env[envKey]) {
             isFoundRequired = true
             console.log(
               `WARNING: Missing Env ${envKey} it's defined not optional (required) in '${ENV_TEMPLATE_PATH}', create it on '${ENV_PATH}' and run it again`
@@ -69,7 +68,9 @@ function extractNotOptionals(envTemplate: EnvVars) {
 }
 
 check_env()
-  .then(console.log)
+  .then(() => {
+    console.log('ENVs setup correctly!')
+  })
   .catch((err) => {
     console.error(err)
     exit(1)
