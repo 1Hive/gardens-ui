@@ -12,37 +12,43 @@ async function check_env() {
   try {
     envTemplate = await readSingle(ENV_TEMPLATE_PATH)
   } catch (error) {
-    console.log(`'${ENV_TEMPLATE_PATH}' path not found`)
+    logCheckEnv(`'${ENV_TEMPLATE_PATH}' path not found`)
   }
   try {
     env = await readSingle(ENV_PATH) // Attempts to read from ./.env
   } catch (error) {
-    console.log(`'${ENV_PATH}' path not found`)
+    logCheckEnv(`'${ENV_PATH}' path not found`)
   }
   if (envTemplate) {
     const keysNotOptionals = extractNotOptionals(envTemplate)
 
-    let isFoundRequired = false
-
+    const arrMissingEnvs: string[] = []
     if (env) {
       const arrKeys = Object.keys(keysNotOptionals)
       for (const keyNotOptional of arrKeys) {
-        for (const envKey of Object.keys(env)) {
-          if (envKey === keyNotOptional && !env[envKey]) {
-            isFoundRequired = true
-            console.log(
-              `WARNING: Missing Env ${envKey} it's defined not optional (required) in '${ENV_TEMPLATE_PATH}', create it on '${ENV_PATH}' and run it again`
-            )
-          }
+        const envKeys = Object.keys(env)
+
+        arrMissingEnvs.push(
+          ...envKeys.filter((ek) => ek === keyNotOptional && env && !env[ek])
+        )
+        if (!envKeys.includes(keyNotOptional)) {
+          arrMissingEnvs.push(keyNotOptional)
         }
       }
     } else {
-      console.log(
+      logCheckEnv(
         `First clone '${ENV_TEMPLATE_PATH}' to '${ENV_PATH}' and run it again`
       )
     }
 
-    if (isFoundRequired && THROW_ERROR_REQUIRED) {
+    if (arrMissingEnvs.length > 0 && THROW_ERROR_REQUIRED) {
+      arrMissingEnvs.forEach((envKey) =>
+        logCheckEnv(`🛑 Missing Env ${envKey}`)
+      )
+
+      logCheckEnv(
+        `🛑 Missing Envs were defined required (not optional) in '${ENV_TEMPLATE_PATH}', create it at '${ENV_PATH}' and run it again 🛑`
+      )
       throw new Error('Missing Required Envs, check the logs')
     }
   } else {
@@ -67,11 +73,14 @@ function extractNotOptionals(envTemplate: EnvVars) {
   return keysNotOptionals
 }
 
+function logCheckEnv(toLog: string) {
+  console.log(`[check-env]: ${toLog}`)
+}
+
 check_env()
   .then(() => {
-    console.log('ENVs setup correctly!')
+    logCheckEnv('🎉 ENVs setup correctly! 🎉')
   })
-  .catch((err) => {
-    console.error(err)
+  .catch(() => {
     exit(1)
   })
