@@ -1,9 +1,13 @@
 import React from 'react'
 import DecisionDetail from './DecisionDetail/DecisionDetail'
 import { GardenLoader } from '../Loader'
-import useProposalLogic from '../../logic/proposal-logic'
+import useProposalLogic, { ProposalLogicProps } from '@/logic/proposal-logic'
 
-function DecisionLoader({ match }) {
+type DecisionLoaderProps = {
+  match: ProposalLogicProps
+}
+
+function DecisionLoader({ match }: DecisionLoaderProps) {
   const {
     actions: { agreementActions, votingActions },
     proposal,

@@ -8,7 +8,7 @@ import { getProfileForAccount } from '@lib/profile'
 
 const addressCache = new Map()
 
-const IdentityBadge = React.memo(function IdentityBadge({
+function IdentityBadge({
   entity,
   iconSize = '24',
   withProfile = true,
@@ -77,6 +77,6 @@ const IdentityBadge = React.memo(function IdentityBadge({
   }
 
   return <Badge {...badgeProps} {...props} />
-})
+}
 
-export default IdentityBadge
+export default React.memo(IdentityBadge)

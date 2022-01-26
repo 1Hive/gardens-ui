@@ -23,7 +23,7 @@ export const toOxford = (arr, conjunction = 'and', ifempty = '') => {
   return arr.join(', ')
 }
 
-export const mimeToExtension = mime => {
+export const mimeToExtension = (mime) => {
   switch (mime) {
     case 'text/markdown':
       return '.md'
@@ -58,7 +58,7 @@ export const readFile = (reader, file) => {
 export function dataURLtoFile(dataurl, filename) {
   const arr = dataurl.split(',')
   const mime = arr[0].match(/:(.*?);/)[1]
-  const bstr = atob(arr[1])
+  const bstr = window.atob(arr[1])
   let n = bstr.length
   const u8arr = new Uint8Array(n)
 

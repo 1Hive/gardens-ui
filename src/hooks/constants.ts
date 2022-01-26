@@ -1,13 +1,12 @@
 import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
-import { ethers } from 'ethers'
 
 type TokenType = {
-  decimals: number
+  decimals?: number
   id: string
-  name: string
+  name?: string
   symbol: string
-  __typename: string
+  __typename?: string
 }
 
 type ConfigType = {
@@ -154,10 +153,12 @@ type StakeHistoryType = {
 }
 
 type ProposalType = {
+  loading?: boolean
   actionId: string
   beneficiary: string
   casts: Array<any>
   challengeEndDate: number
+  minAcceptQuorum: BigNumber
   challengeId: string
   challenger: string
   challengerArbitratorFee: any
@@ -172,6 +173,8 @@ type ProposalType = {
     tokenId: string
     tokenSymbol: string
   }
+  nay: any
+  yea: any
   convictionTrend: BigNumber
   createdAt: number
   creator: string
@@ -182,7 +185,7 @@ type ProposalType = {
   futureConviction: BigNumber
   futureStakedConviction: BigNumber
   hasEnded: boolean
-  id: number | string
+  id: number
   isAccepted: any
   link: string
   maxConviction: BigNumber
@@ -217,6 +220,12 @@ type ProposalType = {
   status: string
   statusData: {
     open: boolean
+    rejected: boolean
+    cancelled: boolean
+    settled: boolean
+    challenged: boolean
+    disputed: boolean
+    executed: boolean
   }
   submitterArbitratorFee: any
   submitterArbitratorFeeId: any

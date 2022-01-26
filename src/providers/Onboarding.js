@@ -33,6 +33,7 @@ const DEFAULT_CONFIG = {
     logo: null,
     logo_type: null,
     token_logo: null,
+    wrappable_token_logo: null,
     forum: '',
     links: {
       community: [{}],

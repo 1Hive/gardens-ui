@@ -2,7 +2,11 @@ import React from 'react'
 
 const DISABLED_COLOR = '#E9E9E9'
 
-export function ThumbsUpIcon({ disabled = false }) {
+type IconsProps = {
+  disabled: boolean
+}
+
+export function ThumbsUpIcon({ disabled = false }: IconsProps) {
   return (
     <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -31,7 +35,7 @@ export function ThumbsUpIcon({ disabled = false }) {
   )
 }
 
-export function ThumbsDownIcon({ disabled }) {
+export function ThumbsDownIcon({ disabled }: IconsProps) {
   return (
     <svg width="28" height="28" xmlns="http://www.w3.org/2000/svg">
       <defs>

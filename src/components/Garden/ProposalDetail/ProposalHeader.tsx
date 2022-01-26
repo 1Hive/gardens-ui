@@ -3,8 +3,13 @@ import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import ProposalIcon from '@components/ProposalIcon'
 import { dateFormat } from '@utils/date-utils'
 import { convertToString } from '@/types'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalHeader({ proposal }) {
+type ProposalHeaderProps = {
+  proposal: ProposalType
+}
+
+function ProposalHeader({ proposal }: ProposalHeaderProps) {
   const theme = useTheme()
   return (
     <div

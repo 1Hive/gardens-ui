@@ -23,12 +23,11 @@ function getStoredList(account, chainId) {
   return new StoredList(`activity:${getNetworkType(chainId)}:${account}`, {
     preStringify: (activity) => ({
       ...activity,
-      status: activity.status.description.replace('ACTIVITY_STATUS_', ''),
-      type: activity.type?.description,
+      status: activity.status.replace('ACTIVITY_STATUS_', ''),
+      type: activity.type,
     }),
     postParse: (activity) => ({
       ...activity,
-      status: ActivityStatus[`ACTIVITY_STATUS_${activity.status}`],
       type: GardenActionTypes[activity.type],
     }),
   })

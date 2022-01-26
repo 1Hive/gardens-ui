@@ -51,10 +51,10 @@ const Home = function Home() {
   }, [history])
 
   const handleFilterSliderToggle = useCallback(() => {
-    setFilterSidlerVisible(visible => !visible)
+    setFilterSidlerVisible((visible) => !visible)
   }, [])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalMode(mode)
   }, [])
@@ -210,6 +210,7 @@ const Home = function Home() {
                           onRequestNewProposal={handleRequestNewProposal}
                           onWrapToken={handleWrapToken}
                           onUnwrapToken={handleUnwrapToken}
+                          onSetDelegate={handleSetDelegate}
                         />
                       </div>
                     )}

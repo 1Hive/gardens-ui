@@ -610,7 +610,7 @@ const Duration = ({ duration }) => {
   )
 }
 
-const useDurationUnits = duration => {
+const useDurationUnits = (duration) => {
   return useMemo(() => {
     let remaining = duration
 

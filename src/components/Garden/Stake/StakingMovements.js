@@ -27,27 +27,27 @@ import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
-    [StakingType.STAKING_SCHEDULED]: {
+    [StakingType.Scheduled]: {
       background: theme.infoSurface,
       color: theme.tagIndicatorContent,
       icon: <IconClock size="small" />,
     },
-    [StakingType.STAKING_CHALLENGED]: {
+    [StakingType.Challenged]: {
       background: theme.warningSurface,
       color: theme.warningSurfaceContent,
       icon: <IconAttention size="small" />,
     },
-    [StakingType.STAKING_COMPLETED]: {
+    [StakingType.Completed]: {
       background: theme.positiveSurface,
       color: theme.positiveSurfaceContent,
       icon: <IconCheck size="small" />,
     },
-    [StakingType.STAKING_CANCELLED]: {
+    [StakingType.Cancelled]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
     },
-    [StakingType.STAKING_SETTLED]: {
+    [StakingType.Settled]: {
       background: theme.surfaceUnder,
       color: theme.contentSecondary,
       icon: <IconCross size="small" />,
@@ -59,18 +59,18 @@ function getActionAttributes(status, theme) {
 
 function getCollateralAttributes(status, theme) {
   const collateralAttributes = {
-    [StakingCollateralType.COLLATERAL_LOCKED]: {
+    [StakingCollateralType.Locked]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [StakingCollateralType.COLLATERAL_CHALLENGED]: {
+    [StakingCollateralType.Challenged]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
     },
-    [StakingCollateralType.COLLATERAL_AVAILABLE]: {
+    [StakingCollateralType.Available]: {
       color: theme.content,
     },
-    [StakingCollateralType.COLLATERAL_SLASHED]: {
+    [StakingCollateralType.Slashed]: {
       color: theme.negative,
     },
   }
@@ -85,9 +85,12 @@ function StakingMovements({ stakingMovements, token }) {
 
   const [selectedPage, setSelectedPage] = useState(0)
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
+
+  const getProposalType = (disputableAddress) =>
+    disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
 
   const handleGoToProposal = useCallback(
     (disputableActionId, disputableAddress) => {
@@ -161,7 +164,7 @@ function StakingMovements({ stakingMovements, token }) {
                 handleGoToProposal(disputableActionId, disputableAddress)
               }
             >
-              Proposal #{disputableActionId}
+              {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
           <div>{collateralState}</div>,
