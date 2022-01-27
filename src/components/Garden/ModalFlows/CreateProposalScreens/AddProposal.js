@@ -61,11 +61,14 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
+  // Escaping forumURL to avoid misuse with regexp
+  const forumURLRegex = connectedGarden.forumURL.replace(
+    /[-/\\^$*+?.()|[\]{}]/g,
+    '\\$&'
+  )
+
   const forumRegex = new RegExp(
-    String.raw`(${connectedGarden.forumURL.replace(
-      /[-/\\^$*+?.()|[\]{}]/g,
-      '\\$&'
-    )}|https:\/\/discord\.com\/channels\/)`
+    String.raw`(${forumURLRegex}|https:\/\/discord\.com\/channels\/)`
   )
 
   const handleAmountEditMode = useCallback(
