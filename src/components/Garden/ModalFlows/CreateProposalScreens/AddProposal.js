@@ -20,6 +20,7 @@ import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
+import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
@@ -62,13 +63,8 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
   // Escaping forumURL to avoid misuse with regexp
-  const forumURLRegex = connectedGarden.forumURL.replace(
-    /[-/\\^$*+?.()|[\]{}]/g,
-    '\\$&'
-  )
-
-  const forumRegex = new RegExp(
-    String.raw`(${forumURLRegex}|https:\/\/discord\.com\/channels\/)`
+  const forumRegex = regexToCheckValidProposalURL(
+    escapeRegex(connectedGarden.forumURL)
   )
 
   const handleAmountEditMode = useCallback(
