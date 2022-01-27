@@ -17,11 +17,10 @@ const ModalSupporters = ({
   onClose,
 }: ModalSupportersProps) => {
   const { width } = useViewport()
-  const { config } = useGardenState()
-  const { requestToken } = config.conviction
+  const { mainToken } = useGardenState()
 
   const formatAmount = (amount: any) =>
-    formatTokenAmount(amount, requestToken.decimals)
+    formatTokenAmount(amount, mainToken?.data?.decimals)
 
   // Show stakes with more than 0.01HNY and DESC
   const filteredSortedtakesByAmount = useMemo(() => {
@@ -78,7 +77,7 @@ const ModalSupporters = ({
               />
 
               <span>
-                {formatAmount(stake?.amount)} {requestToken.symbol}
+                {formatAmount(stake?.amount)} {mainToken?.data?.symbol}
               </span>
             </div>
           ))}
