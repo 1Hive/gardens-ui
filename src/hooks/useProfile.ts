@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { isAddress } from '@1hive/1hive-ui'
 import { getProfileForAccount } from '@lib/profile'
+import { ProfileType } from '@/providers/Profile'
 
 const CACHE = new Map()
 
 export default function useProfile(account: string) {
-  const [profile, setProfile] = useState(null)
+  const [profile, setProfile] = useState<ProfileType>(null)
 
   useEffect(() => {
     if (!account || !isAddress(account)) {

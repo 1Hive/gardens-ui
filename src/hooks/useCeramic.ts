@@ -11,23 +11,35 @@ export const threeID = new ThreeIdConnect()
 
 const endpoint = 'https://ceramic-clay.3boxlabs.com'
 
+export const connectCeramic = () => {
+  const ceramic = new Ceramic(endpoint)
+  const idx = new IDX({ ceramic })
+
+  return {
+    ceramic,
+    idx,
+  }
+}
+
 const useCeramic = () => {
   const { account, ethereum, chainId } = useWallet()
 
   const connectProfile = async () => {
-    console.log(`connect`)
+    console.log(`connectProfile`)
 
     if (!account) return console.log(`No account!`)
 
-    const ceramic = new Ceramic(endpoint)
-    const idx = new IDX({ ceramic })
+    const { idx } = connectCeramic()
 
     try {
       const data = await idx.get('basicProfile', `${account}@eip155:1`)
-      console.log(`data did`, data)
+
+      return data
     } catch (error) {
       createProfile()
     }
+
+    return null
   }
 
   const createProfile = async () => {
@@ -35,7 +47,7 @@ const useCeramic = () => {
 
     if (!account) return console.log(`No account!`)
 
-    const ceramic = new Ceramic(endpoint)
+    const { ceramic, idx } = connectCeramic()
 
     const provider = new providers.Web3Provider(
       ethereum,
@@ -57,7 +69,6 @@ const useCeramic = () => {
     await ceramic.setDID(did)
     await ceramic?.did?.authenticate()
 
-    const idx = new IDX({ ceramic })
     await idx.set('basicProfile', {
       name: account,
     })

@@ -2,7 +2,7 @@ import useCeramic from '@/hooks/useCeramic'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useWallet } from './Wallet'
 
-type ProfileType = {
+export type ProfileType = {
   name?: string
   image?: string
   confirmationFailed?: boolean
