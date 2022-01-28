@@ -1,7 +1,7 @@
 import { getNetworkName } from '@utils/web3-utils'
 import env from '@/environment'
 
-const OWNER_REPO = env('OWNER_REPO_DAO_LIST') ?? 'kamikazebr' //TODO: Change or remove it after tests
+const OWNER_REPO = env('OWNER_REPO_DAO_LIST') ?? '1Hive'
 const REPO = 'dao-list'
 
 const ASSETS_FOLDER_BASE = `https://raw.githubusercontent.com/${OWNER_REPO}/${REPO}/master/assets`

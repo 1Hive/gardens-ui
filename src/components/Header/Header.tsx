@@ -217,6 +217,8 @@ type GardenNavItemsProps = {
     wrappableToken: any
     token: any
     wiki: any
+    forumURL: string
+    getTokenLink: string
   }
 }
 
@@ -224,14 +226,19 @@ function GardenNavItems({ garden }: GardenNavItemsProps) {
   const theme = useTheme()
   const history = useHistory()
   const token = garden.wrappableToken || garden.token
-  const connectedGarden = useConnectedGarden()
-  const forumURL = connectedGarden.forumURL
+  const forumURL = garden.forumURL
   const { preferredNetwork } = useWallet()
 
   const handleOnGoToCovenant = useCallback(() => {
     const path = buildGardenPath(history.location, 'covenant')
     history.push(path)
   }, [history])
+
+  const getTokenLink = useMemo(
+    () =>
+      garden?.getTokenLink || getDexTradeTokenUrl(preferredNetwork, token.id),
+    [garden]
+  )
 
   return (
     <>
@@ -247,7 +254,7 @@ function GardenNavItems({ garden }: GardenNavItemsProps) {
         Forum
       </Link>
       <Link
-        href={getDexTradeTokenUrl(preferredNetwork, token.id)}
+        href={getTokenLink}
         css={`
           text-decoration: none;
           color: ${theme.contentSecondary};

@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "yarn run sync-assets && react-app-rewired start",
+    "start": "yarn run check-env && yarn run sync-assets && react-app-rewired start",
     "build": "yarn run sync-assets && react-app-rewired build",
     "lint": "eslint ./src",
     "sync-assets": "copy-aragon-ui-assets ./public",
     "bundlewatch": "bundlewatch",
-    "prettier-ai": "prettier --write 'src/**/*.{ts,tsx,js}' --loglevel=error --ignore-path .prettier-imports-ignore"
+    "prettier-ai": "prettier --write 'src/**/*.{ts,tsx,js}' --loglevel=error --ignore-path .prettier-imports-ignore",
+    "check-env": "ts-node --project ./scripts/tsconfig.json ./scripts/check_env.ts"
   },
   "dependencies": {
     "3box": "^1.19.1",
@@ -116,6 +117,7 @@
     "react-scripts": "^5.0.0",
     "rimraf": "^2.6.2",
     "svgo": "^2.8.0",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
   "bundlewatch": {
