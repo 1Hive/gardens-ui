@@ -92,7 +92,7 @@ function logCheckEnv(toLog: string) {
 
 check_env()
   .then(() => {
-    logCheckEnv('🎉 ENVs setup correctly! 🎉')
+    logCheckEnv('🎉 All Environment Variables are configured properly! 🎉')
   })
   .catch(() => {
     exit(1)
