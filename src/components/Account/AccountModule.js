@@ -40,13 +40,14 @@ function AccountModule({ compact }) {
     resetConnection,
     switchingNetworks,
   } = useWallet()
+
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
 
-  const toggle = useCallback(() => setOpened(opened => !opened), [])
+  const toggle = useCallback(() => setOpened((opened) => !opened), [])
 
   const activate = useCallback(
-    async providerId => {
+    async (providerId) => {
       try {
         await connect(providerId)
       } catch (error) {
@@ -87,7 +88,7 @@ function AccountModule({ compact }) {
       return 'providers'
     })()
 
-    const screenIndex = SCREENS.findIndex(screen => screen.id === screenId)
+    const screenIndex = SCREENS.findIndex((screen) => screen.id === screenId)
     const direction = previousScreenIndex.current > screenIndex ? -1 : 1
 
     previousScreenIndex.current = screenIndex
@@ -99,7 +100,7 @@ function AccountModule({ compact }) {
   const screenId = screen.id
 
   const handlePopoverClose = useCallback(
-    reject => {
+    (reject) => {
       if (
         screenId === 'connecting' ||
         screenId === 'error' ||

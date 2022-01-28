@@ -105,7 +105,7 @@ function useConnection() {
   const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
   const connect = useCallback(
-    async connector => {
+    async (connector) => {
       try {
         await connectWallet(connector)
       } catch (err) {
@@ -130,13 +130,13 @@ function useConnection() {
     await reset()
   }, [reset])
 
-  const handlePreferredNetworkChange = useCallback(chainId => {
+  const handlePreferredNetworkChange = useCallback((chainId) => {
     setPreferredNetwork(chainId)
     setPreferredChain(chainId)
   }, [])
 
   const handleNetworkSwtich = useCallback(
-    async chainId => {
+    async (chainId) => {
       if (connector === 'injected') {
         try {
           setSwitchingNetworks(true)
@@ -160,7 +160,7 @@ function useConnection() {
         setPreferredNetwork(chainId)
       }
     }
-  }, [chainId, isConnected]) // eslint-disable-line 
+  }, [chainId, isConnected]) // eslint-disable-line
 
   return {
     connect,

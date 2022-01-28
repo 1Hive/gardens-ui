@@ -38,7 +38,3 @@ export const getDexTradeTokenUrl = (chainId: number, tokenAddress: string) => {
       return `https://app.sushi.com/swap?outputCurrency=${tokenAddress}`
   }
 }
-
-export const CERAMIC_ENDPOINT = 'mainnet'
-
-export const CERAMIC_GATEWAY = 'mainnet-gateway'

@@ -10,14 +10,14 @@ export default function useSelectedProfile(account: string) {
   const profile = useProfile()
 
   // Selected account's profile
-  const [selectedProfile, setSelectedProfile] = useState(null)
+  const [selectedProfile, setSelectedProfile] = useState<any>(null)
 
   useEffect(() => {
     let cancelled = false
 
     // Selected account is same as connected account
     // We have already loaded the profile
-    if (addressesEqual(account, profile.account)) {
+    if (addressesEqual(account, profile?.account)) {
       return setSelectedProfile(profile)
     }
 

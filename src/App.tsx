@@ -9,7 +9,6 @@ import { Main } from '@1hive/1hive-ui'
 import MainView from '@components/MainView'
 import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 import { HashRouter } from 'react-router-dom'
-import { ProfileCeramicProvider } from './providers/ProfileCeramic'
 
 function App() {
   return (
@@ -17,18 +16,16 @@ function App() {
       <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
         <WalletProvider>
           <GlobalErrorHandler>
-            <ProfileCeramicProvider>
-              <ProfileProvider>
-                <UserProvider>
-                  <GardensProvider>
-                    <WelcomeLoader />
-                    <MainView>
-                      <Routes />
-                    </MainView>
-                  </GardensProvider>
-                </UserProvider>
-              </ProfileProvider>
-            </ProfileCeramicProvider>
+            <ProfileProvider>
+              <UserProvider>
+                <GardensProvider>
+                  <WelcomeLoader />
+                  <MainView>
+                    <Routes />
+                  </MainView>
+                </GardensProvider>
+              </UserProvider>
+            </ProfileProvider>
           </GlobalErrorHandler>
         </WalletProvider>
       </Main>
