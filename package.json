@@ -9,6 +9,7 @@
     "sync-assets": "copy-aragon-ui-assets ./public",
     "bundlewatch": "bundlewatch",
     "prettier-ai": "prettier --write 'src/**/*.{ts,tsx,js}' --loglevel=error --ignore-path .prettier-imports-ignore",
+    "test": "react-app-rewired test --env=jsdom",
     "check-env": "ts-node --project ./scripts/tsconfig.json ./scripts/check_env.ts"
   },
   "dependencies": {
@@ -65,11 +66,24 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@assets(.*)$": "<rootDir>/src/assets$1",
+      "^@abis(.*)$": "<rootDir>/src/abi$1",
+      "^@components(.*)$": "<rootDir>/src/components$1",
+      "^@hooks(.*)$": "<rootDir>/src/hooks$1",
+      "^@lib(.*)$": "<rootDir>/src/lib$1",
+      "^@providers(.*)$": "<rootDir>/src/providers$1",
+      "^@utils(.*)$": "<rootDir>/src/utils$1",
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/plugin-proposal-class-properties": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
+    "@types/jest": "^27.4.0",
     "@types/node": "^16.11.12",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
