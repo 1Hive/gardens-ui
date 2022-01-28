@@ -64,7 +64,7 @@ function makeVarsMap(lines: string[]) {
     /* Check some error conditions and throw if met */
     checkInvalidFormat(key, value, index)
 
-    /* If value was quoted, the asigned value should not invlude the quotes */
+    /* If value was quoted, the asigned value should not include the quotes */
     const mapValue = stripSurroundingQuotes(value)
 
     map.set(key, mapValue)
