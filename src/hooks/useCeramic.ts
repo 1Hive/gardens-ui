@@ -21,18 +21,34 @@ export const connectCeramic = () => {
   }
 }
 
+const useIdx = () => {
+  const { idx } = connectCeramic()
+
+  const read = async (account: string) => {
+    return await idx.get('basicProfile', `${account}@eip155:1`)
+  }
+
+  const write = async (newData: any) => {
+    return await idx.set('basicProfile', newData)
+  }
+
+  return {
+    read,
+    write,
+  }
+}
+
 const useCeramic = () => {
   const { account, ethereum, chainId } = useWallet()
+  const { read, write } = useIdx()
 
   const connectProfile = async () => {
     console.log(`connectProfile`)
 
     if (!account) return console.log(`No account!`)
 
-    const { idx } = connectCeramic()
-
     try {
-      const data = await idx.get('basicProfile', `${account}@eip155:1`)
+      const data = await read(account)
 
       return data
     } catch (error) {
@@ -47,7 +63,7 @@ const useCeramic = () => {
 
     if (!account) return console.log(`No account!`)
 
-    const { ceramic, idx } = connectCeramic()
+    const { ceramic } = connectCeramic()
 
     const provider = new providers.Web3Provider(
       ethereum,
@@ -69,7 +85,7 @@ const useCeramic = () => {
     await ceramic.setDID(did)
     await ceramic?.did?.authenticate()
 
-    await idx.set('basicProfile', {
+    await write({
       name: account,
     })
   }
