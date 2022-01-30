@@ -1,5 +1,4 @@
-import olduseCeramic from '@/hooks/useCeramic'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useCeramic } from 'use-ceramic'
 import { useWallet } from './Wallet'
 
@@ -13,8 +12,9 @@ export type ProfileType = {
 type State = {
   profile: ProfileType
   account: string
-  auth: () => void
+  // auth: () => void
   updateProfile: () => void
+  renderButton: () => JSX.Element
 }
 
 const ProfileContext = React.createContext<State | undefined | null>(null)
@@ -24,11 +24,11 @@ type ProfileProviderProps = {
 }
 
 function ProfileProvider({ children }: ProfileProviderProps) {
-  const { account, ethereum } = useWallet()
-  const [profile, setProfile] = useState<ProfileType>(null)
+  const { account } = useWallet()
+  const [profile] = useState<ProfileType>(null)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ceramic = useCeramic()
-  const { connectProfile, createProfile } = olduseCeramic()
+  // const { connectProfile, createProfile } = olduseCeramic()
   const [authenticated, setAuthenticated] = useState(ceramic.isAuthenticated)
   const [progress, setProgress] = useState(false)
 
@@ -52,7 +52,7 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     } catch (e) {
       console.error(e)
     } finally {
-      console.log('handleLogin:ended')
+      console.log('handleLogin:ended', authenticated)
       setProgress(false)
     }
   }
@@ -72,44 +72,45 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     }
   }
   // Authenticate profile
-  const auth = useCallback(async () => {
-    // if (!(account && ethereum)) {
-    //   return
-    // }
-    // await handleLogin()
-    try {
-      const profileData: any = await connectProfile()
-      setProfile({
-        ...profile,
-        ...profileData,
-      })
-    } catch (err) {
-      setProfile({
-        ...profile,
-        confirmationFailed: true,
-      })
-    }
-  }, [account, ethereum])
+  // const auth = useCallback(async () => {
+  // if (!(account && ethereum)) {
+  //   return
+  // }
+  // await handleLogin()
+  // try {
+  //   const profileData: any = await connectProfile()
+  //   setProfile({
+  //     ...profile,
+  //     ...profileData,
+  //   })
+  // } catch (err) {
+  //   setProfile({
+  //     ...profile,
+  //     confirmationFailed: true,
+  //   })
+  // }
+  // }, [account, ethereum])
 
   const updateProfile = () => {
     console.log(`updateProfile`)
   }
 
-  useEffect(() => {
-    if (!account) {
-      return
-    }
+  // useEffect(() => {
+  //   if (!account) {
+  //     return
+  //   }
 
-    auth()
-  }, [account, auth])
+  //   auth()
+  // }, [account, auth])
 
   return (
     <ProfileContext.Provider
       value={{
         profile,
         account,
-        auth,
+        // auth,
         updateProfile,
+        renderButton,
       }}
     >
       {children}

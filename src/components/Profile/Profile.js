@@ -114,6 +114,7 @@ function Profile() {
                     `}
                 `}
               >
+                {selectedProfile?.renderButton()}
                 <Button
                   label={
                     selectedProfile?.authenticated

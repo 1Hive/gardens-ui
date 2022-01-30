@@ -10,13 +10,14 @@ import { IDX } from '@ceramicstudio/idx'
 // import { getEthersNetwork } from '@/networks'
 // import { providers } from 'ethers'
 import { useWallet } from 'use-wallet'
-import Web3Modal from 'web3modal'
-import Web3 from 'web3'
+// import Web3Modal from 'web3modal'
+// import Web3 from 'web3'
 
-export const threeID = new ThreeIdConnect()
+// export const threeID = new ThreeIdConnect()
 
 // const endpoint = 'https://ceramic-clay.3boxlabs.com'
 const endpoint = 'https://gateway-clay.ceramic.network'
+// const endpoint = 'https://app.3idconnect.org'
 // const endpoint = 'https://gateway-dev.ceramic.network'
 
 declare global {
@@ -117,7 +118,7 @@ const olduseCeramic = () => {
 
     console.log(`did.authenticated`, did.authenticated)
 
-    const auth = await did.authenticate({ provider: window.ethereum })
+    const auth = await did.authenticate()
     console.log(`did.authenticate`, auth)
     await ceramic.setDID(did)
 

@@ -14,13 +14,20 @@ import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import { AuthProvider, EthereumAuthProvider } from '@3id/connect'
 
-const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN
-
 async function connect(): Promise<AuthProvider> {
-  return new EthereumAuthProvider(
-    window.ethereum,
-    '0x3CeeF2C35d55a61514CeCe32C165fB96536d76c4'
-  )
+  const web3Modal = new Web3Modal({
+    network: 'rinkeby',
+    cacheProvider: false,
+    providerOptions: {
+      injected: {
+        package: null,
+      },
+    },
+  })
+  const provider = await web3Modal.connect()
+  const web3 = new Web3(provider)
+  const accounts = await web3.eth.getAccounts()
+  return new EthereumAuthProvider(provider, accounts[0])
 }
 
 function App() {
