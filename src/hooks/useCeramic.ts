@@ -114,6 +114,7 @@ const olduseCeramic = () => {
     })
 
     console.log(`did`, did)
+
     console.log(`did.authenticated`, did.authenticated)
 
     const auth = await did.authenticate({ provider: window.ethereum })
