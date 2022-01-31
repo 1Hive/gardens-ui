@@ -6,6 +6,7 @@ import { LoadingRing, Main } from '@1hive/1hive-ui'
 const Home = lazy(() => import('@components/Home'))
 const Garden = lazy(() => import('@components/Garden'))
 const Profile = lazy(() => import('@components/Profile/Profile'))
+const Identity = lazy(() => import('@components/Profile/Identity'))
 
 export default function Routes() {
   return (
@@ -21,6 +22,7 @@ export default function Routes() {
       >
         <Route path="/home" component={Home} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/identity" component={Identity} />
         <Route path="/:networkType/garden/:gardenAddress" component={Garden} />
       </Suspense>
 
