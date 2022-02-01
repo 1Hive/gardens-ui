@@ -47,11 +47,21 @@ function getStorageKey(action: string, account: string, chainId: number) {
   return `${action}:${getNetworkType(chainId)}:${account}`
 }
 
-export function setAccountSetting(action: string, account:string, chainId: number, value: any) {
+type AccountActionType = 'lastTxHash'
+
+export function setAccountSetting(
+  action: AccountActionType,
+  account: string,
+  chainId: number,
+  value: any
+) {
   window.localStorage.setItem(getStorageKey(action, account, chainId), value)
 }
-
-export function getAccountSetting(action: string, account: string, chainId: number) {
+export function getAccountSetting(
+  action: AccountActionType,
+  account: string,
+  chainId: number
+) {
   const item = window.localStorage.getItem(
     getStorageKey(action, account, chainId)
   )

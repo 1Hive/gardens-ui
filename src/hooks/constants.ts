@@ -1,3 +1,5 @@
+// TODO: We could improve this types in the future
+
 import { ConnectionContext } from '@1hive/connect-react'
 import BigNumber from '@lib/bigNumber'
 
@@ -239,4 +241,97 @@ type ProposalType = {
   yeas: any
 }
 
-export type { ConfigType, FiltersType, TokenType, AppType, ProposalType }
+type ActionsType = {
+  agreementActions: {
+    approveTokenAmount: (
+      tokenAddress: string,
+      depositAmount: any,
+      onDone?: () => void
+    ) => Promise<void>
+    challengeAction: (
+      { actionId, settlementOffer, challengerFinishedEvidence, context }: any,
+      onDone?: () => void
+    ) => Promise<void>
+    disputeAction: (
+      { actionId, settlementOffer, challengerFinishedEvidence, context }: any,
+      onDone?: () => void
+    ) => Promise<void>
+    getAllowance: (
+      tokenAddress: string
+    ) => Promise<BigNumber | undefined> | undefined
+    resolveAction: (disputeId: number) => void
+    settleAction: (
+      { actionId }: { actionId: number },
+      onDone?: () => void
+    ) => Promise<void>
+    signAgreement: (
+      { versionId }: { versionId: number },
+      onDone?: () => void
+    ) => Promise<void>
+  }
+  convictionActions: {
+    executeProposal: (proposalId: any, onDone?: any) => Promise<void>
+    cancelProposal: (proposalId: any, onDone?: any) => Promise<void>
+    newProposal: (
+      { title, link, amount, stableRequestAmount, beneficiary }: any,
+      onDone?: any
+    ) => Promise<void>
+    newSignalingProposal: ({ title, link }: any, onDone?: any) => Promise<void>
+    stakeToProposal: (
+      { proposalId, amount }: any,
+      onDone?: any
+    ) => Promise<void>
+    withdrawFromProposal: (
+      { proposalId, amount }: any,
+      onDone?: any
+    ) => Promise<void>
+  }
+  hookedTokenManagerActions: {
+    approveWrappableTokenAmount: (amount: any, onDone?: () => void) => void
+    getAllowance: () => void
+    wrap: ({ amount }: any, onDone?: () => void) => Promise<void>
+    unwrap: ({ amount }: any, onDone?: () => void) => Promise<void>
+  }
+  issuanceActions: { executeIssuance: () => void }
+  priceOracleActions: { updatePriceOracle: () => void }
+  unipoolActions: { claimRewards: () => void }
+  votingActions: {
+    delegateVoting: (representative: any, onDone?: () => void) => Promise<void>
+    executeDecision: (voteId: number, script: any) => void
+    voteOnDecision: (
+      voteId: number,
+      supports: any,
+      onDone?: any
+    ) => Promise<void>
+    voteOnBehalfOf: (
+      voteId: number,
+      supports: any,
+      voters: any,
+      onDone?: () => void
+    ) => Promise<void>
+  }
+}
+
+type TransactionType = {
+  data: any
+  from: string | undefined
+  to: string | undefined
+  description?: string
+  type?: string
+  gasLimit?: number
+}
+
+type IntentType = {
+  transactions: Array<TransactionType>
+}
+
+export type {
+  ConfigType,
+  FiltersType,
+  TokenType,
+  AppType,
+  ProposalType,
+  ActionsType,
+  TransactionType,
+  IntentType,
+}

@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo } from 'react'
-
-import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 
 import { GU, useTheme } from '@1hive/1hive-ui'
@@ -14,37 +12,55 @@ import { useActivity } from '@providers/ActivityProvider'
 import { useWallet } from '@providers/Wallet'
 
 import { setAccountSetting } from '@/local-settings'
+import { TransactionType } from '@/hooks/constants'
 
-const indexNumber = {
-  0: 'First',
-  1: 'Second',
-  2: 'Third',
-  3: 'Fourth',
-  4: 'Fifth',
+const INDEX_NUMBER = ['First', 'Second', 'Third', 'Fourth', 'Fifth']
+
+type ModalFlowBaseType = {
+  loading: boolean
+  screens: Array<any>
+  transactions: Array<any>
+  onComplete: () => void
+  onCompleteActions: React.ReactNode
+  frontLoad?: boolean
+  transactionTitle?: string
 }
 
+type HandleSignParamsType = {
+  setSuccess: () => void
+  setWorking: () => void
+  setError: () => void
+  setHash: (hash: any) => void
+}
+
+type TransactionStepsType = {
+  title: string
+  handleSign: (params: HandleSignParamsType) => Promise<void>
+}
+type ArrayTransactionStepsType = Array<TransactionStepsType> | null
+
 function ModalFlowBase({
-  frontLoad,
   loading,
   screens,
   transactions,
-  transactionTitle,
   onComplete,
   onCompleteActions,
-}) {
+  frontLoad = true,
+  transactionTitle = 'Create transaction',
+}: ModalFlowBaseType) {
   const { addActivity } = useActivity()
   const { account, chainId, ethers } = useWallet()
   const signer = useMemo(() => ethers.getSigner(), [ethers])
 
-  const transactionSteps = useMemo(
+  const transactionSteps: ArrayTransactionStepsType = useMemo(
     () =>
       transactions
-        ? transactions.map((transaction, index) => {
+        ? transactions.map((transaction: TransactionType, index: number) => {
             const title = transaction.description
               ? transaction.description
               : transactions.length === 1
               ? 'Sign transaction'
-              : `${indexNumber[index]} transaction`
+              : `${INDEX_NUMBER[index]} transaction`
 
             return {
               // TODO: Add titles from description
@@ -54,7 +70,7 @@ function ModalFlowBase({
                 setWorking,
                 setError,
                 setHash,
-              }) => {
+              }: HandleSignParamsType) => {
                 try {
                   const trx = {
                     from: transaction.from,
@@ -135,17 +151,16 @@ function ModalFlowBase({
   return <MultiModalScreens screens={extendedScreens} />
 }
 
-/* eslint-disable react/prop-types */
-function LoadingScreen({ loading }) {
+function LoadingScreen({ loading }: { loading: boolean }) {
   const theme = useTheme()
   const { next } = useMultiModal()
 
   useEffect(() => {
-    let timeout
+    let timeout: number
 
     if (!loading) {
       // Provide a minimum appearance duration to avoid visual confusion on very fast requests
-      timeout = setTimeout(() => {
+      timeout = window.setTimeout(() => {
         next()
       }, 100)
     }
@@ -186,9 +201,8 @@ function LoadingScreen({ loading }) {
     </div>
   )
 }
-/* eslint-enable react/prop-types */
 
-function modalWidthFromCount(count) {
+function modalWidthFromCount(count: number) {
   if (count >= 3) {
     return 865
   }
@@ -199,19 +213,6 @@ function modalWidthFromCount(count) {
 
   // Modal will fallback to the default
   return null
-}
-
-ModalFlowBase.propTypes = {
-  frontLoad: PropTypes.bool,
-  loading: PropTypes.bool,
-  screens: PropTypes.array,
-  transactions: PropTypes.array,
-  transactionTitle: PropTypes.string,
-}
-
-ModalFlowBase.defaultProps = {
-  frontLoad: true,
-  transactionTitle: 'Create transaction',
 }
 
 export default ModalFlowBase
