@@ -31,7 +31,7 @@ const GARDEN_TOKEN_ICON = 'wrappableToken'
 const DEFAULT_FORUM_LINK = 'https://forum.1hive.org'
 
 const URL_REGEX = new RegExp(
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{2,}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 )
 
 function GardenMetadata() {
