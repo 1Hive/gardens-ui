@@ -41,7 +41,7 @@ export function useAccountStakes(account: string) {
             amount: stake.amount,
             gardenId: stake.proposal.organization.id,
             proposalId: stake.proposal.id,
-            proposalName: stake.proposal.beneficiary,
+            proposalName: stake.proposal.metadata,
           },
         ]
       }, [])
@@ -71,7 +71,7 @@ export function useAccountStakesByGarden(account: string) {
         {
           amount: stake.amount,
           proposalId: stake.proposal.id,
-          proposalName: stake.proposal.beneficiary,
+          proposalName: stake.proposal.metadata,
         },
       ]
     }, [])

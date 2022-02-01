@@ -1,14 +1,21 @@
 import React, { useRef, useImperativeHandle } from 'react'
-import PropTypes from 'prop-types'
 import { Button, IconArrowLeft, GU, useTheme } from '@1hive/1hive-ui'
 
-const Navigation = React.forwardRef(function Navigation(
-  { backEnabled, backLabel, nextEnabled, nextLabel, onBack, onNext },
-  ref
-) {
-  const theme = useTheme()
+type NavigationProps = {
+  backEnabled: boolean
+  backLabel?: string
+  nextEnabled: boolean
+  nextLabel?: string
+  onBack: () => void
+  onNext: () => void
+}
 
-  const nextRef = useRef()
+const Navigation = React.forwardRef<
+  any,
+  React.PropsWithChildren<NavigationProps>
+>(({ backEnabled, backLabel, nextEnabled, nextLabel, onBack, onNext }, ref) => {
+  const theme = useTheme()
+  const nextRef = useRef<any>()
 
   useImperativeHandle(
     ref,
@@ -50,15 +57,6 @@ const Navigation = React.forwardRef(function Navigation(
     </div>
   )
 })
-
-Navigation.propTypes = {
-  backEnabled: PropTypes.bool.isRequired,
-  backLabel: PropTypes.string.isRequired,
-  nextEnabled: PropTypes.bool.isRequired,
-  nextLabel: PropTypes.string.isRequired,
-  onBack: PropTypes.func.isRequired,
-  onNext: PropTypes.func.isRequired,
-}
 
 Navigation.defaultProps = {
   backEnabled: true,

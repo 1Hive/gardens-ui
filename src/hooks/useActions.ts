@@ -23,11 +23,13 @@ import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
 import { ActionsType, TransactionType } from './constants'
 
+const APPROVE_GAS_LIMIT = 250000
 const CHALLENGE_GAS_LIMIT = 1000000
-const GAS_LIMIT = 450000
+const CREATE_PROPOSAL_GAS_LIMIT = 1000000
+const GAS_LIMIT = 550000
 const RESOLVE_GAS_LIMIT = 700000
 const SIGN_GAS_LIMIT = 100000
-const STAKE_GAS_LIMIT = 250000
+const STAKE_GAS_LIMIT = 300000
 const WRAP_GAS_LIMIT = 1000000
 
 export default function useActions(): ActionsType {
@@ -63,7 +65,7 @@ export default function useActions(): ActionsType {
       { title, link, amount, stableRequestAmount, beneficiary },
       onDone = noop
     ) => {
-      const intent = await convictionVotingApp.intent(
+      let intent = await convictionVotingApp.intent(
         'addProposal',
         [
           title,
@@ -76,6 +78,8 @@ export default function useActions(): ActionsType {
           actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, CREATE_PROPOSAL_GAS_LIMIT)
 
       const description = radspec[actions.NEW_PROPOSAL]()
       const type = actions.NEW_PROPOSAL
@@ -95,13 +99,15 @@ export default function useActions(): ActionsType {
 
   const newSignalingProposal = useCallback(
     async ({ title, link }, onDone = noop) => {
-      const intent = await convictionVotingApp.intent(
+      let intent = await convictionVotingApp.intent(
         'addSignalingProposal',
         [title, link ? toHex(link) : '0x'],
         {
           actAs: account,
         }
       )
+
+      intent = imposeGasLimit(intent, CREATE_PROPOSAL_GAS_LIMIT)
 
       const description = radspec[actions.NEW_SIGNALING_PROPOSAL]()
       const type = actions.NEW_SIGNALING_PROPOSAL
@@ -406,6 +412,7 @@ export default function useActions(): ActionsType {
           data: approveData,
           from: account,
           to: tokenContract.address,
+          gasLimit: APPROVE_GAS_LIMIT,
         },
       ]
 
@@ -763,21 +770,14 @@ async function sendIntent(
 function imposeGasLimit(intent: any, gasLimit: number) {
   return {
     ...intent,
-    transactions: intent.transactions.map((tx: TransactionType) => ({
-      ...tx,
-      gasLimit,
-    })),
+    transactions: intent.transactions.map((tx: any) => ({ ...tx, gasLimit })),
   }
 }
 
 function attachTrxMetadata(
-  transactions: Array<TransactionType> | undefined,
+  transactions: any,
   description: string,
-  type: string
-): any {
-  return transactions?.map((tx: TransactionType) => ({
-    ...tx,
-    description,
-    type,
-  }))
+  type: actions
+) {
+  return transactions.map((tx: any) => ({ ...tx, description, type }))
 }

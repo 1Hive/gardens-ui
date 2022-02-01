@@ -8,20 +8,35 @@ import ProposalSupport from './ProposalSupport'
 import { ProposalTypes } from '@/types'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalType } from '@/hooks/constants'
 
-function ProposalInfo({ loading, proposal, onSelectProposal }) {
+type ProposalInfoProps = {
+  loading: boolean
+  proposal: ProposalType
+  onSelectProposal: () => void
+}
+
+function ProposalInfo({
+  loading,
+  proposal,
+  onSelectProposal,
+}: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 
+  const formatedAmount = formatTokenAmount(
+    proposal.requestedAmountConverted,
+    requestToken.decimals
+  )
+
+  const hideRequestedInfo = Number(proposal.requestedAmount) === 0
+
   return (
-    <div>
-      <ProposalDescription
-        proposal={proposal}
-        onSelectProposal={onSelectProposal}
-      />
-      {proposal.type !== ProposalTypes.Decision && (
+    <div onClick={onSelectProposal}>
+      <ProposalDescription proposal={proposal} />
+      {proposal.type !== ProposalTypes.Decision && !hideRequestedInfo && (
         <div
           css={`
             display: flex;
@@ -62,11 +77,7 @@ function ProposalInfo({ loading, proposal, onSelectProposal }) {
                       margin: 0px ${0.5 * GU}px;
                     `}
                   >
-                    {formatTokenAmount(
-                      proposal.requestedAmountConverted,
-                      requestToken.decimals
-                    )}{' '}
-                    {requestToken.symbol}
+                    {`${formatedAmount} ${requestToken.symbol}`}
                   </span>
                   <Help hint="">
                     Converted to {requestToken.symbol} at time of execution. For

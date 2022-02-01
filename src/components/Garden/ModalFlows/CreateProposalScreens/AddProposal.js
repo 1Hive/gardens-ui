@@ -20,6 +20,7 @@ import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
+import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
@@ -61,7 +62,10 @@ const AddProposalPanel = ({ setProposalData }) => {
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
-  const forumRegex = new RegExp(connectedGarden.forumURL)
+  // Escaping forumURL to avoid misuse with regexp
+  const forumRegex = regexToCheckValidProposalURL(
+    escapeRegex(connectedGarden.forumURL)
+  )
 
   const handleAmountEditMode = useCallback(
     (editMode) => {
@@ -181,7 +185,7 @@ const AddProposalPanel = ({ setProposalData }) => {
     }
 
     if (link && !forumRegex.test(link)) {
-      errors.push('Forum post link not provided ')
+      errors.push('Forum post link not provided or not valid')
     }
 
     return errors

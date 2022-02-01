@@ -18,6 +18,7 @@ import minimeTokenAbi from '@abis/minimeToken.json'
 
 const MAX_INT = new BigNumber(2).pow(256).minus(1)
 const STAKE_GAS_LIMIT = 500000
+const APPROVE_GAS_LIMIT = 250000
 
 export function useStaking() {
   const mounted = useMounted()
@@ -27,10 +28,8 @@ export function useStaking() {
 
   const [stakeManagement, setStakeManagement] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [
-    loadingStakingDataFromContract,
-    setLoadingStakingDataFromContract,
-  ] = useState(true)
+  const [loadingStakingDataFromContract, setLoadingStakingDataFromContract] =
+    useState(true)
   const [reFetchTotalBalance, setReFetchTotalBalance] = useState(false)
 
   const stakingMovementsSubscription = useRef(null)
@@ -63,7 +62,7 @@ export function useStaking() {
         return
       }
       if (mounted()) {
-        setStakeManagement(stakeManagement => ({
+        setStakeManagement((stakeManagement) => ({
           ...stakeManagement,
           stakingMovements: data,
         }))
@@ -94,11 +93,11 @@ export function useStaking() {
           const stakingFactory = await connectedAgreementApp.stakingFactory()
 
           const allRequirements = await Promise.all(
-            disputableApps.map(app => app.collateralRequirement())
+            disputableApps.map((app) => app.collateralRequirement())
           )
 
           const allTokens = await Promise.all(
-            allRequirements.map(collateral => collateral.token())
+            allRequirements.map((collateral) => collateral.token())
           )
 
           const staking = await connectedAgreementApp.staking(
@@ -106,17 +105,18 @@ export function useStaking() {
             account
           )
 
-          stakingMovementsSubscription.current = await connectedAgreementApp.onStakingMovements(
-            allTokens[1].id,
-            account,
-            {},
-            handleStakingMovementsData
-          )
+          stakingMovementsSubscription.current =
+            await connectedAgreementApp.onStakingMovements(
+              allTokens[1].id,
+              account,
+              {},
+              handleStakingMovementsData
+            )
 
           const accountBalance = await tokenContract?.balanceOf(account)
 
           if (mounted()) {
-            setStakeManagement(stakeManagement => ({
+            setStakeManagement((stakeManagement) => ({
               ...stakeManagement,
               token: allTokens[1],
               accountBalance,
@@ -165,7 +165,7 @@ export function useStaking() {
         stakeManagement.token.id
       )
       if (mounted()) {
-        setStakeManagement(stakeManagement => {
+        setStakeManagement((stakeManagement) => {
           return {
             ...stakeManagement,
             stakingInstance: stakingInstanceAddress,
@@ -200,7 +200,7 @@ export function useStaking() {
           !stakedBN.eq(stakeManagement.staking.total) ||
           reFetchTotalBalance
         ) {
-          setStakeManagement(stakeManagement => {
+          setStakeManagement((stakeManagement) => {
             return {
               ...stakeManagement,
               staking: {
@@ -215,7 +215,7 @@ export function useStaking() {
           setReFetchTotalBalance(false)
         }
         if (!allowanceBN.eq(stakeManagement.staking.allowance)) {
-          setStakeManagement(stakeManagement => {
+          setStakeManagement((stakeManagement) => {
             return {
               ...stakeManagement,
               staking: {
@@ -335,6 +335,7 @@ export function useStaking() {
           to: stakeManagement.token.id,
           description,
           type,
+          gasLimit: APPROVE_GAS_LIMIT,
         },
       ]
 
@@ -368,7 +369,7 @@ export function useStaking() {
   }, [stakingContract, account])
 
   const allowManager = useCallback(
-    async onDone => {
+    async (onDone) => {
       if (!stakingContract || !connectedAgreementApp || !stakeManagement) {
         return
       }

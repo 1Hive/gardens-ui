@@ -14,7 +14,7 @@ function GardenTypeSelector() {
   const [selectedType] = useState(config.garden.type)
 
   const handleNext = useCallback(
-    selectedType => {
+    (selectedType) => {
       onConfigChange('garden', { type: selectedType })
       onNext()
     },
@@ -61,9 +61,22 @@ function GardenTypeSelector() {
   )
 }
 
-function Card({ title, onSelect, paragraph, selected, animationData }) {
-  const [isPlaying, setIsPlaying] = useState(false)
+type CardProps = {
+  title: string
+  onSelect: () => void
+  paragraph: string
+  selected: boolean
+  animationData: any
+}
 
+function Card({
+  title,
+  onSelect,
+  paragraph,
+  selected,
+  animationData,
+}: CardProps) {
+  const [isPlaying, setIsPlaying] = useState(false)
   const theme = useTheme()
 
   const handleStartAnimation = useCallback(() => {

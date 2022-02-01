@@ -35,18 +35,18 @@ export function ConvictionChart({ proposal, withThreshold = true, lines }) {
   const theme = useTheme()
 
   // We want conviction and threhsold in percentages
-  const normalize = n => n / maxConviction
-  const normalizeLines = lines => {
-    return lines.map(line => line.map(normalize))
+  const normalize = (n) => n / maxConviction
+  const normalizeLines = (lines) => {
+    return lines.map((line) => line.map(normalize))
   }
 
   return (
     <LineChart
       lines={normalizeLines(lines)}
       total={lines[0] && lines[0].length}
-      label={i => i - Math.floor((lines[0].length - 1) / 2)}
+      label={(i) => i - Math.floor((lines[0].length - 1) / 2)}
       captionsHeight={20}
-      color={i => [theme.info, theme.infoSurfaceContent][i]}
+      color={(i) => [theme.info, theme.infoSurfaceContent][i]}
       threshold={
         withThreshold &&
         !Number.isNaN(threshold) &&
@@ -75,6 +75,11 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
 
   const isSupporting = isEntitySupporting(proposal, account)
 
+  const percentageSupport = stakedConviction.eq(0)
+    ? '0'
+    : stakedConviction.multipliedBy(new BigNumber('100')).toFixed(2)
+  const totalSupportLabel = `${percentageSupport}% of the Total Support`
+
   return (
     <div>
       <SummaryBar
@@ -86,10 +91,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
       />
       <div>
         <span>
-          {stakedConviction.eq(0)
-            ? '0'
-            : stakedConviction.multipliedBy(new BigNumber('100')).toFixed(2)}
-          %{' of the Total Support '}
+          {totalSupportLabel}
           {!signalingProposal &&
             (withThreshold ? (
               <span
@@ -134,13 +136,8 @@ export function ConvictionCountdown({ proposal, shorter }) {
   const { config } = useGardenState()
   const { maxRatio, stakeToken } = config.conviction
 
-  const {
-    currentConviction,
-    loading,
-    neededTokens,
-    statusData,
-    threshold,
-  } = proposal
+  const { currentConviction, loading, neededTokens, statusData, threshold } =
+    proposal
   const endDate = useProposalEndDate(proposal)
 
   const view = useMemo(() => {
@@ -272,8 +269,9 @@ const NegativeOutcome = ({ maxRatio, neededTokens, shorter, stakeToken }) => {
           >
             (
             {isNaN(neededTokens) ? (
-              `Funding requests must be below ${maxRatio *
-                100}% of organization total funds`
+              `Funding requests must be below ${
+                maxRatio * 100
+              }% of organization total funds`
             ) : (
               <React.Fragment>
                 At least{' '}

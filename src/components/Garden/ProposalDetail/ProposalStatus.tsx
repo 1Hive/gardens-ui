@@ -1,11 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
+import { Colors } from '@nivo/core'
 
 import celesteIconSvg from '@assets/celeste-icon.svg'
 import challengeIconSvg from '@assets/challenge-icon.svg'
+import { ProposalType } from '@/hooks/constants'
 
-export function getStatusAttributes(proposal, theme) {
+export const ABSTAIN_PROPOSAL = 'Abstain proposal'
+
+type StatusAttributes =
+  | {
+      label: string
+      color: Colors
+      Icon?: typeof IconCheck | typeof IconCross
+      iconSrc?: string
+      background?: string
+      borderColor?: Colors
+    }
+  | undefined
+
+export const getStatusAttributes = (
+  proposal: ProposalType,
+  theme: any
+): StatusAttributes => {
   if (proposal.statusData.open) {
     return {
       label: 'Open',
@@ -57,21 +75,25 @@ export function getStatusAttributes(proposal, theme) {
   }
 }
 
-const ProposalStatus = ({ proposal }) => {
+type ProposalStatusProps = {
+  proposal: ProposalType
+}
+
+const ProposalStatus = ({ proposal }: ProposalStatusProps) => {
   const theme = useTheme()
 
-  const { Icon, iconSrc, color, label } = getStatusAttributes(proposal, theme)
+  const attributes = getStatusAttributes(proposal, theme)
 
   return (
     <Main
       css={`
         ${textStyle('body2')};
-        color: ${color || theme.surfaceContentSecondary};
+        color: ${attributes?.color || theme.surfaceContentSecondary};
       `}
     >
-      {iconSrc ? (
+      {attributes?.iconSrc ? (
         <img
-          src={iconSrc}
+          src={attributes.iconSrc}
           alt=""
           width="24"
           height="24"
@@ -81,9 +103,11 @@ const ProposalStatus = ({ proposal }) => {
           `}
         />
       ) : (
-        Icon && <Icon />
+        attributes?.Icon !== undefined && <attributes.Icon />
       )}
-      <StatusLabel spaced={Boolean(Icon)}>{label}</StatusLabel>
+      <StatusLabel spaced={Boolean(attributes?.Icon)}>
+        {attributes?.label}
+      </StatusLabel>
     </Main>
   )
 }
@@ -93,7 +117,9 @@ const Main = styled.span`
   align-items: center;
 `
 
-const StatusLabel = styled.span`
+const StatusLabel = styled.span<{
+  spaced?: boolean
+}>`
   margin-left: ${({ spaced }) => (spaced ? `${0.5 * GU}px` : '0')};
   text-transform: uppercase;
 `
