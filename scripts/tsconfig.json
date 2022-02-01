@@ -1,0 +1,11 @@
+// **Attention** That tsconfig.json only affect the ./scripts/ folder,
+// maybe you are looking for another tsconfig.json on the root path
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "strictNullChecks": true,
+    "strict": true,
+    "useUnknownInCatchVariables": false,
+    "target": "esnext"
+  }
+}
