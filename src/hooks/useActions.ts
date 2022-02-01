@@ -770,7 +770,10 @@ async function sendIntent(
 function imposeGasLimit(intent: any, gasLimit: number) {
   return {
     ...intent,
-    transactions: intent.transactions.map((tx: any) => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx: TransactionType) => ({
+      ...tx,
+      gasLimit,
+    })),
   }
 }
 
@@ -779,5 +782,9 @@ function attachTrxMetadata(
   description: string,
   type: actions
 ) {
-  return transactions.map((tx: any) => ({ ...tx, description, type }))
+  return transactions.map((tx: TransactionType) => ({
+    ...tx,
+    description,
+    type,
+  }))
 }
