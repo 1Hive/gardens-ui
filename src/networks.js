@@ -17,8 +17,8 @@ const networks = {
     type: 'rinkeby',
 
     hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
-    arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
-    disputeManager: '0xc1f1c30878de30fd3ac3db7eacdd33a70c7110bd',
+    arbitrator: '0xc2224d785d4e4bc92d5be6767a82d026ca2813fd',
+    disputeManager: '0xe87d5c7501ccc6a32126601d94d36c0d0cce2c18',
     template: '0x832a29b1d6c1dfca7075c62d222b40c05183aaae',
     explorer: 'etherscan',
 
