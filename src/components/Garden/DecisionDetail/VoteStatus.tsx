@@ -114,6 +114,15 @@ export const getStatusAttributes = (
       background: theme.background,
     }
   }
+  if (statusData.voided) {
+    return {
+      label: 'Voided',
+      Icon: IconCross,
+      color: theme.negative,
+      background: '#FFF8F8',
+      borderColor: theme.negative,
+    }
+  }
 }
 
 type VoteStatus = {

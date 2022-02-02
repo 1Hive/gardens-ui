@@ -134,8 +134,14 @@ export function getVoteSuccess(vote, pctBase) {
   )
 }
 
-export function getVoteStatusData(vote, hasEnded, pctBase) {
+export function getVoteStatusData(vote, hasEnded, pctBase, voidedDecisions) {
   const statusData = {}
+  
+  if(voidedDecisions && voidedDecisions.includes(vote.number)){
+    statusData.voided = true
+    return statusData
+  }
+
   if (!hasEnded) {
     if (vote.status === PROPOSAL_STATUS_ACTIVE_STRING) {
       statusData.open = true
