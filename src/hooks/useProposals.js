@@ -125,8 +125,6 @@ export function useProposal(proposalId, appAddress) {
     proposalId,
     appAddress
   )
-  const connectedGarden = useConnectedGarden()
-  console.log('CONNECTED GARDEN ', connectedGarden)
   const { chainId } = useConnectedGarden()
   const latestBlock = useLatestBlock(chainId)
   const { config, loading } = useGardenState()
@@ -144,7 +142,6 @@ export function useProposal(proposalId, appAddress) {
       : processProposal(proposal, latestBlock, account, config.conviction)
 
 
-      console.log('PROPOSAL WITH DATa ', proposalWithData)
   return [proposalWithData, blockHasLoaded, loadingProposal]
 }
 
@@ -294,7 +291,6 @@ function processDecision(proposal,voidedDecisions) {
     proposal.challengeEndDate
   )
   const statusData = getVoteStatusData(proposal, hasEnded, PCT_BASE, voidedDecisions)
-  console.log('PROPOSAL WITH DATa ', statusData)
 
   return {
     ...proposal,
