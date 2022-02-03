@@ -21,6 +21,7 @@ import radspec from '../radspec'
 import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
+import { ActionsType, TransactionType } from './constants'
 
 const APPROVE_GAS_LIMIT = 250000
 const CHALLENGE_GAS_LIMIT = 1000000
@@ -31,7 +32,7 @@ const SIGN_GAS_LIMIT = 100000
 const STAKE_GAS_LIMIT = 300000
 const WRAP_GAS_LIMIT = 1000000
 
-export default function useActions() {
+export default function useActions(): ActionsType {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
@@ -642,7 +643,7 @@ export default function useActions() {
         {
           data: updatePriceOracleData,
           from: account,
-          to: priceOracleContract.address,
+          to: priceOracleContract?.address,
         },
       ]
 
@@ -665,7 +666,7 @@ export default function useActions() {
         {
           data: getRewardData,
           from: account,
-          to: unipoolContract.address,
+          to: unipoolContract?.address,
         },
       ]
 
@@ -681,7 +682,7 @@ export default function useActions() {
     [account, mounted, unipoolContract]
   )
 
-  return useMemo(
+  return useMemo<ActionsType>(
     () => ({
       agreementActions: {
         approveTokenAmount,
@@ -745,11 +746,16 @@ export default function useActions() {
   )
 }
 
+type IntentArguments = {
+  ethers: any
+  from: string
+  gasLimit?: number
+}
 async function sendIntent(
-  app,
-  fn,
-  params,
-  { ethers, from, gasLimit = GAS_LIMIT }
+  app: any,
+  fn: string,
+  params: any,
+  { ethers, from, gasLimit = GAS_LIMIT }: IntentArguments
 ) {
   try {
     const intent = await app.intent(fn, params, { actAs: from })
@@ -761,13 +767,24 @@ async function sendIntent(
   }
 }
 
-function imposeGasLimit(intent, gasLimit) {
+function imposeGasLimit(intent: any, gasLimit: number) {
   return {
     ...intent,
-    transactions: intent.transactions.map((tx) => ({ ...tx, gasLimit })),
+    transactions: intent.transactions.map((tx: TransactionType) => ({
+      ...tx,
+      gasLimit,
+    })),
   }
 }
 
-function attachTrxMetadata(transactions, description, type) {
-  return transactions.map((tx) => ({ ...tx, description, type }))
+function attachTrxMetadata(
+  transactions: any,
+  description: string,
+  type: actions
+) {
+  return transactions.map((tx: TransactionType) => ({
+    ...tx,
+    description,
+    type,
+  }))
 }

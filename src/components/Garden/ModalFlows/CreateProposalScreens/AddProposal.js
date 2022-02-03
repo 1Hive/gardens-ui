@@ -44,7 +44,7 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
-const AddProposalPanel = React.memo(({ setProposalData }) => {
+const AddProposalPanel = ({ setProposalData }) => {
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
@@ -330,7 +330,7 @@ const AddProposalPanel = React.memo(({ setProposalData }) => {
       )}
     </form>
   )
-})
+}
 
 function RequestedAmount({
   amount,
@@ -471,4 +471,4 @@ function ConvertedAmount({ amount, loading, requestToken }) {
   )
 }
 
-export default AddProposalPanel
+export default React.memo(AddProposalPanel)

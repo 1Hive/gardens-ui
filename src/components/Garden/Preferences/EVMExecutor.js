@@ -66,7 +66,7 @@ function EVMExecutor({ evmcrispr }) {
     return evmcrispr.apps()
   }, [evmcrispr])
 
-  const shortenedAppsNames = installedApps.map(appName => {
+  const shortenedAppsNames = installedApps.map((appName) => {
     const dotIndex = appName.indexOf('.')
     return (
       SHORTENED_APPS_NAMES.get(
@@ -87,7 +87,7 @@ function EVMExecutor({ evmcrispr }) {
       appFunctions = evmcrispr.appMethods(appName)
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
-      appFunctions = formattedAbi.map(item => {
+      appFunctions = formattedAbi.map((item) => {
         if (item.type === 'function' && item.stateMutability !== 'view') {
           return item.name
         }
@@ -121,7 +121,7 @@ function EVMExecutor({ evmcrispr }) {
       })
     }
     if (interactionType === EXTERNAL_INDEX && formattedAbi) {
-      return formattedAbi[selectedFunction].inputs.map(parameter => {
+      return formattedAbi[selectedFunction].inputs.map((parameter) => {
         return [parameter.name, parameter.type]
       })
     }
@@ -155,7 +155,7 @@ function EVMExecutor({ evmcrispr }) {
 
   const handleOnChangeParameters = useCallback((index, event) => {
     const newValue = event.target.value
-    setParameters(prevState => {
+    setParameters((prevState) => {
       const newArray = [...prevState]
       newArray[index] = newValue
       return newArray
@@ -224,12 +224,12 @@ function EVMExecutor({ evmcrispr }) {
     code,
   ])
 
-  const handleOnContractAddressChange = useCallback(event => {
+  const handleOnContractAddressChange = useCallback((event) => {
     const value = event.target.value
     setExternalContractAddress(value)
   }, [])
 
-  const handleOnAbiChange = useCallback(event => {
+  const handleOnAbiChange = useCallback((event) => {
     const value = event.target.value
     setAbi(value)
     let iface
@@ -238,7 +238,7 @@ function EVMExecutor({ evmcrispr }) {
       iface = new utils.Interface(value)
       formattedAbi = iface.format(utils.FormatTypes.json)
       setFormattedAbi(
-        JSON.parse(formattedAbi).filter(item => {
+        JSON.parse(formattedAbi).filter((item) => {
           if (item.type === 'function' && item.stateMutability !== 'view') {
             return item.name
           }
@@ -257,7 +257,7 @@ function EVMExecutor({ evmcrispr }) {
     setCreateDecisionModalVisible(false)
   }, [])
 
-  const handleOnSetCode = useCallback(event => {
+  const handleOnSetCode = useCallback((event) => {
     const value = event.target.value
     setCode(value)
   }, [])
@@ -337,7 +337,7 @@ function EVMExecutor({ evmcrispr }) {
             return (
               <TextInput
                 key={index}
-                onChange={event => handleOnChangeParameters(index, event)}
+                onChange={(event) => handleOnChangeParameters(index, event)}
                 placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
                 wide
                 css={`

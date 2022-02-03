@@ -24,7 +24,7 @@ import CreateProposalRequirements from './CreateProposalRequirements'
 
 function GoToProposal() {
   const history = useHistory()
-  const [proposalId, setProposalId] = useState()
+  const [proposalId, setProposalId] = useState<string>()
   const { account, chainId, ethers } = useWallet()
   const mounted = useMounted()
   const txHash = getAccountSetting('lastTxHash', account, chainId)
@@ -33,7 +33,7 @@ function GoToProposal() {
     async function getProposalId() {
       const id = await extractProposalId(ethers, txHash, 'conviction')
 
-      if (mounted) {
+      if (mounted()) {
         setProposalId(fromDecimals(id.toString(), 18))
       }
     }
@@ -55,7 +55,7 @@ function GoToProposal() {
   )
 }
 
-function CreateProposalScreens({ onComplete }) {
+function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
   const [loading, setLoading] = useState(true)
   const [transactions, setTransactions] = useState([])
   const { account } = useWallet()
@@ -63,7 +63,7 @@ function CreateProposalScreens({ onComplete }) {
   const { stakeManagement, loading: stakingLoading } = useStakingState()
   const { convictionActions } = useActions()
 
-  const proposalData = useRef()
+  const proposalData = useRef<any>()
 
   useEffect(() => {
     setLoading(true)
@@ -75,9 +75,9 @@ function CreateProposalScreens({ onComplete }) {
     setLoading(agreementLoading || stakingLoading)
   }, [agreementLoading, stakingLoading])
 
-  const handleSetProposalData = useCallback((data) => {
+  const handleSetProposalData = (data: any) => {
     proposalData.current = data
-  }, [])
+  }
 
   const onCompleteMiddleware = useCallback(() => {
     throwConfetti({
@@ -93,32 +93,34 @@ function CreateProposalScreens({ onComplete }) {
     async (onComplete) => {
       const { amount, beneficiary, link, title } = proposalData.current
 
-      let params
-      let fn
+      const onDone = (intent: any) => {
+        setTransactions(intent)
+        onComplete()
+      }
+
       if (amount.valueBN.eq(0)) {
-        fn = 'newSignalingProposal'
-        params = {
-          title,
-          link,
-        }
+        await convictionActions.newSignalingProposal(
+          {
+            title,
+            link,
+          },
+          onDone
+        )
       } else {
         const convertedAmount = amount.valueBN.toString(10)
         const stableRequestAmount = amount.stable
 
-        fn = 'newProposal'
-        params = {
-          title,
-          link,
-          amount: convertedAmount,
-          stableRequestAmount,
-          beneficiary,
-        }
+        await convictionActions.newProposal(
+          {
+            title,
+            link,
+            amount: convertedAmount,
+            stableRequestAmount,
+            beneficiary,
+          },
+          onDone
+        )
       }
-
-      await convictionActions[fn](params, (intent) => {
-        setTransactions(intent)
-        onComplete()
-      })
     },
     [convictionActions, proposalData]
   )
