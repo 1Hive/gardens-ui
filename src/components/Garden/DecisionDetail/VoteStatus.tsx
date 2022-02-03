@@ -2,6 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { IconCheck, IconCross, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
+import {
+  PROPOSAL_STATUS_CANCELLED_STRING,
+  PROPOSAL_STATUS_CHALLENGED_STRING,
+  PROPOSAL_STATUS_SETTLED_STRING,
+  PROPOSAL_STATUS_VOIDED_STRING,
+} from '@/constants'
+
 import celesteIconSvg from '@assets/celeste-icon.svg'
 import challengeIconSvg from '@assets/challenge-icon.svg'
 
@@ -52,7 +59,7 @@ export const getStatusAttributes = (
   }
   if (statusData.cancelled) {
     return {
-      label: 'Cancelled',
+      label: PROPOSAL_STATUS_CANCELLED_STRING,
       Icon: IconCross,
       color: theme.negative,
       background: '#FFF8F8',
@@ -99,7 +106,7 @@ export const getStatusAttributes = (
   }
   if (statusData.challenged) {
     return {
-      label: 'Challenged',
+      label: PROPOSAL_STATUS_CHALLENGED_STRING,
       iconSrc: challengeIconSvg,
       color: '#F5A623',
       background: '#FFFDFA',
@@ -108,10 +115,19 @@ export const getStatusAttributes = (
   }
   if (statusData.settled) {
     return {
-      label: 'Settled',
+      label: PROPOSAL_STATUS_SETTLED_STRING,
       Icon: IconCross,
       color: theme.contentSecondary,
       background: theme.background,
+    }
+  }
+  if (statusData.voided) {
+    return {
+      label: PROPOSAL_STATUS_VOIDED_STRING,
+      Icon: IconCross,
+      color: theme.negative,
+      background: '#FFF8F8',
+      borderColor: theme.negative,
     }
   }
 }

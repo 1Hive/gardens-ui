@@ -72,6 +72,7 @@ function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
   const { config, loading } = useGardenState()
+  const { voidedDecisions } = useConnectedGarden()
 
   // Proposals already come filtered by Type from the subgraph.
   // We will filter locally by support filter and also for Decision proposals, we will filter by status
@@ -83,7 +84,7 @@ function useFilteredProposals(filters, account, latestBlock) {
 
     return proposals.map((proposal) => {
       return proposal.type === ProposalTypes.Decision
-        ? processDecision(proposal)
+        ? processDecision(proposal, voidedDecisions)
         : processProposal(proposal, latestBlock, account, config.conviction)
     })
   }, [account, config, latestBlock, loading, proposals])
@@ -127,6 +128,7 @@ export function useProposal(proposalId, appAddress) {
   const { chainId } = useConnectedGarden()
   const latestBlock = useLatestBlock(chainId)
   const { config, loading } = useGardenState()
+  const { voidedDecisions } = useConnectedGarden()
 
   const blockHasLoaded = latestBlock.number !== 0
 
@@ -136,7 +138,7 @@ export function useProposal(proposalId, appAddress) {
 
   const proposalWithData =
     proposal.type === ProposalTypes.Decision
-      ? processDecision(proposal)
+      ? processDecision(proposal, voidedDecisions)
       : processProposal(proposal, latestBlock, account, config.conviction)
 
   return [proposalWithData, blockHasLoaded, loadingProposal]
@@ -277,7 +279,7 @@ function processProposal(proposal, latestBlock, account, config) {
   }
 }
 
-function processDecision(proposal) {
+function processDecision(proposal, voidedDecisions) {
   const delegatedVotingEndDate = getDelegatedVotingEndDate(proposal)
   const endDate = getVoteEndDate(proposal)
   const executionDelayEndDate = getExecutionDelayEndDate(proposal, endDate)
@@ -287,7 +289,12 @@ function processDecision(proposal) {
     endDate,
     proposal.challengeEndDate
   )
-  const statusData = getVoteStatusData(proposal, hasEnded, PCT_BASE)
+  const statusData = getVoteStatusData(
+    proposal,
+    hasEnded,
+    PCT_BASE,
+    voidedDecisions
+  )
 
   return {
     ...proposal,

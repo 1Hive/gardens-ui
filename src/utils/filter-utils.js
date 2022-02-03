@@ -8,6 +8,7 @@ export const STATUS_FILTER_OPEN = 1
 export const STATUS_FILTER_COMPLETED = 2
 export const STATUS_FILTER_REMOVED = 3
 export const STATUS_FILTER_CHALLENGED = 4
+export const STATUS_FILTER_VOIDED = 5
 export const SUPPORT_FILTER_SUPPORTED = 1
 export const SUPPORT_FILTER_NOT_SUPPORTED = 2
 export const TYPE_FILTER_SUGGESTION = 1
@@ -53,6 +54,7 @@ export const STATUS_ITEMS = [
   'Completed',
   'Removed',
   'Challenged',
+  'Voided'
 ]
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
 export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision']
@@ -73,6 +75,11 @@ export function testStatusFilter(filter, proposal) {
     return true
   }
   const { statusData } = proposal
+
+  //Voided
+  if(filter === STATUS_FILTER_VOIDED && statusData.voided){
+    return true
+  }
 
   // Open
   if (
