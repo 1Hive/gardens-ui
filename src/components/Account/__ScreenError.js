@@ -10,6 +10,8 @@ function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
 
+  console.log(`AccountModuleErrorScreen`, error)
+
   let networkNames = ''
   SUPPORTED_CHAINS.forEach((chain, i, array) => {
     networkNames += getNetworkName(chain)

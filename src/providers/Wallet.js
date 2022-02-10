@@ -99,13 +99,15 @@ function useConnection() {
     isConnected,
     reset,
   } = useWallet()
+
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
   const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
   const connect = useCallback(
-    async connector => {
+    async (connector) => {
+      console.log(`UseConnection Connecting...`)
       try {
         await connectWallet(connector)
       } catch (err) {
@@ -130,13 +132,13 @@ function useConnection() {
     await reset()
   }, [reset])
 
-  const handlePreferredNetworkChange = useCallback(chainId => {
+  const handlePreferredNetworkChange = useCallback((chainId) => {
     setPreferredNetwork(chainId)
     setPreferredChain(chainId)
   }, [])
 
   const handleNetworkSwtich = useCallback(
-    async chainId => {
+    async (chainId) => {
       if (connector === 'injected') {
         try {
           setSwitchingNetworks(true)
@@ -158,9 +160,12 @@ function useConnection() {
       if (SUPPORTED_CHAINS.includes(chainId)) {
         setPreferredChain(chainId)
         setPreferredNetwork(chainId)
+      } else {
+        console.log(`BBB`)
       }
+      console.log(`AAAA`)
     }
-  }, [chainId, isConnected]) // eslint-disable-line 
+  }, [chainId, isConnected]) // eslint-disable-line
 
   return {
     connect,

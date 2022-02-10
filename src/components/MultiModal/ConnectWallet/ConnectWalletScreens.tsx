@@ -1,23 +1,19 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import ConnectWallet from './ConnectWallet'
 import ScreenProvidersWrapper from './ScreenProvidersWrapper'
 import MultiModalScreens from '@/components/MultiModal/MultiModalScreens'
-import ScreenErrorWrapper from './ScreenErrorWrapper'
-import { useWallet } from '@providers/Wallet'
+import useWalletError from '@/hooks/useWalletError'
 
-function ConectWalletScreens({ onSuccess, onClose }) {
-  const [error, setError] = useState(null)
-  const { resetConnection } = useWallet()
+type ConectWalletScreensProps = {
+  onSuccess: () => void
+  onClose: () => void
+}
 
-  const handleOnError = useCallback(e => {
-    setError(e)
-  }, [])
+function ConectWalletScreens({ onSuccess, onClose }: ConectWalletScreensProps) {
+  const { error, handleOnError, handleTryAgain } = useWalletError()
 
-  const handleTryAgain = useCallback(() => {
-    resetConnection()
-    setError(null)
-  }, [resetConnection])
+  console.log(`ConectWalletScreens`, error)
 
   const screens = useMemo(() => {
     return [
@@ -34,11 +30,6 @@ function ConectWalletScreens({ onSuccess, onClose }) {
             onError={handleOnError}
           />
         ),
-        width: 550,
-      },
-      {
-        graphicHeader: false,
-        content: <ScreenErrorWrapper error={error} onBack={handleTryAgain} />,
         width: 550,
       },
     ]

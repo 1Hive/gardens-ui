@@ -9,7 +9,7 @@ function ScreenProvidersWrapper({ onError, onSuccess }) {
   const { next } = useMultiModal()
 
   const activate = useCallback(
-    async providerId => {
+    async (providerId) => {
       try {
         await connect(providerId)
       } catch (error) {
