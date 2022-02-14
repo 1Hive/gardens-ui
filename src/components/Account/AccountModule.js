@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Button, ButtonBase, GU, IconConnect } from '@1hive/1hive-ui'
+import {
+  Button,
+  ButtonBase,
+  GU,
+  IconConnect,
+  IconCanvas,
+} from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
 
 import AccountButton from './AccountButton'
@@ -8,7 +14,7 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
-import styled from 'styled-components'
+import { switchNetwork } from '@/networks'
 
 const SCREENS = [
   {
@@ -55,26 +61,6 @@ function AccountModule({ compact }) {
     }
   }
 
-  // Always show the “connecting…” screen, even if there are no delay
-  useEffect(() => {
-    if (error) {
-      setActivatingDelayed(null)
-    }
-
-    if (activating) {
-      setActivatingDelayed(activating)
-      return
-    }
-
-    const timer = setTimeout(() => {
-      setActivatingDelayed(null)
-    }, 500)
-
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [activating, error])
-
   const previousScreenIndex = useRef(-1)
 
   const { direction, screenIndex } = useMemo(() => {
@@ -96,6 +82,9 @@ function AccountModule({ compact }) {
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
+  const isWrongNetwork = isSupportedNetwork === false
+
+  console.log(`isWrongNetwork`, isWrongNetwork)
 
   const handlePopoverClose = useCallback(
     (reject) => {
@@ -117,42 +106,50 @@ function AccountModule({ compact }) {
       setOpened(true)
     }
 
-    if (screen.id === 'error' && isSupportedNetwork === false) {
+    if (screenId === 'error' || isWrongNetwork === false) {
       setOpened(false)
     }
-  }, [screenId])
-
-  const handleWrongNetwork = useCallback(() => {
-    console.log(`Reset Connection`)
-    resetConnection()
-
-    console.log(`Opening Metamask`)
-    //activate('injected')
-  }, [activate])
+  }, [screenId, isWrongNetwork])
 
   const HeaderButton = () => {
     return screen.id === 'connected' ? (
       <AccountButton onClick={toggle} />
-    ) : screen.id === 'error' && isSupportedNetwork === false ? (
-      <ButtonBase
-        onClick={handleWrongNetwork}
-        css={`
-          background-color: rgb(255, 104, 113);
-          border: 1px solid rgb(255, 104, 113);
-          color: #fff;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 24px 0 16px;
-          width: 100%;
-          height: 40px;
-          border-radius: 12px;
-        `}
-      >
-        <IconConnect />
-        Wrong Network
-      </ButtonBase>
+    ) : isWrongNetwork ? (
+      <>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto auto',
+            gap: '8px',
+          }}
+        >
+          <Button
+            icon={<IconCanvas />}
+            label="Switch wallet to xDai"
+            onClick={async () => await switchNetwork(100)}
+            display={compact ? 'icon' : 'all'}
+            style={{
+              boxShadow: 'none',
+            }}
+          />
+          <ButtonBase
+            css={`
+              background-color: rgb(255, 104, 113);
+              border: 1px solid rgb(255, 104, 113);
+              color: #fff;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 24px 0 16px;
+              width: 100%;
+              height: 40px;
+            `}
+          >
+            Wrong Network
+          </ButtonBase>
+        </div>
+      </>
     ) : (
       <Button
         icon={<IconConnect />}

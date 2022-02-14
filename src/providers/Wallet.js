@@ -10,6 +10,7 @@ import { UseWalletProvider, useWallet } from 'use-wallet'
 
 import { getDefaultProvider } from '@utils/web3-utils'
 import {
+  isSupportedConnectedChain,
   getEthersNetwork,
   isSupportedChain,
   SUPPORTED_CHAINS,
@@ -50,13 +51,24 @@ function WalletAugmented({ children }) {
     )
   }, [chainId, connected, ethereum, preferredNetwork])
 
+  useEffect(() => {
+    console.log(`connected`, connected)
+    console.log(`isSupportedConnectedChain`, isSupportedChain())
+
+    if (connected) {
+      // is connected and should connect
+      console.log(`CONNECT!!!`)
+      connect('injected')
+    }
+  }, [])
+
   const contextValue = useMemo(
     () => ({
       ...wallet,
       connect,
       connected,
       ethers,
-      isSupportedNetwork: isSupportedChain(wallet.chainId),
+      isSupportedNetwork: isSupportedConnectedChain(),
       onNetworkSwitch,
       onPreferredNetworkChange,
       preferredNetwork,
@@ -102,12 +114,12 @@ function useConnection() {
 
   /* We need  to pass down on the providers tree a preferred network in case that there is no network connnected
   or the connected network is not supported in order to show some data and also to react to the network drop down selector changes */
+
   const [preferredNetwork, setPreferredNetwork] = useState(getPreferredChain())
   const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
   const connect = useCallback(
     async (connector) => {
-      console.log(`UseConnection Connecting...`)
       try {
         await connectWallet(connector)
       } catch (err) {
@@ -137,7 +149,7 @@ function useConnection() {
     setPreferredChain(chainId)
   }, [])
 
-  const handleNetworkSwtich = useCallback(
+  const handleNetworkSwitch = useCallback(
     async (chainId) => {
       if (connector === 'injected') {
         try {
@@ -153,6 +165,19 @@ function useConnection() {
     [connector]
   )
 
+  const networkChanged = (chainId) => {
+    console.log(`NetworkChanges`, { chainId })
+    handleNetworkSwitch(chainId)
+  }
+
+  useEffect(() => {
+    window.ethereum.on('chainChanged', networkChanged)
+
+    return () => {
+      window.ethereum.removeListener('chainChanged', networkChanged)
+    }
+  }, [])
+
   // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
   // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies
   useEffect(() => {
@@ -160,16 +185,13 @@ function useConnection() {
       if (SUPPORTED_CHAINS.includes(chainId)) {
         setPreferredChain(chainId)
         setPreferredNetwork(chainId)
-      } else {
-        console.log(`BBB`)
       }
-      console.log(`AAAA`)
     }
   }, [chainId, isConnected]) // eslint-disable-line
 
   return {
     connect,
-    onNetworkSwitch: handleNetworkSwtich,
+    onNetworkSwitch: handleNetworkSwitch,
     onPreferredNetworkChange: handlePreferredNetworkChange,
     preferredNetwork,
     resetConnection,

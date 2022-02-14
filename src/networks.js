@@ -170,6 +170,17 @@ export const switchNetwork = async (chainId) => {
   }
 }
 
+export function isSupportedConnectedChain() {
+  if (window.ethereum) {
+    console.log(`network`, Number(window.ethereum.chainId.replace('0x', '')))
+    return SUPPORTED_CHAINS.includes(
+      Number(window.ethereum.chainId.replace('0x', ''))
+    )
+  }
+
+  return false
+}
+
 export function getAvailableNetworks() {
   return Object.entries(networks).map(([key, { chainId, name, type }]) => ({
     chainId,
