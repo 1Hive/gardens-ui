@@ -10,9 +10,8 @@ import { UseWalletProvider, useWallet } from 'use-wallet'
 
 import { getDefaultProvider } from '@utils/web3-utils'
 import {
-  isSupportedConnectedChain,
   getEthersNetwork,
-  isSupportedChain,
+  isSupportedConnectedChain,
   SUPPORTED_CHAINS,
   switchNetwork,
 } from '@/networks'
@@ -52,12 +51,8 @@ function WalletAugmented({ children }) {
   }, [chainId, connected, ethereum, preferredNetwork])
 
   useEffect(() => {
-    console.log(`connected`, connected)
-    console.log(`isSupportedConnectedChain`, isSupportedChain())
-
+    // is connected and the network is supported
     if (connected) {
-      // is connected and should connect
-      console.log(`CONNECT!!!`)
       connect('injected')
     }
   }, [])
@@ -68,7 +63,6 @@ function WalletAugmented({ children }) {
       connect,
       connected,
       ethers,
-      isSupportedNetwork: isSupportedConnectedChain(),
       onNetworkSwitch,
       onPreferredNetworkChange,
       preferredNetwork,
@@ -101,6 +95,26 @@ function WalletProvider({ children }) {
       <WalletAugmented>{children}</WalletAugmented>
     </UseWalletProvider>
   )
+}
+
+export const useSupportedChain = () => {
+  const [isSupportedNetwork, setIsSupportedNetwork] = useState(
+    isSupportedConnectedChain()
+  )
+
+  const networkChanged = () => {
+    setIsSupportedNetwork(isSupportedConnectedChain())
+  }
+
+  useEffect(() => {
+    window.ethereum.on('chainChanged', networkChanged)
+
+    return () => {
+      window.ethereum.removeListener('chainChanged', networkChanged)
+    }
+  }, [])
+
+  return isSupportedNetwork
 }
 
 function useConnection() {
@@ -164,19 +178,6 @@ function useConnection() {
     },
     [connector]
   )
-
-  const networkChanged = (chainId) => {
-    console.log(`NetworkChanges`, { chainId })
-    handleNetworkSwitch(chainId)
-  }
-
-  useEffect(() => {
-    window.ethereum.on('chainChanged', networkChanged)
-
-    return () => {
-      window.ethereum.removeListener('chainChanged', networkChanged)
-    }
-  }, [])
 
   // This useEffect is needed because we don't have immediately available wallet.chainId right after connecting in the previous hook
   // We just want to trigger this effect on wallet network change, so we´ll remove preferredNetwork from the useEffect dependencies

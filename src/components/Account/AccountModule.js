@@ -6,7 +6,7 @@ import {
   IconConnect,
   IconCanvas,
 } from '@1hive/1hive-ui'
-import { useWallet } from '@providers/Wallet'
+import { useSupportedChain, useWallet } from '@providers/Wallet'
 
 import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
@@ -36,6 +36,7 @@ const SCREENS = [
 
 function AccountModule({ compact }) {
   const buttonRef = useRef()
+  const isSupportedNetwork = useSupportedChain()
 
   const {
     account,
@@ -45,7 +46,6 @@ function AccountModule({ compact }) {
     error,
     resetConnection,
     switchingNetworks,
-    isSupportedNetwork,
   } = useWallet()
 
   const [opened, setOpened] = useState(false)
@@ -82,9 +82,6 @@ function AccountModule({ compact }) {
 
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
-  const isWrongNetwork = isSupportedNetwork === false
-
-  console.log(`isWrongNetwork`, isWrongNetwork)
 
   const handlePopoverClose = useCallback(
     (reject) => {
@@ -106,50 +103,48 @@ function AccountModule({ compact }) {
       setOpened(true)
     }
 
-    if (screenId === 'error' || isWrongNetwork === false) {
+    if (screenId === 'error' || isSupportedNetwork === false) {
       setOpened(false)
     }
-  }, [screenId, isWrongNetwork])
+  }, [screenId])
 
   const HeaderButton = () => {
     return screen.id === 'connected' ? (
       <AccountButton onClick={toggle} />
-    ) : isWrongNetwork ? (
-      <>
-        <div
+    ) : isSupportedNetwork === false ? (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto auto',
+          gap: '8px',
+        }}
+      >
+        <Button
+          icon={<IconCanvas />}
+          label="Switch wallet to xDai"
+          onClick={async () => await switchNetwork(100)}
+          display={compact ? 'icon' : 'all'}
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'auto auto',
-            gap: '8px',
+            boxShadow: 'none',
           }}
+        />
+        <ButtonBase
+          css={`
+            background-color: rgb(255, 104, 113);
+            border: 1px solid rgb(255, 104, 113);
+            color: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px 0 16px;
+            width: 100%;
+            height: 40px;
+          `}
         >
-          <Button
-            icon={<IconCanvas />}
-            label="Switch wallet to xDai"
-            onClick={async () => await switchNetwork(100)}
-            display={compact ? 'icon' : 'all'}
-            style={{
-              boxShadow: 'none',
-            }}
-          />
-          <ButtonBase
-            css={`
-              background-color: rgb(255, 104, 113);
-              border: 1px solid rgb(255, 104, 113);
-              color: #fff;
-              position: relative;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              padding: 0 24px 0 16px;
-              width: 100%;
-              height: 40px;
-            `}
-          >
-            Wrong Network
-          </ButtonBase>
-        </div>
-      </>
+          Wrong Network
+        </ButtonBase>
+      </div>
     ) : (
       <Button
         icon={<IconConnect />}
