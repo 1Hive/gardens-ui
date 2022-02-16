@@ -36,9 +36,6 @@ const ENV_VARS = {
   ETHERSCAN_API_KEY() {
     return process.env.REACT_APP_ETHERSCAN_API_KEY || null
   },
-  PORTIS_ID() {
-    return process.env.REACT_APP_PORTIS_ID || ''
-  },
   GITHUB_API_TOKEN() {
     return process.env.REACT_APP_GITHUB_API_TOKEN || ''
   },
