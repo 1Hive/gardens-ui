@@ -15,7 +15,7 @@ import HeaderModule from '../Header/HeaderModule'
 import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@/providers/Wallet'
 
-function AccountButton({ onClick }) {
+function AccountConnectedButton({ onClick }) {
   const theme = useTheme()
   const { account, image, name } = useProfile()
   const { chainId } = useWallet()
@@ -86,8 +86,9 @@ function AccountButton({ onClick }) {
     />
   )
 }
-AccountButton.propTypes = {
+
+AccountConnectedButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
 
-export default AccountButton
+export default AccountConnectedButton

@@ -1,21 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  Button,
-  ButtonBase,
-  GU,
-  IconConnect,
-  IconCanvas,
-} from '@1hive/1hive-ui'
+import { GU } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
+import useSupportedChain from '@/hooks/useSupportedChain'
 
-import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
-import { switchNetwork } from '@/networks'
-import useSupportedChain from '@/hooks/useSupportedChain'
+import HeaderButton from './Buttons/HeaderButtons'
 
 const SCREENS = [
   {
@@ -129,53 +122,6 @@ function AccountModule({ compact }) {
     }
   }, [screenId])
 
-  const HeaderButton = () => {
-    return screen.id === 'connected' ? (
-      <AccountButton onClick={toggle} />
-    ) : isSupportedNetwork === false ? (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto auto',
-          gap: '8px',
-        }}
-      >
-        <Button
-          icon={<IconCanvas />}
-          label="Switch wallet to xDai"
-          onClick={async () => await switchNetwork(100)}
-          display={compact ? 'icon' : 'all'}
-          style={{
-            boxShadow: 'none',
-          }}
-        />
-        <ButtonBase
-          css={`
-            background-color: rgb(255, 104, 113);
-            border: 1px solid rgb(255, 104, 113);
-            color: #fff;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 24px 0 16px;
-            width: 100%;
-            height: 40px;
-          `}
-        >
-          Wrong Network
-        </ButtonBase>
-      </div>
-    ) : (
-      <Button
-        icon={<IconConnect />}
-        label="Enable account"
-        onClick={toggle}
-        display={compact ? 'icon' : 'all'}
-      />
-    )
-  }
-
   return (
     <div
       ref={buttonRef}
@@ -187,7 +133,7 @@ function AccountModule({ compact }) {
         outline: 0;
       `}
     >
-      <HeaderButton />
+      <HeaderButton toggle={toggle} compact={compact} screenId={screen.id} />
       <HeaderPopover
         direction={direction}
         heading={screen.title}
