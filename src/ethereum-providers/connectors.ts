@@ -1,6 +1,6 @@
 import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
 import env from '@/environment'
-import { useWallet } from '@/providers/Wallet'
+import { getPreferredChain } from '@/local-settings'
 
 const PORTIS_ID = env('PORTIS_ID')
 const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
@@ -29,7 +29,7 @@ export const CONNECTORS = [
         4: RINKEBY_ETH_NODE,
       },
       desktop: true,
-      networkId: null,
+      networkId: getPreferredChain(),
       bridge: WALLET_CONNECT_BRIDGE_ENDPOINT,
       pollingInterval: 12000,
     },
@@ -47,15 +47,7 @@ export const CONNECTORS = [
 
 // the final data that we pass to use-wallet package.
 export const useWalletConnectors = CONNECTORS.reduce((acc, connector) => {
-  const { preferredNetwork } = useWallet()
   if (connector !== null) {
-    // handler the correct networkId
-    if (connector.id === 'walletconnect') {
-      connector.properties = {
-        ...connector.properties,
-        networkId: preferredNetwork,
-      }
-    }
     acc = { ...acc, [connector.id]: connector.properties ?? {} }
   }
   return acc
