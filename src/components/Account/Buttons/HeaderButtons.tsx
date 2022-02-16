@@ -5,18 +5,12 @@ import { switchNetwork } from '@/networks'
 import useSupportedChain from '@/hooks/useSupportedChain'
 import AccountConnectedButton from './ConnectedButton'
 
-type HeaderButtonProps = {
-  screenId: string
-  toggle: () => void
+type WrongNetworkButton = {
   compact: any
 }
 
-const HeaderButton = ({ screenId, toggle, compact }: HeaderButtonProps) => {
-  const isSupportedNetwork = useSupportedChain()
-
-  return screenId === 'connected' ? (
-    <AccountConnectedButton onClick={toggle} />
-  ) : isSupportedNetwork === false ? (
+const WrongNetworkButton = ({ compact }: WrongNetworkButton) => {
+  return (
     <div
       style={{
         display: 'grid',
@@ -50,6 +44,22 @@ const HeaderButton = ({ screenId, toggle, compact }: HeaderButtonProps) => {
         Wrong Network
       </ButtonBase>
     </div>
+  )
+}
+
+type HeaderButtonProps = {
+  screenId: string
+  toggle: () => void
+  compact: any
+}
+
+const HeaderButtons = ({ screenId, toggle, compact }: HeaderButtonProps) => {
+  const isSupportedNetwork = useSupportedChain()
+
+  return screenId === 'connected' ? (
+    <AccountConnectedButton onClick={toggle} />
+  ) : isSupportedNetwork === false ? (
+    <WrongNetworkButton compact={compact} />
   ) : (
     <Button
       icon={<IconConnect />}
@@ -60,4 +70,4 @@ const HeaderButton = ({ screenId, toggle, compact }: HeaderButtonProps) => {
   )
 }
 
-export default HeaderButton
+export default HeaderButtons

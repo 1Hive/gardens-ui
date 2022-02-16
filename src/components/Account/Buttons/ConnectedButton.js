@@ -10,7 +10,7 @@ import {
 } from '@1hive/1hive-ui'
 
 import { useProfile } from '@providers/Profile'
-import HeaderModule from '../Header/HeaderModule'
+import HeaderModule from '../../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@/providers/Wallet'

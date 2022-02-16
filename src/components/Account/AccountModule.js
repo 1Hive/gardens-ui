@@ -8,7 +8,7 @@ import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
-import HeaderButton from './Buttons/HeaderButtons'
+import HeaderButtons from './Buttons/HeaderButtons'
 
 const SCREENS = [
   {
@@ -133,7 +133,7 @@ function AccountModule({ compact }) {
         outline: 0;
       `}
     >
-      <HeaderButton toggle={toggle} compact={compact} screenId={screen.id} />
+      <HeaderButtons toggle={toggle} compact={compact} screenId={screen.id} />
       <HeaderPopover
         direction={direction}
         heading={screen.title}
