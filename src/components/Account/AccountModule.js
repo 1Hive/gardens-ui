@@ -6,7 +6,7 @@ import {
   IconConnect,
   IconCanvas,
 } from '@1hive/1hive-ui'
-import { useSupportedChain, useWallet } from '@providers/Wallet'
+import { useWallet } from '@providers/Wallet'
 
 import AccountButton from './AccountButton'
 import ScreenProviders from './ScreenProviders'
@@ -15,6 +15,7 @@ import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 import { switchNetwork } from '@/networks'
+import useSupportedChain from '@/hooks/useSupportedChain'
 
 const SCREENS = [
   {
@@ -60,6 +61,26 @@ function AccountModule({ compact }) {
       console.log('error ', error)
     }
   }
+
+  // Always show the “connecting…” screen, even if there are no delay
+  useEffect(() => {
+    if (error) {
+      setActivatingDelayed(null)
+    }
+
+    if (activating) {
+      setActivatingDelayed(activating)
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setActivatingDelayed(null)
+    }, 500)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [activating, error])
 
   const previousScreenIndex = useRef(-1)
 
