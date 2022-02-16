@@ -11,10 +11,14 @@ const useSupportedChain = () => {
   }
 
   useEffect(() => {
-    window.ethereum.on('chainChanged', networkChanged)
+    if (window.ethereum) {
+      window.ethereum.on('chainChanged', networkChanged)
+    }
 
     return () => {
-      window.ethereum.removeListener('chainChanged', networkChanged)
+      if (window.ethereum) {
+        window.ethereum.removeListener('chainChanged', networkChanged)
+      }
     }
   }, [])
 
