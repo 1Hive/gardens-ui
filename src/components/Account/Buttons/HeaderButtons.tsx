@@ -98,8 +98,7 @@ const HeaderButtons = ({ screenId, toggle, compact }: HeaderButtonProps) => {
 
   const handleNetworkChange = useCallback(
     (index) => {
-      const chainId = SUPPORTED_CHAINS[index]
-      onPreferredNetworkChange(chainId)
+      onPreferredNetworkChange(SUPPORTED_CHAINS[index])
     },
     [onPreferredNetworkChange]
   )
