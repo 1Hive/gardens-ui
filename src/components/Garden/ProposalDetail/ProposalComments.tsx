@@ -8,6 +8,7 @@ type ProposalCommentsProps = {
 
 function ProposalComments({ link }: ProposalCommentsProps) {
   const { layoutName } = useLayout()
+  
 
   // We take the last section of the link that includes the topicId
   const discourseTopicId = link.split('/').reverse()[0]
@@ -21,7 +22,7 @@ function ProposalComments({ link }: ProposalCommentsProps) {
               padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
             `}
           >
-            <DiscourseComments topicId={discourseTopicId} />
+            <DiscourseComments {...{ topicId: discourseTopicId }} />
           </div>
         )
       }
