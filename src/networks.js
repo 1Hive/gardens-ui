@@ -11,8 +11,6 @@ const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
 export const SUPPORTED_CHAINS = [4, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
 
-export const SUPPORTED_XCHAINS = ['0x64', '0x89', '0x4']
-
 const networks = {
   rinkeby: {
     chainId: 4,
@@ -174,12 +172,12 @@ export const switchNetwork = async (chainId) => {
   }
 }
 
-export function isSupportedConnectedChain() {
-  if (window.ethereum) {
-    return SUPPORTED_XCHAINS.includes(window.ethereum.chainId)
-  }
-
-  return false
+export function isSupportedConnectedChain(chainId) {
+  console.log(
+    `isSupportedConnectedChain - 0x${chainId} - ${chainId}`,
+    SUPPORTED_CHAINS.includes(chainId)
+  )
+  return SUPPORTED_CHAINS.includes(chainId)
 }
 
 export function getAvailableNetworks() {

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GU } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
-import useSupportedChain from '@/hooks/useSupportedChain'
 
 import ScreenProviders from './ScreenProviders'
 import ScreenConnected from './ScreenConnected'
@@ -9,6 +8,7 @@ import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 import HeaderButtons from './Buttons/HeaderButtons'
+import { isSupportedConnectedChain } from '@/networks'
 
 const SCREENS = [
   {
@@ -30,9 +30,9 @@ const SCREENS = [
 
 function AccountModule({ compact }) {
   const buttonRef = useRef()
-  const isSupportedNetwork = useSupportedChain()
 
   const {
+    chainId,
     account,
     activating,
     connect,
@@ -41,6 +41,10 @@ function AccountModule({ compact }) {
     resetConnection,
     switchingNetworks,
   } = useWallet()
+
+  const [isSupportedNetwork, setIsSupportedNetwork] = useState(
+    isSupportedConnectedChain(chainId)
+  )
 
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
@@ -79,10 +83,10 @@ function AccountModule({ compact }) {
 
   const { direction, screenIndex } = useMemo(() => {
     const screenId = (() => {
+      if (account) return 'connected'
       if (error) return 'error'
       if (activatingDelayed) return 'connecting'
       if (switchingNetworks) return 'networks'
-      if (account) return 'connected'
       return 'providers'
     })()
 
@@ -122,6 +126,21 @@ function AccountModule({ compact }) {
     }
   }, [screenId])
 
+  useEffect(() => {
+    if (window?.ethereum !== undefined) {
+      window?.ethereum.on('chainChanged', (newChainId) => {
+        console.log(`chainChanged`, newChainId)
+        setIsSupportedNetwork(isSupportedConnectedChain(newChainId))
+      })
+    }
+
+    return () => {
+      if (window?.ethereum !== undefined) {
+        window?.ethereum?.removeListener('chainChanged', () => null)
+      }
+    }
+  }, [window?.ethereum])
+
   return (
     <div
       ref={buttonRef}
@@ -133,7 +152,12 @@ function AccountModule({ compact }) {
         outline: 0;
       `}
     >
-      <HeaderButtons toggle={toggle} compact={compact} screenId={screen.id} />
+      <HeaderButtons
+        toggle={toggle}
+        compact={compact}
+        screenId={screen.id}
+        isSupportedNetwork={isSupportedNetwork}
+      />
       <HeaderPopover
         direction={direction}
         heading={screen.title}

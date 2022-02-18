@@ -1,9 +1,6 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { DropDown, GU, SearchInput, useLayout } from '@1hive/1hive-ui'
-import { useWallet } from '@providers/Wallet'
-import { SUPPORTED_CHAINS } from '@/networks'
-import { getNetworkName } from '@utils/web3-utils'
 
 const GardensFilters = ({
   itemsSorting,
@@ -13,18 +10,6 @@ const GardensFilters = ({
   onSortingFilterChange,
 }) => {
   const { layoutName } = useLayout()
-  const { onPreferredNetworkChange, preferredNetwork } = useWallet()
-
-  const supportedChains = SUPPORTED_CHAINS.map(chain => getNetworkName(chain))
-  const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
-
-  const handleNetworkChange = useCallback(
-    index => {
-      const chainId = SUPPORTED_CHAINS[index]
-      onPreferredNetworkChange(chainId)
-    },
-    [onPreferredNetworkChange]
-  )
 
   return (
     <div
@@ -35,14 +20,6 @@ const GardensFilters = ({
         flex-wrap: wrap;
       `}
     >
-      <FilterItem>
-        <DropDown
-          items={supportedChains}
-          onChange={handleNetworkChange}
-          selected={selectedIndex}
-          wide
-        />
-      </FilterItem>
       <FilterItem>
         <DropDown
           header="Sort by"

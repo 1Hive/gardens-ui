@@ -8,7 +8,6 @@ import {
 } from '@1hive/1hive-ui'
 import { SUPPORTED_CHAINS, switchNetwork } from '@/networks'
 
-import useSupportedChain from '@/hooks/useSupportedChain'
 import AccountConnectedButton from './ConnectedButton'
 import { useWallet } from '@/providers/Wallet'
 import { getNetworkName } from '@/utils/web3-utils'
@@ -16,9 +15,21 @@ import styled from 'styled-components'
 
 type WrongNetworkButton = {
   compact: any
+  handleNetworkChange: (index: number) => void
 }
 
-const WrongNetworkButton = ({ compact }: WrongNetworkButton) => {
+const WrongNetworkButton = ({
+  compact,
+  handleNetworkChange,
+}: WrongNetworkButton) => {
+  const handleWrongNetworkChange = async () => {
+    try {
+      await switchNetwork(100)
+    } catch (error) {
+      handleNetworkChange(1)
+    }
+  }
+
   return (
     <div
       style={{
@@ -28,7 +39,7 @@ const WrongNetworkButton = ({ compact }: WrongNetworkButton) => {
       }}
     >
       <Button
-        onClick={async () => await switchNetwork(100)}
+        onClick={handleWrongNetworkChange}
         css={`
           overflow: hidden;
           box-shadow: none;
@@ -76,6 +87,7 @@ type HeaderButtonProps = {
   screenId: string
   toggle: () => void
   compact: any
+  isSupportedNetwork: boolean
 }
 
 const ProviderDropdown = styled(DropDown)`
@@ -88,10 +100,15 @@ const ProviderDropdown = styled(DropDown)`
   }
 `
 
-const HeaderButtons = ({ screenId, toggle, compact }: HeaderButtonProps) => {
+const HeaderButtons = ({
+  screenId,
+  toggle,
+  compact,
+  isSupportedNetwork,
+}: HeaderButtonProps) => {
   const theme = useTheme()
-  const isSupportedNetwork = useSupportedChain()
-  const { preferredNetwork, onPreferredNetworkChange } = useWallet()
+  const { preferredNetwork, onPreferredNetworkChange, onNetworkSwitch } =
+    useWallet()
 
   const supportedChains = SUPPORTED_CHAINS.map((chain) => getNetworkName(chain))
   const selectedIndex = SUPPORTED_CHAINS.indexOf(preferredNetwork)
@@ -99,9 +116,12 @@ const HeaderButtons = ({ screenId, toggle, compact }: HeaderButtonProps) => {
   const handleNetworkChange = useCallback(
     (index) => {
       onPreferredNetworkChange(SUPPORTED_CHAINS[index])
+      onNetworkSwitch(SUPPORTED_CHAINS[index])
     },
     [onPreferredNetworkChange]
   )
+
+  console.log(`HeaderButtons isSupportedNetwork`, isSupportedNetwork)
 
   return (
     <div
@@ -116,7 +136,10 @@ const HeaderButtons = ({ screenId, toggle, compact }: HeaderButtonProps) => {
       {screenId === 'connected' ? (
         <AccountConnectedButton onClick={toggle} />
       ) : isSupportedNetwork === false ? (
-        <WrongNetworkButton compact={compact} />
+        <WrongNetworkButton
+          compact={compact}
+          handleNetworkChange={handleNetworkChange}
+        />
       ) : (
         <Button
           icon={<IconConnect />}
