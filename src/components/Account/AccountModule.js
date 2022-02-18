@@ -42,9 +42,7 @@ function AccountModule({ compact }) {
     switchingNetworks,
   } = useWallet()
 
-  const [isSupportedNetwork, setIsSupportedNetwork] = useState(
-    isSupportedConnectedChain(chainId)
-  )
+  const [isSupportedNetwork, setIsSupportedNetwork] = useState(true)
 
   const [opened, setOpened] = useState(false)
   const [activatingDelayed, setActivatingDelayed] = useState(false)
@@ -127,19 +125,8 @@ function AccountModule({ compact }) {
   }, [screenId])
 
   useEffect(() => {
-    if (window?.ethereum !== undefined) {
-      window?.ethereum.on('chainChanged', (newChainId) => {
-        console.log(`chainChanged`, newChainId)
-        setIsSupportedNetwork(isSupportedConnectedChain(newChainId))
-      })
-    }
-
-    return () => {
-      if (window?.ethereum !== undefined) {
-        window?.ethereum?.removeListener('chainChanged', () => null)
-      }
-    }
-  }, [window?.ethereum])
+    setIsSupportedNetwork(isSupportedConnectedChain(chainId))
+  }, [chainId])
 
   return (
     <div

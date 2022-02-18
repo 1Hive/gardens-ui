@@ -35,13 +35,6 @@ function WalletAugmented({ children }) {
     )
   }, [chainId, connected, ethereum, preferredNetwork])
 
-  useEffect(() => {
-    // is connected and the network is supported
-    if (connected) {
-      connect('injected')
-    }
-  }, [])
-
   return (
     <WalletAugmentedContext.Provider
       value={{

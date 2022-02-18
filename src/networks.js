@@ -173,10 +173,6 @@ export const switchNetwork = async (chainId) => {
 }
 
 export function isSupportedConnectedChain(chainId) {
-  console.log(
-    `isSupportedConnectedChain - 0x${chainId} - ${chainId}`,
-    SUPPORTED_CHAINS.includes(chainId)
-  )
   return SUPPORTED_CHAINS.includes(chainId)
 }
 

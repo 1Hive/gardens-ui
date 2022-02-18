@@ -121,8 +121,6 @@ const HeaderButtons = ({
     [onPreferredNetworkChange]
   )
 
-  console.log(`HeaderButtons isSupportedNetwork`, isSupportedNetwork)
-
   return (
     <div
       style={{
