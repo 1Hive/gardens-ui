@@ -1,5 +1,6 @@
 .avatar {
   border-radius: 50%;
+  max-width: 45px;
 }
 
 .mention {

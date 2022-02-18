@@ -10,8 +10,9 @@ function ProposalComments({ link }: ProposalCommentsProps) {
   const { layoutName } = useLayout()
   
 
-  // We take the last section of the link that includes the topicId
-  const discourseTopicId = link.split('/').reverse()[0]
+  // We take the topicId which usually is in the last section of the link if the penultimate is not a number
+  const [lastParam, penultimate] = link.split('/').reverse()
+  const discourseTopicId = isNaN(+penultimate) ? lastParam : penultimate
 
   return (
     <Split
