@@ -1,7 +1,7 @@
 import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
 import env from '@/environment'
+import { getPreferredChain } from '@/local-settings'
 
-const PORTIS_ID = env('PORTIS_ID')
 const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
@@ -12,7 +12,6 @@ type ConnectorProviderType = {
   properties: {
     [key: string]: any
     chainId?: number[]
-    dAppId?: any
     rpc?: any
     bridge?: string
     pollingInterval?: number
@@ -46,14 +45,16 @@ export const CONNECTORS: Array<ConnectorProviderType> = [
   },
 ]
 
-if (PORTIS_ID) {
-  CONNECTORS.push({
-    id: 'portis',
-    properties: {
-      dAppId: PORTIS_ID,
-      chainId: [100, 4],
+function sanitizeWalletConnect(
+  connector: any,
+  chainId = getPreferredChain()
+): void {
+  connector.properties = {
+    ...connector.properties,
+    rpc: {
+      [chainId]: connector.properties.rpc[chainId],
     },
-  })
+  }
 }
 
 export const CONNECTORS_MOBILE = CONNECTORS.filter(
@@ -67,6 +68,9 @@ export const getConnectors = (isMobileView = false) =>
 export const useWalletConnectors = (isMobileView = false) => {
   return getConnectors(isMobileView).reduce((acc, connector) => {
     if (connector !== null) {
+      if (connector.id == 'walletconnect') {
+        sanitizeWalletConnect(connector)
+      }
       acc = { ...acc, [connector.id]: connector.properties ?? {} }
     }
     return acc
