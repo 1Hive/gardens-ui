@@ -5,7 +5,20 @@ const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
-export const CONNECTORS = [
+type ConnectorProviderType = {
+  [key: string]: any
+  id: string
+  properties: {
+    [key: string]: any
+    chainId?: number[]
+    dAppId?: any
+    rpc?: any
+    bridge?: string
+    pollingInterval?: number
+  }
+}
+
+export const CONNECTORS: Array<ConnectorProviderType> = [
   {
     id: 'injected',
     properties: {
@@ -36,12 +49,21 @@ export const CONNECTORS = [
       chainId: [100, 4, 137, 31337],
     },
   },
-].filter((p) => p)
+]
+
+export const CONNECTORS_MOBILE = CONNECTORS.filter(
+  (connector) => connector.id === 'walletconnect'
+)
+
+export const getConnectors = (isMobileView = false) =>
+  isMobileView ? CONNECTORS_MOBILE : CONNECTORS
 
 // the final data that we pass to use-wallet package.
-export const useWalletConnectors = CONNECTORS.reduce((acc, connector) => {
-  if (connector !== null) {
-    acc = { ...acc, [connector.id]: connector.properties ?? {} }
-  }
-  return acc
-}, {})
+export const useWalletConnectors = (isMobileView = false) => {
+  return getConnectors(isMobileView).reduce((acc, connector) => {
+    if (connector !== null) {
+      acc = { ...acc, [connector.id]: connector.properties ?? {} }
+    }
+    return acc
+  }, {})
+}
