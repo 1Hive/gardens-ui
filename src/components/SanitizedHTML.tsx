@@ -21,8 +21,8 @@ const allowedClasses = {
   'img': ['avatar', 'emoji']
 }
 
-const transformTags = (siteUrl) =>  ({
-  'a': (tagName, attribs) => {
+const transformTags = (siteUrl: string) =>  ({
+  'a': (tagName: string, attribs: sanitizeHtml.Attributes) => {
     return {
       tagName,
       attribs: {
@@ -35,7 +35,7 @@ const transformTags = (siteUrl) =>  ({
   }
 })
 
-const CustomSanitizedHTML = ({siteUrl, html}) =>
+const CustomSanitizedHTML = ({siteUrl, html}: {siteUrl: string, html: string}) =>
   <SanitizedHTML
     allowedTags={allowedTags}
     allowedClasses={allowedClasses}

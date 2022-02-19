@@ -12,7 +12,7 @@ function ProposalComments({ link }: ProposalCommentsProps) {
 
   // We take the topicId which usually is in the last section of the link if the penultimate is not a number
   const [lastParam, penultimate] = link.split('/').reverse()
-  const discourseTopicId = isNaN(+penultimate) ? lastParam : penultimate
+  const discourseTopicId = Number(isNaN(+penultimate) ? lastParam : penultimate)
 
   return (
     <Split
@@ -23,7 +23,7 @@ function ProposalComments({ link }: ProposalCommentsProps) {
               padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
             `}
           >
-            <DiscourseComments {...{ topicId: discourseTopicId }} />
+            <DiscourseComments topicId={discourseTopicId} />
           </div>
         )
       }
