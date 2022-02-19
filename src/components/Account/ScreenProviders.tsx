@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   ButtonBase,
@@ -8,18 +7,28 @@ import {
   RADIUS,
   textStyle,
   useTheme,
+  useViewport,
 } from '@1hive/1hive-ui'
-import { CONNECTORS } from '@/ethereum-providers/connectors'
+import { getConnectors } from '@/ethereum-providers/connectors'
 
-function ScreenProviders({ onActivate }) {
+type OnActivateType = (providerId: string) => Promise<void>
+
+type ScreenProviderType = {
+  onActivate: OnActivateType
+}
+
+function ScreenProviders({ onActivate }: ScreenProviderType) {
   const theme = useTheme()
+  const { below } = useViewport()
 
   const providersInfo = useMemo(() => {
-    return CONNECTORS.map(provider => [
-      provider.id,
-      getProviderFromUseWalletId(provider.id),
-    ])
-  }, [])
+    const isMobileView = below('medium')
+    const connectors = getConnectors(isMobileView)
+    return connectors.map(
+      (provider) =>
+        [provider.id, getProviderFromUseWalletId(provider.id)] as const
+    )
+  }, [below])
 
   return (
     <div>
@@ -78,11 +87,21 @@ function ScreenProviders({ onActivate }) {
     </div>
   )
 }
-ScreenProviders.propTypes = {
-  onActivate: PropTypes.func.isRequired,
+
+type ProviderButtonType = {
+  id: string
+  provider?: {
+    image: string
+    name: string
+  }
+  onActivate: OnActivateType
 }
 
-function ProviderButton({ id, provider, onActivate }) {
+function ProviderButton({
+  id,
+  provider,
+  onActivate,
+}: ProviderButtonType): JSX.Element {
   const theme = useTheme()
 
   const handleClick = useCallback(() => {
@@ -110,25 +129,21 @@ function ProviderButton({ id, provider, onActivate }) {
         }
       `}
     >
-      <img src={provider.image} alt="" height={5.25 * GU} />
-      <div
-        css={`
-          margin-top: ${1 * GU}px;
-          ${textStyle('body1')};
-        `}
-      >
-        {provider.name}
-      </div>
+      {provider && (
+        <>
+          <img src={provider.image} alt="" height={5.25 * GU} />
+          <div
+            css={`
+              margin-top: ${1 * GU}px;
+              ${textStyle('body1')};
+            `}
+          >
+            {provider.name}
+          </div>
+        </>
+      )}
     </ButtonBase>
   )
-}
-ProviderButton.propTypes = {
-  id: PropTypes.string.isRequired,
-  onActivate: PropTypes.func.isRequired,
-  provider: PropTypes.shape({
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 export default ScreenProviders

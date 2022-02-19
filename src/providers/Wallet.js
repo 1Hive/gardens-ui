@@ -18,6 +18,7 @@ import {
 import { getPreferredChain, setPreferredChain } from '@/local-settings'
 import { useWalletConnectors } from '@/ethereum-providers/connectors'
 
+import { useViewport } from '@1hive/1hive-ui'
 const WalletAugmentedContext = React.createContext()
 
 function useWalletAugmented() {
@@ -84,8 +85,13 @@ function WalletAugmented({ children }) {
 }
 
 function WalletProvider({ children }) {
+  const { below } = useViewport()
+  const isMobileView = below('medium')
   return (
-    <UseWalletProvider autoConnect connectors={useWalletConnectors}>
+    <UseWalletProvider
+      autoConnect
+      connectors={useWalletConnectors(isMobileView)}
+    >
       <WalletAugmented>{children}</WalletAugmented>
     </UseWalletProvider>
   )
@@ -105,7 +111,7 @@ function useConnection() {
   const [switchingNetworks, setSwitchingNetworks] = useState(false)
 
   const connect = useCallback(
-    async connector => {
+    async (connector) => {
       try {
         await connectWallet(connector)
       } catch (err) {
@@ -130,13 +136,13 @@ function useConnection() {
     await reset()
   }, [reset])
 
-  const handlePreferredNetworkChange = useCallback(chainId => {
+  const handlePreferredNetworkChange = useCallback((chainId) => {
     setPreferredNetwork(chainId)
     setPreferredChain(chainId)
   }, [])
 
   const handleNetworkSwtich = useCallback(
-    async chainId => {
+    async (chainId) => {
       if (connector === 'injected') {
         try {
           setSwitchingNetworks(true)
@@ -160,7 +166,7 @@ function useConnection() {
         setPreferredNetwork(chainId)
       }
     }
-  }, [chainId, isConnected]) // eslint-disable-line 
+  }, [chainId, isConnected]) // eslint-disable-line
 
   return {
     connect,
