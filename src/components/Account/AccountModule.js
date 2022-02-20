@@ -8,7 +8,8 @@ import ScreenConnecting from './ScreenConnecting'
 import ScreenPromptingAction from './ScreenPromptingAction'
 import HeaderPopover from '../Header/HeaderPopover'
 import HeaderButtons from './Buttons/HeaderButtons'
-import { isSupportedConnectedChain } from '@/networks'
+import { isSupportedConnectedChain, getNetworkChainIdByType } from '@/networks'
+import { useGardenRoute } from '@/hooks/useRouting'
 
 const SCREENS = [
   {
@@ -41,6 +42,9 @@ function AccountModule({ compact }) {
     resetConnection,
     switchingNetworks,
   } = useWallet()
+
+  const [networkType] = useGardenRoute()
+  const connectedChainId = getNetworkChainIdByType(networkType)
 
   const [isSupportedNetwork, setIsSupportedNetwork] = useState(true)
 
@@ -125,7 +129,11 @@ function AccountModule({ compact }) {
   }, [screenId])
 
   useEffect(() => {
-    setIsSupportedNetwork(isSupportedConnectedChain(chainId))
+    setIsSupportedNetwork(
+      isSupportedConnectedChain(
+        connectedChainId !== null ? connectedChainId : chainId
+      )
+    )
   }, [chainId])
 
   return (

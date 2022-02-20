@@ -6,82 +6,12 @@ import {
   useTheme,
   DropDown,
 } from '@1hive/1hive-ui'
-import { SUPPORTED_CHAINS, switchNetwork } from '@/networks'
+import { SUPPORTED_CHAINS } from '@/networks'
 
 import AccountConnectedButton from './ConnectedButton'
 import { useWallet } from '@/providers/Wallet'
 import { getNetworkName } from '@/utils/web3-utils'
 import styled from 'styled-components'
-
-type WrongNetworkButton = {
-  compact: any
-  handleNetworkChange: (index: number) => void
-}
-
-const WrongNetworkButton = ({
-  compact,
-  handleNetworkChange,
-}: WrongNetworkButton) => {
-  const handleWrongNetworkChange = async () => {
-    try {
-      await switchNetwork(100)
-    } catch (error) {
-      handleNetworkChange(1)
-    }
-  }
-
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto auto',
-        gap: '8px',
-      }}
-    >
-      <Button
-        onClick={handleWrongNetworkChange}
-        css={`
-          overflow: hidden;
-          box-shadow: none;
-          padding-right: 0;
-          padding-left: 0;
-        `}
-      >
-        <div
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            display: 'flex',
-            paddingRight: '16px',
-            paddingLeft: '16px',
-          }}
-        >
-          <IconCanvas />
-          Switch wallet to xDai
-        </div>
-
-        {!compact ? (
-          <div
-            css={`
-              background-color: rgb(255, 104, 113);
-              border: 1px solid rgb(255, 104, 113);
-              color: #fff;
-              position: relative;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              padding: 0 24px 0 16px;
-              width: 100%;
-              height: 40px;
-            `}
-          >
-            Wrong Network
-          </div>
-        ) : null}
-      </Button>
-    </div>
-  )
-}
 
 type HeaderButtonProps = {
   screenId: string
@@ -91,9 +21,7 @@ type HeaderButtonProps = {
 }
 
 const ProviderDropdown = styled(DropDown)`
-  height: 30px;
   padding-left: 12px;
-  border-radius: 6px;
 
   > svg {
     color: #000;
@@ -134,9 +62,21 @@ const HeaderButtons = ({
       {screenId === 'connected' ? (
         <AccountConnectedButton onClick={toggle} />
       ) : isSupportedNetwork === false ? (
-        <WrongNetworkButton
-          compact={compact}
-          handleNetworkChange={handleNetworkChange}
+        <Button
+          onClick={toggle}
+          icon={
+            <IconCanvas
+              css={`
+                color: #fff;
+              `}
+            />
+          }
+          label="Wrong Network"
+          css={`
+            background-color: rgb(255, 104, 113);
+            border: 1px solid rgb(255, 104, 113);
+            color: #fff;
+          `}
         />
       ) : (
         <Button
@@ -147,17 +87,15 @@ const HeaderButtons = ({
         />
       )}
 
-      {isSupportedNetwork ? (
-        <ProviderDropdown
-          items={supportedChains}
-          onChange={handleNetworkChange}
-          selected={selectedIndex}
-          wide
-          style={{
-            background: theme.accent,
-          }}
-        />
-      ) : null}
+      <ProviderDropdown
+        items={supportedChains}
+        onChange={handleNetworkChange}
+        selected={selectedIndex}
+        wide
+        style={{
+          background: theme.accent,
+        }}
+      />
     </div>
   )
 }
