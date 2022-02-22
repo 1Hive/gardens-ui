@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import {
   BackButton,
   Box,
@@ -62,7 +62,6 @@ import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
 
 // assets
-import warningIcon from '../Agreement/assets/warning.svg'
 import { AbstainCardHeader } from '../Feed/AbstainCard'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
@@ -76,7 +75,7 @@ function ProposalDetail({
   stableToken,
 }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const { layoutName } = useLayout()
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const [modalVisible, setModalVisible] = useState(false)
@@ -105,8 +104,8 @@ function ProposalDetail({
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {
-    history.goBack()
-  }, [history])
+    router.back()
+  }, [router])
 
   const handleResolveAction = useCallback(() => {
     actions.resolveAction(proposal.disputeId)
@@ -504,7 +503,11 @@ function ArgumentBox({ proposal, connectedAccount }) {
             align-items: center;
           `}
         >
-          <img src={warningIcon} width={30} height={30} />
+          <img
+            src={'/public/icons/agreement/warning.svg'}
+            width={30}
+            height={30}
+          />
           <h1>
             {connectedAccount === proposal.creator ? 'Your' : 'This'} proposal{' '}
             {proposal.statusData.challenged ? 'has been' : 'was'} challenged

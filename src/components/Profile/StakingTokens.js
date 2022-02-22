@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import BigNumber from '@lib/bigNumber'
@@ -33,16 +33,16 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   const { preferredNetwork } = useWallet()
   const compact = below('large')
 
-  const history = useHistory()
+  const router = useRouter()
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(
+      router.push(
         `/${getNetworkType(
           preferredNetwork
         )}/garden/${gardenId}/proposal/${proposalId}`
       )
     },
-    [history, preferredNetwork]
+    [router, preferredNetwork]
   )
 
   const myActiveTokens = useMemo(() => {

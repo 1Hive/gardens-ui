@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { animated, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from 'react-spring/renderprops.cjs'
 import {
   BIG_RADIUS,
   DropDown,
@@ -12,7 +12,6 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import arrowDownSvg from '@assets/arrowDown.svg'
 
 function CompactFilter({ ...props }) {
   const { below } = useViewport()
@@ -288,7 +287,7 @@ function AnimatedFilter({ header, items, selected, onSelect }) {
             transition: transform 0.3s ease;
           `}
         >
-          <img src={arrowDownSvg} alt="" />
+          <img src={'/icons/base/arrowDown.svg'} alt="" />
         </div>
       </div>
       <Transition

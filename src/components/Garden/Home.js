@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
@@ -37,7 +37,7 @@ const Home = function Home() {
     totalWrappedSupply,
   } = useGardenLogic()
 
-  const history = useHistory()
+  const router = useRouter()
   const { account } = useWallet()
 
   // min layout is never returned
@@ -47,8 +47,8 @@ const Home = function Home() {
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   const handleBack = useCallback(() => {
-    history.push('/home')
-  }, [history])
+    router.push('/home')
+  }, [router])
 
   const handleFilterSliderToggle = useCallback(() => {
     setFilterSidlerVisible((visible) => !visible)
@@ -62,10 +62,10 @@ const Home = function Home() {
   const handleHideModal = useCallback(() => {
     setModalVisible(false)
 
-    if (history.location.pathname.includes('create')) {
-      history.push(buildGardenPath(history.location, ''))
+    if (router.pathname.includes('create')) {
+      router.push(buildGardenPath(router, ''))
     }
-  }, [history])
+  }, [router])
 
   const handleClaimRewards = useCallback(() => {
     handleShowModal('claim')
@@ -100,10 +100,10 @@ const Home = function Home() {
 
   useEffect(() => {
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
-    if (account && history.location.pathname.includes('create')) {
+    if (account && router.pathname.includes('create')) {
       handleRequestNewProposal()
     }
-  }, [account, handleRequestNewProposal, history])
+  }, [account, handleRequestNewProposal, router])
 
   // TODO: Refactor components positioning with a grid layout
 

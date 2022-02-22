@@ -1,36 +1,33 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 
 import NavigationItem from '../Items/NavigationItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import covenantIcon from '@assets/covenantIcon.svg'
-import createProposalIcon from '@assets/createProposal.svg'
-import feedIcon from '@assets/feedIcon.svg'
 
 const InnerGardenNavigationSidebar = ({
   width,
   onToggle,
   onOpenCreateProposal,
 }) => {
-  const history = useHistory()
+  const router = useRouter()
 
   const gardenNavigationItems = [
     {
-      icon: feedIcon,
+      icon: '/icons/base/feedIcon.svg',
       label: 'Feed',
-      path: buildGardenPath(history.location, ''),
+      path: buildGardenPath(router, ''),
       onClick: onToggle,
     },
     {
-      icon: covenantIcon,
+      icon: '/icons/base/covenantIcon.svg',
       label: 'Covenant',
-      path: buildGardenPath(history.location, 'covenant'),
+      path: buildGardenPath(router, 'covenant'),
       onClick: onToggle,
     },
     {
-      icon: createProposalIcon,
+      icon: '/icons/base/createProposal.svg',
       label: 'Create Proposal',
       path: '',
       onClick: () => {
@@ -46,7 +43,7 @@ const InnerGardenNavigationSidebar = ({
         {gardenNavigationItems.map(({ icon, label, path, onClick }) => (
           <NavigationItem
             key={path}
-            active={history.location.pathname === path}
+            active={router.pathname === path}
             label={label}
             path={path}
             src={icon}

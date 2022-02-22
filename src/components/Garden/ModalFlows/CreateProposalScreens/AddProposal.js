@@ -24,7 +24,7 @@ import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { buildGardenPath } from '@utils/routing-utils'
 
 const SIGNALING_PROPOSAL = 0
@@ -45,6 +45,7 @@ const DEFAULT_FORM_DATA = {
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = ({ setProposalData }) => {
+  const router = useRouter()
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
@@ -213,16 +214,13 @@ const AddProposalPanel = ({ setProposalData }) => {
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
-  const history = useHistory()
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
         All proposals are bound by this community&apos;s{' '}
-        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
-          Covenant
-        </Link>{' '}
-        . If you haven&apos;t taken the time to read through it yet, please make
-        sure you do so.
+        <Link href={buildGardenPath(router, 'covenant')}>Covenant</Link> . If
+        you haven&apos;t taken the time to read through it yet, please make sure
+        you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
         <Link href={connectedGarden.forumURL}>

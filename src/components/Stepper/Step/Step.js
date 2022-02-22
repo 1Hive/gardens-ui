@@ -8,7 +8,7 @@ import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { useWallet } from '@providers/Wallet'
 import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 
 const AnimatedSpan = animated.span
 

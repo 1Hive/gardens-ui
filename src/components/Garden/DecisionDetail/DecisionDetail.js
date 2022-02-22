@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import {
   BackButton,
@@ -47,7 +47,7 @@ function DecisionDetail({ proposal, actions }) {
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState({ mode: '' })
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const { layoutName } = useLayout()
   const { account: connectedAccount } = useWallet()
   const { chainId } = useConnectedGarden()
@@ -84,10 +84,10 @@ function DecisionDetail({ proposal, actions }) {
   const quorumProgress = getQuorumProgress(proposal)
 
   const handleBack = useCallback(() => {
-    history.goBack()
-  }, [history])
+    router.back()
+  }, [router])
 
-  const handleVote = useCallback(data => {
+  const handleVote = useCallback((data) => {
     setModalVisible(true)
     setModalData({ mode: 'vote', ...data })
   }, [])
@@ -100,7 +100,7 @@ function DecisionDetail({ proposal, actions }) {
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalData({ mode })
   }, [])

@@ -6,8 +6,6 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import signGraphic from '@assets/smart-contract.svg'
-
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
@@ -29,14 +27,14 @@ function SignOverview({ getTransactions }) {
   }, [getTransactions, next])
 
   const handleAcceptTerms = useCallback(
-    checked => setAcceptedTerms(checked),
+    (checked) => setAcceptedTerms(checked),
     []
   )
 
   return (
     <>
       <img
-        src={signGraphic}
+        src={'/icons/base/smart-contract.svg'}
         css={`
           display: block;
           width: auto;

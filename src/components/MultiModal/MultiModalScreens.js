@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import { Spring, Transition, animated } from 'react-spring/renderprops.cjs'
 import {
   ButtonIcon,
   GU,
@@ -17,8 +17,6 @@ import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'
 import { useInside } from 'use-inside'
-
-import headerBackground from '../../assets/modal-background.svg'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
@@ -164,7 +162,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
                 overflow: hidden;
                 padding: ${1.5 * GU}px ${standardPadding}px ${1.5 * GU}px
                   ${standardPadding}px;
-                background-image: url('${headerBackground}');
+                background-image: url('/icons/base/modal-background.svg');
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
               `}
             >

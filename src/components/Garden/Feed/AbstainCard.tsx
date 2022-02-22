@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { GU, Help, useTheme, useViewport } from '@1hive/1hive-ui'
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalType } from '@/hooks/constants'
 import styled from 'styled-components'
-import AbstainIcon from '@assets/abstain-icon.svg'
 import ProposalSupport from './ProposalSupport'
 
 type AbstainCardProps = {
@@ -13,17 +12,14 @@ type AbstainCardProps = {
 
 function AbstainCard({ proposal }: AbstainCardProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
 
   const { below } = useViewport()
 
   const handleSelectProposal = useCallback(() => {
-    const path = buildGardenPath(
-      history.location,
-      `proposal/${proposal.number}`
-    )
-    history.push(path)
-  }, [history, proposal.number])
+    const path = buildGardenPath(router, `proposal/${proposal.number}`)
+    router.push(path)
+  }, [router, proposal.number])
 
   return (
     <div
@@ -65,7 +61,12 @@ export const AbstainCardHeader = ({
   return (
     <HeaderCard>
       <HeaderCardInfo onClick={handleSelectProposal}>
-        <img src={AbstainIcon} alt="" height={2.5 * GU} width={2.5 * GU} />
+        <img
+          src={'/icons/base/abstain-icon.svg'}
+          alt=""
+          height={2.5 * GU}
+          width={2.5 * GU}
+        />
         <span>Abstain</span>
       </HeaderCardInfo>
       {showHint ? (

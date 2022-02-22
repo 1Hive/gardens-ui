@@ -133,7 +133,7 @@ const DelegateItem = ({ address, gardenAddress }) => {
   const { gardensMetadata } = useGardens()
   const networkType = getNetworkType(preferredNetwork)
 
-  const gardenPath = `/#/${networkType}/garden/${gardenAddress}`
+  const gardenPath = `/${networkType}/garden/${gardenAddress}`
   const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata)
   return (
     <div

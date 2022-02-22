@@ -17,8 +17,6 @@ import { useWallet } from '@providers/Wallet'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-
 const Metrics = React.memo(function Metrics({
   commonPool,
   onExecuteIssuance,
@@ -98,7 +96,7 @@ function PriceSection({
   const [priceMode, setPriceMode] = useState(true)
 
   const handleTogglePriceMode = useCallback(() => {
-    setPriceMode(priceMode => !priceMode)
+    setPriceMode((priceMode) => !priceMode)
   }, [])
 
   return (
@@ -112,7 +110,7 @@ function PriceSection({
     >
       <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
-        src={token.logo || defaultTokenLogo}
+        src={token.logo || '/icons/base/defaultTokenLogo.svg'}
         height="60"
         width="60"
         alt=""
@@ -137,7 +135,7 @@ function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
   const [supplyMode, setSupplyMode] = useState(true)
 
   const handleToggleSupplyMode = useCallback(() => {
-    setSupplyMode(supplyMode => !supplyMode)
+    setSupplyMode((supplyMode) => !supplyMode)
   }, [])
 
   return (
@@ -374,7 +372,7 @@ function Dot({ isActive, onChange }) {
     <span
       onClick={
         !isActive
-          ? e => {
+          ? (e) => {
               e.preventDefault()
               onChange()
             }

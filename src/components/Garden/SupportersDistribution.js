@@ -15,8 +15,6 @@ import { formatTokenAmount } from '@utils/token-utils'
 import { stakesPercentages } from '@utils/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
-import noSupportIllustration from '@assets/noSupportIllustration.svg'
-
 const DISTRIBUTION_ITEMS_MAX = 6
 
 function displayedStakes(stakes, total, stakeToken) {
@@ -89,7 +87,7 @@ const SupportersDistribution = React.memo(function SupportersDistribution({
               justify-content: center;
             `}
           >
-            <img src={noSupportIllustration} alt="" />
+            <img src={'/icons/base/noSupportIllustration.svg'} alt="" />
           </div>
           <div
             css={`

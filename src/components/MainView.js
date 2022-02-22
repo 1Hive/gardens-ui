@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useRouter } from 'next/router'
 import { GU, Root, ScrollView, ToastHub, useViewport } from '@1hive/1hive-ui'
 
 import Footer from './Garden/Footer'
@@ -14,17 +14,16 @@ import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/Cre
 import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [createProposalModalVisible, setCreateProposalModalVisible] =
+    useState(false)
 
   const handleToggleSidebar = useCallback(() => {
-    setShowMobileSidebar(prevShowMobileSidebar => !prevShowMobileSidebar)
+    setShowMobileSidebar((prevShowMobileSidebar) => !prevShowMobileSidebar)
   }, [])
 
   let loadingGardenState = true

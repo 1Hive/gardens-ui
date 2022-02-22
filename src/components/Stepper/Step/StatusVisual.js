@@ -5,7 +5,7 @@ import { springs } from '@/style/springs'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 import { css, keyframes } from 'styled-components'
 
 const STATUS_ICONS = {

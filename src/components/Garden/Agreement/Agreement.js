@@ -14,8 +14,6 @@ import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreeme
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
 
-import warningSvg from './assets/warning.svg'
-
 function Agreement() {
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
@@ -85,7 +83,7 @@ function AgreementLayout({
                 `}
               >
                 <img
-                  src={warningSvg}
+                  src={'/icons/agreement/warning.svg'}
                   css={`
                     margin-right: ${0.5 * GU}px;
                   `}

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import ProposalFooter from './ProposalFooter'
@@ -31,25 +31,22 @@ function ConvictionProposalCard({ proposal, ...props }: CardProps) {
 
 function Card({ loading = false, proposal }: CardProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const { below } = useViewport()
 
   const handleSelectProposal = useCallback(() => {
     const entityPath =
       proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'
 
-    const path = buildGardenPath(
-      history.location,
-      `${entityPath}/${proposal.number}`
-    )
-    history.push(path)
-  }, [history, proposal.number, proposal.type])
+    const path = buildGardenPath(router, `${entityPath}/${proposal.number}`)
+    router.push(path)
+  }, [router, proposal.number, proposal.type])
 
   const handleViewProfile = useCallback(
     (proposalCreator) => {
-      history.push(`/profile?account=${proposalCreator}`)
+      router.push(`/profile?account=${proposalCreator}`)
     },
-    [history]
+    [router]
   )
 
   return (
