@@ -2,12 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*" ],
+      "@/*": [
+        "./src/*"
+      ],
       "@components/*": [
         "./src/components/*"
       ],
       "@abis/*": [
-        "./src/abis/*"
+        "./src/abi/*"
       ],
       "@assets/*": [
         "./src/assets/*"
@@ -26,4 +28,4 @@
       ]
     }
   }
-} 
+}
