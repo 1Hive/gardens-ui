@@ -9,8 +9,6 @@ const setupAdditionalPlugins = require('./webpack/setup-additional-plugins')
 const nextConfig = {
   distDir: 'build',
 
-  swcMinify: false,
-
   webpack: function includeExtraPlugins(webpackConfig, { webpack }) {
     setupAliases(webpackConfig)
 
