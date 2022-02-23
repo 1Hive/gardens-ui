@@ -113,7 +113,7 @@ function GardenCard({ garden }) {
           css={`
             border-radius: 100%;
           `}
-          src={garden.logo || '/defaultGardenLogo.png'}
+          src={garden.logo || '/icons/base/defaultGardenLogo.png'}
           alt=""
           height="72"
         />
@@ -147,7 +147,7 @@ function GardenCard({ garden }) {
         `}
       >
         <img
-          src={token?.logo || '/defaultTokenLogo.svg'}
+          src={token?.logo || '/icons/base/defaultTokenLogo.svg'}
           alt=""
           height="20"
           width="20"
