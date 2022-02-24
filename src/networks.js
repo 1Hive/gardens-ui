@@ -172,14 +172,10 @@ export const switchNetwork = async (chainId) => {
   }
 }
 
-export function isSupportedConnectedChain(chainId) {
-  if (window.ethereum === undefined) return true
+export function isSupportedConnectedChain() {
+  if (window?.ethereum === undefined) return true
 
-  return SUPPORTED_CHAINS.includes(
-    window?.ethereum !== undefined
-      ? Number(window?.ethereum?.networkVersion)
-      : chainId
-  )
+  return SUPPORTED_CHAINS.includes(Number(window?.ethereum?.networkVersion))
 }
 
 export function getAvailableNetworks() {
