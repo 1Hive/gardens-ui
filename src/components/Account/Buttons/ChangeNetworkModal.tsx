@@ -23,8 +23,6 @@ export default function ChangeNetworkModal({
   const { width } = useViewport()
 
   const handleSwitch = async () => {
-    throw new Error(`AA`)
-
     try {
       await switchNetwork(100)
       onClose()
