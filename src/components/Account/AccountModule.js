@@ -81,10 +81,10 @@ function AccountModule({ compact }) {
 
   const { direction, screenIndex } = useMemo(() => {
     const screenId = (() => {
-      if (account) return 'connected'
       if (error) return 'error'
       if (activatingDelayed) return 'connecting'
       if (switchingNetworks) return 'networks'
+      if (account) return 'connected'
       return 'providers'
     })()
 
