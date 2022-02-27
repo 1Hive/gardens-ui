@@ -16,7 +16,7 @@ function displayedStakes(stakes, total) {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map((stake, index) => ({
+  ).map((stake) => ({
     item: {
       gardenId: stake.index === -1 ? null : stakes[stake.index].gardenId,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
@@ -25,6 +25,35 @@ function displayedStakes(stakes, total) {
     },
     percentage: stake.percentage,
   }))
+}
+
+function useStakesByGarden(stakes) {
+  let gardens = []
+
+  // get all unique gardens
+  stakes.map((c) => {
+    if (!gardens.includes(c.item.gardenId)) {
+      gardens.push(c.item.gardenId)
+    }
+  })
+
+  return gardens.reduce(
+    (acc, garden) => [
+      ...acc,
+      {
+        garden,
+        items: stakes.map((stakeItem) => {
+          if (stakeItem.item.gardenId === garden) {
+            return {
+              item: stakeItem.item,
+              percentage: Math.round(stakeItem.percentage),
+            }
+          }
+        }),
+      },
+    ],
+    []
+  )
 }
 
 const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
@@ -67,33 +96,37 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   }
 
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
+  const stakesByGarden = useStakesByGarden(stakes)
 
-  const adjustedStakes = stakes.map((stake) => ({
-    ...stake,
-    percentage: Math.round(stake.percentage),
-  }))
+  console.log(`stakesByGarden`, stakesByGarden)
 
   return (
-    <Box heading="Supported proposals" padding={3 * GU}>
-      <div>
-        <Distribution
-          colors={colors}
-          heading="Active token distribution"
-          items={adjustedStakes}
-          renderLegendItem={({ item }) => {
-            return (
-              <DistributionItem
-                compact={compact}
-                gardenId={item.gardenId}
-                proposalName={item.proposalName}
-                proposalId={item.proposalId}
-                selectProposal={handleSelectProposal}
-              />
-            )
-          }}
-        />
-      </div>
-    </Box>
+    <>
+      {stakesByGarden.map(({ garden, items }) => (
+        <Box heading="Supported proposals" padding={3 * GU}>
+          <label>{garden}</label>
+          <div>
+            <Distribution
+              colors={colors}
+              heading="Active token distribution"
+              items={items}
+              renderLegendItem={({ item }) => {
+                const { proposalName, proposalId } = item
+                return (
+                  <DistributionItem
+                    compact={compact}
+                    gardenId={garden}
+                    proposalName={proposalName}
+                    proposalId={proposalId}
+                    selectProposal={handleSelectProposal}
+                  />
+                )
+              }}
+            />
+          </div>
+        </Box>
+      ))}
+    </>
   )
 })
 
