@@ -1,7 +1,13 @@
 import React from 'react'
 import { GU, SearchInput, textStyle } from '@1hive/1hive-ui'
 
-const TextFilter = React.memo(({ text, onChange, placeholder = '' }) => {
+type TextFilterProps = {
+  text: string
+  placeholder: string
+  onChange: () => void
+}
+
+const TextFilter = ({ text, onChange, placeholder = '' }: TextFilterProps) => {
   return (
     <div>
       <label
@@ -21,6 +27,6 @@ const TextFilter = React.memo(({ text, onChange, placeholder = '' }) => {
       />
     </div>
   )
-})
+}
 
-export default TextFilter
+export default React.memo(TextFilter)
