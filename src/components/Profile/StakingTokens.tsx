@@ -9,14 +9,34 @@ import { getNetworkType } from '@/utils/web3-utils'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
-function displayedStakes(stakes, total) {
+type StakeItem = {
+  amount?: any
+  gardenId: any
+  proposalId: any
+  proposalName: any
+}
+
+type TransformedStakeType = {
+  item: {
+    gardenId: any
+    proposalId: any
+    proposalName: any
+  }
+  percentage: any
+}
+
+type StakingTokensProps = {
+  myStakes: Array<StakeItem>
+}
+
+function displayedStakes(stakes: Array<StakeItem>, total: BigNumber) {
   return stakesPercentages(
     stakes.map(({ amount }) => amount),
     {
       total,
       maxIncluded: DISTRIBUTION_ITEMS_MAX,
     }
-  ).map((stake) => ({
+  ).map((stake: any) => ({
     item: {
       gardenId: stake.index === -1 ? null : stakes[stake.index].gardenId,
       proposalId: stake.index === -1 ? null : stakes[stake.index].proposalId,
@@ -27,13 +47,20 @@ function displayedStakes(stakes, total) {
   }))
 }
 
-function useStakesByGarden(stakes) {
-  let gardens = []
+const useStakesByGarden = (
+  stakes: Array<TransformedStakeType> | null
+): Array<{
+  garden: string
+  items: Array<TransformedStakeType>
+}> => {
+  if (stakes === null) return []
+
+  const gardens: Array<any> = []
 
   // get all unique gardens
-  stakes.map((c) => {
-    if (!gardens.includes(c.item.gardenId)) {
-      gardens.push(c.item.gardenId)
+  stakes.map((stake) => {
+    if (!gardens.includes(stake.item.gardenId)) {
+      gardens.push(stake.item.gardenId)
     }
   })
 
@@ -42,11 +69,11 @@ function useStakesByGarden(stakes) {
       ...acc,
       {
         garden,
-        items: stakes.map((stakeItem) => {
-          if (stakeItem.item.gardenId === garden) {
+        items: stakes.map((stake) => {
+          if (stake.item.gardenId === garden) {
             return {
-              item: stakeItem.item,
-              percentage: Math.round(stakeItem.percentage),
+              item: stake.item,
+              percentage: Math.round(stake.percentage),
             }
           }
         }),
@@ -56,7 +83,7 @@ function useStakesByGarden(stakes) {
   )
 }
 
-const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
+function StakingTokens({ myStakes }: StakingTokensProps) {
   const theme = useTheme()
   const { below } = useViewport()
   const { preferredNetwork } = useWallet()
@@ -98,28 +125,40 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
   const stakesByGarden = useStakesByGarden(stakes)
 
-  console.log(`stakesByGarden`, stakesByGarden)
-
   return (
     <>
       {stakesByGarden.map(({ garden, items }) => (
-        <Box heading="Supported proposals" padding={3 * GU}>
+        <Box heading="Supported proposals" padding={3 * GU} key={garden}>
           <label>{garden}</label>
           <div>
             <Distribution
               colors={colors}
               heading="Active token distribution"
               items={items}
-              renderLegendItem={({ item }) => {
+              renderLegendItem={({ item }: { item: StakeItem }) => {
                 const { proposalName, proposalId } = item
                 return (
-                  <DistributionItem
-                    compact={compact}
-                    gardenId={garden}
-                    proposalName={proposalName}
-                    proposalId={proposalId}
-                    selectProposal={handleSelectProposal}
-                  />
+                  <div
+                    css={`
+                      background: ${theme.badge};
+                      border-radius: 3px;
+                      padding: ${0.5 * GU}px ${1 * GU}px;
+                      width: ${compact ? '100%' : `${18 * GU}px`};
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      white-space: nowrap;
+
+                      ${proposalId &&
+                      `cursor: pointer; &:hover {
+                        background: ${theme.badge.alpha(0.7)}
+                      }`}
+                    `}
+                    onClick={() =>
+                      proposalId && handleSelectProposal(garden, proposalId)
+                    }
+                  >
+                    {proposalName}
+                  </div>
                 )
               }}
             />
@@ -128,42 +167,6 @@ const StakingTokens = React.memo(function StakingTokens({ myStakes }) {
       ))}
     </>
   )
-})
-
-const DistributionItem = ({
-  compact,
-  gardenId,
-  proposalId,
-  proposalName,
-  selectProposal,
-}) => {
-  const theme = useTheme()
-
-  const handleOnClick = useCallback(() => {
-    selectProposal(gardenId, proposalId)
-  }, [gardenId, proposalId, selectProposal])
-
-  return (
-    <div
-      css={`
-        background: ${theme.badge};
-        border-radius: 3px;
-        padding: ${0.5 * GU}px ${1 * GU}px;
-        width: ${compact ? '100%' : `${18 * GU}px`};
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-
-        ${proposalId &&
-        `cursor: pointer; &:hover {
-          background: ${theme.badge.alpha(0.7)}
-        }`}
-      `}
-      onClick={proposalId ? handleOnClick : null}
-    >
-      {proposalName}
-    </div>
-  )
 }
 
-export default StakingTokens
+export default React.memo(StakingTokens)
