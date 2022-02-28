@@ -41,8 +41,6 @@ function Activity({ account, isConnectedAccount, profileName }: ActivityProps) {
   const theme = useTheme()
   const { user } = useUser(account)
 
-  console.log({ account, isConnectedAccount, profileName })
-
   const { gardensMetadata } = useGardens()
   const { preferredNetwork } = useWallet()
 
