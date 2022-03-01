@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import {
   Box,
   Button,
@@ -89,12 +89,12 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
 
 function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const profile = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${representative.address}`)
-  }, [history, representative])
+    router.push(`/profile?account=${representative.address}`)
+  }, [router, representative])
 
   return (
     <div>

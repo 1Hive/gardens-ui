@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
-import tokenIcon from './assets/connect-icon.svg'
 import LayoutColumns from '../Layout/LayoutColumns'
 
 export default function EmptyState({ icon }) {
@@ -49,7 +48,7 @@ export default function EmptyState({ icon }) {
               `}
             >
               <img
-                src={tokenIcon}
+                src={'/icons/stake/connect-icon.svg'}
                 width={6.5 * GU}
                 height={6.5 * GU}
                 css={`

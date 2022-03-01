@@ -15,7 +15,7 @@ import Onboarding from './Onboarding'
 const DynamicSection = styled.div<{
   marginTop: any
 }>`
-  margin-top: ${props => props.marginTop}px;
+  margin-top: ${(props) => props.marginTop}px;
   padding: 0 ${2 * GU}px;
 `
 

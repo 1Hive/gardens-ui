@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
@@ -14,7 +14,7 @@ function IdentityBadge({
   withProfile = true,
   ...props
 }) {
-  const history = useHistory()
+  const history = useRouter()
   const connectedGarden = useConnectedGarden()
   const [profile, setProfile] = useState(null)
 

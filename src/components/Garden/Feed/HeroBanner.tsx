@@ -9,17 +9,15 @@ import {
 } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
 
-import desktopBanner from '@assets/banner.png'
-import mobileBanner from '@assets/banner-mobile.png'
-import tabletBanner from '@assets/banner-tablet.png'
-import tabletBannerFull from '@assets/banner-tablet-full.png'
-
 const BANNERS = {
-  small: { image: mobileBanner, aspectRatio: '54%' },
-  medium: { image: tabletBanner, aspectRatio: '36%' },
-  medium_full: { image: tabletBannerFull, aspectRatio: '36%' },
-  large: { image: desktopBanner, aspectRatio: '159%' },
-  max: { image: desktopBanner, aspectRatio: '159%' },
+  small: { image: '/icons/base/banner-mobile.png', aspectRatio: '54%' },
+  medium: { image: '/icons/base/banner-tablet.png', aspectRatio: '36%' },
+  medium_full: {
+    image: '/icons/base/banner-tablet-full.png',
+    aspectRatio: '36%',
+  },
+  large: { image: '/icons/base/banner.png', aspectRatio: '159%' },
+  max: { image: '/icons/base/banner.png', aspectRatio: '159%' },
 }
 
 type HeroBannerProps = {

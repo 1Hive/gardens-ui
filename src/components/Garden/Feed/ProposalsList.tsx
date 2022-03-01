@@ -15,12 +15,10 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
-import noProposalsYetLogo from '@assets/noProposalsYet.svg'
 import EmptyResults from '../../EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
 
-import filterToggleSvg from '@assets/filter.svg'
 import { ProposalType } from '@/hooks/constants'
 import AbstainCard from './AbstainCard'
 import { ABSTAIN_PROPOSAL } from '../ProposalDetail/ProposalStatus'
@@ -142,7 +140,7 @@ function ProposalsList({
           </>
         ) : (
           <EmptyResults
-            image={noProposalsYetLogo}
+            image={'/icons/base/noProposalsYet.svg'}
             title={activeFilters ? 'No results found' : 'No proposals yet!'}
             paragraph={
               activeFilters
@@ -163,7 +161,7 @@ type FilterToggleProps = {
 function FilterToggle({ onToggle }: FilterToggleProps) {
   return (
     <Button
-      icon={<img src={filterToggleSvg} />}
+      icon={<img src={'/icons/base/filter.svg'} />}
       display="icon"
       label="filter"
       onClick={onToggle}

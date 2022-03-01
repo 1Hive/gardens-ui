@@ -1,15 +1,11 @@
 import { IndividualStepTypes } from '../stepper-statuses'
 import { useTheme } from '@1hive/1hive-ui'
-import blockIcon from '@assets/blockIcon.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
 import React from 'react'
 
 const illustrations = {
-  [IndividualStepTypes.Working]: trxBeingMinedIllustration,
-  [IndividualStepTypes.Success]: signRequestSuccessIllustration,
-  [IndividualStepTypes.Error]: signRequestFailIllustration,
+  [IndividualStepTypes.Working]: '/icons/base/trxBeingMined.svg',
+  [IndividualStepTypes.Success]: '/icons/base/signRequestSuccess.svg',
+  [IndividualStepTypes.Error]: '/icons/base/signRequestFail.svg',
 }
 
 function Illustration({ status, index }) {
@@ -29,7 +25,7 @@ function Illustration({ status, index }) {
             color: ${theme.positiveContent};
           `}
         >
-          <img src={blockIcon} height={48} width={48} />
+          <img src={'/icons/base/blockIcon.svg'} height={48} width={48} />
         </div>
       ) : (
         <img src={illustrations[status]} height={96} width={96} />

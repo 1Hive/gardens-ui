@@ -1,29 +1,12 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "modules": false,
-        "useBuiltIns": "entry",
-        "corejs": 3
-      }
-    ],
-    "@babel/preset-react"
-  ],
+  "presets": ["next/babel"],
   "plugins": [
-    ["styled-components", { "displayName": true }]
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "modules": "commonjs",
-            "targets": { "node": "current" }
-          }
-        ]
-      ]
-    }
-  }
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true
+      }
+    ]
+  ]
 }

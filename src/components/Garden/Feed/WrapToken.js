@@ -15,21 +15,19 @@ import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-import wrappedIcon from '@assets/wrappedIcon.svg'
-import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
-
 const modeAttributes = {
-  wrap: { icon: unwrappedIcon, button: { mode: 'strong', label: 'Wrap' } },
+  wrap: {
+    icon: '/icons/base/unwrappedIcon.svg',
+    button: { mode: 'strong', label: 'Wrap' },
+  },
   unwrap: {
-    icon: wrappedIcon,
+    icon: '/icons/base/wrappedIcon.svg',
     button: { mode: 'strong', label: 'Unwrap' },
-    hint:
-      'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
   },
   claim: {
     button: { mode: 'normal', label: 'Claim' },
-    icon: claimRewardsIcon,
+    icon: '/icons/base/rewardsWrapperIcon.svg',
   },
 }
 
@@ -75,7 +73,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   ]
 
   const handleItemSelected = useCallback(
-    index => {
+    (index) => {
       // eslint-disable-next-line no-empty
       if (index === carouselItems.length - 1) {
       }

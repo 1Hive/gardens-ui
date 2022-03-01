@@ -4,8 +4,6 @@ import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useDisputeFees } from '@hooks/useDispute'
 
-import honeyIconSvg from '@assets/honey.svg'
-
 import { formatTokenAmount } from '@utils/token-utils'
 import { ProposalType } from '@/hooks/constants'
 
@@ -46,7 +44,7 @@ function DisputeFees({ proposal }: DisputeFeesProps) {
             `}
           >
             <img
-              src={honeyIconSvg}
+              src={'/icons/base/honey.svg'}
               alt=""
               height="28"
               width="28"

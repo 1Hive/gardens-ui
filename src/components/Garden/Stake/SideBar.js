@@ -5,9 +5,6 @@ import ExpandableCard from './ExpandableCard'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatTokenAmount } from '@utils/token-utils'
 
-import coin from './assets/coin.svg'
-import wallet from './assets/wallet.svg'
-
 function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
   const { available, locked, total, allowance } = staking
   const tokenPrice = useHoneyswapTokenPrice(token.id)
@@ -35,7 +32,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
         content={
           <CardContent
             amount={formatTokenAmount(available * tokenPrice, token.decimals)}
-            icon={wallet}
+            icon={'/icons/stake/wallet.svg'}
             title={`Available ${token.symbol}`}
             tokenAmount={formatTokenAmount(available, token.decimals)}
           />
@@ -46,7 +43,7 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
         content={
           <CardContent
             amount={formatTokenAmount(locked * tokenPrice, token.decimals)}
-            icon={coin}
+            icon={'/icons/stake/coin.svg'}
             title={`Locked ${token.symbol}`}
             secondary
             tokenAmount={formatTokenAmount(locked, token.decimals)}

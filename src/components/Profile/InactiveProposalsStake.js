@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
 
 import { useWallet } from '@/providers/Wallet'
@@ -10,17 +10,17 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   const { below } = useViewport()
   const { preferredNetwork } = useWallet()
   const compact = below('large')
-  const history = useHistory()
+  const router = useRouter()
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(
+      router.push(
         `/${getNetworkType(
           preferredNetwork
         )}/garden/${gardenId}/proposal/${proposalId}`
       )
     },
-    [history]
+    [router]
   )
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>

@@ -5,7 +5,6 @@ import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
-import loadingRing from './assets/loading-ring.svg'
 
 const spin = keyframes`
   from {
@@ -16,7 +15,7 @@ const spin = keyframes`
   }
 `
 
-const AccountModuleActionScreen = React.memo(function({ onCancel }) {
+const AccountModuleActionScreen = React.memo(function ({ onCancel }) {
   const theme = useTheme()
   const connectedGarden = useConnectedGarden()
   const { image, name } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network
@@ -56,7 +55,7 @@ const AccountModuleActionScreen = React.memo(function({ onCancel }) {
               left: 0;
               right: 0;
               bottom: 0;
-              background: url(${loadingRing}) no-repeat 0 0;
+              background: url('/icons/base/loading-ring.svg') no-repeat 0 0;
               animation-duration: 1s;
               animation-iteration-count: infinite;
               animation-timing-function: linear;

@@ -1,28 +1,3 @@
-import AddFundsLight from '@assets/activity/light/addFunds.svg'
-import ApproveTokenLight from '@assets/activity/light/approveToken.svg'
-import CancelProposalLight from '@assets/activity/light/cancelProposal.svg'
-import ChallengeActionLight from '@assets/activity/light/challengeAction.svg'
-import ClaimRewardsLight from '@assets/activity/light/claimRewards.svg'
-import DelegateVotingLight from '@assets/activity/light/delegateVoting.svg'
-import DisputeActionLight from '@assets/activity/light/disputeAction.svg'
-import ExecuteAdjustmentLight from '@assets/activity/light/executeAdjustment.svg'
-import ExecuteDecisionLight from '@assets/activity/light/executeDecision.svg'
-import ExecuteProposalLight from '@assets/activity/light/executeProposal.svg'
-import NewDecisionLight from '@assets/activity/light/newDecision.svg'
-import NewProposalLight from '@assets/activity/light/newProposal.svg'
-import NewSignalingProposalLight from '@assets/activity/light/newSignalingProposal.svg'
-import ResolveActionLight from '@assets/activity/light/resolveAction.svg'
-import SettleActionLight from '@assets/activity/light/settleAction.svg'
-import SignAgreementLight from '@assets/activity/light/signAgreement.svg'
-import StakeToProposalLight from '@assets/activity/light/stakeToProposal.svg'
-import UnwrapTokenLigh from '@assets/activity/light/unwrapToken.svg'
-import UpdateOracleLight from '@assets/activity/light/updateOracle.svg'
-import VoteOnDecisionLight from '@assets/activity/light/voteOnDecision.svg'
-import VoteOnBehalfOfLight from '@assets/activity/light/voteOnBehalfOf.svg'
-import WithdrawFromProposalLight from '@assets/activity/light/withdrawFromProposal.svg'
-import WithdrawFundsLight from '@assets/activity/light/withdrawFunds.svg'
-import WrapTokenLigh from '@assets/activity/light/wrapToken.svg'
-
 import { GardenActionTypes as actions } from '@/actions/garden-action-types'
 
 export type AssetsType = Record<
@@ -35,103 +10,103 @@ export type AssetsType = Record<
 
 const assets: AssetsType = {
   [actions.ADD_FUNDS]: {
-    light: AddFundsLight,
+    light: '/icons/activity/light/addFunds.svg',
     dark: null,
   },
   [actions.ALLOW_MANAGER]: {
-    light: ApproveTokenLight,
+    light: '/icons/activity/light/approveToken.svg',
     dark: null,
   },
   [actions.APPROVE_TOKEN]: {
-    light: ApproveTokenLight,
+    light: '/icons/activity/light/approveToken.svg',
     dark: null,
   },
   [actions.CANCEL_PROPOSAL]: {
-    light: CancelProposalLight,
+    light: '/icons/activity/light/cancelProposal.svg',
     dark: null,
   },
   [actions.CHALLENGE_ACTION]: {
-    light: ChallengeActionLight,
+    light: '/icons/activity/light/challengeAction.svg',
     dark: null,
   },
   [actions.CLAIM_REWARDS]: {
-    light: ClaimRewardsLight,
+    light: '/icons/activity/light/claimRewards.svg',
     dark: null,
   },
   [actions.DELEGATE_VOTING]: {
-    light: DelegateVotingLight,
+    light: '/icons/activity/light/delegateVoting.svg',
     dark: null,
   },
   [actions.DISPUTE_ACTION]: {
-    light: DisputeActionLight,
+    light: '/icons/activity/light/disputeAction.svg',
     dark: null,
   },
   [actions.EXECUTE_ADJUSTMENT]: {
-    light: ExecuteAdjustmentLight,
+    light: '/icons/activity/light/executeAdjustment.svg',
     dark: null,
   },
   [actions.EXECUTE_DECISION]: {
-    light: ExecuteDecisionLight,
+    light: '/icons/activity/light/executeDecision.svg',
     dark: null,
   },
   [actions.EXECUTE_PROPOSAL]: {
-    light: ExecuteProposalLight,
+    light: '/icons/activity/light/executeProposal.svg',
     dark: null,
   },
   [actions.NEW_DECISION]: {
-    light: NewDecisionLight,
+    light: '/icons/activity/light/newDecision.svg',
     dark: null,
   },
   [actions.NEW_PROPOSAL]: {
-    light: NewProposalLight,
+    light: '/icons/activity/light/newProposal.svg',
     dark: null,
   },
   [actions.NEW_SIGNALING_PROPOSAL]: {
-    light: NewSignalingProposalLight,
+    light: '/icons/activity/light/newSignalingProposal.svg',
     dark: null,
   },
   [actions.RESOLVE_ACTION]: {
-    light: ResolveActionLight,
+    light: '/icons/activity/light/resolveAction.svg',
     dark: null,
   },
   [actions.SETTLE_ACTION]: {
-    light: SettleActionLight,
+    light: '/icons/activity/light/settleAction.svg',
     dark: null,
   },
   [actions.SIGN_AGREEMENT]: {
-    light: SignAgreementLight,
+    light: '/icons/activity/light/signAgreement.svg',
     dark: null,
   },
   [actions.STAKE_TO_PROPOSAL]: {
-    light: StakeToProposalLight,
+    light: '/icons/activity/light/stakeToProposal.svg',
     dark: null,
   },
   [actions.UNWRAP_TOKEN]: {
-    light: UnwrapTokenLigh,
+    light: '/icons/activity/light/unwrapToken.svg',
     dark: null,
   },
   [actions.UPDATE_PRICE_ORACLE]: {
-    light: UpdateOracleLight,
+    light: '/icons/activity/light/updateOracle.svg',
     dark: null,
   },
   [actions.VOTE_ON_BEHALF_OF]: {
-    light: VoteOnBehalfOfLight,
+    light: '/icons/activity/light/voteOnBehalfOf.svg',
     dark: null,
   },
   [actions.VOTE_ON_DECISION]: {
-    light: VoteOnDecisionLight,
+    light: '/icons/activity/light/voteOnDecision.svg',
     dark: null,
   },
   [actions.WITHDRAW_FROM_PROPOSAL]: {
-    light: WithdrawFromProposalLight,
+    light: '/icons/activity/light/withdrawFromProposal.svg',
     dark: null,
   },
   [actions.WITHDRAW_FUNDS]: {
-    light: WithdrawFundsLight,
+    light: '/icons/activity/light/withdrawFunds.svg',
     dark: null,
   },
   [actions.WRAP_TOKEN]: {
-    light: WrapTokenLigh,
+    light: '/icons/activity/light/wrapToken.svg',
     dark: null,
   },
 }

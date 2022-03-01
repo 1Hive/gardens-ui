@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   Button,
@@ -19,12 +19,9 @@ import { useWallet } from '@providers/Wallet'
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
-import profileButtonSvg from '@assets/profileButton.svg'
-import stakeButtonSvg from '@assets/stakeButton.svg'
-
 function AccountScreenConnected({ providerId, onClosePopover }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
   const { account, chainId, resetConnection } = useWallet()
@@ -33,15 +30,15 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
   const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {
-    history.push(`/profile`)
+    router.push(`/profile`)
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral')
-    history.push(path)
+    const path = buildGardenPath(router, 'collateral')
+    router.push(path)
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const handleCopyAddress = useCallback(() => copy(account), [account, copy])
 
@@ -68,7 +65,12 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
             column-gap: ${1 * GU}px;
           `}
         >
-          <img src={profileButtonSvg} alt="" width="24" height="24" />
+          <img
+            src={'/icons/base/profileButton.svg'}
+            alt=""
+            width="24"
+            height="24"
+          />
           <span>My profile</span>
         </div>
       </ButtonBase>
@@ -91,7 +93,12 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
               column-gap: ${1 * GU}px;
             `}
           >
-            <img src={stakeButtonSvg} alt="" width="24" height="24" />
+            <img
+              src={'/icons/base/stakeButton.svg'}
+              alt=""
+              width="24"
+              height="24"
+            />
             <span>Deposit Manager</span>
           </div>
         </ButtonBase>

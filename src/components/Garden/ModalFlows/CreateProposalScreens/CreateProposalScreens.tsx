@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 import { Button } from '@1hive/1hive-ui'
 
@@ -23,7 +23,7 @@ import AddProposal from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
 
 function GoToProposal() {
-  const history = useHistory()
+  const router = useRouter()
   const [proposalId, setProposalId] = useState<string>()
   const { account, chainId, ethers } = useWallet()
   const mounted = useMounted()
@@ -41,9 +41,9 @@ function GoToProposal() {
   }, [extractProposalId, ethers, txHash])
 
   const handleGoToProposal = useCallback(() => {
-    const path = buildGardenPath(history.location, `proposal/${proposalId}`)
-    history.push(path)
-  }, [history, proposalId])
+    const path = buildGardenPath(router, `proposal/${proposalId}`)
+    router.push(path)
+  }, [router, proposalId])
 
   return (
     <Button

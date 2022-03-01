@@ -1,6 +1,6 @@
 /* eslint-disable no-redeclare */
 import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import {
   GU,
   IconAttention,
@@ -23,7 +23,6 @@ import {
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat, toMs } from '@utils/date-utils'
-import noDataIllustration from './assets/no-dataview-data.svg'
 
 function getActionAttributes(status, theme) {
   const actionAttributes = {
@@ -81,7 +80,7 @@ function getCollateralAttributes(status, theme) {
 function StakingMovements({ stakingMovements, token }) {
   const { config } = useGardenState()
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
 
   const [selectedPage, setSelectedPage] = useState(0)
 
@@ -98,12 +97,12 @@ function StakingMovements({ stakingMovements, token }) {
         disputableAddress === config.voting.id ? 'vote' : 'proposal'
 
       const path = buildGardenPath(
-        history.location,
+        router,
         `${proposalType}/${disputableActionId}`
       )
-      history.push(path)
+      router.push(path)
     },
-    [config, history]
+    [config, router]
   )
 
   return (
@@ -118,7 +117,9 @@ function StakingMovements({ stakingMovements, token }) {
       entries={stakingMovements}
       emptyState={{
         default: {
-          illustration: <img src={noDataIllustration} alt="" />,
+          illustration: (
+            <img src={'/icons/stake/no-dataview-data.svg'} alt="" />
+          ),
           subtitle: "You haven't locked any collateral yet",
         },
       }}

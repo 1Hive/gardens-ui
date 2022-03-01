@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import { GardenLoader } from '@components/Loader'
@@ -10,13 +10,12 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import SideBar from './SideBar'
 import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
-import stakingEmpty from './assets/no-dataview-data.svg'
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
 
 const StakeManagement = React.memo(function StakeManagement() {
   const { account } = useWallet()
-  const history = useHistory()
+  const router = useRouter()
   const [stakeModalMode, setStakeModalMode] = useState()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 
@@ -27,10 +26,10 @@ const StakeManagement = React.memo(function StakeManagement() {
 
   useEffect(() => {
     // Components that redirect to deposit collateral will do so through "garden/${gardenId}/collateral/deposit" url
-    if (account && history.location.pathname.includes('deposit')) {
+    if (account && router.pathname.includes('deposit')) {
       setStakeModalMode('deposit')
     }
-  }, [account, history])
+  }, [account, router])
 
   const orderedStakingMovements = useMemo(() => {
     if (!stakeManagement?.stakingMovements) {
@@ -46,7 +45,7 @@ const StakeManagement = React.memo(function StakeManagement() {
   }, [stakeManagement])
 
   if (!account) {
-    return <EmptyState icon={stakingEmpty} />
+    return <EmptyState icon={'/icons/stake/no-dataview-data.svg'} />
   }
 
   return (

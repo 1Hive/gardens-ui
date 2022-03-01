@@ -10,7 +10,7 @@ import {
   springs,
   useTheme,
 } from '@1hive/1hive-ui'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import { Spring, Transition, animated } from 'react-spring/renderprops.cjs'
 
 const AnimatedDiv = animated.div
 

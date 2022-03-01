@@ -22,8 +22,6 @@ import BigNumber from '@lib/bigNumber'
 import { formatTokenAmount } from '@utils/token-utils'
 import { isEntitySupporting } from '@lib/conviction'
 
-import challengeIconSvg from '@assets/challenge-icon.svg'
-
 const UNABLE_TO_PASS = 0
 const MAY_PASS = 1
 const AVAILABLE = 2
@@ -176,7 +174,14 @@ export function ConvictionCountdown({ proposal, shorter }) {
         <Outcome
           result="Challenged"
           color="#F5A623"
-          icon={<img src={challengeIconSvg} alt="" width="24" height="24" />}
+          icon={
+            <img
+              src={'/icons/base/challenge-icon.svg'}
+              alt=""
+              width="24"
+              height="24"
+            />
+          }
         />
       ) : (
         <PositiveOutcome endDate={endDate} shorter={shorter} view={view} />
