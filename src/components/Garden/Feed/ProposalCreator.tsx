@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  EthIdenticon,
-  GU,
-  shortenAddress,
-  textStyle,
-  useTheme,
-} from '@1hive/1hive-ui'
+import { GU, shortenAddress, textStyle, useTheme } from '@1hive/1hive-ui'
 import ProposalIcon from '@components/ProposalIcon'
 
 import { convertToString } from '@/types'
@@ -13,12 +7,19 @@ import { getProfileForAccount } from '@lib/profile'
 import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
+import { ProposalType } from '@/hooks/constants'
+import HiveUiElements from './Icons'
 
 const addressCache = new Map()
 
-function ProposalCreator({ proposal, onViewProfile }) {
+type ProposalCreatorProps = {
+  proposal: ProposalType
+  onViewProfile: () => void
+}
+
+function ProposalCreator({ proposal, onViewProfile }: ProposalCreatorProps) {
   const theme = useTheme()
-  const [profile, setProfile] = useState(null)
+  const [profile, setProfile] = useState<any>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -69,7 +70,11 @@ function ProposalCreator({ proposal, onViewProfile }) {
             `}
           />
         ) : (
-          <EthIdenticon address={proposal.creator} radius={50} scale={1.8} />
+          <HiveUiElements.EthIdenticonIcon
+            address={proposal.creator}
+            radius={50}
+            scale={1.8}
+          />
         )}
       </div>
       <div

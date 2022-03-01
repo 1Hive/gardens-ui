@@ -3,7 +3,6 @@ import { useHistory } from 'react-router'
 import {
   Box,
   Button,
-  EthIdenticon,
   GU,
   Link,
   LoadingRing,
@@ -14,8 +13,14 @@ import IdentityBadge from '@components/IdentityBadge'
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
+import HiveUiElements from './Icons'
 
-function Delegation({ onRemoveDelegate, onSetDelegate }) {
+type DelegationProps = {
+  onRemoveDelegate: () => void
+  onSetDelegate: () => void
+}
+
+function Delegation({ onRemoveDelegate, onSetDelegate }: DelegationProps) {
   const { account } = useWallet()
   const theme = useTheme()
   const { supporter, loading } = useSupporterSubscription(account)
@@ -87,10 +92,22 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
   )
 }
 
-function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
+type RepresentativeProps = {
+  onRemoveDelegate: () => void
+  onSetDelegate: () => void
+  representative: {
+    address: string
+  }
+}
+
+function Representative({
+  onRemoveDelegate,
+  onSetDelegate,
+  representative,
+}: RepresentativeProps) {
   const theme = useTheme()
   const history = useHistory()
-  const profile = useProfile(representative.address)
+  const profile: any = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
     history.push(`/profile?account=${representative.address}`)
@@ -119,7 +136,7 @@ function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
             `}
           />
         ) : (
-          <EthIdenticon
+          <HiveUiElements.EthIdenticonIcon
             address={representative.address}
             radius={50}
             scale={3}

@@ -4,20 +4,26 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '@/constants'
+import { ProposalType } from '@/hooks/constants'
+import HiveUiElements from './Icons'
 
-function ProposalCountdown({ proposal }) {
+type CountDownProps = {
+  proposal: ProposalType
+}
+
+function ProposalCountdown({ proposal }: CountDownProps) {
   if (proposal.hasEnded) {
     return null
   }
 
   if (proposal.status === PROPOSAL_STATUS_DISPUTED_STRING) {
-    return <Tag>Paused</Tag>
+    return <HiveUiElements.TagElement text="Paused" />
   }
 
   return <CountDown proposal={proposal} />
 }
 
-function CountDown({ proposal }) {
+function CountDown({ proposal }: CountDownProps) {
   const end =
     proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING
       ? proposal.challengeEndDate
