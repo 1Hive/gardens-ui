@@ -8,7 +8,7 @@ import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
 import { ProposalType } from '@/hooks/constants'
-import HiveUiElements from './Icons'
+import { HiveUiElements } from './Icons'
 
 const addressCache = new Map()
 

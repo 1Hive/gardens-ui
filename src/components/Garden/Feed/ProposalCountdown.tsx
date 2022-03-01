@@ -1,11 +1,11 @@
 import React from 'react'
-import { GU, Tag, Timer } from '@1hive/1hive-ui'
+import { GU, Timer } from '@1hive/1hive-ui'
 import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '@/constants'
 import { ProposalType } from '@/hooks/constants'
-import HiveUiElements from './Icons'
+import { HiveUiElements } from './Icons'
 
 type CountDownProps = {
   proposal: ProposalType

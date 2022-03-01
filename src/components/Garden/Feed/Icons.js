@@ -9,7 +9,7 @@ const TagElement = ({ text }) => {
   return <Tag>{text}</Tag>
 }
 
-export default HiveUiElements = {
+export const HiveUiElements = {
   EthIdenticonIcon,
   TagElement,
 }

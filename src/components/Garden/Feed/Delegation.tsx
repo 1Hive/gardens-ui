@@ -13,7 +13,7 @@ import IdentityBadge from '@components/IdentityBadge'
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
-import HiveUiElements from './Icons'
+import { HiveUiElements } from './Icons'
 
 type DelegationProps = {
   onRemoveDelegate: () => void
