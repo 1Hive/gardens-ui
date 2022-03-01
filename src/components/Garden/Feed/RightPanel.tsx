@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { GU, useLayout } from '@1hive/1hive-ui'
 
 import Delegation from './Delegation'
