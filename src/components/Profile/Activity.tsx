@@ -18,6 +18,7 @@ import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 import { getNetworkType } from '@utils/web3-utils'
+import { ProposalType } from './types'
 
 type ActivityProps = {
   account: string
@@ -26,14 +27,7 @@ type ActivityProps = {
 }
 
 type StakeItem = {
-  proposal: {
-    id: number | string
-    name?: string
-    organization: {
-      id: number | string
-    }
-    type: string
-  }
+  proposal: ProposalType
   createdAt?: any
 }
 

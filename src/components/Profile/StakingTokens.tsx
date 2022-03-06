@@ -1,6 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Box, Distribution, GU, useTheme, useViewport } from '@1hive/1hive-ui'
+import {
+  Box,
+  Distribution,
+  GU,
+  shortenAddress,
+  useTheme,
+  useViewport,
+} from '@1hive/1hive-ui'
 
 import BigNumber from '@lib/bigNumber'
 import { useWallet } from '@providers/Wallet'
@@ -86,20 +93,7 @@ const useStakesByGarden = (
 function StakingTokens({ myStakes }: StakingTokensProps) {
   const theme = useTheme()
   const { below } = useViewport()
-  const { preferredNetwork } = useWallet()
   const compact = below('large')
-
-  const history = useHistory()
-  const handleSelectProposal = useCallback(
-    (gardenId, proposalId) => {
-      history.push(
-        `/${getNetworkType(
-          preferredNetwork
-        )}/garden/${gardenId}/proposal/${proposalId}`
-      )
-    },
-    [history, preferredNetwork]
-  )
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
@@ -129,43 +123,83 @@ function StakingTokens({ myStakes }: StakingTokensProps) {
     <>
       {stakesByGarden.map(({ garden, items }) => (
         <Box heading="Supported proposals" padding={3 * GU} key={garden}>
-          <label>{garden}</label>
-          <div>
+          <p>Active token distribution</p>
+          <div
+            css={`
+              margin-bottom: 10px;
+            `}
+          >
             <Distribution
               colors={colors}
-              heading="Active token distribution"
+              heading={
+                <p
+                  css={`
+                    margin-bottom: 10px;
+                    font-size: 12px;
+                    color: ${theme.positive};
+                  `}
+                >
+                  {shortenAddress(garden)}
+                </p>
+              }
               items={items}
-              renderLegendItem={({ item }: { item: StakeItem }) => {
-                const { proposalName, proposalId } = item
-                return (
-                  <div
-                    css={`
-                      background: ${theme.badge};
-                      border-radius: 3px;
-                      padding: ${0.5 * GU}px ${1 * GU}px;
-                      width: ${compact ? '100%' : `${18 * GU}px`};
-                      text-overflow: ellipsis;
-                      overflow: hidden;
-                      white-space: nowrap;
-
-                      ${proposalId &&
-                      `cursor: pointer; &:hover {
-                        background: ${theme.badge.alpha(0.7)}
-                      }`}
-                    `}
-                    onClick={() =>
-                      proposalId && handleSelectProposal(garden, proposalId)
-                    }
-                  >
-                    {proposalName}
-                  </div>
-                )
-              }}
+              renderLegendItem={({ item }: { item: StakeItem }) => (
+                <StakeItem compact={compact} proposal={item} />
+              )}
             />
           </div>
         </Box>
       ))}
     </>
+  )
+}
+
+type StakeItemProps = {
+  compact: any
+  proposal: StakeItem
+}
+
+const StakeItem = ({ compact, proposal }: StakeItemProps) => {
+  const history = useHistory()
+
+  const theme = useTheme()
+  const { preferredNetwork } = useWallet()
+
+  const handleSelectProposal = useCallback(
+    (gardenId, proposalId) => {
+      history.push(
+        `/${getNetworkType(
+          preferredNetwork
+        )}/garden/${gardenId}/proposal/${proposalId}`
+      )
+    },
+    [history, preferredNetwork]
+  )
+
+  return (
+    <div
+      css={`
+        background: ${theme.badge};
+        border-radius: 3px;
+        padding: ${0.5 * GU}px ${1 * GU}px;
+        width: ${compact ? '100%' : `${18 * GU}px`};
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        ${proposal?.proposalId &&
+        `cursor: pointer; &:hover {
+            background: ${theme.badge.alpha(0.7)}
+          }
+        `}
+      `}
+      onClick={() =>
+        proposal?.proposalId &&
+        handleSelectProposal(proposal?.gardenId, proposal?.proposalId)
+      }
+    >
+      {proposal?.proposalName}
+    </div>
   )
 }
 

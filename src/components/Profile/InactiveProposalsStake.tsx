@@ -6,7 +6,32 @@ import { useWallet } from '@/providers/Wallet'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getNetworkType } from '@/utils/web3-utils'
 
-function InactiveProposalsStake({ myInactiveStakes }) {
+type ProposalType = {
+  id: string
+  number: string
+  status: string
+  metadata: string
+  type: 'PROPOSAL_TYPE_SUGGESTION'
+  organization: {
+    id: string
+  }
+}
+
+type InactiveStake = {
+  amount: any
+  createdAt: number
+  id: string
+  proposal: ProposalType
+  type: string
+}
+
+type InactiveProposalsStakeProps = {
+  myInactiveStakes: Array<InactiveStake>
+}
+
+function InactiveProposalsStake({
+  myInactiveStakes,
+}: InactiveProposalsStakeProps) {
   const { below } = useViewport()
   const { preferredNetwork } = useWallet()
   const compact = below('large')
@@ -24,20 +49,38 @@ function InactiveProposalsStake({ myInactiveStakes }) {
   )
   return (
     <Box heading="Inactive proposals stake" padding={3 * GU}>
-      {myInactiveStakes.map((stake) => {
+      {myInactiveStakes.map((stake, index) => {
         return (
-          <ProposalItem
-            amount={stake.amount}
-            compact={compact}
-            gardenId={stake.proposal.organization.id}
-            proposalId={stake.proposal.id}
-            proposalName={stake.proposal.metadata}
-            selectProposal={handleSelectProposal}
-          />
+          <div
+            key={index}
+            css={`
+              display: flex;
+              align-items: center;
+              margin-bottom: ${1 * GU}px;
+            `}
+          >
+            <ProposalItem
+              amount={stake.amount}
+              gardenId={stake.proposal.organization.id}
+              proposalId={stake.proposal.id}
+              proposalName={stake.proposal.metadata}
+              compact={compact}
+              selectProposal={handleSelectProposal}
+            />
+          </div>
         )
       })}
     </Box>
   )
+}
+
+type ProposalItemProps = {
+  amount: any
+  gardenId: string
+  proposalId: string
+  proposalName: string
+  compact: any
+  selectProposal: (gardenId: string, proposalId: string) => void
 }
 
 const ProposalItem = ({
@@ -47,21 +90,11 @@ const ProposalItem = ({
   proposalId,
   proposalName,
   selectProposal,
-}) => {
+}: ProposalItemProps) => {
   const theme = useTheme()
 
-  const handleOnClick = useCallback(() => {
-    selectProposal(gardenId, proposalId)
-  }, [gardenId, proposalId, selectProposal])
-
   return (
-    <div
-      css={`
-        display: flex;
-        align-items: center;
-        margin-bottom: ${1 * GU}px;
-      `}
-    >
+    <>
       <div
         css={`
           width: ${1 * GU}px;
@@ -96,7 +129,7 @@ const ProposalItem = ({
             background: ${theme.badge.alpha(0.7)}
           }`}
           `}
-          onClick={proposalId ? handleOnClick : null}
+          onClick={() => proposalId && selectProposal(gardenId, proposalId)}
         >
           {proposalName}
         </div>
@@ -108,7 +141,7 @@ const ProposalItem = ({
           {formatTokenAmount(amount, 18)}
         </span>
       </div>
-    </div>
+    </>
   )
 }
 

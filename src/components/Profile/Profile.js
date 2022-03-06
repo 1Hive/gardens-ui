@@ -138,6 +138,7 @@ function Profile() {
                   <MainProfile profile={selectedProfile} />
                   <Delegates account={selectedAccount} />
                   <StakingTokens myStakes={accountStakes} />
+
                   {accountInactiveStakes.length > 0 && (
                     <InactiveProposalsStake
                       myInactiveStakes={accountInactiveStakes}
