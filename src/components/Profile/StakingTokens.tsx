@@ -18,19 +18,15 @@ const DISTRIBUTION_ITEMS_MAX = 6
 
 type StakeItem = {
   amount?: any
-  gardenId: any
-  proposalId: any
-  proposalName: any
+  gardenId: string | null
+  proposalId: string | null
+  proposalName: string
 }
 
 type TransformedStakeType = {
-  item: {
-    gardenId: any
-    proposalId: any
-    proposalName: any
-  }
+  item: StakeItem
   percentage: any
-}
+} | null
 
 type StakingTokensProps = {
   myStakes: Array<StakeItem>
@@ -65,9 +61,9 @@ const useStakesByGarden = (
   const gardens: Array<any> = []
 
   // get all unique gardens
-  stakes.map((stake) => {
-    if (!gardens.includes(stake.item.gardenId)) {
-      gardens.push(stake.item.gardenId)
+  stakes.map((stake: TransformedStakeType) => {
+    if (!gardens.includes(stake?.item?.gardenId)) {
+      gardens.push(stake?.item.gardenId)
     }
   })
 
@@ -77,10 +73,10 @@ const useStakesByGarden = (
       {
         garden,
         items: stakes.map((stake) => {
-          if (stake.item.gardenId === garden) {
+          if (stake?.item.gardenId === garden) {
             return {
-              item: stake.item,
-              percentage: Math.round(stake.percentage),
+              item: stake?.item,
+              percentage: Math.round(stake?.percentage),
             }
           }
         }),

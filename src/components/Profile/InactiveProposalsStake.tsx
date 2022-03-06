@@ -5,25 +5,7 @@ import { Box, GU, textStyle, useTheme, useViewport } from '@1hive/1hive-ui'
 import { useWallet } from '@/providers/Wallet'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getNetworkType } from '@/utils/web3-utils'
-
-type ProposalType = {
-  id: string
-  number: string
-  status: string
-  metadata: string
-  type: 'PROPOSAL_TYPE_SUGGESTION'
-  organization: {
-    id: string
-  }
-}
-
-type InactiveStake = {
-  amount: any
-  createdAt: number
-  id: string
-  proposal: ProposalType
-  type: string
-}
+import { InactiveStake } from './types'
 
 type InactiveProposalsStakeProps = {
   myInactiveStakes: Array<InactiveStake>
