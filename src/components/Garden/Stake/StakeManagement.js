@@ -12,8 +12,15 @@ import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 import StakingMovements from './StakingMovements'
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 const StakeManagement = React.memo(function StakeManagement() {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const { account } = useWallet()
   const router = useRouter()
   const [stakeModalMode, setStakeModalMode] = useState()
