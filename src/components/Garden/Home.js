@@ -19,7 +19,15 @@ import useGardenLogic from '@/logic/garden-logic'
 import { useWallet } from '@providers/Wallet'
 import { buildGardenPath } from '@utils/routing-utils'
 
-const Home = function Home() {
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
+
+function Home() {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
