@@ -18,16 +18,19 @@ import { useEsc } from '../../../hooks/useKeyboardArrows'
 
 import AppsAddresses from './AppsAddresses'
 import EVMExecutor from './EVMExecutor'
+import Permissions from './Permissions'
 
 const SECTIONS = new Map([
   ['generalInfo', 'General Info'],
   ['evmExecutor', 'EVM Executor'],
+  ['permissions', 'Permissions']
 ])
 const PATHS = Array.from(SECTIONS.keys())
 const VALUES = Array.from(SECTIONS.values())
 
 const GENERAL_INFO_INDEX = 0
 const EVM_EXECUTOR_INDEX = 1
+const PERMISSIONS_INDEX = 2
 
 const AnimatedDiv = animated.div
 
@@ -87,6 +90,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             {sectionIndex === EVM_EXECUTOR_INDEX && (
               <EVMExecutor evmcrispr={evmcrispr} />
             )}
+            {sectionIndex === PERMISSIONS_INDEX && <Permissions />}
           </React.Fragment>
         </Root.Provider>
       </Layout>

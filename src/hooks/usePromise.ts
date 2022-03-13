@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 export default function usePromise(
   fn: () => Promise<any>,
   memoParams: Array<any>,
-  defaultValue: boolean
+  defaultValue: any
 ) {
   const [result, setResult] = useState(defaultValue)
 
