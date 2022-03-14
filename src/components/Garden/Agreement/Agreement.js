@@ -13,8 +13,15 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 function Agreement() {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
 
