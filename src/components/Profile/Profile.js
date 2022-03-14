@@ -19,6 +19,7 @@ import { useWallet } from '@providers/Wallet'
 import { addressesEqual } from '@utils/web3-utils'
 
 function Profile() {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
@@ -39,7 +40,9 @@ function Profile() {
 
   useEffect(() => {
     if (!selectedAccount) {
-      return router.push('/')
+      return router.push('/home')
+    } else {
+      setIsLoaded(true)
     }
   }, [connectedAccount, router, selectedAccount])
 
@@ -67,6 +70,10 @@ function Profile() {
   const isConnectedAccountProfile =
     (connectedAccount && !selectedAccount) ||
     addressesEqual(connectedAccount, selectedAccount)
+
+  if (!isLoaded) {
+    return 'Loading...'
+  }
 
   return (
     <div>
