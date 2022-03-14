@@ -14,26 +14,32 @@ import GlobalErrorHandler from '@/GlobalErrorHandler'
 import MainView from '@/components/MainView'
 import WelcomeLoader from '@/components/Welcome/WelcomeLoader'
 
+import { GlobalFontStyles } from '@/utils/global-styles'
+
 const GardensApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props
 
   return (
-    <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
-      <WalletProvider>
-        <GlobalErrorHandler>
-          <ProfileProvider>
-            <UserProvider>
-              <GardensProvider>
-                <WelcomeLoader />
-                <MainView>
-                  <Component {...pageProps} />
-                </MainView>
-              </GardensProvider>
-            </UserProvider>
-          </ProfileProvider>
-        </GlobalErrorHandler>
-      </WalletProvider>
-    </Main>
+    <>
+      <GlobalFontStyles />
+
+      <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>
+        <WalletProvider>
+          <GlobalErrorHandler>
+            <ProfileProvider>
+              <UserProvider>
+                <GardensProvider>
+                  <WelcomeLoader />
+                  <MainView>
+                    <Component {...pageProps} />
+                  </MainView>
+                </GardensProvider>
+              </UserProvider>
+            </ProfileProvider>
+          </GlobalErrorHandler>
+        </WalletProvider>
+      </Main>
+    </>
   )
 }
 
