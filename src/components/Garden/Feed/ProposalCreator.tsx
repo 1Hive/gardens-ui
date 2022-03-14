@@ -7,7 +7,9 @@ import { getProfileForAccount } from '@lib/profile'
 import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
+
+//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
 import { HiveUiElements } from './Icons'
 
 const addressCache = new Map()

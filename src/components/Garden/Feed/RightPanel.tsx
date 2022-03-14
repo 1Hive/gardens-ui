@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GU, useLayout } from '@1hive/1hive-ui'
 
 import Delegation from './Delegation'
@@ -69,7 +69,10 @@ function RightPanel({
   const showWrapComponent = account && wrappableToken
 
   const { layoutName } = useLayout()
-  const styles = getStyles(layoutName, account)
+  const styles = useMemo(
+    () => getStyles(layoutName, account),
+    [account, layoutName]
+  )
 
   return (
     <div style={styles}>

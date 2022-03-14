@@ -3,7 +3,7 @@ import { AppBadge } from '@1hive/1hive-ui'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getAppPresentation } from '@utils/app-utils'
 import { getNetwork } from '@/networks'
-import { AppType } from '@/hooks/constants'
+import { AppType } from '@/types/app'
 
 type GardenAppBadgeProps = {
   app: AppType

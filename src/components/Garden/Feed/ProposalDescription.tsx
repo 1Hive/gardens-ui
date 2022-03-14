@@ -4,7 +4,7 @@ import Description from '../Description'
 
 import { useDescribeVote } from '@hooks/useDescribeVote'
 import { ProposalTypes } from '@/types'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type ProposalDescriptionProps = {
   proposal: ProposalType

@@ -1,3 +1,5 @@
+// TODO: This file will be deleted after PR from @kamikazebr goest to production
+
 import React from 'react'
 import { EthIdenticon, Tag } from '@1hive/1hive-ui'
 

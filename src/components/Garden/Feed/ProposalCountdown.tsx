@@ -4,7 +4,9 @@ import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '@/constants'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
+
+//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
 import { HiveUiElements } from './Icons'
 
 type CountDownProps = {

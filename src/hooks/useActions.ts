@@ -21,7 +21,7 @@ import radspec from '../radspec'
 import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
-import { ActionsType, TransactionType } from './constants'
+import { ActionsType, TransactionType } from '../types/app'
 
 const APPROVE_GAS_LIMIT = 250000
 const CHALLENGE_GAS_LIMIT = 1000000
