@@ -3,7 +3,7 @@
  */
 
 const setupAliases = require('./webpack/setup-aliases')
-const setupFallbacks = require('./webpack/setup-fallbacks')
+// const setupFallbacks = require('./webpack/setup-fallbacks')
 const setupAdditionalPlugins = require('./webpack/setup-additional-plugins')
 
 const nextConfig = {
@@ -12,7 +12,7 @@ const nextConfig = {
   webpack: function includeExtraPlugins(webpackConfig, { webpack }) {
     setupAliases(webpackConfig)
 
-    setupFallbacks(webpackConfig)
+    // setupFallbacks(webpackConfig)
 
     setupAdditionalPlugins(webpackConfig, webpack)
 
