@@ -84,10 +84,6 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
-    "@babel/preset-react": "^7.16.5",
     "@types/jest": "^27.4.0",
     "@types/node": "^16.11.12",
     "@types/react": "^17.0.37",
