@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { Main } from '@1hive/1hive-ui'
 import { withRouter } from 'next/router'
 
@@ -21,6 +22,12 @@ const GardensApp = (props: AppProps): JSX.Element => {
 
   return (
     <>
+      <Head>
+        <title>Gardens</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
       <GlobalFontStyles />
 
       <Main assetsUrl="/aragon-ui/" layout={false} scrollView={false}>

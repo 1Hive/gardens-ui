@@ -7,10 +7,8 @@ export default function Document() {
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
         <meta name="description" content="Gardens" />
-        <title>Gardens</title>
+        <meta name="theme-color" content="#000000" />
       </Head>
       <body>
         <Main />
