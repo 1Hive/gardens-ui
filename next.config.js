@@ -21,7 +21,7 @@ const nextConfig = {
     return webpackConfig
   },
 
-  // specify redirects which needs to happen on the server
+  // specify redirects to be handled by next.js internally.
   async redirects() {
     return [
       {
