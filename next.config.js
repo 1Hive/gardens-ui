@@ -3,22 +3,25 @@
  */
 
 const setupAliases = require('./webpack/setup-aliases')
-// const setupFallbacks = require('./webpack/setup-fallbacks')
 const setupAdditionalPlugins = require('./webpack/setup-additional-plugins')
 
 const nextConfig = {
-  distDir: 'build',
+  // enable sourcemaps for browsers (this will increase the build time a bit)
+  productionBrowserSourceMaps: true,
 
+  // removes the powered by icon (which appears in the bottom left) from the app
+  poweredByHeader: false,
+
+  // overrides the default webpack config
   webpack: function includeExtraPlugins(webpackConfig, { webpack }) {
     setupAliases(webpackConfig)
-
-    // setupFallbacks(webpackConfig)
 
     setupAdditionalPlugins(webpackConfig, webpack)
 
     return webpackConfig
   },
 
+  // specify redirects which needs to happen on the server
   async redirects() {
     return [
       {
