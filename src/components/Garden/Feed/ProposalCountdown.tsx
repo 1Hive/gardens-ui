@@ -6,9 +6,6 @@ import {
 } from '@/constants'
 import { ProposalType } from '@/types/app'
 
-//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
-// import { HiveUiElements } from './Icons'
-
 type CountDownProps = {
   proposal: ProposalType
 }
@@ -19,7 +16,7 @@ function ProposalCountdown({ proposal }: CountDownProps) {
   }
 
   if (proposal.status === PROPOSAL_STATUS_DISPUTED_STRING) {
-    return <Tag>Paused</Tag>
+    return <Tag>{"Paused"}</Tag>
   }
 
   return <CountDown proposal={proposal} />
