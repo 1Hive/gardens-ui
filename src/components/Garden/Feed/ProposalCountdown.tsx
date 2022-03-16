@@ -1,13 +1,10 @@
 import React from 'react'
-import { GU, Timer } from '@1hive/1hive-ui'
+import { GU, Timer, Tag } from '@1hive/1hive-ui'
 import {
   PROPOSAL_STATUS_CHALLENGED_STRING,
   PROPOSAL_STATUS_DISPUTED_STRING,
 } from '@/constants'
 import { ProposalType } from '@/types/app'
-
-//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
-import { HiveUiElements } from './Icons'
 
 type CountDownProps = {
   proposal: ProposalType
@@ -19,7 +16,7 @@ function ProposalCountdown({ proposal }: CountDownProps) {
   }
 
   if (proposal.status === PROPOSAL_STATUS_DISPUTED_STRING) {
-    return <HiveUiElements.TagElement text="Paused" />
+    return <Tag>Paused</Tag>
   }
 
   return <CountDown proposal={proposal} />

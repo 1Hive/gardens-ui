@@ -3,7 +3,7 @@ import { GU, SearchInput, textStyle } from '@1hive/1hive-ui'
 
 type TextFilterProps = {
   text: string
-  placeholder: string
+  placeholder?: string
   onChange: () => void
 }
 
