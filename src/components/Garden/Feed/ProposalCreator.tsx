@@ -15,6 +15,10 @@ import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
 import { ProposalType } from '@/types/app'
 
+//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
+import { HiveUiElements }  from './Icons'
+
+
 const addressCache = new Map()
 
 type ProposalCreatorProps = {
@@ -75,7 +79,7 @@ function ProposalCreator({ proposal, onViewProfile }: ProposalCreatorProps) {
             `}
           />
         ) : (
-          <EthIdenticon address={proposal.creator} radius={50} scale={1.8} />
+          <HiveUiElements.EthIdenticonIcon address={proposal.creator} radius={50} scale={1.8} />
         )}
       </div>
       <div

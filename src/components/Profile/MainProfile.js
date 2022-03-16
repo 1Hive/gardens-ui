@@ -1,17 +1,16 @@
 import React from 'react'
 import {
   Box,
-  EthIdenticon,
   GU,
   Link,
   shortenAddress,
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
+import { HiveUiElements } from '../Garden/Feed/Icons'
 
 const IMAGE_DIMENSION = 20 * GU
 const BOX_PADDING = 5 * GU
-
 function MainProfile({ profile }) {
   const theme = useTheme()
   const {
@@ -51,7 +50,7 @@ function MainProfile({ profile }) {
               `}
             />
           ) : (
-            account && <EthIdenticon address={account} radius={100} scale={7} />
+            account && <HiveUiElements.EthIdenticonIcon address={account} radius={100} scale={7} />
           )}
         </div>
         <div

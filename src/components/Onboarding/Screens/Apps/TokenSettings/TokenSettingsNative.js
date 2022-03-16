@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
-  EthIdenticon,
   Field,
   GU,
   Help,
@@ -18,6 +17,8 @@ import GnosisSafeField from './GnosisSafeField'
 import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
+import { HiveUiElements } from '@/components/Garden/Feed/Icons'
+
 
 function useFieldsLayout() {
   return `
@@ -416,7 +417,7 @@ function MemberField({
           `}
         >
           {isAddress(account) ? (
-            <EthIdenticon address={account} radius={RADIUS} />
+            <HiveUiElements.EthIdenticonIcon address={account} radius={RADIUS} />
           ) : (
             <div
               css={`

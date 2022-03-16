@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  EthIdenticon,
   GU,
   RADIUS,
   shortenAddress,
@@ -13,6 +12,7 @@ import HeaderModule from '../Header/HeaderModule'
 
 import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@/providers/Wallet'
+import { HiveUiElements } from '../Garden/Feed/Icons'
 
 type AccountButtonProps = {
   onClick: () => void
@@ -40,7 +40,7 @@ function AccountButton({ onClick }: AccountButtonProps) {
               `}
             />
           ) : (
-            <EthIdenticon address={account} radius={RADIUS} />
+            <HiveUiElements.EthIdenticonIcon address={account} radius={RADIUS} />
           )}
           <div
             css={`
