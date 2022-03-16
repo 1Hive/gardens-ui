@@ -4,7 +4,6 @@ import {
   shortenAddress,
   textStyle,
   useTheme,
-  EthIdenticon,
 } from '@1hive/1hive-ui'
 import ProposalIcon from '@components/ProposalIcon'
 
