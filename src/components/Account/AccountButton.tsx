@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {
   EthIdenticon,
   GU,
@@ -15,7 +14,11 @@ import HeaderModule from '../Header/HeaderModule'
 import { getNetworkName } from '@utils/web3-utils'
 import { useWallet } from '@/providers/Wallet'
 
-function AccountButton({ onClick }) {
+type AccountButtonProps = {
+  onClick: () => void
+}
+
+function AccountButton({ onClick }: AccountButtonProps) {
   const theme = useTheme()
   const { account, image, name } = useProfile()
   const { chainId } = useWallet()
@@ -83,11 +86,9 @@ function AccountButton({ onClick }) {
         </>
       }
       onClick={onClick}
+      hasPopover={true}
     />
   )
-}
-AccountButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
 }
 
 export default AccountButton
