@@ -8,6 +8,7 @@ import {
   LoadingRing,
   textStyle,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 import IdentityBadge from '@components/IdentityBadge'
 import useProfile from '@hooks/useProfile'
@@ -15,9 +16,6 @@ import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
 
 
-
-//TODO: This import will be replaced with @1hive/1hive-ui after new types is updated
-import { HiveUiElements } from './Icons'
 
 type DelegationProps = {
   onRemoveDelegate: () => void
@@ -140,7 +138,7 @@ function Representative({
             `}
           />
         ) : (
-          <HiveUiElements.EthIdenticonIcon
+          <EthIdenticon
             address={representative.address}
             radius={50}
             scale={3}

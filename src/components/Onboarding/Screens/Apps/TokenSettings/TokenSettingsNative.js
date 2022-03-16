@@ -12,12 +12,12 @@ import {
   RADIUS,
   TextInput,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 import GnosisSafeField from './GnosisSafeField'
 import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
-import { HiveUiElements } from '@/components/Garden/Feed/Icons'
 
 
 function useFieldsLayout() {
@@ -417,7 +417,7 @@ function MemberField({
           `}
         >
           {isAddress(account) ? (
-            <HiveUiElements.EthIdenticonIcon address={account} radius={RADIUS} />
+            <EthIdenticon address={account} radius={RADIUS} />
           ) : (
             <div
               css={`

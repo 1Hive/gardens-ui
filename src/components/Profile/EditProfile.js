@@ -10,12 +10,12 @@ import {
   textStyle,
   useLayout,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 
 import ProfileForm from './ProfileForm'
 import Tabs from './Tabs'
 import usePicture from '@hooks/usePicture'
-import { HiveUiElements } from '../Garden/Feed/Icons'
 
 const IMAGE_DIMENSION = 15 * GU
 const CONTENT = [ProfileForm]
@@ -154,7 +154,7 @@ const EditProfile = React.forwardRef(
                       `}
                     />
                   ) : (
-                    <HiveUiElements.EthIdenticonIcon address={account} radius={100} scale={5} />
+                    <EthIdenticon address={account} radius={100} scale={5} />
                   )}
                   {selectedTab === 0 && (
                     <div

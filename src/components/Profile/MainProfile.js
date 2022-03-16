@@ -6,8 +6,8 @@ import {
   shortenAddress,
   textStyle,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
-import { HiveUiElements } from '../Garden/Feed/Icons'
 
 const IMAGE_DIMENSION = 20 * GU
 const BOX_PADDING = 5 * GU
@@ -50,7 +50,7 @@ function MainProfile({ profile }) {
               `}
             />
           ) : (
-            account && <HiveUiElements.EthIdenticonIcon address={account} radius={100} scale={7} />
+            account && <EthIdenticon address={account} radius={100} scale={7} />
           )}
         </div>
         <div
