@@ -1,1 +1,6 @@
-["function earned(address account) public view returns (uint256)", " function getReward() external"]
+[
+    "function earned(address account) public view returns (uint256)",
+    "function getReward() external",
+    "function totalSupply() public view returns (uint256)",
+    "function rewardRate() public view returns (uint256)"
+]
