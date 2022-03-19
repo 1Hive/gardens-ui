@@ -20,6 +20,7 @@ interface PermissionProps {
 interface RoleProps {
   appAddress: string,
   appName: string,
+  appIcon: string,
   description: string | undefined, // TODO- check why this is happening proabably old ABI
   hash: string,
   manager: Array<ManagerProps>,
@@ -44,11 +45,14 @@ export function useRoles() {
 
   const appsWithRolesResolved = usePromise(appsWithPermissions, [], [])
 
+  console.log('appsWithRolesResolved ', appsWithRolesResolved)
+
   const rolesWithEntitiesResolved: Array<RoleProps> = appsWithRolesResolved.map((app: any) => {
     return app.roles.map((role: any) => {
       return {
         ...role,
         appName: getAppPresentationByAddress(installedApps, app.address)?.shortenedName,
+        appIcon: getAppPresentationByAddress(installedApps, app.address)?.iconSrc,
         manager: {
           address: role.manager,
           shortenedName: getAppPresentationByAddress(installedApps, role.manager)?.shortenedName
