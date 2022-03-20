@@ -22,3 +22,6 @@ yarn-error.log*
 # ide
 .vscode
 tsconfig.tsbuildinfo
+
+# Next JS build folder
+.next
