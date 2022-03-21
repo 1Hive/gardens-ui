@@ -50,7 +50,25 @@ function displayedStakes(stakes: Array<StakeItem>, total: BigNumber) {
   }))
 }
 
-const useStakesByGarden = (
+const getStakeItemsPerGarden = (
+  stakes: Array<TransformedStakeType> | null,
+  garden: string
+) => {
+  const items: Array<any> = []
+
+  stakes?.map((stake) => {
+    if (stake?.item.gardenId === garden) {
+      items.push({
+        item: stake?.item,
+        percentage: Math.round(stake?.percentage) ?? '0',
+      })
+    }
+  })
+
+  return items
+}
+
+const getStakesByGarden = (
   stakes: Array<TransformedStakeType> | null
 ): Array<{
   garden: string
@@ -59,31 +77,24 @@ const useStakesByGarden = (
   if (stakes === null) return []
 
   const gardens: Array<any> = []
+  const stakesPerGarden: Array<any> = []
 
   // get all unique gardens
   stakes.map((stake: TransformedStakeType) => {
-    if (!gardens.includes(stake?.item?.gardenId)) {
-      gardens.push(stake?.item.gardenId)
+    const gardenId = stake?.item?.gardenId
+    if (!gardens.includes(gardenId) && gardenId !== null) {
+      gardens.push(gardenId)
     }
   })
 
-  return gardens.reduce(
-    (acc, garden) => [
-      ...acc,
-      {
-        garden,
-        items: stakes.map((stake) => {
-          if (stake?.item.gardenId === garden) {
-            return {
-              item: stake?.item,
-              percentage: Math.round(stake?.percentage),
-            }
-          }
-        }),
-      },
-    ],
-    []
-  )
+  gardens.map((garden) => {
+    stakesPerGarden.push({
+      garden,
+      items: getStakeItemsPerGarden(stakes, garden),
+    })
+  })
+
+  return stakesPerGarden
 }
 
 function StakingTokens({ myStakes }: StakingTokensProps) {
@@ -113,40 +124,39 @@ function StakingTokens({ myStakes }: StakingTokensProps) {
   }
 
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
-  const stakesByGarden = useStakesByGarden(stakes)
+  const stakesByGarden = getStakesByGarden(stakes)
 
   return (
-    <>
+    <Box heading="Supported proposals" padding={3 * GU}>
+      <p>Active token distribution</p>
       {stakesByGarden.map(({ garden, items }) => (
-        <Box heading="Supported proposals" padding={3 * GU} key={garden}>
-          <p>Active token distribution</p>
-          <div
-            css={`
-              margin-bottom: 10px;
-            `}
-          >
-            <Distribution
-              colors={colors}
-              heading={
-                <p
-                  css={`
-                    margin-bottom: 10px;
-                    font-size: 12px;
-                    color: ${theme.positive};
-                  `}
-                >
-                  {shortenAddress(garden)}
-                </p>
-              }
-              items={items}
-              renderLegendItem={({ item }: { item: StakeItem }) => (
-                <StakeItem compact={compact} proposal={item} />
-              )}
-            />
-          </div>
-        </Box>
+        <div
+          key={garden}
+          css={`
+            margin-top: 25px;
+          `}
+        >
+          <Distribution
+            colors={colors}
+            heading={
+              <p
+                css={`
+                  margin-bottom: 10px;
+                  font-size: 12px;
+                  color: ${theme.positive};
+                `}
+              >
+                {shortenAddress(garden)}
+              </p>
+            }
+            items={items}
+            renderLegendItem={({ item }: { item: StakeItem }) => (
+              <StakeItem compact={compact} proposal={item} />
+            )}
+          />
+        </div>
       ))}
-    </>
+    </Box>
   )
 }
 
