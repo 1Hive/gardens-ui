@@ -13,6 +13,7 @@ import BigNumber from '@lib/bigNumber'
 import { useWallet } from '@providers/Wallet'
 import { stakesPercentages } from '@utils/math-utils'
 import { getNetworkType } from '@/utils/web3-utils'
+import { useGardens } from '@/providers/Gardens'
 
 const DISTRIBUTION_ITEMS_MAX = 6
 
@@ -68,10 +69,25 @@ const getStakeItemsPerGarden = (
   return items
 }
 
+type Garden = { address: string; name: string }
+
+const getGardenNameByGardens = (
+  gardens: Array<Garden>,
+  gardenAddress: string
+) => {
+  const garden = gardens.find(
+    (garden: Garden) => garden.address.toLowerCase() === gardenAddress
+  )
+
+  return garden?.name ?? ''
+}
+
 const getStakesByGarden = (
+  gardensMetadata: Array<Garden>,
   stakes: Array<TransformedStakeType> | null
 ): Array<{
   garden: string
+  gardenName: string
   items: Array<TransformedStakeType>
 }> => {
   if (stakes === null) return []
@@ -90,6 +106,7 @@ const getStakesByGarden = (
   gardens.map((garden) => {
     stakesPerGarden.push({
       garden,
+      gardenName: getGardenNameByGardens(gardensMetadata, garden),
       items: getStakeItemsPerGarden(stakes, garden),
     })
   })
@@ -98,6 +115,7 @@ const getStakesByGarden = (
 }
 
 function StakingTokens({ myStakes }: StakingTokensProps) {
+  const { gardensMetadata } = useGardens()
   const theme = useTheme()
   const { below } = useViewport()
   const compact = below('large')
@@ -124,12 +142,12 @@ function StakingTokens({ myStakes }: StakingTokensProps) {
   }
 
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
-  const stakesByGarden = getStakesByGarden(stakes)
+  const stakesByGarden = getStakesByGarden(gardensMetadata, stakes)
 
   return (
     <Box heading="Supported proposals" padding={3 * GU}>
       <p>Active token distribution</p>
-      {stakesByGarden.map(({ garden, items }) => (
+      {stakesByGarden.map(({ garden, gardenName, items }) => (
         <div
           key={garden}
           css={`
@@ -142,11 +160,10 @@ function StakingTokens({ myStakes }: StakingTokensProps) {
               <p
                 css={`
                   margin-bottom: 10px;
-                  font-size: 12px;
-                  color: ${theme.positive};
+                  font-size: 16px;
                 `}
               >
-                {shortenAddress(garden)}
+                {gardenName ?? shortenAddress(garden)}
               </p>
             }
             items={items}
