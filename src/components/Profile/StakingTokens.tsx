@@ -98,7 +98,7 @@ const getStakesByGarden = (
   // get all unique gardens
   stakes.map((stake: TransformedStakeType) => {
     const gardenId = stake?.item?.gardenId
-    if (!gardens.includes(gardenId) && gardenId !== null) {
+    if (gardenId && !gardens.includes(gardenId)) {
       gardens.push(gardenId)
     }
   })
