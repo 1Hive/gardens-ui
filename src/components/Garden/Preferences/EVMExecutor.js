@@ -10,6 +10,7 @@ import {
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
+import { toHex } from 'web3-utils'
 import MultiModal from '@components/MultiModal/MultiModal'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
@@ -36,6 +37,7 @@ function EVMExecutor({ evmcrispr }) {
   const [createDecisionModalVisible, setCreateDecisionModalVisible] =
     useState(false)
   const [abi, setAbi] = useState()
+  const [context, setContext] = useState()
   const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
@@ -178,10 +180,10 @@ function EVMExecutor({ evmcrispr }) {
         [
           evmcrispr
             .exec(installedApps[selectedApp])
-            [functionList[selectedFunction]](...parameters),
+          [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],
-        { context: 'new decision' }
+        { context: toHex(context) }
       )
     }
     if (interactionType === EXTERNAL_INDEX) {
@@ -195,20 +197,21 @@ function EVMExecutor({ evmcrispr }) {
           ),
         ],
         [forwarderName],
-        { context: 'new decision' }
+        { context: toHex(context) }
       )
     }
     if (terminalMode) {
       if (!isSafari) {
         const { evmcl } = await import('@1hive/evmcrispr')
         intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-          context: 'new decision',
+          context: toHex(context),
         })
       }
     }
 
     return [{ ...intent.action, description, type, gasLimit: 10000000 }]
   }, [
+    context,
     forwarderName,
     interactionType,
     terminalMode,
@@ -249,6 +252,11 @@ function EVMExecutor({ evmcrispr }) {
     }
   }, [])
 
+  const handleOnContextChange = useCallback((event) => {
+    const value = event.target.value
+    setContext(value)
+  }, [])
+
   const handleOnShowModal = useCallback(() => {
     setCreateDecisionModalVisible(true)
   }, [])
@@ -268,6 +276,13 @@ function EVMExecutor({ evmcrispr }) {
 
   return (
     <Box heading="App selector">
+      <Field label="Context">
+        <TextInput
+          value={context}
+          wide
+          onChange={handleOnContextChange}
+        />
+      </Field>
       <Field label="Interaction type">
         <DropDown
           items={INTERACTION_TYPES}
