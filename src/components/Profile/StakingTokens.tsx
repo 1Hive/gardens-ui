@@ -31,7 +31,7 @@ function StakingTokens({ myStakes }: StakingTokensProps) {
 
   return (
     <Box heading="Supported proposals" padding={3 * GU}>
-      <p>Active token distribution per garden</p>
+      <p>Active token distribution per Garden</p>
       {myStakesPerGarden.map(({ garden, gardenName, items }) => (
         <div
           key={garden}
