@@ -328,6 +328,7 @@ function GardenMetadata() {
                   file={formData[GARDEN_LOGO_TYPE]}
                   id="file-uploader-0"
                   label="HEADER LOGO"
+                  description="Recommended Height: 40px"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoTypeUpdated}
@@ -344,6 +345,7 @@ function GardenMetadata() {
                   file={formData[GARDEN_LOGO]}
                   id="file-uploader-1"
                   label="GARDEN LOGO"
+                  description="Recommended Size: 256x256px"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnGardenLogoUpdated}
@@ -360,6 +362,7 @@ function GardenMetadata() {
                   file={formData[TOKEN_LOGO]}
                   id="file-uploader-2"
                   label="GARDEN TOKEN ICON"
+                  description="Recommended Size: 256x256px"
                   onDragAccepted={handleOnDragAccepted}
                   onDragRejected={handleOnDragRejected}
                   onFileUpdated={handleOnTokenLogoUpdated}
@@ -369,6 +372,7 @@ function GardenMetadata() {
                 <div
                   css={`
                     width: 100%;
+                    font-size: 0.8rem;
                   `}
                 >
                   <FileUploaderField
@@ -376,6 +380,7 @@ function GardenMetadata() {
                     file={formData[GARDEN_TOKEN_ICON]}
                     id="file-uploader-3"
                     label="EXISTING TOKEN ICON"
+                    description="Recommended Size: 256x256px"
                     onDragAccepted={handleOnDragAccepted}
                     onDragRejected={handleOnDragRejected}
                     onFileUpdated={handleOnWrappableTokenLogoUpdated}
@@ -383,6 +388,13 @@ function GardenMetadata() {
                 </div>
               ) : null}
             </div>
+            <Info
+              css={`
+                margin-bottom: ${4 * GU}px;
+              `}
+            >
+              The header logo height will be set to 40px. Adjust the width accordingly. Garden logo and token should be sized at a 1:1 ratio. The size can be larger but will be scaled down.
+            </Info>
           </div>
         </MetadataField>
         <LinksBox
