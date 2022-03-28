@@ -183,7 +183,7 @@ function EVMExecutor({ evmcrispr }) {
           [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],
-        { context: toHex(context) }
+        { context: context }
       )
     }
     if (interactionType === EXTERNAL_INDEX) {
@@ -197,14 +197,14 @@ function EVMExecutor({ evmcrispr }) {
           ),
         ],
         [forwarderName],
-        { context: toHex(context) }
+        { context: context }
       )
     }
     if (terminalMode) {
       if (!isSafari) {
         const { evmcl } = await import('@1hive/evmcrispr')
         intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-          context: toHex(context),
+          context: context,
         })
       }
     }
