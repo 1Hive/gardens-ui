@@ -1,13 +1,32 @@
 import BigNumber from '@lib/bigNumber'
 import { stakesPercentages } from '@utils/math-utils'
 
-const DISTRIBUTION_ITEMS_MAX = 6
+const DISTRIBUTION_ITEMS_MAX_ACTIVE = 6
+const DISTRIBUTION_ITEMS_MAX_INACTIVE = 6
 
 type StakeItem = {
   amount?: any
   gardenId: string | null
   proposalId: string | null
   proposalName: string
+  status?: 'ACTIVE' | 'INACTIVE'
+}
+
+type InactiveStakeType = {
+  amount?: any
+  createdAt: number
+  id: string
+  proposal: {
+    id: string
+    metadata: string
+    name: string
+    number: string
+    organization: {
+      id: string
+    }
+    status: string
+    type: string
+  }
 }
 
 type TransformedStakeType = {
@@ -17,6 +36,7 @@ type TransformedStakeType = {
 
 type StakingTokensProps = {
   myStakes: Array<StakeItem>
+  myInactiveStakes: Array<any>
 }
 
 type Garden = {
@@ -35,18 +55,45 @@ type StakePerGarden = {
   items: Array<StakeItem>
 }
 
-// get stakes per garden
-const getStakeItemsPerGarden = (stakes: Array<StakeItem>, garden: string) => {
+const refactorInactiveStakes = (
+  stakes: Array<InactiveStakeType>
+): Array<StakeItem> => {
   const items: Array<any> = []
 
-  stakes?.map((stake) => {
-    if (stake?.gardenId === garden) {
-      items.push(stake)
-    }
+  stakes.map((stake) => {
+    items.push({
+      amount: stake.amount,
+      gardenId: stake.proposal.organization.id,
+      proposalId: stake.proposal.id,
+      proposalName: stake.proposal.name,
+    })
   })
 
   return items
 }
+
+// get stakes per garden
+const getStakeItemsPerGarden =
+  (stakes: Array<StakeItem>, inactiveStakes: Array<StakeItem>) =>
+  (garden: string) => {
+    const items: Array<any> = []
+
+    // add all items from active stakes for this garden
+    stakes?.map((stake) => {
+      if (stake?.gardenId === garden) {
+        items.push({ ...stake, status: 'ACTIVE' })
+      }
+    })
+
+    // add all items from inactive stakes for this garden
+    inactiveStakes?.map((stake) => {
+      if (stake?.gardenId === garden) {
+        items.push({ ...stake, status: 'INACTIVE' })
+      }
+    })
+
+    return items
+  }
 
 const getGardenNameByGardens = (
   gardens: Array<Garden>,
@@ -59,33 +106,40 @@ const getGardenNameByGardens = (
   return garden?.name ?? ''
 }
 
-const getStakesByGarden = (
-  gardensMetadata: Array<Garden>,
-  stakes: Array<StakeItem>
-) => {
-  if (stakes === null) return []
+const getStakesByGarden =
+  (stakes: Array<StakeItem>, inactiveStakes: Array<StakeItem>) =>
+  (gardensMetadata: Array<Garden>) => {
+    if (stakes === null) return []
 
-  const gardens: Array<any> = []
-  const stakesPerGarden: Array<any> = []
+    const gardens: Array<any> = []
+    const stakesPerGarden: Array<any> = []
 
-  // get all unique gardens
-  stakes.map((stake: StakeItem) => {
-    const gardenId = stake?.gardenId
-    if (gardenId && !gardens.includes(gardenId)) {
-      gardens.push(gardenId)
-    }
-  })
-
-  gardens.map((garden: string) => {
-    stakesPerGarden.push({
-      garden,
-      gardenName: getGardenNameByGardens(gardensMetadata, garden),
-      items: getStakeItemsPerGarden(stakes, garden),
+    // get all unique gardens from stakes array
+    stakes.map((stake: StakeItem) => {
+      const gardenId = stake?.gardenId
+      if (gardenId && !gardens.includes(gardenId)) {
+        gardens.push(gardenId)
+      }
     })
-  })
 
-  return stakesPerGarden
-}
+    // get all unique gardens from inactive stakes
+    inactiveStakes.map((stake: StakeItem) => {
+      const gardenId = stake?.gardenId
+      if (gardenId && !gardens.includes(gardenId)) {
+        gardens.push(gardenId)
+      }
+    })
+
+    gardens.map((garden: string) => {
+      stakesPerGarden.push({
+        garden,
+        gardenName: getGardenNameByGardens(gardensMetadata, garden),
+        items: getStakeItemsPerGarden(stakes, inactiveStakes)(garden),
+      })
+    })
+
+    return stakesPerGarden
+  }
 
 const getTotalPerGarden = (stakes: Array<StakeItem>) => {
   if (!stakes) {
@@ -97,49 +151,49 @@ const getTotalPerGarden = (stakes: Array<StakeItem>) => {
   }, new BigNumber('0'))
 }
 
-const getMyStakesPerGarden = (
-  gardensMetadata: Array<Garden>,
-  stakes: Array<StakeItem>
-) => {
-  if (stakes === null) return []
+const getMyStakesPerGarden =
+  (stakes: Array<StakeItem>, inactiveStakes: Array<any>) =>
+  (gardensMetadata: Array<Garden>) => {
+    if (stakes === null) return []
 
-  const newStakes: Array<{
-    garden: string
-    gardenName: string
-    items: Array<TransformedStakeType>
-  }> = []
+    const newStakes: Array<{
+      garden: string
+      gardenName: string
+      items: Array<TransformedStakeType>
+    }> = []
 
-  const stakesPerGarden: Array<StakePerGarden> = getStakesByGarden(
-    gardensMetadata,
-    stakes
-  )
+    const stakesPerGarden: Array<StakePerGarden> = getStakesByGarden(
+      stakes,
+      inactiveStakes
+    )(gardensMetadata)
 
-  stakesPerGarden.map((garden) => {
-    const stakePercentagePerGarden = stakesPercentages(
-      garden.items.map(({ amount }) => amount),
-      {
-        total: getTotalPerGarden(garden.items),
-        maxIncluded: DISTRIBUTION_ITEMS_MAX,
-      }
-    )
-
-    newStakes.push({
-      garden: garden.garden,
-      gardenName: garden.gardenName,
-      items: stakePercentagePerGarden.map((stakePercentage: any) => {
-        const item = garden.items[stakePercentage?.index]
-
-        return {
-          item: { ...item },
-          percentage: parseFloat(stakePercentage.percentage),
+    stakesPerGarden.map((garden) => {
+      const stakePercentagePerGarden = stakesPercentages(
+        garden.items.map(({ amount }) => amount),
+        {
+          total: getTotalPerGarden(garden.items),
+          maxIncluded:
+            DISTRIBUTION_ITEMS_MAX_ACTIVE + DISTRIBUTION_ITEMS_MAX_INACTIVE,
         }
-      }),
-    })
-  })
+      )
 
-  return newStakes
-}
+      newStakes.push({
+        garden: garden.garden,
+        gardenName: garden.gardenName,
+        items: stakePercentagePerGarden.map((stakePercentage: any) => {
+          const item = garden.items[stakePercentage?.index]
+
+          return {
+            item: { ...item },
+            percentage: parseFloat(stakePercentage.percentage),
+          }
+        }),
+      })
+    })
+
+    return newStakes
+  }
 
 export type { StakeItem, StakingTokensProps, Garden, StakeItemProps }
 
-export { getMyStakesPerGarden }
+export { getMyStakesPerGarden, refactorInactiveStakes }

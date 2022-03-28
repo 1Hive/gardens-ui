@@ -13,25 +13,28 @@ import {
 import { useWallet } from '@providers/Wallet'
 import { getNetworkType } from '@/utils/web3-utils'
 import { useGardens } from '@/providers/Gardens'
-import { getMyStakesPerGarden } from './stakes-utils'
+import { getMyStakesPerGarden, refactorInactiveStakes } from './stakes-utils'
 import type {
   StakeItem,
   StakeItemProps,
   StakingTokensProps,
 } from './stakes-utils'
 
-function StakingTokens({ myStakes }: StakingTokensProps) {
+function StakingTokens({ myStakes, myInactiveStakes }: StakingTokensProps) {
   const { gardensMetadata } = useGardens()
   const theme = useTheme()
   const { below } = useViewport()
   const compact = below('large')
 
-  const myStakesPerGarden = getMyStakesPerGarden(gardensMetadata, myStakes)
+  const myStakesPerGarden = getMyStakesPerGarden(
+    myStakes,
+    refactorInactiveStakes(myInactiveStakes)
+  )(gardensMetadata)
   const colors = [theme.green, theme.red, theme.purple, theme.yellow]
 
   return (
     <Box heading="Supported proposals" padding={3 * GU}>
-      <p>Active token distribution per Garden</p>
+      <p>Token distribution per Garden</p>
       {myStakesPerGarden.map(({ garden, gardenName, items }) => (
         <div
           key={garden}
@@ -77,7 +80,7 @@ const StakeItemElement = ({ compact, proposal }: StakeItemProps) => {
   return (
     <div
       css={`
-        background: ${theme.badge};
+        background: ${proposal.status === 'ACTIVE' ? theme.badge : '#EEE'};
         border-radius: 3px;
         padding: ${0.5 * GU}px ${1 * GU}px;
         width: ${compact ? '100%' : `${18 * GU}px`};
@@ -86,6 +89,7 @@ const StakeItemElement = ({ compact, proposal }: StakeItemProps) => {
         white-space: nowrap;
 
         ${proposal?.proposalId &&
+        proposal.status === 'ACTIVE' &&
         `cursor: pointer; &:hover {
             background: ${theme.badge.alpha(0.7)}
           }
