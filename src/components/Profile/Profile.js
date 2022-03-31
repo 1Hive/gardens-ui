@@ -137,12 +137,10 @@ function Profile() {
                 <>
                   <MainProfile profile={selectedProfile} />
                   <Delegates account={selectedAccount} />
-                  <StakingTokens myStakes={accountStakes} />
-                  {accountInactiveStakes.length > 0 && (
-                    <InactiveProposalsStake
-                      myInactiveStakes={accountInactiveStakes}
-                    />
-                  )}
+                  <StakingTokens
+                    myStakes={accountStakes}
+                    myInactiveStakes={accountInactiveStakes}
+                  />
                 </>
               }
               invert={oneColumn ? 'vertical' : 'horizontal'}

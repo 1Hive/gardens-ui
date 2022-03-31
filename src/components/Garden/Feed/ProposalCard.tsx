@@ -9,7 +9,7 @@ import { useProposalWithThreshold } from '@hooks/useProposals'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type CardProps = {
   loading?: boolean

@@ -100,10 +100,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.16.tgz#6bf5d106cf10a77f84699ad7587c37f8696dc30b"
-  integrity sha512-BFqruurG2a84NU/PDQxb7jo6HgQudA+AjrwTMg9nXCs1mhgUu+1Kcu5e2gns8xWQi24XysQ0lZC78z3me/2egQ==
+"@1hive/1hive-ui@1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.0.17.tgz#79838d44a3f2f3bce57d460888b70dc4ad3e5b8d"
+  integrity sha512-i5+Wf3OUb0l6w2O7IUFyrqCWh2145TpANx3aTdEClcoNnoKr1Fc15KByushO7oNT7Vl+z4XpxKuqENWGHtHmcg==
   dependencies:
     "@babel/runtime" "^7.3.1"
     airbnb-prop-types "^2.9.0"
@@ -20304,9 +20304,9 @@ ursa-optional@~0.10.0:
     bindings "^1.5.0"
     nan "^2.14.2"
 
-"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
   version "0.2.0"
-  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@0.13.1":
   version "0.13.1"

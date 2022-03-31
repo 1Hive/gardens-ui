@@ -6,7 +6,7 @@ import {
   transformSupporterData,
 } from '../utils/data-utils'
 import { SupporterData } from '@1hive/connect-gardens/dist/cjs/types'
-import { FiltersType } from './constants'
+import { FiltersType } from '../types/app'
 
 type Garden = {
   onConfig: any
