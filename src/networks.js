@@ -38,7 +38,7 @@ const networks = {
   xdai: {
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
-    name: 'xDai',
+    name: 'Gnosis Chain',
     type: 'xdai',
     defaultEthNode: XDAI_ETH_NODE,
 
@@ -67,12 +67,12 @@ const networks = {
 
     eip3085: {
       chainId: '0x64',
-      chainName: 'xDai',
+      chainName: 'Gnosis',
       rpcUrls: ['https://rpc.xdaichain.com/'],
       iconUrls: [
         'https://gblobscdn.gitbook.com/spaces%2F-Lpi9AHj62wscNlQjI-l%2Favatar.png',
       ],
-      nativeCurrency: { name: 'xDAI', symbol: 'xDAI', decimals: 18 },
+      nativeCurrency: { name: 'Gnosis', symbol: 'xDAI', decimals: 18 },
       blockExplorerUrls: ['https://blockscout.com/poa/xdai/'],
     },
   },

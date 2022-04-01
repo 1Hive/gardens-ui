@@ -7,7 +7,7 @@ import { useDisputeFees } from '@hooks/useDispute'
 import honeyIconSvg from '@assets/honey.svg'
 
 import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type DisputeFeesProps = {
   proposal: ProposalType

@@ -24,8 +24,7 @@ const modeAttributes = {
   unwrap: {
     icon: wrappedIcon,
     button: { mode: 'strong', label: 'Unwrap' },
-    hint:
-      'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
   },
   claim: {
     button: { mode: 'normal', label: 'Claim' },
@@ -75,7 +74,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   ]
 
   const handleItemSelected = useCallback(
-    index => {
+    (index) => {
       // eslint-disable-next-line no-empty
       if (index === carouselItems.length - 1) {
       }

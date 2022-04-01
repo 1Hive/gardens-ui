@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "3box": "^1.19.1",
-    "@1hive/1hive-ui": "^1.0.16",
+    "@1hive/1hive-ui": "1.0.17",
     "@1hive/connect-agreement": "^0.9.5",
     "@1hive/connect-gardens": "^0.1.12",
     "@1hive/connect-react": "^0.9.9",
@@ -54,7 +54,7 @@
     "timers-browserify": "^2.0.12",
     "url": "^0.11.0",
     "urql": "^1.10.1",
-    "use-wallet": "npm:@1hive/use-wallet@0.13.1",
+    "use-wallet": "npm:@1hive/use-wallet@1.1.1",
     "web3-utils": "^1.2.0"
   },
   "browserslist": {

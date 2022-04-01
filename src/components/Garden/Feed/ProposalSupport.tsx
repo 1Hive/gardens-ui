@@ -11,7 +11,7 @@ import { ProposalTypes } from '@/types'
 import { safeDiv } from '@utils/math-utils'
 import { getConnectedAccountCast } from '@utils/vote-utils'
 import { VOTE_NAY, VOTE_YEA } from '@/constants'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 import styled from 'styled-components'
 
 type ProposalSupportProps = {
