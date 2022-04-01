@@ -22,6 +22,7 @@ import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
+import ProposalComments from '../ProposalDetail/ProposalComments'
 import ProposalHeader from '../ProposalDetail/ProposalHeader'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
@@ -350,6 +351,7 @@ function DecisionDetail({ proposal, actions }) {
             </>
           }
         />
+        {forumRegex.test(proposal.metadata) && <ProposalComments link={proposal.metadata} />}
       </div>
       <MultiModal
         visible={modalVisible}

@@ -7,6 +7,7 @@ import {
   DropDown,
   Field,
   GU,
+  Help,
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
@@ -276,7 +277,14 @@ function EVMExecutor({ evmcrispr }) {
 
   return (
     <Box heading="App selector">
-      <Field label={<>hello</>}>
+      <Field label={
+        <div css={`display: flex; align-items:center;`}>
+          <div>Context</div>
+          <div>
+            <Help hint="">The context could be for example the forum post discussion link</Help>
+          </div>
+        </div>
+      }>
         <TextInput
           value={context}
           wide
