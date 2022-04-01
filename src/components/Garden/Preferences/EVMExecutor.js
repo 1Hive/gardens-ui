@@ -276,7 +276,7 @@ function EVMExecutor({ evmcrispr }) {
 
   return (
     <Box heading="App selector">
-      <Field label="Context">
+      <Field label={<>hello</>}>
         <TextInput
           value={context}
           wide
@@ -291,111 +291,125 @@ function EVMExecutor({ evmcrispr }) {
           wide
         />
       </Field>
-      {interactionType === INTERNAL_INDEX && (
-        <Field label="Select App">
-          <DropDown
-            items={shortenedAppsNames}
-            onChange={setSelectedApp}
-            selected={selectedApp}
-            disabled={!shortenedAppsNames.length > 0}
-            wide
-          />
-        </Field>
-      )}
-      {interactionType === EXTERNAL_INDEX && (
-        <>
-          <Field label="Contract address">
-            <TextInput
-              value={externalContractAddress}
+      {
+        interactionType === INTERNAL_INDEX && (
+          <Field label="Select App">
+            <DropDown
+              items={shortenedAppsNames}
+              onChange={setSelectedApp}
+              selected={selectedApp}
+              disabled={!shortenedAppsNames.length > 0}
               wide
-              onChange={handleOnContractAddressChange}
             />
           </Field>
-          <Field label="ABI">
-            <TextInput
-              multiline
-              value={abi}
-              wide
-              onChange={handleOnAbiChange}
-              css={`
+        )
+      }
+      {
+        interactionType === EXTERNAL_INDEX && (
+          <>
+            <Field label="Contract address">
+              <TextInput
+                value={externalContractAddress}
+                wide
+                onChange={handleOnContractAddressChange}
+              />
+            </Field>
+            <Field label="ABI">
+              <TextInput
+                multiline
+                value={abi}
+                wide
+                onChange={handleOnAbiChange}
+                css={`
                 min-height: ${30 * GU}px;
               `}
-            />
-          </Field>
-        </>
-      )}
-      {terminalMode && (
-        <TextInput
-          onChange={handleOnSetCode}
-          placeholder={TERMINAL_EXECUTOR_MESSAGE}
-          wide
-          multiline
-          css={`
+              />
+            </Field>
+          </>
+        )
+      }
+      {
+        terminalMode && (
+          <TextInput
+            onChange={handleOnSetCode}
+            placeholder={TERMINAL_EXECUTOR_MESSAGE}
+            wide
+            multiline
+            css={`
             min-height: ${50 * GU}px;
           `}
-        />
-      )}
-      {functionList?.length > 0 && (
-        <Field label="Select Function">
-          <DropDown
-            items={functionList}
-            onChange={setSelectedFunction}
-            selected={selectedFunction}
-            disabled={!functionList.length > 0}
-            wide
           />
-        </Field>
-      )}
-      {requiredParameters?.length > 0 && (
-        <Field label="Arguments">
-          {requiredParameters.map((parameter, index) => {
-            return (
-              <TextInput
-                key={index}
-                onChange={(event) => handleOnChangeParameters(index, event)}
-                placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
-                wide
-                css={`
+        )
+      }
+      {
+        functionList?.length > 0 && (
+          <Field label="Select Function">
+            <DropDown
+              items={functionList}
+              onChange={setSelectedFunction}
+              selected={selectedFunction}
+              disabled={!functionList.length > 0}
+              wide
+            />
+          </Field>
+        )
+      }
+      {
+        requiredParameters?.length > 0 && (
+          <Field label="Arguments">
+            {requiredParameters.map((parameter, index) => {
+              return (
+                <TextInput
+                  key={index}
+                  onChange={(event) => handleOnChangeParameters(index, event)}
+                  placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
+                  wide
+                  css={`
                   margin-bottom: ${2 * GU}px;
                 `}
-              />
-            )
-          })}
-        </Field>
-      )}
-      {!account && (
-        <Info
-          mode="warning"
-          css={`
+                />
+              )
+            })}
+          </Field>
+        )
+      }
+      {
+        !account && (
+          <Info
+            mode="warning"
+            css={`
             margin-top: ${2 * GU}px;
             margin-bottom: ${2 * GU}px;
           `}
-        >
-          You must connect your account in order to create a decision.
-        </Info>
-      )}
-      {selectedFunction !== null || terminalMode ? (
-        <Button
-          css={`
+          >
+            You must connect your account in order to create a decision.
+          </Info>
+        )
+      }
+      {
+        selectedFunction !== null || terminalMode ? (
+          <Button
+            css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={isSafari || !account || (terminalMode && !code)}
-          mode="strong"
-          wide
-          onClick={handleOnShowModal}
-        >
-          Execute
-        </Button>
-      ) : (
-        <> </>
-      )}
+            disabled={isSafari || !account || (terminalMode && !code)}
+            mode="strong"
+            wide
+            onClick={handleOnShowModal}
+          >
+            Execute
+          </Button>
+        ) : (
+          <> </>
+        )
+      }
       <MultiModal
         visible={createDecisionModalVisible}
         onClose={handleOnHideModal}
       >
         <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
       </MultiModal>
-    </Box>
+    </Box >
   )
 }
 
