@@ -20805,10 +20805,10 @@ use-inside@^0.2.0:
   dependencies:
     prop-types "^15.7.2"
 
-"use-wallet@npm:@1hive/use-wallet@0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@1hive/use-wallet/-/use-wallet-0.13.1.tgz#9a33407e95a1ba0ef4209420900b98f0a21e6472"
-  integrity sha512-5HJgsg9W58YXRc49HAuxTvoZD+QW04gVsvtZoTpMsdQ15j+ApL8tKDVyS301crqqGDoJF0D9XVbHXe4g3gImNw==
+"use-wallet@npm:@1hive/use-wallet@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@1hive/use-wallet/-/use-wallet-1.1.1.tgz#63e44644ebe5b09db7ed32299ee1fe37d2964c1c"
+  integrity sha512-CZKJUt/4y68UfJeiMLyNLth9OUcuxmYbPtexR4q9gEfHSDblFwA+MWKL5k1VJa2674NUR6oKOdZ78Vcb7QsTwQ==
   dependencies:
     "@aragon/provided-connector" "^6.0.8"
     "@typescript-eslint/parser" "^4.1.0"

@@ -36,7 +36,7 @@
     "react-use-measure": "^2.0.1",
     "styled-components": "^4.3.2",
     "urql": "^1.10.1",
-    "use-wallet": "npm:@1hive/use-wallet@0.13.1",
+    "use-wallet": "npm:@1hive/use-wallet@1.1.1",
     "web3-utils": "^1.2.0"
   },
   "browserslist": {
