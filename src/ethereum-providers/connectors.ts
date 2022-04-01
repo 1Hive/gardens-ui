@@ -1,10 +1,10 @@
-import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
-import env from '@/environment'
+// import { WALLET_CONNECT_BRIDGE_ENDPOINT } from '@/endpoints'
+// import env from '@/environment'
 import { getPreferredChain } from '@/local-settings'
 
-const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
-const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
-const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
+// const RINKEBY_ETH_NODE = env('RINKEBY_ETH_NODE')
+// const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
+// const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
 type ConnectorProviderType = {
   [key: string]: any
@@ -19,30 +19,31 @@ type ConnectorProviderType = {
 }
 
 export const CONNECTORS: Array<ConnectorProviderType> = [
-  {
-    id: 'injected',
-    properties: {
-      chainId: [100, 4, 137, 31337], // add here to handle more injected chains
-    },
-  },
-  {
-    id: 'frame',
-    properties: {
-      chainId: [100, 4, 137, 31337],
-    },
-  },
-  {
-    id: 'walletconnect',
-    properties: {
-      rpc: {
-        137: POLYGON_ETH_NODE,
-        100: XDAI_ETH_NODE,
-        4: RINKEBY_ETH_NODE,
-      },
-      bridge: WALLET_CONNECT_BRIDGE_ENDPOINT,
-      pollingInterval: 12000,
-    },
-  },
+  // {
+  //   id: 'injected',
+  //   properties: {
+  //     chainId: [100, 4, 137, 31337], // add here to handle more injected chains
+  //   },
+  // },
+  // {
+  //   id: 'frame',
+  //   iamge:'https://frame.nyc3.digitaloceanspaces.com/bundle/default/favicon.dbd15758.png',
+  //   properties: {
+  //     chainId: [100, 4, 137, 31337],
+  //   },
+  // },
+  // {
+  //   id: 'walletconnect',
+  //   properties: {
+  //     rpc: {
+  //       137: POLYGON_ETH_NODE,
+  //       100: XDAI_ETH_NODE,
+  //       4: RINKEBY_ETH_NODE,
+  //     },
+  //     bridge: WALLET_CONNECT_BRIDGE_ENDPOINT,
+  //     pollingInterval: 12000,
+  //   },
+  // },
 ]
 
 function sanitizeWalletConnect(
