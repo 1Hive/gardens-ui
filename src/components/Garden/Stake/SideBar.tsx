@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
