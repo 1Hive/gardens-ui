@@ -15,7 +15,7 @@ type StakeMovement = {
 }
 
 type SideBarProps = {
-  stakeActions: string
+  stakeActions: StakeActionsType
   staking: {
     available: number
     locked: number
@@ -31,18 +31,29 @@ type SideBarProps = {
 }
 
 type CardContentProps = {
-  amount: any
+  amount: BigNumber
   icon: string
   title: string
   secondary?: boolean
   tokenAmount: any
 }
 
+type StakeActionsType = {
+  allowManager: () => void
+  approveTokenAmount: (amount: BigNumber) => void
+  getAllowance: () => void
+  getStakedAmount: () => void
+  reFetchTotalBalance: () => void
+  stake: () => void
+  unlockAndRemoveManager: () => void
+  withdraw: () => void
+}
+
 type BalanceCardProps = {
-  allowance: any
-  locked: any
-  stakeActions: any
-  total: any
+  allowance: BigNumber
+  locked: BigNumber
+  stakeActions: StakeActionsType
+  total: BigNumber
   tokenAddress: string
   tokenDecimals: number
   tokenSymbol: string

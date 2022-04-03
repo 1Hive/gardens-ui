@@ -24,6 +24,7 @@ import {
 import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat, toMs } from '@utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
+import { TokenType } from '@/types/app'
 
 const getActionAttributes = (
   status: StakingType,
@@ -93,12 +94,10 @@ const getCollateralAttributes = (
 
 type StakingMovementsProps = {
   stakingMovements: Array<StakeMovement>
-  token: any
+  token: TokenType
 }
 
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
-  console.log(`stakingMovements`, stakingMovements)
-
   const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
