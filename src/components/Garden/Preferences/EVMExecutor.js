@@ -281,7 +281,7 @@ function EVMExecutor({ evmcrispr }) {
         <div css={`display: flex; align-items:center;`}>
           <div>Context</div>
           <div>
-            <Help hint="">The context could be for example the forum post discussion link</Help>
+            <Help hint="">Information related to your vote. For example: brief description or link to forum discussion.</Help>
           </div>
         </div>
       }>
