@@ -21,7 +21,7 @@ function BalanceCard({
   tokenDecimals,
   tokenSymbol,
   onDepositOrWithdraw,
-}) {
+}: BalanceCardProps) {
   const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
   const theme = useTheme()
   const tokenPrice = useHoneyswapTokenPrice(tokenAddress)

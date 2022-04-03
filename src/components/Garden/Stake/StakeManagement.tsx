@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState, memo } from 'react'
 import { useHistory } from 'react-router'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
@@ -14,10 +14,10 @@ import stakingEmpty from './assets/no-dataview-data.svg'
 import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
 
-const StakeManagement = React.memo(function StakeManagement() {
+function StakeManagement() {
   const { account } = useWallet()
   const history = useHistory()
-  const [stakeModalMode, setStakeModalMode] = useState()
+  const [stakeModalMode, setStakeModalMode] = useState<null | string>()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 
   const handleOnCloseModal = useCallback(() => {
@@ -38,7 +38,7 @@ const StakeManagement = React.memo(function StakeManagement() {
     }
 
     return stakeManagement.stakingMovements.sort(
-      (movement1, movement2) =>
+      (movement1: StakeMovement, movement2: StakeMovement) =>
         movement2.disputableActionId +
         movement2.createdAt -
         (movement1.disputableActionId + movement1.createdAt)
@@ -54,7 +54,7 @@ const StakeManagement = React.memo(function StakeManagement() {
       {loading ? (
         <GardenLoader />
       ) : (
-        <LayoutGutter>
+        <LayoutGutter collapseWhenSmall={undefined}>
           <LayoutLimiter>
             <Header primary="Deposit Manager" />
 
@@ -94,6 +94,6 @@ const StakeManagement = React.memo(function StakeManagement() {
       )}
     </>
   )
-})
+}
 
-export default StakeManagement
+export default memo(StakeManagement)

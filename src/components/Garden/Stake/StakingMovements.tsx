@@ -1,4 +1,4 @@
-/* eslint-disable no-redeclare */
+/* eslint-disable react/jsx-key */
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
@@ -25,7 +25,14 @@ import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat, toMs } from '@utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
 
-function getActionAttributes(status, theme) {
+const getActionAttributes = (
+  status: StakingType,
+  theme: any
+): {
+  color: string
+  background?: string
+  icon?: React.ReactNode
+} => {
   const actionAttributes = {
     [StakingType.Scheduled]: {
       background: theme.infoSurface,
@@ -57,7 +64,13 @@ function getActionAttributes(status, theme) {
   return actionAttributes[status]
 }
 
-function getCollateralAttributes(status, theme) {
+const getCollateralAttributes = (
+  status: StakingCollateralType,
+  theme: any
+): {
+  color: string
+  icon?: React.ReactNode
+} => {
   const collateralAttributes = {
     [StakingCollateralType.Locked]: {
       color: theme.surfaceOpened,
@@ -75,10 +88,15 @@ function getCollateralAttributes(status, theme) {
     },
   }
 
-  return collateralAttributes[status]
+  return collateralAttributes?.[status]
 }
 
-function StakingMovements({ stakingMovements, token }) {
+type StakingMovementsProps = {
+  stakingMovements: Array<StakeMovement>
+  token: any
+}
+
+function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
   const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()
@@ -89,7 +107,7 @@ function StakingMovements({ stakingMovements, token }) {
     setSelectedPage(page)
   }, [])
 
-  const getProposalType = (disputableAddress) =>
+  const getProposalType = (disputableAddress: string) =>
     disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
 
   const handleGoToProposal = useCallback(
@@ -130,15 +148,14 @@ function StakingMovements({ stakingMovements, token }) {
         tokenDecimals,
         disputableActionId,
         disputableAddress,
-      }) => {
+      }: StakeMovement) => {
         const stakingStatus = StakingStatusesMap.get(actionState)
-        const actionAttributes = getActionAttributes(stakingStatus, theme)
+        const actionAttributes =
+          stakingStatus && getActionAttributes(stakingStatus, theme)
 
         const collateralStatus = CollateralStatusesMap.get(collateralState)
-        const amountAttributes = getCollateralAttributes(
-          collateralStatus,
-          theme
-        )
+        const amountAttributes =
+          collateralStatus && getCollateralAttributes(collateralStatus, theme)
 
         return [
           <time
@@ -150,10 +167,11 @@ function StakingMovements({ stakingMovements, token }) {
           <div>
             <Tag
               background={
-                actionAttributes.background && `${actionAttributes.background}`
+                actionAttributes?.background &&
+                `${actionAttributes?.background}`
               }
-              color={actionAttributes.color && `${actionAttributes.color}`}
-              icon={actionAttributes.icon}
+              color={actionAttributes?.color && `${actionAttributes?.color}`}
+              icon={actionAttributes?.icon}
               mode="indicator"
               label={actionState}
             />
@@ -171,12 +189,12 @@ function StakingMovements({ stakingMovements, token }) {
           <div
             css={`
               font-weight: 600;
-              color: ${amountAttributes.color};
+              color: ${amountAttributes?.color};
               display: flex;
               align-items: center;
             `}
           >
-            {amountAttributes.icon}
+            {amountAttributes?.icon}
             <span
               css={`
                 margin-left: ${1 * GU}px;

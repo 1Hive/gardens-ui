@@ -3,7 +3,7 @@ import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
 import tokenIcon from './assets/connect-icon.svg'
 import LayoutColumns from '../Layout/LayoutColumns'
 
-export default function EmptyState({ icon }) {
+export default function EmptyState({ icon }: { icon: string }) {
   return (
     <>
       <Header primary="Deposit Manager" />

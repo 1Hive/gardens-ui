@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
@@ -8,7 +8,12 @@ import { formatTokenAmount } from '@utils/token-utils'
 import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 
-function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
+function Sidebar({
+  stakeActions,
+  staking,
+  token,
+  onDepositOrWithdraw,
+}: SideBarProps) {
   const { available, locked, total, allowance } = staking
   const tokenPrice = useHoneyswapTokenPrice(token.id)
 
@@ -58,7 +63,13 @@ function Sidebar({ stakeActions, staking, token, onDepositOrWithdraw }) {
   )
 }
 
-function CardContent({ amount, icon, title, secondary, tokenAmount }) {
+function CardContent({
+  amount,
+  icon,
+  title,
+  secondary,
+  tokenAmount,
+}: CardContentProps) {
   const theme = useTheme()
   return (
     <div
