@@ -97,6 +97,8 @@ type StakingMovementsProps = {
 }
 
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
+  console.log(`stakingMovements`, stakingMovements)
+
   const { config } = useGardenState()
   const theme = useTheme()
   const history = useHistory()

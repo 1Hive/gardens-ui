@@ -1,11 +1,17 @@
 type StakeMovement = {
-  amount: any
-  createdAt: number
+  actionId: string
   actionState: string
+  agreementId: string
+  amount: string
   collateralState: string
-  tokenDecimals: string
-  disputableActionId: number
+  createdAt: string | number
+  disputableActionId: string | number
   disputableAddress: string
+  id: string
+  stakingId: string
+  tokenDecimals: number
+  tokenId: string
+  tokenSymbol: string
 }
 
 type SideBarProps = {

@@ -39,9 +39,9 @@ function StakeManagement() {
 
     return stakeManagement.stakingMovements.sort(
       (movement1: StakeMovement, movement2: StakeMovement) =>
-        movement2.disputableActionId +
-        movement2.createdAt -
-        (movement1.disputableActionId + movement1.createdAt)
+        Number(movement2.disputableActionId) +
+        Number(movement2.createdAt) -
+        (Number(movement1.disputableActionId) + Number(movement1.createdAt))
     )
   }, [stakeManagement])
 
