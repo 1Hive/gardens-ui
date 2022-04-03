@@ -11,6 +11,13 @@ import {
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatTokenAmount } from '@utils/token-utils'
+import { TokenType } from '@/types/app'
+
+type BalanceCardType = {
+  tokenAddress: TokenType['id']
+  tokenDecimals: TokenType['decimals']
+  tokenSymbol: TokenType['symbol']
+} & BalanceCardProps
 
 function BalanceCard({
   allowance,
@@ -21,7 +28,7 @@ function BalanceCard({
   tokenDecimals,
   tokenSymbol,
   onDepositOrWithdraw,
-}: BalanceCardProps) {
+}: BalanceCardType) {
   const [allowLockManager, setAllowLockManager] = useState(allowance?.gt(0))
   const theme = useTheme()
   const tokenPrice = useHoneyswapTokenPrice(tokenAddress)

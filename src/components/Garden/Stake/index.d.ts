@@ -22,11 +22,6 @@ type SideBarProps = {
     total: number
     allowance: number
   }
-  token: {
-    id: string
-    decimals: number
-    symbol: string
-  }
   onDepositOrWithdraw: Dispatch<SetStateAction<string | null | undefined>>
 }
 
@@ -54,8 +49,16 @@ type BalanceCardProps = {
   locked: BigNumber
   stakeActions: StakeActionsType
   total: BigNumber
-  tokenAddress: string
-  tokenDecimals: number
-  tokenSymbol: string
   onDepositOrWithdraw: (x: string) => void
+}
+
+type ActionType = {
+  color: string
+  background?: string
+  icon?: React.ReactNode
+}
+
+type CollateralType = {
+  color: string
+  icon?: React.ReactNode
 }

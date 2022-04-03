@@ -26,15 +26,8 @@ import { dateFormat, toMs } from '@utils/date-utils'
 import noDataIllustration from './assets/no-dataview-data.svg'
 import { TokenType } from '@/types/app'
 
-const getActionAttributes = (
-  status: StakingType,
-  theme: any
-): {
-  color: string
-  background?: string
-  icon?: React.ReactNode
-} => {
-  const actionAttributes = {
+const getActionAttributes = (status: StakingType, theme: any): ActionType => {
+  const actionAttributes: Record<StakingType, ActionType> = {
     [StakingType.Scheduled]: {
       background: theme.infoSurface,
       color: theme.tagIndicatorContent,
@@ -68,11 +61,8 @@ const getActionAttributes = (
 const getCollateralAttributes = (
   status: StakingCollateralType,
   theme: any
-): {
-  color: string
-  icon?: React.ReactNode
-} => {
-  const collateralAttributes = {
+): CollateralType => {
+  const collateralAttributes: Record<StakingCollateralType, CollateralType> = {
     [StakingCollateralType.Locked]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
