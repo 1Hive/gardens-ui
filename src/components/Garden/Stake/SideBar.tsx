@@ -9,16 +9,16 @@ import coin from './assets/coin.svg'
 import wallet from './assets/wallet.svg'
 import { TokenType } from '@/types/app'
 
-type SidebarType = {
+type SideBarType = {
   token: TokenType
 } & SideBarProps
 
-function Sidebar({
+function SideBar({
   stakeActions,
   staking,
   token,
   onDepositOrWithdraw,
-}: SidebarType) {
+}: SideBarType) {
   const { available, locked, total, allowance } = staking
   const tokenPrice = useHoneyswapTokenPrice(token.id)
 
@@ -37,7 +37,7 @@ function Sidebar({
         stakeActions={stakeActions}
         total={total}
         tokenAddress={token.id}
-        tokenDecimals={token?.decimals}
+        tokenDecimals={token.decimals}
         tokenSymbol={token.symbol}
         onDepositOrWithdraw={onDepositOrWithdraw}
       />
@@ -116,4 +116,4 @@ function CardContent({
   )
 }
 
-export default Sidebar
+export default SideBar

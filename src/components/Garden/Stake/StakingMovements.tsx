@@ -157,11 +157,8 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
           </time>,
           <div>
             <Tag
-              background={
-                actionAttributes?.background &&
-                `${actionAttributes?.background}`
-              }
-              color={actionAttributes?.color && `${actionAttributes?.color}`}
+              background={`${actionAttributes?.background}`}
+              color={`${actionAttributes?.color}`}
               icon={actionAttributes?.icon}
               mode="indicator"
               label={actionState}
