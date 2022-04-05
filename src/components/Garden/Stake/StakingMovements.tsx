@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
@@ -152,10 +151,11 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
           <time
             dateTime={dateFormat(toMs(createdAt), 'standard')}
             title={dateFormat(toMs(createdAt), 'standard')}
+            key="StakingMovements-date"
           >
             {dateFormat(toMs(createdAt), 'onlyDate')}
           </time>,
-          <div>
+          <div key="StakingMovements-tag">
             <Tag
               background={`${actionAttributes?.background}`}
               color={`${actionAttributes?.color}`}
@@ -164,7 +164,7 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
               label={actionState}
             />
           </div>,
-          <div>
+          <div key="StakingMovements-link">
             <Link
               onClick={() =>
                 handleGoToProposal(disputableActionId, disputableAddress)
@@ -173,7 +173,7 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
               {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
-          <div>{collateralState}</div>,
+          <div key="StakingMovements-state">{collateralState}</div>,
           <div
             css={`
               font-weight: 600;
@@ -181,6 +181,7 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
               display: flex;
               align-items: center;
             `}
+            key="StakingMovements-amount"
           >
             {amountAttributes?.icon}
             <span
