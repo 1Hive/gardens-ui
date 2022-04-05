@@ -79,7 +79,7 @@ const getCollateralAttributes = (
     },
   }
 
-  return collateralAttributes?.[status]
+  return collateralAttributes[status]
 }
 
 type StakingMovementsProps = {
