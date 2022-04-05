@@ -185,7 +185,7 @@ const AddProposalPanel = ({ setProposalData }) => {
     }
 
     if (link && !forumRegex.test(link)) {
-      errors.push('Proposal Information URL not provided or not valid')
+      errors.push('Proposal information URL not provided or not valid')
     }
 
     return errors
@@ -300,7 +300,7 @@ const AddProposalPanel = ({ setProposalData }) => {
         <TextInput
           onChange={handleLinkChange}
           value={formData.link}
-          placeholder="Add Proposal Information URL"
+          placeholder="Add Proposal information URL"
           wide
           required
         />
