@@ -54,7 +54,7 @@ function StakeManagement() {
       {loading ? (
         <GardenLoader />
       ) : (
-        <LayoutGutter collapseWhenSmall={undefined}>
+        <LayoutGutter>
           <LayoutLimiter>
             <Header primary="Deposit Manager" />
 

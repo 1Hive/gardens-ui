@@ -1,7 +1,16 @@
 import React from 'react'
 import { useLayout, GU } from '@1hive/1hive-ui'
 
-function LayoutGutter({ children, collapseWhenSmall, ...props }) {
+type LayoutGutterProps = {
+  children: React.ReactNode
+  collapseWhenSmall?: boolean
+}
+
+function LayoutGutter({
+  children,
+  collapseWhenSmall = false,
+  ...props
+}: LayoutGutterProps) {
   const { layoutName } = useLayout()
 
   const smallPaddingAmount = collapseWhenSmall ? 0 : 2 * GU
