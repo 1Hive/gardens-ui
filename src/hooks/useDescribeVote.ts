@@ -3,7 +3,7 @@ import { getAppPresentationByAddress } from '@utils/app-utils'
 import { addressesEqual } from '@utils/web3-utils'
 import { useMounted } from '@hooks/useMounted'
 import { useGardenState } from '@providers/GardenState'
-import { AppType } from './constants'
+import { AppType } from '../types/app'
 
 type Description = {
   annotatedDescription: Array<{

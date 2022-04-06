@@ -159,6 +159,7 @@ type ProposalType = {
   actionId: string
   beneficiary: string
   casts: Array<any>
+  endDate: number
   challengeEndDate: number
   minAcceptQuorum: BigNumber
   challengeId: string

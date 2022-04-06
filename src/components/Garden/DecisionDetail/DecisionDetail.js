@@ -5,6 +5,7 @@ import {
   BackButton,
   Box,
   GU,
+  Link,
   LoadingRing,
   Split,
   textStyle,
@@ -21,6 +22,7 @@ import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
+import ProposalComments from '../ProposalDetail/ProposalComments'
 import ProposalHeader from '../ProposalDetail/ProposalHeader'
 import RaiseDisputeScreens from '../ModalFlows/RaiseDisputeScreens/RaiseDisputeScreens'
 import SettleProposalScreens from '../ModalFlows/SettleProposalScreens/SettleProposalScreens'
@@ -38,6 +40,7 @@ import { useWallet } from '@providers/Wallet'
 
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 import { round, safeDiv } from '@utils/math-utils'
+import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { getConnectedAccountCast, getQuorumProgress } from '@utils/vote-utils'
 import { getNetwork } from '@/networks'
 
@@ -50,7 +53,7 @@ function DecisionDetail({ proposal, actions }) {
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account: connectedAccount } = useWallet()
-  const { chainId } = useConnectedGarden()
+  const { chainId, forumURL } = useConnectedGarden()
   const {
     config: { voting: votingConfig },
   } = useGardenState()
@@ -82,6 +85,10 @@ function DecisionDetail({ proposal, actions }) {
   const yeasPct = safeDiv(parseFloat(yea), totalVotes)
 
   const quorumProgress = getQuorumProgress(proposal)
+
+  const forumRegex = regexToCheckValidProposalURL(
+    escapeRegex(forumURL)
+  )
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -188,19 +195,32 @@ function DecisionDetail({ proposal, actions }) {
                           proposal.metadata || 'No description'
                         ) : (
                           <div>
-                            {proposal.metadata && (
+                            {proposal.metadata && forumRegex.test(proposal.metadata) ? (
                               <div>
                                 <div
                                   css={`
                                     margin-bottom: ${1 * GU}px;
                                   `}
                                 >
-                                  {proposal.metadata}
+                                  <Link href={proposal.metadata} external>
+                                    Read the full proposal
+                                  </Link>
                                 </div>
-                                <b>Actions</b>
+
                               </div>
-                            )}
-                            <Description path={description} />
+                            ) : (<div>
+                              <div
+                                css={`
+                                    margin-bottom: ${1 * GU}px;
+                                  `}
+                              >
+                                {proposal.metadata}
+                              </div>
+                            </div>)}
+                            <div>
+                              <b>Actions</b>
+                              <Description path={description} />
+                            </div>
                           </div>
                         )
                       }
@@ -331,6 +351,7 @@ function DecisionDetail({ proposal, actions }) {
             </>
           }
         />
+        {forumRegex.test(proposal.metadata) && <ProposalComments link={proposal.metadata} />}
       </div>
       <MultiModal
         visible={modalVisible}

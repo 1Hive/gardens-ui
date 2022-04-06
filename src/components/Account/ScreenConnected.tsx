@@ -22,7 +22,15 @@ import { getNetworkName } from '@utils/web3-utils'
 import profileButtonSvg from '@assets/profileButton.svg'
 import stakeButtonSvg from '@assets/stakeButton.svg'
 
-function AccountScreenConnected({ providerId, onClosePopover }) {
+type AccountScreenConnectedProps = {
+  providerId: string
+  onClosePopover: () => void
+}
+
+function AccountScreenConnected({
+  providerId,
+  onClosePopover,
+}: AccountScreenConnectedProps) {
   const theme = useTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
@@ -125,7 +133,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
             `}
           >
             <img
-              src={providerInfo.image}
+              src={providerInfo?.image}
               alt=""
               css={`
                 width: ${2.5 * GU}px;
@@ -135,7 +143,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
               `}
             />
             <span>
-              {providerInfo.id === 'unknown' ? 'Wallet' : providerInfo.name}
+              {providerInfo?.id === 'unknown' ? 'Wallet' : providerInfo?.name}
             </span>
           </div>
           <div

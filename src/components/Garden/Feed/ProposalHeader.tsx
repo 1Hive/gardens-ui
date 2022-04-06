@@ -7,7 +7,7 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 import ProposalCreator from './ProposalCreator'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type ProposalHeaderProps = {
   proposal: ProposalType
