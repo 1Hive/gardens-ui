@@ -15,8 +15,8 @@ const TOKEN_PRICE_QUERY = (tokenAddress: string) => gql`
   }
 `
 
-export function useHoneyswapTokenPrice(tokenAddress: string) {
-  const [tokenPrice, setTokenPrice] = useState<number | string>(-1)
+export function useHoneyswapTokenPrice(tokenAddress: string): number {
+  const [tokenPrice, setTokenPrice] = useState<number>(-1)
 
   useEffect(() => {
     let cancelled = false
@@ -33,10 +33,11 @@ export function useHoneyswapTokenPrice(tokenAddress: string) {
         }
 
         const { token } = result.data
-        const tokenPrice = token.derivedETH
+        const tokenPrice: string = token.derivedETH
 
         if (!cancelled) {
-          setTokenPrice(parseFloat(tokenPrice).toFixed(2))
+          const price = Number(parseFloat(tokenPrice).toFixed(2))
+          setTokenPrice(price)
         }
       } catch (err) {
         retryTimer = window.setTimeout(fetchPrice, RETRY_EVERY)
