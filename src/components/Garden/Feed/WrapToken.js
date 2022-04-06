@@ -19,27 +19,13 @@ import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 
-const modeAttributes = {
-  wrap: { icon: unwrappedIcon, button: { mode: 'strong', label: 'Wrap' } },
-  unwrap: {
-    icon: wrappedIcon,
-    button: { mode: 'strong', label: 'Unwrap' },
-    hint:
-      'This amount can be used to vote on proposals. It can be unwrapped at any time.',
-  },
-  claim: {
-    button: { mode: 'normal', label: 'Claim' },
-    icon: claimRewardsIcon,
-  },
-}
-
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
 
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
-  const [earnedRewards, rewardsLink] = useUnipoolRewards()
+  const [earnedRewards, rewardsLink, rewardAPY] = useUnipoolRewards()
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -54,21 +40,32 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     <Token
       balance={wrappableToken.accountBalance}
       loading={loading}
-      mode="wrap"
+      mode={{
+        icon: unwrappedIcon, 
+        button: { mode: 'strong', label: 'Wrap' },
+        apy: rewardAPY
+      }}
       onClick={onWrapToken}
       token={wrappableToken.data}
     />,
     <Token
       balance={token.accountBalance}
       loading={loading}
-      mode="unwrap"
+      mode={{
+        icon: wrappedIcon, 
+        button: { mode: 'strong', label: 'Unwrap' },
+        hint:'This amount can be used to vote on proposals. It can be unwrapped at any time.'
+      }}
       onClick={onUnwrapToken}
       token={token.data}
     />,
     <Token
       balance={earnedRewards}
       loading={!earnedRewards}
-      mode="claim"
+      mode={{
+        icon: claimRewardsIcon, 
+        button: { mode: 'normal', label: 'Claim' }    
+      }}
       onClick={handleClaimRewards}
       token={wrappableToken.data}
     />,
@@ -100,9 +97,9 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme()
-  const { button, icon, hint } = modeAttributes[mode]
-  const claimMode = mode === 'claim'
-
+  const { icon, button, hint, apy} = mode
+  const claimMode = mode.button.label === 'Claim'
+  
   return (
     <div
       css={`
@@ -113,7 +110,10 @@ function Token({ balance, loading, mode, onClick, token }) {
         ${textStyle('body2')};
       `}
     >
-      <img src={icon} height="48" width="48" />
+      {apy === '0.00%' || !apy ? 
+       (<img src={icon} height="48" width="48" />) 
+       : (<span><img src={icon} height="48" width="48" css={`vertical-align: middle`} /> {apy} APY</span>)
+      }
       {loading ? (
         <div
           css={`
