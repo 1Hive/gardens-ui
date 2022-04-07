@@ -112,7 +112,7 @@ function Token({ balance, loading, mode, onClick, token }) {
     >
       {apy === '0.00%' || !apy ? 
        (<img src={icon} height="48" width="48" />) 
-       : (<span><img src={icon} height="48" width="48" css={`vertical-align: middle`} /> {apy} APY</span>)
+       : (<span><img src={icon} height="48" width="48" css={`vertical-align: middle; width: max-content`} /> {apy} APY</span>)
       }
       {loading ? (
         <div
