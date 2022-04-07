@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useGardenState } from '@providers/GardenState'
 import usePromise from '@hooks/usePromise'
 import { getAppPresentationByAddress } from '@utils/app-utils'
@@ -30,9 +30,8 @@ interface RoleProps {
 }
 
 export function useRoles() {
+  const [loading, setLoading] = useState<boolean>(true)
   const { installedApps } = useGardenState()
-
-  console.log('installed apps ', installedApps)
 
   const appsWithPermissions = useMemo(() => {
     return () => Promise.all(installedApps.map(async (app: any) => {
@@ -67,6 +66,7 @@ export function useRoles() {
     })
   })
 
-  return rolesWithEntitiesResolved.flat()
+
+  return [rolesWithEntitiesResolved.flat(), loading]
 
 }

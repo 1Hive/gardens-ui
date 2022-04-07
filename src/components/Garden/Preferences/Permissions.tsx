@@ -2,11 +2,12 @@
 import React from 'react'
 import { DataView, IdentityBadge, textStyle } from '@1hive/1hive-ui'
 import { useRoles } from '@/hooks/useRoles'
+import Loader from '@components/Loader'
 
 const ENTRIES_PER_PAGE = 10
 
 function Permissions() {
-  const appRoles = useRoles()
+  const [appRoles, loading] = useRoles()
 
   const fields = [
     'Action',
@@ -17,13 +18,19 @@ function Permissions() {
   console.log('installed with perm ', appRoles)
 
   return (
-    <div>
-      <DataView
-        entriesPerPage={ENTRIES_PER_PAGE}
-        fields={fields}
-        entries={appRoles}
-        renderEntry={(entry: any) => renderEntry(entry)}
-      />
+    <div css={`height: 100%;`}>
+      {loading ?
+        (
+
+          <Loader />
+        ) :
+        <DataView
+          entriesPerPage={ENTRIES_PER_PAGE}
+          fields={fields}
+          entries={appRoles}
+          renderEntry={(entry: any) => renderEntry(entry)}
+        />
+      }
     </div>
   )
 }
