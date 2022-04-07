@@ -1,8 +1,14 @@
 import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
 import { ButtonBase, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
-function Tab({ index, item, onChange, selected }) {
+type TabProps = {
+  index: number
+  item: string
+  onChange: (index: number) => void
+  selected: boolean
+}
+
+function Tab({ index, item, onChange, selected }: TabProps) {
   const theme = useTheme()
 
   const handleClick = useCallback(() => {
@@ -53,13 +59,6 @@ function Tab({ index, item, onChange, selected }) {
       </ButtonBase>
     </li>
   )
-}
-
-Tab.propTypes = {
-  index: PropTypes.number.isRequired,
-  item: PropTypes.node.isRequired,
-  onChange: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired,
 }
 
 export default Tab

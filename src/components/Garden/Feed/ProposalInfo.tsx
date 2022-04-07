@@ -8,7 +8,7 @@ import ProposalSupport from './ProposalSupport'
 import { ProposalTypes } from '@/types'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type ProposalInfoProps = {
   loading: boolean

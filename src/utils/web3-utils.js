@@ -43,7 +43,7 @@ export function getNetworkName(chainId = getPreferredChain()) {
 
   if (chainId === '1') return 'Mainnet'
   if (chainId === '4') return 'Rinkeby'
-  if (chainId === '100') return 'xDai'
+  if (chainId === '100') return 'Gnosis'
   if (chainId === '137') return 'Polygon'
 
   return 'unknown'

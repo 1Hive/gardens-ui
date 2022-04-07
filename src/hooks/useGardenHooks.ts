@@ -1,4 +1,4 @@
-import { TokenType } from './constants'
+import { TokenType } from '../types/app'
 import { useContractReadOnly } from './useContract'
 import { useConfigSubscription } from './useSubscriptions'
 import connectAgreement from '@1hive/connect-agreement'

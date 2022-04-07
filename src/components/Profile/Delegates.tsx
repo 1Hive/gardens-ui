@@ -16,8 +16,13 @@ import { useWallet } from '@providers/Wallet'
 
 import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import { getGardenLabel } from '@utils/garden-utils'
+import { UserType } from './types'
 
-function Delegates({ account }) {
+type DelegatesProps = {
+  account: string
+}
+
+function Delegates({ account }: DelegatesProps) {
   const { user, loading } = useUser(account)
 
   return (
@@ -40,7 +45,12 @@ function Delegates({ account }) {
   )
 }
 
-function MyDelegates({ account, user }) {
+type MyDelegatesProps = {
+  account: string
+  user: UserType | null
+}
+
+function MyDelegates({ account, user }: MyDelegatesProps) {
   const theme = useTheme()
   const { account: connectedAccount } = useWallet()
 
@@ -86,7 +96,11 @@ function MyDelegates({ account, user }) {
   )
 }
 
-function DelegateFor({ user }) {
+type DelegateForProps = {
+  user: UserType | null
+}
+
+function DelegateFor({ user }: DelegateForProps) {
   const theme = useTheme()
 
   return (
@@ -128,7 +142,12 @@ function DelegateFor({ user }) {
   )
 }
 
-const DelegateItem = ({ address, gardenAddress }) => {
+type DelegateItemProps = {
+  address: string
+  gardenAddress: string
+}
+
+const DelegateItem = ({ address, gardenAddress }: DelegateItemProps) => {
   const { preferredNetwork } = useWallet()
   const { gardensMetadata } = useGardens()
   const networkType = getNetworkType(preferredNetwork)

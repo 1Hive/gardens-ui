@@ -83,10 +83,10 @@ function useTokens() {
         },
         wrappableToken: wrappableToken
           ? {
-              accountBalance: wrappableTokenAccountBalance,
-              data: wrappableToken,
-              totalSupply: wrappableTokenTotalSupply,
-            }
+            accountBalance: wrappableTokenAccountBalance,
+            data: wrappableToken,
+            totalSupply: wrappableTokenTotalSupply,
+          }
           : null,
       }),
       [
