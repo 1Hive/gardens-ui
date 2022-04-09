@@ -10,7 +10,7 @@ const REWARD_DURATION = 2592000
 
 export default function useUnipoolRewards() {
   const [earned, setEarned] = useState(new BigNumber(0))
-  const [rewardAPY, setRewardAPY] = useState(new BigNumber(0))
+  const [rewardAPR, setRewardAPR] = useState(new BigNumber(0))
   const mounted = useMounted()
 
   const { account } = useWallet()
@@ -48,7 +48,7 @@ export default function useUnipoolRewards() {
       return
     }
 
-    const fetchRewardAPY = async () => {
+    const fetchRewardAPR = async () => {
       try {
         const rewardRateResult = await unipoolContract.rewardRate()
         // Contract value is bn.js so we need to convert it to bignumber.js
@@ -58,19 +58,19 @@ export default function useUnipoolRewards() {
         // Contract value is bn.js so we need to convert it to bignumber.js
         const totalSupply = new BigNumber(totalSupplyResult.toString())
 
-        const rewardAPYRaw = rewardRate.multipliedBy(REWARD_DURATION * 12).dividedBy(totalSupply)        
+        const rewardAPRRaw = rewardRate.multipliedBy(REWARD_DURATION * 12).dividedBy(totalSupply)        
         
         if (mounted()) {
-           setRewardAPY(rewardAPYRaw)
+           setRewardAPR(rewardAPRRaw)
         }
       } catch (err) {
         console.error(`Error fetching reward APY: ${err}`)
       }
     }
 
-    fetchRewardAPY()
+    fetchRewardAPR()
     
   }, [unipoolContract, REWARD_DURATION])
 
-  return [earned, rewardsLink, rewardAPY]
+  return [earned, rewardsLink, rewardAPR]
 }

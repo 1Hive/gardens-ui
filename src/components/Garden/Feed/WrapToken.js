@@ -19,13 +19,13 @@ import { formatTokenAmount } from '@utils/token-utils'
 import wrappedIcon from '@assets/wrappedIcon.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
-import tokenAPYIcon from '@assets/tokenAPYIcon.png'
+import tokenAPRIcon from '@assets/tokenRewardIcon.png'
 
 const TokenHeaderDiv = styled.div`
   display: flex;
   align-items: center;
 `
-const ApySpan = styled.span`
+const AprSpan = styled.span`
   margin-left: ${0.5 * GU}px
 `
 
@@ -35,9 +35,9 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
-  const [earnedRewards, rewardsLink, rewardAPY] = useUnipoolRewards()
-  const rewardAPYFormatted = (rewardAPY && !rewardAPY.eq(0)) ? rewardAPY.multipliedBy(100).toFixed(2) : null
-  const unwrappedImage = (rewardAPY && !rewardAPY.eq(0)) ? tokenAPYIcon : unwrappedIcon
+  const [earnedRewards, rewardsLink, rewardAPR] = useUnipoolRewards()
+  const rewardAPRFormatted = (rewardAPR && !rewardAPR.eq(0)) ? rewardAPR.multipliedBy(100).toFixed(2) : null
+  const unwrappedImage = (rewardAPR && !rewardAPR.eq(0)) ? tokenAPRIcon : unwrappedIcon
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -56,7 +56,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
         type: 'unwrapped',
         icon: unwrappedImage, 
         button: { mode: 'strong', label: 'Wrap' },
-        apy: rewardAPYFormatted
+        apr: rewardAPRFormatted
       }}
       onClick={onWrapToken}
       token={wrappableToken.data}
@@ -112,7 +112,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme()
-  const { icon, button, hint, apy} = mode
+  const { icon, button, hint, apr} = mode
   const claimMode = mode.type === 'claim'
   
   return (
@@ -128,7 +128,7 @@ function Token({ balance, loading, mode, onClick, token }) {
       {
         <TokenHeaderDiv>
           <img src={icon} height="48" width="48" /> 
-          {apy && <ApySpan>{apy}% APY</ApySpan>}
+          {apr && <AprSpan>{apr}% APR</AprSpan>}
         </TokenHeaderDiv>
       }
       {loading ? (
