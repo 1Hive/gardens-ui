@@ -6,7 +6,7 @@ import { useWallet } from '@providers/Wallet'
 import BigNumber from '@lib/bigNumber'
 import unipoolAbi from '@abis/Unipool.json'
 
-const DURATION = 2592000
+const REWARD_DURATION = 2592000
 
 export default function useUnipoolRewards() {
   const [earned, setEarned] = useState(new BigNumber(0))
@@ -58,7 +58,7 @@ export default function useUnipoolRewards() {
         // Contract value is bn.js so we need to convert it to bignumber.js
         const totalSupply = new BigNumber(totalSupplyResult.toString())
 
-        const rewardAPYRaw = rewardRate.multipliedBy(DURATION * 12).dividedBy(totalSupply)        
+        const rewardAPYRaw = rewardRate.multipliedBy(REWARD_DURATION * 12).dividedBy(totalSupply)        
         
         if (mounted()) {
            setRewardAPY(rewardAPYRaw)
@@ -70,7 +70,7 @@ export default function useUnipoolRewards() {
 
     fetchRewardAPY()
     
-  }, [unipoolContract, DURATION])
+  }, [unipoolContract, REWARD_DURATION])
 
   return [earned, rewardsLink, rewardAPY]
 }
