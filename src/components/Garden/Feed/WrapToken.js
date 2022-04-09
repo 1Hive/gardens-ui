@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import styled from 'styled-components'
 import {
   Box,
   Button,
@@ -20,6 +21,14 @@ import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 import tokenAPYIcon from '@assets/tokenAPYIcon.png'
 
+const TokenHeaderDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
+const ApySpan = styled.span`
+  margin-left: ${0.5 * GU}px
+`
+
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
 
@@ -27,6 +36,8 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
   const [earnedRewards, rewardsLink, rewardAPY] = useUnipoolRewards()
+  const rewardAPYFormatted = (rewardAPY && !rewardAPY.eq(0)) ? rewardAPY.multipliedBy(100).toFixed(2) : null
+  const unwrappedImage = (rewardAPY && !rewardAPY.eq(0)) ? tokenAPYIcon : unwrappedIcon
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -42,9 +53,9 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       balance={wrappableToken.accountBalance}
       loading={loading}
       mode={{
-        icon: unwrappedIcon, 
+        icon: unwrappedImage, 
         button: { mode: 'strong', label: 'Wrap' },
-        apy: rewardAPY
+        apy: rewardAPYFormatted
       }}
       onClick={onWrapToken}
       token={wrappableToken.data}
@@ -111,9 +122,11 @@ function Token({ balance, loading, mode, onClick, token }) {
         ${textStyle('body2')};
       `}
     >
-      {apy === '0.00%' || !apy ? 
-       (<img src={icon} height="48" width="48" />) 
-       : (<span><img src={tokenAPYIcon} height="48" width="48" css={`vertical-align: middle; width: max-content`} /> {apy} APY</span>)
+      {
+        <TokenHeaderDiv>
+          <img src={icon} height="48" width="48" /> 
+          {apy && <ApySpan>{apy}% APY</ApySpan>}
+        </TokenHeaderDiv>
       }
       {loading ? (
         <div

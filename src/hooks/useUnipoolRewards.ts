@@ -10,7 +10,7 @@ const DURATION = 2592000
 
 export default function useUnipoolRewards() {
   const [earned, setEarned] = useState(new BigNumber(0))
-  const [rewardAPY, setRewardAPY] = useState('')
+  const [rewardAPY, setRewardAPY] = useState(new BigNumber(0))
   const mounted = useMounted()
 
   const { account } = useWallet()
@@ -59,10 +59,9 @@ export default function useUnipoolRewards() {
         const totalSupply = new BigNumber(totalSupplyResult.toString())
 
         const rewardAPYRaw = rewardRate.multipliedBy(DURATION * 12).dividedBy(totalSupply)        
-        const rewardAPYFormatted = rewardAPYRaw.multipliedBy(100).toFixed(2)+"%"
         
         if (mounted()) {
-           setRewardAPY(rewardAPYFormatted)
+           setRewardAPY(rewardAPYRaw)
         }
       } catch (err) {
         console.error(`Error fetching reward APY: ${err}`)
