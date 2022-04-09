@@ -196,7 +196,7 @@ export function FixedFooter({ token }) {
             `}
           >
             <FooterItem
-              href="#/home"
+              href="/home"
               icon={
                 <img
                   src={'/icons/base/gardensLogoMark.svg'}

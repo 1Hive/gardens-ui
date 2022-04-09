@@ -53,7 +53,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       width={width}
       topElement={
         <Link
-          href="#/home"
+          href="/home"
           external={false}
           css={`
             display: block;

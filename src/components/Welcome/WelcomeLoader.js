@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { GU } from '@1hive/1hive-ui'
 import WelcomeModal from './WelcomeModal'
 
 function WelcomeLoader() {
-  const [welcomeClosed, setWelcomeClosed] = useState(
-    localStorage.getItem('welcomeClosed') === 'true'
-  )
+  const [welcomeClosed, setWelcomeClosed] = useState(false)
+
+  useEffect(() => {
+    setWelcomeClosed(localStorage.getItem('welcomeClosed') === 'true')
+  }, [])
 
   const handleOnOpen = useCallback(() => {
     setWelcomeClosed(false)

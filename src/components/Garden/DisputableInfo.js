@@ -65,7 +65,7 @@ function ProposalChallengedInfo({ proposal }) {
                 as the challenge deposit. You can manage your deposit balances
                 in{' '}
               </span>
-              <Link href="#/collateral" external={false}>
+              <Link href="/collateral" external={false}>
                 Deposit Manager
               </Link>
               .
@@ -217,7 +217,7 @@ function ProposalSettledInfo({ proposal }) {
                 )}
                 . You can manage your deposit balances in{' '}
               </span>
-              <Link href="#/profile" external={false}>
+              <Link href="/profile" external={false}>
                 Deposit Manager
               </Link>
               .
