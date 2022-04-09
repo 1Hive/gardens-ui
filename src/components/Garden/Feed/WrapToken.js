@@ -53,6 +53,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       balance={wrappableToken.accountBalance}
       loading={loading}
       mode={{
+        type: 'unwrapped',
         icon: unwrappedImage, 
         button: { mode: 'strong', label: 'Wrap' },
         apy: rewardAPYFormatted
@@ -64,6 +65,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       balance={token.accountBalance}
       loading={loading}
       mode={{
+        type: 'wrapped',
         icon: wrappedIcon, 
         button: { mode: 'strong', label: 'Unwrap' },
         hint:'This amount can be used to vote on proposals. It can be unwrapped at any time.'
@@ -75,6 +77,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       balance={earnedRewards}
       loading={!earnedRewards}
       mode={{
+        type: 'claim',
         icon: claimRewardsIcon, 
         button: { mode: 'normal', label: 'Claim' }    
       }}
@@ -110,7 +113,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme()
   const { icon, button, hint, apy} = mode
-  const claimMode = mode.button.label === 'Claim'
+  const claimMode = mode.type === 'claim'
   
   return (
     <div
