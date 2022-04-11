@@ -5,7 +5,7 @@ import { Colors } from '@nivo/core'
 
 import celesteIconSvg from '@assets/celeste-icon.svg'
 import challengeIconSvg from '@assets/challenge-icon.svg'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 export const ABSTAIN_PROPOSAL = 'Abstain proposal'
 

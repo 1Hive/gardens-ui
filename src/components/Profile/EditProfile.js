@@ -2,7 +2,6 @@ import React, { useMemo, useRef, useState } from 'react'
 import {
   Button,
   ButtonBase,
-  EthIdenticon,
   GU,
   IconCross,
   IconEdit,
@@ -11,6 +10,7 @@ import {
   textStyle,
   useLayout,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 
 import ProfileForm from './ProfileForm'

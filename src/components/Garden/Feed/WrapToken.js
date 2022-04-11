@@ -21,6 +21,7 @@ import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
 import tokenAPRIcon from '@assets/tokenRewardIcon.png'
 
+
 const TokenHeaderDiv = styled.div`
   display: flex;
   align-items: center;
@@ -87,7 +88,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   ]
 
   const handleItemSelected = useCallback(
-    index => {
+    (index) => {
       // eslint-disable-next-line no-empty
       if (index === carouselItems.length - 1) {
       }

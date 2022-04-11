@@ -8,7 +8,7 @@ type ProposalCommentsProps = {
 
 function ProposalComments({ link }: ProposalCommentsProps) {
   const { layoutName } = useLayout()
-  
+
 
   // We take the topicId which usually is in the last section of the link if the penultimate is not a number
   const [lastParam, penultimate] = link.split('/').reverse()

@@ -1,17 +1,16 @@
 import React from 'react'
 import {
   Box,
-  EthIdenticon,
   GU,
   Link,
   shortenAddress,
   textStyle,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 
 const IMAGE_DIMENSION = 20 * GU
 const BOX_PADDING = 5 * GU
-
 function MainProfile({ profile }) {
   const theme = useTheme()
   const {

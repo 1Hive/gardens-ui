@@ -6,7 +6,7 @@ import { useMounted } from './useMounted'
 import { getProfileForAccount } from '@lib/profile'
 import { hexToUtf8 } from '@utils/web3-utils'
 import agreementAbi from '../abi/agreement.json'
-import { ProposalType } from './constants'
+import { ProposalType } from '../types/app'
 
 export default function useChallenge(proposal: ProposalType) {
   const { chainId } = useConnectedGarden()
