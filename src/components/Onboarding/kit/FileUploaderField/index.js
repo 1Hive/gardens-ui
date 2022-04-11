@@ -56,7 +56,7 @@ export const FileUploaderField = ({
   required = false,
 }) => {
   const theme = useTheme()
-  const iconSize = 7 * GU
+  const iconSize = 6 * GU
   const validExtensions = allowedMIMETypes?.map(f =>
     mimeToExtension(f).toUpperCase()
   )
@@ -117,14 +117,13 @@ export const FileUploaderField = ({
               margin-top: ${1 * GU}px;
             `}
           >
-            {description}
           </div>
         </Field>
       )}
       {/* Set dropzone here due to some problems with the field component and the onclick event bubbling. */}
       <Card
         width="100%"
-        height="135px"
+        height="160px"
         css={`
           border-style: dashed;
           background-color: ${backgroundColor};
@@ -172,6 +171,17 @@ export const FileUploaderField = ({
                   transition: background-color 0.5s;
                 `}
               >
+              <div
+                css={`
+                  margin-top: ${1 * GU}px;
+                  margin-bottom: ${1 * GU}px;
+                  color: ${theme.contentSecondary};
+                  ${textStyle('body2')};
+                  `}
+              >
+              {description}
+              </div>
+                
                 <div
                   css={`
                     border-radius: 50%;
@@ -182,7 +192,7 @@ export const FileUploaderField = ({
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    margin-bottom: ${1 * GU}px;
+                    margin: ${0.5 * GU}px 0px ${1.5 * GU}px;
                   `}
                   onClick={open}
                 >
