@@ -1,5 +1,5 @@
 import { getIpfsUrlFromUri } from './ipfs-utils'
-import { AppType } from '@/hooks/constants'
+import { AppType } from '@/types/app'
 
 export const SHORTENED_APPS_NAMES = new Map([
   ['agent', 'agent'],

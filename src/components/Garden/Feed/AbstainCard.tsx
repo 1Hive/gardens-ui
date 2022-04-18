@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { GU, Help, useTheme, useViewport } from '@1hive/1hive-ui'
 import { buildGardenPath } from '@utils/routing-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 import styled from 'styled-components'
 import ProposalSupport from './ProposalSupport'
 

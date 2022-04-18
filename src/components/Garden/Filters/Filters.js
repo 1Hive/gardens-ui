@@ -7,7 +7,7 @@ import TextFilter from './TextFilter'
 import { useWallet } from '@providers/Wallet'
 import { STATUS_FILTER_OPEN } from '@utils/filter-utils'
 
-const Filters = React.memo(({ compact, ...props }) => {
+const Filters = ({ compact, ...props }) => {
   const theme = useTheme()
   const { account } = useWallet()
 
@@ -130,7 +130,7 @@ const Filters = React.memo(({ compact, ...props }) => {
       />
     </div>
   )
-})
+}
 
 Filters.propTypes = {
   itemsStatus: PropTypes.array.isRequired,
@@ -144,4 +144,4 @@ Filters.propTypes = {
   onTypeFilterChange: PropTypes.func.isRequired,
 }
 
-export default Filters
+export default React.memo(Filters)

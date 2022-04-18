@@ -1,31 +1,32 @@
-/* eslint-disable no-redeclare */
-import React, { useCallback, useState } from 'react'
-import { useRouter } from 'next/router'
 import {
   GU,
-  IconAttention,
+  Tag,
+  Link,
+  IconLock,
+  useTheme,
+  DataView,
   IconCheck,
   IconClock,
   IconCross,
-  IconLock,
+  IconAttention,
   formatTokenAmount,
-  Link,
-  Tag,
-  useTheme,
-  DataView,
 } from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
+import { useRouter } from 'next/router'
+import React, { useCallback, useState } from 'react'
+
 import {
   StakingType,
   StakingCollateralType,
   StakingStatusesMap,
   CollateralStatusesMap,
 } from './staking-management-statuses'
-import { buildGardenPath } from '@utils/routing-utils'
+import { TokenType } from '@/types/app'
 import { dateFormat, toMs } from '@utils/date-utils'
+import { buildGardenPath } from '@utils/routing-utils'
+import { useGardenState } from '@providers/GardenState'
 
-function getActionAttributes(status, theme) {
-  const actionAttributes = {
+const getActionAttributes = (status: StakingType, theme: any): ActionType => {
+  const actionAttributes: Record<StakingType, ActionType> = {
     [StakingType.Scheduled]: {
       background: theme.infoSurface,
       color: theme.tagIndicatorContent,
@@ -56,8 +57,11 @@ function getActionAttributes(status, theme) {
   return actionAttributes[status]
 }
 
-function getCollateralAttributes(status, theme) {
-  const collateralAttributes = {
+const getCollateralAttributes = (
+  status: StakingCollateralType,
+  theme: any
+): CollateralType => {
+  const collateralAttributes: Record<StakingCollateralType, CollateralType> = {
     [StakingCollateralType.Locked]: {
       color: theme.surfaceOpened,
       icon: <IconLock size="small" />,
@@ -77,7 +81,12 @@ function getCollateralAttributes(status, theme) {
   return collateralAttributes[status]
 }
 
-function StakingMovements({ stakingMovements, token }) {
+type StakingMovementsProps = {
+  stakingMovements: Array<StakeMovement>
+  token: TokenType
+}
+
+function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
   const { config } = useGardenState()
   const theme = useTheme()
   const router = useRouter()
@@ -88,7 +97,7 @@ function StakingMovements({ stakingMovements, token }) {
     setSelectedPage(page)
   }, [])
 
-  const getProposalType = (disputableAddress) =>
+  const getProposalType = (disputableAddress: string) =>
     disputableAddress === config.voting.id ? 'Decision' : 'Proposal'
 
   const handleGoToProposal = useCallback(
@@ -131,35 +140,33 @@ function StakingMovements({ stakingMovements, token }) {
         tokenDecimals,
         disputableActionId,
         disputableAddress,
-      }) => {
+      }: StakeMovement) => {
         const stakingStatus = StakingStatusesMap.get(actionState)
-        const actionAttributes = getActionAttributes(stakingStatus, theme)
+        const actionAttributes =
+          stakingStatus && getActionAttributes(stakingStatus, theme)
 
         const collateralStatus = CollateralStatusesMap.get(collateralState)
-        const amountAttributes = getCollateralAttributes(
-          collateralStatus,
-          theme
-        )
+        const amountAttributes =
+          collateralStatus && getCollateralAttributes(collateralStatus, theme)
 
         return [
           <time
             dateTime={dateFormat(toMs(createdAt), 'standard')}
             title={dateFormat(toMs(createdAt), 'standard')}
+            key="StakingMovements-date"
           >
             {dateFormat(toMs(createdAt), 'onlyDate')}
           </time>,
-          <div>
+          <div key="StakingMovements-tag">
             <Tag
-              background={
-                actionAttributes.background && `${actionAttributes.background}`
-              }
-              color={actionAttributes.color && `${actionAttributes.color}`}
-              icon={actionAttributes.icon}
+              background={`${actionAttributes?.background}`}
+              color={`${actionAttributes?.color}`}
+              icon={actionAttributes?.icon}
               mode="indicator"
               label={actionState}
             />
           </div>,
-          <div>
+          <div key="StakingMovements-link">
             <Link
               onClick={() =>
                 handleGoToProposal(disputableActionId, disputableAddress)
@@ -168,16 +175,17 @@ function StakingMovements({ stakingMovements, token }) {
               {`${getProposalType(disputableAddress)} #${disputableActionId}`}
             </Link>
           </div>,
-          <div>{collateralState}</div>,
+          <div key="StakingMovements-state">{collateralState}</div>,
           <div
             css={`
               font-weight: 600;
-              color: ${amountAttributes.color};
+              color: ${amountAttributes?.color};
               display: flex;
               align-items: center;
             `}
+            key="StakingMovements-amount"
           >
-            {amountAttributes.icon}
+            {amountAttributes?.icon}
             <span
               css={`
                 margin-left: ${1 * GU}px;

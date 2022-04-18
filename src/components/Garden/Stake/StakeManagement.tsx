@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Header } from '@1hive/1hive-ui'
-import EmptyState from './EmptyState'
-import { GardenLoader } from '@components/Loader'
-import LayoutColumns from '../Layout/LayoutColumns'
-import LayoutGutter from '../Layout/LayoutGutter'
-import LayoutLimiter from '../Layout/LayoutLimiter'
-import MultiModal from '@components/MultiModal/MultiModal'
-import SideBar from './SideBar'
-import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
-import StakingMovements from './StakingMovements'
-import { useStakingState } from '@providers/Staking'
-import { useWallet } from '@providers/Wallet'
-import { useConnectedGarden } from '@/providers/ConnectedGarden'
+import React, { useCallback, useEffect, useMemo, useState, memo } from 'react'
 
-const StakeManagement = React.memo(function StakeManagement() {
+import SideBar from './SideBar'
+import EmptyState from './EmptyState'
+import { useWallet } from '@providers/Wallet'
+import StakingMovements from './StakingMovements'
+import { GardenLoader } from '@components/Loader'
+import LayoutGutter from '../Layout/LayoutGutter'
+import LayoutColumns from '../Layout/LayoutColumns'
+import LayoutLimiter from '../Layout/LayoutLimiter'
+import { useStakingState } from '@providers/Staking'
+import MultiModal from '@components/MultiModal/MultiModal'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
+import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
+
+function StakeManagement() {
   const connectedGarden = useConnectedGarden()
 
   if (!connectedGarden) {
@@ -23,7 +24,7 @@ const StakeManagement = React.memo(function StakeManagement() {
 
   const { account } = useWallet()
   const router = useRouter()
-  const [stakeModalMode, setStakeModalMode] = useState()
+  const [stakeModalMode, setStakeModalMode] = useState<null | string>()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 
   const handleOnCloseModal = useCallback(() => {
@@ -44,10 +45,10 @@ const StakeManagement = React.memo(function StakeManagement() {
     }
 
     return stakeManagement.stakingMovements.sort(
-      (movement1, movement2) =>
-        movement2.disputableActionId +
-        movement2.createdAt -
-        (movement1.disputableActionId + movement1.createdAt)
+      (movement1: StakeMovement, movement2: StakeMovement) =>
+        Number(movement2.disputableActionId) +
+        Number(movement2.createdAt) -
+        (Number(movement1.disputableActionId) + Number(movement1.createdAt))
     )
   }, [stakeManagement])
 
@@ -100,6 +101,6 @@ const StakeManagement = React.memo(function StakeManagement() {
       )}
     </>
   )
-})
+}
 
-export default StakeManagement
+export default memo(StakeManagement)

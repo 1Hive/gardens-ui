@@ -1,21 +1,27 @@
-import React, { useCallback } from 'react'
-import { useRouter } from 'next/router'
 import {
   Box,
-  Button,
-  EthIdenticon,
   GU,
   Link,
-  LoadingRing,
-  textStyle,
+  Button,
   useTheme,
+  textStyle,
+  LoadingRing,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '@components/IdentityBadge'
-import useProfile from '@hooks/useProfile'
-import { useSupporterSubscription } from '@hooks/useSubscriptions'
-import { useWallet } from '@providers/Wallet'
+import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
 
-function Delegation({ onRemoveDelegate, onSetDelegate }) {
+import useProfile from '@hooks/useProfile'
+import { useWallet } from '@providers/Wallet'
+import IdentityBadge from '@components/IdentityBadge'
+import { useSupporterSubscription } from '@hooks/useSubscriptions'
+
+type DelegationProps = {
+  onRemoveDelegate: () => void
+  onSetDelegate: () => void
+}
+
+function Delegation({ onRemoveDelegate, onSetDelegate }: DelegationProps) {
   const { account } = useWallet()
   const theme = useTheme()
   const { supporter, loading } = useSupporterSubscription(account)
@@ -87,10 +93,22 @@ function Delegation({ onRemoveDelegate, onSetDelegate }) {
   )
 }
 
-function Representative({ onRemoveDelegate, onSetDelegate, representative }) {
+type RepresentativeProps = {
+  onRemoveDelegate: () => void
+  onSetDelegate: () => void
+  representative: {
+    address: string
+  }
+}
+
+function Representative({
+  onRemoveDelegate,
+  onSetDelegate,
+  representative,
+}: RepresentativeProps) {
   const theme = useTheme()
   const router = useRouter()
-  const profile = useProfile(representative.address)
+  const profile: any = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
     router.push(`/profile?account=${representative.address}`)

@@ -102,6 +102,7 @@ function Home() {
   const handleUpdatePriceOracle = useCallback(() => {
     handleShowModal('updatePriceOracle')
   }, [handleShowModal])
+
   const handleProposalCreated = useCallback(() => {
     filters.ranking.onChange(1)
   }, [filters])

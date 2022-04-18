@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import styled from 'styled-components'
 import {
   Box,
   Button,
@@ -10,26 +11,17 @@ import {
 } from '@1hive/1hive-ui'
 
 import Carousel from '@components/Carousel/Carousel'
+import { formatTokenAmount } from '@utils/token-utils'
 import { useGardenState } from '@providers/GardenState'
 import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
-import { formatTokenAmount } from '@utils/token-utils'
-
-const modeAttributes = {
-  wrap: {
-    icon: '/icons/base/unwrappedIcon.svg',
-    button: { mode: 'strong', label: 'Wrap' },
-  },
-  unwrap: {
-    icon: '/icons/base/wrappedIcon.svg',
-    button: { mode: 'strong', label: 'Unwrap' },
-    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
-  },
-  claim: {
-    button: { mode: 'normal', label: 'Claim' },
-    icon: '/icons/base/rewardsWrapperIcon.svg',
-  },
-}
+const TokenHeaderDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
+const AprSpan = styled.span`
+  margin-left: ${0.5 * GU}px;
+`
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
@@ -37,7 +29,15 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
-  const [earnedRewards, rewardsLink] = useUnipoolRewards()
+  const [earnedRewards, rewardsLink, rewardAPR] = useUnipoolRewards()
+  const rewardAPRFormatted =
+    rewardAPR && !rewardAPR.eq(0)
+      ? rewardAPR.multipliedBy(100).toFixed(2)
+      : null
+  const unwrappedImage =
+    rewardAPR && !rewardAPR.eq(0)
+      ? '/icons/base/tokenRewardIcon.png'
+      : '/icons/base/unwrappedIcon.svg'
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -52,21 +52,35 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     <Token
       balance={wrappableToken.accountBalance}
       loading={loading}
-      mode="wrap"
+      mode={{
+        type: 'unwrapped',
+        icon: unwrappedImage,
+        button: { mode: 'strong', label: 'Wrap' },
+        apr: rewardAPRFormatted,
+      }}
       onClick={onWrapToken}
       token={wrappableToken.data}
     />,
     <Token
       balance={token.accountBalance}
       loading={loading}
-      mode="unwrap"
+      mode={{
+        type: 'wrapped',
+        icon: '/icons/base/wrappedIcon.svg',
+        button: { mode: 'strong', label: 'Unwrap' },
+        hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+      }}
       onClick={onUnwrapToken}
       token={token.data}
     />,
     <Token
       balance={earnedRewards}
       loading={!earnedRewards}
-      mode="claim"
+      mode={{
+        type: 'claim',
+        icon: '/icons/base/rewardsWrapperIcon.svg',
+        button: { mode: 'normal', label: 'Claim' },
+      }}
       onClick={handleClaimRewards}
       token={wrappableToken.data}
     />,
@@ -98,8 +112,8 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
 function Token({ balance, loading, mode, onClick, token }) {
   const theme = useTheme()
-  const { button, icon, hint } = modeAttributes[mode]
-  const claimMode = mode === 'claim'
+  const { icon, button, hint, apr } = mode
+  const claimMode = mode.type === 'claim'
 
   return (
     <div
@@ -111,7 +125,12 @@ function Token({ balance, loading, mode, onClick, token }) {
         ${textStyle('body2')};
       `}
     >
-      <img src={icon} height="48" width="48" />
+      {
+        <TokenHeaderDiv>
+          <img src={icon} height="48" width="48" />
+          {apr && <AprSpan>{apr}% APR</AprSpan>}
+        </TokenHeaderDiv>
+      }
       {loading ? (
         <div
           css={`

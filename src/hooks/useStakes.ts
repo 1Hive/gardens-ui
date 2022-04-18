@@ -25,7 +25,7 @@ export function useAccountStakes(account: string) {
 
     return user.supports
       .flatMap(({ stakes }) => stakes)
-      .reduce((acc: any, stake: StakeType) => {
+      .reduce((acc: any, stake: any) => {
         if (
           stake.amount.eq(0) ||
           (stake.proposal.status !== PROPOSAL_STATUS_ACTIVE_STRING &&
@@ -87,7 +87,7 @@ export function useInactiveProposalsWithStake(account: string) {
 
   const inactiveStakes = user.supports
     .flatMap(({ stakes }) => stakes)
-    .filter((stake: StakeType) => {
+    .filter((stake: any) => {
       return (
         stake.proposal.type !== ProposalTypes.Decision &&
         (stake.proposal.status === PROPOSAL_STATUS_CANCELLED_STRING ||

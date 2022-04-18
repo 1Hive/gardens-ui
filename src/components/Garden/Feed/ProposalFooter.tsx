@@ -11,7 +11,7 @@ import { VOTE_NAY, VOTE_YEA } from '@/constants'
 import { ProposalTypes } from '@/types'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getConnectedAccountCast } from '../../../utils/vote-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 import ModalSupporters from './ProposalCardModalSupporters'
 
 type ProposalCardFooterProps = {

@@ -19,7 +19,15 @@ import { useWallet } from '@providers/Wallet'
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
-function AccountScreenConnected({ providerId, onClosePopover }) {
+type AccountScreenConnectedProps = {
+  providerId: string
+  onClosePopover: () => void
+}
+
+function AccountScreenConnected({
+  providerId,
+  onClosePopover,
+}: AccountScreenConnectedProps) {
   const theme = useTheme()
   const router = useRouter()
   const copy = useCopyToClipboard()
@@ -132,7 +140,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
             `}
           >
             <img
-              src={providerInfo.image}
+              src={providerInfo?.image}
               alt=""
               css={`
                 width: ${2.5 * GU}px;
@@ -142,7 +150,7 @@ function AccountScreenConnected({ providerId, onClosePopover }) {
               `}
             />
             <span>
-              {providerInfo.id === 'unknown' ? 'Wallet' : providerInfo.name}
+              {providerInfo?.id === 'unknown' ? 'Wallet' : providerInfo?.name}
             </span>
           </div>
           <div

@@ -3,7 +3,7 @@ import { GU } from '@1hive/1hive-ui'
 
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type ActionCollateralProps = {
   proposal: ProposalType

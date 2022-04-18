@@ -45,33 +45,38 @@ export default function useProposalFilters() {
     filtersCache.get(FILTER_KEY_TYPE) || NULL_FILTER_STATE
   )
 
-  const handleNameFilterChange = useCallback(newName => {
+  const handleNameFilterChange = useCallback((newName) => {
     setNameFilter(newName)
     filtersCache.set(FILTER_KEY_NAME, newName)
   }, [])
+
   const handlePoposalCountIncrease = useCallback(() => {
-    setCountFilter(count => {
+    setCountFilter((count) => {
       const newCount = count + PROPOSAL_COUNT_STEP
       filtersCache.set(FILTER_KEY_COUNT, newCount)
 
       return newCount
     })
   }, [])
-  const handleRankingFilterChange = useCallback(index => {
+
+  const handleRankingFilterChange = useCallback((index) => {
     setRankingFilter(index)
     filtersCache.set(FILTER_KEY_RANKING, index)
   }, [])
-  const handleStatusFilterChange = useCallback(index => {
+
+  const handleStatusFilterChange = useCallback((index) => {
     const newStatus = index || NULL_FILTER_STATE
     setStatusFilter(newStatus)
     filtersCache.set(FILTER_KEY_STATUS, newStatus)
   }, [])
-  const handleSupportFilterChange = useCallback(index => {
+
+  const handleSupportFilterChange = useCallback((index) => {
     const newSupport = index || NULL_FILTER_STATE
     setSupportFilter(newSupport)
     filtersCache.set(FILTER_KEY_SUPPORT, newSupport)
   }, [])
-  const handleTypeFilterChange = useCallback(index => {
+
+  const handleTypeFilterChange = useCallback((index) => {
     const newType = index || NULL_FILTER_STATE
     setTypeFilter(newType)
     filtersCache.set(FILTER_KEY_TYPE, newType)

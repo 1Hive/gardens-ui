@@ -1,9 +1,9 @@
 import React from 'react'
+import { Colors } from '@nivo/core'
 import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
-import { Colors } from '@nivo/core'
 
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 export const ABSTAIN_PROPOSAL = 'Abstain proposal'
 

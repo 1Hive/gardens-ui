@@ -18,8 +18,20 @@ import { convertToString } from '@/types'
 import { dateFormat } from '@utils/date-utils'
 import { getGardenLabel } from '@utils/garden-utils'
 import { getNetworkType } from '@utils/web3-utils'
+import { ProposalType } from './types'
 
-function Activity({ account, isConnectedAccount, profileName }) {
+type ActivityProps = {
+  account: string
+  isConnectedAccount: boolean
+  profileName: string
+}
+
+type StakeItem = {
+  proposal: ProposalType
+  createdAt?: any
+}
+
+function Activity({ account, isConnectedAccount, profileName }: ActivityProps) {
   const theme = useTheme()
   const { user } = useUser(account)
 
@@ -35,9 +47,9 @@ function Activity({ account, isConnectedAccount, profileName }) {
 
     return user.supports
       .flatMap(({ stakesHistory }) => stakesHistory)
-      .reduce((acc, stake) => {
+      .reduce((acc: Array<StakeItem>, stake: StakeItem) => {
         const index = acc.findIndex(
-          (accStake) => accStake.proposal.id === stake.proposal.id
+          (accStake: StakeItem) => accStake.proposal.id === stake.proposal.id
         )
 
         if (index >= 0) {

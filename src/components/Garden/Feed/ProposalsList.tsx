@@ -15,12 +15,11 @@ import {
   useViewport,
 } from '@1hive/1hive-ui'
 
-import EmptyResults from '../../EmptyResults'
-import ProposalCard from './ProposalCard'
-import ProposalRankings from './ProposalRankings'
-
-import { ProposalType } from '@/hooks/constants'
 import AbstainCard from './AbstainCard'
+import ProposalCard from './ProposalCard'
+import { ProposalType } from '@/types/app'
+import EmptyResults from '../../EmptyResults'
+import ProposalRankings from './ProposalRankings'
 import { ABSTAIN_PROPOSAL } from '../ProposalDetail/ProposalStatus'
 
 type ProposalsListProps = {

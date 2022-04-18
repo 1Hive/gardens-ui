@@ -2,7 +2,13 @@ import React, { useCallback } from 'react'
 import { GU, useTheme } from '@1hive/1hive-ui'
 import HelpTip from '@components/HelpTip'
 
-function ListFilter({ items, selected, onChange }) {
+type ListFilterProps = {
+  items: Array<string>
+  selected: number
+  onChange: (index: number) => void
+}
+
+function ListFilter({ items, selected, onChange }: ListFilterProps) {
   return (
     <div>
       {items.map((item, index) => (
@@ -18,8 +24,15 @@ function ListFilter({ items, selected, onChange }) {
     </div>
   )
 }
+type ListItemProps = {
+  helptip: string
+  index: number
+  item: string
+  onSelect: (index: number) => void
+  selected: number
+}
 
-function ListItem({ index, item, onSelect, selected, helptip }) {
+function ListItem({ index, item, onSelect, selected, helptip }: ListItemProps) {
   const theme = useTheme()
 
   const handleOnClick = useCallback(() => {
