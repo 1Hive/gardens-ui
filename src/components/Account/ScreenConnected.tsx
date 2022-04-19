@@ -1,23 +1,23 @@
-import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import {
-  Button,
-  ButtonBase,
   GU,
-  IconCheck,
-  IconCopy,
   RADIUS,
-  textStyle,
+  Button,
+  IconCopy,
   useTheme,
+  textStyle,
+  IconCheck,
+  ButtonBase,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '../IdentityBadge'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
-import { useWallet } from '@providers/Wallet'
 
-import { buildGardenPath } from '@utils/routing-utils'
+import IdentityBadge from '../IdentityBadge'
+
+import { useWallet } from '@providers/Wallet'
 import { getNetworkName } from '@utils/web3-utils'
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 type AccountScreenConnectedProps = {
   providerId: string
@@ -30,6 +30,7 @@ function AccountScreenConnected({
 }: AccountScreenConnectedProps) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
   const { account, chainId, resetConnection } = useWallet()
@@ -43,8 +44,9 @@ function AccountScreenConnected({
   }, [router, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    const path = buildGardenPath(router, 'collateral')
-    router.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral`
+    )
     onClosePopover()
   }, [router, onClosePopover])
 

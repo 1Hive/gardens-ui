@@ -1,15 +1,14 @@
-import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
 import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
-import ProposalFooter from './ProposalFooter'
-import ProposalHeader from './ProposalHeader'
-import ProposalInfo from './ProposalInfo'
-import { useProposalWithThreshold } from '@hooks/useProposals'
-
-import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
 import { ProposalType } from '@/types/app'
+import { useProposalWithThreshold } from '@/hooks/useProposals'
+
+import ProposalInfo from './ProposalInfo'
+import ProposalFooter from './ProposalFooter'
+import ProposalHeader from './ProposalHeader'
 
 type CardProps = {
   loading?: boolean
@@ -32,14 +31,16 @@ function ConvictionProposalCard({ proposal, ...props }: CardProps) {
 function Card({ loading = false, proposal }: CardProps) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
   const { below } = useViewport()
 
   const handleSelectProposal = useCallback(() => {
     const entityPath =
       proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'
 
-    const path = buildGardenPath(router, `${entityPath}/${proposal.number}`)
-    router.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/${entityPath}/${proposal.number}`
+    )
   }, [router, proposal.number, proposal.type])
 
   const handleViewProfile = useCallback(

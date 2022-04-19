@@ -222,13 +222,15 @@ type GardenNavItemsProps = {
 function GardenNavItems({ garden }: GardenNavItemsProps) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
+
   const token = garden.wrappableToken || garden.token
   const forumURL = garden.forumURL
+
   const { preferredNetwork } = useWallet()
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(router, 'covenant')
-    router.push(path)
+    router.push(`/${query.networkType}/garden/${query.gardenAddress}/covenant`)
   }, [router])
 
   const getTokenLink = useMemo(

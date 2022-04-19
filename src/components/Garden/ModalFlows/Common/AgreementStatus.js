@@ -1,20 +1,19 @@
-import React, { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo } from 'react'
 
 import InfoBox from './InfoBox'
 
-import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat } from '@utils/date-utils'
 
 function AgreementStatus({ agreement }) {
-  const router = useRouter()
   const theme = useTheme()
+  const router = useRouter()
+  const query = router.query
   const { signedLatest, singedPreviousVersion, lastSignatureDate } = agreement
 
   const goToAgreement = useCallback(() => {
-    const path = buildGardenPath(router, 'covenant')
-    router.push(path)
+    router.push(`/${query.networkType}/garden/${query.gardenAddress}/covenant`)
   }, [router])
 
   const infoData = useMemo(() => {

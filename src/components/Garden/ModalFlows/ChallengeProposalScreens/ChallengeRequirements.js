@@ -1,25 +1,25 @@
-import React, { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
 import {
-  Button,
   GU,
   Info,
   Link,
-  LoadingRing,
-  textStyle,
+  Button,
   useTheme,
+  textStyle,
+  LoadingRing,
 } from '@1hive/1hive-ui'
+import { useRouter } from 'next/router'
+import React, { useCallback, useMemo } from 'react'
+
 import InfoField from '../../InfoField'
 import ModalButton from '../ModalButton'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
-import { useWallet } from '@providers/Wallet'
 
 import env from '@/environment'
+import { useWallet } from '@providers/Wallet'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
-import { buildGardenPath } from '@utils/routing-utils'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useTokenBalanceOf, useTokenData } from '@hooks/useToken'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
 function ChallengeRequirements({
   agreement,
@@ -27,6 +27,7 @@ function ChallengeRequirements({
   disputeFees,
 }) {
   const router = useRouter()
+  const query = router.query
   const { account } = useWallet()
   const { next } = useMultiModal()
   const { chainId } = useConnectedGarden()
@@ -86,7 +87,12 @@ function ChallengeRequirements({
         of BrightID verified humans – called keepers – is drafted to rule on the
         dispute (they are tasked with deciding whether or not the disputed
         action is compatible with this community’s{' '}
-        <Link href={buildGardenPath(router, 'covenant')}>Covenant.</Link> <br />
+        <Link
+          href={`/${query.networkType}/garden/${query.gardenAddress}/covenant`}
+        >
+          Covenant.
+        </Link>{' '}
+        <br />
         <br />
         If the keepers decide the proposal is compatible, on-chain execution
         continues. If they decide it is not, the proposal is blocked and

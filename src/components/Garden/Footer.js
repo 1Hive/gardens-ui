@@ -1,24 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import {
-  ButtonBase,
   GU,
+  useTheme,
   IconWrite,
-  Link as AragonLink,
   textStyle,
   useLayout,
-  useTheme,
+  ButtonBase,
   useViewport,
+  Link as AragonLink,
 } from '@1hive/1hive-ui'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import React, { useCallback, useEffect, useState } from 'react'
+
+import { useWallet } from '@providers/Wallet'
+import { getDexTradeTokenUrl } from '@/endpoints'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+
 import Layout from '../Layout'
 import MultiModal from '../MultiModal/MultiModal'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
-
-import { buildGardenPath } from '@utils/routing-utils'
-import { getDexTradeTokenUrl } from '@/endpoints'
 
 const defaultFooterData = {
   links: {
@@ -155,6 +155,7 @@ function Footer() {
 export function FixedFooter({ token }) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const { chainId } = useConnectedGarden()
@@ -162,8 +163,7 @@ export function FixedFooter({ token }) {
     useState(false)
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(router, 'covenant')
-    router.push(path)
+    router.push(`/${query.networkType}/garden/${query.gardenAddress}/covenant`)
   }, [router])
 
   // TODO: Add the create proposal modal here

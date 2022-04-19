@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react'
-import { useRouter } from 'next/router'
-import { GU, Help, useTheme, useViewport } from '@1hive/1hive-ui'
-import { buildGardenPath } from '@utils/routing-utils'
-import { ProposalType } from '@/types/app'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
+import { GU, Help, useTheme, useViewport } from '@1hive/1hive-ui'
+
+import { ProposalType } from '@/types/app'
+
 import ProposalSupport from './ProposalSupport'
 
 type AbstainCardProps = {
@@ -13,12 +14,14 @@ type AbstainCardProps = {
 function AbstainCard({ proposal }: AbstainCardProps) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
 
   const { below } = useViewport()
 
   const handleSelectProposal = useCallback(() => {
-    const path = buildGardenPath(router, `proposal/${proposal.number}`)
-    router.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/proposal/${proposal.number}`
+    )
   }, [router, proposal.number])
 
   return (

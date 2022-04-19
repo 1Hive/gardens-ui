@@ -16,13 +16,13 @@ import React, { useCallback, useState } from 'react'
 
 import {
   StakingType,
-  StakingCollateralType,
   StakingStatusesMap,
   CollateralStatusesMap,
+  StakingCollateralType,
 } from './staking-management-statuses'
+
 import { TokenType } from '@/types/app'
 import { dateFormat, toMs } from '@utils/date-utils'
-import { buildGardenPath } from '@utils/routing-utils'
 import { useGardenState } from '@providers/GardenState'
 
 const getActionAttributes = (status: StakingType, theme: any): ActionType => {
@@ -87,9 +87,10 @@ type StakingMovementsProps = {
 }
 
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
-  const { config } = useGardenState()
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
+  const { config } = useGardenState()
 
   const [selectedPage, setSelectedPage] = useState(0)
 
@@ -105,11 +106,9 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
       const proposalType =
         disputableAddress === config.voting.id ? 'vote' : 'proposal'
 
-      const path = buildGardenPath(
-        router,
-        `${proposalType}/${disputableActionId}`
+      router.push(
+        `/${query.networkType}/garden/${query.gardenAddress}/${proposalType}/${disputableActionId}`
       )
-      router.push(path)
     },
     [config, router]
   )

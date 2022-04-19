@@ -12,6 +12,7 @@ const InnerGardenNavigationSidebar = ({
   onOpenCreateProposal,
 }) => {
   const router = useRouter()
+  const query = router.query
 
   const gardenNavigationItems = [
     {
@@ -23,7 +24,7 @@ const InnerGardenNavigationSidebar = ({
     {
       icon: '/icons/base/covenantIcon.svg',
       label: 'Covenant',
-      path: buildGardenPath(router, 'covenant'),
+      path: `/${query.networkType}/garden/${query.gardenAddress}/covenant`,
       onClick: onToggle,
     },
     {

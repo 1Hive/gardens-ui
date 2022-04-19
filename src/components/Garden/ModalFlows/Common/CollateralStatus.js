@@ -1,24 +1,26 @@
-import React, { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo } from 'react'
 
 import InfoBox from './InfoBox'
 
-import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 
 function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
 
   const goToStakeManager = useCallback(() => {
-    const path = buildGardenPath(router, 'collateral')
-    router.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral`
+    )
   }, [router])
 
   const goToStakeManagerDeposit = useCallback(() => {
-    const path = buildGardenPath(router, 'collateral/deposit')
-    router.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral/deposit`
+    )
   }, [router])
 
   const infoData = useMemo(() => {
