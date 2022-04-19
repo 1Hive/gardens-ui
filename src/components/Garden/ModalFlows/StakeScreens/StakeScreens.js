@@ -5,22 +5,23 @@ import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 
 import BigNumber from '@lib/bigNumber'
-import { buildGardenPath } from '@utils/routing-utils'
 import { toDecimals } from '@utils/math-utils'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function StakeScreens({ mode, stakeManagement, stakeActions }) {
-  const [transactions, setTransactions] = useState([])
   const router = useRouter()
+  const query = router.query
+  const [transactions, setTransactions] = useState([])
   const { allowance: stakingAllowance } = stakeManagement?.staking || {}
   const { token, accountBalance } = stakeManagement
 
   const temporatyTrx = useRef([])
 
   const handleCreateProposal = useCallback(() => {
-    const path = buildGardenPath(router, 'create')
-    router.push(path)
+    if (!router.query.create) {
+      router.push(`${router.asPath}?create=true`)
+    }
   }, [router])
 
   const onCompleteActions = useMemo(() => {

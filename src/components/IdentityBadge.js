@@ -14,15 +14,15 @@ function IdentityBadge({
   withProfile = true,
   ...props
 }) {
-  const history = useRouter()
+  const router = useRouter()
   const connectedGarden = useConnectedGarden()
   const [profile, setProfile] = useState(null)
 
   const { explorer, type } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${entity}`)
-  }, [entity, history])
+    router.push(`/profile?account=${entity}`)
+  }, [entity, router])
 
   useEffect(() => {
     let cancelled = false

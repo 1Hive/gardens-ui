@@ -1,5 +1,3 @@
-import React, { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
 import {
   Button,
   ButtonBase,
@@ -9,16 +7,18 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+import { useRouter } from 'next/router'
+import React, { useCallback, useMemo } from 'react'
+
+import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
+
+import Layout from '../Layout'
+import BalanceModule from '../BalanceModule'
 import AccountModule from '../Account/AccountModule'
 import ActivityButton from '../Activity/ActivityButton'
-import BalanceModule from '../BalanceModule'
 import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
-import Layout from '../Layout'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
-
-import { buildGardenPath } from '@utils/routing-utils'
-import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
 function Header({
   onOpenPreferences,
@@ -51,7 +51,8 @@ function Header({
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
-  const logoLink = connectedGarden ? buildGardenPath(router, '') : '/home'
+  // const logoLink = connectedGarden ? router.asPath : '/home'
+  const logoLink = '/home'
 
   const showBalance = connectedGarden && account && !mobileMode
   const showMenu = router.pathname !== '/home' && mobileMode

@@ -1,10 +1,8 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import NavigationItem from '../Items/NavigationItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
-
-import { buildGardenPath } from '@utils/routing-utils'
+import NavigationItem from '../Items/NavigationItem'
 
 const InnerGardenNavigationSidebar = ({
   width,
@@ -18,7 +16,7 @@ const InnerGardenNavigationSidebar = ({
     {
       icon: '/icons/base/feedIcon.svg',
       label: 'Feed',
-      path: buildGardenPath(router, ''),
+      path: router.asPath,
       onClick: onToggle,
     },
     {

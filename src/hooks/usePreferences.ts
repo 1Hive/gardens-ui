@@ -15,7 +15,7 @@ export function getPreferencesSearch(screen: string | null) {
 export default function usePreferences() {
   // We need to keep track of the path where the preference was called in order to return to the same path when the preference modal is closed
   const router = useRouter()
-  const basePath = router.pathname
+  const basePath = router.asPath
   const screen: any = router.query?.preferences ?? ''
 
   const preferenceScreen = useRef(screen)

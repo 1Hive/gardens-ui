@@ -4,7 +4,6 @@ import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
 import { useWallet } from '@providers/Wallet'
 import useGardenLogic from '@/logic/garden-logic'
-import { buildGardenPath } from '@utils/routing-utils'
 import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 import Metrics from './Metrics'
@@ -57,7 +56,7 @@ function Home() {
     router.push('/home')
   }, [router])
 
-  console.log(router.query)
+  console.log(router)
 
   const handleFilterSliderToggle = useCallback(() => {
     setFilterSidlerVisible((visible) => !visible)
@@ -71,8 +70,8 @@ function Home() {
   const handleHideModal = useCallback(() => {
     setModalVisible(false)
 
-    if (router.pathname.includes('create')) {
-      router.push(buildGardenPath(router, ''))
+    if (router.query.create) {
+      router.push(location.pathname)
     }
   }, [router])
 
@@ -109,8 +108,9 @@ function Home() {
   }, [filters])
 
   useEffect(() => {
+    console.log('I got triggered')
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
-    if (account && router.pathname.includes('create')) {
+    if (account && router.query.create) {
       handleRequestNewProposal()
     }
   }, [account, handleRequestNewProposal, router])

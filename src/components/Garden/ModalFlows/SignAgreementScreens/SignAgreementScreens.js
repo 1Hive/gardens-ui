@@ -1,13 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Button } from '@1hive/1hive-ui'
-import ModalFlowBase from '../ModalFlowBase'
+import React, { useCallback, useMemo, useState } from 'react'
+
 import SignOverview from './SignOverview'
+import ModalFlowBase from '../ModalFlowBase'
+
 import useActions from '@hooks/useActions'
 import { useUserState } from '@providers/User'
-
-import { buildGardenPath } from '@utils/routing-utils'
 
 function SignAgreementScreens({ versionId }) {
   const router = useRouter()
@@ -18,8 +18,9 @@ function SignAgreementScreens({ versionId }) {
   const reloadUser = useCallback(() => setTimeout(reload, 4000), [reload])
 
   const handleCreateProposal = useCallback(() => {
-    const path = buildGardenPath(router, 'create')
-    router.push(path)
+    if (!router.query.create) {
+      router.push(`${router.asPath}?create=true`)
+    }
   }, [router])
 
   const onCompleteActions = useMemo(() => {

@@ -75,13 +75,12 @@ function GardensList({ gardens }) {
 
 function GardenCard({ garden }) {
   const theme = useTheme()
-  const history = useRouter()
+  const router = useRouter()
   const { preferredNetwork } = useWallet()
+
   const handleSelectGarden = useCallback(() => {
-    history.push(
-      `${getNetwork(preferredNetwork).type}/garden/${garden.address}`
-    )
-  }, [garden, history, preferredNetwork])
+    router.push(`${getNetwork(preferredNetwork).type}/garden/${garden.address}`)
+  }, [garden, router, preferredNetwork])
 
   const token = garden.wrappableToken || garden.token
 
