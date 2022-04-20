@@ -56,8 +56,6 @@ function Home() {
     router.push('/home')
   }, [router])
 
-  console.log(router)
-
   const handleFilterSliderToggle = useCallback(() => {
     setFilterSidlerVisible((visible) => !visible)
   }, [])

@@ -29,6 +29,7 @@ function Header({
 }) {
   const theme = useTheme()
   const router = useRouter()
+  const query = router.query
   const connectedGarden = useConnectedGarden()
   const { below } = useViewport()
   const { account } = useWallet()
@@ -51,8 +52,9 @@ function Header({
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
-  // const logoLink = connectedGarden ? router.asPath : '/home'
-  const logoLink = '/home'
+  const logoLink = connectedGarden
+    ? `/${query.networkType}/garden/${query.gardenAddress}`
+    : '/home'
 
   const showBalance = connectedGarden && account && !mobileMode
   const showMenu = router.pathname !== '/home' && mobileMode

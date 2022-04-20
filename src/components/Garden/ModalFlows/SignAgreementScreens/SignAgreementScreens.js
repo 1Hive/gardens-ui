@@ -11,6 +11,7 @@ import { useUserState } from '@providers/User'
 
 function SignAgreementScreens({ versionId }) {
   const router = useRouter()
+  const query = router.query
   const actions = useActions()
   const [transactions, setTransactions] = useState([])
   const { reload } = useUserState()
@@ -19,7 +20,9 @@ function SignAgreementScreens({ versionId }) {
 
   const handleCreateProposal = useCallback(() => {
     if (!router.query.create) {
-      router.push(`${router.asPath}?create=true`)
+      router.replace(
+        `/${query.networkType}/garden/${query.gardenAddress}?create=true`
+      )
     }
   }, [router])
 

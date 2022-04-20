@@ -20,7 +20,9 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
 
   const handleCreateProposal = useCallback(() => {
     if (!router.query.create) {
-      router.push(`${router.asPath}?create=true`)
+      router.replace(
+        `/${query.networkType}/garden/${query.gardenAddress}?create=true`
+      )
     }
   }, [router])
 
