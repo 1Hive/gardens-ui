@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useGardenState } from '@providers/GardenState'
 import usePromise from '@hooks/usePromise'
 import { getAppPresentationByAddress } from '@utils/app-utils'
@@ -31,42 +31,53 @@ interface RoleProps {
 
 export function useRoles() {
   const [loading, setLoading] = useState<boolean>(true)
-  const { installedApps } = useGardenState()
+  const gardenState = useGardenState()
 
+  console.log('gardenState ', gardenState)
   const appsWithPermissions = useMemo(() => {
-    return () => Promise.all(installedApps.map(async (app: any) => {
+    if (!gardenState?.installedApps) {
+      return async () => { null }
+    }
+    return () => Promise.all(gardenState?.installedApps.map(async (app: any) => {
       return {
         ...app,
         roles: await app.roles()
       }
     }))
-  }, [installedApps])
+  }, [gardenState])
 
   const appsWithRolesResolved = usePromise(appsWithPermissions, [], [])
 
   console.log('appsWithRolesResolved ', appsWithRolesResolved)
 
-  const rolesWithEntitiesResolved: Array<RoleProps> = appsWithRolesResolved.map((app: any) => {
+  const rolesWithEntitiesResolved: Array<RoleProps> = appsWithRolesResolved ? appsWithRolesResolved.map((app: any) => {
     return app.roles.map((role: any) => {
       return {
         ...role,
-        appName: getAppPresentationByAddress(installedApps, app.address)?.shortenedName,
-        appIcon: getAppPresentationByAddress(installedApps, app.address)?.iconSrc,
+        appName: getAppPresentationByAddress(gardenState?.installedApps, app.address)?.shortenedName,
+        appIcon: getAppPresentationByAddress(gardenState?.installedApps, app.address)?.iconSrc,
         manager: {
           address: role.manager,
-          shortenedName: getAppPresentationByAddress(installedApps, role.manager)?.shortenedName
+          shortenedName: getAppPresentationByAddress(gardenState?.installedApps, role.manager)?.shortenedName
         },
         permissions: role.permissions.map((permission: any) => {
           return {
             ...permission,
-            granteeName: getAppPresentationByAddress(installedApps, permission.granteeAddress)?.shortenedName
+            granteeName: getAppPresentationByAddress(gardenState?.installedApps, permission.granteeAddress)?.shortenedName
           }
         })
       }
     })
-  })
+  }) : null
+
+  useEffect(() => {
+    if (rolesWithEntitiesResolved) {
+      setLoading(false)
+    }
+  }, [rolesWithEntitiesResolved])
 
 
-  return [rolesWithEntitiesResolved.flat(), loading]
+
+  return [rolesWithEntitiesResolved ? rolesWithEntitiesResolved.flat() : [], loading]
 
 }

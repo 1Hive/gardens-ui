@@ -32,6 +32,16 @@ const ParentDiv = styled.div`
   outline: 0;
 `
 
+const RootWrapper = styled(Root.Provider)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
+const HeaderWrapper = styled(Header)`
+  padding-top: ${(props) => !props.compact ? 10 * GU : 0}px;
+`
+
 const SECTIONS = new Map([
   ['generalInfo', 'General Info'],
   ['evmExecutor', 'EVM Executor'],
@@ -80,17 +90,18 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
     getEvmCrispr()
   }, [account, connectedGarden, ethers, isSafari])
 
+  console.log('sectionIndex ', sectionIndex)
+
   return (
-    <ParentDiv id={"PARENT"} ref={container} tabIndex="0">
+    <ParentDiv ref={container} tabIndex="0">
       <LayoutWrapper>
         <Close compact={compact} onClick={onClose} />
-        <Header
-          primary="Global preferences"
-          css={`
-            padding-top: ${!compact ? 10 * GU : 0}px;
-          `}
-        />
-        <Root.Provider id={"ROOTTTTTT"}>
+        <HeaderWrapper
+          compact={compact}
+        >
+          <Header primary="Global preferences" />
+        </HeaderWrapper>
+        <RootWrapper>
           <React.Fragment>
             <Tabs
               items={VALUES}
@@ -104,7 +115,7 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             )}
             {sectionIndex === PERMISSIONS_INDEX && <Permissions />}
           </React.Fragment>
-        </Root.Provider>
+        </RootWrapper>
       </LayoutWrapper>
     </ParentDiv>
   )

@@ -7,7 +7,10 @@ import Loader from '@components/Loader'
 const ENTRIES_PER_PAGE = 10
 
 function Permissions() {
+  console.log('PERMISSIONS!!!!! ')
   const [appRoles, loading] = useRoles()
+
+
 
   const fields = [
     'Action',
@@ -15,7 +18,7 @@ function Permissions() {
     { label: 'Assigned to entity', childStart: true },
     'Managed by',
   ]
-  console.log('installed with perm ', appRoles)
+  // console.log('installed with perm ', appRoles)
 
   return (
     <div css={`height: 100%;`}>
