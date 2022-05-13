@@ -44,6 +44,7 @@ function Permissions() {
           fields={fields}
           entries={appRoles}
           renderEntry={(entry: EntryProps) => renderEntry(entry, installedApps)}
+          renderEntryExpansion={(entry: EntryProps) => renderEntryExpansion(entry, installedApps)}
         />
       }
     </div>
@@ -104,6 +105,16 @@ function renderEntry(entry: EntryProps, installedApps: any) {
 
   ]
   return cells
+}
+
+function renderEntryExpansion(entry: EntryProps, installedApps: any) {
+  const allowedEntities = entry.permissions.filter((permission: any) => permission.allowed === true)
+
+  return allowedEntities.length < 2
+    ? null
+    : allowedEntities.map((entity: any) => (
+      <EntityBadge address={entity.granteeAddress} name={entity.granteeName} icon={entity.granteeIcon} installedApps={installedApps} />
+    ))
 }
 
 
