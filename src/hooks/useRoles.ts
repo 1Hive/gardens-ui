@@ -3,6 +3,8 @@ import { useGardenState } from '@providers/GardenState'
 import usePromise from '@hooks/usePromise'
 import { getAppPresentationByAddress } from '@utils/app-utils'
 
+const ANY_ADDRESS = "0xffffffffffffffffffffffffffffffffffffffff"
+
 interface ManagerProps {
   address: string,
   shortenedName: string,
@@ -33,7 +35,6 @@ export function useRoles() {
   const [loading, setLoading] = useState<boolean>(true)
   const gardenState = useGardenState()
 
-  console.log('gardenState ', gardenState)
   const appsWithPermissions = useMemo(() => {
     if (!gardenState?.installedApps) {
       return async () => { null }
@@ -48,22 +49,30 @@ export function useRoles() {
 
   const appsWithRolesResolved = usePromise(appsWithPermissions, [], [])
 
-  console.log('appsWithRolesResolved ', appsWithRolesResolved)
+  // console.log('appsWithRolesResolved ', appsWithRolesResolved)
+
+  function isAnyAddress(address: string) {
+    return address === ANY_ADDRESS
+  }
 
   const rolesWithEntitiesResolved: Array<RoleProps> = appsWithRolesResolved ? appsWithRolesResolved.map((app: any) => {
     return app.roles.map((role: any) => {
+      const appPresentation = getAppPresentationByAddress(gardenState?.installedApps, app.address)
+
       return {
         ...role,
-        appName: getAppPresentationByAddress(gardenState?.installedApps, app.address)?.shortenedName,
-        appIcon: getAppPresentationByAddress(gardenState?.installedApps, app.address)?.iconSrc,
+        appName: appPresentation?.shortenedName || appPresentation?.humanName,
+        appIcon: appPresentation?.iconSrc,
         manager: {
           address: role.manager,
-          shortenedName: getAppPresentationByAddress(gardenState?.installedApps, role.manager)?.shortenedName
+          shortenedName: getAppPresentationByAddress(gardenState?.installedApps, role.manager)?.shortenedName,
+          managerIcon: getAppPresentationByAddress(gardenState?.installedApps, role.manager)?.iconSrc
         },
         permissions: role.permissions.map((permission: any) => {
           return {
             ...permission,
-            granteeName: getAppPresentationByAddress(gardenState?.installedApps, permission.granteeAddress)?.shortenedName
+            granteeName: isAnyAddress(permission.granteeAddress) ? 'Any account' : getAppPresentationByAddress(gardenState?.installedApps, permission.granteeAddress)?.shortenedName,
+            granteeIcon: getAppPresentationByAddress(gardenState?.installedApps, permission.granteeAddress)?.iconSrc
           }
         })
       }
