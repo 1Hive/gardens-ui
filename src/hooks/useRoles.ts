@@ -49,8 +49,6 @@ export function useRoles() {
 
   const appsWithRolesResolved = usePromise(appsWithPermissions, [], [])
 
-  // console.log('appsWithRolesResolved ', appsWithRolesResolved)
-
   function isAnyAddress(address: string) {
     return address === ANY_ADDRESS
   }

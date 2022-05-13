@@ -4,7 +4,6 @@ import { AppBadge, DataView, IdentityBadge, textStyle } from '@1hive/1hive-ui'
 import { useGardenState } from '@providers/GardenState'
 import { useRoles } from '@/hooks/useRoles'
 import Loader from '@components/Loader'
-import { getAppPresentationByAddress } from '@utils/app-utils'
 
 const ENTRIES_PER_PAGE = 10
 
@@ -22,15 +21,12 @@ function Permissions() {
   const [appRoles, loading] = useRoles()
   const { installedApps } = useGardenState()
 
-  console.log('APP ROLES ', appRoles)
-
   const fields = [
     'Action',
     'On app',
     { label: 'Assigned to entity', childStart: true },
     'Managed by',
   ]
-  // console.log('installed with perm ', appRoles)
 
   return (
     <div css={`height: 100%;`}>
@@ -87,9 +83,8 @@ function EntityBadge({ address, name, icon, installedApps }: { address: string, 
 
 
 function renderEntry(entry: EntryProps, installedApps: any) {
-
   const { appAddress, appIcon, appName, description, manager, permissions } = entry
-  console.log('ENTRY ', entry)
+
   const cells = [
     <span
       css={`
@@ -100,7 +95,6 @@ function renderEntry(entry: EntryProps, installedApps: any) {
     </span>,
     <AppBadge appAddress={appAddress} iconSrc={appIcon} label={appName} entity={appAddress} />,
     <EntryEntities permissions={permissions} installedApps={installedApps} />,
-    // <IdentityBadge label={permissions[0].granteeName} entity={permissions[0].granteeAddress} />,
     <EntityBadge address={manager.address} name={manager.shortenedName} icon={manager.managerIcon} installedApps={installedApps} />
 
   ]
