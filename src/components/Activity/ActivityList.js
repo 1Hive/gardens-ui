@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 import {
   ButtonText,
   GU,
@@ -12,8 +12,6 @@ import ActivityItem from './ActivityItem'
 import { useActivity } from '@providers/ActivityProvider'
 
 import { ActivityStatus } from './activity-statuses'
-// TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
-import noDataSvg from '@assets/noData.svg'
 
 // 8GU for top bar, 4GU for activity heading,
 // 11GU for HelpScout beacon (3GU top/bottom padding, 5GU beacon)
@@ -127,7 +125,8 @@ function ActivityList() {
               height: ${28.5 * GU}px;
             `}
           >
-            <img src={noDataSvg} alt="No results" height="120" />
+            {/* TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS */}
+            <img src={'/icons/base/noData.svg'} alt="No results" height="120" />
             <span
               css={`
                 margin-top: ${2 * GU}px;

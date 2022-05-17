@@ -1,12 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { GU } from '@1hive/1hive-ui'
 import WelcomeModal from './WelcomeModal'
-import InfoButton from '@assets/InfoButton.svg'
 
 function WelcomeLoader() {
-  const [welcomeClosed, setWelcomeClosed] = useState(
-    localStorage.getItem('welcomeClosed') === 'true'
-  )
+  const [welcomeClosed, setWelcomeClosed] = useState(false)
+
+  useEffect(() => {
+    setWelcomeClosed(localStorage.getItem('welcomeClosed') === 'true')
+  }, [])
 
   const handleOnOpen = useCallback(() => {
     setWelcomeClosed(false)
@@ -30,7 +31,7 @@ function WelcomeLoader() {
           margin: ${3 * GU}px;
           cursor: pointer;
         `}
-        src={InfoButton}
+        src={'/icons/base/InfoButton.svg'}
         onClick={handleOnOpen}
       />
     </React.Fragment>

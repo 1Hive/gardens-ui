@@ -1,27 +1,24 @@
 import { addressesEqual } from '@1hive/1hive-ui'
 import { round } from './math-utils'
-import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
-import honeyIconSvg from '@assets/honey.svg'
-import stableTokenSvg from '@assets/stable-token.svg'
 
 const LOCAL_STABLE_ICONS = ['DAI', 'XDAI', 'WXDAI', 'USDC', 'USDT', 'LUSD']
 
 const LOCAL_TOKEN_ICONS = new Map([
-  ['HNY', honeyIconSvg],
-  ['HNYT', honeyIconSvg],
-  ['DAI', stableTokenSvg],
-  ['XDAI', stableTokenSvg],
-  ['WXDAI', stableTokenSvg],
+  ['HNY', '/icons/base/honey.svg'],
+  ['HNYT', '/icons/base/honey.svg'],
+  ['DAI', '/icons/base/stable-token.svg'],
+  ['XDAI', '/icons/base/stable-token.svg'],
+  ['WXDAI', '/icons/base/stable-token.svg'],
 ])
 
 export function getGardenTokenIcon(garden, token) {
   if (garden) {
     if (addressesEqual(garden.token.id, token.id)) {
-      return garden.token.logo || defaultTokenSvg
+      return garden.token.logo || '/defaultTokenLogo.svg'
     }
 
     if (addressesEqual(garden.wrappableToken?.id, token.id)) {
-      return garden.wrappableToken.logo || defaultTokenSvg
+      return garden.wrappableToken.logo || '/defaultTokenLogo.svg'
     }
   }
 
@@ -34,7 +31,7 @@ export function isStableToken(token) {
 }
 
 export function getLocalTokenIconBySymbol(symbol) {
-  return LOCAL_TOKEN_ICONS.get(symbol) || defaultTokenSvg
+  return LOCAL_TOKEN_ICONS.get(symbol) || '/defaultTokenLogo.svg'
 }
 
 export function formatDecimals(value, digits) {

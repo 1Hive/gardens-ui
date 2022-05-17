@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router'
+
 import useActions from '@hooks/useActions'
-import { useGardenState } from '@providers/GardenState'
 import { useProposal } from '@hooks/useProposals'
+import { useGardenState } from '@providers/GardenState'
 
 export type ProposalLogicProps = {
   params: {
@@ -9,9 +11,11 @@ export type ProposalLogicProps = {
   path: string
 }
 
-export default function useProposalLogic(match: ProposalLogicProps) {
-  const { params, path } = match
-  const { id: proposalId } = params
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function useProposalLogic(_match?: ProposalLogicProps) {
+  const router = useRouter()
+  const query = router.query
+  const { id: proposalId } = query
 
   const {
     commonPool,
@@ -22,7 +26,7 @@ export default function useProposalLogic(match: ProposalLogicProps) {
   const { requestToken, stableToken } = config?.conviction || {}
 
   // Get appAddress depending of current router path
-  const appAddress = path.includes('vote')
+  const appAddress = router.asPath.includes('vote')
     ? config?.voting.id.slice(0, 42)
     : config?.conviction.id
 

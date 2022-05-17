@@ -1,27 +1,30 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { Button } from '@1hive/1hive-ui'
 import ModalFlowBase from '../ModalFlowBase'
 import StakeAndWithdraw from './StakeAndWithdraw'
 
 import BigNumber from '@lib/bigNumber'
-import { buildGardenPath } from '@utils/routing-utils'
 import { toDecimals } from '@utils/math-utils'
 
 const ZERO_BN = new BigNumber(toDecimals('0', 18))
 
 function StakeScreens({ mode, stakeManagement, stakeActions }) {
+  const router = useRouter()
+  const query = router.query
   const [transactions, setTransactions] = useState([])
-  const history = useHistory()
   const { allowance: stakingAllowance } = stakeManagement?.staking || {}
   const { token, accountBalance } = stakeManagement
 
   const temporatyTrx = useRef([])
 
   const handleCreateProposal = useCallback(() => {
-    const path = buildGardenPath(history.location, 'create')
-    history.push(path)
-  }, [history])
+    if (!router.query.create) {
+      router.replace(
+        `/${query.networkType}/garden/${query.gardenAddress}?create=true`
+      )
+    }
+  }, [router])
 
   const onCompleteActions = useMemo(() => {
     if (mode === 'deposit') {
@@ -43,21 +46,21 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
         const allowance = await stakeActions.getAllowance()
         if (allowance.lt(amount)) {
           if (!allowance.eq(0)) {
-            await stakeActions.approveTokenAmount(ZERO_BN, intent => {
+            await stakeActions.approveTokenAmount(ZERO_BN, (intent) => {
               temporatyTrx.current = temporatyTrx.current.concat(intent)
             })
           }
-          await stakeActions.approveTokenAmount(amount, intent => {
+          await stakeActions.approveTokenAmount(amount, (intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
 
-        await stakeActions.stake({ amount }, intent => {
+        await stakeActions.stake({ amount }, (intent) => {
           temporatyTrx.current = temporatyTrx.current.concat(intent)
         })
 
         if (stakingAllowance?.eq(0)) {
-          await stakeActions.allowManager(intent => {
+          await stakeActions.allowManager((intent) => {
             temporatyTrx.current = temporatyTrx.current.concat(intent)
           })
         }
@@ -69,7 +72,7 @@ function StakeScreens({ mode, stakeManagement, stakeActions }) {
       }
 
       if (mode === 'withdraw') {
-        await stakeActions.withdraw({ amount }, intent => {
+        await stakeActions.withdraw({ amount }, (intent) => {
           setTransactions(intent)
           onComplete()
         })

@@ -14,9 +14,6 @@ import Navigation from '../../../Navigation'
 import { useTokenData } from '@hooks/useToken'
 import { useOnboardingState } from '@providers/Onboarding'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
-
 function useFieldsLayout() {
   return `
     display: grid;
@@ -52,14 +49,8 @@ function validationError(
 function TokenSettingsBYOT() {
   const fieldsLayout = useFieldsLayout()
 
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    steps,
-    step,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, steps, step } =
+    useOnboardingState()
 
   const [formError, setFormError] = useState(null)
   const [tokenAddress, setTokenAddress] = useState(config.tokens.address)
@@ -77,30 +68,32 @@ function TokenSettingsBYOT() {
     Boolean(config.tokens.gnosisSafe)
   )
 
-  const handleTokenAddressChange = useCallback(event => {
+  const handleTokenAddressChange = useCallback((event) => {
     setFormError(null)
     setTokenAddress(event.target.value)
   }, [])
-  const handleTokenNameChange = useCallback(event => {
+
+  const handleTokenNameChange = useCallback((event) => {
     setFormError(null)
     setGardenTokenName(event.target.value)
   }, [])
-  const handleTokenSymbolChange = useCallback(event => {
+
+  const handleTokenSymbolChange = useCallback((event) => {
     setFormError(null)
     setGardenTokenSymbol(event.target.value.trim().toUpperCase())
   }, [])
 
-  const handleGnosisSafeAddressChange = useCallback(newAddress => {
+  const handleGnosisSafeAddressChange = useCallback((newAddress) => {
     setFormError(null)
     setGnosisSafeAddress(newAddress)
   }, [])
 
-  const handleGnosisSafeCheckChange = useCallback(checked => {
+  const handleGnosisSafeCheckChange = useCallback((checked) => {
     setGnosisSafeChecked(checked)
   }, [])
 
   const handleNext = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
 
       const error = validationError(
@@ -216,10 +209,10 @@ function TokenSettingsBYOT() {
             {!tokenDataError &&
               gardenTokenSymbol &&
               gardenTokenName &&
-              !loadingTokenData && <img src={iconCheck} />}
+              !loadingTokenData && <img src={'/icons/base/iconCheck.svg'} />}
 
             {tokenDataError && !loadingTokenData && isAddress(tokenAddress) && (
-              <img src={iconError} />
+              <img src={'/icons/base/iconError.svg'} />
             )}
           </div>
 

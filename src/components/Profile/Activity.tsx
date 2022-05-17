@@ -75,7 +75,7 @@ function Activity({ account, isConnectedAccount, profileName }: ActivityProps) {
           {dedupedStakes.length ? (
             dedupedStakes.map(({ createdAt, proposal }, index) => {
               const gardenAddress = proposal.organization.id
-              const gardenPath = `/#/${networkType}/garden/${gardenAddress}`
+              const gardenPath = `/${networkType}/garden/${gardenAddress}`
               // TODO: evaluate a more efficient way to handle this
               const gardenLabel = getGardenLabel(gardenAddress, gardensMetadata)
 

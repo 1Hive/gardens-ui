@@ -17,7 +17,6 @@ import Navigation from '../Navigation'
 import useGardenNameResolver from '@hooks/useGardenNameResolver'
 import { useOnboardingState } from '@providers/Onboarding'
 
-import LinksTooltipImg from '@assets/linksTooltip.svg'
 import { BYOT_TYPE } from '../constants'
 
 const COMMUNITY_LINK_TYPE = 'community'
@@ -497,7 +496,7 @@ function LinksBox({
           width: 100%;
         `}
         alt=""
-        src={LinksTooltipImg}
+        src={'/icons/base/linksTooltip.svg'}
       />
     </div>
   )

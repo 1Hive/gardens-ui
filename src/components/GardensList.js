@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import {
   GU,
   Pagination,
@@ -10,9 +10,6 @@ import {
 import EmptyResults from './EmptyResults'
 import { useWallet } from '@providers/Wallet'
 import { getNetwork } from '@/networks'
-
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 const GARDENS_PER_PAGE = 10
 
@@ -35,7 +32,7 @@ function GardensList({ gardens }) {
     [gardens, selectedPage]
   )
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 
@@ -57,7 +54,7 @@ function GardensList({ gardens }) {
               margin-bottom: ${2 * GU}px;
             `}
           >
-            {currentGardens.map(garden => (
+            {currentGardens.map((garden) => (
               <GardenCard key={garden.id} garden={garden} />
             ))}
           </div>
@@ -78,13 +75,12 @@ function GardensList({ gardens }) {
 
 function GardenCard({ garden }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const { preferredNetwork } = useWallet()
+
   const handleSelectGarden = useCallback(() => {
-    history.push(
-      `${getNetwork(preferredNetwork).type}/garden/${garden.address}`
-    )
-  }, [garden, history, preferredNetwork])
+    router.push(`${getNetwork(preferredNetwork).type}/garden/${garden.address}`)
+  }, [garden, router, preferredNetwork])
 
   const token = garden.wrappableToken || garden.token
 
@@ -116,7 +112,7 @@ function GardenCard({ garden }) {
           css={`
             border-radius: 100%;
           `}
-          src={garden.logo || defaultGardenLogo}
+          src={garden.logo || '/icons/base/defaultGardenLogo.png'}
           alt=""
           height="72"
         />
@@ -150,7 +146,7 @@ function GardenCard({ garden }) {
         `}
       >
         <img
-          src={token?.logo || defaultTokenLogo}
+          src={token?.logo || '/icons/base/defaultTokenLogo.svg'}
           alt=""
           height="20"
           width="20"

@@ -53,7 +53,7 @@ class GlobalErrorHandler extends React.Component {
         )}
       </GlobalErrorScreen>
     ) : (
-      children
+      <>{children}</>
     )
   }
 }

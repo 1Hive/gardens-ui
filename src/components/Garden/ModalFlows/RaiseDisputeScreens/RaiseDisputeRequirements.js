@@ -17,8 +17,6 @@ import { useWallet } from '@providers/Wallet'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
 import { CELESTE_URL } from '@/endpoints'
 
 function RaiseDisputeRequirements({
@@ -92,7 +90,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       return {
         backgroundColor: '#EBFBF6',
         color: theme.positive.toString(),
-        icon: iconCheck,
+        icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
           feesAmount,
           token.decimals
@@ -103,7 +101,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
     return {
       backgroundColor: theme.negativeSurface.toString(),
       color: theme.negative.toString(),
-      icon: iconError,
+      icon: '/icons/base/iconError.svg',
       text: `Your enabled account does not have sufficient balance to pay ${formatTokenAmount(
         feesAmount,
         token.decimals
@@ -122,7 +120,7 @@ function CelesteSyncedStatus({ synced }) {
       return {
         backgroundColor: '#EBFBF6',
         color: theme.positive.toString(),
-        icon: iconCheck,
+        icon: '/icons/base/iconCheck.svg',
         text: `Celeste is Synced!`,
       }
     }
@@ -130,7 +128,7 @@ function CelesteSyncedStatus({ synced }) {
     return {
       backgroundColor: theme.negativeSurface.toString(),
       color: theme.negative.toString(),
-      icon: iconError,
+      icon: '/icons/base/iconError.svg',
       text: (
         <div>
           Celeste is not synced, head over to the{' '}

@@ -1,29 +1,29 @@
-import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import {
   GU,
-  IconAttention,
+  Tag,
+  Link,
+  IconLock,
+  useTheme,
+  DataView,
   IconCheck,
   IconClock,
   IconCross,
-  IconLock,
+  IconAttention,
   formatTokenAmount,
-  Link,
-  Tag,
-  useTheme,
-  DataView,
 } from '@1hive/1hive-ui'
-import { useGardenState } from '@providers/GardenState'
+import { useRouter } from 'next/router'
+import React, { useCallback, useState } from 'react'
+
 import {
   StakingType,
-  StakingCollateralType,
   StakingStatusesMap,
   CollateralStatusesMap,
+  StakingCollateralType,
 } from './staking-management-statuses'
-import { buildGardenPath } from '@utils/routing-utils'
-import { dateFormat, toMs } from '@utils/date-utils'
-import noDataIllustration from './assets/no-dataview-data.svg'
+
 import { TokenType } from '@/types/app'
+import { dateFormat, toMs } from '@utils/date-utils'
+import { useGardenState } from '@providers/GardenState'
 
 const getActionAttributes = (status: StakingType, theme: any): ActionType => {
   const actionAttributes: Record<StakingType, ActionType> = {
@@ -87,9 +87,10 @@ type StakingMovementsProps = {
 }
 
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
-  const { config } = useGardenState()
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
+  const query = router.query
+  const { config } = useGardenState()
 
   const [selectedPage, setSelectedPage] = useState(0)
 
@@ -105,13 +106,11 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
       const proposalType =
         disputableAddress === config.voting.id ? 'vote' : 'proposal'
 
-      const path = buildGardenPath(
-        history.location,
-        `${proposalType}/${disputableActionId}`
+      router.push(
+        `/${query.networkType}/garden/${query.gardenAddress}/${proposalType}/${disputableActionId}`
       )
-      history.push(path)
     },
-    [config, history]
+    [config, router]
   )
 
   return (
@@ -126,7 +125,9 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
       entries={stakingMovements}
       emptyState={{
         default: {
-          illustration: <img src={noDataIllustration} alt="" />,
+          illustration: (
+            <img src={'/icons/stake/no-dataview-data.svg'} alt="" />
+          ),
           subtitle: "You haven't locked any collateral yet",
         },
       }}

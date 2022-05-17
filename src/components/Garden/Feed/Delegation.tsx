@@ -1,21 +1,20 @@
-import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
 import {
   Box,
-  Button,
   GU,
   Link,
-  LoadingRing,
-  textStyle,
+  Button,
   useTheme,
+  textStyle,
+  LoadingRing,
   EthIdenticon,
 } from '@1hive/1hive-ui'
-import IdentityBadge from '@components/IdentityBadge'
+import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
+
 import useProfile from '@hooks/useProfile'
-import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
-
-
+import IdentityBadge from '@components/IdentityBadge'
+import { useSupporterSubscription } from '@hooks/useSubscriptions'
 
 type DelegationProps = {
   onRemoveDelegate: () => void
@@ -108,12 +107,12 @@ function Representative({
   representative,
 }: RepresentativeProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const profile: any = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${representative.address}`)
-  }, [history, representative])
+    router.push(`/profile?account=${representative.address}`)
+  }, [router, representative])
 
   return (
     <div>

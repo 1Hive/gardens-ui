@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react'
-import { Spring } from 'react-spring/renderprops'
+import { Spring } from 'react-spring/renderprops.cjs'
 import { unselectable, springs } from '@1hive/1hive-ui'
 
 const LABELS_HEIGHT = 30

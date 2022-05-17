@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 
-import flowerError from '../../assets/flowerError.svg'
-
 function GlobalErrorScreen({ children }) {
   return (
     <div
@@ -29,7 +27,7 @@ function GlobalErrorScreen({ children }) {
       >
         <Container>
           <img
-            src={flowerError}
+            src={'/icons/base/flowerError.svg'}
             alt=""
             css={`
               display: block;

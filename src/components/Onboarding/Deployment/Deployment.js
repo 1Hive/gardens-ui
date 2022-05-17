@@ -1,20 +1,18 @@
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 import ErrorModal from './ErrorModal'
-import flowersLeavesSvg from './assets/flowers-leaves.svg'
 import useDeploymentState from './useDeploymentState'
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
 import { useWallet } from '@/providers/Wallet'
 import { getNetworkType } from '@/utils/web3-utils'
-import gardensLogo from '@assets/gardensLogoMark.svg'
 import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router'
-import { animated, Transition } from 'react-spring/renderprops'
+import { useRouter } from 'next/router'
+import { animated, Transition } from 'react-spring/renderprops.cjs'
 
 const Deployment = React.memo(function Deployment() {
   const { above } = useViewport()
-  const history = useHistory()
+  const router = useRouter()
   const { chainId } = useWallet()
 
   const {
@@ -29,10 +27,10 @@ const Deployment = React.memo(function Deployment() {
 
   const handleGetStarted = useCallback(() => {
     if (gardenAddress && isFinalized) {
-      history.push(`/${getNetworkType(chainId)}/garden/${gardenAddress}`)
+      router.push(`/${getNetworkType(chainId)}/garden/${gardenAddress}`)
       onReset()
     }
-  }, [chainId, gardenAddress, history, isFinalized, onReset])
+  }, [chainId, gardenAddress, router, isFinalized, onReset])
 
   const [pending, allSuccess] = useMemo(() => {
     if (transactionsStatus.length === 0) {
@@ -66,7 +64,7 @@ const Deployment = React.memo(function Deployment() {
               padding-left: ${2.25 * GU}px;
               margin-top: ${2 * GU}px;
             `}
-            src={gardensLogo}
+            src={'/icons/base/gardensLogoMark.svg'}
             height={32}
             alt=""
           />
@@ -165,7 +163,7 @@ const Deployment = React.memo(function Deployment() {
                 <animated.div
                   style={{ opacity, transform }}
                   css={`
-                    background: url(${flowersLeavesSvg});
+                    background: url('/icons/deployment/flowers-leaves.svg');
                     background-size: cover;
                     background-repeat: no-repeat;
                     position: absolute;

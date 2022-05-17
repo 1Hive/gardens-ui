@@ -11,7 +11,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@/providers/Wallet'
 import { useEsc } from '../../../hooks/useKeyboardArrows'

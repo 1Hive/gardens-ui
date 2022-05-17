@@ -4,8 +4,15 @@ import ProposalDetail from './ProposalDetail/ProposalDetail'
 import useProposalLogic from '../../logic/proposal-logic'
 import { useProposalWithThreshold } from '@hooks/useProposals'
 import { ProposalTypes } from '@/types'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 function ProposalLoader({ match }) {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const {
     actions: { agreementActions, convictionActions },
     commonPool,

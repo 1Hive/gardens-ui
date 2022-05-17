@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
-import { animated, Spring } from 'react-spring/renderprops'
+import { animated, Spring } from 'react-spring/renderprops.cjs'
 import Activity from './Activity'
 import Delegates from './Delegates'
 import EditProfile from './EditProfile'
@@ -18,22 +18,20 @@ import useSelectedProfile from '@hooks/useSelectedProfile'
 import { useWallet } from '@providers/Wallet'
 import { addressesEqual } from '@utils/web3-utils'
 
-import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
-
 function Profile() {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
 
   const { account: connectedAccount } = useWallet()
-  const history = useHistory()
+  const router = useRouter()
   const { name: layout } = useLayout()
   const oneColumn = layout === 'small' || layout === 'medium'
 
   const imageInput = useRef(null)
 
   // Selected account
-  const searchParams = useSearchParams()
-  const selectedAccount = searchParams.get('account') || connectedAccount
+  const selectedAccount = router.query.account || connectedAccount
   const accountStakes = useAccountStakes(selectedAccount)
   const accountInactiveStakes = useInactiveProposalsWithStake(selectedAccount)
 
@@ -42,9 +40,11 @@ function Profile() {
 
   useEffect(() => {
     if (!selectedAccount) {
-      return history.push('/')
+      return router.push('/home')
+    } else {
+      setIsLoaded(true)
     }
-  }, [connectedAccount, history, selectedAccount])
+  }, [connectedAccount, router, selectedAccount])
 
   useEffect(() => {
     setEditMode(false)
@@ -57,19 +57,23 @@ function Profile() {
   const coverSrc = useMemo(() => {
     if (editMode) {
       if (coverPic.removed) {
-        return profileCoverDefaultSvg
+        return '/icons/base/profileCoverDefault.svg'
       }
 
       if (imageInput.current?.files && imageInput.current.files[0]) {
         return URL.createObjectURL(imageInput.current?.files[0])
       }
     }
-    return coverPhoto || profileCoverDefaultSvg
+    return coverPhoto || '/icons/base/profileCoverDefault.svg'
   }, [coverPhoto, coverPic, editMode])
 
   const isConnectedAccountProfile =
     (connectedAccount && !selectedAccount) ||
     addressesEqual(connectedAccount, selectedAccount)
+
+  if (!isLoaded) {
+    return 'Loading...'
+  }
 
   return (
     <div>
@@ -181,11 +185,6 @@ function AnimatedBackground({ height, image }) {
       )}
     </Spring>
   )
-}
-
-function useSearchParams() {
-  const { search } = useLocation()
-  return new URLSearchParams(search)
 }
 
 export default Profile

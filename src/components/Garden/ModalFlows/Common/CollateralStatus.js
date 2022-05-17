@@ -1,35 +1,34 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useTheme } from '@1hive/1hive-ui'
+import React, { useCallback, useMemo } from 'react'
 
 import InfoBox from './InfoBox'
 
-import { buildGardenPath } from '@utils/routing-utils'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
 
 function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
+  const query = router.query
 
   const goToStakeManager = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral')
-    history.push(path)
-  }, [history])
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral`
+    )
+  }, [router])
 
   const goToStakeManagerDeposit = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral/deposit')
-    history.push(path)
-  }, [history])
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral/deposit`
+    )
+  }, [router])
 
   const infoData = useMemo(() => {
     if (!availableStaked.gte(actionAmount)) {
       return {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
-        icon: iconError,
+        icon: '/icons/base/iconError.svg',
         text: `Your enabled account does not have sufficient balance to deposit the ${formatTokenAmount(
           actionAmount,
           token.decimals
@@ -43,7 +42,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
       return {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
-        icon: iconError,
+        icon: '/icons/base/iconError.svg',
         text: `You need to allow the Covenant as the lock manager of your staked ${token.symbol}`,
         actionButton: 'Deposit manager',
         buttonOnClick: goToStakeManager,
@@ -53,7 +52,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
     return {
       backgroundColor: '#EBFBF6',
       color: theme.positive,
-      icon: iconCheck,
+      icon: '/icons/base/iconCheck.svg',
       text: `Your enabled account has sufficient balance to deposit the ${formatTokenAmount(
         actionAmount,
         token.decimals

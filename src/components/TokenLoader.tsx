@@ -1,7 +1,6 @@
 import React from 'react'
 import { keyframes, css } from 'styled-components'
 import { GU } from '@1hive/1hive-ui'
-import honeySvg from '@assets/IconHNYLoader.svg'
 
 const spinAnimation = css`
   mask-image: linear-gradient(35deg, transparent 15%, rgba(0, 0, 0, 1));
@@ -38,7 +37,7 @@ function TokenLoader() {
           `}
         >
           <img
-            src={honeySvg}
+            src={'/icons/base/IconHNYLoader.svg'}
             alt="HNY"
             css={`
               position: absolute;

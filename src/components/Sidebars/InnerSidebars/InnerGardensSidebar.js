@@ -9,8 +9,6 @@ import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
 import { addressesEqual, getNetworkType } from '@utils/web3-utils'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import gardensLogo from '@assets/gardensLogoMark.svg'
 
 const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
   const { user: connectedUser, loading: userLoading } = useUserState()
@@ -24,9 +22,9 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return []
     }
 
-    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
+    const result = connectedUser.gardensSigned.map((gardenSignedAddress) => {
       const { name, logo } =
-        gardensMetadata?.find(g =>
+        gardensMetadata?.find((g) =>
           addressesEqual(g.address, gardenSignedAddress)
         ) || {}
 
@@ -34,7 +32,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
         address: gardenSignedAddress,
         name,
         path: `/${networkType}/garden/${gardenSignedAddress}`,
-        src: logo || defaultGardenLogo,
+        src: logo || '/icons/base/defaultGardenLogo.png',
       }
     })
 
@@ -55,14 +53,14 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       width={width}
       topElement={
         <Link
-          href="#/home"
+          href="/home"
           external={false}
           css={`
             display: block;
           `}
         >
           <img
-            src={gardensLogo}
+            src={'/icons/base/gardensLogoMark.svg'}
             height={40}
             alt=""
             css={`

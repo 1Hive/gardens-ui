@@ -8,7 +8,6 @@ import { useWallet } from '@providers/Wallet'
 
 import { formatTokenAmount } from '@utils/token-utils'
 import { safeDivBN } from '@utils/math-utils'
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
   const theme = useTheme()
@@ -29,7 +28,7 @@ function BalanceModule() {
     <HeaderModule
       icon={
         <img
-          src={token.data.logo || defaultTokenLogo}
+          src={token.data.logo || '/icons/base/defaultTokenLogo.svg'}
           height="28"
           width="28"
           alt=""

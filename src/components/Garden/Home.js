@@ -1,25 +1,31 @@
+import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
 import { BackButton, GU, useLayout, useViewport } from '@1hive/1hive-ui'
 
+import { useWallet } from '@providers/Wallet'
+import useGardenLogic from '@/logic/garden-logic'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
+
+import Metrics from './Metrics'
+import Filters from './Filters/Filters'
+import { GardenLoader } from '../Loader'
+import RightPanel from './Feed/RightPanel'
+import ProposalsList from './Feed/ProposalsList'
+import MultiModal from '../MultiModal/MultiModal'
+import NetworkErrorModal from '../NetworkErrorModal'
+import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
+import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
 import ClaimRewardsScreens from './ModalFlows/ClaimRewardsScreens/ClaimRewardsScreens'
 import CreateProposalScreens from './ModalFlows/CreateProposalScreens/CreateProposalScreens'
 import DelegateVotingScreens from './ModalFlows/DelegateVotingScreens/DelegateVotingScreens'
-import Filters from './Filters/Filters'
-import { GardenLoader } from '../Loader'
-import Metrics from './Metrics'
-import MultiModal from '../MultiModal/MultiModal'
-import NetworkErrorModal from '../NetworkErrorModal'
-import PriceOracleScreens from './ModalFlows/PriceOracleScreens/PriceOracleScreens'
-import ProposalsList from './Feed/ProposalsList'
-import RightPanel from './Feed/RightPanel'
-import WrapTokenScreens from './ModalFlows/WrapTokenScreens/WrapTokenScreens'
 
-import useGardenLogic from '@/logic/garden-logic'
-import { useWallet } from '@providers/Wallet'
-import { buildGardenPath } from '@utils/routing-utils'
+function Home() {
+  const connectedGarden = useConnectedGarden()
 
-const Home = function Home() {
+  if (!connectedGarden) {
+    return null
+  }
+
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
@@ -37,7 +43,7 @@ const Home = function Home() {
     totalWrappedSupply,
   } = useGardenLogic()
 
-  const history = useHistory()
+  const router = useRouter()
   const { account } = useWallet()
 
   // min layout is never returned
@@ -47,8 +53,8 @@ const Home = function Home() {
   const compactMode = layoutName === 'small' || layoutName === 'medium'
 
   const handleBack = useCallback(() => {
-    history.push('/home')
-  }, [history])
+    router.push('/home')
+  }, [router])
 
   const handleFilterSliderToggle = useCallback(() => {
     setFilterSidlerVisible((visible) => !visible)
@@ -62,10 +68,10 @@ const Home = function Home() {
   const handleHideModal = useCallback(() => {
     setModalVisible(false)
 
-    if (history.location.pathname.includes('create')) {
-      history.push(buildGardenPath(history.location, ''))
+    if (router.query.create) {
+      router.push(location.pathname)
     }
-  }, [history])
+  }, [router])
 
   const handleClaimRewards = useCallback(() => {
     handleShowModal('claim')
@@ -100,11 +106,12 @@ const Home = function Home() {
   }, [filters])
 
   useEffect(() => {
+    console.log('I got triggered')
     // Components that redirect to create a proposal will do so through "garden/${gardenId}/create" url
-    if (account && history.location.pathname.includes('create')) {
+    if (account && router.query.create) {
       handleRequestNewProposal()
     }
-  }, [account, handleRequestNewProposal, history])
+  }, [account, handleRequestNewProposal, router])
 
   // TODO: Refactor components positioning with a grid layout
 

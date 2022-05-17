@@ -1,6 +1,5 @@
 import React from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
-import flowerError from '@assets/flowerError.svg'
 
 function NetworkErrorModal({ visible }: { visible: boolean }) {
   const { width } = useViewport()
@@ -19,7 +18,12 @@ function NetworkErrorModal({ visible }: { visible: boolean }) {
           text-align: center;
         `}
       >
-        <img src={flowerError} alt="" height="88" width="71" />
+        <img
+          src={'/icons/base/flowerError.svg'}
+          alt=""
+          height="88"
+          width="71"
+        />
         <h3
           css={`
             ${textStyle('title2')}

@@ -1,26 +1,23 @@
+import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import {
-  Button,
-  ButtonBase,
   GU,
-  IconCheck,
-  IconCopy,
   RADIUS,
-  textStyle,
+  Button,
+  IconCopy,
   useTheme,
+  textStyle,
+  IconCheck,
+  ButtonBase,
 } from '@1hive/1hive-ui'
+
 import IdentityBadge from '../IdentityBadge'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
+
 import { useWallet } from '@providers/Wallet'
-
-import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
-
-import profileButtonSvg from '@assets/profileButton.svg'
-import stakeButtonSvg from '@assets/stakeButton.svg'
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 type AccountScreenConnectedProps = {
   providerId: string
@@ -32,7 +29,8 @@ function AccountScreenConnected({
   onClosePopover,
 }: AccountScreenConnectedProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
+  const query = router.query
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
   const { account, chainId, resetConnection } = useWallet()
@@ -41,15 +39,16 @@ function AccountScreenConnected({
   const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {
-    history.push(`/profile`)
+    router.push(`/profile`)
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral')
-    history.push(path)
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/collateral`
+    )
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const handleCopyAddress = useCallback(() => copy(account), [account, copy])
 
@@ -76,7 +75,12 @@ function AccountScreenConnected({
             column-gap: ${1 * GU}px;
           `}
         >
-          <img src={profileButtonSvg} alt="" width="24" height="24" />
+          <img
+            src={'/icons/base/profileButton.svg'}
+            alt=""
+            width="24"
+            height="24"
+          />
           <span>My profile</span>
         </div>
       </ButtonBase>
@@ -99,7 +103,12 @@ function AccountScreenConnected({
               column-gap: ${1 * GU}px;
             `}
           >
-            <img src={stakeButtonSvg} alt="" width="24" height="24" />
+            <img
+              src={'/icons/base/stakeButton.svg'}
+              alt=""
+              width="24"
+              height="24"
+            />
             <span>Deposit Manager</span>
           </div>
         </ButtonBase>

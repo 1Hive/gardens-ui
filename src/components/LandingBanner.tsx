@@ -1,31 +1,28 @@
 import React from 'react'
-import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
-import desktopBanner from '@assets/landingBanner.png'
-import mobileBanner from '@assets/landingBanner-mobile.png'
-import tabletBanner from '@assets/landingBanner-tablet.png'
 import styled from 'styled-components'
+import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 
 const BANNERS = {
   small: {
     aspectRatio: '53.5%',
     hFontSize: '32px',
-    image: mobileBanner,
+    image: '/icons/base/landingBanner-mobile.png',
     pFontSize: '14px',
   },
   medium: {
-    image: tabletBanner,
+    image: '/icons/base/landingBanner-tablet.png',
     aspectRatio: '36.5%',
     hFontSize: '52px',
     pFontSize: '18px',
   },
   large: {
-    image: desktopBanner,
+    image: '/icons/base/landingBanner.png',
     aspectRatio: '26.5%',
     hFontSize: '52px',
     pFontSize: '18px',
   },
   max: {
-    image: desktopBanner,
+    image: '/icons/base/landingBanner.png',
     aspectRatio: '26.5%',
     hFontSize: '64px',
     pFontSize: '20px',

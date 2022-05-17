@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { IdentityBadge as Badge, GU, RADIUS } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
@@ -14,15 +14,15 @@ function IdentityBadge({
   withProfile = true,
   ...props
 }) {
-  const history = useHistory()
+  const router = useRouter()
   const connectedGarden = useConnectedGarden()
   const [profile, setProfile] = useState(null)
 
   const { explorer, type } = getNetwork(connectedGarden?.chainId) // Note that if there´s no connected garden, it will default to preferred network
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${entity}`)
-  }, [entity, history])
+    router.push(`/profile?account=${entity}`)
+  }, [entity, router])
 
   useEffect(() => {
     let cancelled = false

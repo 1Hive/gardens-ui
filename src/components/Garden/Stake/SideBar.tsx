@@ -1,13 +1,11 @@
 import React from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+
+import { TokenType } from '@/types/app'
 import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
-import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatTokenAmount } from '@utils/token-utils'
-
-import coin from './assets/coin.svg'
-import wallet from './assets/wallet.svg'
-import { TokenType } from '@/types/app'
+import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 
 type SideBarType = {
   token: TokenType
@@ -45,7 +43,7 @@ function SideBar({
         content={
           <CardContent
             amount={formatTokenAmount(available * tokenPrice, token.decimals)}
-            icon={wallet}
+            icon={'/icons/stake/wallet.svg'}
             title={`Available ${token.symbol}`}
             tokenAmount={formatTokenAmount(available, token.decimals)}
           />
@@ -56,7 +54,7 @@ function SideBar({
         content={
           <CardContent
             amount={formatTokenAmount(locked * tokenPrice, token.decimals)}
-            icon={coin}
+            icon={'/icons/stake/coin.svg'}
             title={`Locked ${token.symbol}`}
             secondary
             tokenAmount={formatTokenAmount(locked, token.decimals)}

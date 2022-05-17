@@ -4,8 +4,6 @@ import { keyframes } from 'styled-components'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 
-import loadingRing from './assets/loading-ring.svg'
-
 const spin = keyframes`
   from {
     transform: rotate(0deg);
@@ -15,7 +13,7 @@ const spin = keyframes`
   }
 `
 
-const AccountModuleConnectingScreen = React.memo(function({
+const AccountModuleConnectingScreen = React.memo(function ({
   onCancel,
   providerId,
 }) {
@@ -56,7 +54,7 @@ const AccountModuleConnectingScreen = React.memo(function({
               left: 0;
               right: 0;
               bottom: 0;
-              background: url(${loadingRing}) no-repeat 0 0;
+              background: url('/icons/base/loading-ring.svg') no-repeat 0 0;
               animation-duration: 1s;
               animation-iteration-count: infinite;
               animation-timing-function: linear;

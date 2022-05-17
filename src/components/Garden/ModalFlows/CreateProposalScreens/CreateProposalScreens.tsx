@@ -1,29 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-
+import { useRouter } from 'next/router'
 import { Button } from '@1hive/1hive-ui'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useStakingState } from '@providers/Staking'
 import { useWallet } from '@providers/Wallet'
+import { useStakingState } from '@providers/Staking'
 
 import useActions from '@hooks/useActions'
-import { useAgreement } from '@hooks/useAgreement'
 import { useMounted } from '@hooks/useMounted'
+import { useAgreement } from '@hooks/useAgreement'
 
-import { throwConfetti } from '@utils/confetti-utils'
 import { fromDecimals } from '@utils/math-utils'
+import { throwConfetti } from '@utils/confetti-utils'
 import { extractProposalId } from '@utils/proposal-utils'
-import { buildGardenPath } from '@utils/routing-utils'
 
 import { getAccountSetting } from '@/local-settings'
 
-import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal from './AddProposal'
+import ModalFlowBase from '../ModalFlowBase'
 import CreateProposalRequirements from './CreateProposalRequirements'
 
 function GoToProposal() {
-  const history = useHistory()
+  const router = useRouter()
+  const query = router.query
   const [proposalId, setProposalId] = useState<string>()
   const { account, chainId, ethers } = useWallet()
   const mounted = useMounted()
@@ -41,9 +40,10 @@ function GoToProposal() {
   }, [extractProposalId, ethers, txHash])
 
   const handleGoToProposal = useCallback(() => {
-    const path = buildGardenPath(history.location, `proposal/${proposalId}`)
-    history.push(path)
-  }, [history, proposalId])
+    router.push(
+      `/${query.networkType}/garden/${query.gardenAddress}/proposal/${proposalId}`
+    )
+  }, [router, proposalId])
 
   return (
     <Button

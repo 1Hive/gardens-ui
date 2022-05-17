@@ -16,11 +16,6 @@ import { throwConfetti } from '@utils/confetti-utils'
 
 import { TransactionStatusType } from '@/prop-types'
 
-import gardensLogoMark from '@assets/gardensLogoMark.svg'
-
-import flowerSvg from './assets/flower.svg'
-import linesSvg from './assets/lines.svg'
-
 const AnimDiv = animated.div
 const AnimSection = animated.section
 
@@ -113,7 +108,7 @@ export function BoxProgress({
   return (
     <>
       <img
-        src={flowerSvg}
+        src={'/icons/deployment/flower.svg'}
         height="44"
         alt=""
         css={`
@@ -142,10 +137,10 @@ export function BoxProgress({
             position: relative;
           `}
         >
-          <img src={gardensLogoMark} height="272" alt="" />
+          <img src={'/icons/base/gardensLogoMark.svg'} height="272" alt="" />
           <div
             css={`
-              background: url(${linesSvg});
+              background: url('/public/icons/deployment/lines.svg');
               background-repeat: no-repeat;
               background-size: cover;
               position: absolute;
@@ -254,7 +249,7 @@ export function BoxReady({ isFinalized, onGetStarted, opacity, boxTransform }) {
         `}
       >
         <img
-          src={gardensLogoMark}
+          src={'/icons/base/gardensLogoMark.svg'}
           alt=""
           width="250"
           height="250"

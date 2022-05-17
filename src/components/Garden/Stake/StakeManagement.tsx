@@ -1,22 +1,29 @@
-import React, { useCallback, useEffect, useMemo, useState, memo } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { Header } from '@1hive/1hive-ui'
-import EmptyState from './EmptyState'
-import { GardenLoader } from '@components/Loader'
-import LayoutColumns from '../Layout/LayoutColumns'
-import LayoutGutter from '../Layout/LayoutGutter'
-import LayoutLimiter from '../Layout/LayoutLimiter'
-import MultiModal from '@components/MultiModal/MultiModal'
+import React, { useCallback, useEffect, useMemo, useState, memo } from 'react'
+
 import SideBar from './SideBar'
-import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
-import StakingMovements from './StakingMovements'
-import stakingEmpty from './assets/no-dataview-data.svg'
-import { useStakingState } from '@providers/Staking'
+import EmptyState from './EmptyState'
 import { useWallet } from '@providers/Wallet'
+import StakingMovements from './StakingMovements'
+import { GardenLoader } from '@components/Loader'
+import LayoutGutter from '../Layout/LayoutGutter'
+import LayoutColumns from '../Layout/LayoutColumns'
+import LayoutLimiter from '../Layout/LayoutLimiter'
+import { useStakingState } from '@providers/Staking'
+import MultiModal from '@components/MultiModal/MultiModal'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
+import StakeScreens from '../ModalFlows/StakeScreens/StakeScreens'
 
 function StakeManagement() {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const { account } = useWallet()
-  const history = useHistory()
+  const router = useRouter()
   const [stakeModalMode, setStakeModalMode] = useState<null | string>()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 
@@ -27,10 +34,10 @@ function StakeManagement() {
 
   useEffect(() => {
     // Components that redirect to deposit collateral will do so through "garden/${gardenId}/collateral/deposit" url
-    if (account && history.location.pathname.includes('deposit')) {
+    if (account && router.pathname.includes('deposit')) {
       setStakeModalMode('deposit')
     }
-  }, [account, history])
+  }, [account, router])
 
   const orderedStakingMovements = useMemo(() => {
     if (!stakeManagement?.stakingMovements) {
@@ -46,7 +53,7 @@ function StakeManagement() {
   }, [stakeManagement])
 
   if (!account) {
-    return <EmptyState icon={stakingEmpty} />
+    return <EmptyState icon={'/icons/stake/no-dataview-data.svg'} />
   }
 
   return (

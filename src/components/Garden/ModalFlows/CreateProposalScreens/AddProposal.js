@@ -1,31 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react'
 import {
-  Button,
-  Checkbox,
-  DropDown,
-  Field,
   GU,
   Help,
   Info,
-  isAddress,
   Link,
+  Field,
+  Button,
+  Checkbox,
+  DropDown,
+  useTheme,
+  TextInput,
+  isAddress,
   LoadingRing,
   MEDIUM_RADIUS,
-  TextInput,
-  useTheme,
 } from '@1hive/1hive-ui'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useGardenState } from '@providers/GardenState'
-import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
-import { usePriceOracle } from '@hooks/usePriceOracle'
+import { useRouter } from 'next/router'
+import React, { useCallback, useMemo, useState } from 'react'
+
 import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
-import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
+import { usePriceOracle } from '@hooks/usePriceOracle'
+import { useGardenState } from '@providers/GardenState'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
-
-import { useHistory } from 'react-router-dom'
-import { buildGardenPath } from '@utils/routing-utils'
+import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
+import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -45,6 +44,8 @@ const DEFAULT_FORM_DATA = {
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 const AddProposalPanel = ({ setProposalData }) => {
+  const router = useRouter()
+  const query = router.query
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
@@ -61,6 +62,8 @@ const AddProposalPanel = ({ setProposalData }) => {
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
+
+  const covenantPath = `/${query.networkType}/garden/${query.gardenAddress}/covenant`
 
   // Escaping forumURL to avoid misuse with regexp
   const forumRegex = regexToCheckValidProposalURL(
@@ -213,16 +216,12 @@ const AddProposalPanel = ({ setProposalData }) => {
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
-  const history = useHistory()
   return (
     <form onSubmit={handleOnContinue}>
       <Info title="Proposal guidelines">
         All proposals are bound by this community&apos;s{' '}
-        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
-          Covenant
-        </Link>{' '}
-        . If you haven&apos;t taken the time to read through it yet, please make
-        sure you do so.
+        <Link href={covenantPath}>Covenant</Link> . If you haven&apos;t taken
+        the time to read through it yet, please make sure you do so.
         <br />
         <br /> Before creating a proposal you must first create a post on the{' '}
         <Link href={connectedGarden.forumURL}>

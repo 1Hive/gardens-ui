@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import {
   Box,
   Distribution,
@@ -61,20 +61,20 @@ function StakingTokens({ myStakes, myInactiveStakes }: StakingTokensProps) {
 }
 
 const StakeItemElement = ({ compact, proposal }: StakeItemProps) => {
-  const history = useHistory()
+  const router = useRouter()
 
   const theme = useTheme()
   const { preferredNetwork } = useWallet()
 
   const handleSelectProposal = useCallback(
     (gardenId, proposalId) => {
-      history.push(
+      router.push(
         `/${getNetworkType(
           preferredNetwork
         )}/garden/${gardenId}/proposal/${proposalId}`
       )
     },
-    [history, preferredNetwork]
+    [router, preferredNetwork]
   )
 
   return (

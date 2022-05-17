@@ -1,5 +1,3 @@
-import React, { useCallback, useMemo } from 'react'
-import { useHistory, useLocation } from 'react-router'
 import {
   Button,
   ButtonBase,
@@ -9,20 +7,18 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
-import AccountModule from '../Account/AccountModule'
-import ActivityButton from '../Activity/ActivityButton'
-import BalanceModule from '../BalanceModule'
-import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
-import Layout from '../Layout'
-import { useConnectedGarden } from '@providers/ConnectedGarden'
-import { useWallet } from '@providers/Wallet'
+import { useRouter } from 'next/router'
+import React, { useCallback, useMemo } from 'react'
 
-import { buildGardenPath } from '@utils/routing-utils'
+import { useWallet } from '@providers/Wallet'
+import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import gardensLogo from '@assets/gardensLogoMark.svg'
-import gardensLogoType from '@assets/gardensLogoType.svg'
+import Layout from '../Layout'
+import BalanceModule from '../BalanceModule'
+import AccountModule from '../Account/AccountModule'
+import ActivityButton from '../Activity/ActivityButton'
+import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButton'
 
 function Header({
   onOpenPreferences,
@@ -32,9 +28,9 @@ function Header({
   onToggleSidebar: any
 }) {
   const theme = useTheme()
-  const { pathname } = useLocation()
+  const router = useRouter()
+  const query = router.query
   const connectedGarden = useConnectedGarden()
-  const history = useHistory()
   const { below } = useViewport()
   const { account } = useWallet()
 
@@ -42,22 +38,26 @@ function Header({
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
-      return { logo: gardensLogo, logotype: gardensLogoType }
+      return {
+        logo: '/icons/base/gardensLogoMark.svg',
+        logotype: '/icons/base/gardensLogoType.svg',
+      }
     }
 
     return {
-      logo: connectedGarden?.logo || defaultGardenLogo,
-      logotype: connectedGarden?.logo_type || defaultGardenLogo,
+      logo: connectedGarden?.logo || '/icons/base/defaultGardenLogo.png',
+      logotype:
+        connectedGarden?.logo_type || '/icons/base/defaultGardenLogo.png',
     }
   }, [connectedGarden])
 
   const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
-  const logoLink = `#${
-    connectedGarden ? buildGardenPath(history.location, '') : '/home'
-  }`
+  const logoLink = connectedGarden
+    ? `/${query.networkType}/garden/${query.gardenAddress}`
+    : '/home'
 
   const showBalance = connectedGarden && account && !mobileMode
-  const showMenu = pathname !== '/home' && mobileMode
+  const showMenu = router.pathname !== '/home' && mobileMode
 
   return (
     <header
@@ -224,15 +224,17 @@ type GardenNavItemsProps = {
 
 function GardenNavItems({ garden }: GardenNavItemsProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
+  const query = router.query
+
   const token = garden.wrappableToken || garden.token
   const forumURL = garden.forumURL
+
   const { preferredNetwork } = useWallet()
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(history.location, 'covenant')
-    history.push(path)
-  }, [history])
+    router.push(`/${query.networkType}/garden/${query.gardenAddress}/covenant`)
+  }, [router])
 
   const getTokenLink = useMemo(
     () =>

@@ -13,10 +13,15 @@ import MultiModal from '@components/MultiModal/MultiModal'
 import SignAgreementScreens from '../ModalFlows/SignAgreementScreens/SignAgreementScreens'
 import { useAgreement } from '@hooks/useAgreement'
 import { useWallet } from '@providers/Wallet'
-
-import warningSvg from './assets/warning.svg'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 function Agreement() {
+  const connectedGarden = useConnectedGarden()
+
+  if (!connectedGarden) {
+    return null
+  }
+
   const [agreement, loading] = useAgreement()
   const [signModalVisible, setSignModalVisible] = useState(false)
 
@@ -85,7 +90,7 @@ function AgreementLayout({
                 `}
               >
                 <img
-                  src={warningSvg}
+                  src={'/icons/agreement/warning.svg'}
                   css={`
                     margin-right: ${0.5 * GU}px;
                   `}

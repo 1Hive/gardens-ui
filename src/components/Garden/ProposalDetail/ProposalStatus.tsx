@@ -1,10 +1,8 @@
 import React from 'react'
+import { Colors } from '@nivo/core'
 import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
-import { Colors } from '@nivo/core'
 
-import celesteIconSvg from '@assets/celeste-icon.svg'
-import challengeIconSvg from '@assets/challenge-icon.svg'
 import { ProposalType } from '@/types/app'
 
 export const ABSTAIN_PROPOSAL = 'Abstain proposal'
@@ -43,7 +41,7 @@ export const getStatusAttributes = (
   if (proposal.statusData.disputed) {
     return {
       label: 'Waiting for celeste',
-      iconSrc: celesteIconSvg,
+      iconSrc: '/icons/base/celeste-icon.svg',
       color: '#8253A8',
       background: '#FCFAFF',
       borderColor: '#8253A8',
@@ -52,7 +50,7 @@ export const getStatusAttributes = (
   if (proposal.statusData.challenged) {
     return {
       label: 'Challenged',
-      iconSrc: challengeIconSvg,
+      iconSrc: '/icons/base/challenge-icon.svg',
       color: '#F5A623',
       background: '#FFFDFA',
       borderColor: '#F5A623',
