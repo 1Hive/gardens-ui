@@ -29,6 +29,7 @@ import { buildGardenPath } from '@utils/routing-utils'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
+const POLL = 2
 
 const DEFAULT_FORM_DATA = {
   title: '',
@@ -42,7 +43,7 @@ const DEFAULT_FORM_DATA = {
   beneficiary: '',
 }
 
-const PROPOSAL_TYPES = ['Suggestion', 'Funding']
+const PROPOSAL_TYPES = ['Suggestion', 'Funding', 'Poll']
 
 const AddProposalPanel = ({ setProposalData }) => {
   const { next } = useMultiModal()
@@ -157,7 +158,11 @@ const AddProposalPanel = ({ setProposalData }) => {
     (event) => {
       event.preventDefault()
 
-      setProposalData(formData)
+      setProposalData({
+        ...formData,
+        proposalType:
+          formData.proposalType === POLL ? 3 : formData.proposalType, // Tweak to allow proposal poll
+      })
       next()
     },
     [formData, next, setProposalData]
@@ -265,7 +270,9 @@ const AddProposalPanel = ({ setProposalData }) => {
       >
         <TextInput
           onChange={handleTitleChange}
-          placeholder="Add the title of the proposal"
+          placeholder={`Add the title of the ${
+            formData.proposalType === POLL ? 'poll' : 'proposal'
+          }`}
           value={formData.title}
           wide
           required

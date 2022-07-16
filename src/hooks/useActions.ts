@@ -277,6 +277,7 @@ export default function useActions(): ActionsType {
     },
     [account, votingApp]
   )
+
   const voteOnBehalfOf = useCallback(
     async (voteId, supports, voters, onDone = noop) => {
       let intent = await votingApp.intent(
@@ -305,6 +306,7 @@ export default function useActions(): ActionsType {
     },
     [account, votingApp]
   )
+
   // TODO- we need to start using modal flow for all the transactions
   const executeDecision = useCallback(
     (voteId, script) => {
@@ -315,6 +317,7 @@ export default function useActions(): ActionsType {
     },
     [account, ethers, votingApp]
   )
+
   const delegateVoting = useCallback(
     async (representative, onDone = noop) => {
       let intent = await votingApp.intent(
@@ -658,6 +661,7 @@ export default function useActions(): ActionsType {
     },
     [account, mounted, priceOracleContract, mainToken, stableToken]
   )
+
   // Unipool actions
   const claimRewards = useCallback(
     (onDone = noop) => {

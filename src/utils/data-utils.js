@@ -31,6 +31,7 @@ export function transformConfigData(config) {
 }
 
 export async function transformProposalData(proposal) {
+  console.log(proposal.type)
   const proposalData = {
     ...proposal,
     id: proposal.number,
@@ -172,7 +173,7 @@ function transformStakeHistoryData(stake) {
 export function transformUserData(user) {
   return {
     ...user,
-    supports: user.supports.map(support => ({
+    supports: user.supports.map((support) => ({
       ...support,
       casts: support.casts.map(transformCastData),
       stakes: support.stakes.map(transformStakeData),
@@ -182,10 +183,10 @@ export function transformUserData(user) {
 }
 
 export function getAppAddressByName(apps, appName) {
-  return apps?.find(app => app.name === appName)?.address || ''
+  return apps?.find((app) => app.name === appName)?.address || ''
 }
 
 export function getAppByName(apps, appName) {
   const regex = new RegExp(`^${appName}.*$`)
-  return apps?.find(app => app?.name?.match(regex))
+  return apps?.find((app) => app?.name?.match(regex))
 }

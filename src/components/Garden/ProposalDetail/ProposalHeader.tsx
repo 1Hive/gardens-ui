@@ -7,9 +7,10 @@ import { ProposalType } from '@/types/app'
 
 type ProposalHeaderProps = {
   proposal: ProposalType
+  isPoll: boolean
 }
 
-function ProposalHeader({ proposal }: ProposalHeaderProps) {
+function ProposalHeader({ proposal, isPoll }: ProposalHeaderProps) {
   const theme = useTheme()
   return (
     <div
@@ -31,7 +32,7 @@ function ProposalHeader({ proposal }: ProposalHeaderProps) {
             margin-left: ${0.5 * GU}px;
           `}
         >
-          {convertToString(proposal.type)}
+          {isPoll ? 'Poll' : convertToString(proposal.type)}
         </span>
       </div>
       <div

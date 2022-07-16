@@ -77,6 +77,8 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
 
   const handleSetProposalData = (data: any) => {
     proposalData.current = data
+
+    console.log(proposalData.current)
   }
 
   const onCompleteMiddleware = useCallback(() => {

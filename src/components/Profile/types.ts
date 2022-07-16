@@ -4,7 +4,7 @@ type ProposalType = {
   number: string
   status: string
   metadata: string
-  type: 'PROPOSAL_TYPE_SUGGESTION'
+  type: string
   organization: {
     id: string
   }
