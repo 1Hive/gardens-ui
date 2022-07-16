@@ -158,10 +158,13 @@ const AddProposalPanel = ({ setProposalData }) => {
     (event) => {
       event.preventDefault()
 
+      // Tweak to allow proposal poll
       setProposalData({
         ...formData,
+        title:
+          formData.title === POLL ? `Poll - ${formData.title}` : formData.title,
         proposalType:
-          formData.proposalType === POLL ? 3 : formData.proposalType, // Tweak to allow proposal poll
+          formData.proposalType === POLL ? 3 : formData.proposalType,
       })
       next()
     },
