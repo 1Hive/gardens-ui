@@ -13,10 +13,8 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
   const [loading, setLoading] = useState(true)
   const [canUpdate, setCanUpdate] = useState(false)
 
-  const {
-    chainId,
-    incentivisedPriceOracle: priceOracleAddress,
-  } = useConnectedGarden()
+  const { chainId, incentivisedPriceOracle: priceOracleAddress } =
+    useConnectedGarden()
 
   const priceOracleContract = useContractReadOnly(
     priceOracleAddress,
@@ -62,5 +60,6 @@ export function usePriceOracle(stable, amount, tokenIn, tokenOut) {
     fetchConvertedAmount()
     fetchCanUpdate()
   }, [tokenIn, tokenOut, priceOracleContract, amount, mounted, stable])
+
   return [convertedAmount, loading, canUpdate]
 }

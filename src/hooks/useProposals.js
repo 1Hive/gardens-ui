@@ -83,7 +83,6 @@ function useFilteredProposals(filters, account, latestBlock) {
     }
 
     return proposals.map((proposal) => {
-      console.log(proposal)
       return proposal.type === ProposalTypes.Decision
         ? processDecision(proposal, voidedDecisions)
         : processProposal(proposal, latestBlock, account, config.conviction)

@@ -26,6 +26,7 @@ import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 import { useHistory } from 'react-router-dom'
 import { buildGardenPath } from '@utils/routing-utils'
+import { TokenType } from '@/types/app'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -45,7 +46,11 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding', 'Poll']
 
-const AddProposalPanel = ({ setProposalData }) => {
+type AddProposalPanelProps = {
+  setProposalData: (proposal: any) => void
+}
+
+const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
@@ -162,7 +167,9 @@ const AddProposalPanel = ({ setProposalData }) => {
       setProposalData({
         ...formData,
         title:
-          formData.title === POLL ? `Poll - ${formData.title}` : formData.title,
+          formData.proposalType === POLL
+            ? `Poll - ${formData.title}`
+            : formData.title,
         proposalType:
           formData.proposalType === POLL ? 3 : formData.proposalType,
       })
@@ -201,7 +208,7 @@ const AddProposalPanel = ({ setProposalData }) => {
 
   const neededThreshold = useMemo(() => {
     const threshold = calculateThreshold(
-      requestAmount,
+      requestAmount as any,
       commonPool,
       effectiveSupply,
       alpha,
@@ -211,6 +218,8 @@ const AddProposalPanel = ({ setProposalData }) => {
 
     const max = getMaxConviction(effectiveSupply, alpha)
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return Math.round((threshold / max) * 100)
   }, [alpha, commonPool, effectiveSupply, maxRatio, requestAmount, weight])
 
@@ -328,7 +337,7 @@ const AddProposalPanel = ({ setProposalData }) => {
       </Button>
       {errors.length > 0 && (
         <Info
-          mode="warning"
+          mode={Info?.MODES?.WARNING ?? 'warning'}
           css={`
             margin-top: ${2 * GU}px;
           `}
@@ -342,6 +351,23 @@ const AddProposalPanel = ({ setProposalData }) => {
   )
 }
 
+type RequestedAmountProps = {
+  amount: {
+    stable: boolean
+    value: string
+    valueBN: BigNumber
+  }
+  convertedAmount: boolean | BigNumber
+  loadingAmount: boolean | BigNumber
+  neededThreshold: number
+  onAmountChange: (event: any) => void
+  onBlur: () => void
+  onFocus: () => void
+  onIsStableChange: any
+  requestToken: TokenType
+  stableToken: TokenType
+}
+
 function RequestedAmount({
   amount,
   convertedAmount,
@@ -353,7 +379,7 @@ function RequestedAmount({
   onIsStableChange,
   requestToken,
   stableToken,
-}) {
+}: RequestedAmountProps) {
   const theme = useTheme()
   const { stable, value } = amount
 
@@ -450,7 +476,18 @@ function RequestedAmount({
   )
 }
 
-function ConvertedAmount({ amount, loading, requestToken }) {
+// TODO: check this types
+type ConvertedAmountProps = {
+  amount: boolean | BigNumber
+  loading: boolean | BigNumber
+  requestToken: TokenType
+}
+
+const ConvertedAmount = ({
+  amount,
+  loading,
+  requestToken,
+}: ConvertedAmountProps) => {
   const theme = useTheme()
 
   return (

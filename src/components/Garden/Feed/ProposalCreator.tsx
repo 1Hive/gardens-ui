@@ -15,7 +15,6 @@ import { addressesEqual } from '@utils/web3-utils'
 import { ZERO_ADDR } from '@/constants'
 import { ProposalType } from '@/types/app'
 
-
 const addressCache = new Map()
 
 type ProposalCreatorProps = {
@@ -51,7 +50,9 @@ function ProposalCreator({ proposal, onViewProfile }: ProposalCreatorProps) {
 
   const ProposalType = (
     <>
-      <ProposalIcon type={proposal.type} /> {convertToString(proposal.type)}
+      <ProposalIcon type={proposal.type} />
+      {'  '}
+      {convertToString(proposal.type)}
     </>
   )
 

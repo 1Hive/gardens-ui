@@ -1,4 +1,4 @@
-import { convertFromString, ProposalTypes } from '../types'
+import { convertFromString, isPollProposal, ProposalTypes } from '../types'
 import BigNumber from '@lib/bigNumber'
 import { toMilliseconds } from './date-utils'
 
@@ -31,13 +31,14 @@ export function transformConfigData(config) {
 }
 
 export async function transformProposalData(proposal) {
-  console.log(proposal.type)
   const proposalData = {
     ...proposal,
     id: proposal.number,
     createdAt: toMilliseconds(proposal.createdAt),
     executedAt: toMilliseconds(proposal.executedAt),
-    type: convertFromString(proposal.type),
+    type: isPollProposal(proposal)
+      ? ProposalTypes.Poll
+      : convertFromString(proposal.type),
 
     challengeEndDate: toMilliseconds(proposal.challengeEndDate),
     settledAt: toMilliseconds(proposal.settledAt),

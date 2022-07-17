@@ -58,7 +58,7 @@ import {
   soliditySha3,
 } from '@utils/web3-utils'
 import { getNetwork } from '@/networks'
-import { isPollProposal, ProposalTypes } from '@/types'
+import { ProposalTypes } from '@/types'
 import { ZERO_ADDR } from '@/constants'
 
 // assets
@@ -87,7 +87,6 @@ function ProposalDetail({
   const network = getNetwork(chainId)
 
   const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
-  const isPoll = isPollProposal(proposal)
 
   const {
     name,
@@ -145,8 +144,6 @@ function ProposalDetail({
   const fundingProposal =
     requestToken && proposal.type === ProposalTypes.Proposal
 
-  //console.log(proposal)
-
   return (
     <div
       css={`
@@ -188,7 +185,7 @@ function ProposalDetail({
                     {isAbstainProposal ? (
                       <AbstainCardHeader showHint={false} />
                     ) : (
-                      <ProposalHeader proposal={proposal} isPoll={isPoll} />
+                      <ProposalHeader proposal={proposal} />
                     )}
 
                     <h1
