@@ -26,11 +26,9 @@ import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 import { useHistory } from 'react-router-dom'
 import { buildGardenPath } from '@utils/routing-utils'
-import { ProposalType, TokenType } from '@/types/app'
+import { TokenType } from '@/types/app'
 import SingleDatePicker from '@/components/SingleDatePicker/SingleDatePicker'
 import { dateFormat } from '@/utils/date-utils'
-import { usePollProposals } from '@/hooks/usePollProposals'
-import { ProposalTypes } from '@/types'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1

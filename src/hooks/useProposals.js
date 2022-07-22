@@ -252,7 +252,7 @@ export function useProposalEndDate(proposal) {
   return endDate
 }
 
-function processProposal(proposal, latestBlock, account, config) {
+export function processProposal(proposal, latestBlock, account, config) {
   const { alpha, effectiveSupply } = config
   const { stakesHistory, totalTokensStaked } = proposal
 
@@ -273,9 +273,9 @@ function processProposal(proposal, latestBlock, account, config) {
   )
 
   const userStakedConviction = safeDivBN(userConviction, maxConviction)
-
   const stakedConviction = safeDivBN(currentConviction, maxConviction)
   const futureConviction = getMaxConviction(totalTokensStaked, alpha)
+
   const futureStakedConviction = safeDivBN(futureConviction, maxConviction)
   const convictionTrend = getConvictionTrend(
     stakesHistory,

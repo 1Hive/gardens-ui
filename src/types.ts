@@ -48,5 +48,5 @@ export function convertToInt(symbol: string) {
 }
 
 export const isPollProposal = (proposal: ProposalType) => {
-  return proposal.metadata.includes('Poll')
+  return proposal.metadata.includes('Poll -')
 }

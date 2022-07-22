@@ -9,7 +9,6 @@ import {
   Help,
   IconDown,
   IconUp,
-  Info,
   Link,
   shortenAddress,
   Split,
@@ -88,6 +87,7 @@ function ProposalDetail({
   const network = getNetwork(chainId)
 
   const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
+  const isPollProposal = proposal.type === ProposalTypes.Poll
 
   const {
     name,
@@ -238,12 +238,12 @@ function ProposalDetail({
                               {requestToken.symbol} currently in the common
                               pool.
                             </span>
-                          ) : (
+                          ) : !isPollProposal ? (
                             <span>
                               This suggestion is for signaling purposes and is
                               not requesting any {requestToken.symbol}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </>
                     ) : (
@@ -271,11 +271,11 @@ function ProposalDetail({
                     )}
                   </div>
 
-                  {proposal.type === ProposalTypes.Poll ? (
-                    <ProposalDetailPoll proposal={proposal} chainId={chainId} />
+                  {isPollProposal ? (
+                    <ProposalDetailPoll proposal={proposal} />
                   ) : null}
 
-                  {!isAbstainProposal ? (
+                  {!isAbstainProposal && !isPollProposal ? (
                     <div
                       css={`
                         display: grid;

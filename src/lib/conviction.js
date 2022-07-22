@@ -124,12 +124,14 @@ export function getConvictionHistory(stakes, currentTime, alpha, timeUnit) {
     initTime++
   }
 
-  const oldStakes = [...stakes].filter(stake => stake.time <= initTime)
-  const recentStakes = [...stakes].filter(stake => stake.time > initTime)
+  const oldStakes = [...stakes].filter((stake) => stake.time <= initTime)
+  const recentStakes = [...stakes].filter((stake) => stake.time > initTime)
 
-  let { totalTokensStaked: oldAmount, conviction: lastConv, time: lastTime } = [
-    ...oldStakes,
-  ].pop() || {
+  let {
+    totalTokensStaked: oldAmount,
+    conviction: lastConv,
+    time: lastTime,
+  } = [...oldStakes].pop() || {
     totalTokensStaked: new BigNumber('0'),
     conviction: new BigNumber('0'),
     time: 0,
@@ -205,12 +207,7 @@ export function getRemainingTimeToPass(threshold, conviction, amount, alpha) {
         .minus(oneBN)
         .multipliedBy(y)
         .plus(x)
-        .div(
-          a
-            .minus(oneBN)
-            .multipliedBy(y0)
-            .plus(x)
-        )
+        .div(a.minus(oneBN).multipliedBy(y0).plus(x))
         .toNumber()
     ) / Math.log(a.toNumber())
   )
@@ -278,10 +275,7 @@ export function getMinNeededStake(threshold, alpha) {
   const y = threshold
   const a = alpha
 
-  return a
-    .negated()
-    .multipliedBy(y)
-    .plus(y)
+  return a.negated().multipliedBy(y).plus(y)
 }
 
 /**
@@ -296,6 +290,7 @@ export function getMinNeededStake(threshold, alpha) {
 export function getMaxConviction(amount, alpha) {
   const x = amount
   const a = alpha
+
   return x.div(oneBN.minus(a))
 }
 
@@ -315,8 +310,12 @@ function convictionFromStakes(stakes, alpha) {
 
 function stakesByEntity(stakes, entity) {
   return stakes
-    .filter(({ supporter: { user: { address } } }) =>
-      addressesEqual(entity, address)
+    .filter(
+      ({
+        supporter: {
+          user: { address },
+        },
+      }) => addressesEqual(entity, address)
     )
     .map(({ time, tokensStaked, conviction }) => ({
       time,

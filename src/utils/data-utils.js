@@ -81,7 +81,7 @@ export async function transformProposalData(proposal) {
   }
 }
 
-function transformConvictionProposalData(proposal) {
+export function transformConvictionProposalData(proposal) {
   return {
     name: proposal.metadata,
     requestedAmount: new BigNumber(proposal.requestedAmount || 0),
