@@ -64,6 +64,7 @@ import { ZERO_ADDR } from '@/constants'
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
 import { AbstainCardHeader } from '../Feed/AbstainCard'
+import ProposalDetailPoll from './ProposalDetailPoll'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -269,6 +270,11 @@ function ProposalDetail({
                       </div>
                     )}
                   </div>
+
+                  {proposal.type === ProposalTypes.Poll ? (
+                    <ProposalDetailPoll proposal={proposal} chainId={chainId} />
+                  ) : null}
+
                   {!isAbstainProposal ? (
                     <div
                       css={`

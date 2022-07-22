@@ -64,7 +64,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   // Private data might not be ready yet
   useEffect(() => {
     if (birthday || email) {
-      setFormData(formData => ({
+      setFormData((formData) => ({
         ...formData,
         birthday,
         email: { removed: false, value: email, verified: Boolean(email) },
@@ -73,36 +73,36 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
     return () => {}
   }, [birthday, email])
 
-  const handleAccountChange = useCallback(event => {
+  const handleAccountChange = useCallback((event) => {
     const { name, value } = event.target
-    setFormData(formData => ({
+    setFormData((formData) => ({
       ...formData,
       [name]: { ...formData[name], value },
     }))
   }, [])
 
-  const handleAccountRemove = useCallback(account => {
-    setFormData(formData => ({
+  const handleAccountRemove = useCallback((account) => {
+    setFormData((formData) => ({
       ...formData,
       [account]: { ...formData[account], removed: true },
     }))
   }, [])
 
-  const handleAccountCancelRemove = useCallback(account => {
-    setFormData(formData => ({
+  const handleAccountCancelRemove = useCallback((account) => {
+    setFormData((formData) => ({
       ...formData,
       [account]: { ...formData[account], removed: false },
     }))
   }, [])
 
-  const handleDataChange = useCallback(event => {
+  const handleDataChange = useCallback((event) => {
     const { name, value: newValue } = event.target
-    setFormData(formData => ({ ...formData, [name]: newValue }))
+    setFormData((formData) => ({ ...formData, [name]: newValue }))
   }, [])
 
-  const handleBirthdayChange = useCallback(date => {
+  const handleBirthdayChange = useCallback((date) => {
     const dateFormatted = dateFormat(date, 'iso')
-    setFormData(formData => ({ ...formData, birthday: dateFormatted }))
+    setFormData((formData) => ({ ...formData, birthday: dateFormatted }))
   }, [])
 
   const [updatedFields, removedFields] = useMemo(() => {
@@ -166,7 +166,7 @@ function ProfileForm({ coverPic, onBack, profile, profilePic }) {
   ])
 
   const handleFormSubmit = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault()
 
       try {

@@ -68,7 +68,31 @@ export function useProposals() {
   return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
 }
 
-function useFilteredProposals(filters, account, latestBlock) {
+export function useProposalsWithCustomFilters(filters) {
+  const { account } = useWallet()
+  const { chainId } = useConnectedGarden()
+
+  const latestBlock = useLatestBlock(chainId)
+
+  const [proposals, proposalsFetchedCount] = useFilteredProposals(
+    filters,
+    account,
+    latestBlock
+  )
+
+  useEffect(() => {
+    if (
+      proposals.length < proposalsFetchedCount &&
+      proposalsFetchedCount === filters.count.filter
+    ) {
+      filters.count.onChange()
+    }
+  }, [filters.count, proposals.length, proposalsFetchedCount])
+
+  return [proposals, filters, proposalsFetchedCount, latestBlock.number !== 0]
+}
+
+export function useFilteredProposals(filters, account, latestBlock) {
   const myStakes = useAccountStakesByGarden(account)
   const proposals = useProposalsSubscription(filters)
   const { config, loading } = useGardenState()

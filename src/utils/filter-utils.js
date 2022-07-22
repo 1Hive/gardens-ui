@@ -54,7 +54,7 @@ export const STATUS_ITEMS = [
   'Completed',
   'Removed',
   'Challenged',
-  'Voided'
+  'Voided',
 ]
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
 export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision']
@@ -77,7 +77,7 @@ export function testStatusFilter(filter, proposal) {
   const { statusData } = proposal
 
   //Voided
-  if(filter === STATUS_FILTER_VOIDED && statusData.voided){
+  if (filter === STATUS_FILTER_VOIDED && statusData.voided) {
     return true
   }
 

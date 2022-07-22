@@ -26,7 +26,11 @@ import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 import { useHistory } from 'react-router-dom'
 import { buildGardenPath } from '@utils/routing-utils'
-import { TokenType } from '@/types/app'
+import { ProposalType, TokenType } from '@/types/app'
+import SingleDatePicker from '@/components/SingleDatePicker/SingleDatePicker'
+import { dateFormat } from '@/utils/date-utils'
+import { usePollProposals } from '@/hooks/usePollProposals'
+import { ProposalTypes } from '@/types'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -42,6 +46,7 @@ const DEFAULT_FORM_DATA = {
     valueBN: new BigNumber(0),
   },
   beneficiary: '',
+  snapshotDate: '',
 }
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding', 'Poll']
@@ -65,8 +70,9 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
 
   const connectedGarden = useConnectedGarden()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
-
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
+  const isPollProposal = formData.proposalType === POLL
+  const isSuggestionProposal = formData.proposalType === SIGNALING_PROPOSAL
 
   // Escaping forumURL to avoid misuse with regexp
   const forumRegex = regexToCheckValidProposalURL(
@@ -114,6 +120,13 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const handleTitleChange = useCallback((event) => {
     const updatedTitle = event.target.value
     setFormData((formData) => ({ ...formData, title: updatedTitle }))
+  }, [])
+
+  const handleSnapshotDate = useCallback((date) => {
+    setFormData((formData) => ({
+      ...formData,
+      snapshotDate: dateFormat(date, 'iso'),
+    }))
   }, [])
 
   const handleAmountChange = useCallback(
@@ -166,17 +179,17 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       // Tweak to allow proposal poll
       setProposalData({
         ...formData,
-        title:
-          formData.proposalType === POLL
-            ? `Poll - ${formData.title}`
-            : formData.title,
-        proposalType:
-          formData.proposalType === POLL ? 3 : formData.proposalType,
+        title: isPollProposal ? `Poll - ${formData.title}` : formData.title,
+        proposalType: isPollProposal ? 3 : formData.proposalType,
       })
       next()
     },
     [formData, next, setProposalData]
   )
+
+  const handleSelectedPoll = React.useCallback((selected) => {
+    console.log(selected)
+  }, [])
 
   const [requestAmount, loadingRequestAmount] = usePriceOracle(
     formData.amount.stable,
@@ -290,6 +303,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           required
         />
       </Field>
+
       {requestToken && fundingMode && (
         <>
           <RequestedAmount
@@ -315,15 +329,29 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           </Field>
         </>
       )}
-      <Field label="Proposal Information URL">
-        <TextInput
-          onChange={handleLinkChange}
-          value={formData.link}
-          placeholder="Add Proposal information URL"
-          wide
-          required
-        />
-      </Field>
+
+      {isPollProposal ? (
+        <>
+          <Field label="Snapshot Date">
+            <SingleDatePicker
+              format="iso"
+              initialDate={formData.snapshotDate}
+              onChange={handleSnapshotDate}
+            />
+          </Field>
+        </>
+      ) : (
+        <Field label="Proposal Information URL">
+          <TextInput
+            onChange={handleLinkChange}
+            value={formData.link}
+            placeholder="Add Proposal information URL"
+            wide
+            required
+          />
+        </Field>
+      )}
+
       <Button
         wide
         mode="strong"
