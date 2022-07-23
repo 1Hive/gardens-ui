@@ -5,10 +5,11 @@ import {
   textStyle,
   useTheme,
   EthIdenticon,
+  Help,
 } from '@1hive/1hive-ui'
 import ProposalIcon from '@components/ProposalIcon'
 
-import { convertToString } from '@/types'
+import { convertToString, ProposalTypes } from '@/types'
 import { getProfileForAccount } from '@lib/profile'
 import { dateFormat } from '@utils/date-utils'
 import { addressesEqual } from '@utils/web3-utils'
@@ -95,25 +96,39 @@ function ProposalCreator({ proposal, onViewProfile }: ProposalCreatorProps) {
             ProposalType
           ) : (
             <>
-              <strong
+              <div
                 css={`
-                  margin-right: ${1 * GU}px;
-                `}
-                onClick={onViewProfile}
-                style={{ cursor: 'pointer' }}
-              >
-                {profile?.name
-                  ? profile.name
-                  : shortenAddress(proposal.creator)}
-              </strong>
-              <span
-                css={`
-                  margin-right: ${0.5 * GU}px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin-right: 5px;
                 `}
               >
-                created a
-              </span>{' '}
-              {ProposalType}
+                <strong
+                  css={`
+                    margin-right: ${1 * GU}px;
+                  `}
+                  onClick={onViewProfile}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {profile?.name
+                    ? profile.name
+                    : shortenAddress(proposal.creator)}
+                </strong>
+                <span
+                  css={`
+                    margin-right: ${0.5 * GU}px;
+                  `}
+                >
+                  created a
+                </span>{' '}
+                {ProposalType}
+              </div>
+              {proposal.type === ProposalTypes.Poll ? (
+                <div>
+                  <Help hint="">Change this @paul</Help>
+                </div>
+              ) : null}
             </>
           )}
         </div>

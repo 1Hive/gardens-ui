@@ -363,26 +363,35 @@ function ProposalDetail({
                   ) : null}
                   {(statusData.open ||
                     statusData.challenged ||
-                    statusData.disputed) && (
-                    <DataField
-                      label="Progress"
-                      value={
-                        <ConvictionBar
-                          proposal={proposal}
-                          withThreshold={!!requestToken}
-                        />
-                      }
-                    />
-                  )}
-                  <DisputableInfo proposal={proposal} />
-                  <ProposalActions
-                    proposal={proposal}
-                    onChangeSupport={() => handleShowModal('update')}
-                    onExecuteProposal={() => handleShowModal('execute')}
-                    onRequestSupportProposal={() => handleShowModal('support')}
-                  />
+                    statusData.disputed) &&
+                    !isPollProposal && (
+                      <DataField
+                        label="Progress"
+                        value={
+                          <ConvictionBar
+                            proposal={proposal}
+                            withThreshold={!!requestToken}
+                          />
+                        }
+                      />
+                    )}
+
+                  {!isPollProposal ? (
+                    <>
+                      <DisputableInfo proposal={proposal} />
+                      <ProposalActions
+                        proposal={proposal}
+                        onChangeSupport={() => handleShowModal('update')}
+                        onExecuteProposal={() => handleShowModal('execute')}
+                        onRequestSupportProposal={() =>
+                          handleShowModal('support')
+                        }
+                      />
+                    </>
+                  ) : null}
                 </section>
               </Box>
+
               {proposal.pausedAt > 0 && (
                 <Box
                   padding={2.4 * GU}

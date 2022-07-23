@@ -1,5 +1,6 @@
 import { usePollProposals } from '@/hooks/usePollProposals'
 import { ProposalType } from '@/types/app'
+import { dateFormat } from '@/utils/date-utils'
 import { textStyle } from '@1hive/1hive-ui'
 import React from 'react'
 import styled from 'styled-components'
@@ -30,29 +31,62 @@ const ProposalDetailPoll = ({ proposal }: ProposalDetailPollProps) => {
 
   return (
     <div>
-      <label
+      <div
         css={`
-          ${textStyle('label1')};
-          margin-bottom: 14px;
+          margin-bottom: 24px;
           display: block;
         `}
       >
-        Poll Details
-      </label>
+        <label
+          css={`
+            ${textStyle('label1')};
+            margin-bottom: 14px;
+            display: block;
+            text-transform: normal;
+          `}
+        >
+          Snapshot Date:{' '}
+          <span
+            css={`
+              ${textStyle('body3')};
+              margin-left: 14px;
+            `}
+          >
+            {dateFormat(proposal.createdAt, 'custom')}
+          </span>
+        </label>
+      </div>
+
       <div>
-        {items &&
-          items.map((item) => (
-            <Row key={item.id}>
-              <label
-                css={`
-                  ${textStyle('body1')};
-                `}
-              >
-                <strong>{item.metadata}</strong>
-              </label>
-              <ConvictionBar proposal={item} withThreshold={false} />
-            </Row>
-          ))}
+        <label
+          css={`
+            ${textStyle('label1')};
+            margin-bottom: 14px;
+            display: block;
+          `}
+        >
+          Poll Details
+        </label>
+        <div>
+          {items ? (
+            items.length === 0 ? (
+              <p>No suggestion associated with this Poll.</p>
+            ) : (
+              items.map((item) => (
+                <Row key={item.id}>
+                  <label
+                    css={`
+                      ${textStyle('body2')};
+                    `}
+                  >
+                    {item.metadata}
+                  </label>
+                  <ConvictionBar proposal={item} withThreshold={false} />
+                </Row>
+              ))
+            )
+          ) : null}
+        </div>
       </div>
     </div>
   )
