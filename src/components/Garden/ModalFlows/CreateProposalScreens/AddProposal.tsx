@@ -180,6 +180,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       event.preventDefault()
 
       // Tweak to allow proposal poll
+      // for suggestions in poll proposal add "Poll [ID] - [SUGGESTION_TITLE]"
       setProposalData({
         ...formData,
         title: isPollProposal

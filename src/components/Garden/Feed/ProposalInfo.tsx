@@ -97,7 +97,10 @@ function ProposalInfo({
           )}
         </div>
       )}
-      <ProposalSupport proposal={proposal} />
+      {proposal.type !== ProposalTypes.Poll ? (
+        <ProposalSupport proposal={proposal} />
+      ) : null}
+
       {proposal.type === ProposalTypes.Decision && (
         <ProposalCountdown proposal={proposal} />
       )}

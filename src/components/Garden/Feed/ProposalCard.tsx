@@ -81,10 +81,12 @@ function Card({ loading = false, proposal }: CardProps) {
         proposal={proposal}
         onSelectProposal={handleSelectProposal}
       />
-      <ProposalFooter
-        proposal={proposal}
-        onSelectProposal={handleSelectProposal}
-      />
+      {proposal.type !== ProposalTypes.Poll ? (
+        <ProposalFooter
+          proposal={proposal}
+          onSelectProposal={handleSelectProposal}
+        />
+      ) : null}
     </div>
   )
 }

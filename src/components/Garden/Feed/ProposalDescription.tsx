@@ -15,7 +15,7 @@ function ProposalDescription({ proposal }: ProposalDescriptionProps) {
     <div
       css={`
         cursor: pointer;
-        margin-bottom: ${3 * GU}px;
+        margin-bottom: ${proposal.type === ProposalTypes.Poll ? 0 : 3 * GU}px;
         ${textStyle('body1')};
         text-decoration: underline;
         overflow-wrap: anywhere;
