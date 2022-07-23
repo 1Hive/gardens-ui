@@ -29,6 +29,7 @@ import { buildGardenPath } from '@utils/routing-utils'
 import { TokenType } from '@/types/app'
 import SingleDatePicker from '@/components/SingleDatePicker/SingleDatePicker'
 import { dateFormat } from '@/utils/date-utils'
+import { usePollProposals } from '@/hooks/usePollProposals'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
@@ -67,10 +68,14 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   } = config.conviction
 
   const connectedGarden = useConnectedGarden()
+  const { pollProposals } = usePollProposals()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+  const [selectedPoll, setSelectedPoll] = useState(0)
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
   const isPollProposal = formData.proposalType === POLL
   const isSuggestionProposal = formData.proposalType === SIGNALING_PROPOSAL
+
+  const polls = React.useMemo(() => pollProposals, [pollProposals])
 
   // Escaping forumURL to avoid misuse with regexp
   const forumRegex = regexToCheckValidProposalURL(
@@ -177,7 +182,11 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       // Tweak to allow proposal poll
       setProposalData({
         ...formData,
-        title: isPollProposal ? `Poll - ${formData.title}` : formData.title,
+        title: isPollProposal
+          ? `Poll - ${formData.title}`
+          : isSuggestionProposal && selectedPoll !== 0
+          ? `${polls[selectedPoll]} - ${formData.title}`
+          : formData.title,
         proposalType: isPollProposal ? 3 : formData.proposalType,
       })
       next()
@@ -186,7 +195,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   )
 
   const handleSelectedPoll = React.useCallback((selected) => {
-    console.log(selected)
+    setSelectedPoll(selected)
   }, [])
 
   const [requestAmount, loadingRequestAmount] = usePriceOracle(
@@ -236,7 +245,8 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
 
   const submitDisabled =
     !formData.title ||
-    !formData.link ||
+    ((isSuggestionProposal || isSuggestionProposal) && !formData.link) ||
+    (isPollProposal && !formData.snapshotDate) ||
     errors.length > 0 ||
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
@@ -349,6 +359,24 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           />
         </Field>
       )}
+
+      {isSuggestionProposal ? (
+        <Field label="Polls">
+          {polls.length === 0 ? (
+            <p>Loading polls...</p>
+          ) : (
+            <DropDown
+              header="Select Poll"
+              placeholder="Select Poll"
+              selected={selectedPoll}
+              onChange={handleSelectedPoll}
+              items={['Select Poll', ...polls]}
+              required
+              wide
+            />
+          )}
+        </Field>
+      ) : null}
 
       <Button
         wide

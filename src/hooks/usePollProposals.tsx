@@ -1,6 +1,7 @@
 import { getNetwork } from '@/networks'
 import { useConnectedGarden } from '@/providers/ConnectedGarden'
 import { useGardenState } from '@/providers/GardenState'
+import { ProposalType } from '@/types/app'
 import { transformConvictionProposalData } from '@/utils/data-utils'
 
 import React from 'react'
@@ -77,8 +78,6 @@ export function usePollProposals() {
       )
     )
 
-    console.log({ proposals })
-
     return proposals ?? []
   }
 
@@ -103,7 +102,12 @@ export function usePollProposals() {
         return
       }
 
-      setPollProposals(result?.data?.proposals)
+      const newPolls: Array<string> = []
+      result.data.proposals.map((p: ProposalType) =>
+        newPolls.push(`Poll ${p.number}`)
+      )
+
+      setPollProposals(newPolls)
     }
 
     pollProposals.length === 0 && fetch()

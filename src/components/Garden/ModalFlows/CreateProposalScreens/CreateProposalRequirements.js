@@ -26,7 +26,7 @@ function CreateProposalRequirements({ agreement, staking }) {
   )
   const { token, actionAmount } = convictionAppRequirements
   const enoughCollateral = availableStaked.gte(actionAmount)
-  const enoughAllowance = allowance.gt(0)
+  const enoughAllowance = allowance?.gt(0)
 
   const error = useMemo(() => {
     return !signedLatest || !enoughCollateral || !enoughAllowance
