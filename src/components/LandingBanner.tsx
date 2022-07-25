@@ -96,7 +96,7 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
               width: 'min(650px, calc(100% - 150px))',
             }}
           >
-            <div style={{ marginBottom: '7%' }}>
+            <div style={{ marginBottom: '7%', marginTop: '10%' }}>
               <Title hFontSize={hFontSize}>Find your garden</Title>
               <Subtitle pFontSize={pFontSize} color={theme.contentSecondary}>
                 Gardens are digital economies that anyone can help shape
