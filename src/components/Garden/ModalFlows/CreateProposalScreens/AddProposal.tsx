@@ -48,11 +48,15 @@ const DEFAULT_FORM_DATA = {
   snapshotDate: '',
 }
 
-const PROPOSAL_TYPES = ['Suggestion', 'Funding', 'Poll']
+const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
 type AddProposalPanelProps = {
   setProposalData: (proposal: any) => void
 }
+
+// checkbox to show the dropdown ( useState )
+// fix bug on create suggestion ( id is undefined )
+// TODO: where to store snapshot date
 
 const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const { next } = useMultiModal()
@@ -70,9 +74,9 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const connectedGarden = useConnectedGarden()
   const { pollProposals } = usePollProposals()
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+  const [isPollProposal, setIsPollProposal] = useState(false)
   const [selectedPoll, setSelectedPoll] = useState(0)
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
-  const isPollProposal = formData.proposalType === POLL
   const isSuggestionProposal = formData.proposalType === SIGNALING_PROPOSAL
 
   const polls = React.useMemo(() => pollProposals, [pollProposals])
@@ -188,8 +192,9 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           : isSuggestionProposal && selectedPoll !== 0
           ? `${polls[selectedPoll]} - ${formData.title}`
           : formData.title,
-        proposalType: isPollProposal ? 3 : formData.proposalType,
+        proposalType: formData.proposalType,
       })
+
       next()
     },
     [formData, next, setProposalData]
@@ -289,9 +294,11 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       </Field>
       <Info>
         <span>
-          {formData.proposalType === SIGNALING_PROPOSAL
+          {isSuggestionProposal && !isPollProposal
             ? `Suggestion proposals are used to gather community sentiment for
         ideas or future funding proposals.`
+            : isPollProposal
+            ? '@paul can help'
             : `Funding proposals ask for an amount of funds. These funds are granted
         if the proposal in question receives enough support (conviction).`}
         </span>{' '}
@@ -339,6 +346,21 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
         </>
       )}
 
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+          margin-bottom: ${2 * GU}px;
+        `}
+      >
+        <Checkbox
+          checked={isPollProposal}
+          onChange={(value: boolean) => setIsPollProposal(value)}
+          label="I agree to the terms of the Covenant"
+        />
+        Create poll proposal
+      </div>
+
       {isPollProposal ? (
         <>
           <Field label="Snapshot Date">
@@ -361,22 +383,24 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
         </Field>
       )}
 
-      {isSuggestionProposal ? (
-        <Field label="Polls">
-          {polls.length === 0 ? (
-            <p>Loading polls...</p>
-          ) : (
-            <DropDown
-              header="Select Poll"
-              placeholder="Select Poll"
-              selected={selectedPoll}
-              onChange={handleSelectedPoll}
-              items={['Select Poll', ...polls]}
-              required
-              wide
-            />
-          )}
-        </Field>
+      {isSuggestionProposal && !isPollProposal ? (
+        <>
+          <Field label="Polls">
+            {polls.length === 0 ? (
+              <p>Loading polls...</p>
+            ) : (
+              <DropDown
+                header="Select Poll"
+                placeholder="Select Poll"
+                selected={selectedPoll}
+                onChange={handleSelectedPoll}
+                items={['Select Poll', ...polls]}
+                required
+                wide
+              />
+            )}
+          </Field>
+        </>
       ) : null}
 
       <Button
