@@ -1,3 +1,4 @@
+import { POLL_PROPOSAL_START_TEXT } from './components/Garden/ModalFlows/CreateProposalScreens/AddProposal'
 import { ProposalType } from './types/app'
 
 export enum ProposalTypes {
@@ -48,5 +49,5 @@ export function convertToInt(symbol: string) {
 }
 
 export const isPollProposal = (proposal: ProposalType) => {
-  return proposal.metadata.includes('Poll -')
+  return proposal.metadata.includes(POLL_PROPOSAL_START_TEXT)
 }

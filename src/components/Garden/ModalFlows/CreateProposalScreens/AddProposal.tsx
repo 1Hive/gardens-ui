@@ -50,12 +50,12 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
+export const POLL_PROPOSAL_START_TEXT = 'Poll -'
+
 type AddProposalPanelProps = {
   setProposalData: (proposal: any) => void
 }
 
-// checkbox to show the dropdown ( useState )
-// fix bug on create suggestion ( id is undefined )
 // TODO: where to store snapshot date
 
 const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
@@ -188,7 +188,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       setProposalData({
         ...formData,
         title: isPollProposal
-          ? `Poll - ${formData.title}`
+          ? `${POLL_PROPOSAL_START_TEXT} ${formData.title}`
           : isSuggestionProposal && selectedPoll !== 0
           ? `${polls[selectedPoll - 1]} - ${formData.title}`
           : formData.title,
@@ -251,7 +251,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
 
   const submitDisabled =
     !formData.title ||
-    ((isSuggestionProposal || isSuggestionProposal) && !formData.link) ||
+    (isSuggestionProposal && !formData.link) ||
     (isPollProposal && !formData.snapshotDate) ||
     errors.length > 0 ||
     (formData.proposalType === FUNDING_PROPOSAL &&
