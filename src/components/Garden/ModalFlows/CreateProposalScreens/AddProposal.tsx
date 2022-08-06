@@ -190,7 +190,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
         title: isPollProposal
           ? `Poll - ${formData.title}`
           : isSuggestionProposal && selectedPoll !== 0
-          ? `${polls[selectedPoll]} - ${formData.title}`
+          ? `${polls[selectedPoll - 1]} - ${formData.title}`
           : formData.title,
         proposalType: formData.proposalType,
       })
