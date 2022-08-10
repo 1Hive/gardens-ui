@@ -251,7 +251,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
 
   const submitDisabled =
     !formData.title ||
-    (isSuggestionProposal && !formData.link) ||
+    (isSuggestionProposal && !isPollProposal && !formData.link) ||
     (isPollProposal && !formData.snapshotDate) ||
     errors.length > 0 ||
     (formData.proposalType === FUNDING_PROPOSAL &&
