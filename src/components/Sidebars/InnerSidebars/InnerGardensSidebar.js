@@ -12,6 +12,10 @@ import { addressesEqual, getNetworkType } from '@utils/web3-utils'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index
+}
+
 const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
   const { user: connectedUser, loading: userLoading } = useUserState()
   const { gardensMetadata } = useGardens()
@@ -24,19 +28,21 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return []
     }
 
-    const result = connectedUser.gardensSigned.map(gardenSignedAddress => {
-      const { name, logo } =
-        gardensMetadata?.find(g =>
-          addressesEqual(g.address, gardenSignedAddress)
-        ) || {}
+    const result = connectedUser.gardensSigned
+      .filter(onlyUnique)
+      .map((gardenSignedAddress) => {
+        const { name, logo } =
+          gardensMetadata?.find((g) =>
+            addressesEqual(g.address, gardenSignedAddress)
+          ) || {}
 
-      return {
-        address: gardenSignedAddress,
-        name,
-        path: `/${networkType}/garden/${gardenSignedAddress}`,
-        src: logo || defaultGardenLogo,
-      }
-    })
+        return {
+          address: gardenSignedAddress,
+          name,
+          path: `/${networkType}/garden/${gardenSignedAddress}`,
+          src: logo || defaultGardenLogo,
+        }
+      })
 
     return result
   }, [connectedUser, gardensMetadata, networkType])
