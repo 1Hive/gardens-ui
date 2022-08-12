@@ -14,7 +14,12 @@ import { Spring, Transition, animated } from 'react-spring/renderprops'
 
 const AnimatedDiv = animated.div
 
-function ExpandableCard({ content, expansion }) {
+type ExpandableCardProps = {
+  content: React.ReactNode
+  expansion: string
+}
+
+function ExpandableCard({ content, expansion }: ExpandableCardProps) {
   const [opened, setOpened] = useState(false)
   const theme = useTheme()
 
@@ -84,7 +89,12 @@ function ExpandableCard({ content, expansion }) {
   )
 }
 
-function ToggleButton({ onClick, opened }) {
+type ToggleButton = {
+  opened: boolean
+  onClick: () => void
+}
+
+function ToggleButton({ onClick, opened }: ToggleButton) {
   const theme = useTheme()
   return (
     <ButtonIcon
@@ -125,7 +135,11 @@ function ToggleButton({ onClick, opened }) {
   )
 }
 
-function OpenedSurfaceBorder({ opened }) {
+type OpenedSurfaceBorder = {
+  opened: boolean
+}
+
+function OpenedSurfaceBorder({ opened }: OpenedSurfaceBorder) {
   return (
     <Spring
       native
@@ -133,7 +147,7 @@ function OpenedSurfaceBorder({ opened }) {
       to={{ width: Number(opened) }}
       config={springs.smooth}
     >
-      {({ width }) => (
+      {({ width }: any) => (
         <div
           css={`
             position: absolute;
@@ -161,7 +175,9 @@ function OpenedSurfaceBorder({ opened }) {
               transform-origin: 0 0;
             `}
             style={{
-              transform: width.interpolate((v) => `scale3d(${v}, 1, 1)`),
+              transform: width?.interpolate(
+                (v: string) => `scale3d(${v}, 1, 1)`
+              ),
             }}
           />
         </div>
