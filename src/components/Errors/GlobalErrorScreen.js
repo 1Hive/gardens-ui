@@ -1,10 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, GU, useTheme, useViewport } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
 
-import flowerError from '../../assets/flowerError.svg'
+import flowerErrorLight from '@assets/flowerError.svg'
+import flowerErrorDark from '@assets/dark-mode/flowerError.svg'
 
 function GlobalErrorScreen({ children }) {
+  const { appearance } = useAppTheme()
+
   return (
     <div
       css={`
@@ -28,14 +32,29 @@ function GlobalErrorScreen({ children }) {
         `}
       >
         <Container>
-          <img
-            src={flowerError}
-            alt=""
-            css={`
-              display: block;
-              margin: 0px auto 0px;
-            `}
-          />
+          {appearance === 'light' ? (
+            <img
+              src={flowerErrorLight}
+              alt=""
+              width="90"
+              height="120"
+              css={`
+                display: block;
+                margin: ${5 * GU}px auto ${1.5 * GU}px;
+              `}
+            />
+          ) : (
+            <img
+              src={flowerErrorDark}
+              alt=""
+              width="180"
+              height="180"
+              css={`
+                display: block;
+                margin: ${5 * GU}px auto ${1.5 * GU}px;
+              `}
+            />
+          )}
           {children}
         </Container>
       </div>

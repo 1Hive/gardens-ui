@@ -4,9 +4,11 @@ import { GU, Checkbox, Field, useLayout, useTheme } from '@1hive/1hive-ui'
 import ModalButton from '../ModalButton'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
+import { useAppTheme } from '@providers/AppTheme'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import signGraphic from '@assets/smart-contract.svg'
+import signGraphicLight from '@assets/smart-contract.svg'
+import signGraphicDark from '@assets/dark-mode/smart-contract.svg'
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)
@@ -16,6 +18,7 @@ function SignOverview({ getTransactions }) {
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
   const theme = useTheme()
+  const { appearance } = useAppTheme()
 
   const smallMode = layoutName === 'small'
 
@@ -29,14 +32,14 @@ function SignOverview({ getTransactions }) {
   }, [getTransactions, next])
 
   const handleAcceptTerms = useCallback(
-    checked => setAcceptedTerms(checked),
+    (checked) => setAcceptedTerms(checked),
     []
   )
 
   return (
     <>
       <img
-        src={signGraphic}
+        src={appearance === 'light' ? signGraphicLight : signGraphicDark}
         css={`
           display: block;
           width: auto;
