@@ -16,11 +16,11 @@ const illustrations = {
   [IndividualStepTypes.Error]: signRequestFailIllustration,
 }
 
-const illustrationsDarkMode = {
-  [STEP_WORKING]: trxBeingMinedIllustrationDark,
-  [STEP_SUCCESS]: signRequestSuccessIllustrationDark,
-  [STEP_ERROR]: signRequestFailIllustrationDark,
-}
+// const illustrationsDarkMode = {
+//   // [STEP_WORKING]: trxBeingMinedIllustrationDark,
+//   [STEP_SUCCESS]: signRequestSuccessIllustrationDark,
+//   [STEP_ERROR]: signRequestFailIllustrationDark,
+// }
 
 function Illustration({ status, index }) {
   const theme = useTheme()

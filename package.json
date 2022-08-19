@@ -6,7 +6,7 @@
     "start": "yarn run check-env && yarn run sync-assets && react-app-rewired start",
     "build": "yarn run sync-assets && react-app-rewired build",
     "lint": "eslint ./src",
-    "sync-assets": "cyarn opy-aragon-ui-assets ./public",
+    "sync-assets": "yarn copy-aragon-ui-assets ./public",
     "bundlewatch": "bundlewatch",
     "prettier-ai": "prettier --write 'src/**/*.{ts,tsx,js}' --loglevel=error --ignore-path .prettier-imports-ignore",
     "test": "react-app-rewired test --env=jsdom",

@@ -13,6 +13,8 @@ import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 import { HashRouter } from 'react-router-dom'
 import { ANY_ENTITY } from '@1hive/connect-react'
 
+type AppearanceType = 'light' | 'dark'
+
 function App() {
   const { appearance } = useAppTheme()
 
@@ -22,7 +24,7 @@ function App() {
         assetsUrl="/aragon-ui/"
         layout={false}
         scrollView={false}
-        theme={theme.light}
+        theme={theme[appearance as AppearanceType]}
       >
         <WalletProvider>
           <GlobalErrorHandler>
