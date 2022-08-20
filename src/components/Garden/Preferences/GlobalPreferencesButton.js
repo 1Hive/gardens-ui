@@ -8,17 +8,27 @@ import {
   IconSettings,
   Popover,
   RADIUS,
+  Switch,
   textStyle,
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
+
+import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
+import darkModeIconDark from '@assets/dark-mode/icon-dark-mode-dark.svg'
 
 function GlobalPreferencesButton({ onOpen }) {
   const theme = useTheme()
   const { below } = useViewport()
+  const AppTheme = useAppTheme()
 
   const [opened, setOpened] = useState(false)
   const containerRef = useRef()
+
+  const toggleDarkMode = useCallback(() => {
+    AppTheme.toggleAppearance()
+  }, [AppTheme])
 
   const handleToggle = useCallback(() => setOpened((opened) => !opened), [])
   const handleClose = useCallback(() => setOpened(false), [])
@@ -83,6 +93,24 @@ function GlobalPreferencesButton({ onOpen }) {
             Icon={IconConfiguration}
             label="Settings"
           />
+          <Item
+            onClick={toggleDarkMode}
+            icon={AppTheme.appearance === 'dark'? darkModeIconDark : darkModeIconLight }
+            label={
+              <React.Fragment>
+                <div
+                  css={`
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                  `}
+                >
+                  <span>Dark mode</span>
+                  <Switch checked={AppTheme.appearance === 'dark'} />
+                </div>
+              </React.Fragment>
+            }
+          />
           <Item href="https://1hive.gitbook.io/gardens/">
             <div
               css={`
@@ -108,7 +136,7 @@ function GlobalPreferencesButton({ onOpen }) {
   )
 }
 
-function Item({ children, Icon, label, onClick, href }) {
+function Item({ children, icon, label, onClick, href }) {
   const theme = useTheme()
   return (
     <li
@@ -146,13 +174,13 @@ function Item({ children, Icon, label, onClick, href }) {
         >
           {children || (
             <>
-              <Icon />
+              {icon && <img src={icon} alt="" />}
               <div
                 css={`
                   flex-grow: 1;
                   display: flex;
                   align-items: center;
-                  margin-left: ${Icon ? 1 * GU : 0}px;
+                  margin-left: ${icon ? 1 * GU : 0}px;
                 `}
               >
                 {label}

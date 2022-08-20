@@ -36,7 +36,7 @@ export const getStatusAttributes = (
       label: 'Cancelled',
       Icon: IconCross,
       color: theme.negative,
-      background: '#FFF8F8',
+      background: theme.negativeSurface,
       borderColor: theme.negative,
     }
   }

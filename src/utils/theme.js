@@ -54,7 +54,7 @@ export default {
 
     negative: '#FF6D6D',
     negativeContent: '#FF6D6D',
-    negativeSurface: '#362F4E',
+    negativeSurface: '#1a0c0c',
     negativeSurfaceContent: '#FF6D6D',
 
     accent: '#7FDBBD',
@@ -67,12 +67,12 @@ export default {
     positiveSurface: '#0C4054',
 
     celeste: '#B19AFF',
-    celesteBorder: '#2B235F',
-    celesteSurface: '#FFFFFF',
+    celesteBorder: '#B19AFF',
+    celesteSurface: '#12101a',
 
-    challenge: '#FFA410',
-    challengeBorder: '#FFA410',
-    challengeSurface: '#FFFDFA',
+    challenge: '#B3730B',
+    challengeBorder: '#B3730B',
+    challengeSurface: '#190f03',
 
     green: '#71EEB8',
   },

@@ -11,7 +11,6 @@ import { useAppTheme } from './providers/AppTheme'
 import theme from './utils/theme'
 import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 import { HashRouter } from 'react-router-dom'
-import { ANY_ENTITY } from '@1hive/connect-react'
 
 type AppearanceType = 'light' | 'dark'
 

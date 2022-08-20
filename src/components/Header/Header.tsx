@@ -24,10 +24,9 @@ import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
-
 import gardensLogoTypeDark from '@assets/dark-mode/gardensLogoTypeDark.svg'
 import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
-import darkModeIconDark from '@assets/icon-dark-mode-dark.svg'
+import darkModeIconDark from '@assets/dark-mode/icon-dark-mode-dark.svg'
 
 function Header({
   onOpenPreferences,
@@ -57,9 +56,14 @@ function Header({
       }
     }
 
+    const logotype =
+      AppTheme.appearance === 'light'
+        ? connectedGarden?.logo_type
+        : connectedGarden?.logo_type_dark
+
     return {
       logo: connectedGarden?.logo || defaultGardenLogo,
-      logotype: connectedGarden?.logo_type || defaultGardenLogo,
+      logotype: logotype || connectedGarden?.logo_type || defaultGardenLogo,
     }
   }, [connectedGarden, AppTheme.appearence])
 
@@ -205,22 +209,24 @@ function Header({
                 </>
               )}
 
-              <ButtonBase
-                css={`
-                  width: ${3 * GU}px;
-                  height: ${3 * GU}px;
-                `}
-                onClick={toggleDarkMode}
-              >
-                <img
-                  css="width: 100%;"
-                  src={
-                    AppTheme.appearance === 'light'
-                      ? darkModeIconLight
-                      : darkModeIconDark
-                  }
-                />
-              </ButtonBase>
+              {!connectedGarden && (
+                <ButtonBase
+                  css={`
+                    width: ${3 * GU}px;
+                    height: ${3 * GU}px;
+                  `}
+                  onClick={toggleDarkMode}
+                >
+                  <img
+                    css="width: 100%;"
+                    src={
+                      AppTheme.appearance === 'light'
+                        ? darkModeIconLight
+                        : darkModeIconDark
+                    }
+                  />
+                </ButtonBase>
+              )}
 
               {connectedGarden && (
                 <div

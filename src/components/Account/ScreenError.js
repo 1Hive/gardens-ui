@@ -4,12 +4,10 @@ import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ChainUnsupportedError } from 'use-wallet'
 import { SUPPORTED_CHAINS } from '@/networks'
 import { getNetworkName } from '@utils/web3-utils'
-import connectionError from '@/assets/connection-error.svg'
 import { useAppTheme } from '@providers/AppTheme'
 
-//TODO :
-// import connectionErrorLight from './assets/connection-error.png' / NO ESTA
-// import connectionErrorDark from './assets/connection-error-dark-mode.png' / NO LA IMPORTA
+import connectionError from '@assets/connection-error.svg'
+import connectionErrorDark from '@assets/dark-mode/connection-error-dark.svg'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
