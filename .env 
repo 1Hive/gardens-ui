@@ -1,0 +1,61 @@
+# **\*\*** Don't delete that file **\*\***
+
+# That file is used by check_env.ts
+
+# to ensure you have required (not optional) ENV setup properly
+
+# HOW TO USE IT?
+
+# Let the value blank to act like optional
+
+# And set the value 'require' or anything else to throw case it's not exist in .env
+
+REACT_APP_SENTRY_DSN=
+
+# Link of middleware eg: http://localhost:3001 (without slash in the end)
+
+REACT_APP_MIDDLEWARE_ENDPOINT=https://dao-list-middleware.herokuapp.com/
+
+#Owner Repositorie's name of dao-list
+REACT_APP_OWNER_REPO_DAO_LIST=1Hive
+
+# Env to set a custom node on Polygon.
+
+REACT_APP_POLYGON_ETH_NODE=
+
+# Env to set a custom node on xDai.
+
+REACT_APP_XDAI_ETH_NODE=https://poa-xdai.gateway.pokt.network/v1/lb/61140fc659501900341babff
+
+# Env to set a custom node on Rinkeby.
+
+REACT_APP_RINKEBY_ETH_NODE=
+
+# App ID to setup Portis provider.
+
+REACT_APP_PORTIS_ID=
+
+# API key for Pocket to setup a ethers default provider connected to multiple nodes.
+
+REACT_APP_POCKET_API_KEY=
+
+# API key for Alchemy to setup a ethers default provider connected to multiple nodes.
+
+REACT_APP_ALCHEMY_API_KEY=
+
+# API key for Etherscan to setup a ethers default provider connected to multiple nodes.
+
+REACT_APP_ETHERSCAN_API_KEY=
+
+# API key for Infura to setup a ethers default provider connected to multiple nodes.
+
+REACT_APP_INFURA_API_KEY=
+
+# Aragon apps default names (may change depending on the AragonPM repo deployed on network)
+
+REACT_APP_AGREEMENT_APP_NAME=
+REACT_APP_CONVICTION_APP_NAME=
+REACT_APP_HOOKED_TOKEN_MANAGER_APP_NAME=
+REACT_APP_ISSUANCE_APP_NAME=
+DEFAULT_ISSUANCE_APP_NAME=
+DEFAULT_VOTING_APP_NAME=

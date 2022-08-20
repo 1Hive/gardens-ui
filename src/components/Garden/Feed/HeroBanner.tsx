@@ -51,9 +51,7 @@ function HeroBanner({ onRequestNewProposal }: HeroBannerProps) {
 
   const bannerType = appearance === 'light' ? BANNERS : BANNERS_DARK_MODE
 
-  const banner =
-    //Ver esta saccion, no creo que vaya mobileMode, pero en el res dice FullSizeScrenn, que no la tenemos
-    mobileMode && tabletMode ? bannerType.medium_full : bannerType[layoutName]
+  const banner = tabletMode ? bannerType.medium_full : bannerType[layoutName]
 
   return (
     <div

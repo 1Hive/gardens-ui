@@ -17,7 +17,7 @@ const illustrations = {
 }
 
 // const illustrationsDarkMode = {
-//   // [STEP_WORKING]: trxBeingMinedIllustrationDark,
+//   [STEP_WORKING]: trxBeingMinedIllustrationDark,
 //   [STEP_SUCCESS]: signRequestSuccessIllustrationDark,
 //   [STEP_ERROR]: signRequestFailIllustrationDark,
 // }

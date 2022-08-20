@@ -122,8 +122,16 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
 
 function Token({ balance, loading, mode, darkTheme, onClick, token }) {
   const theme = useTheme()
-  const { icon, button, hint, apr } = mode
+  const { button, hint, apr } = mode
   const claimMode = mode.type === 'claim'
+
+  const icon = wrapMode
+    ? darkTheme
+      ? wrappedIconDark
+      : wrappedIcon
+    : darkTheme
+    ? unwrappedIconDark
+    : unwrappedIcon
 
   return (
     <div

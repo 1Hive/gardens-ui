@@ -19,12 +19,11 @@ function MainView({ children }) {
   const connectedGarden = useConnectedGarden()
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [createProposalModalVisible, setCreateProposalModalVisible] =
+    useState(false)
 
   const handleToggleSidebar = useCallback(() => {
-    setShowMobileSidebar(prevShowMobileSidebar => !prevShowMobileSidebar)
+    setShowMobileSidebar((prevShowMobileSidebar) => !prevShowMobileSidebar)
   }, [])
 
   let loadingGardenState = true

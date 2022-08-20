@@ -20,10 +20,10 @@ function GlobalPreferencesButton({ onOpen }) {
   const [opened, setOpened] = useState(false)
   const containerRef = useRef()
 
-  const handleToggle = useCallback(() => setOpened(opened => !opened), [])
+  const handleToggle = useCallback(() => setOpened((opened) => !opened), [])
   const handleClose = useCallback(() => setOpened(false), [])
   const handleItemClick = useCallback(
-    path => () => {
+    (path) => () => {
       setOpened(false)
       onOpen(path)
     },

@@ -93,7 +93,7 @@ const CombinedBar = styled.div`
   height: 6px;
   border-radius: 2px;
   background: #edf3f6;
-  background: ${theme.controlDisabled};
+  background: ${(theme) => theme.controlDisabled};
 `
 
 const BarPart = styled(animated.div)`

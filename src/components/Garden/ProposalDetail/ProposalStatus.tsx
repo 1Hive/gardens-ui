@@ -44,18 +44,18 @@ export const getStatusAttributes = (
     return {
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
-      color: '#8253A8',
-      background: '#FCFAFF',
-      borderColor: '#8253A8',
+      color: theme.celeste,
+      background: theme.celesteSurface,
+      borderColor: theme.celesteBorder,
     }
   }
   if (proposal.statusData.challenged) {
     return {
       label: 'Challenged',
       iconSrc: challengeIconSvg,
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
+      color: theme.challenge,
+      background: theme.challengeSurface,
+      borderColor: theme.challengeBorder,
     }
   }
   if (proposal.statusData.settled) {
