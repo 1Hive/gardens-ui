@@ -24,7 +24,11 @@ function SummaryBar({
     >
       {({ progress }) => (
         <Main compact={compact} {...props}>
-          <CombinedBar>
+          <CombinedBar
+            style={{
+              backgroundColor: theme.surfaceUnder,
+            }}
+          >
             <BarPart
               style={{
                 backgroundColor: theme.accent,
@@ -92,8 +96,6 @@ const CombinedBar = styled.div`
   width: 100%;
   height: 6px;
   border-radius: 2px;
-  background: #edf3f6;
-  background: ${(theme) => theme.controlDisabled};
 `
 
 const BarPart = styled(animated.div)`
