@@ -13,12 +13,14 @@ import {
   useTheme,
   Viewport,
 } from '@1hive/1hive-ui'
+import { useInside } from 'use-inside'
+import { useAppTheme } from '@providers/AppTheme'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
-import { useDisableAnimation } from '../../hooks/useDisableAnimation'
-import { useInside } from 'use-inside'
 
-import headerBackground from '../../assets/modal-background.svg'
+import headerBackground from '@assets/modal-background.svg'
+import headerBackgroundDark from '@assets/dark-mode/modal-background.svg'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
@@ -134,11 +136,15 @@ function MultiModalFrame({ visible, onClosed }) {
 // We memoize this compontent to avoid excessive re-renders when animating
 const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   const theme = useTheme()
+  const AppTheme = useAppTheme()
   const { step, direction, getScreen } = useMultiModal()
   const [applyStaticHeight, setApplyStaticHeight] = useState(false)
   const [height, setHeight] = useState(null)
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const { layoutName } = useLayout()
+
+  const headerImg =
+    AppTheme.appearance === 'light' ? headerBackground : headerBackgroundDark
 
   const smallMode = layoutName === 'small'
 
@@ -164,7 +170,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
                 overflow: hidden;
                 padding: ${1.5 * GU}px ${standardPadding}px ${1.5 * GU}px
                   ${standardPadding}px;
-                background-image: url('${headerBackground}');
+                background-image: url('${headerImg}');
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
               `}
             >
@@ -175,7 +181,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
 
                   ${smallMode ? textStyle('title3') : textStyle('title2')};
                   font-weight: 600;
-                  color: ${theme.overlay};
+                  color: ${theme.overlay.alpha(0.87)};
                 `}
               >
                 {title}
