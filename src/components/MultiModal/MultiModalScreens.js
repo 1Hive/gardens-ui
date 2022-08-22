@@ -13,6 +13,7 @@ import {
   useTheme,
   Viewport,
 } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'

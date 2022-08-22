@@ -62,10 +62,11 @@ function SignOverview({ getTransactions }) {
           `}
         >
           <Checkbox
+            style={{ backgroundColor: `${theme.helpSurface}` }}
             checked={acceptedTerms}
             onChange={handleAcceptTerms}
             css={`
-              border-color: ${theme.accent};
+              border-color: ${theme.disabledContent};$
             `}
           />
         </div>
