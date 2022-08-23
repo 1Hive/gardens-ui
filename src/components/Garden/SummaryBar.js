@@ -26,7 +26,7 @@ function SummaryBar({
         <Main compact={compact} {...props}>
           <CombinedBar
             style={{
-              backgroundColor: theme.surfaceUnder,
+              backgroundColor: '#51709E',
             }}
           >
             <BarPart

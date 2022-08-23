@@ -28,7 +28,8 @@ export default {
     surfaceContent: '#DFE3EA',
     surfaceContentSecondary: '#ACB5C2',
     surfaceIcon: '#DFE3EA',
-    surfaceUnder: '#51709E',
+    surfaceUnder: '#031A3A',
+    surfaceBar: '#51709E',
 
     link: '#7CA8FF',
 
