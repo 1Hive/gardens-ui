@@ -112,7 +112,9 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
             }}
           >
             <div style={{ marginBottom: '7%', marginTop: '10%' }}>
-              <Title hFontSize={hFontSize}>Find your garden</Title>
+              <Title apparence={AppTheme.appearance} hFontSize={hFontSize}>
+                Find your garden
+              </Title>
               <Subtitle pFontSize={pFontSize} color={theme.contentSecondary}>
                 Gardens are digital economies that anyone can help shape
               </Subtitle>
