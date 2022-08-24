@@ -128,7 +128,7 @@ export function BoxProgress({
         `}
       />
       <BoxBase
-        background="#8DE995"
+        background={appearance === 'light' ? '#8DE995' : '#115A50'}
         boxTransform={boxTransform}
         direction={fullWidth ? 'column' : 'row-reverse'}
         opacity={opacity}
