@@ -7,6 +7,8 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import { formatTokenAmount } from '@utils/token-utils'
 
+import honeyIconSvg from '@assets/honey.svg'
+
 function AgreementBindingActions({ apps }) {
   const { chainId } = useConnectedGarden()
   const network = getNetwork(chainId)
@@ -42,7 +44,6 @@ function AgreementBindingActions({ apps }) {
         css={`
           display: grid;
           width: 100%;
-          background-color: ${theme.helpContent};
           padding-top: ${3 * GU}px;
           padding-bottom: ${3 * GU}px;
           padding-left: ${1.25 * GU}px;
@@ -58,7 +59,23 @@ function AgreementBindingActions({ apps }) {
             </>
           }
         >
-          <AmountPerAction amount={actionAmount} token={token} />
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <img
+              src={honeyIconSvg}
+              alt=""
+              height="28"
+              width="28"
+              css={`
+                margin-right: ${0.5 * GU}px;
+              `}
+            />
+            <AmountPerAction amount={actionAmount} token={token} />
+          </div>
         </InfoField>
 
         <InfoField
@@ -69,7 +86,23 @@ function AgreementBindingActions({ apps }) {
             </>
           }
         >
-          <AmountPerAction amount={challengeAmount} token={token} />
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <img
+              src={honeyIconSvg}
+              alt=""
+              height="28"
+              width="28"
+              css={`
+                margin-right: ${0.5 * GU}px;
+              `}
+            />
+            <AmountPerAction amount={challengeAmount} token={token} />
+          </div>
         </InfoField>
 
         <InfoField

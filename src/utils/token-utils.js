@@ -15,10 +15,11 @@ const LOCAL_TOKEN_ICONS = new Map([
   ['WXDAI', stableTokenSvg],
 ])
 
-export function getGardenTokenIcon(garden, token) {
-  const { appearance } = useAppTheme()
+export function getGardenTokenIcon(garden, token, appearance) {
   const tokenLogo =
-    appearance === 'light' ? garden.token.logo : garden.token.logoDark
+    appearance === 'light'
+      ? garden.token.logo
+      : garden.token.logoDark || garden.token.logo
 
   if (garden) {
     if (addressesEqual(garden.token.id, token.id)) {

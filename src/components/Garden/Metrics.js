@@ -115,9 +115,9 @@ function PriceSection({
       <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
         src={
-          appearance === 'light'
+          (appearance === 'light'
             ? token.logo
-            : token.logoDark || defaultTokenLogo
+            : token.logoDark || token.logo) || defaultTokenLogo
         }
         height="60"
         width="60"

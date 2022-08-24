@@ -32,9 +32,9 @@ function BalanceModule() {
       icon={
         <img
           src={
-            appearance === 'light'
+            (appearance === 'light'
               ? token.data.logo
-              : token.data.logoDark || defaultTokenLogo
+              : token.data.logoDark || token.data.logo) || defaultTokenLogo
           }
           height="28"
           width="28"

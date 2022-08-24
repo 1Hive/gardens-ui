@@ -61,7 +61,7 @@ const SliderField = React.forwardRef(function SliderField(
   }, [value])
 
   const handleSliderChange = useCallback(
-    v => {
+    (v) => {
       const value = (v * maxValue).toFixed(precision)
       onChange(value < minValue ? minValue : removeTrailingZeros(value))
     },
@@ -69,7 +69,7 @@ const SliderField = React.forwardRef(function SliderField(
   )
 
   const handleInputChange = useCallback(
-    event => {
+    (event) => {
       const value = event.target.value
 
       // Allow empty values so it can be easier to update input

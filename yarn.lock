@@ -100,10 +100,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.2.tgz#6428996684becf0048360b08a7fbac8f3e9062e5"
-  integrity sha512-I1pczznfjMZPMSfF4XllKr2lK6YJQi20PzICmYJIzAn9iUSOxAMwVzspL6UV/95tMdSGeo+m7N45oKLdT5Qs+Q==
+"@1hive/1hive-ui@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.8.tgz#6a82c9d7775ff34a7bdc7daf0e851fd8235b5419"
+  integrity sha512-4XVYkGep7maZ1uVsWhqad2+/0gn0pg1oII1mprBIO15cxl05wksxykrdAXQUhAQtYcVl8g+aaKQTu7osPRCQog==
   dependencies:
     "@react-spring/web" "^9.4.4"
     arg "^2.0.0"
@@ -20425,9 +20425,9 @@ ursa-optional@~0.10.0:
     bindings "^1.5.0"
     nan "^2.14.2"
 
-"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
   version "0.2.0"
-  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@1.1.1":
   version "1.1.1"

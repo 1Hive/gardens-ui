@@ -112,11 +112,7 @@ function MultiModalFrame({ visible, onClosed }) {
                         `}
                         onClick={handleModalClose}
                       >
-                        <IconCross
-                          color={
-                            appearance === 'light' && theme.positiveSurface
-                          }
-                        />
+                        <IconCross color={theme.floatingContent} />
                       </ButtonIcon>
                     )}
 
@@ -181,8 +177,8 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
                   ${smallMode ? textStyle('title3') : textStyle('title2')};
                   font-weight: 600;
                   color: ${appearance === 'light'
-                    ? theme.selectedContent
-                    : theme.selectedContent.alpha(0.87)};
+                    ? theme.floatingContent
+                    : theme.floatingContent.alpha(0.87)};
                 `}
               >
                 {title}
