@@ -23,8 +23,8 @@ function ConfigureStepsItem({ stepNumber, step, label, currentStep, type }) {
     }
     return `
       padding-top: 2px;
-      background: #ECEFF4;
-      color: #9CA7B8;
+      background: ${theme.disabled};
+      color: #${theme.selectedContent};
     `
   }, [step, currentStep, theme])
 

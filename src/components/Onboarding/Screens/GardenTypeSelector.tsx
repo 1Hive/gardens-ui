@@ -3,6 +3,7 @@ import Lottie from 'react-lottie-player'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useOnboardingState } from '@providers/Onboarding'
+import { useAppTheme } from '@/providers/AppTheme'
 import byotAnimation from '@assets/lotties/byotAnimation.json'
 import nativeAnimation from '@assets/lotties/nativeAnimation.json'
 
@@ -78,6 +79,7 @@ function Card({
 }: CardProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const theme = useTheme()
+  const { appearance } = useAppTheme()
 
   const handleStartAnimation = useCallback(() => {
     setIsPlaying(true)
@@ -104,12 +106,12 @@ function Card({
           border-color 1.5s ease;
         ${selected
           ? `
-          border: 2px solid #56D571;
+          border: 2px solid ${appearance === 'light' ? '#56D571' : '#469766'};
           transform: scale(1.02);
         `
           : `  &:hover {
           box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
-          border: 2px solid #56D571;
+          border: 2px solid ${appearance === 'light' ? '#56D571' : '#469766'};
           transform: scale(1.02);
         }`};
       `}
@@ -119,7 +121,7 @@ function Card({
     >
       <div
         css={`
-          background: #59d673;
+          background: ${appearance === 'light' ? '#59d673' : '#469766'};
           border-radius: 50%;
           width: 218px;
           height: 218px;

@@ -10,49 +10,47 @@ const Modal = ({
   onClick,
   onClose,
   width,
-}) => {
-  const theme = useTheme()(
-    <OneHiveModal
+}) => (
+  <OneHiveModal
+    css={`
+      // Modal needs to pop up over onboarding surface
+      z-index: 4;
+    `}
+    width={width}
+    visible={visible}
+    onClose={onClose}
+  >
+    <div
       css={`
-        // Modal needs to pop up over onboarding surface
-        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        padding: 0 ${4 * GU}px;
+        padding-top: ${2 * GU}px;
       `}
-      width={width}
-      visible={visible}
-      onClose={onClose}
     >
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          padding: 0 ${4 * GU}px;
-          padding-top: ${2 * GU}px;
-        `}
-      >
-        {title && (
-          <div
-            css={`
-              ${textStyle('title3')};
-              margin-bottom: ${4 * GU}px;
-            `}
-          >
-            {title}
-          </div>
-        )}
-        {children}
-        <Button
+      {title && (
+        <div
           css={`
-            align-self: flex-end;
-            margin-top: ${3 * GU}px;
+            ${textStyle('title3')};
+            margin-bottom: ${4 * GU}px;
           `}
-          label={buttonLabel ?? 'Done'}
-          mode="strong"
-          onClick={onClick}
-        />
-      </div>
-    </OneHiveModal>
-  )
-}
+        >
+          {title}
+        </div>
+      )}
+      {children}
+      <Button
+        css={`
+          align-self: flex-end;
+          margin-top: ${3 * GU}px;
+        `}
+        label={buttonLabel ?? 'Done'}
+        mode="strong"
+        onClick={onClick}
+      />
+    </div>
+  </OneHiveModal>
+)
 
 Modal.propTypes = {
   buttonLabel: PropTypes.string,
