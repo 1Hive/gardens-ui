@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "3box": "^1.19.1",
-    "@1hive/1hive-ui": "1.0.17",
+    "@1hive/1hive-ui": "^1.1.2",
     "@1hive/connect-agreement": "^0.9.5",
     "@1hive/connect-gardens": "^0.1.12",
     "@1hive/connect-react": "^0.9.9",
