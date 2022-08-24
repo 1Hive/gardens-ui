@@ -21,15 +21,9 @@ import wrappedIconDark from '@assets/dark-mode/wrappedIconDark.svg'
 import unwrappedIcon from '@assets/unwrappedIcon.svg'
 import unwrappedIconDark from '@assets/dark-mode/unwrappedIconDark.svg'
 import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
-import tokenAPRIcon from '@assets/tokenRewardIcon.png'
-
-const TokenHeaderDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
-const AprSpan = styled.span`
-  margin-left: ${0.5 * GU}px;
-`
+import claimRewardsIconDark from '@assets/dark-mode/rewardsWrapperIcon.svg'
+import tokenAPRIcon from '@assets/tokenRewardIcon.svg'
+import tokenAPRIconDark from '@assets/dark-mode/tokenRewardIcon.svg'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
@@ -43,8 +37,15 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     rewardAPR && !rewardAPR.eq(0)
       ? rewardAPR.multipliedBy(100).toFixed(2)
       : null
-  const unwrappedImage =
-    rewardAPR && !rewardAPR.eq(0) ? tokenAPRIcon : unwrappedIcon
+
+  let unwrappedImage
+  if (rewardAPR && !rewardAPR.eq(0)) {
+    unwrappedImage =
+      AppTheme.appearance === 'dark' ? tokenAPRIconDark : tokenAPRIcon
+  } else {
+    unwrappedImage =
+      AppTheme.appearance === 'dark' ? unwrappedIconDark : unwrappedIcon
+  }
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -74,7 +75,7 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       loading={loading}
       mode={{
         type: 'wrapped',
-        icon: wrappedIcon,
+        icon: AppTheme.appearance === 'dark' ? wrappedIconDark : wrappedIcon,
         button: { mode: 'strong', label: 'Unwrap' },
         hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
       }}
@@ -87,7 +88,10 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
       loading={!earnedRewards}
       mode={{
         type: 'claim',
-        icon: claimRewardsIcon,
+        icon:
+          AppTheme.appearance === 'dark'
+            ? claimRewardsIconDark
+            : claimRewardsIcon,
         button: { mode: 'normal', label: 'Claim' },
       }}
       onClick={handleClaimRewards}
@@ -135,12 +139,14 @@ function Token({ balance, loading, mode, darkTheme, onClick, token }) {
         ${textStyle('body2')};
       `}
     >
-      {
-        <TokenHeaderDiv>
-          <img src={icon} height="48" width="48" />
-          {apr && <AprSpan>{apr}% APR</AprSpan>}
-        </TokenHeaderDiv>
-      }
+      {apr ? (
+        <span css={{ marginLeft: 0.5 * GU }}>
+          <div css={{ color: theme.positive }}>% APR</div>
+          {apr}
+        </span>
+      ) : (
+        <img src={icon} height="48" width="48" />
+      )}
       {loading ? (
         <div
           css={`

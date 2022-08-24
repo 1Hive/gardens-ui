@@ -77,6 +77,7 @@ function AgreementLayout({
               mode="warning"
               css={`
                 margin-bottom: ${2 * GU}px;
+                border: none;
               `}
             >
               <div

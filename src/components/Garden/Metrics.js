@@ -14,6 +14,7 @@ import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
@@ -93,12 +94,13 @@ function PriceSection({
   currency,
   onRequestUpdatePriceOracle,
 }) {
+  const { appearance } = useAppTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const [priceMode, setPriceMode] = useState(true)
 
   const handleTogglePriceMode = useCallback(() => {
-    setPriceMode(priceMode => !priceMode)
+    setPriceMode((priceMode) => !priceMode)
   }, [])
 
   return (
@@ -112,7 +114,11 @@ function PriceSection({
     >
       <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
-        src={token.logo || defaultTokenLogo}
+        src={
+          appearance === 'light'
+            ? token.logo
+            : token.logoDark || defaultTokenLogo
+        }
         height="60"
         width="60"
         alt=""
@@ -137,7 +143,7 @@ function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
   const [supplyMode, setSupplyMode] = useState(true)
 
   const handleToggleSupplyMode = useCallback(() => {
-    setSupplyMode(supplyMode => !supplyMode)
+    setSupplyMode((supplyMode) => !supplyMode)
   }, [])
 
   return (
@@ -374,7 +380,7 @@ function Dot({ isActive, onChange }) {
     <span
       onClick={
         !isActive
-          ? e => {
+          ? (e) => {
               e.preventDefault()
               onChange()
             }

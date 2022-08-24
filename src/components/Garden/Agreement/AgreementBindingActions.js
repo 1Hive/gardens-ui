@@ -10,6 +10,7 @@ import { formatTokenAmount } from '@utils/token-utils'
 function AgreementBindingActions({ apps }) {
   const { chainId } = useConnectedGarden()
   const network = getNetwork(chainId)
+  const theme = useTheme()
 
   const items = apps.map(
     ({
@@ -39,8 +40,9 @@ function AgreementBindingActions({ apps }) {
 
       <div
         css={`
-          display: inline-grid;
+          display: grid;
           width: 100%;
+          background-color: ${theme.helpContent};
           padding-top: ${3 * GU}px;
           padding-bottom: ${3 * GU}px;
           padding-left: ${1.25 * GU}px;

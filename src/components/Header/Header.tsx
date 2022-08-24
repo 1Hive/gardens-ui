@@ -38,7 +38,7 @@ function Header({
   const theme = useTheme()
   const { pathname } = useLocation()
   const connectedGarden = useConnectedGarden()
-  const AppTheme = useAppTheme()
+  const { appearance, toggleAppearance } = useAppTheme()
   const history = useHistory()
   const { below } = useViewport()
   const { account } = useWallet()
@@ -50,14 +50,12 @@ function Header({
       return {
         logo: gardensLogo,
         logotype:
-          AppTheme.appearance === 'light'
-            ? gardensLogoType
-            : gardensLogoTypeDark,
+          appearance === 'light' ? gardensLogoType : gardensLogoTypeDark,
       }
     }
 
     const logotype =
-      AppTheme.appearance === 'light'
+      appearance === 'light'
         ? connectedGarden?.logo_type
         : connectedGarden?.logo_type_dark
 
@@ -65,7 +63,7 @@ function Header({
       logo: connectedGarden?.logo || defaultGardenLogo,
       logotype: logotype || connectedGarden?.logo_type || defaultGardenLogo,
     }
-  }, [connectedGarden, AppTheme.appearence])
+  }, [connectedGarden, appearance])
 
   const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
   const logoLink = `#${
@@ -73,8 +71,8 @@ function Header({
   }`
 
   const toggleDarkMode = useCallback(() => {
-    AppTheme.toggleAppearance()
-  }, [AppTheme])
+    toggleAppearance()
+  }, [toggleAppearance])
 
   const showBalance = connectedGarden && account && !mobileMode
   const showMenu = pathname !== '/home' && mobileMode
@@ -220,7 +218,7 @@ function Header({
                   <img
                     css="width: 100%;"
                     src={
-                      AppTheme.appearance === 'light'
+                      appearance === 'light'
                         ? darkModeIconLight
                         : darkModeIconDark
                     }
