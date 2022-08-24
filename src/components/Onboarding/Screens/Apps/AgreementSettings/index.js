@@ -66,14 +66,8 @@ const validateAgreementSettings = (
 
 function AgreementSettings() {
   const theme = useTheme()
-  const {
-    config,
-    onBack,
-    onConfigChange,
-    onNext,
-    step,
-    steps,
-  } = useOnboardingState()
+  const { config, onBack, onConfigChange, onNext, step, steps } =
+    useOnboardingState()
   const [formError, setFormError] = useState()
   const [
     { actionAmount, challengeAmount, challengePeriod, covenantFile, title },
@@ -85,7 +79,7 @@ function AgreementSettings() {
   )
 
   const handleActionAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['actionAmount', value])
     },
@@ -93,7 +87,7 @@ function AgreementSettings() {
   )
 
   const handleChallengeAmount = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['challengeAmount', value])
     },
@@ -101,7 +95,7 @@ function AgreementSettings() {
   )
 
   const handleChallengePeriod = useCallback(
-    value => {
+    (value) => {
       setFormError(null)
       updateField(['challengePeriod', value])
     },
@@ -109,7 +103,7 @@ function AgreementSettings() {
   )
 
   const handleCovenantFileChange = useCallback(
-    file => {
+    (file) => {
       setFormError(null)
       updateField(['covenantFile', file])
     },

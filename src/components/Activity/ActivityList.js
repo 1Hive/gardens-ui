@@ -10,10 +10,12 @@ import {
 } from '@1hive/1hive-ui'
 import ActivityItem from './ActivityItem'
 import { useActivity } from '@providers/ActivityProvider'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { ActivityStatus } from './activity-statuses'
-// TODO- REPLACES THIS ASSET ONCE THE DESIGNER HAS ONE FOR GARDENS
+
 import noDataSvg from '@assets/noData.svg'
+import noDataDarkSvg from '@assets/dark-mode/noData.svg'
 
 // 8GU for top bar, 4GU for activity heading,
 // 11GU for HelpScout beacon (3GU top/bottom padding, 5GU beacon)
@@ -22,6 +24,7 @@ const MAX_LIST_HEIGHT_CLAMP = 96 * GU
 
 function ActivityList() {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const { below, height } = useViewport()
   const { activities, clearActivities } = useActivity()
 
@@ -127,7 +130,11 @@ function ActivityList() {
               height: ${28.5 * GU}px;
             `}
           >
-            <img src={noDataSvg} alt="No results" height="120" />
+            <img
+              src={appearance === 'light' ? noDataSvg : noDataDarkSvg}
+              alt="No results"
+              height="120"
+            />
             <span
               css={`
                 margin-top: ${2 * GU}px;

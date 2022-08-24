@@ -4,9 +4,12 @@ import BalanceCard from './BalanceCard'
 import ExpandableCard from './ExpandableCard'
 import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatTokenAmount } from '@utils/token-utils'
+import { useAppTheme } from '@providers/AppTheme'
 
-import coin from './assets/coin.svg'
-import wallet from './assets/wallet.svg'
+import coinLight from './assets/coin.svg'
+import walletLight from './assets/wallet.svg'
+import coinDark from './assets/coin-dark.svg'
+import walletDark from './assets/wallet-dark.svg'
 import { TokenType } from '@/types/app'
 
 type SideBarType = {
@@ -19,8 +22,12 @@ function SideBar({
   token,
   onDepositOrWithdraw,
 }: SideBarType) {
+  const AppTheme = useAppTheme()
   const { available, locked, total, allowance } = staking
   const tokenPrice = useHoneyswapTokenPrice(token.id)
+
+  const coin = AppTheme.appearance === 'light' ? coinLight : coinDark
+  const wallet = AppTheme.appearance === 'light' ? walletLight : walletDark
 
   return (
     <div

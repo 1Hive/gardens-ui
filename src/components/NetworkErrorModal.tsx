@@ -1,9 +1,12 @@
 import React from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
-import flowerError from '@assets/flowerError.svg'
+import { useAppTheme } from '@providers/AppTheme'
+import flowerErrorLight from '@assets/flowerError.svg'
+import flowerErrorDark from '@assets/dark-mode/flowerError.svg'
 
 function NetworkErrorModal({ visible }: { visible: boolean }) {
   const { width } = useViewport()
+  const { appearance } = useAppTheme()
 
   return (
     <Modal
@@ -19,7 +22,11 @@ function NetworkErrorModal({ visible }: { visible: boolean }) {
           text-align: center;
         `}
       >
-        <img src={flowerError} alt="" height="88" width="71" />
+        {appearance === 'light' ? (
+          <img src={flowerErrorLight} alt="" height="88" width="71" />
+        ) : (
+          <img src={flowerErrorDark} alt="" height="140" width="120" />
+        )}
         <h3
           css={`
             ${textStyle('title2')}

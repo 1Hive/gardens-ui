@@ -1,8 +1,12 @@
 import React from 'react'
 import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
 import desktopBanner from '@assets/landingBanner.png'
+import desktopBannerDark from '@assets/dark-mode/landingBanner.png'
 import mobileBanner from '@assets/landingBanner-mobile.png'
+import mobileBannerDark from '@assets/dark-mode/landingBanner-mobile.png'
 import tabletBanner from '@assets/landingBanner-tablet.png'
+import tabletBannerDark from '@assets/dark-mode/landingBanner-tablet.png'
 import styled from 'styled-components'
 
 const BANNERS = {
@@ -10,22 +14,26 @@ const BANNERS = {
     aspectRatio: '53.5%',
     hFontSize: '32px',
     image: mobileBanner,
+    imageDark: mobileBannerDark,
     pFontSize: '14px',
   },
   medium: {
     image: tabletBanner,
+    imageDark: tabletBannerDark,
     aspectRatio: '36.5%',
     hFontSize: '52px',
     pFontSize: '18px',
   },
   large: {
     image: desktopBanner,
+    imageDark: desktopBannerDark,
     aspectRatio: '26.5%',
     hFontSize: '52px',
     pFontSize: '18px',
   },
   max: {
     image: desktopBanner,
+    imageDark: desktopBannerDark,
     aspectRatio: '26.5%',
     hFontSize: '64px',
     pFontSize: '20px',
@@ -62,11 +70,12 @@ const ContainerChild = styled.div`
 `
 
 const Title = styled.h1<{
+  apparence: string
   hFontSize: string
 }>`
   font-size: ${(props) => props.hFontSize};
   font-weight: bold;
-  color: #048333;
+  color: ${(props) => (props.apparence === 'dark' ? '#8de995' : '#048333')}; ;
 `
 
 const Subtitle = styled.p<{
@@ -84,11 +93,17 @@ type PropsType = {
 const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
   const { onCreateGarden } = props
   const theme = useTheme()
+  const AppTheme = useAppTheme()
   const { layoutName } = useLayout()
-  const { aspectRatio, hFontSize, image, pFontSize } = BANNERS[layoutName]
+  const { aspectRatio, hFontSize, image, imageDark, pFontSize } =
+    BANNERS[layoutName]
 
   return (
-    <Wrapper ref={ref} image={image} aspectRatio={aspectRatio}>
+    <Wrapper
+      ref={ref}
+      image={`${AppTheme.appearance === 'dark' ? imageDark : image}`}
+      aspectRatio={aspectRatio}
+    >
       <Container>
         <ContainerChild>
           <div
@@ -97,7 +112,9 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
             }}
           >
             <div style={{ marginBottom: '7%' }}>
-              <Title hFontSize={hFontSize}>Find your garden</Title>
+              <Title apparence={AppTheme.appearance} hFontSize={hFontSize}>
+                Find your garden
+              </Title>
               <Subtitle pFontSize={pFontSize} color={theme.contentSecondary}>
                 Gardens are digital economies that anyone can help shape
               </Subtitle>

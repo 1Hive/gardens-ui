@@ -51,7 +51,7 @@ function CollateralStatus({ allowance, availableStaked, actionAmount, token }) {
     }
 
     return {
-      backgroundColor: '#EBFBF6',
+      backgroundColor: theme.positiveContent.alpha(0.8),
       color: theme.positive,
       icon: iconCheck,
       text: `Your enabled account has sufficient balance to deposit the ${formatTokenAmount(

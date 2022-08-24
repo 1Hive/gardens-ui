@@ -1,4 +1,5 @@
 import { addressesEqual } from '@1hive/1hive-ui'
+import { useAppTheme } from '@/providers/AppTheme'
 import { round } from './math-utils'
 import defaultTokenSvg from '@assets/defaultTokenLogo.svg'
 import honeyIconSvg from '@assets/honey.svg'
@@ -14,10 +15,15 @@ const LOCAL_TOKEN_ICONS = new Map([
   ['WXDAI', stableTokenSvg],
 ])
 
-export function getGardenTokenIcon(garden, token) {
+export function getGardenTokenIcon(garden, token, appearance) {
+  const tokenLogo =
+    appearance === 'light'
+      ? garden.token.logo
+      : garden.token.logoDark || garden.token.logo
+
   if (garden) {
     if (addressesEqual(garden.token.id, token.id)) {
-      return garden.token.logo || defaultTokenSvg
+      return tokenLogo || defaultTokenSvg
     }
 
     if (addressesEqual(garden.wrappableToken?.id, token.id)) {

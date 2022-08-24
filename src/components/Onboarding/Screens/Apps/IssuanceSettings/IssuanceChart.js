@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react'
-import { ChartBase } from '@components/Onboarding/kit/ChartComponents'
+import {
+  ChartBase,
+  ChartTooltip,
+} from '@components/Onboarding/kit/ChartComponents'
 import { ResponsiveLine } from '@nivo/line'
 import { useCharts } from '@/providers/Charts'
 import { generateElements } from '@/utils/conviction-modelling-helpers'
@@ -82,6 +85,18 @@ const IssuanceChart = ({
         <ResponsiveLine
           {...commonProps}
           data={[{ id: 'ratio-time', data: chartData }]}
+          tooltip={({
+            point: {
+              data: { x, xFormatted, yFormatted },
+            },
+          }) => (
+            <ChartTooltip
+              xLabel="x"
+              yLabel="y"
+              xValue={`${xFormatted}`}
+              yValue={`${yFormatted}`}
+            />
+          )}
           axisBottom={createAxis('time (months)', 'bottom')}
           axisLeft={createAxis('ratio (%)', 'left')}
         />

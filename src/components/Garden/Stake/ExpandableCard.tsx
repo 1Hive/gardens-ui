@@ -140,6 +140,7 @@ type OpenedSurfaceBorder = {
 }
 
 function OpenedSurfaceBorder({ opened }: OpenedSurfaceBorder) {
+  const theme = useTheme()
   return (
     <Spring
       native
@@ -169,8 +170,8 @@ function OpenedSurfaceBorder({ opened }: OpenedSurfaceBorder) {
               width: 3px;
               background: linear-gradient(
                 90deg,
-                #32fff5 -103.98%,
-                #01bfe3 80.13%
+                ${theme.accentEnd} -103.98%,
+                ${theme.accentStart} 80.13%
               );
               transform-origin: 0 0;
             `}

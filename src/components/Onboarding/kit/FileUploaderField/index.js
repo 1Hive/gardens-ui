@@ -20,7 +20,11 @@ const getDropzoneColor = (theme, isReject, isAccept) => {
     return { mainColor: theme.negative, backgroundColor: theme.negativeSurface }
   } else if (isAccept) {
     return { mainColor: theme.positive, backgroundColor: theme.positiveSurface }
-  } else return { mainColor: '#A1A9A4', backgroundColor: '#FFFFFF' }
+  } else
+    return {
+      mainColor: theme.contentSecondary,
+      backgroundColor: theme.background,
+    }
 }
 
 export const TextFileUploader = ({
@@ -57,11 +61,11 @@ export const FileUploaderField = ({
 }) => {
   const theme = useTheme()
   const iconSize = 7 * GU
-  const validExtensions = allowedMIMETypes?.map(f =>
+  const validExtensions = allowedMIMETypes?.map((f) =>
     mimeToExtension(f).toUpperCase()
   )
   const onDrop = useCallback(
-    files => {
+    (files) => {
       const reader = new FileReader()
       const file = files[0]
 
@@ -76,17 +80,12 @@ export const FileUploaderField = ({
     },
     [maxFileSize, onFileUpdated]
   )
-  const {
-    getRootProps,
-    getInputProps,
-    isDragAccept,
-    isDragReject,
-    open,
-  } = useDropzone({
-    accept: allowedMIMETypes,
-    onDrop,
-    multiple: false,
-  })
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } =
+    useDropzone({
+      accept: allowedMIMETypes,
+      onDrop,
+      multiple: false,
+    })
   const { mainColor, backgroundColor } = getDropzoneColor(
     theme,
     isDragReject,
@@ -135,7 +134,7 @@ export const FileUploaderField = ({
         `}
       >
         <div
-          {...getRootProps({ onClick: e => e.stopPropagation() })}
+          {...getRootProps({ onClick: (e) => e.stopPropagation() })}
           css={`
             height: 100%;
             width: 100%;
