@@ -6,7 +6,6 @@ import InfoField from '../InfoField'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import { formatTokenAmount } from '@utils/token-utils'
-import theme from '@/utils/theme'
 
 function AgreementBindingActions({ apps }) {
   const { chainId } = useConnectedGarden()

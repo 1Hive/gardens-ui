@@ -8,11 +8,8 @@ import Routes from './routes/Routes'
 import { Main } from '@1hive/1hive-ui'
 import MainView from '@components/MainView'
 import { useAppTheme } from './providers/AppTheme'
-import theme from './utils/theme'
 import WelcomeLoader from '@components/Welcome/WelcomeLoader'
 import { HashRouter } from 'react-router-dom'
-
-type AppearanceType = 'light' | 'dark'
 
 function App() {
   const { appearance } = useAppTheme()
@@ -23,7 +20,7 @@ function App() {
         assetsUrl="/aragon-ui/"
         layout={false}
         scrollView={false}
-        theme={theme[appearance as AppearanceType]}
+        theme={appearance}
       >
         <WalletProvider>
           <GlobalErrorHandler>

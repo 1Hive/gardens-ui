@@ -15,6 +15,7 @@ import IdentityBadge from '../IdentityBadge'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
@@ -32,6 +33,7 @@ function AccountScreenConnected({
   onClosePopover,
 }: AccountScreenConnectedProps) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()

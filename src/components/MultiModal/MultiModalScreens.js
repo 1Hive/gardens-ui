@@ -135,7 +135,7 @@ function MultiModalFrame({ visible, onClosed }) {
 // We memoize this compontent to avoid excessive re-renders when animating
 const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   const theme = useTheme()
-  const AppTheme = useAppTheme()
+  const { appearance } = useAppTheme()
   const { step, direction, getScreen } = useMultiModal()
   const [applyStaticHeight, setApplyStaticHeight] = useState(false)
   const [height, setHeight] = useState(null)
@@ -143,7 +143,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   const { layoutName } = useLayout()
 
   const headerImg =
-    AppTheme.appearance === 'light' ? headerBackground : headerBackgroundDark
+    appearance === 'light' ? headerBackground : headerBackgroundDark
 
   const smallMode = layoutName === 'small'
 
@@ -180,7 +180,9 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
 
                   ${smallMode ? textStyle('title3') : textStyle('title2')};
                   font-weight: 600;
-                  color: ${theme.overlay.alpha(0.87)};
+                  color: ${appearance === 'light'
+                    ? theme.selectedContent
+                    : theme.selectedContent.alpha(0.87)};
                 `}
               >
                 {title}

@@ -1,9 +1,12 @@
 import React from 'react'
 import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
-import tokenIcon from './assets/connect-icon.svg'
+import { useAppTheme } from '@/providers/AppTheme'
 import LayoutColumns from '../Layout/LayoutColumns'
+import tokenIcon from './assets/connect-icon.svg'
+import tokenIconDark from './assets/connect-icon-dark.svg'
 
 export default function EmptyState({ icon }: { icon: string }) {
+  const { appearance } = useAppTheme()
   return (
     <>
       <Header primary="Deposit Manager" />
@@ -49,7 +52,7 @@ export default function EmptyState({ icon }: { icon: string }) {
               `}
             >
               <img
-                src={tokenIcon}
+                src={appearance === 'light' ? tokenIcon : tokenIconDark}
                 width={6.5 * GU}
                 height={6.5 * GU}
                 css={`

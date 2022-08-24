@@ -137,6 +137,9 @@ function ProposalDisputedInfo({ proposal }) {
       <Info
         css={`
           margin-top: ${2 * GU}px;
+          color: ${theme.celeste};
+          background: ${theme.celesteContent.alpha(0.5)};
+          border: 1px solid ${theme.celeste};
         `}
       >
         Celeste has been invoked to settle a dispute with this proposal

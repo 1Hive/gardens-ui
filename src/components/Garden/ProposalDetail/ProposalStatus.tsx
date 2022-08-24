@@ -36,7 +36,7 @@ export const getStatusAttributes = (
       label: 'Cancelled',
       Icon: IconCross,
       color: theme.negative,
-      background: theme.negativeSurface,
+      background: theme.negativeSurface.alpha(0.4),
       borderColor: theme.negative,
     }
   }
@@ -45,7 +45,7 @@ export const getStatusAttributes = (
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
       color: theme.celeste,
-      background: theme.celesteSurface,
+      background: theme.celesteSurface.alpha(0.4),
       borderColor: theme.celesteBorder,
     }
   }
@@ -54,7 +54,7 @@ export const getStatusAttributes = (
       label: 'Challenged',
       iconSrc: challengeIconSvg,
       color: theme.challenge,
-      background: theme.challengeSurface,
+      background: theme.challengeSurface.alpha(0.4),
       borderColor: theme.challengeBorder,
     }
   }

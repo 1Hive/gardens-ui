@@ -34,6 +34,7 @@ export function mergeGardenMetadata(garden, gardensMetadata) {
   const token = {
     ...garden.token,
     logo: metadata.token_logo,
+    logoDark: metadata.token_logo_dark,
   }
   const wrappableToken = garden.wrappableToken
     ? {

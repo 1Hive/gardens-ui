@@ -70,11 +70,12 @@ const ContainerChild = styled.div`
 `
 
 const Title = styled.h1<{
+  apparence: string
   hFontSize: string
 }>`
   font-size: ${(props) => props.hFontSize};
   font-weight: bold;
-  color: #048333;
+  color: ${(props) => (props.apparence === 'dark' ? '#8de995' : '#048333')}; ;
 `
 
 const Subtitle = styled.p<{
@@ -111,7 +112,9 @@ const LandingBanner = React.forwardRef<any, PropsType>((props, ref) => {
             }}
           >
             <div style={{ marginBottom: '7%' }}>
-              <Title hFontSize={hFontSize}>Find your garden</Title>
+              <Title apparence={AppTheme.appearance} hFontSize={hFontSize}>
+                Find your garden
+              </Title>
               <Subtitle pFontSize={pFontSize} color={theme.contentSecondary}>
                 Gardens are digital economies that anyone can help shape
               </Subtitle>
