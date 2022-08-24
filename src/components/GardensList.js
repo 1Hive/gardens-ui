@@ -9,6 +9,7 @@ import {
 } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 import { getNetwork } from '@/networks'
 
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
@@ -35,7 +36,7 @@ function GardensList({ gardens }) {
     [gardens, selectedPage]
   )
 
-  const handlePageChange = useCallback(page => {
+  const handlePageChange = useCallback((page) => {
     setSelectedPage(page)
   }, [])
 
@@ -57,7 +58,7 @@ function GardensList({ gardens }) {
               margin-bottom: ${2 * GU}px;
             `}
           >
-            {currentGardens.map(garden => (
+            {currentGardens.map((garden) => (
               <GardenCard key={garden.id} garden={garden} />
             ))}
           </div>
@@ -78,6 +79,7 @@ function GardensList({ gardens }) {
 
 function GardenCard({ garden }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const history = useHistory()
   const { preferredNetwork } = useWallet()
   const handleSelectGarden = useCallback(() => {
@@ -87,6 +89,10 @@ function GardenCard({ garden }) {
   }, [garden, history, preferredNetwork])
 
   const token = garden.wrappableToken || garden.token
+
+  const tokenLogo =
+    (appearance === 'light' ? token?.logo : token?.logoDark || token?.logo) ||
+    defaultTokenLogo
 
   return (
     <div
@@ -149,12 +155,7 @@ function GardenCard({ garden }) {
           color: ${theme.content};
         `}
       >
-        <img
-          src={token?.logo || defaultTokenLogo}
-          alt=""
-          height="20"
-          width="20"
-        />
+        <img src={tokenLogo} alt="" height="20" width="20" />
         <span
           css={`
             margin-left: ${0.75 * GU}px;

@@ -1,10 +1,17 @@
 import React, { useCallback } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
 
 import iconTopSvg from '@assets/rankings/ranking-top.svg'
 import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
 import iconNewSvg from '@assets/rankings/ranking-new.svg'
 import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
+
+// DarkMode svg
+import iconTopSvgDarkMode from '@assets/dark-mode/ranking-top.svg'
+import iconTopSelectedSvgDarkMode from '@assets/dark-mode/ranking-top-selected.svg'
+import iconNewSvgDarkMode from '@assets/dark-mode/ranking-new.svg'
+import iconNewSelectedSvgDarkMode from '@assets/dark-mode/ranking-new-selected.svg'
 
 const iconsMapping: {
   [x: string]: {
@@ -25,8 +32,27 @@ const iconsMapping: {
   },
 }
 
-function getRankingIcon(key: string, selected: boolean) {
-  return iconsMapping[key][selected ? 'iconSelected' : 'icon']
+const iconsMappingDarkMode: {
+  [x: string]: {
+    icon: any
+    iconSelected: any
+    label: string
+  }
+} = {
+  top: {
+    icon: iconTopSvgDarkMode,
+    iconSelected: iconTopSelectedSvgDarkMode,
+    label: 'Most supported',
+  },
+  new: {
+    icon: iconNewSvgDarkMode,
+    iconSelected: iconNewSelectedSvgDarkMode,
+    label: 'Newest',
+  },
+}
+
+function getRankingIcon(key: any, selected: any, mappingType: any) {
+  return mappingType[key][selected ? 'iconSelected' : 'icon']
 }
 
 function getRankingLabel(key: string) {
@@ -52,6 +78,10 @@ function ProposalRankings({
   onChange,
   selected,
 }: ProposalRankingsProps) {
+  const appearance = useAppTheme()
+  const mappingType =
+    appearance.appearance === 'light' ? iconsMapping : iconsMappingDarkMode
+
   return (
     <div
       css={`
@@ -64,7 +94,7 @@ function ProposalRankings({
       {items.map((item, index) => (
         <Item
           key={index}
-          icon={getRankingIcon(item, selected === index)}
+          icon={getRankingIcon(item, selected === index, mappingType)}
           index={index}
           label={getRankingLabel(item)}
           onSelect={onChange}
@@ -87,7 +117,7 @@ function Item({ icon, index, label, onSelect, selected }: ItemProps) {
       css={`
         display: flex;
         align-items: center;
-        color: ${theme.content};
+        color: ${theme.accentContent};
         margin-right: ${1 * GU}px;
         border-radius: ${2 * GU}px;
         padding: ${0.5 * GU}px ${0.75 * GU}px;

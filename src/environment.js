@@ -5,7 +5,7 @@ const DEFAULT_ISSUANCE_APP_NAME = 'dynamic-issuance'
 const DEFAULT_MIDDLEWARE_ENDPOINT = 'https://dao-list-middleware.herokuapp.com'
 const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
-const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.xdaichain.com'
+const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.gnosischain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
 
 const ENV_VARS = {

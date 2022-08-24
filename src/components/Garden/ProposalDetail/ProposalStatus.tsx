@@ -36,7 +36,7 @@ export const getStatusAttributes = (
       label: 'Cancelled',
       Icon: IconCross,
       color: theme.negative,
-      background: '#FFF8F8',
+      background: theme.negativeSurface.alpha(0.4),
       borderColor: theme.negative,
     }
   }
@@ -44,18 +44,18 @@ export const getStatusAttributes = (
     return {
       label: 'Waiting for celeste',
       iconSrc: celesteIconSvg,
-      color: '#8253A8',
-      background: '#FCFAFF',
-      borderColor: '#8253A8',
+      color: theme.celeste,
+      background: theme.celesteSurface.alpha(0.4),
+      borderColor: theme.celesteBorder,
     }
   }
   if (proposal.statusData.challenged) {
     return {
       label: 'Challenged',
       iconSrc: challengeIconSvg,
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
+      color: theme.challenge,
+      background: theme.challengeSurface.alpha(0.4),
+      borderColor: theme.challengeBorder,
     }
   }
   if (proposal.statusData.settled) {

@@ -38,7 +38,7 @@ function Setup({ onClose }) {
           width: 100%;
           flex-grow: 1;
           flex-shrink: 1;
-          background: #f9f9f8;
+          background: ${theme.control};
         `}
       >
         <div

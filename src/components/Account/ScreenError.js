@@ -4,11 +4,15 @@ import { GU, Link, textStyle, useTheme } from '@1hive/1hive-ui'
 import { ChainUnsupportedError } from 'use-wallet'
 import { SUPPORTED_CHAINS } from '@/networks'
 import { getNetworkName } from '@utils/web3-utils'
-import connectionError from '@/assets/connection-error.svg'
+import { useAppTheme } from '@providers/AppTheme'
+
+import connectionError from '@assets/connection-error.svg'
+import connectionErrorDark from '@assets/dark-mode/connection-error-dark.svg'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()
   const elementRef = useRef()
+  const { appearance } = useAppTheme()
 
   let networkNames = ''
   SUPPORTED_CHAINS.forEach((chain, i, array) => {
@@ -58,7 +62,10 @@ function AccountModuleErrorScreen({ error, onBack }) {
             position: relative;
             width: 281px;
             height: 188px;
-            background: 50% 50% / 100% 100% no-repeat url(${connectionError});
+            background: 50% 50% / 100% 100% no-repeat
+              url(${appearance === 'light'
+                ? connectionErrorLight
+                : connectionErrorDark});
           `}
         />
         <h1

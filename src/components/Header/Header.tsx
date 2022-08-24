@@ -16,6 +16,7 @@ import GlobalPreferencesButton from '../Garden/Preferences/GlobalPreferencesButt
 import Layout from '../Layout'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
@@ -23,6 +24,9 @@ import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 import defaultGardenLogo from '@assets/defaultGardenLogo.png'
 import gardensLogo from '@assets/gardensLogoMark.svg'
 import gardensLogoType from '@assets/gardensLogoType.svg'
+import gardensLogoTypeDark from '@assets/dark-mode/gardensLogoTypeDark.svg'
+import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
+import darkModeIconDark from '@assets/dark-mode/icon-dark-mode-dark.svg'
 
 function Header({
   onOpenPreferences,
@@ -34,6 +38,7 @@ function Header({
   const theme = useTheme()
   const { pathname } = useLocation()
   const connectedGarden = useConnectedGarden()
+  const { appearance, toggleAppearance } = useAppTheme()
   const history = useHistory()
   const { below } = useViewport()
   const { account } = useWallet()
@@ -42,19 +47,32 @@ function Header({
 
   const { logo, logotype } = useMemo(() => {
     if (!connectedGarden) {
-      return { logo: gardensLogo, logotype: gardensLogoType }
+      return {
+        logo: gardensLogo,
+        logotype:
+          appearance === 'light' ? gardensLogoType : gardensLogoTypeDark,
+      }
     }
+
+    const logotype =
+      appearance === 'light'
+        ? connectedGarden?.logo_type
+        : connectedGarden?.logo_type_dark
 
     return {
       logo: connectedGarden?.logo || defaultGardenLogo,
-      logotype: connectedGarden?.logo_type || defaultGardenLogo,
+      logotype: logotype || connectedGarden?.logo_type || defaultGardenLogo,
     }
-  }, [connectedGarden])
+  }, [connectedGarden, appearance])
 
   const Logo = <img src={logo} height={mobileMode ? 40 : 60} alt="" />
   const logoLink = `#${
     connectedGarden ? buildGardenPath(history.location, '') : '/home'
   }`
+
+  const toggleDarkMode = useCallback(() => {
+    toggleAppearance()
+  }, [toggleAppearance])
 
   const showBalance = connectedGarden && account && !mobileMode
   const showMenu = pathname !== '/home' && mobileMode
@@ -64,7 +82,7 @@ function Header({
       css={`
         position: relative;
         z-index: 1;
-        background: #fff;
+        background: ${theme.surface};
         box-shadow: rgba(0, 0, 0, 0.05) 0 2px 3px;
       `}
     >
@@ -167,7 +185,12 @@ function Header({
                 height: 100%;
                 display: flex;
                 align-items: center;
-                ${showBalance && `min-width: ${42.5 * GU}px`};
+                justify-content: space-between;
+                min-width: ${showBalance
+                  ? 42.5 * GU
+                  : mobileMode
+                  ? 10 * GU
+                  : 29 * GU}px;
               `}
             >
               <AccountModule compact={mobileMode} />
@@ -183,6 +206,26 @@ function Header({
                   <BalanceModule />
                 </>
               )}
+
+              {!connectedGarden && (
+                <ButtonBase
+                  css={`
+                    width: ${3 * GU}px;
+                    height: ${3 * GU}px;
+                  `}
+                  onClick={toggleDarkMode}
+                >
+                  <img
+                    css="width: 100%;"
+                    src={
+                      appearance === 'light'
+                        ? darkModeIconLight
+                        : darkModeIconDark
+                    }
+                  />
+                </ButtonBase>
+              )}
+
               {connectedGarden && (
                 <div
                   css={`

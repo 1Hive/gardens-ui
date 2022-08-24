@@ -14,6 +14,7 @@ import {
   DataView,
 } from '@1hive/1hive-ui'
 import { useGardenState } from '@providers/GardenState'
+import { useAppTheme } from '@providers/AppTheme'
 import {
   StakingType,
   StakingCollateralType,
@@ -21,8 +22,10 @@ import {
   CollateralStatusesMap,
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
+import noDataIllustrationLight from './assets/no-dataview-data.svg'
+import noDataIllustrationDark from '@assets/dark-mode/no-dataview-data.svg'
 import { dateFormat, toMs } from '@utils/date-utils'
-import noDataIllustration from './assets/no-dataview-data.svg'
+
 import { TokenType } from '@/types/app'
 
 const getActionAttributes = (status: StakingType, theme: any): ActionType => {
@@ -89,6 +92,7 @@ type StakingMovementsProps = {
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
   const { config } = useGardenState()
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const history = useHistory()
 
   const [selectedPage, setSelectedPage] = useState(0)
@@ -126,7 +130,16 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
       entries={stakingMovements}
       emptyState={{
         default: {
-          illustration: <img src={noDataIllustration} alt="" />,
+          illustration: (
+            <img
+              src={
+                appearance === 'light'
+                  ? noDataIllustrationLight
+                  : noDataIllustrationDark
+              }
+              alt=""
+            />
+          ),
           subtitle: "You haven't locked any collateral yet",
         },
       }}
