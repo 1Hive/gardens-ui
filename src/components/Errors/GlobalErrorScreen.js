@@ -5,9 +5,13 @@ import { useAppTheme } from '@providers/AppTheme'
 
 import flowerErrorLight from '@assets/flowerError.svg'
 import flowerErrorDark from '@assets/dark-mode/flowerError.svg'
+import backgroundLight from '@assets/background.svg'
+import backgroundDark from '@assets/dark-mode/background.svg'
 
 function GlobalErrorScreen({ children }) {
   const { appearance } = useAppTheme()
+
+  const background = appearance === 'light' ? backgroundLight : backgroundDark
 
   return (
     <div
@@ -17,6 +21,7 @@ function GlobalErrorScreen({ children }) {
         overflow: auto;
         background-repeat: repeat-x;
         background-size: cover;
+        background-image: url('${background}');
         border-top-style: solid;
         border-top-width: 4px;
         border-top-color: #6050b0;
