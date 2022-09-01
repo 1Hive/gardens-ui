@@ -100,10 +100,10 @@
     did-resolver "^1.1.0"
     ipfs-did-document "^1.2.3"
 
-"@1hive/1hive-ui@^1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.8.tgz#6a82c9d7775ff34a7bdc7daf0e851fd8235b5419"
-  integrity sha512-4XVYkGep7maZ1uVsWhqad2+/0gn0pg1oII1mprBIO15cxl05wksxykrdAXQUhAQtYcVl8g+aaKQTu7osPRCQog==
+"@1hive/1hive-ui@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.9.tgz#bbf5b5b227358e84db4865b421aade6086c5932c"
+  integrity sha512-i6bWik6e0jbe3OgkHc916ep4LJTmrRT80czGRkmo6S5ogtDaPBPotrN5W0OhIlPnWK+P8jBIhGNd+6UER1kE+Q==
   dependencies:
     "@react-spring/web" "^9.4.4"
     arg "^2.0.0"

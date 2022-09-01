@@ -14,6 +14,7 @@ import {
   TextInput,
   useTheme,
 } from '@1hive/1hive-ui'
+import { useHistory } from 'react-router-dom'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
@@ -22,13 +23,12 @@ import BigNumber from '@lib/bigNumber'
 import { toDecimals } from '@utils/math-utils'
 import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
-import { calculateThreshold, getMaxConviction } from '@lib/conviction'
-
-import { useHistory } from 'react-router-dom'
 import { buildGardenPath } from '@utils/routing-utils'
+import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
 const SIGNALING_PROPOSAL = 0
 const FUNDING_PROPOSAL = 1
+const STREAM_PROPOSAL = 3 // We already use 2 for decisions
 
 const DEFAULT_FORM_DATA = {
   title: '',
@@ -44,10 +44,13 @@ const DEFAULT_FORM_DATA = {
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 
+const PROPOSAL_TYPES_WITH_STREAM = ['Suggestion', 'Funding', 'Stream']
+
 const AddProposalPanel = ({ setProposalData }) => {
   const { next } = useMultiModal()
   const { commonPool, config } = useGardenState()
   const {
+    id: convictionAddress,
     alpha,
     effectiveSupply,
     maxRatio,
@@ -58,8 +61,10 @@ const AddProposalPanel = ({ setProposalData }) => {
   } = config.conviction
 
   const connectedGarden = useConnectedGarden()
+
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
+  const streamMode = formData.proposalType === STREAM_PROPOSAL
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
   // Escaping forumURL to avoid misuse with regexp
@@ -210,6 +215,7 @@ const AddProposalPanel = ({ setProposalData }) => {
     !formData.title ||
     !formData.link ||
     errors.length > 0 ||
+    (formData.proposalType === STREAM_PROPOSAL && !formData.beneficiary) ||
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
@@ -243,7 +249,11 @@ const AddProposalPanel = ({ setProposalData }) => {
           placeholder="Select proposal type"
           selected={formData.proposalType}
           onChange={handleProposalTypeChange}
-          items={PROPOSAL_TYPES}
+          items={
+            connectedGarden.fluidProposals
+              ? PROPOSAL_TYPES_WITH_STREAM
+              : PROPOSAL_TYPES
+          }
           required
           wide
         />
@@ -253,6 +263,8 @@ const AddProposalPanel = ({ setProposalData }) => {
           {formData.proposalType === SIGNALING_PROPOSAL
             ? `Suggestion proposals are used to gather community sentiment for
         ideas or future funding proposals.`
+            : formData.proposalType === STREAM_PROPOSAL
+            ? `Stream proposals TBD`
             : `Funding proposals ask for an amount of funds. These funds are granted
         if the proposal in question receives enough support (conviction).`}
         </span>{' '}
@@ -295,6 +307,17 @@ const AddProposalPanel = ({ setProposalData }) => {
             />
           </Field>
         </>
+      )}
+      {streamMode && (
+        <Field label="Beneficiary address">
+          <TextInput
+            onChange={handleBeneficiaryChange}
+            value={formData.beneficiary}
+            placeholder="Add the beneficiary’s ETH address"
+            wide
+            required
+          />
+        </Field>
       )}
       <Field label="Proposal Information URL">
         <TextInput
