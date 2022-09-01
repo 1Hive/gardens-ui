@@ -151,10 +151,10 @@
   dependencies:
     "@1hive/connect-core" "^0.9.10"
 
-"@1hive/connect-gardens@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.12.tgz#7c591acdd64a7e2d5173a819c30d6a99a652f79c"
-  integrity sha512-lhPje/c+s7MFfMN1heJ8a0AhrduIjbD4lHRVeRp/O7Z8w7XJyS+BoH8EGmrLv3lI8xFI8a2VFx0wg25f4FIXcQ==
+"@1hive/connect-gardens@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.13.tgz#4e681f27a06e854cec9efcdd0731c660c6703603"
+  integrity sha512-lW1frk0gx7DFzxnItGXIjZR+XAAz3b738qIj779B318ne9IARbCVPALmtnXUwgMYaFqQPGtq14RT5g13d6lw/w==
   dependencies:
     "@1hive/connect-core" "^0.9.4"
     "@1hive/connect-thegraph" "^0.9.4"
@@ -20425,9 +20425,9 @@ ursa-optional@~0.10.0:
     bindings "^1.5.0"
     nan "^2.14.2"
 
-"use-inside@git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
   version "0.2.0"
-  resolved "git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@1.1.1":
   version "1.1.1"

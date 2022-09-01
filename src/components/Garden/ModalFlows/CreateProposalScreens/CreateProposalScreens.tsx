@@ -24,7 +24,7 @@ import { getAccountSetting } from '@/local-settings'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
-import AddProposal from './AddProposal'
+import AddProposal, { SIGNALING_PROPOSAL, STREAM_PROPOSAL } from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
 
 function GoToProposal() {
@@ -114,7 +114,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
         onComplete()
       }
 
-      if (proposalType === 0) {
+      if (proposalType === SIGNALING_PROPOSAL) {
         // SIGNALING_PROPOSAL
         await convictionActions.newSignalingProposal(
           {
@@ -123,7 +123,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
           },
           onDone
         )
-      } else if (proposalType === 3) {
+      } else if (proposalType === STREAM_PROPOSAL) {
         // STREAM_PROPOSAL
         if (convictionContract === null) return
         const proposalId = await convictionContract.proposalCounter()

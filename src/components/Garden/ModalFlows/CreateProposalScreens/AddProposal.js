@@ -26,9 +26,9 @@ import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
 
-const SIGNALING_PROPOSAL = 0
-const FUNDING_PROPOSAL = 1
-const STREAM_PROPOSAL = 3 // We already use 2 for decisions
+export const SIGNALING_PROPOSAL = 0
+export const FUNDING_PROPOSAL = 1
+export const STREAM_PROPOSAL = 2
 
 const DEFAULT_FORM_DATA = {
   title: '',
