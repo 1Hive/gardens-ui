@@ -11,7 +11,7 @@ function ProposalIcon({ type }: { type: string }) {
     color =
       type === ProposalTypes.Proposal
         ? theme.yellow
-        : ProposalTypes.Suggestion
+        : type === ProposalTypes.Suggestion
         ? theme.green
         : theme.blue
   }

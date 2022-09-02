@@ -1,13 +1,15 @@
 import React from 'react'
 import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
+import BigNumber from '@lib/bigNumber'
 import Balance from '../Balance'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 
-import { ProposalTypes } from '@/types'
+import useSuperfluidCFAv1 from '@/hooks/useSignalingProposalType'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalTypes } from '@/types'
 import { ProposalType } from '@/types/app'
 
 type ProposalInfoProps = {
@@ -23,6 +25,9 @@ function ProposalInfo({
 }: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
+  const { flowRateMonthly, loading: loadingFlow } = useSuperfluidCFAv1(
+    proposal.beneficiary
+  )
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 
@@ -31,12 +36,10 @@ function ProposalInfo({
     requestToken.decimals
   )
 
-  const hideRequestedInfo = Number(proposal.requestedAmount) === 0
-
   return (
     <div onClick={onSelectProposal}>
       <ProposalDescription proposal={proposal} />
-      {proposal.type !== ProposalTypes.Decision && !hideRequestedInfo && (
+      {proposal.type === ProposalTypes.Proposal && (
         <div
           css={`
             display: flex;
@@ -93,6 +96,37 @@ function ProposalInfo({
                   </Help>
                 </div>
               )}
+            </>
+          )}
+        </div>
+      )}
+      {proposal.type === ProposalTypes.Stream && (
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            color: ${theme.contentSecondary};
+            margin-bottom: ${2 * GU}px;
+          `}
+        >
+          <span
+            css={`
+              margin-right: ${1 * GU}px;
+            `}
+          >
+            Streaming:
+          </span>
+          {loadingFlow ? (
+            <LoadingRing />
+          ) : (
+            <>
+              <Balance
+                amount={new BigNumber(flowRateMonthly)}
+                decimals={primaryToken.decimals}
+                icon={primaryToken.icon}
+                symbol={primaryToken.symbol}
+              />
+              x per month
             </>
           )}
         </div>

@@ -2,6 +2,7 @@ export enum ProposalTypes {
   Decision = 'PROPOSAL_TYPE_DECISION',
   Proposal = 'PROPOSAL_TYPE_PROPOSAL',
   Suggestion = 'PROPOSAL_TYPE_SUGGESTION',
+  Stream = 'PROPOSAL_TYPE_STREAM',
 }
 
 const symbolMapping: {
@@ -10,6 +11,7 @@ const symbolMapping: {
   Decision: ProposalTypes.Decision,
   Proposal: ProposalTypes.Proposal,
   Suggestion: ProposalTypes.Suggestion,
+  Stream: ProposalTypes.Stream,
 }
 
 const stringMapping: {
@@ -18,12 +20,14 @@ const stringMapping: {
   [ProposalTypes.Decision]: 'Decision',
   [ProposalTypes.Proposal]: 'Funding',
   [ProposalTypes.Suggestion]: 'Suggestion',
+  [ProposalTypes.Stream]: 'Stream',
 }
 
 // Maps to typeInt number from subgraph, useful for queries
 const intMapping: {
   [x: string]: number
 } = {
+  [ProposalTypes.Stream]: 3,
   [ProposalTypes.Decision]: 2,
   [ProposalTypes.Proposal]: 1,
   [ProposalTypes.Suggestion]: 0,
