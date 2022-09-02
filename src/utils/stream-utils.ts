@@ -1,3 +1,5 @@
+import { getNetworkName } from './web3-utils'
+
 /******* TIME CONSTANTS *******/
 export const MONTHS_PER_YEAR = 12
 export const DAYS_PER_MONTH = 30
@@ -25,4 +27,17 @@ export const getFlowAmountByPerSecondFlowRate = (perSecondFlowRate: string) => {
     monthly: Math.round(decimalFlowRate * MONTH_IN_SECONDS).toString(),
     yearly: Math.round(decimalFlowRate * YEAR_IN_SECONDS).toString(),
   }
+}
+
+const SUPERFLUID_STREAM_URL = ' https://app.superfluid.finance/stream'
+
+export function generateSuperfluidLink(
+  token: string,
+  sender: string,
+  reciver: string,
+  chainId: number
+): string {
+  const network = getNetworkName(chainId).toLowerCase()
+
+  return `${SUPERFLUID_STREAM_URL}/${network}/${sender}-${reciver}-${token}-3.0`
 }

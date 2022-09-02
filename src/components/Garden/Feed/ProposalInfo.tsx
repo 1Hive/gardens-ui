@@ -1,7 +1,7 @@
 import React from 'react'
 import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
-import BigNumber from '@lib/bigNumber'
 import Balance from '../Balance'
+import Stream from '../Stream'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
@@ -25,7 +25,7 @@ function ProposalInfo({
 }: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
-  const { flowRateMonthly, loading: loadingFlow } = useSuperfluidCFAv1(
+  const { flow, loading: loadingFlow } = useSuperfluidCFAv1(
     proposal.beneficiary
   )
   const { requestToken, stableToken } = config.conviction
@@ -120,13 +120,12 @@ function ProposalInfo({
             <LoadingRing />
           ) : (
             <>
-              <Balance
-                amount={new BigNumber(flowRateMonthly)}
+              <Stream
+                flowRateConvertions={flow.flowRateConvertions}
                 decimals={primaryToken.decimals}
                 icon={primaryToken.icon}
                 symbol={primaryToken.symbol}
               />
-              x per month
             </>
           )}
         </div>
