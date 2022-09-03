@@ -1,11 +1,12 @@
 import React from 'react'
-import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
+import { GU, Help, Link, useTheme } from '@1hive/1hive-ui'
 import Balance from '../Balance'
 import Stream from '../Stream'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 
+import Loading from '@/components/Loading'
 import useSuperfluidCFAv1 from '@/hooks/useSignalingProposalType'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
@@ -64,7 +65,7 @@ function ProposalInfo({
           {proposal.stable && (
             <>
               {loading ? (
-                <LoadingRing />
+                <Loading />
               ) : (
                 <div
                   css={`
@@ -117,7 +118,13 @@ function ProposalInfo({
             Streaming:
           </span>
           {loadingFlow ? (
-            <LoadingRing />
+            <div
+              css={`
+                align-items: left;
+              `}
+            >
+              <Loading />
+            </div>
           ) : (
             <>
               <Stream

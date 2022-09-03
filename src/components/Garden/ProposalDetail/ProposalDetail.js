@@ -30,7 +30,7 @@ import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
 import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
-import LoadingRing from '@/components/LoadingRing'
+import Loading from '@/components/Loading'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalComments from './ProposalComments'
@@ -65,6 +65,7 @@ import { ZERO_ADDR } from '@/constants'
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
 import { AbstainCardHeader } from '../Feed/AbstainCard'
+import LoadingRing from '@/components/LoadingRing'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -248,7 +249,7 @@ function ProposalDetail({
                             </span>
                           ) : streamingProposal ? (
                             loadingFlow ? (
-                              <LoadingRing />
+                              <Loading center={false} />
                             ) : (
                               <span>
                                 This proposal is streaming{' '}
@@ -330,28 +331,27 @@ function ProposalDetail({
                               )
                             }
                           />
-                          {loadingFlow ? (
-                            <LoadingRing />
-                          ) : (
-                            <DataField
-                              label="Stream"
-                              value={
-                                flow.superfluidLink ? (
-                                  <Link href={flow.superfluidLink} external>
-                                    Review Superfluid stream
-                                  </Link>
-                                ) : (
-                                  <span
-                                    css={`
-                                      ${textStyle('body2')};
-                                    `}
-                                  >
-                                    No link available
-                                  </span>
-                                )
-                              }
-                            />
-                          )}
+                          <DataField
+                            label="Stream"
+                            value={
+                              flow.superfluidLink ? (
+                                <Link
+                                  href={loadingFlow ? '' : flow.superfluidLink}
+                                  external
+                                >
+                                  Review Superfluid stream
+                                </Link>
+                              ) : (
+                                <span
+                                  css={`
+                                    ${textStyle('body2')};
+                                  `}
+                                >
+                                  No link available
+                                </span>
+                              )
+                            }
+                          />
                         </>
                       )}
                       {!streamingProposal && (
