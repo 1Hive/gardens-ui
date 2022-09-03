@@ -15,6 +15,7 @@ import { formatTokenAmount } from '@utils/token-utils'
 import { stakesPercentages } from '@utils/math-utils'
 import { addressesEqualNoSum as addressesEqual } from '@utils/web3-utils'
 
+import noSupportIllustration from '@assets/noSupportIllustration.svg'
 import noSupportIllustrationDark from '@assets/dark-mode/noSupportIllustrationDark.svg'
 
 const DISTRIBUTION_ITEMS_MAX = 6
