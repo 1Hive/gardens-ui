@@ -264,7 +264,7 @@ const AddProposalPanel = ({ setProposalData }) => {
             ? `Suggestion proposals are used to gather community sentiment for
         ideas or future funding proposals.`
             : formData.proposalType === STREAM_PROPOSAL
-            ? `Stream proposals TBD`
+            ? `Stream proposals create continuous funding to the beneficiary in relation to the support (conviction) accrue.`
             : `Funding proposals ask for an amount of funds. These funds are granted
         if the proposal in question receives enough support (conviction).`}
         </span>{' '}

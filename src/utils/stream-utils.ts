@@ -39,5 +39,5 @@ export function generateSuperfluidLink(
 ): string {
   const network = getNetworkName(chainId).toLowerCase()
 
-  return `${SUPERFLUID_STREAM_URL}/${network}/${sender}-${reciver}-${token}-3.0`
+  return `${SUPERFLUID_STREAM_URL}/${network}/${sender}-${reciver}-${token}-0.0`
 }
