@@ -64,7 +64,7 @@ function AccountModuleErrorScreen({ error, onBack }) {
             height: 188px;
             background: 50% 50% / 100% 100% no-repeat
               url(${appearance === 'light'
-                ? connectionErrorLight
+                ? connectionError
                 : connectionErrorDark});
           `}
         />
