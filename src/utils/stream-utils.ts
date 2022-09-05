@@ -29,15 +29,14 @@ export const getFlowAmountByPerSecondFlowRate = (perSecondFlowRate: string) => {
   }
 }
 
-const SUPERFLUID_STREAM_URL = ' https://app.superfluid.finance/stream'
+const SUPERFLUID_STREAM_URL = 'https://app.superfluid.finance/token'
 
 export function generateSuperfluidLink(
   token: string,
-  sender: string,
   reciver: string,
   chainId: number
 ): string {
   const network = getNetworkName(chainId).toLowerCase()
 
-  return `${SUPERFLUID_STREAM_URL}/${network}/${sender}-${reciver}-${token}-0.0`
+  return `${SUPERFLUID_STREAM_URL}/${network}/${token}?view=${reciver}`
 }

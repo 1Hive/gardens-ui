@@ -66,12 +66,7 @@ export default function useSuperfluidCFAv1(beneficiary: string) {
             flowRateConvertions: getFlowAmountByPerSecondFlowRate(
               flowData.flowRate.toString()
             ),
-            superfluidLink: generateSuperfluidLink(
-              token,
-              sender,
-              beneficiary,
-              chainId
-            ),
+            superfluidLink: generateSuperfluidLink(token, beneficiary, chainId),
           }))
         }
       } catch (err) {
