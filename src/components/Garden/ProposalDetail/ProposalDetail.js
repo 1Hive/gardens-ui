@@ -76,6 +76,7 @@ function ProposalDetail({
   permissions,
   requestToken,
   stableToken,
+  flowData,
 }) {
   const theme = useTheme()
   const history = useHistory()
@@ -83,13 +84,10 @@ function ProposalDetail({
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
-
-  const { flow, loading: loadingFlow } = useSuperfluidCFAv1(
-    proposal.beneficiary
-  )
   const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
+  const { flow, loading: loadingFlow } = flowData
 
   const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
 
@@ -331,29 +329,21 @@ function ProposalDetail({
                               )
                             }
                           />
-                          <DataField
-                            label="Stream"
-                            value={
-                              flow.superfluidLink ? (
-                                <Link
-                                  href={loadingFlow ? '' : flow.superfluidLink}
-                                  external
-                                >
+                          {loadingFlow ? (
+                            <Loading center={false} />
+                          ) : (
+                            <DataField
+                              label="Stream"
+                              value={
+                                <Link href={flow.superfluidLink} external>
                                   Review Superfluid stream
                                 </Link>
-                              ) : (
-                                <span
-                                  css={`
-                                    ${textStyle('body2')};
-                                  `}
-                                >
-                                  No link available
-                                </span>
-                              )
-                            }
-                          />
+                              }
+                            />
+                          )}
                         </>
                       )}
+
                       {!streamingProposal && (
                         <DataField
                           label="Forum"
