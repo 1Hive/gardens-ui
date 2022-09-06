@@ -22,10 +22,10 @@ export const BASE_18 = 1e18
 export const getFlowAmountByPerSecondFlowRate = (perSecondFlowRate: string) => {
   const decimalFlowRate = Number(perSecondFlowRate) / BASE_18
   return {
-    daily: Math.round(decimalFlowRate * DAY_IN_SECONDS).toString(),
-    weekly: Math.round(decimalFlowRate * WEEK_IN_SECONDS).toString(),
-    monthly: Math.round(decimalFlowRate * MONTH_IN_SECONDS).toString(),
-    yearly: Math.round(decimalFlowRate * YEAR_IN_SECONDS).toString(),
+    daily: (decimalFlowRate * DAY_IN_SECONDS).toFixed(2).toString(),
+    weekly: (decimalFlowRate * WEEK_IN_SECONDS).toFixed(2).toString(),
+    monthly: (decimalFlowRate * MONTH_IN_SECONDS).toFixed(2).toString(),
+    yearly: (decimalFlowRate * YEAR_IN_SECONDS).toFixed(2).toString(),
   }
 }
 
