@@ -103,8 +103,6 @@ function ProposalDetail({
     txHash,
   } = proposal || {}
 
-  console.log(proposal)
-
   const { background, borderColor } = getStatusAttributes(proposal, theme)
 
   const handleBack = useCallback(() => {

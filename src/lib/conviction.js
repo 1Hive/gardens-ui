@@ -86,10 +86,6 @@ export function getCurrentConvictionByEntity(
 
   const entityStakes = stakesByEntity(stakes, entity)
 
-  if (!entityStakes.length > 0) {
-    return new BigNumber('0')
-  }
-
   const { time, totalTokensStaked, conviction } = convictionFromStakes(
     entityStakes,
     alpha
@@ -309,8 +305,24 @@ function convictionFromStakes(stakes, alpha) {
 }
 
 function stakesByEntity(stakes, entity) {
+  if (stakes.length === 0) {
+    return []
+  }
+
+  const hasUser = stakes[0]?.supporter ?? null
+
+  console.log({ stakes, hasUser })
+
+  if (hasUser === null) {
+    return stakes.map(({ tokensStaked, conviction }) => ({
+      time: null,
+      totalTokensStaked: tokensStaked,
+      conviction,
+    }))
+  }
+
   return stakes
-    .filter(
+    ?.filter(
       ({
         supporter: {
           user: { address },
@@ -325,11 +337,17 @@ function stakesByEntity(stakes, entity) {
 }
 
 export function isEntitySupporting(proposal, entity) {
-  if (!entity) {
+  if (!entity || proposal?.stakes.length === 0) {
     return false
   }
 
-  const entityStake = proposal.stakes.find(
+  const hasUser = proposal?.stakes[0]?.supporter ?? null
+
+  if (hasUser === null) {
+    return false
+  }
+
+  const entityStake = proposal?.stakes.find(
     ({
       supporter: {
         user: { address },

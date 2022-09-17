@@ -12,6 +12,7 @@ type ProposalDetailPollProps = {
 
 const Row = styled.div`
   width: 50%;
+  margin-bottom: 15px;
 `
 
 const ProposalDetailPoll = ({ proposal }: ProposalDetailPollProps) => {
@@ -23,6 +24,7 @@ const ProposalDetailPoll = ({ proposal }: ProposalDetailPollProps) => {
   React.useEffect(() => {
     const fetch = async () => {
       const results = await fetchProposalsByProposalId(String(proposal.id))
+      console.log(results)
       setItems(results)
     }
 
@@ -79,7 +81,7 @@ const ProposalDetailPoll = ({ proposal }: ProposalDetailPollProps) => {
                       ${textStyle('body2')};
                     `}
                   >
-                    {item.metadata}
+                    <strong>{item.metadata}</strong>
                   </label>
                   <ConvictionBar proposal={item} withThreshold={false} />
                 </Row>
