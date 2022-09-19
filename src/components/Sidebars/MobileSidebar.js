@@ -7,7 +7,10 @@ import InnerGardenNavigationSidebar from './InnerSidebars/InnerGardenNavigationS
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 
 const GARDENS_SIDEBAR_WIDTH = 9 * GU
-const NAVIGATION_SIDEBAR_WIDTH = screen.width - 18 * GU
+const NAVIGATION_SIDEBAR_WIDTH =
+  typeof window !== 'undefined'
+    ? window.screen.width - 18 * GU
+    : GARDENS_SIDEBAR_WIDTH
 const TOTAL_WIDTH = GARDENS_SIDEBAR_WIDTH + NAVIGATION_SIDEBAR_WIDTH
 
 const AnimatedSidebar = ({

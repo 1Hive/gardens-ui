@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
 
@@ -12,19 +12,18 @@ const BaseItem = ({
   onClick = () => {},
 }) => {
   const theme = useTheme()
+  const router = useRouter()
   const AppTheme = useAppTheme()
-
-  const history = useHistory()
 
   const activeColor =
     AppTheme.appearance === 'light' ? 'rgb(212 251 216)' : theme.positiveSurface
 
   const handleClickItem = useCallback(() => {
     if (path) {
-      history.push(path)
+      router.push(path)
     }
     onClick()
-  }, [history, onClick, path])
+  }, [router, onClick, path])
 
   return (
     <li

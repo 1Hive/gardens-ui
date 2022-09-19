@@ -1,19 +1,20 @@
 import React from 'react'
 import { Button, GU, useLayout, useTheme } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
-import desktopBanner from '@assets/landingBanner.png'
-import desktopBannerDark from '@assets/dark-mode/landingBanner.png'
-import mobileBanner from '@assets/landingBanner-mobile.png'
-import mobileBannerDark from '@assets/dark-mode/landingBanner-mobile.png'
-import tabletBanner from '@assets/landingBanner-tablet.png'
-import tabletBannerDark from '@assets/dark-mode/landingBanner-tablet.png'
+import desktopBanner from '@images/icons/base/landingBanner.png'
+import desktopBannerDark from '@images/icons/dark-mode/landingBanner.png'
+import mobileBanner from '@images/icons/base/landingBanner-mobile.png'
+import mobileBannerDark from '@images/icons/dark-mode/landingBanner-mobile.png'
+import tabletBanner from '@images/icons/base/landingBanner-tablet.png'
+import tabletBannerDark from '@images/icons/dark-mode/landingBanner-tablet.png'
+
 import styled from 'styled-components'
 
 const BANNERS = {
   small: {
     aspectRatio: '53.5%',
     hFontSize: '32px',
-    image: mobileBanner,
+    image: mobileBanner, // /icons/base/,
     imageDark: mobileBannerDark,
     pFontSize: '14px',
   },

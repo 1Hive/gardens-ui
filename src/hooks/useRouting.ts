@@ -1,15 +1,8 @@
-import { useRouteMatch } from 'react-router'
-
-type ParamsType = {
-  params: {
-    gardenAddress: string
-    networkType: string
-  }
-} | null
+import { useRouter } from 'next/router'
 
 export function useGardenRoute() {
-  const match: ParamsType = useRouteMatch('/:networkType/garden/:gardenAddress')
-  const { gardenAddress, networkType } = match?.params || {}
+  const router = useRouter()
+  const { gardenAddress, networkType } = router.query || {}
 
   return [networkType, gardenAddress]
 }

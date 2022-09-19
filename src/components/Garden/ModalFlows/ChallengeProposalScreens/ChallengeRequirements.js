@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import {
   Button,
   GU,
@@ -21,15 +21,12 @@ import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
-
 function ChallengeRequirements({
   agreement,
   collateralTokenAccountBalance,
   disputeFees,
 }) {
-  const history = useHistory()
+  const router = useRouter()
   const { account } = useWallet()
   const { next } = useMultiModal()
   const { chainId } = useConnectedGarden()
@@ -89,10 +86,7 @@ function ChallengeRequirements({
         of BrightID verified humans – called keepers – is drafted to rule on the
         dispute (they are tasked with deciding whether or not the disputed
         action is compatible with this community’s{' '}
-        <Link href={`#${buildGardenPath(history.location, 'covenant')}`}>
-          Covenant.
-        </Link>{' '}
-        <br />
+        <Link href={buildGardenPath(router, 'covenant')}>Covenant.</Link> <br />
         <br />
         If the keepers decide the proposal is compatible, on-chain execution
         continues. If they decide it is not, the proposal is blocked and
@@ -159,7 +153,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
       return {
         backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
-        icon: iconCheck,
+        icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           challengeAmount,
           token.decimals
@@ -170,7 +164,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
     return {
       backgroundColor: theme.negativeSurface,
       color: theme.negative,
-      icon: iconError,
+      icon: '/icons/base/iconError.svg',
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         challengeAmount,
         token.decimals
@@ -189,7 +183,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
       return {
         backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
-        icon: iconCheck,
+        icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
           feesAmount,
           token.decimals
@@ -200,7 +194,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
     return {
       backgroundColor: theme.negativeSurface,
       color: theme.negative,
-      icon: iconError,
+      icon: '/icons/base/iconError.svg',
       text: `Your enabled account does not have sufficient balance to lock ${formatTokenAmount(
         feesAmount,
         token.decimals

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import {
   Box,
   Button,
@@ -14,8 +14,6 @@ import IdentityBadge from '@components/IdentityBadge'
 import useProfile from '@hooks/useProfile'
 import { useSupporterSubscription } from '@hooks/useSubscriptions'
 import { useWallet } from '@providers/Wallet'
-
-
 
 type DelegationProps = {
   onRemoveDelegate: () => void
@@ -108,12 +106,13 @@ function Representative({
   representative,
 }: RepresentativeProps) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
+  // const profile = useProfile(representative.address)
   const profile: any = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {
-    history.push(`/profile?account=${representative.address}`)
-  }, [history, representative])
+    router.push(`/profile?account=${representative.address}`)
+  }, [router, representative])
 
   return (
     <div>

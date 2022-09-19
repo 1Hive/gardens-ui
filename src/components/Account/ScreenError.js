@@ -6,8 +6,8 @@ import { SUPPORTED_CHAINS } from '@/networks'
 import { getNetworkName } from '@utils/web3-utils'
 import { useAppTheme } from '@providers/AppTheme'
 
-import connectionError from '@assets/connection-error.svg'
-import connectionErrorDark from '@assets/dark-mode/connection-error-dark.svg'
+import connectionError from '@images/icons/base/connection-error.svg'
+import connectionErrorDark from '@images/icons/dark-mode/connection-error-dark.svg'
 
 function AccountModuleErrorScreen({ error, onBack }) {
   const theme = useTheme()

@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
 import { useLocation } from 'react-router'
 import {
   GU,
@@ -21,8 +22,9 @@ import CreateProposalScreens from './Garden/ModalFlows/CreateProposalScreens/Cre
 import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
+  const { pathname } = useRouter()
   const theme = useTheme()
-  const { pathname } = useLocation()
+  // const { pathname } = useLocation()
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
   const [openPreferences, closePreferences, preferenceOption] = usePreferences()

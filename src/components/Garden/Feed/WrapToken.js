@@ -16,14 +16,29 @@ import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-import wrappedIcon from '@assets/wrappedIcon.svg'
-import wrappedIconDark from '@assets/dark-mode/wrappedIconDark.svg'
-import unwrappedIcon from '@assets/unwrappedIcon.svg'
-import unwrappedIconDark from '@assets/dark-mode/unwrappedIconDark.svg'
-import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
-import claimRewardsIconDark from '@assets/dark-mode/rewardsWrapperIcon.svg'
-import tokenAPRIcon from '@assets/tokenRewardIcon.svg'
-import tokenAPRIconDark from '@assets/dark-mode/tokenRewardIcon.svg'
+// const modeAttributes = { //TODO FIXME
+//   wrap: {
+//     icon: '/icons/base/unwrappedIcon.svg',
+//     button: { mode: 'strong', label: 'Wrap' },
+//   },
+//   unwrap: {
+//     icon: '/icons/base/wrappedIcon.svg',
+//     button: { mode: 'strong', label: 'Unwrap' },
+//     hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+//   },
+//   claim: {
+//     button: { mode: 'normal', label: 'Claim' },
+//     icon: '/icons/base/rewardsWrapperIcon.svg',
+//   },
+// }
+import wrappedIcon from '@images/icons/base/wrappedIcon.svg'
+import wrappedIconDark from '@images/icons/dark-mode/wrappedIconDark.svg'
+import unwrappedIcon from '@images/icons/base/unwrappedIcon.svg'
+import unwrappedIconDark from '@images/icons/dark-mode/unwrappedIconDark.svg'
+import claimRewardsIcon from '@images/icons/base/rewardsWrapperIcon.svg'
+import claimRewardsIconDark from '@images/icons/dark-mode/rewardsWrapperIcon.svg'
+import tokenAPRIcon from '@images/icons/base/tokenRewardIcon.svg'
+import tokenAPRIconDark from '@images/icons/dark-mode/tokenRewardIcon.svg'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()

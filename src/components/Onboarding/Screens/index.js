@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { GU, springs } from '@1hive/1hive-ui'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 import { useOnboardingState } from '@providers/Onboarding'
 
 const AnimatedDiv = animated.div

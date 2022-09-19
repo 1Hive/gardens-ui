@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import {
   Button,
@@ -20,10 +20,10 @@ import { useAppTheme } from '@/providers/AppTheme'
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
-import profileButtonSvg from '@assets/profileButton.svg'
-import stakeButtonSvg from '@assets/stakeButton.svg'
-import profileButtonDarkSvg from '@assets/dark-mode/profileButton.svg'
-import stakeButtonDarkSvg from '@assets/dark-mode/stakeButton.svg'
+import profileButtonSvg from '@images/icons/base/profileButton.svg'
+import stakeButtonSvg from '@images/icons/base/stakeButton.svg'
+import profileButtonDarkSvg from '@images/icons/dark-mode/profileButton.svg'
+import stakeButtonDarkSvg from '@images/icons/dark-mode/stakeButton.svg'
 
 type AccountScreenConnectedProps = {
   providerId: string
@@ -36,7 +36,7 @@ function AccountScreenConnected({
 }: AccountScreenConnectedProps) {
   const theme = useTheme()
   const { appearance } = useAppTheme()
-  const history = useHistory()
+  const router = useRouter()
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
   const { account, chainId, resetConnection } = useWallet()
@@ -45,15 +45,15 @@ function AccountScreenConnected({
   const providerInfo = getProviderFromUseWalletId(providerId)
 
   const goToProfile = useCallback(() => {
-    history.push(`/profile`)
+    router.push(`/profile`)
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const goToStakeManagement = useCallback(() => {
-    const path = buildGardenPath(history.location, 'collateral')
-    history.push(path)
+    const path = buildGardenPath(router, 'collateral')
+    router.push(path)
     onClosePopover()
-  }, [history, onClosePopover])
+  }, [router, onClosePopover])
 
   const handleCopyAddress = useCallback(() => copy(account), [account, copy])
 

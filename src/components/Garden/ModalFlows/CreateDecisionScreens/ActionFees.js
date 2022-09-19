@@ -7,8 +7,6 @@ import env from '@/environment'
 import { formatTokenAmount } from '@utils/token-utils'
 import { getDisputableAppByName } from '@utils/app-utils'
 
-import iconFees from '@assets/iconFees.svg'
-
 function ActionFeesModal({ agreement, onCreateTransaction }) {
   const { next } = useMultiModal()
   const { layoutName } = useLayout()
@@ -70,7 +68,12 @@ function ActionFeesModal({ agreement, onCreateTransaction }) {
             align-items: center;
           `}
         >
-          <img src={iconFees} alt="" height={4 * GU} width={4 * GU} />
+          <img
+            src={'/icons/base/iconFees.svg'}
+            alt=""
+            height={4 * GU}
+            width={4 * GU}
+          />
           <h3
             css={`
               font-weight: 600;

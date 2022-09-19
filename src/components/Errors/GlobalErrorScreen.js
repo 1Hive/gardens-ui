@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { Card, GU, useTheme, useViewport } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
 
-import flowerErrorLight from '@assets/flowerError.svg'
-import flowerErrorDark from '@assets/dark-mode/flowerError.svg'
-import backgroundLight from '@assets/background.svg'
-import backgroundDark from '@assets/dark-mode/background.svg'
+import flowerErrorLight from '@images/icons/base/flowerError.svg'
+import flowerErrorDark from '@images/icons/dark-mode/flowerError.svg'
+import backgroundLight from '@images/icons/base/background.svg'
+import backgroundDark from '@images/icons/dark-mode/background.svg'
 
 function GlobalErrorScreen({ children }) {
   const { appearance } = useAppTheme()

@@ -7,7 +7,6 @@ import {
   useTheme,
   GU,
 } from '@1hive/1hive-ui'
-import icon from './assets/icon.svg'
 
 function AgreementHeader({ title }) {
   const theme = useTheme()
@@ -71,7 +70,7 @@ function DecorativeIcon() {
       `}
     >
       <img
-        src={icon}
+        src={'/icons/agreement/icon.svg'}
         alt=""
         width={8.75 * GU}
         height={8.75 * GU}

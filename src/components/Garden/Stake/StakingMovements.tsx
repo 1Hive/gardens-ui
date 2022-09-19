@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import {
   GU,
   IconAttention,
@@ -22,8 +22,8 @@ import {
   CollateralStatusesMap,
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
-import noDataIllustrationLight from './assets/no-dataview-data.svg'
-import noDataIllustrationDark from '@assets/dark-mode/no-dataview-data.svg'
+import noDataIllustrationLight from '@images/icons/stake/no-dataview-data.svg'
+import noDataIllustrationDark from '@images/icons/dark-mode/no-dataview-data.svg'
 import { dateFormat, toMs } from '@utils/date-utils'
 
 import { TokenType } from '@/types/app'
@@ -92,8 +92,8 @@ type StakingMovementsProps = {
 function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
   const { config } = useGardenState()
   const theme = useTheme()
+  const router = useRouter()
   const { appearance } = useAppTheme()
-  const history = useHistory()
 
   const [selectedPage, setSelectedPage] = useState(0)
 
@@ -110,12 +110,12 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
         disputableAddress === config.voting.id ? 'vote' : 'proposal'
 
       const path = buildGardenPath(
-        history.location,
+        router,
         `${proposalType}/${disputableActionId}`
       )
-      history.push(path)
+      router.push(path)
     },
-    [config, history]
+    [config, router]
   )
 
   return (

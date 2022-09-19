@@ -9,8 +9,6 @@ import { useGardens } from '@providers/Gardens'
 import { useUserState } from '@providers/User'
 
 import { addressesEqual, getNetworkType } from '@utils/web3-utils'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import gardensLogo from '@assets/gardensLogoMark.svg'
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index
@@ -28,6 +26,19 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
       return []
     }
 
+    // const result = connectedUser.gardensSigned.map((gardenSignedAddress) => {
+    //   const { name, logo } =
+    //     gardensMetadata?.find((g) =>
+    //       addressesEqual(g.address, gardenSignedAddress)
+    //     ) || {}
+
+    //   return {
+    //     address: gardenSignedAddress,
+    //     name,
+    //     path: `/${networkType}/garden/${gardenSignedAddress}`,
+    //     src: logo || '/icons/base/defaultGardenLogo.png', // TODO FIXME check that image path
+    //   }
+    // }) 
     const result = connectedUser.gardensSigned
       .filter(onlyUnique)
       .map((gardenSignedAddress) => {
@@ -68,7 +79,7 @@ const InnerGardensSidebar = ({ disableAnimation = false, width, onToggle }) => {
           `}
         >
           <img
-            src={gardensLogo}
+            src={'/icons/base/gardensLogoMark.svg'}
             height={40}
             alt=""
             css={`

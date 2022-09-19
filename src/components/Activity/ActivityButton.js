@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Spring, animated } from 'react-spring/renderprops'
+import { Spring, animated } from 'react-spring/renderprops.cjs'
 import {
   ButtonIcon,
   IconAlert,

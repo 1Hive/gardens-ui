@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import {
   ButtonBase,
   GU,
@@ -19,11 +19,6 @@ import { useWallet } from '@providers/Wallet'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getDexTradeTokenUrl } from '@/endpoints'
-
-import createSvg from '@assets/create.svg'
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import getHoneySvg from '@assets/getHoney.svg' // TODO: Update
-import gardenSvg from '@assets/gardensLogoMark.svg'
 
 const defaultFooterData = {
   links: {
@@ -52,7 +47,7 @@ const defaultFooterData = {
       },
     ],
   },
-  logo: gardenSvg,
+  logo: '/icons/base/gardensLogoMark.svg',
   garden: false,
 }
 
@@ -78,7 +73,7 @@ function Footer() {
     }
   }, [connectedGarden])
 
-  const logoSvg = footerData.logo || defaultGardenLogo
+  const logoSvg = footerData.logo || '/icons/base/defaultGardenLogo.png'
 
   return (
     <footer
@@ -159,18 +154,17 @@ function Footer() {
 
 export function FixedFooter({ token }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
   const { account } = useWallet()
   const { layoutName } = useLayout()
   const { chainId } = useConnectedGarden()
-  const [createProposalModalVisible, setCreateProposalModalVisible] = useState(
-    false
-  )
+  const [createProposalModalVisible, setCreateProposalModalVisible] =
+    useState(false)
 
   const handleOnGoToCovenant = useCallback(() => {
-    const path = buildGardenPath(history.location, 'covenant')
-    history.push(path)
-  }, [history])
+    const path = buildGardenPath(router, 'covenant')
+    router.push(path)
+  }, [router])
 
   // TODO: Add the create proposal modal here
   return (
@@ -204,7 +198,12 @@ export function FixedFooter({ token }) {
             <FooterItem
               href="#/home"
               icon={
-                <img src={gardenSvg} alt="home" width="24px" height="24px" />
+                <img
+                  src={'/icons/base/gardensLogoMark.svg'}
+                  alt="home"
+                  width="24px"
+                  height="24px"
+                />
               }
               label="Home"
             />
@@ -228,13 +227,14 @@ export function FixedFooter({ token }) {
             />
             <FooterItem
               disabled={!account}
-              icon={<img src={createSvg} alt="create" />}
+              icon={<img src={'/icons/base/create.svg'} alt="create" />}
               label="Create"
               onClick={() => setCreateProposalModalVisible(true)}
             />
             <FooterItem
               href={getDexTradeTokenUrl(chainId, token.id)}
-              icon={<img src={getHoneySvg} alt="" />}
+              // TODO: Update the getHoney Icon
+              icon={<img src={'/icons/base/getHoney.svg'} alt="" />}
               label={`Get ${token.name}`}
               external
             />
@@ -271,7 +271,7 @@ function FooterItem({
         border-radius: 0;
 
         ${!disabled &&
-          `&:active {
+        `&:active {
           background: ${theme.surfacePressed};
           }`}
       `}

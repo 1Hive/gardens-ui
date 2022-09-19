@@ -9,10 +9,6 @@ import { dateFormat } from '@utils/date-utils'
 import { formatTokenAmount } from '@utils/token-utils'
 import { ProposalTypes } from '@/types'
 
-import celesteStarIconSvg from '@assets/icon-celeste-star.svg'
-import coinsIconSvg from '@assets/icon-coins.svg'
-import warningIconSvg from '@assets/icon-warning.svg'
-
 const DATE_FORMAT = 'YYYY/MM/DD , HH:mm'
 
 function DisputableInfo({ proposal }) {
@@ -75,7 +71,7 @@ function ProposalChallengedInfo({ proposal }) {
               .
             </div>
           }
-          iconSrc={warningIconSvg}
+          iconSrc={'/icons/base/icon-warning.svg'}
           title="You have challenged this vote"
         />
       )}
@@ -127,7 +123,7 @@ function ProposalDisputedInfo({ proposal }) {
               .
             </div>
           }
-          iconSrc={celesteStarIconSvg}
+          iconSrc={'/icons/base/icon-celeste-star.svg'}
           title={`${
             isSubmitter ? 'You' : 'Submitter'
           } have invoked Celeste and are awaiting a response`}
@@ -164,7 +160,11 @@ function ProposalSettledInfo({ proposal }) {
     <div>
       {(isSubmitter || isChallenger) && (
         <InfoBox
-          iconSrc={isSubmitter ? coinsIconSvg : warningIconSvg}
+          iconSrc={
+            isSubmitter
+              ? '/icons/base/icon-coins.svg'
+              : '/icons/base/icon-warning.svg'
+          }
           title={
             isSubmitter
               ? 'You have accepted the settlement offer'

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useTheme } from '@1hive/1hive-ui'
 
 import InfoBox from './InfoBox'
@@ -7,25 +7,22 @@ import InfoBox from './InfoBox'
 import { buildGardenPath } from '@utils/routing-utils'
 import { dateFormat } from '@utils/date-utils'
 
-import iconError from '@assets/iconError.svg'
-import iconCheck from '@assets/iconCheck.svg'
-
 function AgreementStatus({ agreement }) {
-  const history = useHistory()
+  const router = useRouter()
   const theme = useTheme()
   const { signedLatest, singedPreviousVersion, lastSignatureDate } = agreement
 
   const goToAgreement = useCallback(() => {
-    const path = buildGardenPath(history.location, 'covenant')
-    history.push(path)
-  }, [history])
+    const path = buildGardenPath(router, 'covenant')
+    router.push(path)
+  }, [router])
 
   const infoData = useMemo(() => {
     if (!signedLatest && !singedPreviousVersion) {
       return {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
-        icon: iconError,
+        icon: '/icons/base/iconError.svg',
         text: 'You have not signed the covenant.',
         actionButton: 'Sign Covenant',
         buttonOnClick: goToAgreement,
@@ -35,7 +32,7 @@ function AgreementStatus({ agreement }) {
       return {
         backgroundColor: theme.negativeSurface.toString(),
         color: theme.negative,
-        icon: iconError,
+        icon: '/icons/base/iconError.svg',
         text: 'You have not signed the newest covenant.',
         actionButton: 'Sign Covenant',
         buttonOnClick: goToAgreement,
@@ -45,7 +42,7 @@ function AgreementStatus({ agreement }) {
       return {
         backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
-        icon: iconCheck,
+        icon: '/icons/base/iconCheck.svg',
         text: `You signed this organization’s Covenant on ${dateFormat(
           lastSignatureDate
         )}.`,

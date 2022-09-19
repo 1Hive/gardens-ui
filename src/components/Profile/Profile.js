@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Button, GU, Split, springs, useLayout } from '@1hive/1hive-ui'
-import { animated, Spring } from 'react-spring/renderprops'
+import { animated, Spring } from 'react-spring/renderprops.cjs'
 import Activity from './Activity'
 import Delegates from './Delegates'
 import EditProfile from './EditProfile'
@@ -19,8 +19,8 @@ import { useWallet } from '@providers/Wallet'
 import { useAppTheme } from '@providers/AppTheme'
 import { addressesEqual } from '@utils/web3-utils'
 
-import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
-import profileCoverDefaultDarkSvg from '@assets/dark-mode/profileCoverDefaultDark.svg'
+import profileCoverDefaultSvg from '@images/icons/base/profileCoverDefault.svg'
+import profileCoverDefaultDarkSvg from '@images/icons/dark-mode/profileCoverDefaultDark.svg'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)
@@ -28,15 +28,14 @@ function Profile() {
   const AppTheme = useAppTheme()
 
   const { account: connectedAccount } = useWallet()
-  const history = useHistory()
+  const router = useRouter()
   const { name: layout } = useLayout()
   const oneColumn = layout === 'small' || layout === 'medium'
 
   const imageInput = useRef(null)
 
   // Selected account
-  const searchParams = useSearchParams()
-  const selectedAccount = searchParams.get('account') || connectedAccount
+  const selectedAccount = router.query.account || connectedAccount
   const accountStakes = useAccountStakes(selectedAccount)
   const accountInactiveStakes = useInactiveProposalsWithStake(selectedAccount)
 
@@ -45,9 +44,9 @@ function Profile() {
 
   useEffect(() => {
     if (!selectedAccount) {
-      return history.push('/')
+      return router.push('/')
     }
-  }, [connectedAccount, history, selectedAccount])
+  }, [connectedAccount, router, selectedAccount])
 
   useEffect(() => {
     setEditMode(false)
@@ -184,11 +183,6 @@ function AnimatedBackground({ height, image }) {
       )}
     </Spring>
   )
-}
-
-function useSearchParams() {
-  const { search } = useLocation()
-  return new URLSearchParams(search)
 }
 
 export default Profile

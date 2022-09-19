@@ -1,19 +1,19 @@
 import { IndividualStepTypes } from '../stepper-statuses'
 import { useTheme } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
-import blockIcon from '@assets/blockIcon.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
+import blockIcon from '@images/icons/base/blockIcon.svg'
+import signRequestFailIllustration from '@images/icons/base/signRequestFail.svg'
+import signRequestSuccessIllustration from '@images/icons/base/signRequestSuccess.svg'
+import trxBeingMinedIllustration from '@images/icons/base/trxBeingMined.svg'
 import React from 'react'
-import signRequestSuccessIllustrationDark from '@assets/dark-mode/signRequestSuccess.svg'
-import signRequestFailIllustrationDark from '@assets/dark-mode/signRequestFail.svg'
-import trxBeingMinedIllustrationDark from '@assets/dark-mode/honey.svg'
+import signRequestSuccessIllustrationDark from '@images/icons/dark-mode/signRequestSuccess.svg'
+import signRequestFailIllustrationDark from '@images/icons/dark-mode/signRequestFail.svg'
+import trxBeingMinedIllustrationDark from '@images/icons/dark-mode/honey.svg'
 
 const illustrations = {
-  [IndividualStepTypes.Working]: trxBeingMinedIllustration,
-  [IndividualStepTypes.Success]: signRequestSuccessIllustration,
-  [IndividualStepTypes.Error]: signRequestFailIllustration,
+  [IndividualStepTypes.Working]: '/icons/base/trxBeingMined.svg',
+  [IndividualStepTypes.Success]: '/icons/base/signRequestSuccess.svg',
+  [IndividualStepTypes.Error]: '/icons/base/signRequestFail.svg',
 }
 
 const illustrationsDarkMode = {
@@ -45,7 +45,7 @@ function Illustration({ status, index }) {
             color: ${theme.positiveContent};
           `}
         >
-          <img src={blockIcon} height={48} width={48} />
+          <img src={'/icons/base/blockIcon.svg'} height={48} width={48} />
         </div>
       ) : (
         <img src={illustrationsType[status]} height={96} width={96} />

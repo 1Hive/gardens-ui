@@ -1,37 +1,37 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 
 import { useAppTheme } from '@/providers/AppTheme'
 import NavigationItem from '../Items/NavigationItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import covenantIcon from '@assets/covenantIcon.svg'
-import createProposalIcon from '@assets/createProposal.svg'
-import feedIcon from '@assets/feedIcon.svg'
-import covenantIconDark from '@assets/dark-mode/covenantIcon.svg'
-import createProposalIconDark from '@assets/dark-mode/createProposal.svg'
-import feedIconDark from '@assets/dark-mode/feedIcon.svg'
+import covenantIcon from '@images/icons/base/covenantIcon.svg'
+import createProposalIcon from '@images/icons/base/createProposal.svg'
+import feedIcon from '@images/icons/base/feedIcon.svg'
+import covenantIconDark from '@images/icons/dark-mode/covenantIcon.svg'
+import createProposalIconDark from '@images/icons/dark-mode/createProposal.svg'
+import feedIconDark from '@images/icons/dark-mode/feedIcon.svg'
 
 const InnerGardenNavigationSidebar = ({
   width,
   onToggle,
   onOpenCreateProposal,
 }) => {
-  const history = useHistory()
+  const router = useRouter()
   const { appearance } = useAppTheme()
 
   const gardenNavigationItems = [
     {
       icon: appearance === 'light' ? feedIcon : feedIconDark,
       label: 'Feed',
-      path: buildGardenPath(history.location, ''),
+      path: buildGardenPath(router, ''),
       onClick: onToggle,
     },
     {
       icon: appearance === 'light' ? covenantIcon : covenantIconDark,
       label: 'Covenant',
-      path: buildGardenPath(history.location, 'covenant'),
+      path: buildGardenPath(router, 'covenant'),
       onClick: onToggle,
     },
     {
@@ -52,7 +52,7 @@ const InnerGardenNavigationSidebar = ({
         {gardenNavigationItems.map(({ icon, label, path, onClick }) => (
           <NavigationItem
             key={path}
-            active={history.location.pathname === path}
+            active={router.pathname === path}
             label={label}
             path={path}
             src={icon}

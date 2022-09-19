@@ -5,8 +5,8 @@ import { getProviderFromUseWalletId } from 'use-wallet'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
 import { useAppTheme } from '@/providers/AppTheme'
 
-import loadingRing from './assets/loading-ring.svg'
-import loadingRingDark from './assets/loading-ring-dark.svg'
+import loadingRing from '@images/icons/base/loading-ring.svg'
+import loadingRingDark from '@images/icons/base/loading-ring-dark.svg'
 
 const spin = keyframes`
   from {

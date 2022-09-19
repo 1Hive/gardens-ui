@@ -9,7 +9,6 @@ import { useAppTheme } from '@/providers/AppTheme'
 
 import { formatTokenAmount } from '@utils/token-utils'
 import { safeDivBN } from '@utils/math-utils'
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 function BalanceModule() {
   const theme = useTheme()
@@ -31,10 +30,12 @@ function BalanceModule() {
     <HeaderModule
       icon={
         <img
+          // src={token.data.logo || '/icons/base/defaultTokenLogo.svg'}
           src={
             (appearance === 'light'
               ? token.data.logo
-              : token.data.logoDark || token.data.logo) || defaultTokenLogo
+              : token.data.logoDark || token.data.logo) ||
+            '/icons/base/defaultTokenLogo.svg'
           }
           height="28"
           width="28"

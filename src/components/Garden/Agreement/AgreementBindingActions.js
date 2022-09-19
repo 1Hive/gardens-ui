@@ -7,7 +7,7 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { getNetwork } from '@/networks'
 import { formatTokenAmount } from '@utils/token-utils'
 
-import honeyIconSvg from '@assets/honey.svg'
+import honeyIconSvg from '@images/icons/base/honey.svg'
 
 function AgreementBindingActions({ apps }) {
   const { chainId } = useConnectedGarden()

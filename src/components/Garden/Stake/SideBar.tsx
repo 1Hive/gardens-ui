@@ -6,10 +6,10 @@ import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { formatTokenAmount } from '@utils/token-utils'
 import { useAppTheme } from '@providers/AppTheme'
 
-import coinLight from './assets/coin.svg'
-import walletLight from './assets/wallet.svg'
-import coinDark from './assets/coin-dark.svg'
-import walletDark from './assets/wallet-dark.svg'
+import coinLight from '@images/icons/stake/coin.svg'
+import walletLight from '@images/icons/stake/wallet.svg'
+import coinDark from '@images/icons/stake/coin-dark.svg'
+import walletDark from '@images/icons/stake/wallet-dark.svg'
 import { TokenType } from '@/types/app'
 
 type SideBarType = {

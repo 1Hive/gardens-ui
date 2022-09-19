@@ -18,8 +18,6 @@ import { useAppTheme } from '@/providers/AppTheme'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
-
 const Metrics = React.memo(function Metrics({
   commonPool,
   onExecuteIssuance,
@@ -117,7 +115,7 @@ function PriceSection({
         src={
           (appearance === 'light'
             ? token.logo
-            : token.logoDark || token.logo) || defaultTokenLogo
+            : token.logoDark || token.logo) || '/icons/base/defaultTokenLogo.svg'
         }
         height="60"
         width="60"

@@ -9,7 +9,11 @@ const PREFERRED_CHAIN_ID_KEY = 'CHAIN_ID'
 // Get a setting from localStorage
 function getLocalStorageSetting(confKey: string) {
   const storageKey = `${confKey}_KEY`
-  return window.localStorage.getItem(storageKey)
+  if (typeof window === 'undefined') {
+    return ''
+  }
+
+  return window?.localStorage?.getItem(storageKey)
 }
 
 function setLocalSetting(confKey: string, value: string) {
@@ -27,7 +31,14 @@ export function setPreferredChain(chainId = 100) {
   return setLocalSetting(PREFERRED_CHAIN_ID_KEY, String(chainId))
 }
 
-export function getAppTheme() {
+export function getAppTheme():{theme:any,appearance:'light'|'dark'} {
+  if (typeof window === 'undefined') {
+    return {
+      theme: null,
+      appearance: 'light',
+    }
+  }
+
   const storedAppTheme = getLocalStorageSetting(APP_THEME)
   if (storedAppTheme) {
     try {

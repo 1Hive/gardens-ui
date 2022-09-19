@@ -10,22 +10,25 @@ import {
 import { useWallet } from '@providers/Wallet'
 import { useAppTheme } from '@providers/AppTheme'
 
-import desktopBanner from '@assets/banner.png'
-import mobileBanner from '@assets/banner-mobile.png'
-import tabletBanner from '@assets/banner-tablet.png'
-import tabletBannerFull from '@assets/banner-tablet-full.png'
+import desktopBanner from '@images/icons/base/banner.png'
+import mobileBanner from '@images/icons/base/banner-mobile.png'
+import tabletBanner from '@images/icons/base/banner-tablet.png'
+import tabletBannerFull from '@images/icons/base/banner-tablet-full.png'
 
-import desktopBannerDark from '@assets/dark-mode/banner.png'
-import mobileBannerDark from '@assets/dark-mode/banner-mobile.png'
-import tabletBannerDark from '@assets/dark-mode/banner-tablet.png'
-import tabletBannerFullDark from '@assets/dark-mode/banner-tablet-full.png'
+import desktopBannerDark from '@images/icons/dark-mode/banner.png'
+import mobileBannerDark from '@images/icons/dark-mode/banner-mobile.png'
+import tabletBannerDark from '@images/icons/dark-mode/banner-tablet.png'
+import tabletBannerFullDark from '@images/icons/dark-mode/banner-tablet-full.png'
 
 const BANNERS = {
-  small: { image: mobileBanner, aspectRatio: '54%' },
-  medium: { image: tabletBanner, aspectRatio: '36%' },
-  medium_full: { image: tabletBannerFull, aspectRatio: '36%' },
-  large: { image: desktopBanner, aspectRatio: '159%' },
-  max: { image: desktopBanner, aspectRatio: '159%' },
+  small: { image: '/icons/base/banner-mobile.png', aspectRatio: '54%' },
+  medium: { image: '/icons/base/banner-tablet.png', aspectRatio: '36%' },
+  medium_full: {
+    image: '/icons/base/banner-tablet-full.png',
+    aspectRatio: '36%',
+  },
+  large: { image: '/icons/base/banner.png', aspectRatio: '159%' },
+  max: { image: '/icons/base/banner.png', aspectRatio: '159%' },
 }
 
 const BANNERS_DARK_MODE = {

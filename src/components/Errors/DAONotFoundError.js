@@ -1,11 +1,11 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import { Button, GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { getNetworkName } from '../../utils/web3-utils'
 
 function DAONotFoundError({ chainId, daoId }) {
   const theme = useTheme()
-  const history = useHistory()
+  const router = useRouter()
 
   return (
     <React.Fragment>
@@ -33,7 +33,7 @@ function DAONotFoundError({ chainId, daoId }) {
       </div>
       <Button
         mode="strong"
-        onClick={() => history.push('/home')}
+        onClick={() => router.push('/home')}
         wide
         css={`
           margin-top: ${3 * GU}px;

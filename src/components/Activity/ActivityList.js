@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Transition, animated } from 'react-spring/renderprops'
+import { Transition, animated } from 'react-spring/renderprops.cjs'
 import {
   ButtonText,
   GU,
@@ -14,8 +14,8 @@ import { useAppTheme } from '@/providers/AppTheme'
 
 import { ActivityStatus } from './activity-statuses'
 
-import noDataSvg from '@assets/noData.svg'
-import noDataDarkSvg from '@assets/dark-mode/noData.svg'
+import noDataSvg from '@images/icons/base/noData.svg'
+import noDataDarkSvg from '@images/icons/dark-mode/noData.svg'
 
 // 8GU for top bar, 4GU for activity heading,
 // 11GU for HelpScout beacon (3GU top/bottom padding, 5GU beacon)

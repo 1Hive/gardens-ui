@@ -6,8 +6,6 @@ import StepsPanel from './Steps/StepsPanel'
 import { useWallet } from '@providers/Wallet'
 import { getNetworkName } from '@utils/web3-utils'
 
-import gardensLogo from '@assets/gardensLogoMark.svg'
-
 function Setup({ onClose }) {
   const theme = useTheme()
   const { chainId } = useWallet()
@@ -27,7 +25,7 @@ function Setup({ onClose }) {
             padding-left: ${2.25 * GU}px;
             margin-top: ${2 * GU}px;
           `}
-          src={gardensLogo}
+          src={'/icons/base/gardensLogoMark.svg'}
           height={32}
           alt=""
         />

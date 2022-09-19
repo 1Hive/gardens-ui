@@ -1,8 +1,8 @@
 import React from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
-import flowerErrorLight from '@assets/flowerError.svg'
-import flowerErrorDark from '@assets/dark-mode/flowerError.svg'
+import flowerErrorLight from '@images/icons/base/flowerError.svg'
+import flowerErrorDark from '@images/icons/dark-mode/flowerError.svg'
 
 function NetworkErrorModal({ visible }: { visible: boolean }) {
   const { width } = useViewport()

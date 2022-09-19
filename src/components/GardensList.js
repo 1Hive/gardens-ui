@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useRouter } from 'next/router'
 import {
   GU,
   Pagination,
@@ -11,9 +11,6 @@ import EmptyResults from './EmptyResults'
 import { useWallet } from '@providers/Wallet'
 import { useAppTheme } from '@/providers/AppTheme'
 import { getNetwork } from '@/networks'
-
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import defaultTokenLogo from '@assets/defaultTokenLogo.svg'
 
 const GARDENS_PER_PAGE = 10
 
@@ -79,8 +76,8 @@ function GardensList({ gardens }) {
 
 function GardenCard({ garden }) {
   const theme = useTheme()
+  const history = useRouter()
   const { appearance } = useAppTheme()
-  const history = useHistory()
   const { preferredNetwork } = useWallet()
   const handleSelectGarden = useCallback(() => {
     history.push(
@@ -92,7 +89,7 @@ function GardenCard({ garden }) {
 
   const tokenLogo =
     (appearance === 'light' ? token?.logo : token?.logoDark || token?.logo) ||
-    defaultTokenLogo
+    '/icons/base/defaultTokenLogo.svg'
 
   return (
     <div
@@ -122,7 +119,7 @@ function GardenCard({ garden }) {
           css={`
             border-radius: 100%;
           `}
-          src={garden.logo || defaultGardenLogo}
+          src={garden.logo || '/icons/base/defaultGardenLogo.png'}
           alt=""
           height="72"
         />

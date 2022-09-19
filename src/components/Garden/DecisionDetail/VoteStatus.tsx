@@ -9,9 +9,6 @@ import {
   PROPOSAL_STATUS_VOIDED_STRING,
 } from '@/constants'
 
-import celesteIconSvg from '@assets/celeste-icon.svg'
-import challengeIconSvg from '@assets/challenge-icon.svg'
-
 type AttributesProps = {
   label: string
   Icon?: React.ReactNode
@@ -98,7 +95,7 @@ export const getStatusAttributes = (
   if (statusData.disputed) {
     return {
       label: 'Waiting for celeste',
-      iconSrc: celesteIconSvg,
+      iconSrc: '/icons/base/celeste-icon.svg',
       color: '#8253A8',
       background: '#FCFAFF',
       borderColor: '#8253A8',
@@ -107,7 +104,7 @@ export const getStatusAttributes = (
   if (statusData.challenged) {
     return {
       label: PROPOSAL_STATUS_CHALLENGED_STRING,
-      iconSrc: challengeIconSvg,
+      iconSrc: '/icons/base/challenge-icon.svg', //challengeIconSvg, TODO FIXME
       color: theme.challenge,
       background: theme.challengeSurface,
       borderColor: theme.challengeBorder,

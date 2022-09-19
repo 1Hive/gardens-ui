@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Spring, Transition, animated } from 'react-spring/renderprops'
+import { Spring, Transition, animated } from 'react-spring/renderprops.cjs'
 import {
   ButtonIcon,
   GU,
@@ -19,8 +19,8 @@ import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
 
-import headerBackground from '@assets/modal-background.svg'
-import headerBackgroundDark from '@assets/dark-mode/modal-background.svg'
+import headerBackground from '@images/icons/base/modal-background.svg'
+import headerBackgroundDark from '@images/icons/dark-mode/modal-background.svg'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
