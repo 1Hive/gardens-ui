@@ -15,8 +15,6 @@ const BaseItem = ({
   const router = useRouter()
   const AppTheme = useAppTheme()
 
-  const history = useHistory()
-
   const activeColor =
     AppTheme.appearance === 'light' ? 'rgb(212 251 216)' : theme.positiveSurface
 

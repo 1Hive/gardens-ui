@@ -1,7 +1,6 @@
 // import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useMemo, useState, memo } from 'react'
-// import { useHistory } from 'react-router'
 import { Header } from '@1hive/1hive-ui'
 import EmptyState from './EmptyState'
 import { GardenLoader } from '@components/Loader'
@@ -23,7 +22,6 @@ function StakeManagement() {
   const router = useRouter()
   // const [stakeModalMode, setStakeModalMode] = useState()
   const { appearance } = useAppTheme()
-  // const history = useHistory()
   const [stakeModalMode, setStakeModalMode] = useState<null | string>()
   const { stakeManagement, stakeActions, loading } = useStakingState()
 

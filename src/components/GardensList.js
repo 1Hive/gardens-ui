@@ -78,7 +78,6 @@ function GardenCard({ garden }) {
   const theme = useTheme()
   const history = useRouter()
   const { appearance } = useAppTheme()
-  // const history = useHistory()
   const { preferredNetwork } = useWallet()
   const handleSelectGarden = useCallback(() => {
     history.push(

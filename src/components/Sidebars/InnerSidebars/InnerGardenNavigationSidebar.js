@@ -19,7 +19,6 @@ const InnerGardenNavigationSidebar = ({
   onOpenCreateProposal,
 }) => {
   const router = useRouter()
-  // const history = useHistory()
   const { appearance } = useAppTheme()
 
   const gardenNavigationItems = [

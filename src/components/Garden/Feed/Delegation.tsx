@@ -108,7 +108,6 @@ function Representative({
   const theme = useTheme()
   const router = useRouter()
   // const profile = useProfile(representative.address)
-  // const history = useHistory()
   const profile: any = useProfile(representative.address)
 
   const handleViewProfile = useCallback(() => {

@@ -94,7 +94,6 @@ function StakingMovements({ stakingMovements, token }: StakingMovementsProps) {
   const theme = useTheme()
   const router = useRouter()
   const { appearance } = useAppTheme()
-  // const history = useHistory()
 
   const [selectedPage, setSelectedPage] = useState(0)
 

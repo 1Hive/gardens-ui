@@ -31,7 +31,7 @@ export function setPreferredChain(chainId = 100) {
   return setLocalSetting(PREFERRED_CHAIN_ID_KEY, String(chainId))
 }
 
-export function getAppTheme() {
+export function getAppTheme():{theme:any,appearance:'light'|'dark'} {
   if (typeof window === 'undefined') {
     return {
       theme: null,

@@ -39,7 +39,6 @@ function Header({
   const router = useRouter()
   const connectedGarden = useConnectedGarden()
   const { appearance, toggleAppearance } = useAppTheme()
-  // const history = useHistory()
   const { below } = useViewport()
   const { account } = useWallet()
 
@@ -72,7 +71,7 @@ function Header({
   const logoLink = connectedGarden ? buildGardenPath(router, '') : '/home'
 
   const toggleDarkMode = useCallback(() => {
-    toggleAppearance()
+    toggleAppearance?.()
   }, [toggleAppearance])
 
   const showBalance = connectedGarden && account && !mobileMode
