@@ -15,8 +15,8 @@ import {
 } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
 
-import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
-import darkModeIconDark from '@assets/dark-mode/icon-dark-mode-dark.svg'
+import darkModeIconLight from '@images/icons/base/icon-dark-mode-light.svg'
+import darkModeIconDark from '@images/icons/dark-mode/icon-dark-mode-dark.svg'
 
 function GlobalPreferencesButton({ onOpen }) {
   const theme = useTheme()

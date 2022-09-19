@@ -7,8 +7,8 @@ import { useGardenState } from '@providers/GardenState'
 import { useAppTheme } from '@providers/AppTheme'
 import { useMultiModal } from '@components/MultiModal/MultiModalProvider'
 
-import signGraphicLight from '@assets/smart-contract.svg'
-import signGraphicDark from '@assets/dark-mode/smart-contract.svg'
+import signGraphicLight from '@images/icons/base/smart-contract.svg'
+import signGraphicDark from '@images/icons/dark-mode/smart-contract.svg'
 
 function SignOverview({ getTransactions }) {
   const [loading, setLoading] = useState(false)

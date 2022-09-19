@@ -5,8 +5,8 @@ import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useAppTheme } from '@/providers/AppTheme'
 import { useDisputeFees } from '@hooks/useDispute'
 
-import honeyIconSvg from '@assets/honey.svg'
-import honeyDarkIconSvg from '@assets/dark-mode/honey.svg'
+import honeyIconSvg from '@images/icons/base/honey.svg'
+import honeyDarkIconSvg from '@images/icons/dark-mode/honey.svg'
 
 import { formatTokenAmount } from '@utils/token-utils'
 import { ProposalType } from '@/types/app'

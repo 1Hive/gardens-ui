@@ -20,10 +20,10 @@ import { useAppTheme } from '@/providers/AppTheme'
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
-import profileButtonSvg from '@assets/profileButton.svg'
-import stakeButtonSvg from '@assets/stakeButton.svg'
-import profileButtonDarkSvg from '@assets/dark-mode/profileButton.svg'
-import stakeButtonDarkSvg from '@assets/dark-mode/stakeButton.svg'
+import profileButtonSvg from '@images/icons/base/profileButton.svg'
+// import stakeButtonSvg from '@images/icons/base/stakeButton.svg'
+// import profileButtonDarkSvg from '@images/icons/dark-mode/profileButton.svg'
+// import stakeButtonDarkSvg from '@images/icons/dark-mode/stakeButton.svg'
 
 type AccountScreenConnectedProps = {
   providerId: string

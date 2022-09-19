@@ -19,8 +19,8 @@ import { useWallet } from '@providers/Wallet'
 import { useAppTheme } from '@providers/AppTheme'
 import { addressesEqual } from '@utils/web3-utils'
 
-import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
-import profileCoverDefaultDarkSvg from '@assets/dark-mode/profileCoverDefaultDark.svg'
+import profileCoverDefaultSvg from '@images/icons/base/profileCoverDefault.svg'
+import profileCoverDefaultDarkSvg from '@images/icons/dark-mode/profileCoverDefaultDark.svg'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)

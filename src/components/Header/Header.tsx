@@ -21,12 +21,12 @@ import { useAppTheme } from '@providers/AppTheme'
 import { buildGardenPath } from '@utils/routing-utils'
 import { CELESTE_URL, getDexTradeTokenUrl } from '@/endpoints'
 
-import defaultGardenLogo from '@assets/defaultGardenLogo.png'
-import gardensLogo from '@assets/gardensLogoMark.svg'
-import gardensLogoType from '@assets/gardensLogoType.svg'
-import gardensLogoTypeDark from '@assets/dark-mode/gardensLogoTypeDark.svg'
-import darkModeIconLight from '@assets/icon-dark-mode-light.svg'
-import darkModeIconDark from '@assets/dark-mode/icon-dark-mode-dark.svg'
+import defaultGardenLogo from '@images/icons/base/defaultGardenLogo.png'
+import gardensLogo from '@images/icons/base/gardensLogoMark.svg'
+import gardensLogoType from '@images/icons/base/gardensLogoType.svg'
+import gardensLogoTypeDark from '@images/icons/dark-mode/gardensLogoTypeDark.svg'
+import darkModeIconLight from '@images/icons/base/icon-dark-mode-light.svg'
+import darkModeIconDark from '@images/icons/dark-mode/icon-dark-mode-dark.svg'
 
 function Header({
   onOpenPreferences,

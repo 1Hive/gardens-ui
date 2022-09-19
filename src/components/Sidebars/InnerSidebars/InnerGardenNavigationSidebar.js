@@ -6,12 +6,12 @@ import NavigationItem from '../Items/NavigationItem'
 import BaseInnerSidebar from './BaseInnerSidebar'
 
 import { buildGardenPath } from '@utils/routing-utils'
-import covenantIcon from '@assets/covenantIcon.svg'
-import createProposalIcon from '@assets/createProposal.svg'
-import feedIcon from '@assets/feedIcon.svg'
-import covenantIconDark from '@assets/dark-mode/covenantIcon.svg'
-import createProposalIconDark from '@assets/dark-mode/createProposal.svg'
-import feedIconDark from '@assets/dark-mode/feedIcon.svg'
+import covenantIcon from '@images/icons/base/covenantIcon.svg'
+import createProposalIcon from '@images/icons/base/createProposal.svg'
+import feedIcon from '@images/icons/base/feedIcon.svg'
+import covenantIconDark from '@images/icons/dark-mode/covenantIcon.svg'
+import createProposalIconDark from '@images/icons/dark-mode/createProposal.svg'
+import feedIconDark from '@images/icons/dark-mode/feedIcon.svg'
 
 const InnerGardenNavigationSidebar = ({
   width,

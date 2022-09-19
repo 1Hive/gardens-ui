@@ -2,8 +2,8 @@ import React from 'react'
 import { Card, GU, Header, textStyle } from '@1hive/1hive-ui'
 import { useAppTheme } from '@/providers/AppTheme'
 import LayoutColumns from '../Layout/LayoutColumns'
-import tokenIcon from './assets/connect-icon.svg'
-import tokenIconDark from './assets/connect-icon-dark.svg'
+import tokenIcon from '@images/icons/stake/connect-icon.svg'
+import tokenIconDark from '@images/icons/stake/connect-icon-dark.svg'
 
 export default function EmptyState({ icon }: { icon: string }) {
   const { appearance } = useAppTheme()

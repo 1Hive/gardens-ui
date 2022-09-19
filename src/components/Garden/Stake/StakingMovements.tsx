@@ -22,8 +22,8 @@ import {
   CollateralStatusesMap,
 } from './staking-management-statuses'
 import { buildGardenPath } from '@utils/routing-utils'
-import noDataIllustrationLight from './assets/no-dataview-data.svg'
-import noDataIllustrationDark from '@assets/dark-mode/no-dataview-data.svg'
+import noDataIllustrationLight from '@images/icons/stake/no-dataview-data.svg'
+import noDataIllustrationDark from '@images/icons/dark-mode/no-dataview-data.svg'
 import { dateFormat, toMs } from '@utils/date-utils'
 
 import { TokenType } from '@/types/app'

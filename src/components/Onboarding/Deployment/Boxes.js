@@ -17,12 +17,12 @@ import { useAppTheme } from '@/providers/AppTheme'
 
 import { TransactionStatusType } from '@/prop-types'
 
-import gardensLogoMark from '@assets/gardensLogoMark.svg'
+import gardensLogoMark from '@images/icons/base/gardensLogoMark.svg'
 
-import flowerSvg from './assets/flower.svg'
-import linesSvg from './assets/lines.svg'
-import flowerDarkSvg from './assets/flower-dark.svg'
-import linesDarkSvg from './assets/lines-dark.svg'
+import flowerSvg from '@images/icons/deployment/flower.svg'
+import linesSvg from '@images/icons/deployment/lines.svg'
+import flowerDarkSvg from '@images/icons/deployment/flower-dark.svg'
+import linesDarkSvg from '@images/icons/deployment/lines-dark.svg'
 
 const AnimDiv = animated.div
 const AnimSection = animated.section

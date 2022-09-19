@@ -74,6 +74,7 @@
   },
   "jest": {
     "moduleNameMapper": {
+      "^@images(.*)$": "<rootDir>/public$1",
       "^@assets(.*)$": "<rootDir>/src/assets$1",
       "^@abis(.*)$": "<rootDir>/src/abi$1",
       "^@components(.*)$": "<rootDir>/src/components$1",

@@ -1,14 +1,14 @@
 import { IndividualStepTypes } from '../stepper-statuses'
 import { useTheme } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
-import blockIcon from '@assets/blockIcon.svg'
-import signRequestFailIllustration from '@assets/signRequestFail.svg'
-import signRequestSuccessIllustration from '@assets/signRequestSuccess.svg'
-import trxBeingMinedIllustration from '@assets/trxBeingMined.svg'
+import blockIcon from '@images/icons/base/blockIcon.svg'
+import signRequestFailIllustration from '@images/icons/base/signRequestFail.svg'
+import signRequestSuccessIllustration from '@images/icons/base/signRequestSuccess.svg'
+import trxBeingMinedIllustration from '@images/icons/base/trxBeingMined.svg'
 import React from 'react'
-import signRequestSuccessIllustrationDark from '@assets/dark-mode/signRequestSuccess.svg'
-import signRequestFailIllustrationDark from '@assets/dark-mode/signRequestFail.svg'
-import trxBeingMinedIllustrationDark from '@assets/dark-mode/honey.svg'
+import signRequestSuccessIllustrationDark from '@images/icons/dark-mode/signRequestSuccess.svg'
+import signRequestFailIllustrationDark from '@images/icons/dark-mode/signRequestFail.svg'
+import trxBeingMinedIllustrationDark from '@images/icons/dark-mode/honey.svg'
 
 const illustrations = {
   [IndividualStepTypes.Working]: '/icons/base/trxBeingMined.svg',

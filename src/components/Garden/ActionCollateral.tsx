@@ -3,7 +3,7 @@ import { GU, useTheme } from '@1hive/1hive-ui'
 
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { formatTokenAmount } from '@utils/token-utils'
-import lockIconSvg from '@assets/icon-lock.svg'
+import lockIconSvg from '@images/icons/base/icon-lock.svg'
 import { ProposalType } from '@/types/app'
 
 type ActionCollateralProps = {

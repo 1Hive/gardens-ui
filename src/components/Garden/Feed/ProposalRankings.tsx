@@ -2,16 +2,16 @@ import React, { useCallback } from 'react'
 import { GU, textStyle, useTheme } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
 
-import iconTopSvg from '@assets/rankings/ranking-top.svg'
-import iconTopSelectedSvg from '@assets/rankings/ranking-top-selected.svg'
-import iconNewSvg from '@assets/rankings/ranking-new.svg'
-import iconNewSelectedSvg from '@assets/rankings/ranking-new-selected.svg'
+import iconTopSvg from '@images/icons/base/rankings/ranking-top.svg'
+import iconTopSelectedSvg from '@images/icons/base/rankings/ranking-top-selected.svg'
+import iconNewSvg from '@images/icons/base/rankings/ranking-new.svg'
+import iconNewSelectedSvg from '@images/icons/base/rankings/ranking-new-selected.svg'
 
 // DarkMode svg
-import iconTopSvgDarkMode from '@assets/dark-mode/ranking-top.svg'
-import iconTopSelectedSvgDarkMode from '@assets/dark-mode/ranking-top-selected.svg'
-import iconNewSvgDarkMode from '@assets/dark-mode/ranking-new.svg'
-import iconNewSelectedSvgDarkMode from '@assets/dark-mode/ranking-new-selected.svg'
+import iconTopSvgDarkMode from '@images/icons/dark-mode/ranking-top.svg'
+import iconTopSelectedSvgDarkMode from '@images/icons/dark-mode/ranking-top-selected.svg'
+import iconNewSvgDarkMode from '@images/icons/dark-mode/ranking-new.svg'
+import iconNewSelectedSvgDarkMode from '@images/icons/dark-mode/ranking-new-selected.svg'
 
 const iconsMapping: {
   [x: string]: {

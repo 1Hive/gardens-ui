@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
 import { Colors } from '@nivo/core'
 
-import celesteIconSvg from '@assets/celeste-icon.svg'
-import challengeIconSvg from '@assets/challenge-icon.svg'
+import celesteIconSvg from '@images/icons/base/celeste-icon.svg'
+import challengeIconSvg from '@images/icons/base/challenge-icon.svg'
 import { ProposalType } from '@/types/app'
 
 export const ABSTAIN_PROPOSAL = 'Abstain proposal'

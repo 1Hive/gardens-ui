@@ -1,7 +1,7 @@
 import { getIpfsUrlFromUri } from './ipfs-utils'
-import iconAcl from '@assets/icon-acl.svg'
-import iconKernel from '@assets/icon-kernel.svg'
-import iconRegistry from '@assets/icon-registry.svg'
+import iconAcl from '@images/icons/base/icon-acl.svg'
+import iconKernel from '@images/icons/base/icon-kernel.svg'
+import iconRegistry from '@images/icons/base/icon-registry.svg'
 import { AppType } from '@/types/app'
 
 export const SHORTENED_APPS_NAMES = new Map([

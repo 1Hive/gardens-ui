@@ -332,6 +332,7 @@ module.exports = function(webpackEnv) {
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               loader: require.resolve('url-loader'),
+              include:[path.resolve(__dirname, '../../node_modules/use-wallet/dist/cjs/')],
               options: {
                 limit: imageInlineSizeLimit,
                 name: 'static/media/[name].[hash:8].[ext]',
