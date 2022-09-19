@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import styled from 'styled-components'
 import {
   Box,
   Button,
@@ -8,36 +9,58 @@ import {
   textStyle,
   useTheme,
 } from '@1hive/1hive-ui'
-
+import { useAppTheme } from '@providers/AppTheme'
 import Carousel from '@components/Carousel/Carousel'
 import { useGardenState } from '@providers/GardenState'
 import useUnipoolRewards from '@/hooks/useUnipoolRewards'
 
 import { formatTokenAmount } from '@utils/token-utils'
 
-const modeAttributes = {
-  wrap: {
-    icon: '/icons/base/unwrappedIcon.svg',
-    button: { mode: 'strong', label: 'Wrap' },
-  },
-  unwrap: {
-    icon: '/icons/base/wrappedIcon.svg',
-    button: { mode: 'strong', label: 'Unwrap' },
-    hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
-  },
-  claim: {
-    button: { mode: 'normal', label: 'Claim' },
-    icon: '/icons/base/rewardsWrapperIcon.svg',
-  },
-}
+// const modeAttributes = { //TODO FIXME
+//   wrap: {
+//     icon: '/icons/base/unwrappedIcon.svg',
+//     button: { mode: 'strong', label: 'Wrap' },
+//   },
+//   unwrap: {
+//     icon: '/icons/base/wrappedIcon.svg',
+//     button: { mode: 'strong', label: 'Unwrap' },
+//     hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+//   },
+//   claim: {
+//     button: { mode: 'normal', label: 'Claim' },
+//     icon: '/icons/base/rewardsWrapperIcon.svg',
+//   },
+// }
+import wrappedIcon from '@assets/wrappedIcon.svg'
+import wrappedIconDark from '@assets/dark-mode/wrappedIconDark.svg'
+import unwrappedIcon from '@assets/unwrappedIcon.svg'
+import unwrappedIconDark from '@assets/dark-mode/unwrappedIconDark.svg'
+import claimRewardsIcon from '@assets/rewardsWrapperIcon.svg'
+import claimRewardsIconDark from '@assets/dark-mode/rewardsWrapperIcon.svg'
+import tokenAPRIcon from '@assets/tokenRewardIcon.svg'
+import tokenAPRIconDark from '@assets/dark-mode/tokenRewardIcon.svg'
 
 function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   const { token, wrappableToken } = useGardenState()
+  const AppTheme = useAppTheme()
 
   const loading =
     token.accountBalance.eq(-1) || wrappableToken.accountBalance.eq(-1)
 
-  const [earnedRewards, rewardsLink] = useUnipoolRewards()
+  const [earnedRewards, rewardsLink, rewardAPR] = useUnipoolRewards()
+  const rewardAPRFormatted =
+    rewardAPR && !rewardAPR.eq(0)
+      ? rewardAPR.multipliedBy(100).toFixed(2)
+      : null
+
+  let unwrappedImage
+  if (rewardAPR && !rewardAPR.eq(0)) {
+    unwrappedImage =
+      AppTheme.appearance === 'dark' ? tokenAPRIconDark : tokenAPRIcon
+  } else {
+    unwrappedImage =
+      AppTheme.appearance === 'dark' ? unwrappedIconDark : unwrappedIcon
+  }
 
   const handleClaimRewards = useCallback(() => {
     if (rewardsLink) {
@@ -52,23 +75,43 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
     <Token
       balance={wrappableToken.accountBalance}
       loading={loading}
-      mode="wrap"
+      mode={{
+        type: 'unwrapped',
+        icon: unwrappedImage,
+        button: { mode: 'strong', label: 'Wrap' },
+        apr: rewardAPRFormatted,
+      }}
       onClick={onWrapToken}
       token={wrappableToken.data}
+      darkTheme={AppTheme.appearance === 'dark'}
     />,
     <Token
       balance={token.accountBalance}
       loading={loading}
-      mode="unwrap"
+      mode={{
+        type: 'wrapped',
+        icon: AppTheme.appearance === 'dark' ? wrappedIconDark : wrappedIcon,
+        button: { mode: 'strong', label: 'Unwrap' },
+        hint: 'This amount can be used to vote on proposals. It can be unwrapped at any time.',
+      }}
       onClick={onUnwrapToken}
       token={token.data}
+      darkTheme={AppTheme.appearance === 'dark'}
     />,
     <Token
       balance={earnedRewards}
       loading={!earnedRewards}
-      mode="claim"
+      mode={{
+        type: 'claim',
+        icon:
+          AppTheme.appearance === 'dark'
+            ? claimRewardsIconDark
+            : claimRewardsIcon,
+        button: { mode: 'normal', label: 'Claim' },
+      }}
       onClick={handleClaimRewards}
       token={wrappableToken.data}
+      darkTheme={AppTheme.appearance === 'dark'}
     />,
   ]
 
@@ -96,10 +139,10 @@ function WrapToken({ onClaimRewards, onUnwrapToken, onWrapToken }) {
   )
 }
 
-function Token({ balance, loading, mode, onClick, token }) {
+function Token({ balance, loading, mode, darkTheme, onClick, token }) {
   const theme = useTheme()
-  const { button, icon, hint } = modeAttributes[mode]
-  const claimMode = mode === 'claim'
+  const { icon, button, hint, apr } = mode
+  const claimMode = mode.type === 'claim'
 
   return (
     <div
@@ -111,7 +154,14 @@ function Token({ balance, loading, mode, onClick, token }) {
         ${textStyle('body2')};
       `}
     >
-      <img src={icon} height="48" width="48" />
+      {apr ? (
+        <span css={{ marginLeft: 0.5 * GU }}>
+          <div css={{ color: theme.positive }}>% APR</div>
+          {apr}
+        </span>
+      ) : (
+        <img src={icon} height="48" width="48" />
+      )}
       {loading ? (
         <div
           css={`

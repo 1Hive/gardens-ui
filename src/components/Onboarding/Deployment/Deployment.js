@@ -1,9 +1,12 @@
 import { BoxProgress, BoxReady } from './Boxes'
 import DeploymentStepsPanel from './DeploymentStepsPanel'
 import ErrorModal from './ErrorModal'
+import flowersLeavesSvg from './assets/flowers-leaves.svg'
+import flowersLeavesDarkSvg from './assets/flowers-leaves-dark.svg'
 import useDeploymentState from './useDeploymentState'
 import { Button, GU, LoadingRing, springs, useViewport } from '@1hive/1hive-ui'
 import { useWallet } from '@/providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 import { getNetworkType } from '@/utils/web3-utils'
 import { IndividualStepTypes } from '@components/Stepper/stepper-statuses'
 import React, { useCallback, useMemo } from 'react'
@@ -11,6 +14,7 @@ import { useRouter } from 'next/router'
 import { animated, Transition } from 'react-spring/renderprops.cjs'
 
 const Deployment = React.memo(function Deployment() {
+  const { appearance } = useAppTheme()
   const { above } = useViewport()
   const router = useRouter()
   const { chainId } = useWallet()
@@ -163,7 +167,9 @@ const Deployment = React.memo(function Deployment() {
                 <animated.div
                   style={{ opacity, transform }}
                   css={`
-                    background: url('/icons/deployment/flowers-leaves.svg');
+                    background: url(${appearance === 'light'
+                      ? flowersLeavesSvg
+                      : flowersLeavesDarkSvg});
                     background-size: cover;
                     background-repeat: no-repeat;
                     position: absolute;

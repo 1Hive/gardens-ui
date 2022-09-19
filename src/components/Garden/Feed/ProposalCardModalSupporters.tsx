@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 import { useGardenState } from '@/providers/GardenState'
 import IdentityBadge from '@/components/IdentityBadge'
 import { formatTokenAmount } from '@utils/token-utils'

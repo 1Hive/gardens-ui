@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { GU, Link, useTheme } from '@1hive/1hive-ui'
+import { useAppTheme } from '@providers/AppTheme'
 
 const BaseItem = ({
   active,
@@ -12,6 +13,12 @@ const BaseItem = ({
 }) => {
   const theme = useTheme()
   const router = useRouter()
+  const AppTheme = useAppTheme()
+
+  const history = useHistory()
+
+  const activeColor =
+    AppTheme.appearance === 'light' ? 'rgb(212 251 216)' : theme.positiveSurface
 
   const handleClickItem = useCallback(() => {
     if (path) {
@@ -24,7 +31,7 @@ const BaseItem = ({
     <li
       css={`
         position: relative;
-        background: ${active ? 'rgb(212 251 216)' : theme.surface};
+        background: ${active ? activeColor : theme.surface};
         height: ${height}px;
         width: 100%;
         border-right: 1px solid ${theme.border};
@@ -54,7 +61,9 @@ const BaseItem = ({
             bottom: 0;
             left: 0;
             width: 4px;
-            background: rgb(62, 207, 75);
+            background: ${AppTheme.appearance === 'light'
+              ? 'rgb(62, 207, 75)'
+              : theme.positive};
           `}
         />
       )}
@@ -73,7 +82,12 @@ const BaseItem = ({
             padding: ${1.5 * GU}px;
             ${!active &&
             `&:hover {
-                background: rgb(246, 246, 247);
+              background: ${
+                AppTheme.appearance === 'light'
+                  ? 'rgb(246, 246, 247)'
+                  : theme.accentContent
+              };
+                background: ;
               }`}
           `}
         >

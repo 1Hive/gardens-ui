@@ -88,7 +88,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
   const infoData = useMemo(() => {
     if (accountBalance.gte(feesAmount)) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive.toString(),
         icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to pay ${formatTokenAmount(
@@ -118,7 +118,7 @@ function CelesteSyncedStatus({ synced }) {
   const infoData = useMemo(() => {
     if (synced) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive.toString(),
         icon: '/icons/base/iconCheck.svg',
         text: `Celeste is Synced!`,

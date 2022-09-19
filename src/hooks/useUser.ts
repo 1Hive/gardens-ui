@@ -4,10 +4,10 @@ import { useMounted } from './useMounted'
 import { getNetwork } from '../networks'
 import { transformUserData } from '@utils/data-utils'
 import { useWallet } from '@/providers/Wallet'
-import { UserData } from '@1hive/connect-gardens/dist/cjs/types'
+import { UserType } from '@/components/Profile/types'
 
 export default function useUser(address: string) {
-  const [user, setUser] = useState<UserData | null>(null)
+  const [user, setUser] = useState<UserType | null>(null)
   const [loading, setLoading] = useState(true)
   const [refetchTriger, setRefetchTriger] = useState(false)
   const mounted = useMounted()

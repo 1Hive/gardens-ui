@@ -13,8 +13,16 @@ import {
 } from '@1hive/1hive-ui'
 
 import { throwConfetti } from '@utils/confetti-utils'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { TransactionStatusType } from '@/prop-types'
+
+import gardensLogoMark from '@assets/gardensLogoMark.svg'
+
+import flowerSvg from './assets/flower.svg'
+import linesSvg from './assets/lines.svg'
+import flowerDarkSvg from './assets/flower-dark.svg'
+import linesDarkSvg from './assets/lines-dark.svg'
 
 const AnimDiv = animated.div
 const AnimSection = animated.section
@@ -97,6 +105,7 @@ export function BoxProgress({
   transactionsStatus,
 }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const { below } = useViewport()
   const fullWidth = below('large')
 
@@ -108,7 +117,7 @@ export function BoxProgress({
   return (
     <>
       <img
-        src={'/icons/deployment/flower.svg'}
+        src={appearance === 'light' ? flowerSvg : flowerDarkSvg}
         height="44"
         alt=""
         css={`
@@ -119,7 +128,7 @@ export function BoxProgress({
         `}
       />
       <BoxBase
-        background="#8DE995"
+        background={appearance === 'light' ? '#8DE995' : '#115A50'}
         boxTransform={boxTransform}
         direction={fullWidth ? 'column' : 'row-reverse'}
         opacity={opacity}
@@ -128,7 +137,11 @@ export function BoxProgress({
           css={`
             width: ${fullWidth ? 100 : 50}%;
             height: ${fullWidth ? '430px' : '100%'};
-            background: linear-gradient(300deg, #3dcb60 -17%, #8de995 280%);
+            background: linear-gradient(
+              300deg,
+              ${appearance === 'light' ? '#3dcb60' : '#1B714F'} -17%,
+              #8de995 280%
+            );
             display: flex;
             align-items: center;
             justify-content: center;
@@ -140,7 +153,9 @@ export function BoxProgress({
           <img src={'/icons/base/gardensLogoMark.svg'} height="272" alt="" />
           <div
             css={`
-              background: url('/public/icons/deployment/lines.svg');
+              background: url(${appearance === 'light'
+                ? linesSvg
+                : linesDarkSvg});
               background-repeat: no-repeat;
               background-size: cover;
               position: absolute;

@@ -1,8 +1,10 @@
 import React from 'react'
 import { GU, useTheme } from '@1hive/1hive-ui'
+import { useAppTheme } from '@/providers/AppTheme'
 
 const BaseInnerSidebar = ({ children, width, topElement }) => {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
 
   return (
     <div
@@ -11,7 +13,8 @@ const BaseInnerSidebar = ({ children, width, topElement }) => {
         width: ${width};
         background-color: ${theme.surface};
         border-right: 1px solid ${theme.border};
-        box-shadow: 2px 0px 4px rgba(160, 168, 194, 0.16);
+        ${appearance === 'light' &&
+        `box-shadow: 2px 0px 4px rgba(160, 168, 194, 0.16)`};
       `}
     >
       {topElement && (

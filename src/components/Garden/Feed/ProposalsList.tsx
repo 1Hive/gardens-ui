@@ -19,7 +19,8 @@ import EmptyResults from '../../EmptyResults'
 import ProposalCard from './ProposalCard'
 import ProposalRankings from './ProposalRankings'
 
-import { ProposalType } from '@/hooks/constants'
+import filterToggleSvg from '@assets/filter.svg'
+import { ProposalType } from '@/types/app'
 import AbstainCard from './AbstainCard'
 import { ABSTAIN_PROPOSAL } from '../ProposalDetail/ProposalStatus'
 

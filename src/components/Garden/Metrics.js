@@ -14,6 +14,7 @@ import { useHoneyswapTokenPrice } from '@hooks/useHoneyswapTokenPrice'
 import { usePriceOracle } from '@hooks/usePriceOracle'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
@@ -91,6 +92,7 @@ function PriceSection({
   currency,
   onRequestUpdatePriceOracle,
 }) {
+  const { appearance } = useAppTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   const [priceMode, setPriceMode] = useState(true)
@@ -110,7 +112,11 @@ function PriceSection({
     >
       <DotSwitch first={priceMode} onChange={handleTogglePriceMode} />
       <img
-        src={token.logo || '/icons/base/defaultTokenLogo.svg'}
+        src={
+          (appearance === 'light'
+            ? token.logo
+            : token.logoDark || token.logo) || '/icons/base/defaultTokenLogo.svg'
+        }
         height="60"
         width="60"
         alt=""

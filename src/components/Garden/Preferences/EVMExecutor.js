@@ -7,9 +7,11 @@ import {
   DropDown,
   Field,
   GU,
+  Help,
   Info,
   TextInput,
 } from '@1hive/1hive-ui'
+import { toHex } from 'web3-utils'
 import MultiModal from '@components/MultiModal/MultiModal'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { SHORTENED_APPS_NAMES } from '@utils/app-utils'
@@ -36,6 +38,7 @@ function EVMExecutor({ evmcrispr }) {
   const [createDecisionModalVisible, setCreateDecisionModalVisible] =
     useState(false)
   const [abi, setAbi] = useState()
+  const [context, setContext] = useState()
   const [externalContractAddress, setExternalContractAddress] = useState(null)
   const [formattedAbi, setFormattedAbi] = useState(null)
   const [interactionType, setInteractionType] = useState(0)
@@ -178,10 +181,10 @@ function EVMExecutor({ evmcrispr }) {
         [
           evmcrispr
             .exec(installedApps[selectedApp])
-            [functionList[selectedFunction]](...parameters),
+          [functionList[selectedFunction]](...parameters),
         ],
         [forwarderName],
-        { context: 'new decision' }
+        { context: context }
       )
     }
     if (interactionType === EXTERNAL_INDEX) {
@@ -195,20 +198,21 @@ function EVMExecutor({ evmcrispr }) {
           ),
         ],
         [forwarderName],
-        { context: 'new decision' }
+        { context: context }
       )
     }
     if (terminalMode) {
       if (!isSafari) {
         const { evmcl } = await import('@1hive/evmcrispr')
         intent = await evmcrispr.encode(evmcl`${code}`, [forwarderName], {
-          context: 'new decision',
+          context: context,
         })
       }
     }
 
     return [{ ...intent.action, description, type, gasLimit: 10000000 }]
   }, [
+    context,
     forwarderName,
     interactionType,
     terminalMode,
@@ -249,6 +253,11 @@ function EVMExecutor({ evmcrispr }) {
     }
   }, [])
 
+  const handleOnContextChange = useCallback((event) => {
+    const value = event.target.value
+    setContext(value)
+  }, [])
+
   const handleOnShowModal = useCallback(() => {
     setCreateDecisionModalVisible(true)
   }, [])
@@ -268,6 +277,20 @@ function EVMExecutor({ evmcrispr }) {
 
   return (
     <Box heading="App selector">
+      <Field label={
+        <div css={`display: flex; align-items:center;`}>
+          <div>Context</div>
+          <div>
+            <Help hint="">Information related to your vote. For example: brief description or link to forum discussion.</Help>
+          </div>
+        </div>
+      }>
+        <TextInput
+          value={context}
+          wide
+          onChange={handleOnContextChange}
+        />
+      </Field>
       <Field label="Interaction type">
         <DropDown
           items={INTERACTION_TYPES}
@@ -276,111 +299,125 @@ function EVMExecutor({ evmcrispr }) {
           wide
         />
       </Field>
-      {interactionType === INTERNAL_INDEX && (
-        <Field label="Select App">
-          <DropDown
-            items={shortenedAppsNames}
-            onChange={setSelectedApp}
-            selected={selectedApp}
-            disabled={!shortenedAppsNames.length > 0}
-            wide
-          />
-        </Field>
-      )}
-      {interactionType === EXTERNAL_INDEX && (
-        <>
-          <Field label="Contract address">
-            <TextInput
-              value={externalContractAddress}
+      {
+        interactionType === INTERNAL_INDEX && (
+          <Field label="Select App">
+            <DropDown
+              items={shortenedAppsNames}
+              onChange={setSelectedApp}
+              selected={selectedApp}
+              disabled={!shortenedAppsNames.length > 0}
               wide
-              onChange={handleOnContractAddressChange}
             />
           </Field>
-          <Field label="ABI">
-            <TextInput
-              multiline
-              value={abi}
-              wide
-              onChange={handleOnAbiChange}
-              css={`
+        )
+      }
+      {
+        interactionType === EXTERNAL_INDEX && (
+          <>
+            <Field label="Contract address">
+              <TextInput
+                value={externalContractAddress}
+                wide
+                onChange={handleOnContractAddressChange}
+              />
+            </Field>
+            <Field label="ABI">
+              <TextInput
+                multiline
+                value={abi}
+                wide
+                onChange={handleOnAbiChange}
+                css={`
                 min-height: ${30 * GU}px;
               `}
-            />
-          </Field>
-        </>
-      )}
-      {terminalMode && (
-        <TextInput
-          onChange={handleOnSetCode}
-          placeholder={TERMINAL_EXECUTOR_MESSAGE}
-          wide
-          multiline
-          css={`
+              />
+            </Field>
+          </>
+        )
+      }
+      {
+        terminalMode && (
+          <TextInput
+            onChange={handleOnSetCode}
+            placeholder={TERMINAL_EXECUTOR_MESSAGE}
+            wide
+            multiline
+            css={`
             min-height: ${50 * GU}px;
           `}
-        />
-      )}
-      {functionList?.length > 0 && (
-        <Field label="Select Function">
-          <DropDown
-            items={functionList}
-            onChange={setSelectedFunction}
-            selected={selectedFunction}
-            disabled={!functionList.length > 0}
-            wide
           />
-        </Field>
-      )}
-      {requiredParameters?.length > 0 && (
-        <Field label="Arguments">
-          {requiredParameters.map((parameter, index) => {
-            return (
-              <TextInput
-                key={index}
-                onChange={(event) => handleOnChangeParameters(index, event)}
-                placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
-                wide
-                css={`
+        )
+      }
+      {
+        functionList?.length > 0 && (
+          <Field label="Select Function">
+            <DropDown
+              items={functionList}
+              onChange={setSelectedFunction}
+              selected={selectedFunction}
+              disabled={!functionList.length > 0}
+              wide
+            />
+          </Field>
+        )
+      }
+      {
+        requiredParameters?.length > 0 && (
+          <Field label="Arguments">
+            {requiredParameters.map((parameter, index) => {
+              return (
+                <TextInput
+                  key={index}
+                  onChange={(event) => handleOnChangeParameters(index, event)}
+                  placeholder={`${parameter[0].toString()} : ${parameter[1].toString()}`}
+                  wide
+                  css={`
                   margin-bottom: ${2 * GU}px;
                 `}
-              />
-            )
-          })}
-        </Field>
-      )}
-      {!account && (
-        <Info
-          mode="warning"
-          css={`
+                />
+              )
+            })}
+          </Field>
+        )
+      }
+      {
+        !account && (
+          <Info
+            mode="warning"
+            css={`
             margin-top: ${2 * GU}px;
             margin-bottom: ${2 * GU}px;
           `}
-        >
-          You must connect your account in order to create a decision.
-        </Info>
-      )}
-      {selectedFunction !== null || terminalMode ? (
-        <Button
-          css={`
+          >
+            You must connect your account in order to create a decision.
+          </Info>
+        )
+      }
+      {
+        selectedFunction !== null || terminalMode ? (
+          <Button
+            css={`
             margin-top: ${terminalMode ? 2 * GU : 0}px;
           `}
-          disabled={isSafari || !account || (terminalMode && !code)}
-          mode="strong"
-          wide
-          onClick={handleOnShowModal}
-        >
-          Execute
-        </Button>
-      ) : (
-        <> </>
-      )}
+            disabled={isSafari || !account || (terminalMode && !code)}
+            mode="strong"
+            wide
+            onClick={handleOnShowModal}
+          >
+            Execute
+          </Button>
+        ) : (
+          <> </>
+        )
+      }
       <MultiModal
         visible={createDecisionModalVisible}
         onClose={handleOnHideModal}
       >
         <CreateDecisionScreens onCreateTransaction={handleOnCreateIntent} />
       </MultiModal>
-    </Box>
+    </Box >
   )
 }
 

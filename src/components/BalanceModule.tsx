@@ -5,12 +5,14 @@ import HeaderModule from './Header/HeaderModule'
 import useAccountTokens from '@hooks/useAccountTokens'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { formatTokenAmount } from '@utils/token-utils'
 import { safeDivBN } from '@utils/math-utils'
 
 function BalanceModule() {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const wallet = useWallet()
   const { token } = useGardenState()
 
@@ -28,7 +30,13 @@ function BalanceModule() {
     <HeaderModule
       icon={
         <img
-          src={token.data.logo || '/icons/base/defaultTokenLogo.svg'}
+          // src={token.data.logo || '/icons/base/defaultTokenLogo.svg'}
+          src={
+            (appearance === 'light'
+              ? token.data.logo
+              : token.data.logoDark || token.data.logo) ||
+            '/icons/base/defaultTokenLogo.svg'
+          }
           height="28"
           width="28"
           alt=""

@@ -94,6 +94,7 @@ const Home = function Home() {
   const handleUpdatePriceOracle = useCallback(() => {
     handleShowModal('updatePriceOracle')
   }, [handleShowModal])
+
   const handleProposalCreated = useCallback(() => {
     filters.ranking.onChange(1)
   }, [filters])
@@ -207,6 +208,7 @@ const Home = function Home() {
                       >
                         <RightPanel
                           onClaimRewards={handleClaimRewards}
+                          onRemoveDelegate={handleRemoveDelagate}
                           onRequestNewProposal={handleRequestNewProposal}
                           onWrapToken={handleWrapToken}
                           onUnwrapToken={handleUnwrapToken}

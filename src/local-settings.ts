@@ -54,6 +54,10 @@ export function getAppTheme() {
   }
 }
 
+export function setAppTheme(appearance: string, theme = null) {
+  return setLocalSetting(APP_THEME, JSON.stringify({ appearance, theme }))
+}
+
 function getStorageKey(action: string, account: string, chainId: number) {
   return `${action}:${getNetworkType(chainId)}:${account}`
 }
@@ -77,8 +81,4 @@ export function getAccountSetting(
     getStorageKey(action, account, chainId)
   )
   return item
-}
-
-export function setAppTheme(appearance: string, theme = null) {
-  return setLocalSetting(APP_THEME, JSON.stringify({ appearance, theme }))
 }

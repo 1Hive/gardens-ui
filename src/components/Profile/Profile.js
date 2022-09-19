@@ -16,11 +16,16 @@ import {
 import usePicture from '@hooks/usePicture'
 import useSelectedProfile from '@hooks/useSelectedProfile'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
 import { addressesEqual } from '@utils/web3-utils'
+
+import profileCoverDefaultSvg from '@assets/profileCoverDefault.svg'
+import profileCoverDefaultDarkSvg from '@assets/dark-mode/profileCoverDefaultDark.svg'
 
 function Profile() {
   const [editMode, setEditMode] = useState(false)
   const [coverPic, onCoverPicChange, onCoverPicRemoval] = usePicture(!editMode)
+  const AppTheme = useAppTheme()
 
   const { account: connectedAccount } = useWallet()
   const router = useRouter()
@@ -54,14 +59,14 @@ function Profile() {
   const coverSrc = useMemo(() => {
     if (editMode) {
       if (coverPic.removed) {
-        return '/icons/base/profileCoverDefault.svg'
+        return AppTheme.appearance === 'dark'? profileCoverDefaultDarkSvg : profileCoverDefaultSvg
       }
 
       if (imageInput.current?.files && imageInput.current.files[0]) {
         return URL.createObjectURL(imageInput.current?.files[0])
       }
     }
-    return coverPhoto || '/icons/base/profileCoverDefault.svg'
+    return coverPhoto || AppTheme.appearance === 'dark'? profileCoverDefaultDarkSvg : profileCoverDefaultSvg
   }, [coverPhoto, coverPic, editMode])
 
   const isConnectedAccountProfile =
@@ -134,12 +139,10 @@ function Profile() {
                 <>
                   <MainProfile profile={selectedProfile} />
                   <Delegates account={selectedAccount} />
-                  <StakingTokens myStakes={accountStakes} />
-                  {accountInactiveStakes.length > 0 && (
-                    <InactiveProposalsStake
-                      myInactiveStakes={accountInactiveStakes}
-                    />
-                  )}
+                  <StakingTokens
+                    myStakes={accountStakes}
+                    myInactiveStakes={accountInactiveStakes}
+                  />
                 </>
               }
               invert={oneColumn ? 'vertical' : 'horizontal'}

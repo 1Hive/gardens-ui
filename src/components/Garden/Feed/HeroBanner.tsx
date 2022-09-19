@@ -8,6 +8,17 @@ import {
   useLayout,
 } from '@1hive/1hive-ui'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@providers/AppTheme'
+
+import desktopBanner from '@assets/banner.png'
+import mobileBanner from '@assets/banner-mobile.png'
+import tabletBanner from '@assets/banner-tablet.png'
+import tabletBannerFull from '@assets/banner-tablet-full.png'
+
+import desktopBannerDark from '@assets/dark-mode/banner.png'
+import mobileBannerDark from '@assets/dark-mode/banner-mobile.png'
+import tabletBannerDark from '@assets/dark-mode/banner-tablet.png'
+import tabletBannerFullDark from '@assets/dark-mode/banner-tablet-full.png'
 
 const BANNERS = {
   small: { image: '/icons/base/banner-mobile.png', aspectRatio: '54%' },
@@ -20,6 +31,14 @@ const BANNERS = {
   max: { image: '/icons/base/banner.png', aspectRatio: '159%' },
 }
 
+const BANNERS_DARK_MODE = {
+  small: { image: mobileBannerDark, aspectRatio: '54%' },
+  medium: { image: tabletBannerDark, aspectRatio: '36%' },
+  medium_full: { image: tabletBannerFullDark, aspectRatio: '36%' },
+  large: { image: desktopBannerDark, aspectRatio: '159%' },
+  max: { image: desktopBannerDark, aspectRatio: '159%' },
+}
+
 type HeroBannerProps = {
   onRequestNewProposal: () => void
 }
@@ -27,11 +46,15 @@ type HeroBannerProps = {
 function HeroBanner({ onRequestNewProposal }: HeroBannerProps) {
   const { account } = useWallet()
   const { layoutName } = useLayout()
+  const { appearance } = useAppTheme()
 
   const mobileMode = layoutName === 'small'
   const tabletMode = layoutName === 'medium'
   const compactMode = mobileMode || tabletMode
-  const banner = tabletMode ? BANNERS.medium_full : BANNERS[layoutName]
+
+  const bannerType = appearance === 'light' ? BANNERS : BANNERS_DARK_MODE
+
+  const banner = tabletMode ? bannerType.medium_full : bannerType[layoutName]
 
   return (
     <div

@@ -1,0 +1,94 @@
+import React from 'react'
+import {
+  GU,
+  RADIUS,
+  shortenAddress,
+  textStyle,
+  useTheme,
+  EthIdenticon,
+} from '@1hive/1hive-ui'
+
+import { useProfile } from '@providers/Profile'
+import HeaderModule from '../Header/HeaderModule'
+
+import { getNetworkName } from '@utils/web3-utils'
+import { useWallet } from '@/providers/Wallet'
+
+type AccountButtonProps = {
+  onClick: () => void
+}
+
+function AccountButton({ onClick }: AccountButtonProps) {
+  const theme = useTheme()
+  const { account, image, name } = useProfile()
+  const { chainId } = useWallet()
+
+  return (
+    <HeaderModule
+      icon={
+        <div css="position: relative">
+          {image ? (
+            <img
+              src={image}
+              height="28"
+              width="28"
+              alt=""
+              css={`
+                border-radius: 4px;
+                display: block;
+                object-fit: cover;
+              `}
+            />
+          ) : (
+            <EthIdenticon address={account} radius={RADIUS} />
+          )}
+          <div
+            css={`
+              position: absolute;
+              bottom: -3px;
+              right: -3px;
+              width: 10px;
+              height: 10px;
+              background: ${theme.positive};
+              border: 2px solid ${theme.surface};
+              border-radius: 50%;
+            `}
+          />
+        </div>
+      }
+      content={
+        <>
+          <div
+            css={`
+              margin-bottom: -5px;
+              ${textStyle('body2')}
+            `}
+          >
+            <div
+              css={`
+                overflow: hidden;
+                max-width: ${16 * GU}px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              `}
+            >
+              {name || shortenAddress(account)}
+            </div>
+          </div>
+          <div
+            css={`
+              font-size: 11px; /* doesn’t exist in aragonUI */
+              color: ${theme.positive};
+            `}
+          >
+            Connected to {getNetworkName(chainId)}
+          </div>
+        </>
+      }
+      onClick={onClick}
+      hasPopover={true}
+    />
+  )
+}
+
+export default AccountButton

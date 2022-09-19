@@ -40,7 +40,7 @@ function AgreementStatus({ agreement }) {
     }
     if (signedLatest) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
         icon: '/icons/base/iconCheck.svg',
         text: `You signed this organization’s Covenant on ${dateFormat(

@@ -151,7 +151,7 @@ function CollateralStatus({ accountBalance, challengeAmount, token }) {
   const infoData = useMemo(() => {
     if (accountBalance.gte(challengeAmount)) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
         icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(
@@ -181,7 +181,7 @@ function FeesStatus({ accountBalance, feesAmount, token }) {
   const infoData = useMemo(() => {
     if (accountBalance.gte(feesAmount)) {
       return {
-        backgroundColor: '#EBFBF6',
+        backgroundColor: theme.positiveContent.alpha(0.8),
         color: theme.positive,
         icon: '/icons/base/iconCheck.svg',
         text: `Your enabled account has sufficient balance to lock ${formatTokenAmount(

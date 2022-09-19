@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import { keyframes } from 'styled-components'
 import { getProviderFromUseWalletId } from 'use-wallet'
 import { GU, useTheme, textStyle, Link } from '@1hive/1hive-ui'
+import { useAppTheme } from '@/providers/AppTheme'
+
+import loadingRing from './assets/loading-ring.svg'
+import loadingRingDark from './assets/loading-ring-dark.svg'
 
 const spin = keyframes`
   from {
@@ -18,6 +22,7 @@ const AccountModuleConnectingScreen = React.memo(function ({
   providerId,
 }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const provider = getProviderFromUseWalletId(providerId)
   return (
     <section
@@ -54,7 +59,10 @@ const AccountModuleConnectingScreen = React.memo(function ({
               left: 0;
               right: 0;
               bottom: 0;
-              background: url('/icons/base/loading-ring.svg') no-repeat 0 0;
+              background: url(${appearance === 'light'
+                  ? loadingRing
+                  : loadingRingDark})
+                no-repeat 0 0;
               animation-duration: 1s;
               animation-iteration-count: infinite;
               animation-timing-function: linear;

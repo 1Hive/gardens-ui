@@ -1,15 +1,17 @@
 import React from 'react'
-import { GU } from '@1hive/1hive-ui'
+import { GU, useTheme } from '@1hive/1hive-ui'
 
 import useGardenTokenIcon from '@hooks/useGardenTokenIcon'
 import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalType } from '@/hooks/constants'
+import lockIconSvg from '@assets/icon-lock.svg'
+import { ProposalType } from '@/types/app'
 
 type ActionCollateralProps = {
   proposal: ProposalType
 }
 
 function ActionCollateral({ proposal }: ActionCollateralProps) {
+  const theme = useTheme()
   const { collateralRequirement } = proposal
   const tokenIcon = useGardenTokenIcon({
     id: collateralRequirement.tokenId,
@@ -43,7 +45,15 @@ function ActionCollateral({ proposal }: ActionCollateralProps) {
         )}{' '}
         {collateralRequirement.tokenSymbol}
       </div>
-      <img src={'/icons/base/icon-lock.svg'} alt="" width="16" height="16" />
+      <img
+        src={lockIconSvg}
+        alt=""
+        width="16"
+        height="16"
+        css={`
+          color: ${theme.contentSecondary};
+        `}
+      />
     </div>
   )
 }

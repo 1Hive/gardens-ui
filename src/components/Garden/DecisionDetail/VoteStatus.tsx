@@ -104,10 +104,10 @@ export const getStatusAttributes = (
   if (statusData.challenged) {
     return {
       label: PROPOSAL_STATUS_CHALLENGED_STRING,
-      iconSrc: '/icons/base/challenge-icon.svg',
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
+      iconSrc: '/icons/base/challenge-icon.svg', //challengeIconSvg, TODO FIXME
+      color: theme.challenge,
+      background: theme.challengeSurface,
+      borderColor: theme.challengeBorder,
     }
   }
   if (statusData.settled) {

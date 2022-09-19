@@ -13,10 +13,14 @@ import {
   useTheme,
   Viewport,
 } from '@1hive/1hive-ui'
+import { useInside } from 'use-inside'
+import { useAppTheme } from '@providers/AppTheme'
+import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import { MultiModalProvider, useMultiModal } from './MultiModalProvider'
 import { springs } from '../../style/springs'
-import { useDisableAnimation } from '../../hooks/useDisableAnimation'
-import { useInside } from 'use-inside'
+
+import headerBackground from '@assets/modal-background.svg'
+import headerBackgroundDark from '@assets/dark-mode/modal-background.svg'
 
 const DEFAULT_MODAL_WIDTH = 80 * GU
 const AnimatedDiv = animated.div
@@ -46,6 +50,7 @@ MultiModalScreens.propTypes = {
 /* eslint-disable react/prop-types */
 function MultiModalFrame({ visible, onClosed }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const { currentScreen, close } = useMultiModal()
 
   const {
@@ -107,13 +112,7 @@ function MultiModalFrame({ visible, onClosed }) {
                         `}
                         onClick={handleModalClose}
                       >
-                        <IconCross
-                          color={
-                            graphicHeader
-                              ? theme.overlay
-                              : theme.surfaceContentSecondary
-                          }
-                        />
+                        <IconCross color={theme.floatingContent} />
                       </ButtonIcon>
                     )}
 
@@ -132,11 +131,15 @@ function MultiModalFrame({ visible, onClosed }) {
 // We memoize this compontent to avoid excessive re-renders when animating
 const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const { step, direction, getScreen } = useMultiModal()
   const [applyStaticHeight, setApplyStaticHeight] = useState(false)
   const [height, setHeight] = useState(null)
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const { layoutName } = useLayout()
+
+  const headerImg =
+    appearance === 'light' ? headerBackground : headerBackgroundDark
 
   const smallMode = layoutName === 'small'
 
@@ -162,7 +165,7 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
                 overflow: hidden;
                 padding: ${1.5 * GU}px ${standardPadding}px ${1.5 * GU}px
                   ${standardPadding}px;
-                background-image: url('/icons/base/modal-background.svg');
+                background-image: url('${headerImg}');
                 margin-bottom: ${smallMode ? 3 * GU : 5 * GU}px;
               `}
             >
@@ -173,7 +176,9 @@ const MultiModalContent = React.memo(function ModalContent({ viewportWidth }) {
 
                   ${smallMode ? textStyle('title3') : textStyle('title2')};
                   font-weight: 600;
-                  color: ${theme.overlay};
+                  color: ${appearance === 'light'
+                    ? theme.floatingContent
+                    : theme.floatingContent.alpha(0.87)};
                 `}
               >
                 {title}

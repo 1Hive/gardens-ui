@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
-  EthIdenticon,
   Field,
   GU,
   Help,
@@ -13,11 +12,13 @@ import {
   RADIUS,
   TextInput,
   useTheme,
+  EthIdenticon,
 } from '@1hive/1hive-ui'
 import GnosisSafeField from './GnosisSafeField'
 import Header from '../../../kit/Header'
 import Navigation from '../../../Navigation'
 import { useOnboardingState } from '@providers/Onboarding'
+
 
 function useFieldsLayout() {
   return `

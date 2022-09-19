@@ -9,6 +9,7 @@ import {
 } from '@1hive/1hive-ui'
 import EmptyResults from './EmptyResults'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 import { getNetwork } from '@/networks'
 
 const GARDENS_PER_PAGE = 10
@@ -76,6 +77,8 @@ function GardensList({ gardens }) {
 function GardenCard({ garden }) {
   const theme = useTheme()
   const history = useRouter()
+  const { appearance } = useAppTheme()
+  // const history = useHistory()
   const { preferredNetwork } = useWallet()
   const handleSelectGarden = useCallback(() => {
     history.push(
@@ -84,6 +87,10 @@ function GardenCard({ garden }) {
   }, [garden, history, preferredNetwork])
 
   const token = garden.wrappableToken || garden.token
+
+  const tokenLogo =
+    (appearance === 'light' ? token?.logo : token?.logoDark || token?.logo) ||
+    '/icons/base/defaultTokenLogo.svg'
 
   return (
     <div
@@ -146,12 +153,7 @@ function GardenCard({ garden }) {
           color: ${theme.content};
         `}
       >
-        <img
-          src={token?.logo || '/icons/base/defaultTokenLogo.svg'}
-          alt=""
-          height="20"
-          width="20"
-        />
+        <img src={tokenLogo} alt="" height="20" width="20" />
         <span
           css={`
             margin-left: ${0.75 * GU}px;

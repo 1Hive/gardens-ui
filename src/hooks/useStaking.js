@@ -114,20 +114,21 @@ export function useStaking() {
             )
 
           const accountBalance = await tokenContract?.balanceOf(account)
+          const accountBalanceBN = accountBalance && new BigNumber(accountBalance.toString())
 
           if (mounted()) {
             setStakeManagement((stakeManagement) => ({
               ...stakeManagement,
               token: allTokens[1],
-              accountBalance,
+              accountBalance: accountBalanceBN,
               staking: staking
                 ? {
-                    ...staking,
-                    available: new BigNumber(staking.available),
-                    challenged: new BigNumber(staking.challenged),
-                    locked: new BigNumber(staking.locked),
-                    total: new BigNumber(staking.total),
-                  }
+                  ...staking,
+                  available: new BigNumber(staking.available),
+                  challenged: new BigNumber(staking.challenged),
+                  locked: new BigNumber(staking.locked),
+                  total: new BigNumber(staking.total),
+                }
                 : defaultValues,
               stakingFactory: stakingFactory,
               stakingInstance: null,

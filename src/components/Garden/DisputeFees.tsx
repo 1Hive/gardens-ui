@@ -2,10 +2,14 @@ import React from 'react'
 import { GU, LoadingRing, textStyle, useTheme } from '@1hive/1hive-ui'
 
 import { useConnectedGarden } from '@providers/ConnectedGarden'
+import { useAppTheme } from '@/providers/AppTheme'
 import { useDisputeFees } from '@hooks/useDispute'
 
+import honeyIconSvg from '@assets/honey.svg'
+import honeyDarkIconSvg from '@assets/dark-mode/honey.svg'
+
 import { formatTokenAmount } from '@utils/token-utils'
-import { ProposalType } from '@/hooks/constants'
+import { ProposalType } from '@/types/app'
 
 type DisputeFeesProps = {
   proposal: ProposalType
@@ -13,6 +17,7 @@ type DisputeFeesProps = {
 
 function DisputeFees({ proposal }: DisputeFeesProps) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const { chainId } = useConnectedGarden()
   const fees = useDisputeFees(chainId)
 
@@ -44,7 +49,7 @@ function DisputeFees({ proposal }: DisputeFeesProps) {
             `}
           >
             <img
-              src={'/icons/base/honey.svg'}
+              src={appearance === 'light' ? honeyIconSvg : honeyDarkIconSvg}
               alt=""
               height="28"
               width="28"

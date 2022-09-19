@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@1hive/1hive-ui'
 import { Colors } from '@nivo/core'
 
-import { ProposalType } from '@/hooks/constants'
+import celesteIconSvg from '@assets/celeste-icon.svg'
+import challengeIconSvg from '@assets/challenge-icon.svg'
+import { ProposalType } from '@/types/app'
 
 export const ABSTAIN_PROPOSAL = 'Abstain proposal'
 
@@ -34,26 +36,26 @@ export const getStatusAttributes = (
       label: 'Cancelled',
       Icon: IconCross,
       color: theme.negative,
-      background: '#FFF8F8',
+      background: theme.negativeSurface.alpha(0.4),
       borderColor: theme.negative,
     }
   }
   if (proposal.statusData.disputed) {
     return {
       label: 'Waiting for celeste',
-      iconSrc: '/icons/base/celeste-icon.svg',
-      color: '#8253A8',
-      background: '#FCFAFF',
-      borderColor: '#8253A8',
+      iconSrc: celesteIconSvg,
+      color: theme.celeste,
+      background: theme.celesteSurface.alpha(0.4),
+      borderColor: theme.celesteBorder,
     }
   }
   if (proposal.statusData.challenged) {
     return {
       label: 'Challenged',
-      iconSrc: '/icons/base/challenge-icon.svg',
-      color: '#F5A623',
-      background: '#FFFDFA',
-      borderColor: '#F5A623',
+      iconSrc: challengeIconSvg,
+      color: theme.challenge,
+      background: theme.challengeSurface.alpha(0.4),
+      borderColor: theme.challengeBorder,
     }
   }
   if (proposal.statusData.settled) {
