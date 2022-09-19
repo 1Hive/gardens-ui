@@ -17,16 +17,25 @@ function AppThemeProvider(props: any) {
     setAppTheme(newAppearance)
   }, [appearance])
 
-  const appTheme = useMemo(
-    () => ({
-      appearance,
-      theme,
-      toggleAppearance,
-    }),
-    [appearance, theme, toggleAppearance]
-  )
+  // const appTheme = useMemo(
+  //   () => ({
+  //     appearance,
+  //     theme,
+  //     toggleAppearance,
+  //   }),
+  //   [appearance, theme, toggleAppearance]
+  // )
 
-  return <AppThemeContext.Provider value={appTheme} {...props} />
+  return (
+    <AppThemeContext.Provider
+      value={{
+        appearance,
+        theme,
+        toggleAppearance,
+      }}
+      {...props}
+    />
+  )
 }
 
 function useAppTheme() {

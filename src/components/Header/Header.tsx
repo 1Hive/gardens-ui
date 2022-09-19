@@ -71,6 +71,7 @@ function Header({
   const logoLink = connectedGarden ? buildGardenPath(router, '') : '/home'
 
   const toggleDarkMode = useCallback(() => {
+    console.log('toggleAppearance', toggleAppearance)
     toggleAppearance?.()
   }, [toggleAppearance])
 
