@@ -133,6 +133,7 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
 }
 
 export function ConvictionCountdown({ proposal, shorter }) {
+  const theme = useTheme()
   const { config } = useGardenState()
   const { maxRatio, stakeToken } = config.conviction
 
@@ -175,7 +176,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
       ) : view === CHALLENGED ? (
         <Outcome
           result="Challenged"
-          color="#F5A623"
+          color={theme.challenge}
           icon={<img src={challengeIconSvg} alt="" width="24" height="24" />}
         />
       ) : (

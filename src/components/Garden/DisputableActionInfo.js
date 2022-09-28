@@ -37,7 +37,9 @@ function getInfoActionContent(proposal, account, actions) {
     if (proposal.disputedAt === 0) {
       return {
         info:
-          proposal.type === ProposalTypes.Suggestion
+          proposal.type === ProposalTypes.Stream
+            ? 'This stream will remain active until it is either successfully challenged or removed by the original author.'
+            : proposal.type === ProposalTypes.Suggestion
             ? 'This suggestion will remain open until it is either successfully challenged or removed by the original author.'
             : `This proposal is currently open. It will pass if nobody successfully challenges it ${
                 proposal.type === ProposalTypes.Decision
@@ -65,8 +67,7 @@ function getInfoActionContent(proposal, account, actions) {
 
   if (proposal.statusData.challenged && isSubmitter) {
     return {
-      info:
-        "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
+      info: "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
       actions: [
         {
           label: 'Accept settlement',
@@ -86,8 +87,7 @@ function getInfoActionContent(proposal, account, actions) {
   if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
-        info:
-          'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
+        info: 'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
         actions: [
           {
             label: 'Claim collateral',
@@ -213,7 +213,11 @@ function usePeriod(proposal, periodEndDate) {
 }
 
 function Conviction({ proposal }) {
-  if (proposal.type === ProposalTypes.Suggestion) {
+  // TODO: handle Stream conviction data
+  if (
+    proposal.type === ProposalTypes.Suggestion ||
+    proposal.type === ProposalTypes.Stream
+  ) {
     return null
   }
 
