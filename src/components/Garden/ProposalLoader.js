@@ -14,6 +14,7 @@ function ProposalLoader({ match }) {
     proposal,
     requestToken,
     stableToken,
+    flowData,
   } = useProposalLogic(match)
 
   if (!proposal || loading) {
@@ -37,6 +38,7 @@ function ProposalLoader({ match }) {
       requestToken={requestToken}
       stableToken={stableToken}
       commonPool={commonPool}
+      flowData={flowData}
     />
   )
 }

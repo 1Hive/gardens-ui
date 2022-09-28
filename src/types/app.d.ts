@@ -287,6 +287,9 @@ type ActionsType = {
       onDone?: any
     ) => Promise<void>
   }
+  fluidProposalsActions: {
+    activateProposal: ({ proposalId, beneficiary }: any, onDone?: any) => void
+  }
   hookedTokenManagerActions: {
     approveWrappableTokenAmount: (amount: any, onDone?: () => void) => void
     getAllowance: () => void

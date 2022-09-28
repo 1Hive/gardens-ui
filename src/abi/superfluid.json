@@ -1,0 +1,4 @@
+[
+  "function cfa() view returns (address)",
+  "function agent() view returns (address)"
+]

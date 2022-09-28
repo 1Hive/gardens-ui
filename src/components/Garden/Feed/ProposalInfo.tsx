@@ -1,13 +1,16 @@
 import React from 'react'
-import { GU, Help, Link, LoadingRing, useTheme } from '@1hive/1hive-ui'
+import { GU, Help, Link, useTheme } from '@1hive/1hive-ui'
 import Balance from '../Balance'
+import Stream from '../Stream'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 
-import { ProposalTypes } from '@/types'
+import Loading from '@/components/Loading'
+import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
+import { ProposalTypes } from '@/types'
 import { ProposalType } from '@/types/app'
 
 type ProposalInfoProps = {
@@ -23,6 +26,7 @@ function ProposalInfo({
 }: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
+  const { flow, loading: loadingFlow } = useSuperfluid(proposal.beneficiary)
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 
@@ -31,12 +35,10 @@ function ProposalInfo({
     requestToken.decimals
   )
 
-  const hideRequestedInfo = Number(proposal.requestedAmount) === 0
-
   return (
     <div onClick={onSelectProposal}>
       <ProposalDescription proposal={proposal} />
-      {proposal.type !== ProposalTypes.Decision && !hideRequestedInfo && (
+      {proposal.type === ProposalTypes.Proposal && (
         <div
           css={`
             display: flex;
@@ -61,7 +63,7 @@ function ProposalInfo({
           {proposal.stable && (
             <>
               {loading ? (
-                <LoadingRing />
+                <Loading />
               ) : (
                 <div
                   css={`
@@ -93,6 +95,42 @@ function ProposalInfo({
                   </Help>
                 </div>
               )}
+            </>
+          )}
+        </div>
+      )}
+      {proposal.type === ProposalTypes.Stream && (
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            color: ${theme.contentSecondary};
+            margin-bottom: ${2 * GU}px;
+          `}
+        >
+          <span
+            css={`
+              margin-right: ${1 * GU}px;
+            `}
+          >
+            Streaming:
+          </span>
+          {loadingFlow ? (
+            <div
+              css={`
+                align-items: left;
+              `}
+            >
+              <Loading />
+            </div>
+          ) : (
+            <>
+              <Stream
+                flowRateConvertions={flow.flowRateConvertions}
+                decimals={primaryToken.decimals}
+                icon={primaryToken.icon}
+                symbol={primaryToken.symbol}
+              />
             </>
           )}
         </div>

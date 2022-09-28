@@ -6,9 +6,14 @@ function ProposalIcon({ type }: { type: string }) {
   const theme = useTheme()
   let color
   if (type === ProposalTypes.Decision) {
-    color = '#FFC3AB'
+    color = theme.red
   } else {
-    color = type === ProposalTypes.Proposal ? theme.yellow : theme.green
+    color =
+      type === ProposalTypes.Proposal
+        ? theme.yellow
+        : type === ProposalTypes.Suggestion
+        ? theme.green
+        : theme.blue
   }
 
   return (
