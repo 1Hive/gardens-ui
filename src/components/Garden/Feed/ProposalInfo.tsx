@@ -7,7 +7,7 @@ import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 
 import Loading from '@/components/Loading'
-import useSuperfluidCFAv1 from '@/hooks/useSignalingProposalType'
+import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
 import { ProposalTypes } from '@/types'
@@ -26,9 +26,7 @@ function ProposalInfo({
 }: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
-  const { flow, loading: loadingFlow } = useSuperfluidCFAv1(
-    proposal.beneficiary
-  )
+  const { flow, loading: loadingFlow } = useSuperfluid(proposal.beneficiary)
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 

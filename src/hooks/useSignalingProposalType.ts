@@ -24,7 +24,7 @@ const FLOW_INITIAL_STATE = {
   superfluidLink: '',
 }
 
-export default function useSuperfluidCFAv1(beneficiary: string) {
+export default function useSuperfluid(beneficiary: string) {
   const [flow, setFlow] = useState(FLOW_INITIAL_STATE)
   const mounted = useMounted()
   const [loading, setLoading] = useState(true)

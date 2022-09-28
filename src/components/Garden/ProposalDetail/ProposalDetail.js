@@ -30,6 +30,7 @@ import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
 import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
+import LoadingRing from '@/components/LoadingRing'
 import Loading from '@/components/Loading'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
@@ -47,7 +48,7 @@ import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposa
 
 // Hooks
 import useChallenge from '@hooks/useChallenge'
-import useSuperfluidCFAv1 from '@/hooks/useSignalingProposalType'
+import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
@@ -65,7 +66,6 @@ import { ZERO_ADDR } from '@/constants'
 // assets
 import warningIcon from '../Agreement/assets/warning.svg'
 import { AbstainCardHeader } from '../Feed/AbstainCard'
-import LoadingRing from '@/components/LoadingRing'
 
 const CANCEL_ROLE_HASH = soliditySha3('CANCEL_PROPOSAL_ROLE')
 
@@ -254,7 +254,7 @@ function ProposalDetail({
                                 <strong>
                                   {flow.flowRateConvertions.monthly}
                                 </strong>{' '}
-                                {requestToken.symbol}x per month out of{' '}
+                                Super {requestToken.symbol} per month out of{' '}
                                 <strong>
                                   {formatTokenAmount(
                                     commonPool,

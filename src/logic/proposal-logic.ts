@@ -1,7 +1,7 @@
 import useActions from '@hooks/useActions'
 import { useGardenState } from '@providers/GardenState'
 import { useProposal } from '@hooks/useProposals'
-import useSuperfluidCFAv1 from '@/hooks/useSignalingProposalType'
+import useSuperfluid from '@/hooks/useSignalingProposalType'
 
 export type ProposalLogicProps = {
   params: {
@@ -33,7 +33,7 @@ export default function useProposalLogic(match: ProposalLogicProps) {
     appAddress
   )
 
-  const flowData = useSuperfluidCFAv1(proposal?.beneficiary)
+  const flowData = useSuperfluid(proposal?.beneficiary)
 
   return {
     actions,

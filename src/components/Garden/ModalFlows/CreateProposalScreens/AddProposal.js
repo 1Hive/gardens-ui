@@ -67,6 +67,19 @@ const AddProposalPanel = ({ setProposalData }) => {
   const streamMode = formData.proposalType === STREAM_PROPOSAL
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
 
+  const typesItems = connectedGarden.fluidProposals
+    ? PROPOSAL_TYPES_WITH_STREAM
+    : PROPOSAL_TYPES
+
+  const infoContent =
+    formData.proposalType === SIGNALING_PROPOSAL
+      ? `Suggestion proposals are used to gather community sentiment for
+ideas or future funding proposals.`
+      : formData.proposalType === STREAM_PROPOSAL
+      ? `Stream proposals create continuous funding to the beneficiary in relation to the support (conviction) accrue.`
+      : `Funding proposals ask for an amount of funds. These funds are granted
+if the proposal in question receives enough support (conviction).`
+
   // Escaping forumURL to avoid misuse with regexp
   const forumRegex = regexToCheckValidProposalURL(
     escapeRegex(connectedGarden.forumURL)
@@ -249,25 +262,13 @@ const AddProposalPanel = ({ setProposalData }) => {
           placeholder="Select proposal type"
           selected={formData.proposalType}
           onChange={handleProposalTypeChange}
-          items={
-            connectedGarden.fluidProposals
-              ? PROPOSAL_TYPES_WITH_STREAM
-              : PROPOSAL_TYPES
-          }
+          items={typesItems}
           required
           wide
         />
       </Field>
       <Info>
-        <span>
-          {formData.proposalType === SIGNALING_PROPOSAL
-            ? `Suggestion proposals are used to gather community sentiment for
-        ideas or future funding proposals.`
-            : formData.proposalType === STREAM_PROPOSAL
-            ? `Stream proposals create continuous funding to the beneficiary in relation to the support (conviction) accrue.`
-            : `Funding proposals ask for an amount of funds. These funds are granted
-        if the proposal in question receives enough support (conviction).`}
-        </span>{' '}
+        <span>{infoContent}</span>{' '}
       </Info>
       <Field
         label="Title"

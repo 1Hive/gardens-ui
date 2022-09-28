@@ -9,41 +9,22 @@ import { useGardenState } from '@/providers/GardenState'
 import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 import { useContractReadOnly } from '@/hooks/useContract'
+import { useMounted } from '@/hooks/useMounted'
 import useActions from '@hooks/useActions'
 import { useAgreement } from '@hooks/useAgreement'
-import { useMounted } from '@hooks/useMounted'
 
 import { throwConfetti } from '@utils/confetti-utils'
-import { fromDecimals } from '@utils/math-utils'
-import { extractProposalId } from '@utils/proposal-utils'
 import { buildGardenPath } from '@utils/routing-utils'
 
 import convictionAbi from '@abis/conviction.json'
-
-import { getAccountSetting } from '@/local-settings'
 
 import ModalFlowBase from '../ModalFlowBase'
 import ActionFees from './ActionFees'
 import AddProposal, { SIGNALING_PROPOSAL, STREAM_PROPOSAL } from './AddProposal'
 import CreateProposalRequirements from './CreateProposalRequirements'
 
-function GoToProposal() {
+function GoToProposal({ proposalId }: { proposalId: string }) {
   const history = useHistory()
-  const [proposalId, setProposalId] = useState<string>()
-  const { account, chainId, ethers } = useWallet()
-  const mounted = useMounted()
-  const txHash = getAccountSetting('lastTxHash', account, chainId)
-
-  useEffect(() => {
-    async function getProposalId() {
-      const id = await extractProposalId(ethers, txHash, 'conviction')
-
-      if (mounted()) {
-        setProposalId(fromDecimals(id.toString(), 18))
-      }
-    }
-    getProposalId()
-  }, [extractProposalId, ethers, txHash])
 
   const handleGoToProposal = useCallback(() => {
     const path = buildGardenPath(history.location, `proposal/${proposalId}`)
@@ -63,7 +44,9 @@ function GoToProposal() {
 function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
   const [loading, setLoading] = useState(true)
   const [transactions, setTransactions] = useState([])
+  const [proposalId, setProposalId] = useState('')
   const { account } = useWallet()
+  const mounted = useMounted()
   const [agreement, agreementLoading] = useAgreement()
   const { config } = useGardenState()
   const { chainId } = useConnectedGarden()
@@ -89,6 +72,18 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     setLoading(agreementLoading || stakingLoading)
   }, [agreementLoading, stakingLoading])
+
+  useEffect(() => {
+    async function fetchProposalCounter() {
+      const counter = await convictionContract?.proposalCounter()
+      if (mounted()) {
+        setProposalId(counter)
+      }
+    }
+    if (convictionContract) {
+      fetchProposalCounter()
+    }
+  }, [convictionContract, mounted])
 
   const handleSetProposalData = (data: any) => {
     proposalData.current = data
@@ -125,9 +120,6 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
         )
       } else if (proposalType === STREAM_PROPOSAL) {
         // STREAM_PROPOSAL
-        if (convictionContract === null) return
-        const proposalId = await convictionContract.proposalCounter()
-
         await convictionActions.newSignalingProposal(
           {
             title,
@@ -165,7 +157,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
         )
       }
     },
-    [convictionActions, proposalData]
+    [convictionActions, proposalData, convictionContract, proposalId]
   )
 
   const screens = useMemo(
@@ -216,7 +208,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
       transactionTitle="Create proposal"
       screens={screens}
       onComplete={onCompleteMiddleware}
-      onCompleteActions={<GoToProposal />}
+      onCompleteActions={<GoToProposal proposalId={proposalId.toString()} />}
     />
   )
 }
