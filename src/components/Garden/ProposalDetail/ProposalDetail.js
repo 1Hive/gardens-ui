@@ -87,7 +87,6 @@ function ProposalDetail({
   const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
-  const { flow, loading: loadingFlow } = flowData
 
   const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
 
@@ -246,13 +245,13 @@ function ProposalDetail({
                               pool.
                             </span>
                           ) : streamingProposal ? (
-                            loadingFlow ? (
+                            flowData?.loading ? (
                               <Loading center={false} />
                             ) : (
                               <span>
                                 This proposal is streaming{' '}
                                 <strong>
-                                  {flow.flowRateConvertions.monthly}
+                                  {flowData?.flow.flowRateConvertions.monthly}
                                 </strong>{' '}
                                 Super {requestToken.symbol} per month out of{' '}
                                 <strong>
@@ -329,13 +328,16 @@ function ProposalDetail({
                               )
                             }
                           />
-                          {loadingFlow ? (
+                          {flowData?.loading ? (
                             <Loading center={false} />
                           ) : (
                             <DataField
                               label="Stream"
                               value={
-                                <Link href={flow.superfluidLink} external>
+                                <Link
+                                  href={flowData?.flow.superfluidLink}
+                                  external
+                                >
                                   Review Superfluid stream
                                 </Link>
                               }
