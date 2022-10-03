@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from '../lib/bigNumber'
 import { useBlockTime, useLatestBlock } from './useBlock'
 import { useAccountStakesByGarden } from './useStakes'
+import useFluidProposals from './useFluidProposals'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useGardenState } from '@providers/GardenState'
 import useProposalFilters, {
@@ -24,6 +25,10 @@ import {
   getRemainingTimeToPass,
 } from '@lib/conviction'
 import { testStatusFilter, testSupportFilter } from '@utils/filter-utils'
+import {
+  generateSuperfluidLink,
+  getFlowAmountByPerSecondFlowRate,
+} from '@/utils/stream-utils'
 import { safeDivBN } from '@utils/math-utils'
 import {
   getProposalStatusData,
@@ -37,6 +42,7 @@ import {
   getVoteStatusData,
   hasVoteEnded,
 } from '@utils/vote-utils'
+import fluidProposalsAbi from '@abis/FluidProposals.json'
 import { ProposalTypes } from '../types'
 import { PCT_BASE } from '../constants'
 
@@ -142,6 +148,30 @@ export function useProposal(proposalId, appAddress) {
       : processProposal(proposal, latestBlock, account, config.conviction)
 
   return [proposalWithData, blockHasLoaded, loadingProposal]
+}
+
+export function useProposalWithStream(proposal) {
+  const { commonPool, config } = useGardenState()
+  const { requestToken } = config.conviction
+  const { chainId } = useConnectedGarden()
+  const [minStake, currentRate, targetRate, loading] = useFluidProposals(
+    proposal.id
+  )
+
+  return [
+    {
+      ...proposal,
+      minStake,
+      currentRate: getFlowAmountByPerSecondFlowRate(currentRate?.toString()),
+      targetRate: getFlowAmountByPerSecondFlowRate(targetRate?.toString()),
+      superfluidLink: generateSuperfluidLink(
+        requestToken.id,
+        proposal.beneficiary,
+        chainId
+      ),
+    },
+    loading,
+  ]
 }
 
 export function useProposalWithThreshold(proposal) {

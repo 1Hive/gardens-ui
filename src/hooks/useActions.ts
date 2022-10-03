@@ -687,11 +687,11 @@ export default function useActions(): ActionsType {
 
   // Fluid Proposals actions
   const activateProposal = useCallback(
-    ({ proposalId, beneficiary }, onDone = noop) => {
+    ({ proposalId }, onDone = noop) => {
       const activateProposalData = encodeFunctionData(
         fluidProposalsContract,
         'activateProposal',
-        [proposalId, beneficiary]
+        [proposalId]
       )
       let transactions = [
         {
@@ -703,6 +703,33 @@ export default function useActions(): ActionsType {
 
       const description = radspec[actions.ACTIVATE_STREAM_PROPOSAL]()
       const type = actions.ACTIVATE_STREAM_PROPOSAL
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, fluidProposalsContract]
+  )
+
+  const registerProposal = useCallback(
+    ({ proposalId, beneficiary }, onDone = noop) => {
+      const registerProposalData = encodeFunctionData(
+        fluidProposalsContract,
+        'registerProposal',
+        [proposalId, beneficiary]
+      )
+      let transactions = [
+        {
+          data: registerProposalData,
+          from: account,
+          to: fluidProposalsContract?.address,
+        },
+      ]
+
+      const description = radspec[actions.REGISTER_STREAM_PROPOSAL]()
+      const type = actions.REGISTER_STREAM_PROPOSAL
 
       transactions = attachTrxMetadata(transactions, description, type)
 
@@ -732,7 +759,10 @@ export default function useActions(): ActionsType {
         stakeToProposal,
         withdrawFromProposal,
       },
-      fluidProposalsActions: { activateProposal },
+      fluidProposalsActions: {
+        activateProposal,
+        registerProposal,
+      },
       hookedTokenManagerActions: {
         approveWrappableTokenAmount,
         getAllowance: getHookedTokenManagerAllowance,
@@ -765,6 +795,7 @@ export default function useActions(): ActionsType {
       getHookedTokenManagerAllowance,
       newProposal,
       newSignalingProposal,
+      registerProposal,
       resolveAction,
       settleAction,
       signAgreement,

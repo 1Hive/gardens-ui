@@ -48,7 +48,6 @@ import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposa
 
 // Hooks
 import useChallenge from '@hooks/useChallenge'
-import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
@@ -76,7 +75,6 @@ function ProposalDetail({
   permissions,
   requestToken,
   stableToken,
-  flowData,
 }) {
   const theme = useTheme()
   const history = useHistory()
@@ -87,7 +85,6 @@ function ProposalDetail({
   const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
-  const { flow, loading: loadingFlow } = flowData
 
   const isAbstainProposal = proposal.metadata === ABSTAIN_PROPOSAL
 
@@ -246,25 +243,19 @@ function ProposalDetail({
                               pool.
                             </span>
                           ) : streamingProposal ? (
-                            loadingFlow ? (
-                              <Loading center={false} />
-                            ) : (
-                              <span>
-                                This proposal is streaming{' '}
-                                <strong>
-                                  {flow.flowRateConvertions.monthly}
-                                </strong>{' '}
-                                Super {requestToken.symbol} per month out of{' '}
-                                <strong>
-                                  {formatTokenAmount(
-                                    commonPool,
-                                    requestToken.decimals
-                                  )}
-                                </strong>{' '}
-                                {requestToken.symbol} currently in the common
-                                pool.
-                              </span>
-                            )
+                            <span>
+                              This proposal is streaming{' '}
+                              <strong>{proposal?.currentRate.monthly}</strong>{' '}
+                              Super {requestToken.symbol} per month out of{' '}
+                              <strong>
+                                {formatTokenAmount(
+                                  commonPool,
+                                  requestToken.decimals
+                                )}
+                              </strong>{' '}
+                              {requestToken.symbol} currently in the common
+                              pool.
+                            </span>
                           ) : (
                             <span>
                               This suggestion is for signaling purposes and is
@@ -329,18 +320,14 @@ function ProposalDetail({
                               )
                             }
                           />
-                          {loadingFlow ? (
-                            <Loading center={false} />
-                          ) : (
-                            <DataField
-                              label="Stream"
-                              value={
-                                <Link href={flow.superfluidLink} external>
-                                  Review Superfluid stream
-                                </Link>
-                              }
-                            />
-                          )}
+                          <DataField
+                            label="Stream"
+                            value={
+                              <Link href={proposal.superfluidLink} external>
+                                Review Superfluid stream
+                              </Link>
+                            }
+                          />
                         </>
                       )}
 

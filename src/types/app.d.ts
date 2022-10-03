@@ -240,6 +240,19 @@ type ProposalType = {
   userConviction: BigNumber
   userStakedConviction: BigNumber
   yeas: any
+  minStake: BigNumber
+  currentRate: {
+    daily: string
+    weekly: string
+    monthly: string
+    yearly: string
+  }
+  targetRate: {
+    daily: string
+    weekly: string
+    monthly: string
+    yearly: string
+  }
 }
 
 type ActionsType = {
@@ -288,7 +301,8 @@ type ActionsType = {
     ) => Promise<void>
   }
   fluidProposalsActions: {
-    activateProposal: ({ proposalId, beneficiary }: any, onDone?: any) => void
+    activateProposal: ({ proposalId }: any, onDone?: any) => void
+    registerProposal: ({ proposalId, beneficiary }: any, onDone?: any) => void
   }
   hookedTokenManagerActions: {
     approveWrappableTokenAmount: (amount: any, onDone?: () => void) => void
