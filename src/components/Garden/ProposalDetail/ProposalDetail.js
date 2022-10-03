@@ -149,6 +149,9 @@ function ProposalDetail({
 
   const fundingOrStreaming = fundingProposal || streamingProposal
 
+  const isStreaming =
+    Number(proposal.minStake) < Number(proposal.totalTokensStaked)
+
   return (
     <div
       css={`
@@ -243,19 +246,47 @@ function ProposalDetail({
                               pool.
                             </span>
                           ) : streamingProposal ? (
-                            <span>
-                              This proposal is streaming{' '}
-                              <strong>{proposal?.currentRate.monthly}</strong>{' '}
-                              Super {requestToken.symbol} per month out of{' '}
-                              <strong>
-                                {formatTokenAmount(
-                                  commonPool,
-                                  requestToken.decimals
-                                )}
-                              </strong>{' '}
-                              {requestToken.symbol} currently in the common
-                              pool.
-                            </span>
+                            isStreaming ? (
+                              <div
+                                css={`
+                                  display: flex;
+                                  align-items: center;
+                                `}
+                              >
+                                <span
+                                  css={`
+                                    margin: 0px ${0.5 * GU}px;
+                                  `}
+                                >
+                                  This proposal is streaming{' '}
+                                  <strong>
+                                    {proposal?.currentRate.monthly}
+                                  </strong>{' '}
+                                  {requestToken.symbol} per month with a cap of{' '}
+                                  <strong>
+                                    {proposal?.currentRate.monthly}
+                                  </strong>
+                                </span>
+                                <Help hint="">
+                                  Stream proposals accrue in relation with the
+                                  support amount, reaching a maximum cap.
+                                </Help>
+                              </div>
+                            ) : (
+                              <span>
+                                This proposal is requesting{' '}
+                                <strong>{proposal?.targetRate.monthly}</strong>{' '}
+                                {requestToken.symbol} per month out of{' '}
+                                <strong>
+                                  {formatTokenAmount(
+                                    commonPool,
+                                    requestToken.decimals
+                                  )}
+                                </strong>{' '}
+                                {requestToken.symbol} currently in the common
+                                pool.
+                              </span>
+                            )
                           ) : (
                             <span>
                               This suggestion is for signaling purposes and is

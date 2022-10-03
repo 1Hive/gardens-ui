@@ -7,9 +7,11 @@ import { useContractReadOnly } from './useContract'
 import fluidProposalsAbi from '@abis/FluidProposals.json'
 
 export default function useFluidProposals(proposalId: number) {
+  const [superToken, setSuperToken] = useState(null)
   const [minStake, setMinStake] = useState(null)
   const [targetRate, setTargetRate] = useState(null)
   const [currentRate, setCurrentRate] = useState(null)
+  const [canActivate, setCanActivate] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const mounted = useMounted()
@@ -31,6 +33,7 @@ export default function useFluidProposals(proposalId: number) {
       try {
         setLoading(true)
 
+        const superToken = await fluidProposalsContract.token()
         const minStake = await fluidProposalsContract.minStake()
         const targetRate = await fluidProposalsContract.getTargetRate(
           proposalId
@@ -38,11 +41,16 @@ export default function useFluidProposals(proposalId: number) {
         const currentRate = await fluidProposalsContract.getCurrentRate(
           proposalId
         )
+        const canActivate = await fluidProposalsContract.canActivateProposal(
+          proposalId
+        )
 
         if (mounted()) {
+          setSuperToken(superToken)
           setMinStake(minStake)
           setTargetRate(targetRate)
           setCurrentRate(currentRate)
+          setCanActivate(canActivate)
           setLoading(false)
         }
       } catch (err) {
@@ -54,5 +62,5 @@ export default function useFluidProposals(proposalId: number) {
     fetchFluidProposalsData()
   }, [fluidProposalsContract, proposalId])
 
-  return [minStake, currentRate, targetRate, loading]
+  return [superToken, minStake, currentRate, targetRate, canActivate, loading]
 }

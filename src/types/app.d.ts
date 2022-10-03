@@ -240,6 +240,7 @@ type ProposalType = {
   userConviction: BigNumber
   userStakedConviction: BigNumber
   yeas: any
+  superToken: string
   minStake: BigNumber
   currentRate: {
     daily: string
@@ -253,6 +254,7 @@ type ProposalType = {
     monthly: string
     yearly: string
   }
+  canActivate: boolean
 }
 
 type ActionsType = {

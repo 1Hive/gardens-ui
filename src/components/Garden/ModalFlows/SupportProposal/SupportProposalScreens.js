@@ -5,20 +5,11 @@ import SupportProposal from './SupportProposal'
 
 import { useConnectedGarden } from '@/providers/ConnectedGarden'
 import useActions from '@hooks/useActions'
-import { useContractReadOnly } from '@/hooks/useContract'
-import fluidProposalsAbi from '@abis/FluidProposals.json'
 import { ProposalTypes } from '@/types'
 
 function SupportProposalScreens({ proposal, mode }) {
   const [transactions, setTransactions] = useState([])
-  const { chainId, fluidProposals } = useConnectedGarden()
   const { convictionActions, fluidProposalsActions } = useActions()
-
-  const fluidProposalsContract = useContractReadOnly(
-    fluidProposals,
-    fluidProposalsAbi,
-    chainId
-  )
 
   const temporatyTrx = useRef([])
 
@@ -26,17 +17,13 @@ function SupportProposalScreens({ proposal, mode }) {
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
-      if (type == ProposalTypes.Stream) {
-        const canActivateStream =
-          await fluidProposalsContract?.canActivateProposal(proposalId)
-        if (canActivateStream) {
-          await fluidProposalsActions.activateProposal(
-            { proposalId },
-            (intent) => {
-              temporatyTrx.current = temporatyTrx.current.concat(intent)
-            }
-          )
-        }
+      if (type == ProposalTypes.Stream && proposal.canActivate) {
+        await fluidProposalsActions.activateProposal(
+          { proposalId },
+          (intent) => {
+            temporatyTrx.current = temporatyTrx.current.concat(intent)
+          }
+        )
       }
 
       await convictionActions.stakeToProposal(
@@ -49,29 +36,19 @@ function SupportProposalScreens({ proposal, mode }) {
       setTransactions(temporatyTrx.current)
       onComplete()
     },
-    [
-      convictionActions,
-      fluidProposalsActions,
-      fluidProposalsContract,
-      proposalId,
-      type,
-    ]
+    [convictionActions, fluidProposalsActions, proposalId, type]
   )
 
   const getChangeSupportTransactions = useCallback(
     async (onComplete, changeMode, amount) => {
       if (changeMode === 'stake') {
-        if (type == ProposalTypes.Stream) {
-          const canActivateStream =
-            await fluidProposalsContract?.canActivateProposal(proposalId)
-          if (canActivateStream) {
-            await fluidProposalsActions.activateProposal(
-              { proposalId },
-              (intent) => {
-                temporatyTrx.current = temporatyTrx.current.concat(intent)
-              }
-            )
-          }
+        if (type == ProposalTypes.Stream && proposal.canActivate) {
+          await fluidProposalsActions.activateProposal(
+            { proposalId },
+            (intent) => {
+              temporatyTrx.current = temporatyTrx.current.concat(intent)
+            }
+          )
         }
 
         await convictionActions.stakeToProposal(
@@ -94,13 +71,7 @@ function SupportProposalScreens({ proposal, mode }) {
         )
       }
     },
-    [
-      convictionActions,
-      fluidProposalsActions,
-      fluidProposalsContract,
-      proposalId,
-      type,
-    ]
+    [convictionActions, fluidProposalsActions, proposalId, type]
   )
 
   const screens = useMemo(() => {
