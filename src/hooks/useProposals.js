@@ -42,7 +42,6 @@ import {
   getVoteStatusData,
   hasVoteEnded,
 } from '@utils/vote-utils'
-import fluidProposalsAbi from '@abis/FluidProposals.json'
 import { ProposalTypes } from '../types'
 import { PCT_BASE } from '../constants'
 
