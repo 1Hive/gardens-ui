@@ -264,7 +264,7 @@ function ProposalDetail({
                                   </strong>{' '}
                                   {requestToken.symbol} per month with a cap of{' '}
                                   <strong>
-                                    {proposal?.currentRate.monthly}
+                                    {proposal?.targetRate.monthly}
                                   </strong>
                                 </span>
                                 <Help hint="">
