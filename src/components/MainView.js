@@ -23,7 +23,9 @@ import { MobileSidebar, Sidebar } from './Sidebars'
 
 function MainView({ children }) {
   const { pathname } = useRouter()
+  console.log('pathname',pathname)
   const theme = useTheme()
+  console.log('theme',theme)
   // const { pathname } = useLocation()
   const { below } = useViewport()
   const connectedGarden = useConnectedGarden()
