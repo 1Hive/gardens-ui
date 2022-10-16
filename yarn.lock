@@ -165,13 +165,6 @@
   dependencies:
     "@1hive/connect-core" "^0.9.10"
 
-"@1hive/connect-ethereum@^0.9.12":
-  version "0.9.12"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.12.tgz#8b57f2f75e0e97b0727bab0228c3ac4762d4ebf8"
-  integrity sha512-osS3lahu1RniAqB8szNL02Q0bbJy0GX4MHFxO9ul8p+TF7JdcDoqpp1AA30zFQOWNvEWmEozoFoda/kt6tC63Q==
-  dependencies:
-    "@1hive/connect-core" "^0.9.12"
-
 "@1hive/connect-gardens@^0.1.14":
   version "0.1.14"
   resolved "https://registry.yarnpkg.com/@1hive/connect-gardens/-/connect-gardens-0.1.14.tgz#5f53fcca488d266786cf4706a0a7ce643b1b1f5b"
