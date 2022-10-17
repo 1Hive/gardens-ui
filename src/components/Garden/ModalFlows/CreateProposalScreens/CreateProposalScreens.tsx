@@ -130,7 +130,7 @@ function CreateProposalScreens({ onComplete }: { onComplete: () => void }) {
           }
         )
 
-        await fluidProposalsActions.activateProposal(
+        await fluidProposalsActions.registerProposal(
           {
             proposalId,
             beneficiary,

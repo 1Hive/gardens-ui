@@ -11,7 +11,7 @@ import {
   Timer,
   useTheme,
 } from '@1hive/1hive-ui'
-import { ConvictionCountdown } from './ConvictionVisuals'
+import { ConvictionCountdown, ConvictionStream } from './ConvictionVisuals'
 
 import { useDisputeState } from '@hooks/useDispute'
 import { useWallet } from '@providers/Wallet'
@@ -213,16 +213,23 @@ function usePeriod(proposal, periodEndDate) {
 }
 
 function Conviction({ proposal }) {
-  // TODO: handle Stream conviction data
-  if (
-    proposal.type === ProposalTypes.Suggestion ||
-    proposal.type === ProposalTypes.Stream
-  ) {
+  if (proposal.type === ProposalTypes.Suggestion) {
     return null
   }
 
   const isCancelled =
     proposal.statusData.cancelled || proposal.statusData.settled
+
+  if (proposal.type === ProposalTypes.Stream) {
+    return (
+      <DataField
+        label="Support until stream"
+        value={
+          isCancelled ? 'Cancelled' : <ConvictionStream proposal={proposal} />
+        }
+      />
+    )
+  }
 
   return (
     <DataField

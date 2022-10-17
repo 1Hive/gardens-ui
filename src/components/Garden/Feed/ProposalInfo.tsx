@@ -1,13 +1,12 @@
 import React from 'react'
 import { GU, Help, Link, useTheme } from '@1hive/1hive-ui'
 import Balance from '../Balance'
-import Stream from '../Stream'
+import { Stream, StreamRequest } from '../Stream'
 import ProposalCountdown from './ProposalCountdown'
 import ProposalDescription from './ProposalDescription'
 import ProposalSupport from './ProposalSupport'
 
 import Loading from '@/components/Loading'
-import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useGardenState } from '@providers/GardenState'
 import { formatTokenAmount } from '@utils/token-utils'
 import { ProposalTypes } from '@/types'
@@ -26,7 +25,6 @@ function ProposalInfo({
 }: ProposalInfoProps) {
   const theme = useTheme()
   const { config } = useGardenState()
-  const { flow, loading: loadingFlow } = useSuperfluid(proposal.beneficiary)
   const { requestToken, stableToken } = config.conviction
   const primaryToken = proposal.stable ? stableToken : requestToken
 
@@ -34,6 +32,9 @@ function ProposalInfo({
     proposal.requestedAmountConverted,
     requestToken.decimals
   )
+
+  const isStreaming =
+    Number(proposal.minStake) < Number(proposal.totalTokensStaked)
 
   return (
     <div onClick={onSelectProposal}>
@@ -99,7 +100,7 @@ function ProposalInfo({
           )}
         </div>
       )}
-      {proposal.type === ProposalTypes.Stream && (
+      {proposal.type === ProposalTypes.Stream && isStreaming && (
         <div
           css={`
             display: flex;
@@ -115,7 +116,7 @@ function ProposalInfo({
           >
             Streaming:
           </span>
-          {loadingFlow ? (
+          {loading ? (
             <div
               css={`
                 align-items: left;
@@ -126,7 +127,44 @@ function ProposalInfo({
           ) : (
             <>
               <Stream
-                flowRateConvertions={flow.flowRateConvertions}
+                currentRate={proposal.currentRate}
+                targetRate={proposal.targetRate}
+                decimals={primaryToken.decimals}
+                icon={primaryToken.icon}
+                symbol={primaryToken.symbol}
+              />
+            </>
+          )}
+        </div>
+      )}
+      {proposal.type === ProposalTypes.Stream && !isStreaming && (
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            color: ${theme.contentSecondary};
+            margin-bottom: ${2 * GU}px;
+          `}
+        >
+          <span
+            css={`
+              margin-right: ${1 * GU}px;
+            `}
+          >
+            Request:
+          </span>
+          {loading ? (
+            <div
+              css={`
+                align-items: left;
+              `}
+            >
+              <Loading />
+            </div>
+          ) : (
+            <>
+              <StreamRequest
+                targetRate={proposal.targetRate}
                 decimals={primaryToken.decimals}
                 icon={primaryToken.icon}
                 symbol={primaryToken.symbol}
