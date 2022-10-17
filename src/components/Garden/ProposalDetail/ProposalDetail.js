@@ -48,7 +48,6 @@ import SupportProposalScreens from '../ModalFlows/SupportProposal/SupportProposa
 
 // Hooks
 import useChallenge from '@hooks/useChallenge'
-import useSuperfluid from '@/hooks/useSignalingProposalType'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@providers/Wallet'
 
@@ -76,7 +75,6 @@ function ProposalDetail({
   permissions,
   requestToken,
   stableToken,
-  flowData,
 }) {
   const theme = useTheme()
   const history = useHistory()
@@ -150,6 +148,9 @@ function ProposalDetail({
     requestToken && proposal.type === ProposalTypes.Stream
 
   const fundingOrStreaming = fundingProposal || streamingProposal
+
+  const isStreaming =
+    Number(proposal.minStake) < Number(proposal.totalTokensStaked)
 
   return (
     <div
@@ -245,15 +246,37 @@ function ProposalDetail({
                               pool.
                             </span>
                           ) : streamingProposal ? (
-                            flowData?.loading ? (
-                              <Loading center={false} />
+                            isStreaming ? (
+                              <div
+                                css={`
+                                  display: flex;
+                                  align-items: center;
+                                `}
+                              >
+                                <span
+                                  css={`
+                                    margin: 0px ${0.5 * GU}px;
+                                  `}
+                                >
+                                  This proposal is streaming{' '}
+                                  <strong>
+                                    {proposal?.currentRate.monthly}
+                                  </strong>{' '}
+                                  {requestToken.symbol} per month with a cap of{' '}
+                                  <strong>
+                                    {proposal?.targetRate.monthly}
+                                  </strong>
+                                </span>
+                                <Help hint="">
+                                  Stream proposals accrue in relation with the
+                                  support amount, reaching a maximum cap.
+                                </Help>
+                              </div>
                             ) : (
                               <span>
-                                This proposal is streaming{' '}
-                                <strong>
-                                  {flowData?.flow.flowRateConvertions.monthly}
-                                </strong>{' '}
-                                Super {requestToken.symbol} per month out of{' '}
+                                This proposal is requesting{' '}
+                                <strong>{proposal?.targetRate.monthly}</strong>{' '}
+                                {requestToken.symbol} per month out of{' '}
                                 <strong>
                                   {formatTokenAmount(
                                     commonPool,
@@ -328,21 +351,14 @@ function ProposalDetail({
                               )
                             }
                           />
-                          {flowData?.loading ? (
-                            <Loading center={false} />
-                          ) : (
-                            <DataField
-                              label="Stream"
-                              value={
-                                <Link
-                                  href={flowData?.flow.superfluidLink}
-                                  external
-                                >
-                                  Review Superfluid stream
-                                </Link>
-                              }
-                            />
-                          )}
+                          <DataField
+                            label="Stream"
+                            value={
+                              <Link href={proposal.superfluidLink} external>
+                                Review Superfluid stream
+                              </Link>
+                            }
+                          />
                         </>
                       )}
 

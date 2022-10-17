@@ -123,7 +123,7 @@ const RequiredSeparatorWrapper = styled(animated.div)`
 
 const RequiredSeparator = styled.div`
   height: 100%;
-  border-left: 1px dashed #979797;
+  border-left: 1px dashed ${({ theme }) => theme.surfaceContentSecondary};
 `
 
 export default SummaryBar

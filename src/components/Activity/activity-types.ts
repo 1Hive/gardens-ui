@@ -114,6 +114,11 @@ const ACTIVITY_TYPES: {
     icon: actions.NEW_SIGNALING_PROPOSAL,
     title: 'Activate stream proposal',
   },
+  [actions.REGISTER_STREAM_PROPOSAL]: {
+    // TODO: add new icon
+    icon: actions.NEW_SIGNALING_PROPOSAL,
+    title: 'Register stream proposal',
+  },
 }
 
 export function getActivityData(type: actions): ActivityData {

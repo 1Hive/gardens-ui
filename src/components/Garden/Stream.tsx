@@ -3,7 +3,13 @@ import styled from 'styled-components'
 import { GU } from '@1hive/1hive-ui'
 
 type StreamProps = {
-  flowRateConvertions: {
+  currentRate?: {
+    daily: string
+    weekly: string
+    monthly: string
+    yearly: string
+  }
+  targetRate: {
     daily: string
     weekly: string
     monthly: string
@@ -12,20 +18,15 @@ type StreamProps = {
   decimals: number
   symbol: string
   icon: string
-  verified?: any
-  color?: any
-  size?: any
 }
 
 // TODO: allow to chose monthly, daily, etc
-function Stream({
-  flowRateConvertions,
+export function Stream({
+  currentRate,
+  targetRate,
   decimals,
   symbol,
   icon,
-  verified,
-  color,
-  size,
 }: StreamProps) {
   return (
     <section>
@@ -33,12 +34,32 @@ function Stream({
         css={`
           display: flex;
           align-items: center;
-          color: ${color};
-          ${size}
         `}
       >
         <TokenIcon src={icon} />
-        {flowRateConvertions.monthly} {symbol + 'x' || ''} per month
+        {currentRate?.monthly} {symbol} per month with a cap of{' '}
+        {targetRate?.monthly}
+      </div>
+    </section>
+  )
+}
+
+export function StreamRequest({
+  targetRate,
+  decimals,
+  symbol,
+  icon,
+}: StreamProps) {
+  return (
+    <section>
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <TokenIcon src={icon} />
+        {targetRate?.monthly} {symbol} per month
       </div>
     </section>
   )
@@ -47,5 +68,3 @@ function Stream({
 const TokenIcon = styled.img.attrs({ alt: '', width: '24', height: '24' })`
   margin-right: ${1 * GU}px;
 `
-
-export default Stream

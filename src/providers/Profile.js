@@ -108,7 +108,7 @@ function ProfileProvider({ children }) {
       return
     }
     setBox(null)
-    // auth()
+    auth()
   }, [account, auth])
 
   useEffect(() => {
