@@ -416,7 +416,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
       </Button>
       {errors.length > 0 && (
         <Info
-          mode={Info?.MODES?.WARNING ?? 'warning'}
+          mode={'warning'}
           css={`
             margin-top: ${2 * GU}px;
           `}
