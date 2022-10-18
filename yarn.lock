@@ -144,12 +144,33 @@
     "@ethersproject/providers" "^5.5.1"
     "@ethersproject/solidity" "^5.5.0"
 
+"@1hive/connect-core@^0.9.13":
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-core/-/connect-core-0.9.13.tgz#de110d39ce732843caa0cb7b6a98cbabf806eaba"
+  integrity sha512-yt9+NgCneE8oFcdG8YQTgHM1CIbcS+PqFLq2J4X5eRQMZRIJPW7XG+ffv4hXZn0ZeUb/QnvTD3m3+GCsWY+ZoQ==
+  dependencies:
+    "@1hive/radspec" "^2.0.0"
+    "@ethersproject/abi" "^5.5.0"
+    "@ethersproject/address" "^5.5.0"
+    "@ethersproject/bignumber" "^5.5.0"
+    "@ethersproject/contracts" "^5.5.0"
+    "@ethersproject/hash" "^5.5.0"
+    "@ethersproject/providers" "^5.5.1"
+    "@ethersproject/solidity" "^5.5.0"
+
 "@1hive/connect-ethereum@^0.9.10":
   version "0.9.10"
   resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.10.tgz#39bedb11803c780fdec83b72a2ef232e412c0948"
   integrity sha512-ZLxOY5ZYaDsatk5NSrYownM33voaURXIyxGERvxcL/9wEXrTYNZwgIjq0RbLFe8I2FmPLg3W+K0laSM5uj9uhg==
   dependencies:
     "@1hive/connect-core" "^0.9.10"
+
+"@1hive/connect-ethereum@^0.9.13":
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-ethereum/-/connect-ethereum-0.9.13.tgz#8bd024bcf2840ecfbb687c088eda10431540db3f"
+  integrity sha512-Km0Nmi/GuWxkKZIn1a3oj5YP0qPIEBTWK/5RPqPdx26eBg5/sa/vDvuMfOohtZLsHgbOwf9aQaoqEmw/Hu7vVQ==
+  dependencies:
+    "@1hive/connect-core" "^0.9.13"
 
 "@1hive/connect-gardens@^0.1.12":
   version "0.1.12"
@@ -161,12 +182,12 @@
     ethers "^5.5.1"
     graphql-tag "^2.10.3"
 
-"@1hive/connect-react@^0.9.9":
-  version "0.9.10"
-  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.10.tgz#b4fbae0a26afe71991557b1bdb3991b43adb0ea6"
-  integrity sha512-tgNaeB3y9Wqw4QNwCjYDZUOlIr9zMAlQzv92JqMBCQoMgp7mgdmTmgXaYou3iXGZ5TEyBlqJz7EWzbEdoGY9rw==
+"@1hive/connect-react@^0.9.13":
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-react/-/connect-react-0.9.13.tgz#be8cbfcd9aa53162dc0ac2011d8fe5d6411991a6"
+  integrity sha512-6AVY2Q6dQ6ufrCM1cmxj+rVoD9NkHs3hsPuiTNbk3URFiJX/ISzqIrtI7kzEAJR8Ni6WSk70Hq9Z718sPYFaug==
   dependencies:
-    "@1hive/connect" "^0.9.10"
+    "@1hive/connect" "^0.9.13"
 
 "@1hive/connect-thegraph@^0.9.10", "@1hive/connect-thegraph@^0.9.3", "@1hive/connect-thegraph@^0.9.4":
   version "0.9.10"
@@ -181,7 +202,29 @@
     isomorphic-ws "^4.0.1"
     subscriptions-transport-ws "^0.9.16"
 
-"@1hive/connect@^0.9.10", "@1hive/connect@^0.9.7":
+"@1hive/connect-thegraph@^0.9.13":
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect-thegraph/-/connect-thegraph-0.9.13.tgz#5ad33292db67df4388e63361a102e9738b431a8d"
+  integrity sha512-uLP+/Rg/Z64L42WT83xtQ9z5aapjQ7Fw8V2lKe5YQMNgTVm3Ae/ltPcCs+K6kGvHCUTZu0klW9CCNcciK4dBvw==
+  dependencies:
+    "@1hive/connect-core" "^0.9.13"
+    "@urql/core" "^1.11.7"
+    graphql "^15.0.0"
+    graphql-tag "^2.10.3"
+    isomorphic-unfetch "^3.0.0"
+    isomorphic-ws "^4.0.1"
+    subscriptions-transport-ws "^0.9.16"
+
+"@1hive/connect@^0.9.13":
+  version "0.9.13"
+  resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.13.tgz#8c28492320a3e429fff75f5fc475b50fe0393396"
+  integrity sha512-hQsFWmZ2xCZcN+8L+ERU3rHbP5Wo/Awl2slemSz4OpL6QPc8adn9HmLbq8OA0AnyExpB2uA3oe1o1X5WiNwxoA==
+  dependencies:
+    "@1hive/connect-core" "^0.9.13"
+    "@1hive/connect-ethereum" "^0.9.13"
+    "@1hive/connect-thegraph" "^0.9.13"
+
+"@1hive/connect@^0.9.7":
   version "0.9.10"
   resolved "https://registry.yarnpkg.com/@1hive/connect/-/connect-0.9.10.tgz#64b49c5070b77f1c4f55036e27cf8eb3c6fb0508"
   integrity sha512-luLxU3wtto6uMS0Aum8HsAapT3tUSCgNn6ziXlpTgGcS2LR1sz8xZppk6N/a8kUTLSjRMFbUiP2hELMpNLCtUA==
@@ -20425,9 +20468,9 @@ ursa-optional@~0.10.0:
     bindings "^1.5.0"
     nan "^2.14.2"
 
-"use-inside@git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
   version "0.2.0"
-  resolved "git+https://github.com/aragon/use-inside.git#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@1.1.1":
   version "1.1.1"
