@@ -31,6 +31,7 @@ import DisputeFees from '../DisputeFees'
 import ExecuteProposalScreens from '../ModalFlows/ExecuteProposalScreens/ExecuteProposalScreens'
 import IdentityBadge from '@components/IdentityBadge'
 import LoadingRing from '@/components/LoadingRing'
+import Loading from '@/components/Loading'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
 import ProposalComments from './ProposalComments'
@@ -81,7 +82,6 @@ function ProposalDetail({
   const oneColumn = layoutName === 'small' || layoutName === 'medium'
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMode, setModalMode] = useState(null)
-
   const { chainId } = useConnectedGarden()
   const { account: connectedAccount } = useWallet()
   const network = getNetwork(chainId)
@@ -143,6 +143,14 @@ function ProposalDetail({
 
   const fundingProposal =
     requestToken && proposal.type === ProposalTypes.Proposal
+
+  const streamingProposal =
+    requestToken && proposal.type === ProposalTypes.Stream
+
+  const fundingOrStreaming = fundingProposal || streamingProposal
+
+  const isStreaming =
+    Number(proposal.minStake) < Number(proposal.totalTokensStaked)
 
   return (
     <div
@@ -237,6 +245,48 @@ function ProposalDetail({
                               {requestToken.symbol} currently in the common
                               pool.
                             </span>
+                          ) : streamingProposal ? (
+                            isStreaming ? (
+                              <div
+                                css={`
+                                  display: flex;
+                                  align-items: center;
+                                `}
+                              >
+                                <span
+                                  css={`
+                                    margin: 0px ${0.5 * GU}px;
+                                  `}
+                                >
+                                  This proposal is streaming{' '}
+                                  <strong>
+                                    {proposal?.currentRate.monthly}
+                                  </strong>{' '}
+                                  {requestToken.symbol} per month with a cap of{' '}
+                                  <strong>
+                                    {proposal?.targetRate.monthly}
+                                  </strong>
+                                </span>
+                                <Help hint="">
+                                  Stream proposals accrue in relation with the
+                                  support amount, reaching a maximum cap.
+                                </Help>
+                              </div>
+                            ) : (
+                              <span>
+                                This proposal is requesting{' '}
+                                <strong>{proposal?.targetRate.monthly}</strong>{' '}
+                                {requestToken.symbol} per month out of{' '}
+                                <strong>
+                                  {formatTokenAmount(
+                                    commonPool,
+                                    requestToken.decimals
+                                  )}
+                                </strong>{' '}
+                                {requestToken.symbol} currently in the common
+                                pool.
+                              </span>
+                            )
                           ) : (
                             <span>
                               This suggestion is for signaling purposes and is
@@ -281,25 +331,58 @@ function ProposalDetail({
                           : 2.5 * GU}px;
                       `}
                     >
-                      <DataField
-                        label="Forum"
-                        value={
-                          link ? (
-                            <Link href={link} external>
-                              Read the full proposal
-                            </Link>
-                          ) : (
-                            <span
-                              css={`
-                                ${textStyle('body2')};
-                              `}
-                            >
-                              No link provided
-                            </span>
-                          )
-                        }
-                        css="grid-column-start: span 2;"
-                      />
+                      {streamingProposal && (
+                        <>
+                          <DataField
+                            label="Forum"
+                            value={
+                              link ? (
+                                <Link href={link} external>
+                                  Read the full proposal
+                                </Link>
+                              ) : (
+                                <span
+                                  css={`
+                                    ${textStyle('body2')};
+                                  `}
+                                >
+                                  No link provided
+                                </span>
+                              )
+                            }
+                          />
+                          <DataField
+                            label="Stream"
+                            value={
+                              <Link href={proposal.superfluidLink} external>
+                                Review Superfluid stream
+                              </Link>
+                            }
+                          />
+                        </>
+                      )}
+
+                      {!streamingProposal && (
+                        <DataField
+                          label="Forum"
+                          value={
+                            link ? (
+                              <Link href={link} external>
+                                Read the full proposal
+                              </Link>
+                            ) : (
+                              <span
+                                css={`
+                                  ${textStyle('body2')};
+                                `}
+                              >
+                                No link provided
+                              </span>
+                            )
+                          }
+                          css="grid-column-start: span 2;"
+                        />
+                      )}
                       <DataField
                         label="Status"
                         value={<ProposalStatus proposal={proposal} />}
@@ -314,7 +397,7 @@ function ProposalDetail({
                         />
                       )}
 
-                      {fundingProposal && (
+                      {fundingOrStreaming && (
                         <DataField
                           label="Beneficiary"
                           value={
@@ -432,7 +515,7 @@ function ProposalDetail({
                         color: ${theme.contentSecondary};
                       `}
                     >
-                      This suggestion will be active until it is removed by the
+                      This proposal will be active until it is removed by the
                       creator or an authorised entity.
                     </Box>
                   )}

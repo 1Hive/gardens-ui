@@ -55,6 +55,14 @@ function ProposalFooter({ proposal, onSelectProposal }: ProposalFooterProps) {
     stakeToken.decimals
   )
 
+  const formattedMinStake = formatTokenAmount(
+    proposal.minStake,
+    stakeToken.decimals
+  )
+
+  const notStreaming =
+    Number(proposal.minStake) > Number(proposal.totalTokensStaked)
+
   // TODO: Use mapping and status symbol
   const proposalStatusLabel = useMemo(() => {
     if (proposal.statusData.open) {
@@ -105,6 +113,11 @@ function ProposalFooter({ proposal, onSelectProposal }: ProposalFooterProps) {
             {stakeToken.symbol} needed to pass: {formattedNeededTokens}
           </div>
         )}
+      {proposal.type === ProposalTypes.Stream && notStreaming && (
+        <div>
+          {stakeToken.symbol} needed to start streaming: {formattedMinStake}
+        </div>
+      )}
       <div onClick={onSelectProposal} style={{ cursor: 'pointer' }}>
         Status: {proposalStatusLabel}
       </div>

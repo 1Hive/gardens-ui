@@ -18,6 +18,7 @@ import { encodeFunctionData, getDefaultProvider } from '@utils/web3-utils'
 import BigNumber from '@lib/bigNumber'
 import radspec from '../radspec'
 
+import fluidProposalsAbi from '@abis/FluidProposals.json'
 import priceOracleAbi from '@abis/priceOracle.json'
 import unipoolAbi from '@abis/Unipool.json'
 import tokenAbi from '@abis/minimeToken.json'
@@ -36,7 +37,8 @@ export default function useActions(): ActionsType {
   const { account, ethers } = useWallet()
   const mounted = useMounted()
 
-  const { chainId, incentivisedPriceOracle, unipool } = useConnectedGarden()
+  const { chainId, fluidProposals, incentivisedPriceOracle, unipool } =
+    useConnectedGarden()
   const { installedApps, mainToken, wrappableToken } = useGardenState()
   const convictionVotingApp = getAppByName(
     installedApps,
@@ -48,6 +50,7 @@ export default function useActions(): ActionsType {
     incentivisedPriceOracle,
     priceOracleAbi
   )
+  const fluidProposalsContract = useContract(fluidProposals, fluidProposalsAbi)
   const unipoolContract = useContract(unipool, unipoolAbi)
   const wrappableTokenContract = useContract(wrappableToken?.data.id, tokenAbi)
 
@@ -682,6 +685,61 @@ export default function useActions(): ActionsType {
     [account, mounted, unipoolContract]
   )
 
+  // Fluid Proposals actions
+  const activateProposal = useCallback(
+    ({ proposalId }, onDone = noop) => {
+      const activateProposalData = encodeFunctionData(
+        fluidProposalsContract,
+        'activateProposal',
+        [proposalId]
+      )
+      let transactions = [
+        {
+          data: activateProposalData,
+          from: account,
+          to: fluidProposalsContract?.address,
+        },
+      ]
+
+      const description = radspec[actions.ACTIVATE_STREAM_PROPOSAL]()
+      const type = actions.ACTIVATE_STREAM_PROPOSAL
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, fluidProposalsContract]
+  )
+
+  const registerProposal = useCallback(
+    ({ proposalId, beneficiary }, onDone = noop) => {
+      const registerProposalData = encodeFunctionData(
+        fluidProposalsContract,
+        'registerProposal',
+        [proposalId, beneficiary]
+      )
+      let transactions = [
+        {
+          data: registerProposalData,
+          from: account,
+          to: fluidProposalsContract?.address,
+        },
+      ]
+
+      const description = radspec[actions.REGISTER_STREAM_PROPOSAL]()
+      const type = actions.REGISTER_STREAM_PROPOSAL
+
+      transactions = attachTrxMetadata(transactions, description, type)
+
+      if (mounted()) {
+        onDone(transactions)
+      }
+    },
+    [account, mounted, fluidProposalsContract]
+  )
+
   return useMemo<ActionsType>(
     () => ({
       agreementActions: {
@@ -701,6 +759,10 @@ export default function useActions(): ActionsType {
         stakeToProposal,
         withdrawFromProposal,
       },
+      fluidProposalsActions: {
+        activateProposal,
+        registerProposal,
+      },
       hookedTokenManagerActions: {
         approveWrappableTokenAmount,
         getAllowance: getHookedTokenManagerAllowance,
@@ -718,6 +780,7 @@ export default function useActions(): ActionsType {
       },
     }),
     [
+      activateProposal,
       approveTokenAmount,
       approveWrappableTokenAmount,
       cancelProposal,
@@ -732,6 +795,7 @@ export default function useActions(): ActionsType {
       getHookedTokenManagerAllowance,
       newProposal,
       newSignalingProposal,
+      registerProposal,
       resolveAction,
       settleAction,
       signAgreement,

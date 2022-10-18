@@ -132,7 +132,90 @@ export function ConvictionBar({ proposal, withThreshold = true }) {
   )
 }
 
+export function ConvictionStream({ proposal, shorter }) {
+  const theme = useTheme()
+  const { config } = useGardenState()
+  const { stakeToken } = config.conviction
+  const { minStake, loading, statusData, totalTokensStaked } = proposal
+
+  const isStreaming = Number(minStake) < Number(totalTokensStaked)
+
+  const view = useMemo(() => {
+    if (statusData.challenged) {
+      return CHALLENGED
+    }
+    if (isStreaming) {
+      return AVAILABLE
+    }
+    return UNABLE_TO_PASS
+  }, [isStreaming, statusData])
+
+  return loading ? (
+    <LoadingRing label="Loading" />
+  ) : (
+    <div
+      css={`
+        display: grid;
+        grid-gap: ${1 * GU}px;
+      `}
+    >
+      {view === UNABLE_TO_PASS ? (
+        <>
+          <Outcome
+            result="Won't stream"
+            color={theme.negative}
+            icon={<IconCross />}
+          />
+          {!shorter && (
+            <>
+              <span
+                css={`
+                  color: ${theme.surfaceContent};
+                `}
+              >
+                {'Not enough support received'}
+              </span>
+              <span
+                css={`
+                  color: ${theme.surfaceContentSecondary};
+                `}
+              >
+                (
+                {
+                  <React.Fragment>
+                    At least{' '}
+                    <Tag>
+                      {`${formatTokenAmount(minStake, stakeToken.decimals)} ${
+                        stakeToken.symbol
+                      }`}
+                    </Tag>{' '}
+                    needed
+                  </React.Fragment>
+                }
+                )
+              </span>
+            </>
+          )}
+        </>
+      ) : view === CHALLENGED ? (
+        <Outcome
+          result="Challenged"
+          color={theme.challenge}
+          icon={<img src={challengeIconSvg} alt="" width="24" height="24" />}
+        />
+      ) : (
+        <Outcome
+          result={'Streaming'}
+          color={theme.positive}
+          icon={<IconCheck />}
+        />
+      )}
+    </div>
+  )
+}
+
 export function ConvictionCountdown({ proposal, shorter }) {
+  const theme = useTheme()
   const { config } = useGardenState()
   const { maxRatio, stakeToken } = config.conviction
 
@@ -175,7 +258,7 @@ export function ConvictionCountdown({ proposal, shorter }) {
       ) : view === CHALLENGED ? (
         <Outcome
           result="Challenged"
-          color="#F5A623"
+          color={theme.challenge}
           icon={<img src={challengeIconSvg} alt="" width="24" height="24" />}
         />
       ) : (
@@ -283,7 +366,7 @@ const NegativeOutcome = ({ maxRatio, neededTokens, shorter, stakeToken }) => {
                 more needed
               </React.Fragment>
             )}
-            ).
+            )
           </span>
         </>
       )}

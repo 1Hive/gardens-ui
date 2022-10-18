@@ -97,7 +97,7 @@ function HeroBanner({ onRequestNewProposal }: HeroBannerProps) {
             >
               {account
                 ? `The community wants to hear from you!`
-                : `Connect your account to create a proposal`}
+                : `Connect to create a proposal`}
             </h2>
             {account && (
               <Button

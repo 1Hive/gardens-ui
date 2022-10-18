@@ -1,4 +1,4 @@
-import isIPFS from 'is-ipfs'
+import * as isIPFS from 'is-ipfs'
 import { IPFS_ENDPOINT } from '../endpoints'
 
 const REQUEST_TIMEOUT = 60000
