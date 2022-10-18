@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@1hive/1hive-ui@^1.1.10":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.10.tgz#2e9b2f2b1648244640462ff265c6fb161b35f109"
-  integrity sha512-fMLLkpdASANwH8picrnHqEOspkzi45FZJf7cXl8k9u9ibJq55uZSS/eYeYd2wXs7U6SEHXqPBo025pEcYMHmBQ==
+"@1hive/1hive-ui@^1.1.11":
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.11.tgz#aa3559a8567d660aeccb81464a8822d0cfe37d51"
+  integrity sha512-kOTorv4N08FN4uVyU9ozi4rcYDtTnri0e1LLBZYIZBuTqGiYoCqcBtdqDCCe4FF+WetSC+dfcAYUDvXnzmdxOQ==
   dependencies:
     "@react-spring/web" "^9.4.4"
     arg "^2.0.0"
@@ -21,7 +21,7 @@
     react-display-name "^0.2.5"
     react-onclickout "^2.0.8"
     recursive-copy "^2.0.9"
-    use-inside "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+    use-inside aragon/use-inside#master
 
 "@1hive/connect-agreement@^0.9.5":
   version "0.9.5"
@@ -14448,9 +14448,9 @@ urql@^1.10.1:
     "@urql/core" "^1.16.0"
     wonka "^4.0.14"
 
-"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
+"use-inside@github:aragon/use-inside#master":
   version "0.2.0"
-  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+  resolved "https://codeload.github.com/aragon/use-inside/tar.gz/16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
 
 "use-wallet@npm:@1hive/use-wallet@1.1.1":
   version "1.1.1"
