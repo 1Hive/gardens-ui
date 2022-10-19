@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@1hive/1hive-ui@^1.1.10":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.10.tgz#2e9b2f2b1648244640462ff265c6fb161b35f109"
-  integrity sha512-fMLLkpdASANwH8picrnHqEOspkzi45FZJf7cXl8k9u9ibJq55uZSS/eYeYd2wXs7U6SEHXqPBo025pEcYMHmBQ==
+"@1hive/1hive-ui@^1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@1hive/1hive-ui/-/1hive-ui-1.1.12.tgz#0dd50868a867f961ab627b68113a01d9a344f431"
+  integrity sha512-Qj/UEeLNKLUlfHX5jLVolTQi1wVVll+GB04K520K/BoUW1tahLD7IfBEok2alk0BvcXKYqPoF1xk0EJfSCwZmQ==
   dependencies:
     "@react-spring/web" "^9.4.4"
     arg "^2.0.0"
@@ -21,7 +21,7 @@
     react-display-name "^0.2.5"
     react-onclickout "^2.0.8"
     recursive-copy "^2.0.9"
-    use-inside "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+    use-inside "npm:@1hive/use-inside@0.3.0"
 
 "@1hive/connect-agreement@^0.9.5":
   version "0.9.5"
@@ -135,10 +135,10 @@
     "@1hive/connect-ethereum" "^0.9.10"
     "@1hive/connect-thegraph" "^0.9.10"
 
-"@1hive/evmcrispr@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@1hive/evmcrispr/-/evmcrispr-0.3.7.tgz#06fe9354288164ffe0c615585c13506201e479ae"
-  integrity sha512-ycP0ARXTjwIWW3/lW/+ULXTYl1JDm1p8VDYN5xaARfEEKUqfeE1tI+1rSGpp9nNyVgK2cJUGhP6DpGhFeqDQEA==
+"@1hive/evmcrispr@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@1hive/evmcrispr/-/evmcrispr-0.3.8.tgz#5496ca0ed5f7b5bbb461fb71410e8fa4afd74f2a"
+  integrity sha512-p+9oDVD0wkSrnOlbgiL5uY2+W5QU1hsbzg1jfJbkMJmMuIvPA5C16sy2/XBBPNsMWka8+R+qe8NMrajStvOz0g==
   dependencies:
     "@1hive/connect" "^0.9.7"
     ethers "^5.0.17"
@@ -14448,9 +14448,10 @@ urql@^1.10.1:
     "@urql/core" "^1.16.0"
     wonka "^4.0.14"
 
-"use-inside@https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf":
-  version "0.2.0"
-  resolved "https://github.com/aragon/use-inside#16f321e499d8f89e9b0fb0999e2d21db2b119bbf"
+"use-inside@npm:@1hive/use-inside@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@1hive/use-inside/-/use-inside-0.3.0.tgz#f016e5f0b83910aba39faa7308b9271810fc25ce"
+  integrity sha512-kDJ0DQNcW8cb/8WtREKh6ATj+iXntxK3bXiVeiUnOHs/vGVBF5cJt5h/r0oA5etiApvKCuGNrOgvGSWbOqOLoA==
 
 "use-wallet@npm:@1hive/use-wallet@1.1.1":
   version "1.1.1"
