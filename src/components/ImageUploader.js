@@ -16,7 +16,7 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [error, setError] = useState('')
 
-  const photoUpload = e => {
+  const photoUpload = (e) => {
     e.preventDefault()
     const reader = new FileReader()
     const file = e.target.files[0]
@@ -32,7 +32,7 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
     }
   }
 
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -48,7 +48,7 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
     onImageLoaded(btoa(binaryString), extension)
   }
 
-  const handleRemove = e => {
+  const handleRemove = (e) => {
     e.preventDefault()
     setImageLoaded(false)
     document.getElementById(`file-${id}`).value = ''
@@ -132,10 +132,11 @@ function ImageUploader({ id, imageExist, onImageLoaded, onImageRemoved }) {
 }
 
 const Container = styled.div`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
 
-  background: ${props => (props.imageLoaded ? props.successColor : '#eceff4')};
+  background: ${(props) =>
+    props.imageLoaded ? props.successColor : '#eceff4'};
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -152,7 +153,7 @@ const Container = styled.div`
   }
   &:hover {
     transition: all 1s;
-    box-shadow: 0px 0px 15px 2px ${props => props.hoverColor};
+    box-shadow: 0px 0px 15px 2px ${(props) => props.hoverColor};
   }
 `
 

@@ -24,7 +24,7 @@ const getStyles = (
       position: 'sticky',
       rowGap: `${3 * GU}px`,
       top: `${3 * GU}px`,
-      width: '327px',
+      width: '260px',
     }
   }
   if (tabletMode) {

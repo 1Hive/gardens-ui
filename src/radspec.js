@@ -84,4 +84,10 @@ export default {
   [actions.UPDATE_PRICE_ORACLE]: () => {
     return `Update price oracle`
   },
+  [actions.REGISTER_STREAM_PROPOSAL]: () => {
+    return `Register stream proposal`
+  },
+  [actions.ACTIVATE_STREAM_PROPOSAL]: () => {
+    return `Activate stream proposal`
+  },
 }

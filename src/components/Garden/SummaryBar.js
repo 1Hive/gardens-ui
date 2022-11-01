@@ -24,7 +24,11 @@ function SummaryBar({
     >
       {({ progress }) => (
         <Main compact={compact} {...props}>
-          <CombinedBar>
+          <CombinedBar
+            style={{
+              backgroundColor: theme.surfaceSummary,
+            }}
+          >
             <BarPart
               style={{
                 backgroundColor: theme.accent,
@@ -92,7 +96,6 @@ const CombinedBar = styled.div`
   width: 100%;
   height: 6px;
   border-radius: 2px;
-  background: #edf3f6;
 `
 
 const BarPart = styled(animated.div)`
@@ -120,7 +123,7 @@ const RequiredSeparatorWrapper = styled(animated.div)`
 
 const RequiredSeparator = styled.div`
   height: 100%;
-  border-left: 1px dashed #979797;
+  border-left: 1px dashed ${({ theme }) => theme.surfaceContentSecondary};
 `
 
 export default SummaryBar

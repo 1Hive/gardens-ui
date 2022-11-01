@@ -15,12 +15,15 @@ import IdentityBadge from '../IdentityBadge'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard'
 import { useWallet } from '@providers/Wallet'
+import { useAppTheme } from '@/providers/AppTheme'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { getNetworkName } from '@utils/web3-utils'
 
 import profileButtonSvg from '@assets/profileButton.svg'
 import stakeButtonSvg from '@assets/stakeButton.svg'
+import profileButtonDarkSvg from '@assets/dark-mode/profileButton.svg'
+import stakeButtonDarkSvg from '@assets/dark-mode/stakeButton.svg'
 
 type AccountScreenConnectedProps = {
   providerId: string
@@ -32,6 +35,7 @@ function AccountScreenConnected({
   onClosePopover,
 }: AccountScreenConnectedProps) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
   const history = useHistory()
   const copy = useCopyToClipboard()
   const connectedGarden = useConnectedGarden()
@@ -76,7 +80,14 @@ function AccountScreenConnected({
             column-gap: ${1 * GU}px;
           `}
         >
-          <img src={profileButtonSvg} alt="" width="24" height="24" />
+          <img
+            src={
+              appearance === 'light' ? profileButtonSvg : profileButtonDarkSvg
+            }
+            alt=""
+            width="24"
+            height="24"
+          />
           <span>My profile</span>
         </div>
       </ButtonBase>
@@ -99,7 +110,12 @@ function AccountScreenConnected({
               column-gap: ${1 * GU}px;
             `}
           >
-            <img src={stakeButtonSvg} alt="" width="24" height="24" />
+            <img
+              src={appearance === 'light' ? stakeButtonSvg : stakeButtonDarkSvg}
+              alt=""
+              width="24"
+              height="24"
+            />
             <span>Deposit Manager</span>
           </div>
         </ButtonBase>

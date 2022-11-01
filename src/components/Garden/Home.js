@@ -208,6 +208,7 @@ const Home = function Home() {
                       >
                         <RightPanel
                           onClaimRewards={handleClaimRewards}
+                          onRemoveDelegate={handleRemoveDelagate}
                           onRequestNewProposal={handleRequestNewProposal}
                           onWrapToken={handleWrapToken}
                           onUnwrapToken={handleUnwrapToken}

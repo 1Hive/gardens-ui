@@ -38,10 +38,10 @@ const Filters = ({ compact, ...props }) => {
   return (
     <div
       css={`
-        min-width: 270px;
+        min-width: 220px;
         height: fit-content;
         margin-top: ${3 * GU}px;
-        margin-right: ${8 * GU}px;
+        margin-right: ${3 * GU}px;
         top: ${9 * GU}px;
         position: sticky;
       `}

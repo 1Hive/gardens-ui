@@ -4,7 +4,7 @@ import { TEXT_STYLES, useTheme } from '@1hive/1hive-ui'
 
 const ChartsContext = React.createContext()
 
-const getAxisOffset = orient => {
+const getAxisOffset = (orient) => {
   switch (orient) {
     case 'bottom':
       return 36
@@ -21,7 +21,7 @@ function ChartsProvider({ children }) {
   const ChartOptions = useMemo(
     () => ({
       commonProps: {
-        colors: ['#7CE0D6'],
+        colors: [theme.accent],
         curve: 'basis',
         enablePoints: false,
         lineWidth: 3,
@@ -30,18 +30,18 @@ function ChartsProvider({ children }) {
           axis: {
             ticks: {
               text: {
-                fill: theme.contentSecondary,
+                fill: theme.content,
               },
             },
             legend: {
               text: {
-                fill: theme.contentSecondary,
+                fill: theme.content,
               },
             },
           },
           grid: {
             line: {
-              stroke: theme.contentSecondary.alpha(0.1),
+              stroke: theme.content.alpha(0.1),
             },
           },
         },

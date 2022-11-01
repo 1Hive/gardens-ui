@@ -84,7 +84,7 @@ const KNOWN_HELP_DESCRIPTIONS = {
   ],
   all: [
     'All proposals',
-    <>View all proposals (suggestion, funding, and decision).</>,
+    <>View all proposals (suggestion, funding, streams, and decision).</>,
   ],
   suggestion: [
     'Suggestion Proposals',
@@ -105,6 +105,13 @@ const KNOWN_HELP_DESCRIPTIONS = {
     <>
       Funding proposals ask for an amount of funds. These funds are granted if
       the proposal in question receives enough support (conviction).
+    </>,
+  ],
+  stream: [
+    'Stream proposals',
+    <>
+      Stream proposals creates a continuous stream of funding related to the
+      conviction accrued.
     </>,
   ],
 }

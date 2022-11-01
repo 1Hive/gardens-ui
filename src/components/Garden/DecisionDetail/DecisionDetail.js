@@ -86,15 +86,13 @@ function DecisionDetail({ proposal, actions }) {
 
   const quorumProgress = getQuorumProgress(proposal)
 
-  const forumRegex = regexToCheckValidProposalURL(
-    escapeRegex(forumURL)
-  )
+  const forumRegex = regexToCheckValidProposalURL(escapeRegex(forumURL))
 
   const handleBack = useCallback(() => {
     history.goBack()
   }, [history])
 
-  const handleVote = useCallback(data => {
+  const handleVote = useCallback((data) => {
     setModalVisible(true)
     setModalData({ mode: 'vote', ...data })
   }, [])
@@ -107,7 +105,7 @@ function DecisionDetail({ proposal, actions }) {
     actions.resolveAction(proposal.disputeId)
   }, [actions, proposal])
 
-  const handleShowModal = useCallback(mode => {
+  const handleShowModal = useCallback((mode) => {
     setModalVisible(true)
     setModalData({ mode })
   }, [])
@@ -195,7 +193,8 @@ function DecisionDetail({ proposal, actions }) {
                           proposal.metadata || 'No description'
                         ) : (
                           <div>
-                            {proposal.metadata && forumRegex.test(proposal.metadata) ? (
+                            {proposal.metadata &&
+                            forumRegex.test(proposal.metadata) ? (
                               <div>
                                 <div
                                   css={`
@@ -206,17 +205,18 @@ function DecisionDetail({ proposal, actions }) {
                                     Read the full proposal
                                   </Link>
                                 </div>
-
                               </div>
-                            ) : (<div>
-                              <div
-                                css={`
+                            ) : (
+                              <div>
+                                <div
+                                  css={`
                                     margin-bottom: ${1 * GU}px;
                                   `}
-                              >
-                                {proposal.metadata}
+                                >
+                                  {proposal.metadata}
+                                </div>
                               </div>
-                            </div>)}
+                            )}
                             <div>
                               <b>Actions</b>
                               <Description path={description} />
@@ -351,7 +351,9 @@ function DecisionDetail({ proposal, actions }) {
             </>
           }
         />
-        {forumRegex.test(proposal.metadata) && <ProposalComments link={proposal.metadata} />}
+        {forumRegex.test(proposal.metadata) && (
+          <ProposalComments link={proposal.metadata} />
+        )}
       </div>
       <MultiModal
         visible={modalVisible}

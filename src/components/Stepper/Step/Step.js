@@ -34,7 +34,7 @@ function Step({
         descColor: theme.contentSecondary,
       },
       [IndividualStepTypes.Prompting]: {
-        visualColor: '#7CE0D6',
+        visualColor: theme.info,
         descColor: theme.contentSecondary,
       },
       [IndividualStepTypes.Working]: {

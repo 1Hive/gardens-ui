@@ -2,7 +2,8 @@ export const toPercentage = value => value * 100
 
 export const fromPercentage = pct => pct / 100
 
-export const calculateDecay = halflifeDays => (1 / 2) ** (1 / halflifeDays)
+export const calculateDecay = (halflifeDays) =>
+  (1 / 2) ** (1 / (halflifeDays * 24 * 60 * 60))
 
 export const calculateConviction = (initialConviction, amount, time, decay) =>
   initialConviction * decay ** time +

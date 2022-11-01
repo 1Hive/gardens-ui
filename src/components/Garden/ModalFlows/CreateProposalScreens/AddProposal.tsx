@@ -23,7 +23,6 @@ import { toDecimals } from '@utils/math-utils'
 import { escapeRegex, regexToCheckValidProposalURL } from '@utils/regex-utils'
 import { formatTokenAmount, isStableToken } from '@utils/token-utils'
 import { calculateThreshold, getMaxConviction } from '@lib/conviction'
-
 import { useHistory } from 'react-router-dom'
 import { buildGardenPath } from '@utils/routing-utils'
 import { TokenType } from '@/types/app'
@@ -31,9 +30,10 @@ import SingleDatePicker from '@/components/SingleDatePicker/SingleDatePicker'
 import { dateFormat } from '@/utils/date-utils'
 import { usePollProposals } from '@/hooks/usePollProposals'
 
-const SIGNALING_PROPOSAL = 0
-const FUNDING_PROPOSAL = 1
-const POLL = 2
+export const SIGNALING_PROPOSAL = 0
+export const FUNDING_PROPOSAL = 1
+export const STREAM_PROPOSAL = 2
+export const POLL_PROPOSAL = 3
 
 const DEFAULT_FORM_DATA = {
   title: '',
@@ -49,14 +49,12 @@ const DEFAULT_FORM_DATA = {
 }
 
 const PROPOSAL_TYPES = ['Suggestion', 'Funding']
-
 export const POLL_PROPOSAL_START_TEXT = 'Poll -'
 
 type AddProposalPanelProps = {
   setProposalData: (proposal: any) => void
 }
-
-// TODO: where to store snapshot date
+const PROPOSAL_TYPES_WITH_STREAM = ['Suggestion', 'Funding', 'Stream']
 
 const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const { next } = useMultiModal()
@@ -76,10 +74,25 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
   const [isPollProposal, setIsPollProposal] = useState(false)
   const [selectedPoll, setSelectedPoll] = useState(0)
+
+  const streamMode = formData.proposalType === STREAM_PROPOSAL
   const fundingMode = formData.proposalType === FUNDING_PROPOSAL
   const isSuggestionProposal = formData.proposalType === SIGNALING_PROPOSAL
 
   const polls = React.useMemo(() => pollProposals, [pollProposals])
+
+  const typesItems = connectedGarden.fluidProposals
+    ? PROPOSAL_TYPES_WITH_STREAM
+    : PROPOSAL_TYPES
+
+  const infoContent =
+    formData.proposalType === SIGNALING_PROPOSAL
+      ? `Suggestion proposals are used to gather community sentiment for
+ideas or future funding proposals.`
+      : formData.proposalType === STREAM_PROPOSAL
+      ? `Stream proposals create continuous funding to the beneficiary in relation to the support (conviction) accrue.`
+      : `Funding proposals ask for an amount of funds. These funds are granted
+if the proposal in question receives enough support (conviction).`
 
   // Escaping forumURL to avoid misuse with regexp
   const forumRegex = regexToCheckValidProposalURL(
@@ -254,6 +267,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
     (isSuggestionProposal && !isPollProposal && !formData.link) ||
     (isPollProposal && !formData.snapshotDate) ||
     errors.length > 0 ||
+    (formData.proposalType === STREAM_PROPOSAL && !formData.beneficiary) ||
     (formData.proposalType === FUNDING_PROPOSAL &&
       (formData.amount.valueBN.eq(0) || !formData.beneficiary))
 
@@ -287,21 +301,13 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           placeholder="Select proposal type"
           selected={formData.proposalType}
           onChange={handleProposalTypeChange}
-          items={PROPOSAL_TYPES}
+          items={typesItems}
           required
           wide
         />
       </Field>
       <Info>
-        <span>
-          {isSuggestionProposal && !isPollProposal
-            ? `Suggestion proposals are used to gather community sentiment for
-        ideas or future funding proposals.`
-            : isPollProposal
-            ? '@paul can help'
-            : `Funding proposals ask for an amount of funds. These funds are granted
-        if the proposal in question receives enough support (conviction).`}
-        </span>{' '}
+        <span>{infoContent}</span>{' '}
       </Info>
       <Field
         label="Title"
@@ -312,7 +318,7 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
         <TextInput
           onChange={handleTitleChange}
           placeholder={`Add the title of the ${
-            formData.proposalType === POLL ? 'poll' : 'proposal'
+            formData.proposalType === POLL_PROPOSAL ? 'poll' : 'proposal'
           }`}
           value={formData.title}
           wide
@@ -345,21 +351,27 @@ const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
           </Field>
         </>
       )}
-
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          margin-bottom: ${2 * GU}px;
-        `}
-      >
-        <Checkbox
-          checked={isPollProposal}
-          onChange={(value: boolean) => setIsPollProposal(value)}
-          label="I agree to the terms of the Covenant"
+      {streamMode && (
+        <Field label="Beneficiary address">
+          <TextInput
+            onChange={handleBeneficiaryChange}
+            value={formData.beneficiary}
+            placeholder="Add the beneficiary’s ETH address"
+            wide
+            required
+          />
+        </Field>
+      )}
+      <Field label="Proposal Information URL">
+        <TextInput
+          onChange={handleLinkChange}
+          value={formData.link}
+          placeholder="Add Proposal information URL"
+          wide
+          required
         />
         Create poll proposal
-      </div>
+      </Field>
 
       {isPollProposal ? (
         <>

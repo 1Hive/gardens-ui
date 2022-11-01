@@ -14,6 +14,7 @@ export const SUPPORT_FILTER_NOT_SUPPORTED = 2
 export const TYPE_FILTER_SUGGESTION = 1
 export const TYPE_FILTER_PROPOSAL = 2
 export const TYPE_FILTER_DECISION = 3
+export const TYPE_FILTER_STREAM = 4
 export const RANKING_FILTER_TOP = 0
 export const RANKING_FILTER_NEW = 1
 
@@ -38,6 +39,7 @@ export const filterArgsMapping = {
     [TYPE_FILTER_SUGGESTION]: [0],
     [TYPE_FILTER_PROPOSAL]: [1],
     [TYPE_FILTER_DECISION]: [2],
+    [TYPE_FILTER_STREAM]: [3],
   },
 }
 
@@ -57,7 +59,7 @@ export const STATUS_ITEMS = [
   'Voided',
 ]
 export const SUPPORT_ITEMS = ['All', 'Supported', 'Not Supported']
-export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision']
+export const TYPE_ITEMS = ['All', 'Suggestion', 'Funding', 'Decision', 'Stream']
 export const RANKING_ITEMS = ['top', 'new']
 
 export function testSupportFilter(filter, proposalSupportStatus) {

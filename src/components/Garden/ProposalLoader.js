@@ -2,7 +2,10 @@ import React from 'react'
 import { GardenLoader } from '../Loader'
 import ProposalDetail from './ProposalDetail/ProposalDetail'
 import useProposalLogic from '../../logic/proposal-logic'
-import { useProposalWithThreshold } from '@hooks/useProposals'
+import {
+  useProposalWithStream,
+  useProposalWithThreshold,
+} from '@hooks/useProposals'
 import { ProposalTypes } from '@/types'
 
 function ProposalLoader({ match }) {
@@ -29,6 +32,15 @@ function ProposalLoader({ match }) {
       stableToken={stableToken}
       commonPool={commonPool}
     />
+  ) : proposal.type === ProposalTypes.Stream ? (
+    <WithStream
+      proposal={proposal}
+      actions={{ ...agreementActions, ...convictionActions }}
+      permissions={permissions}
+      requestToken={requestToken}
+      stableToken={stableToken}
+      commonPool={commonPool}
+    />
   ) : (
     <ProposalDetail
       proposal={proposal}
@@ -39,6 +51,16 @@ function ProposalLoader({ match }) {
       commonPool={commonPool}
     />
   )
+}
+
+function WithStream({ proposal, ...props }) {
+  const [proposalWithStream, loading] = useProposalWithStream(proposal)
+
+  if (loading) {
+    return <GardenLoader />
+  }
+
+  return <ProposalDetail proposal={proposalWithStream} {...props} />
 }
 
 function WithThreshold({ proposal, ...props }) {

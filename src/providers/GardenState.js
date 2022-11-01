@@ -10,6 +10,7 @@ import { useConnectedGarden } from './ConnectedGarden'
 import useEffectiveSupply from '@hooks/useEffectiveSupply'
 import { useWallet } from '@providers/Wallet'
 import { getGardenTokenIcon } from '@utils/token-utils'
+import { useAppTheme } from './AppTheme'
 
 const GardenStateContext = React.createContext()
 
@@ -83,10 +84,10 @@ function useTokens() {
         },
         wrappableToken: wrappableToken
           ? {
-            accountBalance: wrappableTokenAccountBalance,
-            data: wrappableToken,
-            totalSupply: wrappableTokenTotalSupply,
-          }
+              accountBalance: wrappableTokenAccountBalance,
+              data: wrappableToken,
+              totalSupply: wrappableTokenTotalSupply,
+            }
           : null,
       }),
       [
@@ -105,6 +106,7 @@ function useTokens() {
 
 function useNewConfig(config, effectiveSupply, loading) {
   const connectedGarden = useConnectedGarden()
+  const { appearance } = useAppTheme()
 
   return useMemo(() => {
     if (loading) {
@@ -114,9 +116,21 @@ function useNewConfig(config, effectiveSupply, loading) {
     const { requestToken, stableToken, stakeToken } = config.conviction
 
     // tokenIcons
-    const requestTokenIcon = getGardenTokenIcon(connectedGarden, requestToken)
-    const stableTokenIcon = getGardenTokenIcon(connectedGarden, stableToken)
-    const stakeTokenIcon = getGardenTokenIcon(connectedGarden, stakeToken)
+    const requestTokenIcon = getGardenTokenIcon(
+      connectedGarden,
+      requestToken,
+      appearance
+    )
+    const stableTokenIcon = getGardenTokenIcon(
+      connectedGarden,
+      stableToken,
+      appearance
+    )
+    const stakeTokenIcon = getGardenTokenIcon(
+      connectedGarden,
+      stakeToken,
+      appearance
+    )
 
     const tokensWithIcon = {
       requestToken: { ...requestToken, icon: requestTokenIcon },
@@ -132,7 +146,7 @@ function useNewConfig(config, effectiveSupply, loading) {
         effectiveSupply,
       },
     }
-  }, [config, connectedGarden, effectiveSupply, loading])
+  }, [config, connectedGarden, effectiveSupply, loading, appearance])
 }
 
 GardenStateProvider.propTypes = {

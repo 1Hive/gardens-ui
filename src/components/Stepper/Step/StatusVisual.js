@@ -1,6 +1,7 @@
 import { IndividualStepTypes } from '../stepper-statuses'
 import Illustration from './Illustration'
 import { GU, textStyle, IconCross, IconCheck, useTheme } from '@1hive/1hive-ui'
+import { useAppTheme } from '@/providers/AppTheme'
 import { springs } from '@/style/springs'
 import { useDisableAnimation } from '@hooks/useDisableAnimation'
 import PropTypes from 'prop-types'
@@ -173,6 +174,8 @@ StatusVisual.propTypes = {
 /* eslint-disable react/prop-types */
 function StepIllustration({ number, status, withoutFirstStep }) {
   const theme = useTheme()
+  const { appearance } = useAppTheme()
+
   const renderIllustration =
     status === IndividualStepTypes.Working ||
     status === IndividualStepTypes.Error ||
@@ -197,11 +200,15 @@ function StepIllustration({ number, status, withoutFirstStep }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: ${theme.contentSecondary};
+            background-color: ${appearance === 'light'
+              ? theme.contentSecondary
+              : theme.badge};
             height: 100%;
             width: 100%;
             border-radius: 100%;
-            color: ${theme.positiveContent};
+            color: ${appearance === 'light'
+              ? theme.positiveContent
+              : theme.content};
             ${textStyle('title1')};
             font-weight: 600;
           `}

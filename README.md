@@ -25,6 +25,6 @@ yarn
 yarn start
 ```
 
-### Environment variables
+#### Environment variables
 
 Check out the [.env.example file](.env.example)

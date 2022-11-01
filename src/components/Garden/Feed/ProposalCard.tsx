@@ -5,7 +5,10 @@ import { GU, useTheme, useViewport } from '@1hive/1hive-ui'
 import ProposalFooter from './ProposalFooter'
 import ProposalHeader from './ProposalHeader'
 import ProposalInfo from './ProposalInfo'
-import { useProposalWithThreshold } from '@hooks/useProposals'
+import {
+  useProposalWithStream,
+  useProposalWithThreshold,
+} from '@hooks/useProposals'
 
 import { buildGardenPath } from '@utils/routing-utils'
 import { ProposalTypes } from '@/types'
@@ -19,9 +22,16 @@ type CardProps = {
 function ProposalCard({ proposal, ...props }: CardProps) {
   return proposal.type === ProposalTypes.Decision ? (
     <Card proposal={proposal} {...props} />
+  ) : proposal.type === ProposalTypes.Stream ? (
+    <StreamProposalCard proposal={proposal} {...props} />
   ) : (
     <ConvictionProposalCard proposal={proposal} {...props} />
   )
+}
+
+function StreamProposalCard({ proposal, ...props }: CardProps) {
+  const [proposalWithStream, loading] = useProposalWithStream(proposal)
+  return <Card proposal={proposalWithStream} loading={loading} {...props} />
 }
 
 function ConvictionProposalCard({ proposal, ...props }: CardProps) {
