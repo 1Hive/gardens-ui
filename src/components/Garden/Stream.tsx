@@ -37,8 +37,8 @@ export function Stream({
         `}
       >
         <TokenIcon src={icon} />
-        {currentRate?.monthly} {symbol} per month with a cap of{' '}
-        {targetRate?.monthly}
+        {currentRate?.monthly} {symbol}/mo {parseFloat(currentRate?.monthly || '0s') < parseFloat(targetRate?.monthly || '0') ? 'increasing' : 'decreasing'} to a target flow of {' '}
+        {targetRate?.monthly} {symbol}/mo
       </div>
     </section>
   )
