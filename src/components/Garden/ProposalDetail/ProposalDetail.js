@@ -262,14 +262,14 @@ function ProposalDetail({
                                   <strong>
                                     {proposal?.currentRate.monthly}
                                   </strong>{' '}
-                                  {requestToken.symbol} per month with a cap of{' '}
+                                  {requestToken.symbol}/month {parseFloat(proposal?.currentRate.monthly || '0') < parseFloat(proposal?.targetRate.monthly || '0') ? 'increasing' : 'decreasing'} to a target flow of{' '}
                                   <strong>
-                                    {proposal?.targetRate.monthly}
+                                    {proposal?.targetRate.monthly} {requestToken.symbol}/month
                                   </strong>
                                 </span>
                                 <Help hint="">
                                   Stream proposals accrue in relation with the
-                                  support amount, reaching a maximum cap.
+                                  support amount, reaching the target ratio after a while.
                                 </Help>
                               </div>
                             ) : (
