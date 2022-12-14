@@ -18,6 +18,7 @@ import { getVoidedGardensByNetwork } from '../voided-gardens'
 import { mergeGardenMetadata } from '@utils/garden-utils'
 import { testNameFilter } from '@utils/garden-filters-utils'
 import { getNetwork, getNetworkChainIdByType } from '@/networks'
+import env from '@/environment'
 
 const DAOContext = React.createContext()
 
@@ -57,13 +58,13 @@ function useFilteredGardens(gardens, gardensMetadata, filters) {
   const debouncedNameFilter = useDebounce(filters.name.filter, 300)
 
   return useMemo(() => {
-    const mergedGardens = gardens.map(garden =>
+    const mergedGardens = gardens.map((garden) =>
       mergeGardenMetadata(garden, gardensMetadata)
     )
     if (!debouncedNameFilter) {
       return mergedGardens
     }
-    return mergedGardens.filter(garden =>
+    return mergedGardens.filter((garden) =>
       testNameFilter(debouncedNameFilter, garden)
     )
   }, [debouncedNameFilter, gardens, gardensMetadata])
@@ -108,20 +109,26 @@ function useGardensList(queryFilters, filters, chainId) {
   const filteredGardens = useFilteredGardens(gardens, gardensMetadata, filters)
 
   const reload = useCallback(() => {
-    setRefetchTriger(triger => setRefetchTriger(!triger))
+    setRefetchTriger((triger) => setRefetchTriger(!triger))
   }, [])
 
   useEffect(() => {
     setLoading(true)
     const fetchGardens = async () => {
       try {
+        const arrNetworks = env('NETWORK_HAS_FLUID_PROPOSAL')
+
         const result = await getGardens(
-          { network: chainId, subgraphUrl: subgraphs.gardens },
+          {
+            network: chainId,
+            subgraphUrl: subgraphs.gardens,
+            hasFluidProposal: arrNetworks.includes('' + chainId),
+          },
           { ...sorting.queryArgs }
         )
 
         setGardens(
-          result.filter(garden => !getVoidedGardensByNetwork().get(garden.id))
+          result.filter((garden) => !getVoidedGardensByNetwork().get(garden.id))
         )
       } catch (err) {
         setGardens([])

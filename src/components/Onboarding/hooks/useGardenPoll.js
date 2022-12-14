@@ -14,9 +14,15 @@ export default function useGardenPoll(gardenAddress, chainId, onResult = noop) {
 
     const pollGarden = async () => {
       try {
+        const arrNetworks = env('NETWORK_HAS_FLUID_PROPOSAL')
+
         // Note that getGarden throws an error if it can't find the garden for the given address
         await getGarden(
-          { network: chainId, subgraphUrl: subgraphs.gardens },
+          {
+            network: chainId,
+            subgraphUrl: subgraphs.gardens,
+            hasFluidProposal: arrNetworks.includes('' + chainId),
+          },
           gardenAddress
         )
 

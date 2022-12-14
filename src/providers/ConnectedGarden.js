@@ -92,8 +92,14 @@ function useGarden(id, gardensMetadata, chainId) {
         setLoading(true)
       }
       try {
+        const arrNetworks = env('NETWORK_HAS_FLUID_PROPOSAL')
+
         const result = await getGarden(
-          { network: chainId, subgraphUrl: subgraphs.gardens },
+          {
+            network: chainId,
+            hasFluidProposal: arrNetworks.includes('' + chainId),
+            subgraphUrl: subgraphs.gardens,
+          },
           id
         )
 

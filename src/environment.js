@@ -7,6 +7,7 @@ const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
 const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.gnosischain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
+const DEFAULT_NETWORK_HAS_FLUID_PROPOSAL = [100, 4] // Gnosis and Rinkeby
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -65,7 +66,16 @@ const ENV_VARS = {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
   MIDDLEWARE_ENDPOINT() {
-    return process.env.REACT_APP_MIDDLEWARE_ENDPOINT || DEFAULT_MIDDLEWARE_ENDPOINT
+    return (
+      process.env.REACT_APP_MIDDLEWARE_ENDPOINT || DEFAULT_MIDDLEWARE_ENDPOINT
+    )
+  },
+  NETWORK_HAS_FLUID_PROPOSAL() {
+    return (
+      (process.env.REACT_APP_NETWORK_HAS_FLUID_PROPOSAL &&
+        process.env.REACT_APP_NETWORK_HAS_FLUID_PROPOSAL.split(',')) ||
+      DEFAULT_NETWORK_HAS_FLUID_PROPOSAL
+    )
   },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || null
