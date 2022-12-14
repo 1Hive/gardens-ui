@@ -7,6 +7,7 @@ package-lock.json
 /build
 
 # misc
+.yalc
 .env
 .DS_Store
 .env.local
