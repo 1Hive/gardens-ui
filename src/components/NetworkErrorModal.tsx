@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { GU, Modal, textStyle, useViewport } from '@1hive/1hive-ui'
 import { useAppTheme } from '@providers/AppTheme'
 import flowerErrorLight from '@assets/flowerError.svg'
@@ -8,11 +8,22 @@ function NetworkErrorModal({ visible }: { visible: boolean }) {
   const { width } = useViewport()
   const { appearance } = useAppTheme()
 
+  const [forceClose, setForceClose] = useState(false)
+
+  useEffect(() => {
+    if (visible) {
+      setForceClose(false)
+    }
+  }, [visible])
+
   return (
     <Modal
       padding={7 * GU}
-      visible={visible}
+      visible={visible && !forceClose}
       width={Math.min(55 * GU, width - 40)}
+      onClose={() => {
+        setForceClose(true)
+      }}
     >
       <div
         css={`
