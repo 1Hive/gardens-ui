@@ -55,7 +55,7 @@ function getInfoActionContent(proposal, account, actions) {
                     ? 'decision'
                     : 'proposal'
                 }`,
-                mode: 'strong',
+                mode: 'negative',
                 onClick: actions.onChallengeAction,
               },
             ],

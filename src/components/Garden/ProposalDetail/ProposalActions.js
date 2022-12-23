@@ -81,7 +81,7 @@ function ProposalActions({
       return {
         text: 'Change support',
         action: onChangeSupport,
-        mode: 'normal',
+        mode: 'strong',
       }
     }
     if (mode === 'support') {
