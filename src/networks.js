@@ -10,30 +10,32 @@ const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
 
 const networks = {
-  rinkeby: {
-    chainId: 4,
-    ensRegistry: '0x98df287b6c145399aaa709692c8d308357bc085d',
-    name: 'Rinkeby',
-    type: 'rinkeby',
+  goerli: {
+    chainId: 5,
+    ensRegistry: '0x8cf5a255ed61f403837f040b8d9f052857469273',
+    name: 'Goerli',
+    type: 'goerli',
 
     hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
-    arbitrator: '0xc2224d785d4e4bc92d5be6767a82d026ca2813fd',
-    disputeManager: '0xe87d5c7501ccc6a32126601d94d36c0d0cce2c18',
-    template: '0x832a29b1d6c1dfca7075c62d222b40c05183aaae',
+    arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150',
+    disputeManager: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150',
+    template:
+      '0x1f756cac140e1a22d9a2dd258a59d0bf2060d3f0QMRM6VT582IBNY8GPI9XB1N5DSFRJ4YHTP',
     explorer: 'etherscan',
 
-    honeyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
-    honeyPriceOracle: '0xa87f58dbbe3a4d01d7f776e02b4dd3237f598095',
-    stableToken: '0x531eab8bb6a2359fe52ca5d308d85776549a0af9',
+    honeyToken: '0x2d467a24095b262787f58ce97d9b130ce7232b57',
+    honeyPriceOracle: '0x732cf7ff8a3df9daedc283587be2051dc67ac6c3',
+    stableToken: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60',
 
     subgraphs: {
       agreement:
         'https://api.thegraph.com/subgraphs/name/1hive/agreement-rinkeby',
       aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-rinkeby',
       celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste-rinkeby',
-      gardens: 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby',
+      gardens:
+        'https://api.studio.thegraph.com/query/29898/gardens-goerli/v2.0.0',
     },
-    legacyNetworkType: 'rinkeby',
+    legacyNetworkType: 'goerli', // TODO Looks like not used
   },
   xdai: {
     chainId: 100,
@@ -188,7 +190,7 @@ export function getAgreementConnectorConfig(chainId) {
   }
 }
 
-export const SUPPORTED_CHAINS = [4, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
+export const SUPPORTED_CHAINS = [4, 5, 100, 137] // Add  arbitrum  chains id + fill the network json with the data
 
 export function isSupportedChain(chainId) {
   return SUPPORTED_CHAINS.includes(chainId)

@@ -38,7 +38,9 @@ function HoneyswapLiquidity() {
     honeyTokenLiquidityStable,
     tokenLiquidity,
   } = config.liquidity
-  const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
+  const [hnyPrice, hnyPriceLoading, hnyError] = useHNYPriceOracle(
+    toDecimals('1', 18)
+  )
 
   // State vars
   const [denom, setDenom] = useState(denomination) // 0 HNY, 1 USD
@@ -281,13 +283,22 @@ function HoneyswapLiquidity() {
                 )}
               </div>
             )}
-            <div
-              css={`
-                ${textStyle('body3')};
-              `}
-            >
-              You must specify an amount worth at least {MIN_HNY_USD} USD
-            </div>
+            <>
+              <div
+                css={`
+                  ${textStyle('body3')};
+                `}
+              >
+                You must specify an amount worth at least {MIN_HNY_USD} USD
+              </div>
+              <div
+                css={`
+                  ${textStyle('body3')};
+                `}
+              >
+                {/* {hnyError} */}
+              </div>
+            </>
           </div>
         </div>
         <div
