@@ -19,8 +19,7 @@ const networks = {
     hiveGarden: '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a',
     arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150',
     disputeManager: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150',
-    template:
-      '0x1f756cac140e1a22d9a2dd258a59d0bf2060d3f0QMRM6VT582IBNY8GPI9XB1N5DSFRJ4YHTP',
+    template: '0x1f756cac140e1a22d9a2dd258a59d0bf2060d3f0',
     explorer: 'etherscan',
 
     honeyToken: '0x2d467a24095b262787f58ce97d9b130ce7232b57',
