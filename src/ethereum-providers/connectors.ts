@@ -24,6 +24,12 @@ export const CONNECTORS: Array<ConnectorProviderType> = [
     id: 'injected',
     properties: {
       chainId: [100, 4, 5, 137, 31337], // add here to handle more injected chains
+      rpc: {
+        137: POLYGON_ETH_NODE,
+        100: XDAI_ETH_NODE,
+        4: RINKEBY_ETH_NODE,
+        5: GOERLI_ETH_NODE,
+      },
     },
   },
   {

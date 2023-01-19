@@ -7,6 +7,7 @@ const DEFAULT_VOTING_APP_NAME = 'disputable-voting'
 
 const DEFAULT_XDAI_ETH_NODE_ENDPOINT = 'https://rpc.gnosischain.com'
 const DEFAULT_POLYGON_ETH_NODE_ENDPOINT = 'https://polygon-rpc.com'
+const DEFAULT_GOERLI_ETH_NODE_ENDPOINT = 'https://eth-goerli.public.blastapi.io'
 
 const ENV_VARS = {
   AGREEMENT_APP_NAME() {
@@ -32,6 +33,11 @@ const ENV_VARS = {
     return (
       process.env.REACT_APP_POLYGON_ETH_NODE ||
       DEFAULT_POLYGON_ETH_NODE_ENDPOINT
+    )
+  },
+  GOERLI_ETH_NODE() {
+    return (
+      process.env.REACT_APP_GOERLI_ETH_NODE || DEFAULT_GOERLI_ETH_NODE_ENDPOINT
     )
   },
   ETHERSCAN_API_KEY() {
@@ -65,7 +71,9 @@ const ENV_VARS = {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
   MIDDLEWARE_ENDPOINT() {
-    return process.env.REACT_APP_MIDDLEWARE_ENDPOINT || DEFAULT_MIDDLEWARE_ENDPOINT
+    return (
+      process.env.REACT_APP_MIDDLEWARE_ENDPOINT || DEFAULT_MIDDLEWARE_ENDPOINT
+    )
   },
   VERCEL_ENV() {
     return process.env.REACT_APP_VERCEL_ENV || null

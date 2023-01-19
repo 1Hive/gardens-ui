@@ -6,10 +6,11 @@ import { getNetwork } from '../networks'
 import { fromDecimals } from '@utils/math-utils'
 
 import priceOracleAbi from '@abis/priceOracle.json'
+import { setDebugLog } from 'clipboard-polyfill'
 
 export default function useHNYPriceOracle(amount: number) {
   const [convertedAmount, setConvertedAmount] = useState<string | number>(-1)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const { chainId } = useWallet()
 
@@ -44,7 +45,6 @@ export default function useHNYPriceOracle(amount: number) {
           )
         }
       } catch (err) {
-        setLoading(false)
         let msgError = 'Error unknown'
         const errAny = err as any
         if ('reason' in errAny) {
@@ -56,6 +56,8 @@ export default function useHNYPriceOracle(amount: number) {
         }
 
         console.error(`Error consulting converted amount ${err}`)
+      } finally {
+        setLoading(false)
       }
     }
 

@@ -38,9 +38,7 @@ function HoneyswapLiquidity() {
     honeyTokenLiquidityStable,
     tokenLiquidity,
   } = config.liquidity
-  const [hnyPrice, hnyPriceLoading, hnyError] = useHNYPriceOracle(
-    toDecimals('1', 18)
-  )
+  const [hnyPrice, hnyPriceLoading] = useHNYPriceOracle(toDecimals('1', 18))
 
   // State vars
   const [denom, setDenom] = useState(denomination) // 0 HNY, 1 USD
