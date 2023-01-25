@@ -48,12 +48,13 @@ const DEFAULT_FORM_DATA = {
   snapshotDate: '',
 }
 
-const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 export const POLL_PROPOSAL_START_TEXT = 'Poll -'
 
 type AddProposalPanelProps = {
   setProposalData: (proposal: any) => void
 }
+
+const PROPOSAL_TYPES = ['Suggestion', 'Funding']
 const PROPOSAL_TYPES_WITH_STREAM = ['Suggestion', 'Funding', 'Stream']
 
 const AddProposalPanel = ({ setProposalData }: AddProposalPanelProps) => {
