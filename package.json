@@ -24,6 +24,7 @@
     "@types/sanitize-html": "^2.6.2",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
+    "brightid_sdk_v5": "^1.0.2",
     "buffer": "^6.0.3",
     "canvas-confetti": "^1.4.0",
     "clipboard-polyfill": "^3.0.0-pre5",
