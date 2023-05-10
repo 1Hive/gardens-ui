@@ -15,6 +15,7 @@ import { usePriceOracle } from '@hooks/usePriceOracle'
 import { useGardenState } from '@providers/GardenState'
 import { useWallet } from '@providers/Wallet'
 import { useAppTheme } from '@/providers/AppTheme'
+import { useConnectedGarden } from '@/providers/ConnectedGarden'
 
 import { formatDecimals, formatTokenAmount } from '@utils/token-utils'
 
@@ -29,11 +30,23 @@ const Metrics = React.memo(function Metrics({
   totalSupply,
   totalWrappedSupply,
 }) {
+  const { useCommonPoolTokenPrice } = useConnectedGarden()
+
   const currency = {
     name: 'USD',
     symbol: '$',
     rate: 1,
   }
+
+  // merge the metadata
+  const commonPoolToken = useMemo(
+    () => ({
+      ...priceToken,
+      ...commonPool.token,
+    }),
+    [commonPool.token, priceToken]
+  )
+
   return (
     <Split
       primary={
@@ -48,7 +61,7 @@ const Metrics = React.memo(function Metrics({
               onExecuteIssuance={onExecuteIssuance}
               onRequestUpdatePriceOracle={onRequestUpdatePriceOracle}
               currency={currency}
-              token={priceToken}
+              token={useCommonPoolTokenPrice ? commonPoolToken : priceToken}
             />
             <SupplySection
               currency={currency}
@@ -140,7 +153,7 @@ function PriceSection({
 }
 
 function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
-  const [supplyMode, setSupplyMode] = useState(true)
+  const [supplyMode, setSupplyMode] = useState(totalWrappedSupply === null)
 
   const handleToggleSupplyMode = useCallback(() => {
     setSupplyMode((supplyMode) => !supplyMode)
@@ -159,7 +172,7 @@ function SupplySection({ currency, totalSupply, totalWrappedSupply }) {
             margin-right: ${2 * GU}px;
           `}
         >
-          <DotSwitch first={supplyMode} onChange={handleToggleSupplyMode} />
+          <DotSwitch first={!supplyMode} onChange={handleToggleSupplyMode} />
         </div>
       )}
       {supplyMode ? (

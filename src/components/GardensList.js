@@ -88,7 +88,9 @@ function GardenCard({ garden }) {
     )
   }, [garden, history, preferredNetwork])
 
-  const token = garden.wrappableToken || garden.token
+  const token = garden.useCommonPoolTokenPrice
+    ? garden.token
+    : garden.wrappableToken || garden.token
 
   const tokenLogo =
     (appearance === 'light' ? token?.logo : token?.logoDark || token?.logo) ||
