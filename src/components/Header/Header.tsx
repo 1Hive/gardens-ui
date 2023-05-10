@@ -262,6 +262,7 @@ type GardenNavItemsProps = {
     wiki: any
     forumURL: string
     getTokenLink: string
+    getTokenDescription: string
   }
 }
 
@@ -280,6 +281,11 @@ function GardenNavItems({ garden }: GardenNavItemsProps) {
   const getTokenLink = useMemo(
     () =>
       garden?.getTokenLink || getDexTradeTokenUrl(preferredNetwork, token.id),
+    [garden]
+  )
+
+  const getTokenDescription = useMemo(
+    () => garden?.getTokenDescription || `Get ${token.symbol}`,
     [garden]
   )
 
@@ -304,7 +310,7 @@ function GardenNavItems({ garden }: GardenNavItemsProps) {
           margin-left: ${4 * GU}px;
         `}
       >
-        Get {token.symbol}
+        {getTokenDescription}
       </Link>
       {garden?.wiki && (
         <Link
