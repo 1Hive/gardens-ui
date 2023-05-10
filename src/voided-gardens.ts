@@ -10,6 +10,7 @@ const VOIDED_GARDENS: {
     ['0xd006ab4235fa2c94889f0d884ebd92f33a4045e6', '_'],
     ['0x70a74a4130ae62d842ff97d70120bdb67cb10414', '_'],
     ['0xe943ac8e67611166d42b8b7c0ac29b0d025cfb9d', '_'],
+    ['0xb4cc3b50a67918910189eeba48d426d5f23a6296', '_'],
   ]),
   rinkeby: new Map([]),
 }
