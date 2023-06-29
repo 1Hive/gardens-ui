@@ -19,7 +19,7 @@ export const WALLET_CONNECT_BRIDGE_ENDPOINT =
 export const IPFS_ENDPOINT = {
   read: isLocalOrUnknownNetwork()
     ? 'http://127.0.0.1:8080/ipfs'
-    : 'https://ipfs.io/ipfs/',
+    : 'https://ipfs.io/ipfs',
   upload: 'https://ipfs.infura.io:5001/api/v0/add',
 }
 

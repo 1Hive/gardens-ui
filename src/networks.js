@@ -8,6 +8,17 @@ import env from './environment'
 
 const XDAI_ETH_NODE = env('XDAI_ETH_NODE')
 const POLYGON_ETH_NODE = env('POLYGON_ETH_NODE')
+const SUBGRAPH_API_KEY = env('SUBGRAPH_API_KEY')
+
+
+const replaceSubgraphApiKey = (url, alternativeUrl) => {
+  // https://gateway.thegraph.com/api/[api-key]/subgraphs/id/3ozDUC86k4Bxi1paf4pT7SSafomRb1FDHuf28LGJuS12
+  // replace [api-key] with SUBGRAPH_API_KEY if NULL use alternativeUrl
+  if (SUBGRAPH_API_KEY) {
+    return url.replace('[api-key]', SUBGRAPH_API_KEY)
+  }
+  return alternativeUrl
+}
 
 const networks = {
   rinkeby: {
@@ -56,12 +67,16 @@ const networks = {
     stableToken: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
 
     subgraphs: {
-      agreement: 'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai',
-      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
-      celeste: 'https://api.thegraph.com/subgraphs/name/1hive/celeste',
+      agreement: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/BUw5gVF7RhtFwg29EtG1Hcv29zvm2xhkCaKu3cAoKsK6',
+      'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai'),
+      aragon: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/3ozDUC86k4Bxi1paf4pT7SSafomRb1FDHuf28LGJuS12',
+      'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'),
+      celeste: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/HQcpdYKeSRuvjEwz8QL4nGYrJ6pUUxNoTcxssMn1Gc83',
+      'https://api.thegraph.com/subgraphs/name/1hive/celeste'),
       gardens:
         env('VERCEL_ENV') === 'production'
-          ? 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
+          ? replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/EucdbfTKw6d9DFeA2yHP8W9ZPciQGpAQHZMFCy3i7TxZ',
+          'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai')
           : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
     },
 

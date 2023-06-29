@@ -2,7 +2,7 @@
 node_modules
 /public/aragon-ui
 package-lock.json
-
+.yalc
 # production
 /build
 
