@@ -64,6 +64,9 @@ const ENV_VARS = {
   POCKET_API_KEY() {
     return process.env.REACT_APP_POCKET_API_KEY || null
   },
+  SUBGRAPH_API_KEY() {
+    return process.env.REACT_APP_SUBGRAPH_API_KEY || null
+  },
   MIDDLEWARE_ENDPOINT() {
     return process.env.REACT_APP_MIDDLEWARE_ENDPOINT || DEFAULT_MIDDLEWARE_ENDPOINT
   },
