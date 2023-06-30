@@ -69,8 +69,7 @@ const networks = {
     subgraphs: {
       agreement: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/BUw5gVF7RhtFwg29EtG1Hcv29zvm2xhkCaKu3cAoKsK6',
       'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai'),
-      aragon: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/3ozDUC86k4Bxi1paf4pT7SSafomRb1FDHuf28LGJuS12',
-      'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'),
+      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
       celeste: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/HQcpdYKeSRuvjEwz8QL4nGYrJ6pUUxNoTcxssMn1Gc83',
       'https://api.thegraph.com/subgraphs/name/1hive/celeste'),
       gardens:
