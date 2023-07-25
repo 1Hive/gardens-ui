@@ -17,7 +17,7 @@ function SupportProposalScreens({ proposal, mode }) {
 
   const getTransactions = useCallback(
     async (onComplete, amount) => {
-      if (type == ProposalTypes.Stream && proposal.canActivate) {
+      if (type == ProposalTypes.Stream && !proposal.isActive) {
         await fluidProposalsActions.activateProposal(
           { proposalId },
           (intent) => {
@@ -42,7 +42,7 @@ function SupportProposalScreens({ proposal, mode }) {
   const getChangeSupportTransactions = useCallback(
     async (onComplete, changeMode, amount) => {
       if (changeMode === 'stake') {
-        if (type == ProposalTypes.Stream && proposal.canActivate) {
+        if (type == ProposalTypes.Stream && !proposal.isActive) {
           await fluidProposalsActions.activateProposal(
             { proposalId },
             (intent) => {

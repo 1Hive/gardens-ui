@@ -153,7 +153,7 @@ export function useProposalWithStream(proposal) {
   const { commonPool, config } = useGardenState()
   const { requestToken } = config.conviction
   const { chainId } = useConnectedGarden()
-  const [superToken, minStake, currentRate, targetRate, canActivate, loading] =
+  const [superToken, minStake, currentRate, targetRate, isActive, loading] =
     useFluidProposals(proposal.id)
 
   return [
@@ -162,7 +162,7 @@ export function useProposalWithStream(proposal) {
       minStake,
       currentRate: getFlowAmountByPerSecondFlowRate(currentRate?.toString()),
       targetRate: getFlowAmountByPerSecondFlowRate(targetRate?.toString()),
-      canActivate,
+      isActive,
       superfluidLink: generateSuperfluidLink(
         superToken,
         proposal.beneficiary,

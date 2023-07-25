@@ -11,7 +11,7 @@ export default function useFluidProposals(proposalId: number) {
   const [minStake, setMinStake] = useState(null)
   const [targetRate, setTargetRate] = useState(null)
   const [currentRate, setCurrentRate] = useState(null)
-  const [canActivate, setCanActivate] = useState(false)
+  const [isActive, setIsActive] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const mounted = useMounted()
@@ -41,16 +41,14 @@ export default function useFluidProposals(proposalId: number) {
         const currentRate = await fluidProposalsContract.getCurrentRate(
           proposalId
         )
-        const canActivate = await fluidProposalsContract.canActivateProposal(
-          proposalId
-        )
+        const isActive = await fluidProposalsContract.isActive(proposalId)
 
         if (mounted()) {
           setSuperToken(superToken)
           setMinStake(minStake)
           setTargetRate(targetRate)
           setCurrentRate(currentRate)
-          setCanActivate(canActivate)
+          setIsActive(isActive)
           setLoading(false)
         }
       } catch (err) {
@@ -62,5 +60,5 @@ export default function useFluidProposals(proposalId: number) {
     fetchFluidProposalsData()
   }, [fluidProposalsContract, proposalId])
 
-  return [superToken, minStake, currentRate, targetRate, canActivate, loading]
+  return [superToken, minStake, currentRate, targetRate, isActive, loading]
 }
