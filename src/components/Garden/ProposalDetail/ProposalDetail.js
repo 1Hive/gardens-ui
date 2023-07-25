@@ -118,7 +118,7 @@ function ProposalDetail({
   }, [])
 
   const hasCancelRole = useMemo(() => {
-    if (!connectedAccount) {
+    if (!connectedAccount || !permissions) {
       return false
     }
 
@@ -262,14 +262,25 @@ function ProposalDetail({
                                   <strong>
                                     {proposal?.currentRate.monthly}
                                   </strong>{' '}
-                                  {requestToken.symbol}/month {parseFloat(proposal?.currentRate.monthly || '0') < parseFloat(proposal?.targetRate.monthly || '0') ? 'increasing' : 'decreasing'} to a target flow of{' '}
+                                  {requestToken.symbol}/month{' '}
+                                  {parseFloat(
+                                    proposal?.currentRate.monthly || '0'
+                                  ) <
+                                  parseFloat(
+                                    proposal?.targetRate.monthly || '0'
+                                  )
+                                    ? 'increasing'
+                                    : 'decreasing'}{' '}
+                                  to a target flow of{' '}
                                   <strong>
-                                    {proposal?.targetRate.monthly} {requestToken.symbol}/month
+                                    {proposal?.targetRate.monthly}{' '}
+                                    {requestToken.symbol}/month
                                   </strong>
                                 </span>
                                 <Help hint="">
                                   Stream proposals accrue in relation with the
-                                  support amount, reaching the target ratio after a while.
+                                  support amount, reaching the target ratio
+                                  after a while.
                                 </Help>
                               </div>
                             ) : (
