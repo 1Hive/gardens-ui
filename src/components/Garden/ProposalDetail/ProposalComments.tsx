@@ -9,15 +9,16 @@ type ProposalCommentsProps = {
 function ProposalComments({ link }: ProposalCommentsProps) {
   const { layoutName } = useLayout()
 
+  if (link) {
+    // We take the topicId which usually is in the last section of the link if the penultimate is not a number
+    const [lastParam, penultimate] = link.split('/').reverse()
+    const discourseTopicId = Number(
+      isNaN(+penultimate) ? lastParam : penultimate
+    )
 
-  // We take the topicId which usually is in the last section of the link if the penultimate is not a number
-  const [lastParam, penultimate] = link.split('/').reverse()
-  const discourseTopicId = Number(isNaN(+penultimate) ? lastParam : penultimate)
-
-  return (
-    <Split
-      primary={
-        link && (
+    return (
+      <Split
+        primary={
           <div
             css={`
               padding-left: ${layoutName !== 'large' ? 2 * GU : 0}px;
@@ -25,10 +26,11 @@ function ProposalComments({ link }: ProposalCommentsProps) {
           >
             <DiscourseComments topicId={discourseTopicId} />
           </div>
-        )
-      }
-    />
-  )
+        }
+      />
+    )
+  }
+  return <Split />
 }
 
 export default ProposalComments
