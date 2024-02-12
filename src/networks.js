@@ -67,14 +67,13 @@ const networks = {
     stableToken: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
 
     subgraphs: {
-      agreement: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/BUw5gVF7RhtFwg29EtG1Hcv29zvm2xhkCaKu3cAoKsK6',
-      'https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai'),
-      aragon: 'https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai',
-      celeste: replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/HQcpdYKeSRuvjEwz8QL4nGYrJ6pUUxNoTcxssMn1Gc83',
+      agreement: replaceSubgraphApiKey('https://gateway-arbitrum.network.thegraph.com/api/[api-key]/subgraphs/id/CdZ3hGHrcjhbhYad2mN27K8YusaVY7U8ru3Tp4De2gM7','https://api.thegraph.com/subgraphs/name/1hive/agreement-xdai'),
+      aragon: replaceSubgraphApiKey('https://gateway-arbitrum.network.thegraph.com/api/[api-key]/subgraphs/id/4xcBUyAqw61JTtP4SwvTw8f7RgRA6A1bxENatnK9cF33','https://api.thegraph.com/subgraphs/name/1hive/aragon-xdai'),
+      celeste: replaceSubgraphApiKey('https://gateway-arbitrum.network.thegraph.com/api/[api-key]/subgraphs/id/KvR9XcnqQzVv2j3h7FnQjxroUptEu56dtj7mtQ5TTun',
       'https://api.thegraph.com/subgraphs/name/1hive/celeste'),
       gardens:
         env('VERCEL_ENV') === 'production'
-          ? replaceSubgraphApiKey('https://gateway.thegraph.com/api/[api-key]/subgraphs/id/EucdbfTKw6d9DFeA2yHP8W9ZPciQGpAQHZMFCy3i7TxZ',
+          ? replaceSubgraphApiKey('https://gateway-arbitrum.network.thegraph.com/api/[api-key]/subgraphs/id/G4EbcSW588SUy8CdprPPxCN69VN8mxvnwt4oyR6YpGza',
           'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai')
           : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
     },
