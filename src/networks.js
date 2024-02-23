@@ -74,7 +74,7 @@ const networks = {
       gardens:
         env('VERCEL_ENV') === 'production'
           ? replaceSubgraphApiKey('https://gateway-arbitrum.network.thegraph.com/api/[api-key]/subgraphs/id/G4EbcSW588SUy8CdprPPxCN69VN8mxvnwt4oyR6YpGza',
-          'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai')
+          'https://api.thegraph.com/subgraphs/name/1hive/gardens-gnosis')
           : 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai-staging',
     },
 
