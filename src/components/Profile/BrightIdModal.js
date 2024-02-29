@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode.react'
 import {
+  Button,
   GU,
   Info,
   Modal,
@@ -15,6 +16,7 @@ import { sponsorUser } from '@/services/sponsorUser'
 
 function BrightIdModal({ account, addressExist, visible, onClose }) {
   const [error, setError] = useState(null)
+  const [hasScannedQr, setHasScannedQr] = useState(false)
 
   const deepLink = `${BRIGHT_ID_APP_DEEPLINK}/${account}`
   const { width } = useViewport()
@@ -85,7 +87,7 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
         >
           Connect with BrightID
         </h5>
-        {addressExist ? (
+        {addressExist && hasScannedQr ? (
           <div
             css={`
               display: flex;
@@ -141,6 +143,14 @@ function BrightIdModal({ account, addressExist, visible, onClose }) {
               Scanning this code will prevent any previously connected addresses
               from connecting to BrightID in the future through any 1Hive apps
             </Info>
+            <Button
+              onClick={() => setHasScannedQr(true)}
+              css={`
+                margin-top: ${3 * GU}px;
+              `}
+            >
+              Continue after Scanning QR Code
+            </Button>
           </>
         )}
       </div>
