@@ -13,8 +13,9 @@ const VOIDED_GARDENS: {
     ['0xb4cc3b50a67918910189eeba48d426d5f23a6296', '_'],
   ]),
   rinkeby: new Map([]),
+  goerli: new Map([]),
 }
 
 export function getVoidedGardensByNetwork() {
-  return VOIDED_GARDENS[getNetworkType()]
+  return VOIDED_GARDENS[getNetworkType()] // TODO Improv with if and return default value
 }
