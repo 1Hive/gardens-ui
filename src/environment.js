@@ -1,3 +1,4 @@
+const DEFAULT_AGENT_APP_NAME = 'agent'
 const DEFAULT_AGREEMENT_APP_NAME = 'agreement'
 const DEFAULT_CONVICTION_APP_NAME = 'disputable-conviction-voting'
 const DEFAULT_HOOKED_TOKEN_MANAGER = 'wrappable-hooked-token-manager'

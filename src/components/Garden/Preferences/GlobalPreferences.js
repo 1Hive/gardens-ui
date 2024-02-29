@@ -11,6 +11,7 @@ import {
   useTheme,
   useViewport,
 } from '@1hive/1hive-ui'
+import styled from 'styled-components'
 import { Transition, animated } from 'react-spring/renderprops'
 import { useConnectedGarden } from '@providers/ConnectedGarden'
 import { useWallet } from '@/providers/Wallet'
@@ -18,16 +19,40 @@ import { useEsc } from '../../../hooks/useKeyboardArrows'
 
 import AppsAddresses from './AppsAddresses'
 import EVMExecutor from './EVMExecutor'
+import Permissions from './Permissions'
+
+
+const LayoutWrapper = styled(Layout)`
+  z-index: 2;
+  height: 100%;
+`
+const ParentDiv = styled.div`
+  display: flex;
+  height: 100%;
+  outline: 0;
+`
+
+const RootWrapper = styled(Root.Provider)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
+const HeaderWrapper = styled(Header)`
+  padding-top: ${(props) => !props.compact ? 10 * GU : 0}px;
+`
 
 const SECTIONS = new Map([
   ['generalInfo', 'General Info'],
   ['evmExecutor', 'EVM Executor'],
+  ['permissions', 'Permissions']
 ])
 const PATHS = Array.from(SECTIONS.keys())
 const VALUES = Array.from(SECTIONS.values())
 
 const GENERAL_INFO_INDEX = 0
 const EVM_EXECUTOR_INDEX = 1
+const PERMISSIONS_INDEX = 2
 
 const AnimatedDiv = animated.div
 
@@ -65,17 +90,18 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
     getEvmCrispr()
   }, [account, connectedGarden, ethers, isSafari])
 
+  console.log('sectionIndex ', sectionIndex)
+
   return (
-    <div ref={container} tabIndex="0" css="outline: 0">
-      <Layout css="z-index: 2">
+    <ParentDiv ref={container} tabIndex="0">
+      <LayoutWrapper>
         <Close compact={compact} onClick={onClose} />
-        <Header
-          primary="Global preferences"
-          css={`
-            padding-top: ${!compact ? 10 * GU : 0}px;
-          `}
-        />
-        <Root.Provider>
+        <HeaderWrapper
+          compact={compact}
+        >
+          <Header primary="Global preferences" />
+        </HeaderWrapper>
+        <RootWrapper>
           <React.Fragment>
             <Tabs
               items={VALUES}
@@ -87,10 +113,11 @@ function GlobalPreferences({ compact, onClose, onNavigation, sectionIndex }) {
             {sectionIndex === EVM_EXECUTOR_INDEX && (
               <EVMExecutor evmcrispr={evmcrispr} />
             )}
+            {sectionIndex === PERMISSIONS_INDEX && <Permissions />}
           </React.Fragment>
-        </Root.Provider>
-      </Layout>
-    </div>
+        </RootWrapper>
+      </LayoutWrapper>
+    </ParentDiv>
   )
 }
 
