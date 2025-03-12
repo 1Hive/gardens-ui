@@ -12,6 +12,13 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
   const { layoutName } = useLayout()
   const { next } = useMultiModal()
   const { challenge, loading } = useChallenge(proposal)
+  
+  // Check if this is an expired challenge settlement
+  const isExpiredChallenge = 
+    isChallenger && 
+    proposal.status === 'Challenged' && 
+    Date.now() > proposal.challengeEndDate &&
+    proposal.settledAt === 0
 
   const handleOnContinue = useCallback(() => {
     getTransactions(() => {
@@ -27,8 +34,12 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
     >
       <span>
         {isChallenger
-          ? `This proposal has been cancelled as the submitter never responded to your settlement offer. 
-          Claiming your deposit will transfer your settlement offer amount from the proposal submitter to you; your challenge deposit will be returned, and your dispute fees refunded.`
+          ? isExpiredChallenge
+            ? `The proposal creator did not respond to your challenge within the allowed time frame. 
+               You can now claim your collateral, which will transfer the settlement offer amount from the proposer to you,
+               return your challenge deposit, and refund your dispute fees.`
+            : `This proposal has been cancelled as the submitter never responded to your settlement offer. 
+               Claiming your deposit will transfer your settlement offer amount from the proposal submitter to you; your challenge deposit will be returned, and your dispute fees refunded.`
           : `By accepting this settlement offer you agree to cancel Proposal ${id}; you will forfeit your proposal deposit and the settlement will be taken from the available funds in your deposit manager.`}
       </span>
 
@@ -74,7 +85,7 @@ function SettlementDetails({ getTransactions, isChallenger, proposal }) {
         {!loading && challenge.context}
       </InfoField>
       <ModalButton mode="strong" loading={false} onClick={handleOnContinue}>
-        {isChallenger ? 'Claim deposit' : 'Accept settlement'}
+        {isChallenger ? 'Claim collateral' : 'Accept settlement'}
       </ModalButton>
     </div>
   )

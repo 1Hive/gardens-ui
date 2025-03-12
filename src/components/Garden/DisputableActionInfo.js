@@ -65,21 +65,38 @@ function getInfoActionContent(proposal, account, actions) {
     return { info: 'Proposals cannot be challenged more than once.' }
   }
 
-  if (proposal.statusData.challenged && isSubmitter) {
-    return {
-      info: "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
-      actions: [
-        {
-          label: 'Accept settlement',
-          mode: 'strong',
-          onClick: actions.onSettleAction,
-        },
-        {
-          label: 'Raise to celeste',
-          mode: 'normal',
-          onClick: actions.onDisputeAction,
-        },
-      ],
+  if (proposal.statusData.challenged) {
+    // Check if the submitter should respond
+    if (isSubmitter) {
+      return {
+        info: "If you don't accept the settlement or raise to Celeste, the settlement amount will be lost to the challenger.",
+        actions: [
+          {
+            label: 'Accept settlement',
+            mode: 'strong',
+            onClick: actions.onSettleAction,
+          },
+          {
+            label: 'Raise to celeste',
+            mode: 'normal',
+            onClick: actions.onDisputeAction,
+          },
+        ],
+      }
+    }
+    
+    // Check if challenge period has ended and challenger can settle
+    if (isChallenger && Date.now() > proposal.challengeEndDate) {
+      return {
+        info: 'The proposer has not responded to your challenge and the challenge period has ended. You can now claim your collateral.',
+        actions: [
+          {
+            label: 'Claim collateral',
+            mode: 'strong',
+            onClick: actions.onSettleAction,
+          },
+        ],
+      }
     }
   }
 
@@ -87,7 +104,7 @@ function getInfoActionContent(proposal, account, actions) {
   if (proposal.statusData.settled && proposal.settledAt === 0) {
     if (isChallenger) {
       return {
-        info: 'When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You’ll also get a refund for your action deposit and dispute fees.',
+        info: "When you claim your collateral, the settlement offer will be slashed from submitter and transferred to you. You'll also get a refund for your action deposit and dispute fees.",
         actions: [
           {
             label: 'Claim collateral',

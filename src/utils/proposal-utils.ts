@@ -39,6 +39,17 @@ export function getProposalStatusData(proposal: {
   status: string
   challengeEndDate: Date | any
 }) {
+  // First check if a challenged proposal's period has expired
+  if (
+    proposal.status === PROPOSAL_STATUS_CHALLENGED_STRING &&
+    Date.now() > proposal.challengeEndDate
+  ) {
+    return {
+      settled: true,
+    }
+  }
+
+  // Then process normal statuses
   switch (proposal.status) {
     case PROPOSAL_STATUS_EXECUTED_STRING:
       return {
@@ -48,9 +59,7 @@ export function getProposalStatusData(proposal: {
       return {
         cancelled: true,
       }
-    case PROPOSAL_STATUS_SETTLED_STRING ||
-      (PROPOSAL_STATUS_CHALLENGED_STRING &&
-        Date.now() > proposal.challengeEndDate):
+    case PROPOSAL_STATUS_SETTLED_STRING:
       return {
         settled: true,
       }

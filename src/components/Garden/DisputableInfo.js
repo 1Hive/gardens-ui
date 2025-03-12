@@ -159,6 +159,12 @@ function ProposalSettledInfo({ proposal }) {
 
   const isSubmitter = addressesEqual(proposal.creator, account)
   const isChallenger = addressesEqual(proposal.challenger, account)
+  
+  // Check if this is an expired challenge that hasn't been settled yet
+  const isExpiredChallenge = 
+    proposal.status === 'Challenged' && 
+    Date.now() > proposal.challengeEndDate &&
+    proposal.settledAt === 0
 
   return (
     <div>
@@ -168,6 +174,8 @@ function ProposalSettledInfo({ proposal }) {
           title={
             isSubmitter
               ? 'You have accepted the settlement offer'
+              : isChallenger && isExpiredChallenge
+              ? 'The proposal creator did not respond to your challenge'
               : 'You have challenged this vote'
           }
           content={
@@ -179,6 +187,8 @@ function ProposalSettledInfo({ proposal }) {
               >
                 {isSubmitter
                   ? 'You acccepted the settlement offer on'
+                  : isChallenger && isExpiredChallenge
+                  ? 'The challenge period ended on'
                   : 'You challenged this proposal on'}
               </span>{' '}
               {dateFormat(
@@ -186,6 +196,8 @@ function ProposalSettledInfo({ proposal }) {
                   ? proposal.settledAt > 0
                     ? proposal.settledAt
                     : proposal.challengeEndDate
+                  : isExpiredChallenge
+                  ? proposal.challengeEndDate
                   : proposal.challengedAt,
                 'YYYY/MM/DD HH:mm'
               )}{' '}
@@ -194,6 +206,9 @@ function ProposalSettledInfo({ proposal }) {
                   color: ${theme.contentSecondary};
                 `}
               >
+                {isExpiredChallenge && isChallenger
+                ? 'with no response. You can now claim the settlement by clicking "Claim collateral" in the Disputable Action panel.'
+                : <span>
                 and{' '}
                 {isSubmitter ? (
                   `${formatTokenAmount(
@@ -219,19 +234,22 @@ function ProposalSettledInfo({ proposal }) {
                   </span>
                 )}
                 . You can manage your deposit balances in{' '}
+                </span>}
               </span>
-              <Link href="#/profile" external={false}>
-                Deposit Manager
-              </Link>
-              .
+              {!isExpiredChallenge && (
+                <Link href="#/profile" external={false}>
+                  Deposit Manager
+                </Link>
+              )}
+              {!isExpiredChallenge && '.'}
             </div>
           }
         />
       )}
       <Info mode="warning">
-        This {proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'}{' '}
-        has been cancelled: it was challenged, and the settlement offer
-        accepted.
+        {isExpiredChallenge
+        ? `This ${proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'} has been challenged, and the creator did not respond within the required time period. The challenger can now settle the dispute and the proposal will be cancelled.`
+        : `This ${proposal.type === ProposalTypes.Decision ? 'vote' : 'proposal'} has been cancelled: it was challenged, and the settlement offer accepted.`}
       </Info>
     </div>
   )
