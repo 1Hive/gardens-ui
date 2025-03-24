@@ -32,6 +32,7 @@ export function getNetworkType(chainId = getPreferredChain()) {
 
   if (chainId === '1') return 'mainnet'
   if (chainId === '4') return 'rinkeby'
+  if (chainId === '5') return 'goerli' // TODO FIXME Another way to be easy to add new networks
   if (chainId === '100') return 'xdai'
   if (chainId === '137') return 'polygon'
 
@@ -43,6 +44,7 @@ export function getNetworkName(chainId = getPreferredChain()) {
 
   if (chainId === '1') return 'Mainnet'
   if (chainId === '4') return 'Rinkeby'
+  if (chainId === '5') return 'Goerli' // TODO FIXME Another way to be easy to add new networks
   if (chainId === '100') return 'Gnosis'
   if (chainId === '137') return 'Polygon'
 

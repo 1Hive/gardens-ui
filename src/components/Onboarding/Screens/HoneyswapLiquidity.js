@@ -281,13 +281,22 @@ function HoneyswapLiquidity() {
                 )}
               </div>
             )}
-            <div
-              css={`
-                ${textStyle('body3')};
-              `}
-            >
-              You must specify an amount worth at least {MIN_HNY_USD} USD
-            </div>
+            <>
+              <div
+                css={`
+                  ${textStyle('body3')};
+                `}
+              >
+                You must specify an amount worth at least {MIN_HNY_USD} USD
+              </div>
+              <div
+                css={`
+                  ${textStyle('body3')};
+                `}
+              >
+                {/* {hnyError} */}
+              </div>
+            </>
           </div>
         </div>
         <div

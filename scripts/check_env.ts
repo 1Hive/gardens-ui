@@ -44,6 +44,7 @@ async function check_env() {
       logCheckEnv(
         `First clone '${ENV_TEMPLATE_PATH}' to '${ENV_PATH}' and run it again`
       )
+      throw new Error('')
     }
 
     if (arrMissingEnvs.length > 0 && THROW_ERROR_REQUIRED) {
