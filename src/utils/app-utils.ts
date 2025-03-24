@@ -55,6 +55,7 @@ export function getAppPresentation(app: AppType): {
   humanName: string
   iconSrc: string
   name?: string
+  shortenedName?: string
 } | null {
   const { contentUri, name, manifest, appId } = app
   // Get human readable name and icon from manifest if available
@@ -66,6 +67,7 @@ export function getAppPresentation(app: AppType): {
       humanName,
       iconSrc: iconPath ? getIpfsUrlFromUri(contentUri) + iconPath : '',
       name,
+      shortenedName: SHORTENED_APPS_NAMES.get(name) || name,
     }
   }
 

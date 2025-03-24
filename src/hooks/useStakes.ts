@@ -96,5 +96,5 @@ export function useInactiveProposalsWithStake(account: string) {
       )
     })
 
-  return inactiveStakes
+  return inactiveStakes.flat()
 }
